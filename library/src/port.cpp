@@ -1,0 +1,585 @@
+/*
+    MIDI Sequencer C++ library 
+    Copyright (C) 2006-2008, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+ 
+    This library is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+ 
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ 
+    You should have received a copy of the GNU General Public License along 
+    with this program; if not, write to the Free Software Foundation, Inc., 
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+*/
+
+#include "port.h"
+#include "queue.h"
+#include "subscription.h"
+#include "client.h"
+#include "commons.h"
+
+namespace ALSA 
+{
+namespace Sequencer 
+{
+
+/************/
+/* PortInfo */
+/************/
+
+PortInfo::PortInfo()
+{
+	snd_seq_port_info_malloc(&m_Info);
+}
+
+PortInfo::PortInfo(snd_seq_port_info_t* other)
+{
+	snd_seq_port_info_malloc(&m_Info);
+	snd_seq_port_info_copy(m_Info, other);
+}
+
+PortInfo::~PortInfo()
+{
+	snd_seq_port_info_free(m_Info);
+	freeSubscribers();
+}
+
+PortInfo*
+PortInfo::clone()
+{
+	return new PortInfo(m_Info);
+}
+
+int 
+PortInfo::getClient()
+{
+    return snd_seq_port_info_get_client(m_Info);
+}
+
+int 
+PortInfo::getPort()
+{
+    return snd_seq_port_info_get_port(m_Info);
+}
+
+const snd_seq_addr_t* 
+PortInfo::getAddr()
+{
+	return snd_seq_port_info_get_addr(m_Info);
+}
+
+std::string 
+PortInfo::getName()
+{
+	return std::string(snd_seq_port_info_get_name(m_Info));
+}
+
+unsigned int 
+PortInfo::getCapability()
+{
+	return snd_seq_port_info_get_capability(m_Info);
+}
+
+unsigned int 
+PortInfo::getType()
+{
+	return snd_seq_port_info_get_type(m_Info);
+}
+
+int
+PortInfo::getMidiChannels()
+{
+    return snd_seq_port_info_get_midi_channels(m_Info);
+}
+
+int
+PortInfo::getMidiVoices()
+{
+	return snd_seq_port_info_get_midi_voices(m_Info);
+}
+
+int 
+PortInfo::getSynthVoices()
+{
+	return snd_seq_port_info_get_synth_voices(m_Info);
+}
+
+int 
+PortInfo::getReadUse()
+{
+    return snd_seq_port_info_get_read_use(m_Info);
+}
+
+int 
+PortInfo::getWriteUse()
+{
+	return snd_seq_port_info_get_write_use(m_Info);
+}
+
+int 
+PortInfo::getPortSpecified()
+{
+	return snd_seq_port_info_get_port_specified(m_Info);
+}
+
+void 
+PortInfo::setClient(int client)
+{
+    snd_seq_port_info_set_client(m_Info, client);
+}
+
+void 
+PortInfo::setPort(int port)
+{
+    snd_seq_port_info_set_port(m_Info, port);
+}
+
+void 
+PortInfo::setAddr(snd_seq_addr_t* addr)
+{
+    snd_seq_port_info_set_addr(m_Info, addr);
+}
+
+void 
+PortInfo::setName(std::string const& name)
+{
+    snd_seq_port_info_set_name(m_Info, name.c_str());
+}
+
+void 
+PortInfo::setName(QString const& name)
+{
+    snd_seq_port_info_set_name(m_Info, name.data());
+}
+
+void 
+PortInfo::setCapability(unsigned int capability)
+{
+    snd_seq_port_info_set_capability(m_Info, capability);
+}
+
+void 
+PortInfo::setType(unsigned int _type)
+{
+    snd_seq_port_info_set_type(m_Info, _type);
+}
+
+void 
+PortInfo::setMidiChannels(int channels)
+{
+    snd_seq_port_info_set_midi_channels(m_Info, channels);
+}
+
+void 
+PortInfo::setMidiVoices(int voices)
+{
+    snd_seq_port_info_set_midi_voices(m_Info, voices);
+}
+
+void 
+PortInfo::setSynthVoices(int voices)
+{
+    snd_seq_port_info_set_synth_voices(m_Info, voices);
+}
+
+void 
+PortInfo::setPortSpecified(int val)
+{
+    snd_seq_port_info_set_port_specified(m_Info, val);
+}
+
+unsigned int 
+PortInfo::getSubscribersCount()
+{
+	return m_Subscribers.size();
+}
+
+Subscriber*
+PortInfo::getSubscriber(unsigned int j)
+{
+    if (j < m_Subscribers.size()) {
+    	return m_Subscribers[j];
+    }
+    return NULL;
+}
+
+void 
+PortInfo::readSubscribers(MidiClient* seq)
+{
+    snd_seq_addr_t tmp;
+    Subscriber* subs;
+
+    freeSubscribers();
+    tmp.client = getClient();
+    tmp.port = getPort();
+    subs = new Subscriber();
+    subs->setType(SND_SEQ_QUERY_SUBS_READ);
+    subs->setIndex(0);
+    subs->setRoot(&tmp);
+    while (snd_seq_query_port_subscribers(seq->getHandle(), subs->m_Info) >= 0) {
+        m_Subscribers.push_back(subs->clone());
+        subs->setIndex(subs->getIndex() + 1);
+    }
+    delete subs;
+}
+
+void
+PortInfo::freeSubscribers()
+{
+	SubscribersVector::iterator it;
+	for(it = m_Subscribers.begin(); it != m_Subscribers.end(); ++it)
+	{
+		delete (*it);
+	}
+    m_Subscribers.clear();
+}
+	
+/************/
+/* MidiPort */
+/************/
+
+MidiPort::MidiPort( QObject* parent, const char* name ) :
+	QObject( parent, name ),
+	m_MidiClient(NULL),
+	m_Info(NULL),
+	m_Attached(false),
+	m_AutoAttach(false)
+{
+    m_Info = new PortInfo();
+}
+
+MidiPort::~MidiPort()
+{
+  unsubscribeAll();
+  detach();
+  freeSubscriptions();
+  if (m_Info != NULL)
+	  delete m_Info;
+}
+
+PortInfo*
+MidiPort::getPortInfo()
+{
+    if (m_Info == NULL) {
+        m_Info = new PortInfo();
+    }
+    return m_Info;
+}
+
+int 
+MidiPort::getSubscriptionCount()
+{
+    return m_Subscriptions.size();
+}
+
+void
+MidiPort::freeSubscriptions()
+{
+	SubscriptionsVector::iterator it;
+	for(it = m_Subscriptions.begin(); it != m_Subscriptions.end(); ++it)
+	{
+		delete (*it);
+	}
+	m_Subscriptions.clear();
+}
+
+Subscription* 
+MidiPort::getSubscription(unsigned int j)
+{
+    if (j < m_Subscriptions.size()) {
+        return m_Subscriptions[j];
+    }
+    return NULL;
+}
+
+void 
+MidiPort::setMidiClient( MidiClient* seq )
+{
+    if (m_MidiClient != seq) {
+        emit midiClientChanged(this, seq);
+        m_MidiClient = seq;
+        if (m_AutoAttach && !m_Attached) {
+            attach();
+        }
+        applyPortInfo();
+    }
+}
+
+void 
+MidiPort::subscribe(Subscription* subs)
+{
+    subs->subscribe(m_MidiClient);
+    m_Subscriptions.push_back(subs->clone());
+    emit subscribed(this, subs);
+}
+
+void 
+MidiPort::unsubscribe(Subscription* subs)
+{
+    Subscription* subs2;
+    if (m_MidiClient == NULL) {
+        return;
+    }
+    subs->unsubscribe(m_MidiClient);
+	SubscriptionsVector::iterator it;
+	for(it = m_Subscriptions.begin(); it != m_Subscriptions.end(); ++it)
+	{
+        subs2 = (*it);
+        if ((subs2->getSender()->client == subs->getSender()->client) && 
+            (subs2->getSender()->port == subs->getSender()->port) && 
+            (subs2->getDest()->client == subs->getDest()->client) && 
+            (subs2->getDest()->port == subs->getDest()->port)) {
+            m_Subscriptions.erase(it);
+            delete subs2;
+            break;
+        }
+    }
+}
+
+void 
+MidiPort::subscribeTo( PortInfo* info )
+{
+    Subscription subs;
+    subs.setSender(m_Info->getAddr());
+    subs.setDest(info->getAddr());
+    subscribe(&subs);
+}
+
+void 
+MidiPort::subscribeTo( int client, int port )
+{
+    Subscription subs;
+    snd_seq_addr addr;
+    addr.client = client;
+    addr.port = port;
+    subs.setSender(m_Info->getAddr());
+    subs.setDest(&addr);
+    subscribe(&subs);
+}
+
+void 
+MidiPort::subscribeTo( std::string const& name )
+{
+    Subscription subs;
+    snd_seq_addr addr;
+    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL)) {
+        subs.setSender(m_Info->getAddr());
+        snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.c_str());
+        subs.setDest(&addr);
+        subscribe(&subs);
+    }
+}
+
+void 
+MidiPort::subscribeTo( QString const& name )
+{
+    Subscription subs;
+    snd_seq_addr addr;
+    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL)) {
+        subs.setSender(m_Info->getAddr());
+        snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.data());
+        subs.setDest(&addr);
+        subscribe(&subs);
+    }
+}
+
+
+void 
+MidiPort::subscribeFrom( PortInfo* port )
+{
+    Subscription subs;
+    subs.setSender( port->getAddr() );
+    subs.setDest( m_Info->getAddr() );
+    subscribe(&subs);
+}
+
+void 
+MidiPort::subscribeFrom( int client, int port )
+{
+    Subscription subs;
+    snd_seq_addr addr;
+    addr.client = client;
+    addr.port = port;
+    subs.setSender(&addr);
+    subs.setDest(m_Info->getAddr());
+    subscribe(&subs);
+}
+
+void 
+MidiPort::subscribeFrom( std::string const& name)
+{
+    Subscription subs;
+    snd_seq_addr addr;
+    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL)) {
+    	snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.c_str());
+    	subs.setSender(&addr);
+    	subs.setDest(m_Info->getAddr());
+    	subscribe(&subs);
+    }
+}
+
+void 
+MidiPort::subscribeFrom( QString const& name)
+{
+    Subscription subs;
+    snd_seq_addr addr;
+    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL)) {
+    	snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.data());
+    	subs.setSender(&addr);
+    	subs.setDest(m_Info->getAddr());
+    	subscribe(&subs);
+    }
+}
+void 
+MidiPort::subscribeFromAnnounce()
+{
+    subscribeFrom(SND_SEQ_CLIENT_SYSTEM, SND_SEQ_PORT_SYSTEM_ANNOUNCE);
+}
+
+void 
+MidiPort::unsubscribeAll()
+{
+    if (m_MidiClient == NULL) {
+        return;
+    }
+	SubscriptionsVector::iterator it;
+    for ( it = m_Subscriptions.begin(); it != m_Subscriptions.end(); ++it ) {
+    	(*it)->unsubscribe(m_MidiClient);
+    	delete (*it);
+    }
+    m_Subscriptions.clear();
+}
+
+void 
+MidiPort::applyPortInfo()
+{
+    if (m_Attached && (m_MidiClient != NULL) && (m_MidiClient->isOpened())) {
+        snd_seq_set_port_info(m_MidiClient->getHandle(), m_Info->getPort(), m_Info->m_Info);
+    }
+}
+
+std::string 
+MidiPort::getPortName()
+{
+    return m_Info->getName();
+}
+
+void 
+MidiPort::setPortName( std::string const& newName)
+{
+    m_Info->setName(newName);
+    applyPortInfo();
+}
+
+unsigned int 
+MidiPort::getCapability()
+{
+    return m_Info->getCapability();
+}
+
+void 
+MidiPort::setCapability(unsigned int newValue)
+{
+    m_Info->setCapability(newValue);
+    applyPortInfo();
+}
+
+unsigned int 
+MidiPort::getPortType()
+{
+    return m_Info->getType();
+}
+
+void 
+MidiPort::setPortType( unsigned int newValue)
+{
+    m_Info->setType( newValue );
+    applyPortInfo();
+}
+
+int
+MidiPort::getMidiChannels()
+{
+	return m_Info->getMidiChannels();
+}
+
+void 
+MidiPort::setMidiChannels(int newValue)
+{
+    m_Info->setMidiChannels( newValue );
+    applyPortInfo();
+}
+
+int 
+MidiPort::getMidiVoices()
+{
+	return m_Info->getMidiVoices();
+}
+
+void 
+MidiPort::setMidiVoices(int newValue)
+{
+    m_Info->setMidiVoices( newValue );
+    applyPortInfo();
+}
+
+int 
+MidiPort::getSynthVoices()
+{
+    return m_Info->getSynthVoices();
+}
+
+void 
+MidiPort::setSynthVoices(int newValue)
+{
+    m_Info->setSynthVoices( newValue );
+    applyPortInfo();
+}
+
+void 
+MidiPort::attach()
+{
+    if (!m_Attached && (m_MidiClient != NULL)) {
+        m_MidiClient->portAttach(this);
+        m_Attached = true;
+        emit attached(this);
+    }
+}
+
+void 
+MidiPort::detach()
+{
+    if (m_Attached && (m_MidiClient != NULL)) {
+        m_MidiClient->portDetach(this);
+        m_Attached = false;
+        emit detached(this);
+    }
+}
+
+void 
+MidiPort::setAttached(bool state)
+{
+    if (m_Attached != state) {
+        if (state) {
+            attach();
+        } else {
+            detach();
+        }
+    }
+}
+
+void 
+MidiPort::setAutoAttach(bool state)
+{
+    if (m_AutoAttach != state) {
+        m_AutoAttach = state;
+    }
+}
+
+}
+}
