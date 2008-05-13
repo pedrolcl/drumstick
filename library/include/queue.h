@@ -49,14 +49,6 @@ public:
     void setOwner(int value);
     void setFlags(unsigned int value);
   
-    /*
-     PROPERTY  Id: Integer read get_id;
-     PROPERTY  Name: String read get_name write set_name;
-     PROPERTY  Owner: Integer read get_owner write set_owner;
-     PROPERTY  Locked: Boolean read get_locked;
-     PROPERTY  Flags: LongWord read get_flags write set_flags;
-     */
-    
 private:
     snd_seq_queue_info_t* m_Info;
 };
@@ -78,12 +70,6 @@ public:
     unsigned int getStatusBits();
     snd_seq_tick_time_t getTickTime();
   
-    /*PROPERTY  QueueId: Integer read get_id;
-     PROPERTY  Events: Integer read get_events;
-     PROPERTY  RealTime: snd_seq_real_time_t read get_realtime;
-     PROPERTY  StatusBits: LongWord read get_statusBits;
-     PROPERTY  TickTime: snd_seq_tick_time_t read get_ticktime;*/
-    
 private:
     snd_seq_queue_status_t* m_Info;
 };
@@ -109,12 +95,6 @@ public:
     void setSkewBase(unsigned int value);
     void setTempo(unsigned int value);
   
-    /*PROPERTY  QueueId: Integer read get_id;
-     PROPERTY  Ppq: Integer read get_ppq write set_ppq;
-     PROPERTY  Skew: LongWord read get_skew write set_skew;
-     PROPERTY  SkewBase: LongWord read get_skewbase write set_skewbase;
-     PROPERTY  Tempo: LongWord read get_tempo write set_tempo; */
-    
 private:
     snd_seq_queue_tempo_t* m_Info;
 };
@@ -138,11 +118,6 @@ public:
     void setId(snd_timer_id_t* value);
     void setResolution(unsigned int value);
   
-    /*PROPERTY  QueueId: Integer read get_queue;
-     PROPERTY  TimerType: snd_timer_type_t read get_type write set_type;
-     PROPERTY  TimerId: Psnd_timer_id_t read get_id write set_id;
-     PROPERTY  Resolution: LongWord read get_resolution write set_resolution; */
-    
 private:
     snd_seq_queue_timer_t* m_Info;
 };
@@ -173,13 +148,6 @@ public:
     void setTimer(QueueTimer* value);
     void setUsage(int used);
     
-    /*PROPERTY  QueueId: Integer read FId;
-     PROPERTY  Info: TAlsaQueueInfo read get_info write set_info;
-     PROPERTY  Status: TAlsaQueueStatus read get_status;
-     PROPERTY  Tempo: TAlsaQueueTempo read get_tempo write set_tempo;
-     PROPERTY  Timer: TAlsaQueueTimer read get_timer write set_timer;
-     PROPERTY  Usage: Integer read get_usage write set_usage;*/
-
 private:
     int m_Id;
     MidiClient* m_MidiClient;

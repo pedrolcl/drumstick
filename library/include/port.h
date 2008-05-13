@@ -76,22 +76,6 @@ protected:
     void readSubscribers(MidiClient* seq);
     void freeSubscribers();
   
-    /*PROPERTY  Info: Psnd_seq_port_info_t read FInfo;
-     PROPERTY  ClientId: Integer read get_client write set_client;
-     PROPERTY  PortId: Integer read get_port write set_port;
-     PROPERTY  PortName: String read get_name write set_name;
-     PROPERTY  Addr: snd_seq_addr_t read get_addr write set_addr;
-     PROPERTY  Capability: TPortCaps read GetCaps write SetCaps;
-     PROPERTY  PortType: TPortType read GetType write SetType;
-     PROPERTY  MidiChannels: LongInt read get_midi_channels write set_midi_channels;
-     PROPERTY  MidiVoices: LongInt read get_midi_voices write set_midi_voices;
-     PROPERTY  SynthVoices: LongInt read get_synth_voices write set_synth_voices;
-     PROPERTY  PortSpecified: LongInt read get_port_specified write set_port_specified;
-     PROPERTY  ReadUse: LongInt read get_read_use;
-     PROPERTY  WriteUse: LongInt read get_write_use;
-     PROPERTY  SubscribersCount: Integer read GetSubscribersCount;
-     PROPERTY  Subscribers[j: Integer]: TAlsaQuerySubscribe read GetSubscriber; */
-
 private:
     snd_seq_port_info_t* m_Info;
     SubscribersVector m_Subscribers;
@@ -151,23 +135,6 @@ signals:
 protected:
     void freeSubscriptions();
 	
-    /*PROPERTY  SubscriptionCount: Integer read GetSubscriptionCount;
-     PROPERTY  Subscription[j: Integer]:TAlsaSubscription read GetSubscription;
-     PROPERTY  Info: TAlsaPortInfo read GetPortInfo;
-     PROPERTY  Attached: Boolean read FAttached write SetAttached;
-     PROPERTY  OnSubscription: TAlsaMidiPortEvent read FOnSubscription write FOnSubscription;
-     PROPERTY  OnMidiClientChange: TAlsaMidiPortEvent read FOnMidiClientChange write FOnMidiClientChange;
-     PROPERTY  OnAttach: TAlsaMidiPortEvent read FOnAttach write FOnAttach;
-     PROPERTY  OnDetach: TAlsaMidiPortEvent read FOnDetach write FOnDetach;
-     PROPERTY  AutoAttach: Boolean read FAutoAttach write SetAutoAttach;
-     PROPERTY  MidiClient: TAlsaMidiClient read FMidiClient write SetMidiClient;
-     PROPERTY  PortName: String read GetPortName write SetPortName;
-     PROPERTY  Capability: TPortCaps read GetPortCaps write SetPortCaps;
-     PROPERTY  PortType: TPortType read GetPortType write SetPortType;
-     PROPERTY  MidiChannels: LongInt read GetMidiChannels write SetMidiChannels;
-     PROPERTY  MidiVoices: LongInt read GetMidiVoices write SetMidiVoices;
-     PROPERTY  SynthVoices: LongInt read GetSynthVoices write SetSynthVoices; */
-
 private:
     MidiClient* m_MidiClient;
     PortInfo* m_Info;

@@ -58,19 +58,6 @@ public:
     void setType(snd_seq_query_subs_type_t type);
     void setIndex(int index);
     
-    /*PROPERTY Info: psnd_seq_query_subscribe_t read FInfo;
-     PROPERTY  ClientId: LongInt read get_client write set_client;
-     PROPERTY  PortId: LongInt read get_port write set_port;
-     PROPERTY  Root: snd_seq_addr_t read get_root write set_root;
-     PROPERTY  QType: snd_seq_query_subs_type_t read get_type write set_type;
-     PROPERTY  QIndex: LongInt read get_index write set_index;
-     PROPERTY  NumSubs: LongInt read get_num_subs;
-     PROPERTY  Addr: snd_seq_addr_t read get_addr;
-     PROPERTY  MidiQueue: LongInt read get_queue;
-     PROPERTY  Exclusive: Boolean read get_exclusive;
-     PROPERTY  TimeUpdate: Boolean read get_time_update;
-     PROPERTY  TimeReal: Boolean read get_time_real;*/
-
 private:
     snd_seq_query_subscribe_t* m_Info;
   
@@ -102,14 +89,6 @@ public:
     void setTimeUpdate(bool val);
     void setTimeReal(bool val);
   
-    /*PROPERTY  Sender: snd_seq_addr_t read get_sender write set_sender;
-     PROPERTY  Dest: snd_seq_addr_t read get_dest write set_dest;
-     PROPERTY  MidiQueue: LongInt read get_queue write set_queue;
-     property  Voices: LongWord write set_voices;
-     PROPERTY  Exclusive: Boolean read get_exclusive write set_exclusive;
-     PROPERTY  TimeUpdate: Boolean read get_time_update write set_time_update;
-     PROPERTY  TimeReal: Boolean read get_time_real write set_time_real; */
-
 private:
     snd_seq_port_subscribe_t* m_Info;
 };

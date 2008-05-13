@@ -66,18 +66,6 @@ protected:
     void readPorts(MidiClient* seq);
     void freePorts();
   
-  /* PROPERTY  Info: Psnd_seq_client_info_t read FInfo;
-     PROPERTY  ClientId: Integer read get_client write set_client;
-     PROPERTY  ClientType: snd_seq_client_type_t read get_type;
-     PROPERTY  Name: String read get_name write set_name;
-     PROPERTY  BroadcastFilter: Boolean read get_broadcast_filter write set_broadcast_filter;
-     PROPERTY  ErrorBounce: Boolean read get_error_bounce write set_error_bounce;
-     property  EventFilter: PByte read get_event_filter write set_event_filter;
-     PROPERTY  PortCount: LongInt read get_num_ports;
-     PROPERTY  EventLost: LongInt read get_event_lost;
-     PROPERTY  PortInfoCount: Integer read GetPortInfoCount;
-     PROPERTY  PortInfo[j:Integer]: TAlsaPortInfo read GetPortInfo; */
-
 private:
     snd_seq_client_info_t* m_Info;
     PortInfoVector m_Ports;
@@ -151,26 +139,6 @@ protected:
     void freeClients();
     void updateAvailablePorts();
     PortInfoVector filterPorts(unsigned int filter);
-
-  /* PROPERTY  OutputBufferSize: LongInt read GetOutputBufferSize write SetOutputBufferSize;
-     PROPERTY  InputBufferSize: LongInt read GetInputBufferSize write SetInputBufferSize;
-     PROPERTY  SeqType: LongInt read GetType;
-     PROPERTY  ClientId: LongInt read GetClientId;
-     PROPERTY  SeqHandle:Psnd_seq_t read FSeqHandle;
-     PROPERTY  ClientInfoCount: Integer read GetClientInfoCount;
-     PROPERTY  ClientInfo[j:Integer]: TAlsaClientInfo read GetClientInfo;
-     PROPERTY  Client: TAlsaClientInfo read GetThisClient write SetThisClient;
-     PROPERTY  PortCount: Integer read GetPortCount;
-     PROPERTY  Port[j: Integer]: TAlsaMidiPort read GetPort;
-     PROPERTY  MidiQueue: TAlsaQueue read GetQueue;
-     PROPERTY  OnEvent: TAlsaNotifyEvent read FOnEvent write FOnEvent;
-     PROPERTY  OpenMode: TAlsaOpenMode read FMode write SetMode;
-     PROPERTY  SeqName:String read FName write SetSeqName;
-     PROPERTY  BlockMode: Boolean read FBlock write SetBlock;
-     PROPERTY  Enabled: Boolean read FEnabled write SetEnabled;
-     PROPERTY  ClientName: String read GetClientName write SetClientName;
-     PROPERTY  BroadcastFilter: Boolean read GetBroadcastFilter write SetBroadcastFilter;
-     PROPERTY  ErrorBounce: Boolean read GetErrorBounce write SetErrorBounce;  */
 
 private:
     snd_seq_t* m_SeqHandle;
