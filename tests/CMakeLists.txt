@@ -125,6 +125,31 @@ TARGET_LINK_LIBRARIES(dumpmid
     aseqmm
 )
 
+# timertest
+
+SET(timertest_SRCS
+    timertest/timertest.cpp
+    timertest/timertest.h
+)
+
+#SET(timertestd_qtobject_SRCS
+#    timertest/timertest.h
+#)
+
+#QT_WRAP_CPP(timertest timertest_moc_SRCS ${timertest_qtobject_SRCS})
+
+ADD_EXECUTABLE(timertest
+#    ${timertest_moc_SRCS}
+    ${timertest_SRCS}
+)
+
+TARGET_LINK_LIBRARIES(timertest
+    ${QT_LIBRARIES} 
+    ${ALSA_LIBS} 
+    aseqmm
+)
+
+
 # we should install some files...
 INSTALL(TARGETS buildsmf dumpsmf testevents dumpmid
 		RUNTIME DESTINATION bin

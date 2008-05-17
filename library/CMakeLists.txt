@@ -35,6 +35,7 @@ SET(aseqmm_SRCS
     include/qsmf.h
     include/queue.h
     include/subscription.h
+    include/alsatimer.h
     src/client.cpp
     src/event.cpp
     src/port.cpp
@@ -42,6 +43,7 @@ SET(aseqmm_SRCS
     src/qsmf.cpp
     src/queue.cpp
     src/subscription.cpp
+    src/alsatimer.cpp
 )
 
 QT_WRAP_CPP(aseqmm aseqmm_moc_SRCS ${aseqmm_qtobject_SRCS})
