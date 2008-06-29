@@ -22,8 +22,8 @@
 
 #include "commons.h"
 #include "port.h"
-#include <vector>
-#include <qobject.h>
+#include <QObject>
+#include <QList>
 
 namespace ALSA 
 {
@@ -41,26 +41,28 @@ class ClientInfo
 	
 public:
 	ClientInfo();
+	ClientInfo(const ClientInfo& other);
 	ClientInfo(snd_seq_client_info_t* other); 
 	virtual ~ClientInfo();
     ClientInfo* clone();
+    ClientInfo& operator=(const ClientInfo& other);
 
     int getClientId();
     snd_seq_client_type_t getClientType();
-    std::string getName();
+    QString getName();
     bool getBroadcastFilter();
     bool getErrorBounce();
     int getNumPorts();
     int getEventLost();
     void setClient(int client);
-    void setName(std::string name);
+    void setName(QString name);
     void setBroadcastFilter(bool val);
     void setErrorBounce(bool val);
     const unsigned char* getEventFilter();
     void setEventFilter(unsigned char* filter);
     
     unsigned int getPortInfoCount();
-    PortInfo* getPortInfo(unsigned int j);
+    PortInfo* getPortInfo(int j);
 
 protected:    
     void readPorts(MidiClient* seq);
@@ -68,10 +70,10 @@ protected:
   
 private:
     snd_seq_client_info_t* m_Info;
-    PortInfoVector m_Ports;
+    PortInfoList m_Ports;
 };
 
-typedef std::vector<ClientInfo*> ClientInfoVector;
+typedef QList<ClientInfo> ClientInfoList;
 
 class MidiClient : public QObject
 {
@@ -79,7 +81,7 @@ class MidiClient : public QObject
 	friend class SequencerInputThread;
 	
 public:
-	MidiClient( QObject* parent, const char* name = 0 );
+	MidiClient( QObject* parent );
 	virtual ~MidiClient();
 	
     void open();
@@ -88,7 +90,7 @@ public:
     void stopEvents();
     MidiPort* createPort();
     MidiQueue* createQueue(); 
-    MidiQueue* createQueue(std::string const& name);
+    MidiQueue* createQueue(QString const& name);
     MidiQueue* getQueue();
     void portAttach(MidiPort* port);
     void portDetach(MidiPort* port);
@@ -110,14 +112,14 @@ public:
     void setOutputBufferSize(size_t newSize);
     size_t getInputBufferSize();
     void setInputBufferSize(size_t newSize);
-    std::string getDeviceName() { return m_DeviceName; }
-    void setDeviceName( std::string const& newName);
+    QString getDeviceName() { return m_DeviceName; }
+    void setDeviceName( QString const& newName);
     int getOpenMode() { return m_OpenMode; }
     void setOpenMode(int newMode);
     bool getBlockMode() { return m_BlockMode; }
     void setBlockMode(bool newValue);
-    std::string getClientName();
-    void setClientName( std::string const& newName);
+    QString getClientName();
+    void setClientName( QString const& newName);
     bool getBroadcastFilter();
     void setBroadcastFilter(bool newValue);
     bool getErrorBounce();
@@ -126,11 +128,11 @@ public:
     ClientInfo* getThisClientInfo();
     void setThisClientInfo(ClientInfo* val);
     int getPortCount();
-    MidiPort* getPort(unsigned int j);
+    MidiPort* getPort(int j);
     int getClientInfoCount();
-    ClientInfo* getClientInfo(unsigned int j);
-    PortInfoVector getAvailableInputs();
-    PortInfoVector getAvailableOutputs();
+    ClientInfo* getClientInfo(int j);
+    PortInfoList getAvailableInputs();
+    PortInfoList getAvailableOutputs();
 
 protected:    
     void doEvents();
@@ -138,11 +140,11 @@ protected:
     void readClients();
     void freeClients();
     void updateAvailablePorts();
-    PortInfoVector filterPorts(unsigned int filter);
+    PortInfoList filterPorts(unsigned int filter);
 
 private:
     snd_seq_t* m_SeqHandle;
-    std::string m_DeviceName;
+    QString m_DeviceName;
     
     bool m_BlockMode;
     bool m_NeedRefreshClientList;
@@ -152,10 +154,10 @@ private:
     ClientInfo* m_Info;
     MidiQueue* m_Queue;
 
-    ClientInfoVector m_ClientList;
-    MidiPortVector m_Ports;
-    PortInfoVector m_OutputsAvail;
-    PortInfoVector m_InputsAvail;
+    ClientInfoList m_ClientList;
+    MidiPortList m_Ports;
+    PortInfoList m_OutputsAvail;
+    PortInfoList m_InputsAvail;
 };
 
 }

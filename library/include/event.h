@@ -21,16 +21,16 @@
 #define INCLUDED_EVENT_H
 
 #include "commons.h"
-#include <qevent.h>
+#include <QEvent>
 
 namespace ALSA 
 {
 namespace Sequencer 
 {
 
-#define SequencerEventType (QEvent::User + 4154) // :-)
+const QEvent::Type SequencerEventType = QEvent::Type(QEvent::User + 4154); // :-)
 
-class SequencerEvent : public QCustomEvent
+class SequencerEvent : public QEvent
 {
 public:
     SequencerEvent();

@@ -34,6 +34,12 @@ Subscriber::Subscriber()
 	snd_seq_query_subscribe_malloc(&m_Info);
 }
 
+Subscriber::Subscriber(const Subscriber& other)
+{
+	snd_seq_query_subscribe_malloc(&m_Info);
+	snd_seq_query_subscribe_copy(m_Info, other.m_Info);
+}
+
 Subscriber::Subscriber(snd_seq_query_subscribe_t* other)
 {
 	snd_seq_query_subscribe_malloc(&m_Info);
@@ -49,6 +55,13 @@ Subscriber*
 Subscriber::clone()
 {   
     return new Subscriber(m_Info);
+}
+
+Subscriber&
+Subscriber::operator=(const Subscriber& other)
+{
+	snd_seq_query_subscribe_copy(m_Info, other.m_Info);
+	return *this;
 }
 
 int 
@@ -156,6 +169,12 @@ Subscription::Subscription()
 	snd_seq_port_subscribe_malloc(&m_Info);
 }
 
+Subscription::Subscription(const Subscription& other)
+{
+	snd_seq_port_subscribe_malloc(&m_Info);
+	snd_seq_port_subscribe_copy(m_Info, other.m_Info);
+}
+
 Subscription::Subscription(snd_seq_port_subscribe_t* other)
 {
 	snd_seq_port_subscribe_malloc(&m_Info);
@@ -171,6 +190,13 @@ Subscription*
 Subscription::clone()
 {   
     return new Subscription(m_Info);
+}
+
+Subscription&
+Subscription::operator=(const Subscription& other)
+{
+	snd_seq_port_subscribe_copy(m_Info, other.m_Info);
+	return *this;
 }
 
 const snd_seq_addr_t* 

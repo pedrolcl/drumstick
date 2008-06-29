@@ -22,7 +22,7 @@
 #define INCLUDED_SUBSCRIPTION_H
 
 #include "commons.h"
-#include <vector>
+#include <QList>
 
 namespace ALSA 
 {
@@ -37,6 +37,7 @@ class Subscriber
 	
 public:
     Subscriber();
+    Subscriber(const Subscriber& other);
     Subscriber(snd_seq_query_subscribe_t* other);
     virtual ~Subscriber();
     Subscriber* clone();
@@ -57,6 +58,7 @@ public:
     void setRoot(snd_seq_addr_t* addr);
     void setType(snd_seq_query_subs_type_t type);
     void setIndex(int index);
+    Subscriber& operator=(const Subscriber& other);
     
 private:
     snd_seq_query_subscribe_t* m_Info;
@@ -67,6 +69,7 @@ class Subscription
 {
 public:
     Subscription();
+    Subscription(const Subscription& other);
     Subscription(snd_seq_port_subscribe_t* other);
     virtual ~Subscription();
     Subscription* clone();
@@ -88,13 +91,14 @@ public:
     void setExclusive(bool val);
     void setTimeUpdate(bool val);
     void setTimeReal(bool val);
+    Subscription& operator=(const Subscription& other);
   
 private:
     snd_seq_port_subscribe_t* m_Info;
 };
 
-typedef std::vector<Subscription*> SubscriptionsVector;
-typedef std::vector<Subscriber*> SubscribersVector;
+typedef QList<Subscription> SubscriptionsList;
+typedef QList<Subscriber> SubscribersList;
 
 }
 }

@@ -18,7 +18,8 @@
 */
 
 #include <iostream>
-#include <qapplication.h>
+#include <QApplication>
+#include <QDebug>
 #include "qsmf.h"
 #include "buildsmf.h"
 
@@ -36,7 +37,7 @@ QSMFBuilder::QSMFBuilder() : QObject()
 
 void QSMFBuilder::errorHandler(const QString& errorStr)
 {
-    cerr << errorStr << endl;
+    qDebug() << errorStr;
     exit(1);
 }
 
@@ -46,7 +47,7 @@ void QSMFBuilder::trackHandler(int )
 
     // Text event
 	m_engine->writeMetaEvent(0, copyright_notice, 
-	                         "Copyright (C) 2006-2008 Pedro Lopez-Cabanillas"); 
+	                         QString("Copyright (C) 2006-2008 Pedro Lopez-Cabanillas")); 
 
     m_engine->writeBpmTempo(0, 100);                
     m_engine->writeTimeSignature(0, 3, 2, 36, 8);  // ts = 3/4

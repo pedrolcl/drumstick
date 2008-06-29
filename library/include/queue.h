@@ -41,11 +41,11 @@ public:
     QueueInfo* clone();
     
     int getId();
-    std::string getName();
+    QString getName();
     int getOwner();
     bool getLocked();
     unsigned int getFlags();
-    void setName(std::string value);
+    void setName(QString value);
     void setOwner(int value);
     void setFlags(unsigned int value);
   
@@ -128,7 +128,7 @@ class MidiQueue
 public:
     MidiQueue(MidiClient* seq);
     MidiQueue(MidiClient* seq,  QueueInfo* info);
-    MidiQueue(MidiClient* seq,  std::string name);
+    MidiQueue(MidiClient* seq,  QString name);
     virtual ~MidiQueue();
     
     int getId() { return m_Id; }

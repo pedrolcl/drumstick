@@ -21,7 +21,7 @@
 #define TESTEVENTS_H_
 
 #include "event.h"
-#include <qobject.h>
+#include <QObject>
 
 using namespace ALSA::Sequencer;
 using namespace std;

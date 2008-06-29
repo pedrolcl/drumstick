@@ -20,11 +20,10 @@
 #ifndef COMMONS_H_
 #define COMMONS_H_
 
-#include <string>
 #include <stdexcept>
 #include <qglobal.h>
-#include <qstring.h>
-#include <qapplication.h>
+#include <QString>
+#include <QApplication>
 
 extern "C" {
 #include <alsa/asoundlib.h>
@@ -35,7 +34,7 @@ namespace ALSA
 namespace Sequencer 
 {
 
-typedef Q_UINT8 MidiByte;  
+typedef quint8 MidiByte;  
 
 class FatalError : public std::runtime_error
 {
@@ -47,11 +46,6 @@ public:
 	const QString qstrError() 
 	{
 		return QString(snd_strerror(errCode));
-	}
-	
-	const std::string strError()
-	{
-		return std::string(snd_strerror(errCode));
 	}
 	
 	int code() { return errCode; }

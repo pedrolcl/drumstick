@@ -36,19 +36,18 @@ TimerTest::~TimerTest()
 void
 TimerTest::run()
 {
-	TimerIdVector ids = m_query->getTimers();
-	TimerIdVector::iterator it;
+	TimerIdList ids = m_query->getTimers();
+	TimerIdList::iterator it;
 	cout << "type__ Name________________ c/s/C/D/S Freq." << endl;
-	for(it = ids.begin(); it != ids.end(); ++it)
+	foreach(TimerId id, ids)
 	{
-		TimerId* id = (*it);
-		Timer* timer = new Timer(id, SND_TIMER_OPEN_NONBLOCK);
+		Timer* timer = new Timer(&id, SND_TIMER_OPEN_NONBLOCK);
 		TimerInfo* info = timer->getTimerInfo();
 		
-		cout << setw(7) << left << info->getId();
-		cout << setw(20) << left << info->getName() << " ";
-		cout << id->getClass() << "/" << id->getSlaveClass() << "/";
-		cout << id->getCard() << "/" << id->getDevice() << "/" << id->getSubdevice() << " ";
+		cout << setw(7) << left << info->getId().toStdString();
+		cout << setw(20) << left << info->getName().toStdString() << " ";
+		cout << id.getClass() << "/" << id.getSlaveClass() << "/";
+		cout << id.getCard() << "/" << id.getDevice() << "/" << id.getSubdevice() << " ";
 		if( info->isSlave() ) {
 			cout << "SLAVE";
 		} else {

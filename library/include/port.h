@@ -23,8 +23,8 @@
 
 #include "commons.h"
 #include "subscription.h"
-
-#include <qobject.h>
+#include <QObject>
+#include <QList>
 
 namespace ALSA 
 {
@@ -41,14 +41,16 @@ class PortInfo
 	
 public:
     PortInfo();
+    PortInfo(const PortInfo& other);
     PortInfo(snd_seq_port_info_t* other);
     virtual ~PortInfo(); 
     PortInfo* clone();
+    PortInfo& operator=(const PortInfo& other);
     
     int getClient();
     int getPort();
     const snd_seq_addr_t* getAddr();
-    std::string getName();
+    QString getName();
     unsigned int getCapability();
     unsigned int getType();
     int getMidiChannels();
@@ -60,8 +62,7 @@ public:
     void setClient(int client);
     void setPort(int port);
     void setAddr(snd_seq_addr_t* addr);
-    void setName(std::string const& name);
-    void setName(QString const& name);
+    void setName( QString const& name );
     void setCapability(unsigned int capability);
     void setType(unsigned int type);
     void setMidiChannels(int channels);
@@ -70,7 +71,7 @@ public:
     void setPortSpecified(int val);
 
     unsigned int getSubscribersCount();
-    Subscriber* getSubscriber(unsigned int j);
+    Subscriber& getSubscriber(int j);
     
 protected:    
     void readSubscribers(MidiClient* seq);
@@ -78,7 +79,7 @@ protected:
   
 private:
     snd_seq_port_info_t* m_Info;
-    SubscribersVector m_Subscribers;
+    SubscribersList m_Subscribers;
 };
 
   
@@ -87,7 +88,7 @@ class MidiPort : public QObject
 	Q_OBJECT
 	
 public:
-    MidiPort( QObject* parent, const char* name = 0 );
+    MidiPort( QObject* parent );
     virtual ~MidiPort();
     
     void attach();
@@ -96,22 +97,20 @@ public:
     void unsubscribe( Subscription* subs );
     void unsubscribeAll();
     void subscribeTo( PortInfo* port); 
-    void subscribeTo( int client, int port); 
-    void subscribeTo( std::string const& name); 
-    void subscribeTo( QString const& name); 
-    void subscribeFrom( PortInfo* port); 
-    void subscribeFrom( int client, int port); 
-    void subscribeFrom( std::string const& name); 
-    void subscribeFrom( QString const& name); 
+    void subscribeTo( int client, int port ); 
+    void subscribeTo( QString const& name ); 
+    void subscribeFrom( PortInfo* port ); 
+    void subscribeFrom( int client, int port ); 
+    void subscribeFrom( QString const& name ); 
     void subscribeFromAnnounce();
   
     int getSubscriptionCount();
-    Subscription* getSubscription(unsigned int j);
+    Subscription& getSubscription(int j);
     
     void setMidiClient( MidiClient* seq);
     void applyPortInfo();
-    std::string getPortName();
-    void setPortName( std::string const& newName);
+    QString getPortName();
+    void setPortName( QString const& newName);
     unsigned int getCapability();
     void setCapability( unsigned int newValue);
     unsigned int getPortType();
@@ -140,11 +139,11 @@ private:
     PortInfo* m_Info;
     bool m_Attached;
     bool m_AutoAttach;
-    SubscriptionsVector m_Subscriptions;
+    SubscriptionsList m_Subscriptions;
 };
 
-typedef std::vector<PortInfo*> PortInfoVector;
-typedef std::vector<MidiPort*> MidiPortVector;
+typedef QList<PortInfo> PortInfoList;
+typedef QList<MidiPort*> MidiPortList;
 
 }
 }

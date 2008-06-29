@@ -22,7 +22,7 @@
 #include <iostream>
 #include <qobject.h>
 #include <qstring.h>
-#include <qcstring.h>
+//#include <qcstring.h>
 #include <qapplication.h>
 #include "qsmf.h"
 #include "dumpsmf.h"
@@ -61,17 +61,17 @@ QSpySMF::QSpySMF()
 void QSpySMF::dump(const QString& chan, const QString& event, const QString& data)
 {
   cout << m_engine->getCurrentTime() << '\t'; 
-  cout << chan << '\t';
-  cout << event << '\t';
-  cout << data << '\t' << endl;
+  cout << chan.toStdString() << '\t';
+  cout << event.toStdString() << '\t';
+  cout << data.toStdString() << '\t' << endl;
 }
 
 void QSpySMF::dumpStr(const QString& event, const QString& data)
 {
   cout << m_engine->getCurrentTime() << '\t'; 
   cout << "--" << '\t';
-  cout << event << '\t';
-  cout << data << '\t' << endl;
+  cout << event.toStdString() << '\t';
+  cout << data.toStdString() << '\t' << endl;
 }
 
 void QSpySMF::headerEvent(int format, int ntrks, int division)
@@ -133,7 +133,7 @@ void QSpySMF::chanPressEvent(int chan, int press)
 
 void QSpySMF::sysexEvent(const QByteArray& data)
 {
-  unsigned int j;
+  int j;
   QString s;
   for(j = 0; j < data.count(); ++j)
     s.append(QString("%1 ").arg(data[j] & 0xff, 2, 16));
@@ -142,7 +142,7 @@ void QSpySMF::sysexEvent(const QByteArray& data)
 
 void QSpySMF::variableEvent(const QByteArray& data)
 {  
-  unsigned int j;
+  int j;
   QString s;
   for(j = 0; j < data.count(); ++j)
     s.append(QString("%1 ").arg(data[j] & 0xff, 2, 16));
@@ -151,7 +151,7 @@ void QSpySMF::variableEvent(const QByteArray& data)
 
 void QSpySMF::metaMiscEvent(int typ, const QByteArray& data)
 {
-  unsigned int j;
+  int j;
   QString s = QString("type=%1 ").arg(typ);
   for(j = 0; j < data.count(); ++j)
     s.append(QString("%1 ").arg(data[j] & 0xff, 2, 16));
@@ -200,7 +200,7 @@ void QSpySMF::tempoEvent(int tempo)
 
 void QSpySMF::errorHandler(const QString& errorStr)
 {
-  cerr << errorStr << endl;
+  cerr << errorStr.toStdString() << endl;
   exit(1);
 }
 

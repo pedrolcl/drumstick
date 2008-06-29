@@ -21,7 +21,7 @@
 #define INCLUDED_TIMER_H
 
 #include "commons.h"
-#include <vector>
+#include <QList>
 
 namespace ALSA
 {
@@ -40,8 +40,8 @@ public:
 
 	bool isSlave();
 	int getCard();
-	std::string getId();
-	std::string getName();
+	QString getId();
+	QString getName();
 	long getResolution();
 	
 private:
@@ -55,9 +55,11 @@ class TimerId
 	
 public:
 	TimerId();
+	TimerId(const TimerId& other);
 	TimerId(const snd_timer_id_t *other);
 	virtual ~TimerId();
 	TimerId* clone();
+	TimerId& operator=(const TimerId& other);
 	
 	void setClass(int devclass);
 	int getClass();
@@ -74,7 +76,7 @@ private:
 	snd_timer_id_t *m_Info;
 };
 
-typedef std::vector<TimerId*> TimerIdVector;
+typedef QList<TimerId> TimerIdList;
 
 class TimerGlobalInfo
 {
@@ -88,8 +90,8 @@ public:
 	TimerId* getTimerId();
 	unsigned int getFlags();
 	int getCard();
-	std::string getId();
-	std::string getName();
+	QString getId();
+	QString getName();
 	unsigned long getResolution();
 	unsigned long getMinResolution();
 	unsigned long getMaxResolution();
@@ -102,10 +104,10 @@ private:
 class TimerQuery
 {
 public:
-	TimerQuery(const std::string& deviceName, int openMode);
+	TimerQuery(const QString& deviceName, int openMode);
 	virtual ~TimerQuery();
 	
-	TimerIdVector getTimers() { return m_timers; }
+	TimerIdList getTimers() { return m_timers; }
 	TimerGlobalInfo* getGlobalInfo();
 	void setGlobalParams(snd_timer_gparams_t* params);
 	void getGlobalParams(snd_timer_gparams_t* params);
@@ -117,8 +119,8 @@ protected:
 	
 private:
 	snd_timer_query_t *m_Info;
-	TimerIdVector m_timers;
-};	
+	TimerIdList m_timers;
+};
 
 class TimerParams
 {
@@ -168,7 +170,7 @@ private:
 class Timer
 {
 public:
-	Timer(const std::string& deviceName, int openMode);
+	Timer(const QString& deviceName, int openMode);
 	Timer(TimerId* id, int openMode);
 	virtual ~Timer();
 	snd_timer_t* getHandle() { return m_Info; }

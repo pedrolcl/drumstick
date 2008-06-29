@@ -20,10 +20,9 @@
 #include <iostream>
 #include <iomanip> 
 
-#include <qobject.h>
-#include <qstring.h>
-#include <qcstring.h>
-#include <qapplication.h>
+#include <QObject>
+#include <QString>
+#include <QApplication>
 
 #include "testevents.h"
 

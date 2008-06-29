@@ -21,8 +21,8 @@
 #define INCLUDED_QMIDITHREAD_H
 
 #include "commons.h"
-#include <qthread.h>
-#include <qmutex.h>
+#include <QThread>
+#include <QMutex>
 
 namespace ALSA 
 {

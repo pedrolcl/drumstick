@@ -59,10 +59,10 @@ QueueInfo::getId()
     return snd_seq_queue_info_get_queue(m_Info);
 }
 
-std::string 
+QString 
 QueueInfo::getName()
 {
-    return std::string(snd_seq_queue_info_get_name(m_Info));
+    return QString(snd_seq_queue_info_get_name(m_Info));
 }
 
 int 
@@ -84,9 +84,9 @@ QueueInfo::getFlags()
 }
 
 void 
-QueueInfo::setName(std::string value)
+QueueInfo::setName(QString value)
 {
-    snd_seq_queue_info_set_name(m_Info, value.c_str());
+    snd_seq_queue_info_set_name(m_Info, value.toLocal8Bit().data());
 }
 
 void 
@@ -326,10 +326,10 @@ MidiQueue::MidiQueue(MidiClient* seq, QueueInfo* info)
 	m_Id = CHECK_ERROR(snd_seq_create_queue(m_MidiClient->getHandle(), m_Info->m_Info));
 }
 
-MidiQueue::MidiQueue(MidiClient* seq, std::string name)
+MidiQueue::MidiQueue(MidiClient* seq, QString name)
 {
 	m_MidiClient = seq;
-	m_Id = CHECK_ERROR(snd_seq_alloc_named_queue(m_MidiClient->getHandle(), name.c_str()));
+	m_Id = CHECK_ERROR(snd_seq_alloc_named_queue(m_MidiClient->getHandle(), name.toLocal8Bit().data()));
 }
 
 MidiQueue::~MidiQueue()

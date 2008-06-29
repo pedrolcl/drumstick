@@ -21,10 +21,9 @@
 #include <iostream>
 #include <iomanip> 
 
-#include <qobject.h>
-#include <qstring.h>
-#include <qcstring.h>
-#include <qapplication.h>
+#include <QObject>
+#include <QString>
+#include <QApplication>
 
 #include "dumpmid.h"
 
@@ -77,7 +76,7 @@ QDumpMIDI::stop()
 }
 
 void 
-QDumpMIDI::subscription(MidiPort* port, Subscription* subs)
+QDumpMIDI::subscription(MidiPort*, Subscription* subs)
 {
 	qDebug("Subscription made from %d:%d", subs->getSender()->client, subs->getSender()->port);
 	subs->setQueue(m_Client->getQueue()->getId());
@@ -88,11 +87,11 @@ QDumpMIDI::subscription(MidiPort* port, Subscription* subs)
 void QDumpMIDI::subscribe(const QString& portName)
 {
 	try	{
-		qDebug("Trying to subscribe %s", portName.data());
+		qDebug("Trying to subscribe %s", portName.toLocal8Bit().data());
 		m_Port->subscribeFrom(portName);
 	} catch (FatalError *err) {
 		cerr << "FatalError exception. Error code: " << err->code() 
-			 << " (" << err->qstrError() << ")" << endl;
+			 << " (" << err->qstrError().toStdString() << ")" << endl;
 		cerr << "Location: " << err->what() << endl;
 		throw err;
 	}
@@ -114,14 +113,14 @@ void QDumpMIDI::run()
 		m_Client->stopEvents();
 	} catch (FatalError *err) {
 		cerr << "FatalError exception. Error code: " << err->code() 
-			 << " (" << err->qstrError() << ")" << endl;
+			 << " (" << err->qstrError().toStdString() << ")" << endl;
 		cerr << "Location: " << err->what() << endl;
 		throw err;
 	}
 }
 
 void 
-QDumpMIDI::customEvent(QCustomEvent *ev)
+QDumpMIDI::customEvent(QEvent *ev)
 {
 	if (ev->type() == SequencerEventType) {
 		SequencerEvent* sev = dynamic_cast<SequencerEvent*>(ev);

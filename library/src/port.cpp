@@ -37,6 +37,13 @@ PortInfo::PortInfo()
 	snd_seq_port_info_malloc(&m_Info);
 }
 
+PortInfo::PortInfo(const PortInfo& other)
+{
+	snd_seq_port_info_malloc(&m_Info);
+	snd_seq_port_info_copy(m_Info, other.m_Info);
+	m_Subscribers = other.m_Subscribers;
+}
+
 PortInfo::PortInfo(snd_seq_port_info_t* other)
 {
 	snd_seq_port_info_malloc(&m_Info);
@@ -53,6 +60,14 @@ PortInfo*
 PortInfo::clone()
 {
 	return new PortInfo(m_Info);
+}
+
+PortInfo&
+PortInfo::operator=(const PortInfo& other)
+{
+	snd_seq_port_info_copy(m_Info, other.m_Info);
+	m_Subscribers = other.m_Subscribers;
+	return *this;
 }
 
 int 
@@ -73,10 +88,10 @@ PortInfo::getAddr()
 	return snd_seq_port_info_get_addr(m_Info);
 }
 
-std::string 
+QString 
 PortInfo::getName()
 {
-	return std::string(snd_seq_port_info_get_name(m_Info));
+	return QString(snd_seq_port_info_get_name(m_Info));
 }
 
 unsigned int 
@@ -146,15 +161,9 @@ PortInfo::setAddr(snd_seq_addr_t* addr)
 }
 
 void 
-PortInfo::setName(std::string const& name)
-{
-    snd_seq_port_info_set_name(m_Info, name.c_str());
-}
-
-void 
 PortInfo::setName(QString const& name)
 {
-    snd_seq_port_info_set_name(m_Info, name.data());
+    snd_seq_port_info_set_name(m_Info, name.toLocal8Bit().data());
 }
 
 void 
@@ -199,43 +208,33 @@ PortInfo::getSubscribersCount()
 	return m_Subscribers.size();
 }
 
-Subscriber*
-PortInfo::getSubscriber(unsigned int j)
+Subscriber&
+PortInfo::getSubscriber(int j)
 {
-    if (j < m_Subscribers.size()) {
-    	return m_Subscribers[j];
-    }
-    return NULL;
+	return m_Subscribers[j];
 }
 
 void 
 PortInfo::readSubscribers(MidiClient* seq)
 {
+    Subscriber subs;
     snd_seq_addr_t tmp;
-    Subscriber* subs;
 
     freeSubscribers();
     tmp.client = getClient();
     tmp.port = getPort();
-    subs = new Subscriber();
-    subs->setType(SND_SEQ_QUERY_SUBS_READ);
-    subs->setIndex(0);
-    subs->setRoot(&tmp);
-    while (snd_seq_query_port_subscribers(seq->getHandle(), subs->m_Info) >= 0) {
-        m_Subscribers.push_back(subs->clone());
-        subs->setIndex(subs->getIndex() + 1);
+    subs.setType(SND_SEQ_QUERY_SUBS_READ);
+    subs.setIndex(0);
+    subs.setRoot(&tmp);
+    while (snd_seq_query_port_subscribers(seq->getHandle(), subs.m_Info) >= 0) {
+    	m_Subscribers.append(subs);
+        subs.setIndex(subs.getIndex() + 1);
     }
-    delete subs;
 }
 
 void
 PortInfo::freeSubscribers()
 {
-	SubscribersVector::iterator it;
-	for(it = m_Subscribers.begin(); it != m_Subscribers.end(); ++it)
-	{
-		delete (*it);
-	}
     m_Subscribers.clear();
 }
 	
@@ -243,8 +242,8 @@ PortInfo::freeSubscribers()
 /* MidiPort */
 /************/
 
-MidiPort::MidiPort( QObject* parent, const char* name ) :
-	QObject( parent, name ),
+MidiPort::MidiPort( QObject* parent ) :
+	QObject( parent ),
 	m_MidiClient(NULL),
 	m_Info(NULL),
 	m_Attached(false),
@@ -280,21 +279,13 @@ MidiPort::getSubscriptionCount()
 void
 MidiPort::freeSubscriptions()
 {
-	SubscriptionsVector::iterator it;
-	for(it = m_Subscriptions.begin(); it != m_Subscriptions.end(); ++it)
-	{
-		delete (*it);
-	}
 	m_Subscriptions.clear();
 }
 
-Subscription* 
-MidiPort::getSubscription(unsigned int j)
+Subscription&
+MidiPort::getSubscription(int j)
 {
-    if (j < m_Subscriptions.size()) {
-        return m_Subscriptions[j];
-    }
-    return NULL;
+	return m_Subscriptions[j];
 }
 
 void 
@@ -314,28 +305,27 @@ void
 MidiPort::subscribe(Subscription* subs)
 {
     subs->subscribe(m_MidiClient);
-    m_Subscriptions.push_back(subs->clone());
+    m_Subscriptions.append(*subs);
     emit subscribed(this, subs);
 }
 
 void 
-MidiPort::unsubscribe(Subscription* subs)
+MidiPort::unsubscribe( Subscription* subs )
 {
-    Subscription* subs2;
+    Subscription subs2;
     if (m_MidiClient == NULL) {
         return;
     }
     subs->unsubscribe(m_MidiClient);
-	SubscriptionsVector::iterator it;
+	SubscriptionsList::iterator it;
 	for(it = m_Subscriptions.begin(); it != m_Subscriptions.end(); ++it)
 	{
         subs2 = (*it);
-        if ((subs2->getSender()->client == subs->getSender()->client) && 
-            (subs2->getSender()->port == subs->getSender()->port) && 
-            (subs2->getDest()->client == subs->getDest()->client) && 
-            (subs2->getDest()->port == subs->getDest()->port)) {
+        if ((subs2.getSender()->client == subs->getSender()->client) && 
+            (subs2.getSender()->port == subs->getSender()->port) && 
+            (subs2.getDest()->client == subs->getDest()->client) && 
+            (subs2.getDest()->port == subs->getDest()->port)) {
             m_Subscriptions.erase(it);
-            delete subs2;
             break;
         }
     }
@@ -363,31 +353,17 @@ MidiPort::subscribeTo( int client, int port )
 }
 
 void 
-MidiPort::subscribeTo( std::string const& name )
-{
-    Subscription subs;
-    snd_seq_addr addr;
-    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL)) {
-        subs.setSender(m_Info->getAddr());
-        snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.c_str());
-        subs.setDest(&addr);
-        subscribe(&subs);
-    }
-}
-
-void 
 MidiPort::subscribeTo( QString const& name )
 {
     Subscription subs;
     snd_seq_addr addr;
     if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL)) {
         subs.setSender(m_Info->getAddr());
-        snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.data());
+        snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.toLocal8Bit().data());
         subs.setDest(&addr);
         subscribe(&subs);
     }
 }
-
 
 void 
 MidiPort::subscribeFrom( PortInfo* port )
@@ -411,25 +387,12 @@ MidiPort::subscribeFrom( int client, int port )
 }
 
 void 
-MidiPort::subscribeFrom( std::string const& name)
-{
-    Subscription subs;
-    snd_seq_addr addr;
-    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL)) {
-    	snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.c_str());
-    	subs.setSender(&addr);
-    	subs.setDest(m_Info->getAddr());
-    	subscribe(&subs);
-    }
-}
-
-void 
 MidiPort::subscribeFrom( QString const& name)
 {
     Subscription subs;
     snd_seq_addr addr;
     if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL)) {
-    	snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.data());
+    	snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.toLocal8Bit().data());
     	subs.setSender(&addr);
     	subs.setDest(m_Info->getAddr());
     	subscribe(&subs);
@@ -447,10 +410,9 @@ MidiPort::unsubscribeAll()
     if (m_MidiClient == NULL) {
         return;
     }
-	SubscriptionsVector::iterator it;
-    for ( it = m_Subscriptions.begin(); it != m_Subscriptions.end(); ++it ) {
-    	(*it)->unsubscribe(m_MidiClient);
-    	delete (*it);
+    foreach(Subscription s, m_Subscriptions)
+    {
+    	s.unsubscribe(m_MidiClient);
     }
     m_Subscriptions.clear();
 }
@@ -463,14 +425,14 @@ MidiPort::applyPortInfo()
     }
 }
 
-std::string 
+QString 
 MidiPort::getPortName()
 {
     return m_Info->getName();
 }
 
 void 
-MidiPort::setPortName( std::string const& newName)
+MidiPort::setPortName( QString const& newName)
 {
     m_Info->setName(newName);
     applyPortInfo();

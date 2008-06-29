@@ -22,11 +22,10 @@
 #ifndef INCLUDED_SMF_H
 #define INCLUDED_SMF_H
 
-#include <qobject.h>
-#include <qdatastream.h>
-#include <qstring.h>
-#include <qptrlist.h>
-#include <qcstring.h>
+#include <QObject>
+#include <QDataStream>
+#include <QString>
+#include <QList>
 
 namespace MIDI
 {
@@ -77,7 +76,7 @@ class QSmf : public QObject
     Q_OBJECT
 
 public:
-    QSmf(QObject * parent = 0, const char * name = 0);
+    QSmf(QObject * parent = 0);
     virtual ~QSmf();
 
     void readFromStream(QDataStream *stream);
@@ -141,58 +140,58 @@ signals:
 private:
     struct QSmfRecTempo
     {
-        Q_ULONG tempo;
-        Q_ULONG time;
+        quint64 tempo;
+        quint64 time;
     };
 
     QDataStream *m_IOStream;
     QByteArray m_MsgBuff;
-    QPtrList<QSmfRecTempo> m_TempoList;
-    Q_ULONG m_ToBeRead;
-    Q_ULONG m_NumBytesWritten;
+    QList<QSmfRecTempo> m_TempoList;
+    quint64 m_ToBeRead;
+    quint64 m_NumBytesWritten;
     bool m_Interactive;     // file and track headers are not required
-    Q_ULONG m_CurrTime;     // current time in delta-time units
-    Q_ULONG m_RealTime;     // current time in 1/16 centisecond-time units
+    quint64 m_CurrTime;     // current time in delta-time units
+    quint64 m_RealTime;     // current time in 1/16 centisecond-time units
     double m_DblRealTime;   // as above, floating
     int m_Division;         // ticks per beat. Default = 96
-    Q_ULONG m_CurrTempo;    // microseconds per quarter note
-    Q_ULONG m_OldCurrTempo;
-    Q_ULONG m_OldRealTime;
+    quint64 m_CurrTempo;    // microseconds per quarter note
+    quint64 m_OldCurrTempo;
+    quint64 m_OldRealTime;
     double m_DblOldRealtime;
-    Q_ULONG m_OldCurrTime;
-    Q_ULONG m_RevisedTime;
-    Q_ULONG m_TempoChangeTime;
+    quint64 m_OldCurrTime;
+    quint64 m_RevisedTime;
+    quint64 m_TempoChangeTime;
     int m_Tracks;
     int m_fileFormat;
     int m_LastStatus;
 
     void SMFRead();
     void SMFWrite();
-    Q_UINT8 getByte();
-    void putByte(Q_UINT8 value);
+    quint8 getByte();
+    void putByte(quint8 value);
     void readHeader();
     void readTrack();
-    Q_UINT16 to16bit(Q_UINT8 c1, Q_UINT8 c2);
-    Q_UINT32 to32bit(Q_UINT8 c1, Q_UINT8 c2, Q_UINT8 c3, Q_UINT8 c4);
-    Q_UINT16 read16bit();
-    Q_UINT32 read32bit();
-    void write16bit(Q_UINT16 data);
-    void write32bit(Q_UINT32 data);
-    void writeVarLen(Q_ULONG value);
-    double ticksToSecs(Q_ULONG ticks, Q_UINT16 division, Q_ULONG tempo);
-    Q_LONG readVarLen();
+    quint16 to16bit(quint8 c1, quint8 c2);
+    quint32 to32bit(quint8 c1, quint8 c2, quint8 c3, quint8 c4);
+    quint16 read16bit();
+    quint32 read32bit();
+    void write16bit(quint16 data);
+    void write32bit(quint32 data);
+    void writeVarLen(quint64 value);
+    double ticksToSecs(quint64 ticks, quint16 division, quint64 tempo);
+    long readVarLen();
     void readExpected(const QString& s);
-    void addTempo(Q_ULONG tempo, Q_ULONG time);
-    Q_ULONG findTempo();
+    void addTempo(quint64 tempo, quint64 time);
+    quint64 findTempo();
     void SMFError(const QString& s);
-    void channelMessage(Q_UINT8 status, Q_UINT8 c1, Q_UINT8 c2);
+    void channelMessage(quint8 status, quint8 c1, quint8 c2);
     void msgInit();
-    void msgAdd(Q_UINT8 b);
-    void metaEvent(Q_UINT8 b);
+    void msgAdd(quint8 b);
+    void metaEvent(quint8 b);
     void sysEx();
-    void badByte(Q_UINT8 b, int p);
-    Q_UINT8 lowerByte(Q_UINT16 x);
-    Q_UINT8 upperByte(Q_UINT16 x);
+    void badByte(quint8 b, int p);
+    quint8 lowerByte(quint16 x);
+    quint8 upperByte(quint16 x);
     bool endOfSmf();
     void writeHeaderChunk(int format, int ntracks, int division);
     void writeTrackChunk(int track);

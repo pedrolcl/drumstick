@@ -58,16 +58,16 @@ TimerInfo::getCard()
 	return snd_timer_info_get_card(m_Info);
 }
 
-std::string
+QString
 TimerInfo::getId()
 {
-	return std::string(snd_timer_info_get_id(m_Info));
+	return QString(snd_timer_info_get_id(m_Info));
 }
 
-std::string
+QString
 TimerInfo::getName()
 {
-	return std::string(snd_timer_info_get_name(m_Info));
+	return QString(snd_timer_info_get_name(m_Info));
 }
 
 long
@@ -97,6 +97,18 @@ TimerId::TimerId(const snd_timer_id_t *other)
 		setSubdevice(0);
 }
 
+TimerId::TimerId(const TimerId& other)
+{
+	snd_timer_id_malloc(&m_Info);
+	snd_timer_id_copy(m_Info, other.m_Info);
+	if (getCard() < 0)
+		setCard(0);
+	if (getDevice() < 0)
+		setDevice(0);
+	if (getSubdevice() < 0)
+		setSubdevice(0);
+}
+
 TimerId::~TimerId()
 {
 	snd_timer_id_free(m_Info);
@@ -106,6 +118,19 @@ TimerId*
 TimerId::clone()
 {
 	return new TimerId(m_Info);
+}
+
+TimerId&
+TimerId::operator=(const TimerId& other)
+{
+	snd_timer_id_copy(m_Info, other.m_Info);
+	if (getCard() < 0)
+		setCard(0);
+	if (getDevice() < 0)
+		setDevice(0);
+	if (getSubdevice() < 0)
+		setSubdevice(0);
+	return *this;
 }
 
 void
@@ -172,9 +197,9 @@ TimerId::getSubdevice()
  * TimerQuery *
  **************/
 
-TimerQuery::TimerQuery(const std::string& deviceName, int openMode)
+TimerQuery::TimerQuery(const QString& deviceName, int openMode)
 {
-	snd_timer_query_open(&m_Info, deviceName.c_str(), openMode);
+	snd_timer_query_open(&m_Info, deviceName.toLocal8Bit().data(), openMode);
 	readTimers();
 }
 
@@ -187,28 +212,22 @@ TimerQuery::~TimerQuery()
 void
 TimerQuery::readTimers()
 {
-	TimerId* tid = new TimerId(); 
-	snd_timer_id_set_class(tid->m_Info, SND_TIMER_CLASS_NONE);
+	TimerId tid; //= new TimerId(); 
+	snd_timer_id_set_class(tid.m_Info, SND_TIMER_CLASS_NONE);
 	for(;;)
 	{
-        int rc = snd_timer_query_next_device(m_Info, tid->m_Info);
+        int rc = snd_timer_query_next_device(m_Info, tid.m_Info);
         if (rc < 0) 
         	break;
-        if (tid->getClass() < 0)
+        if (tid.getClass() < 0)
         	break;
-        m_timers.push_back(tid->clone());
+        m_timers.append(tid);
 	}
-	delete tid;
 }
 
 void
 TimerQuery::freeTimers()
 {
-	TimerIdVector::iterator it;
-	for(it = m_timers.begin(); it != m_timers.end(); ++it)
-	{
-		delete (*it);
-	}
 	m_timers.clear();
 }
 
@@ -289,16 +308,16 @@ TimerGlobalInfo::getCard()
 	return snd_timer_ginfo_get_card (m_Info);
 }
 
-std::string
+QString
 TimerGlobalInfo::getId()
 {
-	return std::string(snd_timer_ginfo_get_id (m_Info));
+	return QString(snd_timer_ginfo_get_id (m_Info));
 }
 
-std::string
+QString
 TimerGlobalInfo::getName()
 {
-	return std::string(snd_timer_ginfo_get_name (m_Info));
+	return QString(snd_timer_ginfo_get_name (m_Info));
 }
 
 unsigned long 	
@@ -484,9 +503,9 @@ TimerStatus::getQueue()
  *********/
 
 
-Timer::Timer(const std::string& deviceName, int openMode)
+Timer::Timer(const QString& deviceName, int openMode)
 {
-	CHECK_ERROR(snd_timer_open (&m_Info, deviceName.c_str(), openMode));
+	CHECK_ERROR(snd_timer_open (&m_Info, deviceName.toLocal8Bit().data(), openMode));
 }
 
 Timer::Timer(TimerId* id, int openMode)
@@ -497,7 +516,7 @@ Timer::Timer(TimerId* id, int openMode)
 							.arg(id->getCard())
 							.arg(id->getDevice())
 							.arg(id->getSubdevice());
-	CHECK_ERROR(snd_timer_open (&m_Info, deviceName.data(), openMode));
+	CHECK_ERROR(snd_timer_open (&m_Info, deviceName.toLocal8Bit().data(), openMode));
 }
 
 Timer::~Timer()

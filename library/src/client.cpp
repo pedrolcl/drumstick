@@ -23,8 +23,8 @@
 #include "event.h"
 #include "qmidithread.h"
 #include "port.h"
-#include <qthread.h>
-#include <qapplication.h>
+#include <QThread>
+#include <QApplication>
 
 namespace ALSA 
 {
@@ -35,8 +35,8 @@ namespace Sequencer
 /* MidiClient */
 /**************/
 
-MidiClient::MidiClient( QObject* parent, const char* name ) : 
-	QObject(parent, name),
+MidiClient::MidiClient( QObject* parent ) : 
+	QObject(parent),
 	m_SeqHandle(0),
 	m_DeviceName("default"),
 	m_BlockMode(false),
@@ -69,7 +69,7 @@ MidiClient::open()
     if (!m_BlockMode) {
         blockMode = SND_SEQ_NONBLOCK;
     }
-    CHECK_ERROR(snd_seq_open(&m_SeqHandle, m_DeviceName.c_str(), m_OpenMode, blockMode));
+    CHECK_ERROR(snd_seq_open(&m_SeqHandle, m_DeviceName.toLocal8Bit().data(), m_OpenMode, blockMode));
     snd_seq_get_client_info(m_SeqHandle, m_Info->m_Info);
 }
 
@@ -112,7 +112,7 @@ MidiClient::setInputBufferSize(size_t newSize)
 }
 
 void 
-MidiClient::setDeviceName( std::string const& newName)
+MidiClient::setDeviceName( QString const& newName)
 {
     if ((m_DeviceName != newName) && (m_SeqHandle == NULL)) {
         m_DeviceName = newName;
@@ -265,7 +265,7 @@ MidiClient::stopEvents()
     	while (!m_Thread->wait(500) && (counter < 10)) {
         	counter++;
     	}
-        if (!m_Thread->finished()) {
+        if (!m_Thread->isFinished()) {
         	m_Thread->terminate();
         }
         m_Thread = NULL;
@@ -275,26 +275,27 @@ MidiClient::stopEvents()
 void 
 MidiClient::readClients()
 {
-    ClientInfo *cInfo1, *cInfo2; 
+    ClientInfo cInfo1, cInfo2; 
     freeClients();
-    cInfo1 = new ClientInfo();
-    cInfo1->setClient(-1);
-    while (snd_seq_query_next_client(m_SeqHandle, cInfo1->m_Info) >= 0) {
-        cInfo2 = cInfo1->clone();
-        cInfo2->readPorts(this);
-        m_ClientList.push_back(cInfo2);
+    //cInfo1 = new ClientInfo();
+    cInfo1.setClient(-1);
+    while (snd_seq_query_next_client(m_SeqHandle, cInfo1.m_Info) >= 0) {
+        cInfo2 = cInfo1; //->clone();
+        cInfo2.readPorts(this);
+        //m_ClientList.push_back(cInfo2);
+        m_ClientList.append(cInfo2);
     }
-    delete cInfo1;
+    //delete cInfo1;
     m_NeedRefreshClientList = false;
 }
 
 void
 MidiClient::freeClients()
 {
-	ClientInfoVector::iterator it;
-	for(it = m_ClientList.begin(); it != m_ClientList.end(); ++it) {
-		delete (*it);
-	}
+//	ClientInfoList::iterator it;
+//	for(it = m_ClientList.begin(); it != m_ClientList.end(); ++it) {
+//		delete (*it);
+//	}
     m_ClientList.clear();
 }
 
@@ -305,10 +306,10 @@ MidiClient::getClientInfoCount()
 }
 
 ClientInfo* 
-MidiClient::getClientInfo(unsigned int j)
+MidiClient::getClientInfo(int j)
 {
-    if ((j >= 0) && (j < m_ClientList.size())) {
-        return m_ClientList[j];
+    if (j < m_ClientList.size()) {
+        return &m_ClientList[j];
     } 
     return NULL;
 }
@@ -337,14 +338,14 @@ MidiClient::applyClientInfo()
     }
 }
 
-std::string 
+QString 
 MidiClient::getClientName()
 {
     return m_Info->getName();
 }
 
 void 
-MidiClient::setClientName(std::string const& newName)
+MidiClient::setClientName(QString const& newName)
 {
     if (newName != m_Info->getName()) {
         m_Info->setName(newName);
@@ -359,7 +360,7 @@ MidiClient::getPortCount()
 }
 
 MidiPort* 
-MidiClient::getPort(unsigned int j)
+MidiClient::getPort(int j)
 {
     if (j < m_Ports.size()) {
         return m_Ports[j];
@@ -395,7 +396,7 @@ MidiClient::portDetach(MidiPort* port)
 	    CHECK_ERROR(snd_seq_delete_port(m_SeqHandle, port->getPortInfo()->getPort()));
 	    port->setMidiClient(NULL);
 	    
-	    MidiPortVector::iterator it;
+	    MidiPortList::iterator it;
 	    for(it = m_Ports.begin(); it != m_Ports.end(); ++it)
 	    {
 	    	if ((*it)->getPortInfo()->getPort() == port->getPortInfo()->getPort())
@@ -410,7 +411,7 @@ MidiClient::portDetach(MidiPort* port)
 void MidiClient::detachAllPorts()
 {
 	if (m_SeqHandle != NULL) {
-		MidiPortVector::iterator it;
+		MidiPortList::iterator it;
 		for (it = m_Ports.begin(); it != m_Ports.end(); ++it) {
 			CHECK_ERROR(snd_seq_delete_port(m_SeqHandle, (*it)->getPortInfo()->getPort()));
 			(*it)->setMidiClient(NULL);
@@ -539,7 +540,7 @@ MidiClient::createQueue()
 }
 
 MidiQueue* 
-MidiClient::createQueue(std::string const& queueName )
+MidiClient::createQueue(QString const& queueName )
 {
     if (m_Queue != NULL) {
         delete m_Queue;
@@ -548,25 +549,25 @@ MidiClient::createQueue(std::string const& queueName )
     return m_Queue;
 }
 
-PortInfoVector
+PortInfoList
 MidiClient::filterPorts(unsigned int filter)
 {
-	PortInfoVector result;
-    ClientInfoVector::iterator it;
+	PortInfoList result;
+    ClientInfoList::iterator it;
     unsigned int j;
   
     if (m_NeedRefreshClientList)
     	readClients();
     
     for (it = m_ClientList.begin(); it != m_ClientList.end(); ++it) {
-    	ClientInfo* ci = (*it);
-        for (j=0; j < ci->getPortInfoCount(); ++j) {
-        	PortInfo* pi = ci->getPortInfo(j);
+    	ClientInfo ci = (*it);
+        for (j=0; j < ci.getPortInfoCount(); ++j) {
+        	PortInfo* pi = ci.getPortInfo(j);
         	unsigned int cap = pi->getCapability();
             if ( ((filter & cap) != 0) && 
             	 ((SND_SEQ_PORT_CAP_NO_EXPORT & cap) == 0) && 
-            	 (ci->getClientId() != SND_SEQ_CLIENT_SYSTEM) ) {
-                result.push_back(pi);
+            	 (ci.getClientId() != SND_SEQ_CLIENT_SYSTEM) ) {
+                result.append(*pi);
             }
         }
     }
@@ -582,7 +583,7 @@ MidiClient::updateAvailablePorts()
     m_OutputsAvail = filterPorts( SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE );
 }
 
-PortInfoVector 
+PortInfoList 
 MidiClient::getAvailableInputs()
 {
     if (m_NeedRefreshClientList || m_InputsAvail.empty()) {
@@ -591,7 +592,7 @@ MidiClient::getAvailableInputs()
     return m_InputsAvail;
 }
 
-PortInfoVector 
+PortInfoList 
 MidiClient::getAvailableOutputs()
 {
     if (m_NeedRefreshClientList || m_OutputsAvail.empty()) {
@@ -607,6 +608,13 @@ MidiClient::getAvailableOutputs()
 ClientInfo::ClientInfo()
 {
     snd_seq_client_info_malloc(&m_Info);
+}
+
+ClientInfo::ClientInfo(const ClientInfo& other)
+{
+    snd_seq_client_info_malloc(&m_Info);
+    snd_seq_client_info_copy(m_Info, other.m_Info);
+    m_Ports = other.m_Ports;
 }
 
 ClientInfo::ClientInfo(snd_seq_client_info_t* other)
@@ -627,6 +635,14 @@ ClientInfo::clone()
 	return new ClientInfo(m_Info);
 }
 
+ClientInfo&
+ClientInfo::operator=(const ClientInfo& other)
+{
+    snd_seq_client_info_copy(m_Info, other.m_Info);
+    m_Ports = other.m_Ports;
+    return *this;
+}
+
 int 
 ClientInfo::getClientId()
 {
@@ -639,10 +655,10 @@ ClientInfo::getClientType()
     return snd_seq_client_info_get_type(m_Info);
 }
 
-std::string 
+QString 
 ClientInfo::getName()
 {
-    return std::string(snd_seq_client_info_get_name(m_Info));
+    return QString(snd_seq_client_info_get_name(m_Info));
 }
 
 bool 
@@ -682,9 +698,9 @@ ClientInfo::setClient(int client)
 }
 
 void 
-ClientInfo::setName(std::string name)
+ClientInfo::setName(QString name)
 {
-    snd_seq_client_info_set_name(m_Info, name.c_str());
+    snd_seq_client_info_set_name(m_Info, name.toLocal8Bit().data());
 }
 
 void 
@@ -708,26 +724,26 @@ ClientInfo::setEventFilter(unsigned char *filter)
 void 
 ClientInfo::readPorts(MidiClient* seq)
 {
-    PortInfo *info1, *info2;
+    PortInfo info1, info2;
     freePorts();
-    info1 = new PortInfo();
-    info1->setClient(getClientId());
-    info1->setPort(-1);
-    while (snd_seq_query_next_port(seq->getHandle(), info1->m_Info) >= 0) {
-        info2 = info1->clone();
-        info2->readSubscribers(seq);
-        m_Ports.push_back(info2);
+    //info1 = new PortInfo();
+    info1.setClient(getClientId());
+    info1.setPort(-1);
+    while (snd_seq_query_next_port(seq->getHandle(), info1.m_Info) >= 0) {
+        info2 = info1; //->clone();
+        info2.readSubscribers(seq);
+        m_Ports.append(info2);
     }
-    delete info1;
+    //delete info1;
 }
 
 void
 ClientInfo::freePorts()
 {
-    PortInfoVector::iterator it;
-    for(it = m_Ports.begin(); it != m_Ports.end(); ++it) {
-    	delete (*it);
-    }
+//    PortInfoList::iterator it;
+//    for(it = m_Ports.begin(); it != m_Ports.end(); ++it) {
+//    	delete (*it);
+//    }
     m_Ports.clear();
 }
 
@@ -738,10 +754,10 @@ ClientInfo::getPortInfoCount()
 }
 
 PortInfo*
-ClientInfo::getPortInfo(unsigned int j)
+ClientInfo::getPortInfo(int j)
 {
     if (j < m_Ports.size()) {
-        return m_Ports[j];
+        return &m_Ports[j];
     }
     return NULL;
 }

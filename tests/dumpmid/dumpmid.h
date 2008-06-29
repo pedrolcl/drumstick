@@ -20,8 +20,8 @@
 #ifndef DUMPMIDI_H_
 #define DUMPMIDI_H_
 
-#include <qobject.h>
-#include <qmutex.h>
+#include <QObject>
+#include <QMutex>
 
 #include "commons.h"
 #include "event.h"
@@ -51,7 +51,7 @@ public slots:
 	void subscription(MidiPort* port, Subscription* subs);
 	
 protected:
-	virtual void customEvent( QCustomEvent *ev );
+	virtual void customEvent( QEvent *ev );
 	
 private:
 	MidiClient* m_Client;

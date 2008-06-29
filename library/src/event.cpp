@@ -24,12 +24,12 @@ namespace ALSA
 namespace Sequencer 
 {
 
-  SequencerEvent::SequencerEvent() : QCustomEvent(SequencerEventType)
+  SequencerEvent::SequencerEvent() : QEvent(SequencerEventType)
   {
     snd_seq_ev_clear( &m_event ); 
   }
 
-  SequencerEvent::SequencerEvent(snd_seq_event_t* event) : QCustomEvent(SequencerEventType)
+  SequencerEvent::SequencerEvent(snd_seq_event_t* event) : QEvent(SequencerEventType)
   {
     snd_seq_ev_clear( &m_event ); 
     m_event = *event;
