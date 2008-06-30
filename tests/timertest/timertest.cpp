@@ -18,10 +18,9 @@
 */
 
 #include "timertest.h"
-#include <iostream>
-#include <iomanip> 
+#include <QTextStream>
 
-using namespace std;
+static QTextStream cout(stdout, QIODevice::WriteOnly); 
 
 TimerTest::TimerTest()
 {
@@ -44,8 +43,9 @@ TimerTest::run()
 		Timer* timer = new Timer(&id, SND_TIMER_OPEN_NONBLOCK);
 		TimerInfo* info = timer->getTimerInfo();
 		
-		cout << setw(7) << left << info->getId().toStdString();
-		cout << setw(20) << left << info->getName().toStdString() << " ";
+		cout << qSetFieldWidth(7) << left << info->getId();
+		cout << qSetFieldWidth(20) << left << info->getName();
+		cout << qSetFieldWidth(0) << " ";
 		cout << id.getClass() << "/" << id.getSlaveClass() << "/";
 		cout << id.getCard() << "/" << id.getDevice() << "/" << id.getSubdevice() << " ";
 		if( info->isSlave() ) {

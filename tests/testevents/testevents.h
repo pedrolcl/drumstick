@@ -24,7 +24,6 @@
 #include <QObject>
 
 using namespace ALSA::Sequencer;
-using namespace std;
 
 class QTestEvents : public QObject
 {

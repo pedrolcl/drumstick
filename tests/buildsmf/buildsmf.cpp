@@ -17,14 +17,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#include <iostream>
 #include <QApplication>
 #include <QDebug>
 #include "qsmf.h"
 #include "buildsmf.h"
-
-using namespace std;
-using namespace MIDI::Utils;
 
 QSMFBuilder::QSMFBuilder() : QObject()
 {

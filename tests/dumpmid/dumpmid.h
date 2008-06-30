@@ -31,7 +31,6 @@
 #include "subscription.h"
 
 using namespace ALSA::Sequencer;
-using namespace std;
 
 class QDumpMIDI : public QObject
 {
