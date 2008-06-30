@@ -63,6 +63,7 @@
 </storageModule>
 
 
+
 <storageModule moduleId="org.eclipse.cdt.core.pathentry">
 <pathentry kind="src" path="library"/>
 <pathentry kind="src" path="tests"/>
