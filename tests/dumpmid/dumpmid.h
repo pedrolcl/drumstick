@@ -20,6 +20,11 @@
 #ifndef DUMPMIDI_H_
 #define DUMPMIDI_H_
 
+/* MidiClient can deliver SequencerEvents with only
+ * signals or posting QEvents to the QApplication loop */  
+#undef USE_QEVENTS
+//#define USE_QEVENTS
+
 #include <QObject>
 #include <QMutex>
 
@@ -48,9 +53,13 @@ public:
 
 public slots:
 	void subscription(MidiPort* port, Subscription* subs);
-	
+
+#ifdef USE_QEVENTS	
 protected:
 	virtual void customEvent( QEvent *ev );
+#else	
+	void sequencerEvent( SequencerEvent* ev ); 
+#endif
 	
 private:
 	MidiClient* m_Client;

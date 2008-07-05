@@ -58,7 +58,7 @@ void SequencerInputThread::run()
 			while (!isTerminated() && (m_MidiClient != NULL))
 			{
 				rt = poll(pfd, npfd, m_Wait);
-				if (rt >= 0) {
+				if (rt > 0) {
 					m_MidiClient->doEvents();
 				}
 			}

@@ -43,6 +43,7 @@ public:
 	QString getId();
 	QString getName();
 	long getResolution();
+	long getFrequency();
 	
 private:
 	snd_timer_info_t *m_Info;	

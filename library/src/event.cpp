@@ -34,28 +34,41 @@ namespace Sequencer
     snd_seq_ev_clear( &m_event ); 
     m_event = *event;
   }
+  
+  SequencerEvent::SequencerEvent(const SequencerEvent& other) : QEvent(SequencerEventType)
+  {
+	  snd_seq_ev_clear( &m_event );  
+	  m_event = other.m_event;
+  }
 
-  bool SequencerEvent::isSubscription()
+  SequencerEvent& 
+  SequencerEvent::operator=(const SequencerEvent& other)
+  {
+	  m_event = other.m_event;
+	  return *this;
+  }
+  
+  bool SequencerEvent::isSubscription() const
   {   
     return ( m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED || 
              m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED );
   }
 
-  bool SequencerEvent::isPort()
+  bool SequencerEvent::isPort() const
   {
     return ( m_event.type == SND_SEQ_EVENT_PORT_START || 
              m_event.type == SND_SEQ_EVENT_PORT_EXIT || 
              m_event.type == SND_SEQ_EVENT_PORT_CHANGE );
 }
 
-  bool SequencerEvent::isClient()
+  bool SequencerEvent::isClient() const  
   {   
     return ( m_event.type == SND_SEQ_EVENT_CLIENT_START || 
              m_event.type == SND_SEQ_EVENT_CLIENT_EXIT || 
              m_event.type == SND_SEQ_EVENT_CLIENT_CHANGE );
   }
 
-  bool SequencerEvent::isConnectionChange()
+  bool SequencerEvent::isConnectionChange() const 
   {   
     return ( m_event.type == SND_SEQ_EVENT_PORT_START || 
              m_event.type == SND_SEQ_EVENT_PORT_EXIT ||
@@ -70,11 +83,6 @@ namespace Sequencer
   void SequencerEvent::setType(uchar eventType)
   {
     m_event.type = eventType;
-  }
-
-  snd_seq_event_type_t SequencerEvent::getType()
-  {   
-    return m_event.type;
   }
 
   void SequencerEvent::setDestination(int client, int port)
@@ -107,16 +115,6 @@ namespace Sequencer
     snd_seq_ev_schedule_tick(&m_event, queue, relative, tick);
   }
 
-  int SequencerEvent::getSourceClient()
-  {   
-	  return m_event.source.client;
-  }
-
-  int SequencerEvent::getSourcePort()
-  {
-	  return m_event.source.port;
-  }
-  
   void SequencerEvent::scheduleReal(int queue, ulong secs, ulong nanos, bool relative)
   {
     snd_seq_real_time_t rtime;
@@ -130,31 +128,6 @@ namespace Sequencer
     snd_seq_ev_set_priority(&m_event, high);
   }
 
-  snd_seq_tick_time_t SequencerEvent::getTick()
-  {   
-    return m_event.time.tick;
-  }
-
-  unsigned int SequencerEvent::getRealTimeSecs()
-  {
-    return m_event.time.time.tv_sec;
-  }
-
-  unsigned int SequencerEvent::getRealTimeNanos()
-  {
-    return m_event.time.time.tv_nsec;
-  }
-
-  snd_seq_event_t* SequencerEvent::getEvent()
-  { 
-    return &m_event;
-  }
-  
-  int SequencerEvent::getTag()
-  {
-    return m_event.tag;
-  }
-  
   void SequencerEvent::setTag(int aTag)
   {
     snd_seq_ev_set_tag(&m_event, aTag);
@@ -200,7 +173,7 @@ namespace Sequencer
     snd_seq_ev_set_chanpress(&m_event, ch, val);
   }
 
-  SysExEvent::SysExEvent(uint datalen,  char* dataptr) : SequencerEvent()
+  SysExEvent::SysExEvent(const uint datalen,  char* dataptr) : SequencerEvent()
   {
     snd_seq_ev_set_sysex(&m_event, datalen, dataptr);
   }

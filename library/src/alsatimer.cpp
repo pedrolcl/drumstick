@@ -76,6 +76,16 @@ TimerInfo::getResolution()
 	return snd_timer_info_get_resolution(m_Info);
 }
 
+long
+TimerInfo::getFrequency()
+{
+	long res = getResolution();
+	if (res > 0) {
+		return 1000000000 / res;
+	}
+	return 0;	
+}
+
 /***********
  * TimerId *
  ***********/

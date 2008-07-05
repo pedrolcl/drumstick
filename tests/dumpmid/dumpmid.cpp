@@ -23,6 +23,7 @@
 #include <QString>
 #include <QApplication>
 #include <QTextStream>
+#include <QtDebug>
 
 static QTextStream cout(stdout, QIODevice::WriteOnly); 
 static QTextStream cerr(stderr, QIODevice::WriteOnly); 
@@ -36,7 +37,9 @@ QDumpMIDI::QDumpMIDI()
 	m_Client->setBlockMode(false);
 	m_Client->open();
 	m_Client->setClientName("DumpMIDI");
-
+#ifndef USE_QEVENTS // using signals instead
+	connect(m_Client, SIGNAL(eventReceived(SequencerEvent*)), SLOT(sequencerEvent(SequencerEvent*)), Qt::DirectConnection);
+#endif	
 	m_Port->setMidiClient(m_Client);
 	m_Port->setPortName("DumpMIDI port");
 	m_Port->setCapability(SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE);
@@ -44,6 +47,7 @@ QDumpMIDI::QDumpMIDI()
 	connect(m_Port, SIGNAL(subscribed(MidiPort*,Subscription*)), SLOT(subscription(MidiPort*,Subscription*)));
 	
 	m_Port->attach();
+	qDebug() << "Trying to subscribe from Announce";
 	m_Port->subscribeFromAnnounce();
 }
 
@@ -75,7 +79,7 @@ QDumpMIDI::stop()
 void 
 QDumpMIDI::subscription(MidiPort*, Subscription* subs)
 {
-	qDebug("Subscription made from %d:%d", subs->getSender()->client, subs->getSender()->port);
+	qDebug() << "Subscription made from" << subs->getSender()->client << ":" << subs->getSender()->port;
 	subs->setQueue(m_Client->getQueue()->getId());
 	subs->setTimeReal(true);
 	subs->setTimeUpdate(true);
@@ -84,7 +88,7 @@ QDumpMIDI::subscription(MidiPort*, Subscription* subs)
 void QDumpMIDI::subscribe(const QString& portName)
 {
 	try	{
-		qDebug("Trying to subscribe %s", portName.toLocal8Bit().data());
+		qDebug() << "Trying to subscribe" << portName.toLocal8Bit().data();
 		m_Port->subscribeFrom(portName);
 	} catch (FatalError *err) {
 		cerr << "FatalError exception. Error code: " << err->code() 
@@ -99,15 +103,20 @@ void QDumpMIDI::run()
 	cout << "Press Ctrl+C to exit" << endl;
 	cout << "Source_ Event_________________ Ch _Data__" << endl;
 	try	{
+#ifdef USE_QEVENTS
+		m_Client->addSubscriber(this);
+		m_Client->setEventsEnabled(true);
+#endif		
 		m_Client->createQueue();
-		m_Client->startEvents();
+		m_Client->startSequencerInput();
 		m_Client->getQueue()->start();
 		m_Stopped = false;
 		while (!stopped()) {
+			//QApplication::processEvents();
 			sleep(1);
 		}
 		m_Client->getQueue()->stop();
-		m_Client->stopEvents();
+		m_Client->stopSequencerInput();
 	} catch (FatalError *err) {
 		cerr << "FatalError exception. Error code: " << err->code() 
 			 << " (" << err->qstrError() << ")" << endl;
@@ -116,6 +125,7 @@ void QDumpMIDI::run()
 	}
 }
 
+#ifdef USE_QEVENTS
 void 
 QDumpMIDI::customEvent(QEvent *ev)
 {
@@ -125,8 +135,15 @@ QDumpMIDI::customEvent(QEvent *ev)
 			dumpEvent(sev);
 		}
 	}
-	delete ev;
 }
+#else
+void 
+QDumpMIDI::sequencerEvent(SequencerEvent *ev)
+{
+	//qDebug() << "Signal received!";
+	dumpEvent(ev);
+}
+#endif
 
 void 
 QDumpMIDI::dumpEvent(SequencerEvent* sev)
@@ -344,9 +361,9 @@ QDumpMIDI* test;
 void signalHandler(int sig)
 {
 	if (sig == SIGINT)
-		qDebug("Caught a SIGINT. Exiting");
+		qDebug() << "Caught a SIGINT. Exiting";
 	else if (sig == SIGTERM)
-		qDebug("Caught a SIGTERM. Exiting");
+		qDebug() << "Caught a SIGTERM. Exiting";
 	test->stop();
 }
 

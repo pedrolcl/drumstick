@@ -39,6 +39,7 @@ MidiClient::MidiClient( QObject* parent ) :
 	QObject(parent),
 	m_SeqHandle(0),
 	m_DeviceName("default"),
+	m_eventsEnabled(false),
 	m_BlockMode(false),
 	m_NeedRefreshClientList(true),
     m_OpenMode(SND_SEQ_OPEN_DUPLEX),
@@ -77,7 +78,7 @@ void
 MidiClient::close()
 {
     if (m_SeqHandle != NULL) {
-        stopEvents();
+        stopSequencerInput();
         CHECK_ERROR(snd_seq_close(m_SeqHandle));
         m_SeqHandle = NULL;
     }
@@ -153,6 +154,7 @@ MidiClient::getSequencerType()
 void 
 MidiClient::doEvents()
 {
+	//qDebug() << "--> MidiClient::doEvents()";
     do {
         int err = 0;
         snd_seq_event_t* evp = NULL;
@@ -241,14 +243,23 @@ MidiClient::doEvents()
                     event = new SequencerEvent(evp);
                     break;
             }
-            qApp->sendEvent(parent(), event);
+            if (m_eventsEnabled)
+            {
+            	foreach(QObject* s, m_subscribers)
+            	{
+            		QApplication::sendEvent(s, event);
+            	}
+            }
+            emit eventReceived(event);
+            delete event;
         }
     }
     while (snd_seq_event_input_pending(m_SeqHandle, 0) > 0);
+    //qDebug() << "<-- MidiClient::doEvents()";
 }
 
 void 
-MidiClient::startEvents()
+MidiClient::startSequencerInput()
 {
 	if (m_Thread == NULL) {
 		m_Thread = new SequencerInputThread(this, POLLIN, 500);
@@ -257,7 +268,7 @@ MidiClient::startEvents()
 }
 
 void 
-MidiClient::stopEvents()
+MidiClient::stopSequencerInput()
 {
     if (m_Thread != NULL) {
     	m_Thread->stop();
@@ -275,27 +286,19 @@ MidiClient::stopEvents()
 void 
 MidiClient::readClients()
 {
-    ClientInfo cInfo1, cInfo2; 
+    ClientInfo cInfo; 
     freeClients();
-    //cInfo1 = new ClientInfo();
-    cInfo1.setClient(-1);
-    while (snd_seq_query_next_client(m_SeqHandle, cInfo1.m_Info) >= 0) {
-        cInfo2 = cInfo1; //->clone();
-        cInfo2.readPorts(this);
-        //m_ClientList.push_back(cInfo2);
-        m_ClientList.append(cInfo2);
+    cInfo.setClient(-1);
+    while (snd_seq_query_next_client(m_SeqHandle, cInfo.m_Info) >= 0) {
+        cInfo.readPorts(this);
+        m_ClientList.append(cInfo);
     }
-    //delete cInfo1;
     m_NeedRefreshClientList = false;
 }
 
 void
 MidiClient::freeClients()
 {
-//	ClientInfoList::iterator it;
-//	for(it = m_ClientList.begin(); it != m_ClientList.end(); ++it) {
-//		delete (*it);
-//	}
     m_ClientList.clear();
 }
 
@@ -601,6 +604,27 @@ MidiClient::getAvailableOutputs()
     return m_OutputsAvail;
 }
 
+void 
+MidiClient::addSubscriber(QObject* subscriber)
+{
+	m_subscribers.append(subscriber);
+}
+
+void 
+MidiClient::removeSubscriber(QObject* subscriber)
+{
+	m_subscribers.removeAll(subscriber);
+}
+
+void 
+MidiClient::setEventsEnabled(bool bEnabled)
+{
+	if (bEnabled != m_eventsEnabled)
+	{
+		m_eventsEnabled = (bEnabled & !m_subscribers.empty());
+	}
+}
+
 /**************/
 /* ClientInfo */
 /**************/
@@ -724,26 +748,19 @@ ClientInfo::setEventFilter(unsigned char *filter)
 void 
 ClientInfo::readPorts(MidiClient* seq)
 {
-    PortInfo info1, info2;
+    PortInfo info;
     freePorts();
-    //info1 = new PortInfo();
-    info1.setClient(getClientId());
-    info1.setPort(-1);
-    while (snd_seq_query_next_port(seq->getHandle(), info1.m_Info) >= 0) {
-        info2 = info1; //->clone();
-        info2.readSubscribers(seq);
-        m_Ports.append(info2);
+    info.setClient(getClientId());
+    info.setPort(-1);
+    while (snd_seq_query_next_port(seq->getHandle(), info.m_Info) >= 0) {
+        info.readSubscribers(seq);
+        m_Ports.append(info);
     }
-    //delete info1;
 }
 
 void
 ClientInfo::freePorts()
 {
-//    PortInfoList::iterator it;
-//    for(it = m_Ports.begin(); it != m_Ports.end(); ++it) {
-//    	delete (*it);
-//    }
     m_Ports.clear();
 }
 

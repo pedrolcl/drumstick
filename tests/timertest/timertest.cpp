@@ -36,13 +36,11 @@ void
 TimerTest::run()
 {
 	TimerIdList ids = m_query->getTimers();
-	TimerIdList::iterator it;
 	cout << "type__ Name________________ c/s/C/D/S Freq." << endl;
 	foreach(TimerId id, ids)
 	{
 		Timer* timer = new Timer(&id, SND_TIMER_OPEN_NONBLOCK);
 		TimerInfo* info = timer->getTimerInfo();
-		
 		cout << qSetFieldWidth(7) << left << info->getId();
 		cout << qSetFieldWidth(20) << left << info->getName();
 		cout << qSetFieldWidth(0) << " ";
@@ -51,8 +49,7 @@ TimerTest::run()
 		if( info->isSlave() ) {
 			cout << "SLAVE";
 		} else {
-			long hz = 1000000000 / info->getResolution();
-			cout << hz << " Hz"; 
+			cout << info->getFrequency() << " Hz"; 
 		}
 		cout << endl;
 		delete info;

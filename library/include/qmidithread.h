@@ -33,6 +33,8 @@ class MidiClient;
   
 class SequencerInputThread: public QThread
 {
+	Q_OBJECT
+	
 public:
     SequencerInputThread(MidiClient *seq, short events, int timeout) : QThread(),
     	m_MidiClient(seq),

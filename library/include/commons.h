@@ -24,6 +24,7 @@
 #include <qglobal.h>
 #include <QString>
 #include <QApplication>
+#include <QtDebug>
 
 extern "C" {
 #include <alsa/asoundlib.h>
@@ -57,7 +58,7 @@ private:
 inline int checkErrorAndThrow(int rc, const char *where)
 {
 	if (rc < 0) {
-		//qDebug("Error=%d (%s)\nlocation: %s", rc, snd_strerror(rc), where);
+		qDebug() << "Error=" << rc << "(" <<  snd_strerror(rc) << ")\nlocation:" << where;
 		throw new FatalError(std::string(where), rc);
 	}
 	return rc;

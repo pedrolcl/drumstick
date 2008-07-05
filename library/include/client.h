@@ -86,8 +86,8 @@ public:
 	
     void open();
     void close();
-    void startEvents();
-    void stopEvents();
+    void startSequencerInput();
+    void stopSequencerInput();
     MidiPort* createPort();
     MidiQueue* createQueue(); 
     MidiQueue* createQueue(QString const& name);
@@ -133,7 +133,15 @@ public:
     ClientInfo* getClientInfo(int j);
     PortInfoList getAvailableInputs();
     PortInfoList getAvailableOutputs();
-
+    
+    void addSubscriber(QObject* subscriber);
+    void removeSubscriber(QObject* subscriber);
+    void setEventsEnabled(const bool bEnabled);
+    bool getEventsEnabled() const { return m_eventsEnabled; }
+    
+signals:    
+    void eventReceived(SequencerEvent* ev);
+    
 protected:    
     void doEvents();
     void applyClientInfo();
@@ -146,6 +154,7 @@ private:
     snd_seq_t* m_SeqHandle;
     QString m_DeviceName;
     
+    bool m_eventsEnabled;
     bool m_BlockMode;
     bool m_NeedRefreshClientList;
     int  m_OpenMode;
@@ -158,6 +167,7 @@ private:
     MidiPortList m_Ports;
     PortInfoList m_OutputsAvail;
     PortInfoList m_InputsAvail;
+    QList<QObject*> m_subscribers;
 };
 
 }

@@ -24,6 +24,7 @@ SET(aseqmm_qtobject_SRCS
     include/client.h
     include/port.h
     include/qsmf.h
+    include/qmidithread.h
 )
 
 SET(aseqmm_SRCS

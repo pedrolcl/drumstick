@@ -34,31 +34,33 @@ class SequencerEvent : public QEvent
 {
 public:
     SequencerEvent();
+    SequencerEvent(const SequencerEvent& other);
     SequencerEvent(snd_seq_event_t* event);
     ~SequencerEvent() {}
     
-    bool isSubscription();
-    bool isPort();
-    bool isClient();
-    bool isConnectionChange();
-    void setType(snd_seq_event_type_t eventType);
-    snd_seq_event_type_t getType();
-    void setDestination(int client, int port);
-    void setSource(int port);
-    int getSourceClient();
-    int getSourcePort();
-    snd_seq_tick_time_t getTick();
-    unsigned int getRealTimeSecs();
-    unsigned int getRealTimeNanos();
+    SequencerEvent& operator=(const SequencerEvent& other);
+    bool isSubscription() const;
+    bool isPort() const;
+    bool isClient() const;
+    bool isConnectionChange() const;
+    void setType(const snd_seq_event_type_t eventType);
+    snd_seq_event_type_t getType() const { return m_event.type; }
+    void setDestination(const int client, const int port);
+    void setSource(const int port);
+    int getSourceClient() const { return m_event.source.client; }
+    int getSourcePort() const { return m_event.source.port; }
+    snd_seq_tick_time_t getTick() const { return m_event.time.tick; }
+    unsigned int getRealTimeSecs() const { return m_event.time.time.tv_sec; }
+    unsigned int getRealTimeNanos() const { return m_event.time.time.tv_nsec; }
     void setSubscribers();
     void setBroadcast();
     void setDirect();
-    void scheduleTick(int queue, int tick, bool relative);
-    void scheduleReal(int queue, ulong secs, ulong nanos, bool relative);
-    void setPriority(bool high);
-    int getTag();
-    void setTag(int aTag);
-    snd_seq_event_t *getEvent();
+    void scheduleTick(const int queue, const int tick, const bool relative);
+    void scheduleReal(const int queue, const ulong secs, const ulong nanos, const bool relative);
+    void setPriority(const bool high);
+    int getTag() const { return m_event.tag; }
+    void setTag(const int aTag);
+    snd_seq_event_t* getEvent() { return &m_event; }
 
 protected:
     snd_seq_event_t m_event;
@@ -70,7 +72,7 @@ public:
 	ChannelEvent() : SequencerEvent() {}
 	ChannelEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
 	
-    void setChannel(MidiByte c) { m_event.data.note.channel = (c & 0xf); }
+    void setChannel(const MidiByte c) { m_event.data.note.channel = (c & 0xf); }
     int getChannel() { return m_event.data.note.channel; }
 };
   
@@ -80,10 +82,10 @@ public:
     KeyEvent() : ChannelEvent() {}
     KeyEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
     
-    int getKey() { return m_event.data.note.note; }
-    void setKey(MidiByte b) { m_event.data.note.note = b; }
-    int getVelocity() { return m_event.data.note.velocity; }
-    void setVelocity(MidiByte b) { m_event.data.note.velocity = b; }
+    int getKey()  const { return m_event.data.note.note; }
+    void setKey(const MidiByte b) { m_event.data.note.note = b; }
+    int getVelocity() const { return m_event.data.note.velocity; }
+    void setVelocity(const MidiByte b) { m_event.data.note.velocity = b; }
 };   
   
 class NoteEvent : public KeyEvent
@@ -91,10 +93,10 @@ class NoteEvent : public KeyEvent
 public:
 	NoteEvent() : KeyEvent() {}
 	NoteEvent(snd_seq_event_t* event) : KeyEvent(event) {}
-    NoteEvent(int ch, int key, int vel, int dur);
+    NoteEvent(const int ch, const int key, const int vel, const int dur);
 
-    ulong getDuration() { return m_event.data.note.duration; }
-    void setDuration(ulong d) { m_event.data.note.duration = d; }
+    ulong getDuration() const { return m_event.data.note.duration; }
+    void setDuration(const ulong d) { m_event.data.note.duration = d; }
 };
   
 class NoteOnEvent : public KeyEvent 
@@ -102,7 +104,7 @@ class NoteOnEvent : public KeyEvent
 public:
 	NoteOnEvent() : KeyEvent() {}
 	NoteOnEvent(snd_seq_event_t* event) : KeyEvent(event) {}
-    NoteOnEvent(int ch, int key, int vel);
+    NoteOnEvent(const int ch, const int key, const int vel);
 };
   
 class NoteOffEvent : public KeyEvent 
@@ -110,7 +112,7 @@ class NoteOffEvent : public KeyEvent
 public:
 	NoteOffEvent() : KeyEvent() {}
 	NoteOffEvent(snd_seq_event_t* event) : KeyEvent(event) {}
-    NoteOffEvent(int ch, int key, int vel);
+    NoteOffEvent(const int ch, const int key, const int vel);
 };
   
 class KeyPressEvent : public KeyEvent 
@@ -118,7 +120,7 @@ class KeyPressEvent : public KeyEvent
 public:
 	KeyPressEvent() : KeyEvent() {}
 	KeyPressEvent(snd_seq_event_t* event) : KeyEvent(event) {}
-    KeyPressEvent(int ch, int key, int vel);
+    KeyPressEvent(const int ch, const int key, const int vel);
 };
   
 class ControllerEvent : public ChannelEvent
@@ -126,12 +128,12 @@ class ControllerEvent : public ChannelEvent
 public:
 	ControllerEvent() : ChannelEvent() {}
 	ControllerEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
-	ControllerEvent(int ch, int cc, int val);
+	ControllerEvent(const int ch, const int cc, const int val);
     
-    uint getParam() { return m_event.data.control.param; }
-    void setParam( uint p ) { m_event.data.control.param = p; }
-    int getValue() { return m_event.data.control.value; }
-    void setValue( int v ) { m_event.data.control.value = v; }
+    uint getParam() const { return m_event.data.control.param; }
+    void setParam( const uint p ) { m_event.data.control.param = p; }
+    int getValue() const { return m_event.data.control.value; }
+    void setValue( const int v ) { m_event.data.control.value = v; }
 };
   
 class ProgramChangeEvent : public ChannelEvent
@@ -139,10 +141,10 @@ class ProgramChangeEvent : public ChannelEvent
 public:
 	ProgramChangeEvent() : ChannelEvent() {}
 	ProgramChangeEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
-    ProgramChangeEvent(int ch, int val);
+    ProgramChangeEvent(const int ch, const int val);
     
-    int getValue() { return m_event.data.control.value; }
-    void setValue( int v ) { m_event.data.control.value = v; }
+    int getValue() const { return m_event.data.control.value; }
+    void setValue( const int v ) { m_event.data.control.value = v; }
 };
   
 class PitchBendEvent : public ChannelEvent
@@ -150,10 +152,10 @@ class PitchBendEvent : public ChannelEvent
 public:
 	PitchBendEvent() : ChannelEvent() {}
 	PitchBendEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
-	PitchBendEvent(int ch, int val);
+	PitchBendEvent(const int ch, const int val);
 
-    int getValue() { return m_event.data.control.value; }
-    void setValue( int v ) { m_event.data.control.value = v; }
+    int getValue() const { return m_event.data.control.value; }
+    void setValue( const int v ) { m_event.data.control.value = v; }
 };
   
 class ChanPressEvent : public ChannelEvent
@@ -161,10 +163,10 @@ class ChanPressEvent : public ChannelEvent
 public:
 	ChanPressEvent() : ChannelEvent() {}
 	ChanPressEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
-    ChanPressEvent(int ch, int val);
+    ChanPressEvent( const int ch, const int val);
     
-    int getValue() { return m_event.data.control.value; }
-    void setValue( int v ) { m_event.data.control.value = v; }
+    int getValue() const { return m_event.data.control.value; }
+    void setValue( const int v ) { m_event.data.control.value = v; }
 };
   
 class SysExEvent : public SequencerEvent
@@ -172,10 +174,10 @@ class SysExEvent : public SequencerEvent
 public:
 	SysExEvent() : SequencerEvent() {}
 	SysExEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
-    SysExEvent(uint datalen, char* dataptr);
+    SysExEvent(const uint datalen, char* dataptr);
     
-    uint getLength() { return m_event.data.ext.len; }
-    uchar* getData() { return static_cast<uchar*>(m_event.data.ext.ptr); }
+    uint getLength() const { return m_event.data.ext.len; }
+    const uchar* getData() const { return static_cast<const uchar*>(m_event.data.ext.ptr); }
 };
  
 class SystemEvent : public SequencerEvent
@@ -183,7 +185,7 @@ class SystemEvent : public SequencerEvent
 public:
 	SystemEvent() : SequencerEvent() {}
 	SystemEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
-    SystemEvent(int statusByte);
+    SystemEvent(const int statusByte);
 };
 
 class QueueControlEvent : public SequencerEvent
@@ -191,19 +193,19 @@ class QueueControlEvent : public SequencerEvent
 public:
 	QueueControlEvent() : SequencerEvent() {}
 	QueueControlEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
-	QueueControlEvent(int type, int queue, int value);
-	int getQueue() { return m_event.data.queue.queue; }
-	void setQueue(uchar q) { m_event.data.queue.queue = q; }
-	int getValue() { return m_event.data.queue.param.value; }
-	void setValue(int val) { m_event.data.queue.param.value = val; }
-	uint getPosition() { return m_event.data.queue.param.position; }
-	void setPosition(uint pos) { m_event.data.queue.param.position = pos; }
-	snd_seq_tick_time_t getTickTime() { return m_event.data.queue.param.time.tick; }
-	void setTickTime(snd_seq_tick_time_t t) { m_event.data.queue.param.time.tick = t; }
-	uint getSkewBase() { return m_event.data.queue.param.skew.base;  }
-	void setSkewBase(uint base) { m_event.data.queue.param.skew.base = base; }
-	uint getSkewValue() { return m_event.data.queue.param.skew.value;  }
-	void setSkewValue(uint val) {m_event.data.queue.param.skew.value = val; }
+	QueueControlEvent(const int type, const int queue, const int value);
+	int getQueue() const { return m_event.data.queue.queue; }
+	void setQueue(const uchar q) { m_event.data.queue.queue = q; }
+	int getValue() const { return m_event.data.queue.param.value; }
+	void setValue(const int val) { m_event.data.queue.param.value = val; }
+	uint getPosition() const { return m_event.data.queue.param.position; }
+	void setPosition(const uint pos) { m_event.data.queue.param.position = pos; }
+	snd_seq_tick_time_t getTickTime() const { return m_event.data.queue.param.time.tick; }
+	void setTickTime(const snd_seq_tick_time_t t) { m_event.data.queue.param.time.tick = t; }
+	uint getSkewBase() const { return m_event.data.queue.param.skew.base;  }
+	void setSkewBase(const uint base) { m_event.data.queue.param.skew.base = base; }
+	uint getSkewValue() const { return m_event.data.queue.param.skew.value;  }
+	void setSkewValue(const uint val) {m_event.data.queue.param.skew.value = val; }
 };
   
 class ValueEvent : public SequencerEvent
@@ -211,10 +213,10 @@ class ValueEvent : public SequencerEvent
 public:
 	ValueEvent() : SequencerEvent() {}
 	ValueEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
-	ValueEvent(int statusByte, int val);
+	ValueEvent(const int statusByte, const int val);
     
-    int getValue() { return m_event.data.control.value; }
-    void setValue( int v ) { m_event.data.control.value = v; }
+    int getValue() const { return m_event.data.control.value; }
+    void setValue( const int v ) { m_event.data.control.value = v; }
 };
 
 class TempoEvent : public QueueControlEvent
@@ -222,7 +224,7 @@ class TempoEvent : public QueueControlEvent
 public:
 	TempoEvent() : QueueControlEvent() {}
 	TempoEvent(snd_seq_event_t* event) : QueueControlEvent(event) {}
-    TempoEvent(int queue, int tempo);
+    TempoEvent(const int queue, const int tempo);
 };
 
 class SubscriptionEvent : public SequencerEvent
@@ -231,12 +233,12 @@ public:
 	SubscriptionEvent() : SequencerEvent() {}
 	SubscriptionEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
 	
-	bool subscribed() { return (m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED); }
-	bool unsubscribed() { return (m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED); }
-	int getSenderClient() { return m_event.data.connect.sender.client; }
-	int getSenderPort() { return m_event.data.connect.sender.port; }
-	int getDestClient() { return m_event.data.connect.dest.client; }
-	int getDestPort() { return m_event.data.connect.dest.port; }
+	bool subscribed() const { return (m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED); }
+	bool unsubscribed() const { return (m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED); }
+	int getSenderClient() const { return m_event.data.connect.sender.client; }
+	int getSenderPort() const { return m_event.data.connect.sender.port; }
+	int getDestClient() const { return m_event.data.connect.dest.client; }
+	int getDestPort() const { return m_event.data.connect.dest.port; }
 };
 
 class ClientEvent : public SequencerEvent
@@ -244,7 +246,7 @@ class ClientEvent : public SequencerEvent
 public:
 	ClientEvent() : SequencerEvent() {}
 	ClientEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
-	int getClient() { return m_event.data.addr.client; }
+	int getClient() const { return m_event.data.addr.client; }
 };
 
 class PortEvent : public ClientEvent
@@ -252,7 +254,7 @@ class PortEvent : public ClientEvent
 public:
 	PortEvent() : ClientEvent() {}
 	PortEvent(snd_seq_event_t* event) : ClientEvent(event) {}
-	int getPort() { return m_event.data.addr.port; }
+	int getPort() const { return m_event.data.addr.port; }
 };
 
 }
