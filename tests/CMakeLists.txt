@@ -149,9 +149,32 @@ TARGET_LINK_LIBRARIES(timertest
     aseqmm
 )
 
+# playsmf
+
+SET(playsmf_SRCS
+    playsmf/playsmf.cpp
+    playsmf/playsmf.h
+)
+
+SET(playsmf_qtobject_SRCS
+    playsmf/playsmf.h
+)
+
+QT_WRAP_CPP(playsmf playsmf_moc_SRCS ${playsmf_qtobject_SRCS})
+
+ADD_EXECUTABLE(playsmf
+    ${playsmf_moc_SRCS}
+    ${playsmf_SRCS}
+)
+
+TARGET_LINK_LIBRARIES(playsmf
+    ${QT_LIBRARIES} 
+    ${ALSA_LIBS} 
+    aseqmm
+)
 
 # we should install some files...
-INSTALL(TARGETS buildsmf dumpsmf testevents dumpmid
+INSTALL(TARGETS buildsmf dumpsmf testevents dumpmid playsmf
 		RUNTIME DESTINATION bin
 		ARCHIVE DESTINATION lib
 		LIBRARY DESTINATION lib)

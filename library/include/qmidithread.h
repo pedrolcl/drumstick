@@ -54,7 +54,7 @@ private:
     int m_Wait;
     short m_Events;
     bool m_Terminated;
-    QMutex m;
+    QMutex m_mutex;
 };
 
 }

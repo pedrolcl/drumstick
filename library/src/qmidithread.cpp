@@ -29,18 +29,18 @@ namespace Sequencer
 bool 
 SequencerInputThread::isTerminated() 
 { 
-	m.lock();
+	m_mutex.lock();
 	bool bTmp = m_Terminated;
-	m.unlock();
+	m_mutex.unlock();
 	return  bTmp;
 }
 
 void 
 SequencerInputThread::stop() 
 { 
-	m.lock();
+	m_mutex.lock();
 	m_Terminated = true;
-	m.unlock();
+	m_mutex.unlock();
 }
 
 void SequencerInputThread::run()

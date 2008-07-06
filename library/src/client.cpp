@@ -37,15 +37,15 @@ namespace Sequencer
 
 MidiClient::MidiClient( QObject* parent ) : 
 	QObject(parent),
-	m_SeqHandle(0),
-	m_DeviceName("default"),
 	m_eventsEnabled(false),
 	m_BlockMode(false),
 	m_NeedRefreshClientList(true),
     m_OpenMode(SND_SEQ_OPEN_DUPLEX),
+	m_SeqHandle(0),
     m_Thread(NULL),
     m_Info(NULL),
-    m_Queue(NULL)
+    m_Queue(NULL),
+    m_DeviceName("default")
 {
     m_Info = new ClientInfo();
 }
@@ -455,60 +455,60 @@ MidiClient::setErrorBounce(bool newValue)
     applyClientInfo();
 }
 
-void 
-MidiClient::output(SequencerEvent* ev)
+void MidiClient::output(SequencerEvent* ev)
 {
-    int npfds;
-    pollfd* pfds;
+	int npfds;
+	pollfd* pfds;
 
-    npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
-    pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
-    snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-    while (snd_seq_event_output(m_SeqHandle, ev->getEvent()) < 0) {
-        CHECK_ERROR(poll(pfds, npfds, -1));
-    }
+	npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
+	pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
+	snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
+	while (snd_seq_event_output(m_SeqHandle, ev->getEvent()) < 0)
+	{
+		poll(pfds, npfds, -1);
+	}
 }
 
-void 
-MidiClient::outputDirect(SequencerEvent* ev)
+void MidiClient::outputDirect(SequencerEvent* ev)
 {
-    int npfds;
-    pollfd* pfds;
+	int npfds;
+	pollfd* pfds;
 
-    npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
-    pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
-    snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-    while (snd_seq_event_output_direct(m_SeqHandle, ev->getEvent()) < 0) {
-        CHECK_ERROR( poll(pfds, npfds, -1) );
-    }
+	npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
+	pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
+	snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
+	while (snd_seq_event_output_direct(m_SeqHandle, ev->getEvent()) < 0)
+	{
+		poll(pfds, npfds, -1);
+	}
 }
 
-void 
-MidiClient::outputBuffer(SequencerEvent* ev)
+void MidiClient::outputBuffer(SequencerEvent* ev)
 {
-    int npfds;
-    pollfd* pfds;
+	int npfds;
+	pollfd* pfds;
 
-    npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
-    pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
-    snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-    while (snd_seq_event_output_buffer(m_SeqHandle, ev->getEvent()) < 0) {
-        CHECK_ERROR( poll(pfds, npfds, -1) );
-    }
+	npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
+	pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
+	snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
+	while (snd_seq_event_output_buffer(m_SeqHandle, ev->getEvent()) < 0)
+	{
+		poll(pfds, npfds, -1);
+	}
 }
 
-void 
-MidiClient::drainOutput(int timeout)
+void MidiClient::drainOutput(int timeout)
 {
-    int npfds;
-    pollfd* pfds;
+	int npfds;
+	pollfd* pfds;
 
-    npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
-    pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
-    snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-    while (snd_seq_drain_output(m_SeqHandle) < 0) {
-        CHECK_ERROR( poll(pfds, npfds, timeout) );
-    }
+	npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
+	pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
+	snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
+	while (snd_seq_drain_output(m_SeqHandle) < 0)
+	{
+		poll(pfds, npfds, timeout);
+	}
 }
 
 void 
@@ -520,7 +520,7 @@ MidiClient::drainOutput()
 void 
 MidiClient::synchronizeOutput()
 {
-    CHECK_ERROR(snd_seq_sync_output_queue(m_SeqHandle));
+    snd_seq_sync_output_queue(m_SeqHandle);
 }
 
 MidiQueue* 

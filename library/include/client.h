@@ -151,18 +151,17 @@ protected:
     PortInfoList filterPorts(unsigned int filter);
 
 private:
-    snd_seq_t* m_SeqHandle;
-    QString m_DeviceName;
-    
     bool m_eventsEnabled;
     bool m_BlockMode;
     bool m_NeedRefreshClientList;
     int  m_OpenMode;
     
+    snd_seq_t* m_SeqHandle;
     SequencerInputThread* m_Thread;
     ClientInfo* m_Info;
     MidiQueue* m_Queue;
 
+    QString m_DeviceName;
     ClientInfoList m_ClientList;
     MidiPortList m_Ports;
     PortInfoList m_OutputsAvail;
