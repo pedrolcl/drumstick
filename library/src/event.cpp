@@ -24,182 +24,188 @@ namespace ALSA
 namespace Sequencer 
 {
 
-  SequencerEvent::SequencerEvent() : QEvent(SequencerEventType)
-  {
+SequencerEvent::SequencerEvent() : QEvent(SequencerEventType)
+{
     snd_seq_ev_clear( &m_event ); 
-  }
-
-  SequencerEvent::SequencerEvent(snd_seq_event_t* event) : QEvent(SequencerEventType)
-  {
-    snd_seq_ev_clear( &m_event ); 
-    m_event = *event;
-  }
-  
-  SequencerEvent::SequencerEvent(const SequencerEvent& other) : QEvent(SequencerEventType)
-  {
-	  snd_seq_ev_clear( &m_event );  
-	  m_event = other.m_event;
-  }
-
-  SequencerEvent& 
-  SequencerEvent::operator=(const SequencerEvent& other)
-  {
-	  m_event = other.m_event;
-	  return *this;
-  }
-  
-  bool SequencerEvent::isSubscription() const
-  {   
-    return ( m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED || 
-             m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED );
-  }
-
-  bool SequencerEvent::isPort() const
-  {
-    return ( m_event.type == SND_SEQ_EVENT_PORT_START || 
-             m_event.type == SND_SEQ_EVENT_PORT_EXIT || 
-             m_event.type == SND_SEQ_EVENT_PORT_CHANGE );
 }
 
-  bool SequencerEvent::isClient() const  
-  {   
-    return ( m_event.type == SND_SEQ_EVENT_CLIENT_START || 
-             m_event.type == SND_SEQ_EVENT_CLIENT_EXIT || 
-             m_event.type == SND_SEQ_EVENT_CLIENT_CHANGE );
-  }
+SequencerEvent::SequencerEvent(snd_seq_event_t* event) : QEvent(SequencerEventType)
+{
+    snd_seq_ev_clear( &m_event ); 
+    m_event = *event;
+}
 
-  bool SequencerEvent::isConnectionChange() const 
-  {   
+SequencerEvent::SequencerEvent(const SequencerEvent& other) : QEvent(SequencerEventType)
+{
+    snd_seq_ev_clear( &m_event );  
+    m_event = other.m_event;
+}
+
+SequencerEvent& 
+SequencerEvent::operator=(const SequencerEvent& other)
+{
+    m_event = other.m_event;
+    return *this;
+}
+
+SequencerEvent*
+SequencerEvent::clone()
+{
+    return new SequencerEvent( &m_event );
+}
+
+bool SequencerEvent::isSubscription() const
+{   
+    return ( m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED || 
+            m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED );
+}
+
+bool SequencerEvent::isPort() const
+{
     return ( m_event.type == SND_SEQ_EVENT_PORT_START || 
-             m_event.type == SND_SEQ_EVENT_PORT_EXIT ||
-             m_event.type == SND_SEQ_EVENT_PORT_CHANGE || 
-             m_event.type == SND_SEQ_EVENT_CLIENT_START ||
-             m_event.type == SND_SEQ_EVENT_CLIENT_EXIT ||
-             m_event.type == SND_SEQ_EVENT_CLIENT_CHANGE || 
-             m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED ||  
-             m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED );
-  }
+            m_event.type == SND_SEQ_EVENT_PORT_EXIT || 
+            m_event.type == SND_SEQ_EVENT_PORT_CHANGE );
+}
 
-  void SequencerEvent::setType(uchar eventType)
-  {
+bool SequencerEvent::isClient() const  
+{   
+    return ( m_event.type == SND_SEQ_EVENT_CLIENT_START || 
+            m_event.type == SND_SEQ_EVENT_CLIENT_EXIT || 
+            m_event.type == SND_SEQ_EVENT_CLIENT_CHANGE );
+}
+
+bool SequencerEvent::isConnectionChange() const 
+{   
+    return ( m_event.type == SND_SEQ_EVENT_PORT_START || 
+            m_event.type == SND_SEQ_EVENT_PORT_EXIT ||
+            m_event.type == SND_SEQ_EVENT_PORT_CHANGE || 
+            m_event.type == SND_SEQ_EVENT_CLIENT_START ||
+            m_event.type == SND_SEQ_EVENT_CLIENT_EXIT ||
+            m_event.type == SND_SEQ_EVENT_CLIENT_CHANGE || 
+            m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED ||  
+            m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED );
+}
+
+void SequencerEvent::setSequencerType(uchar eventType)
+{
     m_event.type = eventType;
-  }
+}
 
-  void SequencerEvent::setDestination(int client, int port)
-  {
+void SequencerEvent::setDestination(int client, int port)
+{
     snd_seq_ev_set_dest(&m_event, client, port);
-  }
+}
 
-  void SequencerEvent::setSource(int port)
-  {
+void SequencerEvent::setSource(int port)
+{
     snd_seq_ev_set_source(&m_event, port);
-  }
+}
 
-  void SequencerEvent::setSubscribers()
-  {
+void SequencerEvent::setSubscribers()
+{
     snd_seq_ev_set_subs(&m_event);
-  }
+}
 
-  void SequencerEvent::setBroadcast()
-  {
+void SequencerEvent::setBroadcast()
+{
     snd_seq_ev_set_broadcast(&m_event);
-  }
+}
 
-  void SequencerEvent::setDirect()
-  {
+void SequencerEvent::setDirect()
+{
     snd_seq_ev_set_direct(&m_event);
-  }
+}
 
-  void SequencerEvent::scheduleTick(int queue, int tick, bool relative)
-  {
+void SequencerEvent::scheduleTick(int queue, int tick, bool relative)
+{
     snd_seq_ev_schedule_tick(&m_event, queue, relative, tick);
-  }
+}
 
-  void SequencerEvent::scheduleReal(int queue, ulong secs, ulong nanos, bool relative)
-  {
+void SequencerEvent::scheduleReal(int queue, ulong secs, ulong nanos, bool relative)
+{
     snd_seq_real_time_t rtime;
     rtime.tv_sec = secs;
     rtime.tv_nsec = nanos;
     snd_seq_ev_schedule_real(&m_event, queue, relative, &rtime);
-  }
+}
 
-  void SequencerEvent::setPriority(bool high)
-  {
+void SequencerEvent::setPriority(bool high)
+{
     snd_seq_ev_set_priority(&m_event, high);
-  }
+}
 
-  void SequencerEvent::setTag(int aTag)
-  {
+void SequencerEvent::setTag(int aTag)
+{
     snd_seq_ev_set_tag(&m_event, aTag);
-  }
+}
 
-  NoteEvent::NoteEvent(int ch, int key, int vel, int dur) : KeyEvent()
-  {
+NoteEvent::NoteEvent(int ch, int key, int vel, int dur) : KeyEvent()
+{
     snd_seq_ev_set_note(&m_event, ch, key, vel, dur);
-  }
+}
 
-  NoteOnEvent::NoteOnEvent(int ch, int key, int vel) : KeyEvent()
-  {
+NoteOnEvent::NoteOnEvent(int ch, int key, int vel) : KeyEvent()
+{
     snd_seq_ev_set_noteon(&m_event, ch, key, vel);
-  }
+}
 
-  NoteOffEvent::NoteOffEvent(int ch, int key, int vel) : KeyEvent()
-  {
+NoteOffEvent::NoteOffEvent(int ch, int key, int vel) : KeyEvent()
+{
     snd_seq_ev_set_noteoff(&m_event, ch, key, vel);
-  }
+}
 
-  KeyPressEvent::KeyPressEvent(int ch, int key, int vel) : KeyEvent()
-  {
+KeyPressEvent::KeyPressEvent(int ch, int key, int vel) : KeyEvent()
+{
     snd_seq_ev_set_keypress(&m_event, ch, key, vel);
-  }
+}
 
-  ControllerEvent::ControllerEvent(int ch, int cc, int val) : ChannelEvent()
-  {
+ControllerEvent::ControllerEvent(int ch, int cc, int val) : ChannelEvent()
+{
     snd_seq_ev_set_controller(&m_event, ch, cc, val);
-  }
+}
 
-  ProgramChangeEvent::ProgramChangeEvent(int ch, int val) : ChannelEvent()
-  {
+ProgramChangeEvent::ProgramChangeEvent(int ch, int val) : ChannelEvent()
+{
     snd_seq_ev_set_pgmchange(&m_event, ch, val);
-  }
+}
 
-  PitchBendEvent::PitchBendEvent(int ch, int val) : ChannelEvent()
-  {
+PitchBendEvent::PitchBendEvent(int ch, int val) : ChannelEvent()
+{
     snd_seq_ev_set_pitchbend(&m_event, ch, val);
-  }
+}
 
-  ChanPressEvent::ChanPressEvent(int ch, int val) : ChannelEvent()
-  {
+ChanPressEvent::ChanPressEvent(int ch, int val) : ChannelEvent()
+{
     snd_seq_ev_set_chanpress(&m_event, ch, val);
-  }
+}
 
-  SysExEvent::SysExEvent(const uint datalen,  char* dataptr) : SequencerEvent()
-  {
+SysExEvent::SysExEvent(const uint datalen,  char* dataptr) : SequencerEvent()
+{
     snd_seq_ev_set_sysex(&m_event, datalen, dataptr);
-  }
+}
 
-  SystemEvent::SystemEvent(int statusByte) : SequencerEvent()
-  {
+SystemEvent::SystemEvent(int statusByte) : SequencerEvent()
+{
     snd_seq_ev_set_fixed(&m_event);
-    setType(statusByte);
-  }
-  
-  QueueControlEvent::QueueControlEvent(int type, int queue, int value) : SequencerEvent()
-  {
-	snd_seq_ev_set_queue_control(&m_event, type, queue, value);
-  }
+    setSequencerType(statusByte);
+}
 
-  ValueEvent::ValueEvent(int statusByte, int val) : SequencerEvent()
-  {
+QueueControlEvent::QueueControlEvent(int type, int queue, int value) : SequencerEvent()
+{
+    snd_seq_ev_set_queue_control(&m_event, type, queue, value);
+}
+
+ValueEvent::ValueEvent(int statusByte, int val) : SequencerEvent()
+{
     snd_seq_ev_set_fixed(&m_event);
-    setType(statusByte);
+    setSequencerType(statusByte);
     setValue(val);
-  }
-  
-  TempoEvent::TempoEvent(int queue, int tempo) : QueueControlEvent()
-  {
+}
+
+TempoEvent::TempoEvent(int queue, int tempo) : QueueControlEvent()
+{
     snd_seq_ev_set_queue_tempo(&m_event, queue, tempo);
-  }
+}
 
 }
 }

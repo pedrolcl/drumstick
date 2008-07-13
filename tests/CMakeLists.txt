@@ -40,7 +40,7 @@ SET(buildsmf_qtobject_SRCS
     buildsmf/buildsmf.h
 )
 
-QT_WRAP_CPP(buildsmf buildsmf_moc_SRCS ${buildsmf_qtobject_SRCS})
+QT4_WRAP_CPP(buildsmf_moc_SRCS ${buildsmf_qtobject_SRCS})
 
 ADD_EXECUTABLE(buildsmf 
     ${buildsmf_moc_SRCS}
@@ -64,7 +64,7 @@ SET(dumpsmf_qtobject_SRCS
     dumpsmf/dumpsmf.h
 )
 
-QT_WRAP_CPP(dumpsmf dumpsmf_moc_SRCS ${dumpsmf_qtobject_SRCS})
+QT4_WRAP_CPP(dumpsmf_moc_SRCS ${dumpsmf_qtobject_SRCS})
 
 ADD_EXECUTABLE(dumpsmf 
     ${dumpsmf_moc_SRCS}
@@ -88,7 +88,7 @@ SET(testevents_qtobject_SRCS
     testevents/testevents.h
 )
 
-QT_WRAP_CPP(testevents testevents_moc_SRCS ${testevents_qtobject_SRCS})
+QT4_WRAP_CPP(testevents_moc_SRCS ${testevents_qtobject_SRCS})
 
 ADD_EXECUTABLE(testevents
     ${testevents_moc_SRCS}
@@ -112,7 +112,7 @@ SET(dumpmid_qtobject_SRCS
     dumpmid/dumpmid.h
 )
 
-QT_WRAP_CPP(dumpmid dumpmid_moc_SRCS ${dumpmid_qtobject_SRCS})
+QT4_WRAP_CPP(dumpmid_moc_SRCS ${dumpmid_qtobject_SRCS})
 
 ADD_EXECUTABLE(dumpmid
     ${dumpmid_moc_SRCS}
@@ -136,7 +136,7 @@ SET(timertest_SRCS
 #    timertest/timertest.h
 #)
 
-#QT_WRAP_CPP(timertest timertest_moc_SRCS ${timertest_qtobject_SRCS})
+#QT4_WRAP_CPP(timertest_moc_SRCS ${timertest_qtobject_SRCS})
 
 ADD_EXECUTABLE(timertest
 #    ${timertest_moc_SRCS}
@@ -160,7 +160,7 @@ SET(playsmf_qtobject_SRCS
     playsmf/playsmf.h
 )
 
-QT_WRAP_CPP(playsmf playsmf_moc_SRCS ${playsmf_qtobject_SRCS})
+QT4_WRAP_CPP(playsmf_moc_SRCS ${playsmf_qtobject_SRCS})
 
 ADD_EXECUTABLE(playsmf
     ${playsmf_moc_SRCS}
@@ -173,8 +173,64 @@ TARGET_LINK_LIBRARIES(playsmf
     aseqmm
 )
 
+# vpiano
+
+INCLUDE_DIRECTORIES ( 
+    ${CMAKE_CURRENT_SOURCE_DIR}/vpiano
+)
+
+SET(vpiano_forms_SRCS
+    vpiano/about.ui
+    vpiano/connections.ui
+    vpiano/preferences.ui
+    vpiano/vpiano.ui
+)
+
+QT4_WRAP_UI(vpiano_ui_SRCS ${vpiano_forms_SRCS})
+
+SET(vpiano_SRCS
+    vpiano/pianokey.cpp
+    vpiano/pianokey.h
+    vpiano/pianoscene.cpp
+    vpiano/pianoscene.h
+    vpiano/pianokeybd.cpp
+    vpiano/pianokeybd.h
+    vpiano/about.cpp
+    vpiano/about.h
+    vpiano/connections.cpp
+    vpiano/connections.h
+    vpiano/preferences.cpp
+    vpiano/preferences.h
+    vpiano/vpiano.cpp
+    vpiano/vpiano.h
+    vpiano/main.cpp
+)
+
+SET(vpiano_qtobject_SRCS
+    vpiano/pianoscene.h
+    vpiano/pianokeybd.h
+    vpiano/about.h
+    vpiano/connections.h
+    vpiano/preferences.h
+    vpiano/vpiano.h
+)
+
+QT4_WRAP_CPP(vpiano_moc_SRCS ${vpiano_qtobject_SRCS})
+
+ADD_EXECUTABLE(vpiano
+    ${vpiano_ui_SRCS}
+    ${vpiano_moc_SRCS}
+    ${vpiano_SRCS}
+)
+
+TARGET_LINK_LIBRARIES(vpiano
+    ${QT_LIBRARIES} 
+    ${ALSA_LIBS} 
+    aseqmm
+)
+
 # we should install some files...
-INSTALL(TARGETS buildsmf dumpsmf testevents dumpmid playsmf
+INSTALL(TARGETS buildsmf dumpsmf testevents dumpmid playsmf vpiano
 		RUNTIME DESTINATION bin
 		ARCHIVE DESTINATION lib
 		LIBRARY DESTINATION lib)

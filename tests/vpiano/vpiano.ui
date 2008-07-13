@@ -1,0 +1,96 @@
+<ui version="4.0" >
+ <class>VPiano</class>
+ <widget class="QMainWindow" name="VPiano" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>664</width>
+    <height>139</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Virtual Piano Keyboard</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <layout class="QVBoxLayout" >
+    <item>
+     <widget class="PianoKeybd" name="pianokeybd" >
+      <property name="numOctaves" stdset="0" >
+       <number>5</number>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>664</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile" >
+    <property name="title" >
+     <string>File</string>
+    </property>
+    <addaction name="actionExit" />
+   </widget>
+   <widget class="QMenu" name="menuEdit" >
+    <property name="title" >
+     <string>Edit</string>
+    </property>
+    <addaction name="actionConnections" />
+    <addaction name="actionPreferences" />
+   </widget>
+   <widget class="QMenu" name="menuHelp" >
+    <property name="layoutDirection" >
+     <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="title" >
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout" />
+   </widget>
+   <addaction name="menuFile" />
+   <addaction name="menuEdit" />
+   <addaction name="menuHelp" />
+  </widget>
+  <widget class="QStatusBar" name="statusBar" >
+   <property name="sizeGripEnabled" >
+    <bool>true</bool>
+   </property>
+  </widget>
+  <action name="actionExit" >
+   <property name="text" >
+    <string>&amp;Exit</string>
+   </property>
+  </action>
+  <action name="actionPreferences" >
+   <property name="text" >
+    <string>&amp;Preferences</string>
+   </property>
+  </action>
+  <action name="actionConnections" >
+   <property name="text" >
+    <string>&amp;Connections</string>
+   </property>
+  </action>
+  <action name="actionAbout" >
+   <property name="text" >
+    <string>About</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PianoKeybd</class>
+   <extends>QGraphicsView</extends>
+   <header>pianokeybd.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

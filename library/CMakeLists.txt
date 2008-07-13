@@ -47,9 +47,12 @@ SET(aseqmm_SRCS
     src/alsatimer.cpp
 )
 
-QT_WRAP_CPP(aseqmm aseqmm_moc_SRCS ${aseqmm_qtobject_SRCS})
+QT4_WRAP_CPP(aseqmm_moc_SRCS ${aseqmm_qtobject_SRCS})
 
-ADD_LIBRARY(aseqmm ${aseqmm_SRCS} ${aseqmm_moc_SRCS})
+ADD_LIBRARY(aseqmm 
+    ${aseqmm_moc_SRCS}
+    ${aseqmm_SRCS} 
+)
 
 TARGET_LINK_LIBRARIES(aseqmm
     ${QT_LIBRARIES}

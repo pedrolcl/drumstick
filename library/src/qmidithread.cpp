@@ -29,45 +29,45 @@ namespace Sequencer
 bool 
 SequencerInputThread::isTerminated() 
 { 
-	m_mutex.lock();
-	bool bTmp = m_Terminated;
-	m_mutex.unlock();
-	return  bTmp;
+    m_mutex.lock();
+    bool bTmp = m_Terminated;
+    m_mutex.unlock();
+    return  bTmp;
 }
 
 void 
 SequencerInputThread::stop() 
 { 
-	m_mutex.lock();
-	m_Terminated = true;
-	m_mutex.unlock();
+    m_mutex.lock();
+    m_Terminated = true;
+    m_mutex.unlock();
 }
 
 void SequencerInputThread::run()
 {
-	unsigned long npfd;
-	pollfd* pfd;
-	int rt;
+    unsigned long npfd;
+    pollfd* pfd;
+    int rt;
 
-	if (m_MidiClient != NULL) {
-		npfd = snd_seq_poll_descriptors_count(m_MidiClient->getHandle(), m_Events);
-		pfd = (pollfd *) alloca(npfd * sizeof(pollfd));
-		try
-		{
-			snd_seq_poll_descriptors(m_MidiClient->getHandle(), pfd, npfd, m_Events);
-			while (!isTerminated() && (m_MidiClient != NULL))
-			{
-				rt = poll(pfd, npfd, m_Wait);
-				if (rt > 0) {
-					m_MidiClient->doEvents();
-				}
-			}
-		}
-		catch (...)
-		{
-			qWarning("exception in input thread");
-		}
-	}
+    if (m_MidiClient != NULL) {
+        npfd = snd_seq_poll_descriptors_count(m_MidiClient->getHandle(), m_Events);
+        pfd = (pollfd *) alloca(npfd * sizeof(pollfd));
+        try
+        {
+            snd_seq_poll_descriptors(m_MidiClient->getHandle(), pfd, npfd, m_Events);
+            while (!isTerminated() && (m_MidiClient != NULL))
+            {
+                rt = poll(pfd, npfd, m_Wait);
+                if (rt > 0) {
+                    m_MidiClient->doEvents();
+                }
+            }
+        }
+        catch (...)
+        {
+            qWarning("exception in input thread");
+        }
+    }
 }
 
 }

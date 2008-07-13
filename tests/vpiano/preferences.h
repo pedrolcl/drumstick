@@ -1,5 +1,5 @@
 /*
-    MIDI Sequencer C++ library 
+    Virtual Piano test using the MIDI Sequencer C++ library 
     Copyright (C) 2006-2008, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
@@ -17,24 +17,39 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#ifndef TESTEVENTS_H_
-#define TESTEVENTS_H_
+#ifndef PREFERENCES_H
+#define PREFERENCES_H
 
-#include "event.h"
-#include <QObject>
+#include <QtGui/QDialog>
+#include "ui_preferences.h"
 
-using namespace ALSA::Sequencer;
-
-class QTestEvents : public QObject
+class Preferences : public QDialog
 {
     Q_OBJECT
 
 public:
-    QTestEvents() {}
-    virtual ~QTestEvents() {}
+    Preferences(QWidget *parent = 0);
+    int getInChannel() const { return m_inChannel; }
+    int getOutChannel() const { return m_outChannel; }
+    int getVelocity() const { return m_velocity; }
+    int getBaseOctave() const { return m_baseOctave; }
+    int getNumOctaves() const { return m_numOctaves; }
+    void apply();
 
-    void dumpEvent(SequencerEvent* m_ev);
-    void run();
+public slots:
+    void slotButtonClicked(QAbstractButton *button);
+    void accept();
+
+protected:
+    void showEvent ( QShowEvent *event ); 
+
+private:
+    Ui::PreferencesClass ui;
+    int m_inChannel;
+    int m_outChannel;
+    int m_velocity;
+    int m_baseOctave;
+    int m_numOctaves;
 };
 
-#endif /*TESTEVENTS_H_*/
+#endif // PREFERENCES_H

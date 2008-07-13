@@ -1,0 +1,83 @@
+<ui version="4.0" >
+ <class>ConnectionsClass</class>
+ <widget class="QDialog" name="ConnectionsClass" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>272</width>
+    <height>302</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Connections</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <item>
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="currentIndex" >
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="tabInput" >
+      <attribute name="title" >
+       <string>Input</string>
+      </attribute>
+      <layout class="QVBoxLayout" />
+     </widget>
+     <widget class="QWidget" name="tabOutput" >
+      <attribute name="title" >
+       <string>Output</string>
+      </attribute>
+      <layout class="QVBoxLayout" />
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>ConnectionsClass</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>264</x>
+     <y>303</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>283</x>
+     <y>112</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>ConnectionsClass</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>65</x>
+     <y>303</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>93</x>
+     <y>74</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
