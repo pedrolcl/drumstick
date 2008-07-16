@@ -26,7 +26,6 @@
 class PianoKey : public QGraphicsRectItem
 {
 public:
-    PianoKey(QGraphicsItem * parent = 0 ) : QGraphicsRectItem(parent) { }
     PianoKey(const QRectF &rect, const QBrush &brush, const int note); 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
     int getNote() const { return m_note; }
