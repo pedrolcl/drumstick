@@ -36,8 +36,12 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     m_Client->setBlockMode(false);
     m_Client->open();
     m_Client->setClientName("Virtual Piano");
+#ifdef USE_QEVENTS
     m_Client->addSubscriber(this);
     m_Client->setEventsEnabled(true);
+#else USE_QEVENTS // using signals instead
+    connect(m_Client, SIGNAL(eventReceived(SequencerEvent*)), SLOT(sequencerEvent(SequencerEvent*)));
+#endif  
 
     m_Port = new MidiPort(this);
     m_Port->setMidiClient(m_Client);
@@ -84,7 +88,6 @@ void VPiano::slotNoteOn(int midiNote)
     ev.setDirect();
     m_Client->outputDirect(&ev);
 }
-
 void VPiano::slotNoteOff(int midiNote)
 {
     int chan = dlgPreferences.getOutChannel();
@@ -96,43 +99,57 @@ void VPiano::slotNoteOff(int midiNote)
     m_Client->outputDirect(&ev);
 }
 
-void VPiano::customEvent(QEvent *ev)
+void VPiano::displayEvent(SequencerEvent *ev)
 {
-    if (ev->type() != SequencerEventType) 
-        return;
     try {
-        SequencerEvent* sev = static_cast<SequencerEvent*>(ev);
-        if (sev != NULL) {
-            switch (sev->getSequencerType()) {
-            case SND_SEQ_EVENT_NOTEON: {
-                NoteOnEvent* e = static_cast<NoteOnEvent*>(sev);
-                if ( dlgPreferences.getInChannel() == e->getChannel() ) {
-                    int note = e->getKey();
-                    ui.pianokeybd->showNoteOn(note);
-                    //qDebug() << "NoteOn" << note;
-                }
-                break;
+        switch (ev->getSequencerType()) {
+        case SND_SEQ_EVENT_NOTEON: {
+            NoteOnEvent* e = dynamic_cast<NoteOnEvent*>(ev);
+            if ((e != NULL) && (dlgPreferences.getInChannel() == e->getChannel())) {
+                int note = e->getKey();
+                ui.pianokeybd->showNoteOn(note);
+                //qDebug() << "NoteOn" << note;
             }
-            case SND_SEQ_EVENT_NOTEOFF: {
-                NoteOffEvent* e = static_cast<NoteOffEvent*>(sev);
-                if ( dlgPreferences.getInChannel() == e->getChannel() ) {
-                    int note = e->getKey();
-                    ui.pianokeybd->showNoteOff(note);
-                    //qDebug() << "NoteOff" << note;
-                }
-                break;
+            break;
+        }
+        case SND_SEQ_EVENT_NOTEOFF: {
+            NoteOffEvent* e = dynamic_cast<NoteOffEvent*>(ev);
+            if ((e != NULL) && (dlgPreferences.getInChannel() == e->getChannel())) {
+                int note = e->getKey();
+                ui.pianokeybd->showNoteOff(note);
+                //qDebug() << "NoteOff" << note;
             }
-            default:
-                break;
-            }
+            break;
+        }
+        default:
+            break;
         }
     } catch (FatalError *err) {
         qDebug() << "FatalError exception. Error code: " << err->code() 
-                 << " (" << err->qstrError() << ")";
+        << " (" << err->qstrError() << ")";
         qDebug() << "Location: " << err->what();
         throw err;
     }
 }
+
+#ifdef USE_QEVENTS
+void VPiano::customEvent(QEvent *ev)
+{
+    if (ev->type() != SequencerEventType) 
+        return;
+    SequencerEvent* sev = dynamic_cast<SequencerEvent*>(ev);
+    if (sev != NULL) {
+        displayEvent( sev );
+    }
+}
+#else
+void 
+VPiano::sequencerEvent(SequencerEvent *ev)
+{
+    displayEvent( ev );
+    delete ev;
+}
+#endif
 
 void VPiano::slotSubscription(MidiPort*, Subscription* subs)
 {

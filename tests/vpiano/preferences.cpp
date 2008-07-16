@@ -29,7 +29,7 @@ Preferences::Preferences(QWidget *parent)
     m_baseOctave(4),
     m_numOctaves(5)
 {
-	ui.setupUi( this );
+    ui.setupUi( this );
     connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(slotButtonClicked(QAbstractButton*)));
 }
 

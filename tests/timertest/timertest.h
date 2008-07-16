@@ -27,12 +27,12 @@ using namespace ALSA;
 class TimerTest
 {
 public:
-	TimerTest();
-	virtual ~TimerTest();
-	void run();
-	
+    TimerTest();
+    virtual ~TimerTest();
+    void run();
+
 private:
-	TimerQuery* m_query;
+    TimerQuery* m_query;
 };
 
 #endif /*TIMERTEST_H_*/

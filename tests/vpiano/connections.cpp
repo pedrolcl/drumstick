@@ -22,7 +22,7 @@
 Connections::Connections(QWidget *parent)
     : QDialog(parent)
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
 }
 
 /*QStringList Connections::getSelectedInputs() const

@@ -29,8 +29,8 @@ namespace MIDI
 namespace Utils
 {
 
-QSmf::QSmf(QObject * parent ) :
-        QObject( parent )
+QSmf::QSmf(QObject * parent) :
+    QObject(parent)
 {
     m_Interactive = false;
     m_CurrTime = 0;
@@ -108,7 +108,7 @@ void QSmf::readHeader()
         division = read16bit();
         m_Division = division;
     }
-    emit signalSMFHeader(format, ntrks, division);
+emit     signalSMFHeader(format, ntrks, division);
 
     /* flush any extra stuff, in case the length of header is not */
     while ((m_ToBeRead > 0) && !endOfSmf())
@@ -121,18 +121,16 @@ void QSmf::readHeader()
 void QSmf::readTrack()
 {
     /* This array is indexed by the high half of a status byte.  It's
-       value is either the number of bytes needed (1 or 2) for a channel
-       message, or 0 (meaning it's not  a channel message). */
+     value is either the number of bytes needed (1 or 2) for a channel
+     message, or 0 (meaning it's not  a channel message). */
     static const quint8 chantype[16] =
-        {
-            0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 1, 1, 2, 0
-        };
+        { 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 1, 1, 2, 0 };
 
     quint64 lookfor;
     quint8 c, c1, type;
-    bool sysexcontinue;	    // 1 if last message was an unfinished SysEx
-    bool running;           // 1 when running status used
-    quint8 status;         // status value (e.g. 0x90==note-on)
+    bool sysexcontinue; // 1 if last message was an unfinished SysEx
+    bool running; // 1 when running status used
+    quint8 status; // status value (e.g. 0x90==note-on)
     int needed;
     double delta_secs;
     quint64 delta_ticks, save_time, save_tempo;
@@ -156,7 +154,7 @@ void QSmf::readTrack()
     m_OldRealTime = 0;
     m_CurrTempo = findTempo();
 
-    emit signalSMFTrackStart();
+emit     signalSMFTrackStart();
 
     while (!endOfSmf() && (m_Interactive || m_ToBeRead > 0))
     {
@@ -183,7 +181,8 @@ void QSmf::readTrack()
                         m_DblOldRealtime = m_DblRealTime;
                         m_OldCurrTime = save_time;
                     }
-                    delta_secs = ticksToSecs(m_RevisedTime - m_OldCurrTime, m_Division, save_tempo);
+                    delta_secs = ticksToSecs(m_RevisedTime - m_OldCurrTime,
+                                             m_Division, save_tempo);
                     m_DblRealTime = m_DblOldRealtime + delta_secs * 1600.0;
                     m_RealTime = static_cast<quint64>(0.5 + m_DblRealTime);
                     if (m_RevisedTime == m_TempoChangeTime)
@@ -194,7 +193,8 @@ void QSmf::readTrack()
                 }
                 else
                 {
-                    delta_secs = ticksToSecs(m_RevisedTime - m_OldCurrTime, m_Division, m_CurrTempo);
+                    delta_secs = ticksToSecs(m_RevisedTime - m_OldCurrTime,
+                                             m_Division, m_CurrTempo);
                     m_DblRealTime = m_DblOldRealtime + delta_secs * 1600.0;
                     m_RealTime = static_cast<quint64>(0.5 + m_DblRealTime);
                 }
@@ -302,7 +302,7 @@ void QSmf::readTrack()
             break;
         }
     }
-    emit signalSMFTrackEnd();
+emit     signalSMFTrackEnd();
 }
 
 void QSmf::SMFRead()
@@ -327,7 +327,7 @@ void QSmf::SMFWrite()
     m_LastStatus = 0;
     if (m_fileFormat == 1)
     {
-        emit signalSMFWriteTempoTrack();
+emit         signalSMFWriteTempoTrack();
     }
     for (i = 0; i < m_Tracks; ++i)
     {
@@ -393,7 +393,7 @@ void QSmf::writeTrackChunk(int track)
     write32bit(trklength);
     m_NumBytesWritten = 0;
 
-    emit signalSMFWriteTrack(track);
+emit     signalSMFWriteTrack(track);
 
     place_marker = m_IOStream->device()->pos();
     m_IOStream->device()->seek(offset);
@@ -439,7 +439,8 @@ void QSmf::writeMetaEvent(long deltaTime, int type)
     putByte(0);
 }
 
-void QSmf::writeMidiEvent(long deltaTime, int type, int chan, const QByteArray& data)
+void QSmf::writeMidiEvent(long deltaTime, int type, int chan,
+                          const QByteArray& data)
 {
     int i, j, size;
     quint8 c;
@@ -464,9 +465,9 @@ void QSmf::writeMidiEvent(long deltaTime, int type, int chan, const QByteArray& 
     }
     if (type == system_exclusive || type == end_of_sysex)
     {
-    	size = data.size();
-    	if (data[0] == type) 
-    	    --size;
+        size = data.size();
+        if (data[0] == type)
+            --size;
         writeVarLen(size);
     }
     j = (data[0] == type ? 1 : 0);
@@ -482,7 +483,7 @@ void QSmf::writeMidiEvent(long deltaTime, int type, int chan, int b1)
     writeVarLen(deltaTime);
     if ((type == system_exclusive) || (type == end_of_sysex))
     {
-    	SMFError("error: Wrong method for a system exclusive event");
+        SMFError("error: Wrong method for a system exclusive event");
     }
     if (chan > 15)
     {
@@ -494,7 +495,7 @@ void QSmf::writeMidiEvent(long deltaTime, int type, int chan, int b1)
         m_LastStatus = c;
         putByte(c);
     }
-    putByte(b1);    
+    putByte(b1);
 }
 
 void QSmf::writeMidiEvent(long deltaTime, int type, int chan, int b1, int b2)
@@ -503,7 +504,7 @@ void QSmf::writeMidiEvent(long deltaTime, int type, int chan, int b1, int b2)
     writeVarLen(deltaTime);
     if ((type == system_exclusive) || (type == end_of_sysex))
     {
-    	SMFError("error: Wrong method for a system exclusive event");
+        SMFError("error: Wrong method for a system exclusive event");
     }
     if (chan > 15)
     {
@@ -515,26 +516,26 @@ void QSmf::writeMidiEvent(long deltaTime, int type, int chan, int b1, int b2)
         m_LastStatus = c;
         putByte(c);
     }
-    putByte(b1);    
-    putByte(b2);    
+    putByte(b1);
+    putByte(b2);
 }
 
-void QSmf::writeMidiEvent(long deltaTime, int type, long len,  char* data)
+void QSmf::writeMidiEvent(long deltaTime, int type, long len, char* data)
 {
     unsigned int i, j, size;
     quint8 c;
     writeVarLen(deltaTime);
     if ((type != system_exclusive) && (type != end_of_sysex))
     {
-    	SMFError("error: type should be system exclusive");
+        SMFError("error: type should be system exclusive");
     }
     m_LastStatus = 0;
     c = type;
     putByte(c);
     size = len;
     c = (unsigned)data[0];
-    if (c == type) 
-       --size;
+    if (c == type)
+        --size;
     writeVarLen(size);
     j = (c == type ? 1 : 0);
     for (i = j; i < (unsigned)len; ++i)
@@ -569,7 +570,7 @@ void QSmf::writeTempo(long deltaTime, long tempo)
 /* tempo expressed in quarter notes per minute */
 void QSmf::writeBpmTempo(long deltaTime, int tempo)
 {
-	long us_tempo = 60000000l / tempo;
+    long us_tempo = 60000000l / tempo;
     writeVarLen(deltaTime);
     putByte(m_LastStatus = meta_event);
     putByte(set_tempo);
@@ -624,7 +625,7 @@ void QSmf::writeVarLen(quint64 value)
 }
 
 /* These routines are used to make sure that the byte order of
-   the various data types remains constant between machines. */
+ the various data types remains constant between machines. */
 void QSmf::write32bit(quint32 data)
 {
     putByte((data >> 24) & 0xff);
@@ -642,18 +643,18 @@ void QSmf::write16bit(quint16 data)
 quint16 QSmf::to16bit(quint8 c1, quint8 c2)
 {
     quint16 value;
-    value  = (c1 << 8);
-    value +=  c2;
+    value = (c1 << 8);
+    value += c2;
     return value;
 }
 
 quint32 QSmf::to32bit(quint8 c1, quint8 c2, quint8 c3, quint8 c4)
 {
     quint32 value;
-    value  = (c1 << 24);
+    value = (c1 << 24);
     value += (c2 << 16);
     value += (c3 << 8);
-    value +=  c4;
+    value += c4;
     return value;
 }
 
@@ -689,8 +690,7 @@ long QSmf::readVarLen()
         {
             c = getByte();
             value = (value << 7) + (c & 0x7f);
-        }
-        while ((c & 0x80) != 0);
+        } while ((c & 0x80) != 0);
     }
     return value;
 }
@@ -716,7 +716,7 @@ quint64 QSmf::findTempo()
     QSmfRecTempo rec = m_TempoList.last();
     old_tempo = m_CurrTempo;
     new_tempo = m_CurrTempo;
-    foreach (rec, m_TempoList)
+    foreach(rec, m_TempoList)
     {
         if (rec.time <= m_CurrTime)
         {
@@ -743,9 +743,9 @@ quint64 QSmf::findTempo()
 }
 
 /* This routine converts delta times in ticks into seconds. The
-   else statement is needed because the formula is different for tracks
-   based on notes and tracks based on SMPTE times. */
-double QSmf::ticksToSecs(quint64 ticks,  quint16 division,  quint64 tempo)
+ else statement is needed because the formula is different for tracks
+ based on notes and tracks based on SMPTE times. */
+double QSmf::ticksToSecs(quint64 ticks, quint16 division, quint64 tempo)
 {
     double result;
     double smpte_format;
@@ -759,14 +759,15 @@ double QSmf::ticksToSecs(quint64 ticks,  quint16 division,  quint64 tempo)
     {
         smpte_format = upperByte(division);
         smpte_resolution = lowerByte(division);
-        result = static_cast<double>(ticks)/(smpte_format * smpte_resolution * 1000000.0);
+        result = static_cast<double>(ticks)/(smpte_format * smpte_resolution
+                * 1000000.0);
     }
     return result;
 }
 
 void QSmf::SMFError(const QString& s)
 {
-    emit signalSMFError(s);
+emit     signalSMFError(s);
 }
 
 void QSmf::channelMessage(quint8 status, quint8 c1, quint8 c2)
@@ -785,26 +786,26 @@ void QSmf::channelMessage(quint8 status, quint8 c1, quint8 c2)
     switch (status & midi_command_mask)
     {
     case note_off:
-        emit signalSMFNoteOff(chan, c1, c2);
+emit         signalSMFNoteOff(chan, c1, c2);
         break;
     case note_on:
-        emit signalSMFNoteOn(chan, c1, c2);
+emit         signalSMFNoteOn(chan, c1, c2);
         break;
     case poly_aftertouch:
-        emit signalSMFKeyPress(chan, c1, c2);
+emit         signalSMFKeyPress(chan, c1, c2);
         break;
     case control_change:
-        emit signalSMFCtlChange(chan, c1, c2);
+emit         signalSMFCtlChange(chan, c1, c2);
         break;
     case program_chng:
-        emit signalSMFProgram(chan, c1);
+emit         signalSMFProgram(chan, c1);
         break;
     case channel_aftertouch:
-        emit signalSMFChanPress(chan, c1);
+emit         signalSMFChanPress(chan, c1);
         break;
     case pitch_wheel:
         k = c1 + (c2 << 7) - 8192;
-        emit signalSMFPitchBend(chan, k);
+emit         signalSMFPitchBend(chan, k);
         break;
     default:
         qWarning("Unknown MIDI status, unhandled event");
@@ -820,7 +821,7 @@ void QSmf::metaEvent(quint8 b)
     switch (b)
     {
     case sequence_number:
-        emit signalSMFSequenceNum(to16bit(m[0], m[1]));
+emit         signalSMFSequenceNum(to16bit(m[0], m[1]));
         break;
     case text_event:
     case copyright_notice:
@@ -829,20 +830,20 @@ void QSmf::metaEvent(quint8 b)
     case lyric:
     case marker:
     case cue_point:
-        emit signalSMFText(b, QString(m));
+emit         signalSMFText(b, QString(m));
         break;
     case forced_channel:
-        emit signalSMFforcedChannel(m[0]);
+emit         signalSMFforcedChannel(m[0]);
         break;
     case forced_port:
-        emit signalSMFforcedPort(m[0]);
+emit         signalSMFforcedPort(m[0]);
         break;
     case end_of_track:
-        emit signalSMFendOfTrack();
+emit         signalSMFendOfTrack();
         break;
     case set_tempo:
         m_CurrTempo = to32bit(0, m[0], m[1], m[2]);
-        emit signalSMFTempo(m_CurrTempo);
+emit         signalSMFTempo(m_CurrTempo);
         rec = m_TempoList.last();
         if (rec.tempo == m_CurrTempo)
         {
@@ -855,19 +856,19 @@ void QSmf::metaEvent(quint8 b)
         addTempo(m_CurrTempo, m_CurrTime);
         break;
     case smpte_offset:
-        emit signalSMFSmpte(m[0], m[1], m[2], m[3], m[4]);
+emit         signalSMFSmpte(m[0], m[1], m[2], m[3], m[4]);
         break;
     case time_signature:
-        emit signalSMFTimeSig(m[0], m[1], m[2], m[3]);
+emit         signalSMFTimeSig(m[0], m[1], m[2], m[3]);
         break;
     case key_signature:
-        emit signalSMFKeySig(m[0], m[1]);
+emit         signalSMFKeySig(m[0], m[1]);
         break;
     case sequencer_specific:
-        emit signalSMFSeqSpecific(m);
+emit         signalSMFSeqSpecific(m);
         break;
     default:
-        emit signalSMFMetaMisc(b, m);
+emit         signalSMFMetaMisc(b, m);
         break;
     }
 }
@@ -875,7 +876,7 @@ void QSmf::metaEvent(quint8 b)
 void QSmf::sysEx()
 {
     QByteArray varr(m_MsgBuff);
-    emit signalSMFSysex(varr);
+emit     signalSMFSysex(varr);
 }
 
 void QSmf::badByte(quint8 b, int p)

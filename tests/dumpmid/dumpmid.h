@@ -54,10 +54,10 @@ public:
 public slots:
 void subscription(MidiPort* port, Subscription* subs);
 
-#ifdef USE_QEVENTS	
+#ifdef USE_QEVENTS
 protected:
     virtual void customEvent( QEvent *ev );
-#else	
+#else
     void sequencerEvent( SequencerEvent* ev ); 
 #endif
 

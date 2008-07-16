@@ -35,6 +35,11 @@ PianoKeybd::PianoKeybd(const int baseOctave, const int numOctaves, QWidget *pare
     initScene(baseOctave, numOctaves);
 }
 
+PianoKeybd::~PianoKeybd()
+{
+    delete m_scene;
+}
+
 void PianoKeybd::initScene(int base, int num)
 {
     m_scene = new PianoScene(base, num, this);

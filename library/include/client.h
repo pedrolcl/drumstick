@@ -29,7 +29,7 @@ namespace ALSA
 {
 namespace Sequencer 
 {
-  
+
 class MidiQueue;
 class MidiClient;
 class SequencerEvent;
@@ -37,13 +37,13 @@ class SequencerInputThread;
 
 class ClientInfo
 {
-	friend class MidiClient;
-	
+    friend class MidiClient;
+
 public:
-	ClientInfo();
-	ClientInfo(const ClientInfo& other);
-	ClientInfo(snd_seq_client_info_t* other); 
-	virtual ~ClientInfo();
+    ClientInfo();
+    ClientInfo(const ClientInfo& other);
+    ClientInfo(snd_seq_client_info_t* other); 
+    virtual ~ClientInfo();
     ClientInfo* clone();
     ClientInfo& operator=(const ClientInfo& other);
 
@@ -60,14 +60,14 @@ public:
     void setErrorBounce(bool val);
     const unsigned char* getEventFilter();
     void setEventFilter(unsigned char* filter);
-    
+
     unsigned int getPortInfoCount();
     PortInfo* getPortInfo(int j);
 
 protected:    
     void readPorts(MidiClient* seq);
     void freePorts();
-  
+
 private:
     snd_seq_client_info_t* m_Info;
     PortInfoList m_Ports;
@@ -77,13 +77,13 @@ typedef QList<ClientInfo> ClientInfoList;
 
 class MidiClient : public QObject
 {
-	Q_OBJECT
-	friend class SequencerInputThread;
-	
+    Q_OBJECT
+    friend class SequencerInputThread;
+
 public:
-	MidiClient( QObject* parent );
-	virtual ~MidiClient();
-	
+    MidiClient( QObject* parent );
+    virtual ~MidiClient();
+
     void open();
     void close();
     void startSequencerInput();
@@ -102,7 +102,7 @@ public:
     void drainOutput(); 
     void drainOutput(int timeout); 
     void synchronizeOutput();
-  
+
     int getClientId();
     snd_seq_type_t getSequencerType();
     snd_seq_t* getHandle() { return m_SeqHandle; }
@@ -124,7 +124,7 @@ public:
     void setBroadcastFilter(bool newValue);
     bool getErrorBounce();
     void setErrorBounce(bool newValue);
-    
+
     ClientInfo* getThisClientInfo();
     void setThisClientInfo(ClientInfo* val);
     int getPortCount();
@@ -133,15 +133,15 @@ public:
     ClientInfo* getClientInfo(int j);
     PortInfoList getAvailableInputs();
     PortInfoList getAvailableOutputs();
-    
+
     void addSubscriber(QObject* subscriber);
     void removeSubscriber(QObject* subscriber);
     void setEventsEnabled(const bool bEnabled);
     bool getEventsEnabled() const { return m_eventsEnabled; }
-    
-signals:    
+
+    signals:    
     void eventReceived(SequencerEvent* ev);
-    
+
 protected:    
     void doEvents();
     void applyClientInfo();
@@ -155,7 +155,7 @@ private:
     bool m_BlockMode;
     bool m_NeedRefreshClientList;
     int  m_OpenMode;
-    
+
     snd_seq_t* m_SeqHandle;
     SequencerInputThread* m_Thread;
     ClientInfo* m_Info;

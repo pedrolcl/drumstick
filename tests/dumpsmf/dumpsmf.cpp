@@ -29,194 +29,195 @@
 static QTextStream cout(stdout, QIODevice::WriteOnly); 
 static QTextStream cerr(stderr, QIODevice::WriteOnly); 
 
+
+
 QSpySMF::QSpySMF()
 {
-  m_engine = new QSmf(this);
-  connect(m_engine, SIGNAL(signalSMFHeader(int,int,int)), this, SLOT(headerEvent(int,int,int)));
-  connect(m_engine, SIGNAL(signalSMFTrackStart()), this, SLOT(trackStartEvent()));
-  connect(m_engine, SIGNAL(signalSMFTrackEnd()), this, SLOT(trackEndEvent()));
-  connect(m_engine, SIGNAL(signalSMFNoteOn(int,int,int)), this, SLOT(noteOnEvent(int,int,int)));
-  connect(m_engine, SIGNAL(signalSMFNoteOff(int,int,int)), this, SLOT(noteOffEvent(int,int,int)));
-  connect(m_engine, SIGNAL(signalSMFKeyPress(int,int,int)), this, SLOT(keyPressEvent(int,int,int)));
-  connect(m_engine, SIGNAL(signalSMFCtlChange(int,int,int)), this, SLOT(ctlChangeEvent(int,int,int)));
-  connect(m_engine, SIGNAL(signalSMFPitchBend(int,int)), this, SLOT(pitchBendEvent(int,int)));
-  connect(m_engine, SIGNAL(signalSMFProgram(int,int)), this, SLOT(programEvent(int,int)));
-  connect(m_engine, SIGNAL(signalSMFChanPress(int,int)), this, SLOT(chanPressEvent(int,int)));
-  connect(m_engine, SIGNAL(signalSMFSysex(const QByteArray&)), this, SLOT(sysexEvent(const QByteArray&)));
-  connect(m_engine, SIGNAL(signalSMFMetaMisc(int, const QByteArray&)), this, SLOT(metaMiscEvent(int, const QByteArray&)));
-  connect(m_engine, SIGNAL(signalSMFVariable(const QByteArray&)), this, SLOT(variableEvent(const QByteArray&)));
-  connect(m_engine, SIGNAL(signalSMFSequenceNum(int)), this, SLOT(seqNum(int)));
-  connect(m_engine, SIGNAL(signalSMFforcedChannel(int)), this, SLOT(forcedChannel(int)));
-  connect(m_engine, SIGNAL(signalSMFforcedPort(int)), this, SLOT(forcedPort(int)));
-  connect(m_engine, SIGNAL(signalSMFText(int,const QString&)), this, SLOT(textEvent(int,const QString&)));
-  connect(m_engine, SIGNAL(signalSMFendOfTrack()), this, SLOT(endOfTrackEvent()));
-  connect(m_engine, SIGNAL(signalSMFTimeSig(int,int,int,int)), this, SLOT(timeSigEvent(int,int,int,int)));
-  connect(m_engine, SIGNAL(signalSMFSmpte(int,int,int,int,int)), this, SLOT(smpteEvent(int,int,int,int,int)));
-  connect(m_engine, SIGNAL(signalSMFKeySig(int,int)), this, SLOT(keySigEvent(int,int)));
-  connect(m_engine, SIGNAL(signalSMFTempo(int)), this, SLOT(tempoEvent(int)));
-  connect(m_engine, SIGNAL(signalSMFError(const QString&)), this, SLOT(errorHandler(const QString&)));
+    m_engine = new QSmf(this);
+    connect(m_engine, SIGNAL(signalSMFHeader(int,int,int)), this, SLOT(headerEvent(int,int,int)));
+    connect(m_engine, SIGNAL(signalSMFTrackStart()), this, SLOT(trackStartEvent()));
+    connect(m_engine, SIGNAL(signalSMFTrackEnd()), this, SLOT(trackEndEvent()));
+    connect(m_engine, SIGNAL(signalSMFNoteOn(int,int,int)), this, SLOT(noteOnEvent(int,int,int)));
+    connect(m_engine, SIGNAL(signalSMFNoteOff(int,int,int)), this, SLOT(noteOffEvent(int,int,int)));
+    connect(m_engine, SIGNAL(signalSMFKeyPress(int,int,int)), this, SLOT(keyPressEvent(int,int,int)));
+    connect(m_engine, SIGNAL(signalSMFCtlChange(int,int,int)), this, SLOT(ctlChangeEvent(int,int,int)));
+    connect(m_engine, SIGNAL(signalSMFPitchBend(int,int)), this, SLOT(pitchBendEvent(int,int)));
+    connect(m_engine, SIGNAL(signalSMFProgram(int,int)), this, SLOT(programEvent(int,int)));
+    connect(m_engine, SIGNAL(signalSMFChanPress(int,int)), this, SLOT(chanPressEvent(int,int)));
+    connect(m_engine, SIGNAL(signalSMFSysex(const QByteArray&)), this, SLOT(sysexEvent(const QByteArray&)));
+    connect(m_engine, SIGNAL(signalSMFMetaMisc(int, const QByteArray&)), this, SLOT(metaMiscEvent(int, const QByteArray&)));
+    connect(m_engine, SIGNAL(signalSMFVariable(const QByteArray&)), this, SLOT(variableEvent(const QByteArray&)));
+    connect(m_engine, SIGNAL(signalSMFSequenceNum(int)), this, SLOT(seqNum(int)));
+    connect(m_engine, SIGNAL(signalSMFforcedChannel(int)), this, SLOT(forcedChannel(int)));
+    connect(m_engine, SIGNAL(signalSMFforcedPort(int)), this, SLOT(forcedPort(int)));
+    connect(m_engine, SIGNAL(signalSMFText(int,const QString&)), this, SLOT(textEvent(int,const QString&)));
+    connect(m_engine, SIGNAL(signalSMFendOfTrack()), this, SLOT(endOfTrackEvent()));
+    connect(m_engine, SIGNAL(signalSMFTimeSig(int,int,int,int)), this, SLOT(timeSigEvent(int,int,int,int)));
+    connect(m_engine, SIGNAL(signalSMFSmpte(int,int,int,int,int)), this, SLOT(smpteEvent(int,int,int,int,int)));
+    connect(m_engine, SIGNAL(signalSMFKeySig(int,int)), this, SLOT(keySigEvent(int,int)));
+    connect(m_engine, SIGNAL(signalSMFTempo(int)), this, SLOT(tempoEvent(int)));
+    connect(m_engine, SIGNAL(signalSMFError(const QString&)), this, SLOT(errorHandler(const QString&)));
 }
 
 void QSpySMF::dump(const QString& chan, const QString& event,
-		const QString& data)
+                   const QString& data)
 {
-	cout << right << qSetFieldWidth(7) << m_engine->getCurrentTime();
-	cout << qSetFieldWidth(3) << chan;
-	cout << qSetFieldWidth(0) << left << " ";
-	cout << qSetFieldWidth(15) << event;
-	cout << qSetFieldWidth(0) << " " << data << endl;
+    cout << right << qSetFieldWidth(7) << m_engine->getCurrentTime();
+    cout << qSetFieldWidth(3) << chan;
+    cout << qSetFieldWidth(0) << left << " ";
+    cout << qSetFieldWidth(15) << event;
+    cout << qSetFieldWidth(0) << " " << data << endl;
 }
 
 void QSpySMF::dumpStr(const QString& event, const QString& data)
 {
-	cout << right << qSetFieldWidth(7) << m_engine->getCurrentTime();
-	cout << qSetFieldWidth(3) << "--";
-	cout << qSetFieldWidth(0) << left << " ";
-	cout << qSetFieldWidth(15) << event;
-	cout << qSetFieldWidth(0) << " " << data << endl;
+    cout << right << qSetFieldWidth(7) << m_engine->getCurrentTime();
+    cout << qSetFieldWidth(3) << "--";
+    cout << qSetFieldWidth(0) << left << " ";
+    cout << qSetFieldWidth(15) << event;
+    cout << qSetFieldWidth(0) << " " << data << endl;
 }
 
 void QSpySMF::headerEvent(int format, int ntrks, int division)
 {
-  dumpStr("SMF Header",
-          QString("Format=%1, Tracks=%2, Division=%3").
-             arg(format).arg(ntrks).arg(division));
+    dumpStr("SMF Header", QString("Format=%1, Tracks=%2, Division=%3").
+    arg(format).arg(ntrks).arg(division));
 }
 
 void QSpySMF::trackStartEvent()
 {
-  dumpStr("Track", "Start");
+    dumpStr("Track", "Start");
 }
 
 void QSpySMF::trackEndEvent()
 {
-  dumpStr("Track", "End");
+    dumpStr("Track", "End");
 }
 
 void QSpySMF::endOfTrackEvent()
 {
-  dumpStr("Meta Event", "End Of Track");
+    dumpStr("Meta Event", "End Of Track");
 }
 
 void QSpySMF::noteOnEvent(int chan, int pitch, int vol)
 {
-  dump(QString("%1").arg(chan,2), "Note On", QString("%1, %2").arg(pitch).arg(vol));
+    dump(QString("%1").arg(chan, 2), "Note On", QString("%1, %2").arg(pitch).arg(vol));
 }
 
 void QSpySMF::noteOffEvent(int chan, int pitch, int vol)
 {
-  dump(QString("%1").arg(chan,2), "Note Off", QString("%1, %2").arg(pitch).arg(vol));
+    dump(QString("%1").arg(chan, 2), "Note Off", QString("%1, %2").arg(pitch).arg(vol));
 }
 
 void QSpySMF::keyPressEvent(int chan, int pitch, int press)
 {
-  dump(QString("%1").arg(chan,2), "Key Pressure", QString("%1, %2").arg(pitch).arg(press));
+    dump(QString("%1").arg(chan, 2), "Key Pressure", QString("%1, %2").arg(pitch).arg(press));
 }
 
 void QSpySMF::ctlChangeEvent(int chan, int ctl, int value)
 {
-  dump(QString("%1").arg(chan,2), "Control Change", QString("%1, %2").arg(ctl).arg(value));
+    dump(QString("%1").arg(chan, 2), "Control Change", QString("%1, %2").arg(ctl).arg(value));
 }
 
 void QSpySMF::pitchBendEvent(int chan, int value)
 {
-  dump(QString("%1").arg(chan,2), "Pitch Bend", QString::number(value));
+    dump(QString("%1").arg(chan, 2), "Pitch Bend", QString::number(value));
 }
 
 void QSpySMF::programEvent(int chan, int patch)
 {
-  dump(QString("%1").arg(chan,2), "Program Change", QString::number(patch));
+    dump(QString("%1").arg(chan, 2), "Program Change", QString::number(patch));
 }
 
 void QSpySMF::chanPressEvent(int chan, int press)
 {
-  dump(QString("%1").arg(chan,2), "Chan.Pressure", QString::number(press));
+    dump(QString("%1").arg(chan, 2), "Chan.Pressure", QString::number(press));
 }
 
 void QSpySMF::sysexEvent(const QByteArray& data)
 {
-  int j;
-  QString s;
-  for(j = 0; j < data.count(); ++j)
-    s.append(QString("%1 ").arg(data[j] & 0xff, 2, 16));
-  dumpStr("SysEx", s);
+    int j;
+    QString s;
+    for (j = 0; j < data.count(); ++j)
+        s.append(QString("%1 ").arg(data[j] & 0xff, 2, 16));
+    dumpStr("SysEx", s);
 }
 
 void QSpySMF::variableEvent(const QByteArray& data)
-{  
-  int j;
-  QString s;
-  for(j = 0; j < data.count(); ++j)
-    s.append(QString("%1 ").arg(data[j] & 0xff, 2, 16));
-  dumpStr("Variable event", s);
+{
+    int j;
+    QString s;
+    for (j = 0; j < data.count(); ++j)
+        s.append(QString("%1 ").arg(data[j] & 0xff, 2, 16));
+    dumpStr("Variable event", s);
 }
 
 void QSpySMF::metaMiscEvent(int typ, const QByteArray& data)
 {
-  int j;
-  QString s = QString("type=%1 ").arg(typ);
-  for(j = 0; j < data.count(); ++j)
-    s.append(QString("%1 ").arg(data[j] & 0xff, 2, 16));
-  dumpStr("Meta", s);
+    int j;
+    QString s = QString("type=%1 ").arg(typ);
+    for (j = 0; j < data.count(); ++j)
+        s.append(QString("%1 ").arg(data[j] & 0xff, 2, 16));
+    dumpStr("Meta", s);
 }
 
 void QSpySMF::seqNum(int seq)
-{  
-  dump("--", "Sequence num.", QString::number(seq));
+{
+    dump("--", "Sequence num.", QString::number(seq));
 }
 
 void QSpySMF::forcedChannel(int channel)
 {
-  dump("--", "Forced channel", QString::number(channel));
+    dump("--", "Forced channel", QString::number(channel));
 }
 
 void QSpySMF::forcedPort(int port)
 {
-  dump("--", "Forced port", QString::number(port));
+    dump("--", "Forced port", QString::number(port));
 }
 
 void QSpySMF::textEvent(int typ, const QString& data)
 {
-  dumpStr(QString("Text (%1)").arg(typ), data);
+    dumpStr(QString("Text (%1)").arg(typ), data);
 }
 
 void QSpySMF::smpteEvent(int b0, int b1, int b2, int b3, int b4)
 {
-  dump("--", "SMPTE", QString("%1, %2, %3, %4, %5").arg(b0).arg(b1).arg(b2).arg(b3).arg(b4));
+    dump("--", "SMPTE", QString("%1, %2, %3, %4, %5").arg(b0).arg(b1).arg(b2).arg(b3).arg(b4));
 }
 
 void QSpySMF::timeSigEvent(int b0, int b1, int b2, int b3)
 {
-  dump("--", "Time Signature", QString("%1, %2, %3, %4").arg(b0).arg(b1).arg(b2).arg(b3));
+    dump("--", "Time Signature", QString("%1, %2, %3, %4").arg(b0).arg(b1).arg(b2).arg(b3));
 }
 
 void QSpySMF::keySigEvent(int b0, int b1)
 {
-  dump("--", "Key Signature", QString("%1, %2").arg(b0).arg(b1));
+    dump("--", "Key Signature", QString("%1, %2").arg(b0).arg(b1));
 }
 
 void QSpySMF::tempoEvent(int tempo)
 {
-  dump("--", "Tempo", QString::number(tempo));
+    dump("--", "Tempo", QString::number(tempo));
 }
 
 void QSpySMF::errorHandler(const QString& errorStr)
 {
-  cerr << errorStr << endl;
-  exit(1);
+    cerr << errorStr << endl;
+    exit(1);
 }
 
 void QSpySMF::run(QString fileName)
-{  
-	cout << "___time ch event__________ data____" << endl;
-	m_engine->readFromFile(fileName);
+{
+    cout << "___time ch event__________ data____" << endl;
+    m_engine->readFromFile(fileName);
 }
 
 int main(int argc, char **argv)
 {
-  QApplication app(argc, argv, false);
-  QSpySMF *spy = new QSpySMF();
-  if (app.argc() > 1)
-     spy->run(app.argv()[1]);
+    QApplication app(argc, argv, false);
+    QSpySMF *spy = new QSpySMF();
+    if (app.argc() > 1)
+        spy->run(app.argv()[1]);
 }
 

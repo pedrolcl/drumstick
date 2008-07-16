@@ -33,6 +33,7 @@ class QDESIGNER_WIDGET_EXPORT PianoKeybd : public QGraphicsView
 public:
     PianoKeybd(QWidget *parent = 0);
     PianoKeybd(const int baseOctave, const int numOctaves, QWidget *parent = 0);
+    ~PianoKeybd();
     void setKeyboardMap(const KeyboardMap& m) { m_scene->setKeyboardMap(m); }
     int baseOctave() const { return m_scene->baseOctave(); }
     int numOctaves() const { return m_scene->numOctaves(); }

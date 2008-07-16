@@ -30,16 +30,17 @@ namespace Sequencer
 
 const QEvent::Type SequencerEventType = QEvent::Type(QEvent::User + 4154); // :-)
 
+#define CLONE_EVENT_DECLARATION(T) virtual T* clone() { return new T(&m_event); }
+
 class SequencerEvent : public QEvent
 {
 public:
     SequencerEvent();
     SequencerEvent(const SequencerEvent& other);
     SequencerEvent(snd_seq_event_t* event);
-    ~SequencerEvent() {}
+    virtual ~SequencerEvent() {}
 
     SequencerEvent& operator=(const SequencerEvent& other);
-    SequencerEvent* clone();
     bool isSubscription() const;
     bool isPort() const;
     bool isClient() const;
@@ -62,10 +63,12 @@ public:
     int getTag() const { return m_event.tag; }
     void setTag(const int aTag);
     snd_seq_event_t* getEvent() { return &m_event; }
+    CLONE_EVENT_DECLARATION(SequencerEvent);
 
 protected:
     snd_seq_event_t m_event;
 };
+
 
 class ChannelEvent : public SequencerEvent
 {
@@ -98,6 +101,7 @@ public:
 
     ulong getDuration() const { return m_event.data.note.duration; }
     void setDuration(const ulong d) { m_event.data.note.duration = d; }
+    CLONE_EVENT_DECLARATION(NoteEvent)
 };
   
 class NoteOnEvent : public KeyEvent 
@@ -106,6 +110,7 @@ public:
     NoteOnEvent() : KeyEvent() {}
     NoteOnEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     NoteOnEvent(const int ch, const int key, const int vel);
+    CLONE_EVENT_DECLARATION(NoteOnEvent)
 };
   
 class NoteOffEvent : public KeyEvent 
@@ -114,6 +119,7 @@ public:
     NoteOffEvent() : KeyEvent() {}
     NoteOffEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     NoteOffEvent(const int ch, const int key, const int vel);
+    CLONE_EVENT_DECLARATION(NoteOffEvent)
 };
   
 class KeyPressEvent : public KeyEvent 
@@ -122,6 +128,7 @@ public:
     KeyPressEvent() : KeyEvent() {}
     KeyPressEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     KeyPressEvent(const int ch, const int key, const int vel);
+    CLONE_EVENT_DECLARATION(KeyPressEvent)
 };
   
 class ControllerEvent : public ChannelEvent
@@ -135,6 +142,7 @@ public:
     void setParam( const uint p ) { m_event.data.control.param = p; }
     int getValue() const { return m_event.data.control.value; }
     void setValue( const int v ) { m_event.data.control.value = v; }
+    CLONE_EVENT_DECLARATION(ControllerEvent)
 };
   
 class ProgramChangeEvent : public ChannelEvent
@@ -146,6 +154,7 @@ public:
 
     int getValue() const { return m_event.data.control.value; }
     void setValue( const int v ) { m_event.data.control.value = v; }
+    CLONE_EVENT_DECLARATION(ProgramChangeEvent)
 };
   
 class PitchBendEvent : public ChannelEvent
@@ -157,6 +166,7 @@ public:
 
     int getValue() const { return m_event.data.control.value; }
     void setValue( const int v ) { m_event.data.control.value = v; }
+    CLONE_EVENT_DECLARATION(PitchBendEvent)
 };
   
 class ChanPressEvent : public ChannelEvent
@@ -168,6 +178,7 @@ public:
 
     int getValue() const { return m_event.data.control.value; }
     void setValue( const int v ) { m_event.data.control.value = v; }
+    CLONE_EVENT_DECLARATION(ChanPressEvent)
 };
   
 class SysExEvent : public SequencerEvent
@@ -179,6 +190,7 @@ public:
 
     uint getLength() const { return m_event.data.ext.len; }
     const uchar* getData() const { return static_cast<const uchar*>(m_event.data.ext.ptr); }
+    CLONE_EVENT_DECLARATION(SysExEvent)
 };
  
 class SystemEvent : public SequencerEvent
@@ -187,6 +199,7 @@ public:
     SystemEvent() : SequencerEvent() {}
     SystemEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
     SystemEvent(const int statusByte);
+    CLONE_EVENT_DECLARATION(SystemEvent)
 };
 
 class QueueControlEvent : public SequencerEvent
@@ -207,6 +220,7 @@ public:
     void setSkewBase(const uint base) { m_event.data.queue.param.skew.base = base; }
     uint getSkewValue() const { return m_event.data.queue.param.skew.value;  }
     void setSkewValue(const uint val) {m_event.data.queue.param.skew.value = val; }
+    CLONE_EVENT_DECLARATION(QueueControlEvent)
 };
   
 class ValueEvent : public SequencerEvent
@@ -218,6 +232,7 @@ public:
 
     int getValue() const { return m_event.data.control.value; }
     void setValue( const int v ) { m_event.data.control.value = v; }
+    CLONE_EVENT_DECLARATION(ValueEvent)
 };
 
 class TempoEvent : public QueueControlEvent
@@ -226,6 +241,7 @@ public:
     TempoEvent() : QueueControlEvent() {}
     TempoEvent(snd_seq_event_t* event) : QueueControlEvent(event) {}
     TempoEvent(const int queue, const int tempo);
+    CLONE_EVENT_DECLARATION(TempoEvent)
 };
 
 class SubscriptionEvent : public SequencerEvent
@@ -240,6 +256,7 @@ public:
     int getSenderPort() const { return m_event.data.connect.sender.port; }
     int getDestClient() const { return m_event.data.connect.dest.client; }
     int getDestPort() const { return m_event.data.connect.dest.port; }
+    CLONE_EVENT_DECLARATION(SubscriptionEvent)
 };
 
 class ClientEvent : public SequencerEvent
@@ -248,6 +265,7 @@ public:
     ClientEvent() : SequencerEvent() {}
     ClientEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
     int getClient() const { return m_event.data.addr.client; }
+    CLONE_EVENT_DECLARATION(ClientEvent)
 };
 
 class PortEvent : public ClientEvent
@@ -256,6 +274,7 @@ public:
     PortEvent() : ClientEvent() {}
     PortEvent(snd_seq_event_t* event) : ClientEvent(event) {}
     int getPort() const { return m_event.data.addr.port; }
+    CLONE_EVENT_DECLARATION(PortEvent)
 };
 
 }

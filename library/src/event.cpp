@@ -48,41 +48,35 @@ SequencerEvent::operator=(const SequencerEvent& other)
     return *this;
 }
 
-SequencerEvent*
-SequencerEvent::clone()
-{
-    return new SequencerEvent( &m_event );
-}
-
 bool SequencerEvent::isSubscription() const
 {   
-    return ( m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED || 
+    return (m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED || 
             m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED );
 }
 
 bool SequencerEvent::isPort() const
 {
-    return ( m_event.type == SND_SEQ_EVENT_PORT_START || 
+    return (m_event.type == SND_SEQ_EVENT_PORT_START || 
             m_event.type == SND_SEQ_EVENT_PORT_EXIT || 
             m_event.type == SND_SEQ_EVENT_PORT_CHANGE );
 }
 
 bool SequencerEvent::isClient() const  
 {   
-    return ( m_event.type == SND_SEQ_EVENT_CLIENT_START || 
+    return (m_event.type == SND_SEQ_EVENT_CLIENT_START || 
             m_event.type == SND_SEQ_EVENT_CLIENT_EXIT || 
             m_event.type == SND_SEQ_EVENT_CLIENT_CHANGE );
 }
 
-bool SequencerEvent::isConnectionChange() const 
-{   
-    return ( m_event.type == SND_SEQ_EVENT_PORT_START || 
+bool SequencerEvent::isConnectionChange() const
+{
+    return (m_event.type == SND_SEQ_EVENT_PORT_START ||
             m_event.type == SND_SEQ_EVENT_PORT_EXIT ||
-            m_event.type == SND_SEQ_EVENT_PORT_CHANGE || 
+            m_event.type == SND_SEQ_EVENT_PORT_CHANGE ||
             m_event.type == SND_SEQ_EVENT_CLIENT_START ||
             m_event.type == SND_SEQ_EVENT_CLIENT_EXIT ||
-            m_event.type == SND_SEQ_EVENT_CLIENT_CHANGE || 
-            m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED ||  
+            m_event.type == SND_SEQ_EVENT_CLIENT_CHANGE ||
+            m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED ||
             m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED );
 }
 

@@ -23,9 +23,9 @@
 #include "client.h"
 #include "commons.h"
 
-namespace ALSA 
+namespace ALSA
 {
-namespace Sequencer 
+namespace Sequencer
 {
 
 /************/
@@ -34,76 +34,74 @@ namespace Sequencer
 
 PortInfo::PortInfo()
 {
-	snd_seq_port_info_malloc(&m_Info);
+    snd_seq_port_info_malloc(&m_Info);
 }
 
 PortInfo::PortInfo(const PortInfo& other)
 {
-	snd_seq_port_info_malloc(&m_Info);
-	snd_seq_port_info_copy(m_Info, other.m_Info);
-	m_Subscribers = other.m_Subscribers;
+    snd_seq_port_info_malloc(&m_Info);
+    snd_seq_port_info_copy(m_Info, other.m_Info);
+    m_Subscribers = other.m_Subscribers;
 }
 
 PortInfo::PortInfo(snd_seq_port_info_t* other)
 {
-	snd_seq_port_info_malloc(&m_Info);
-	snd_seq_port_info_copy(m_Info, other);
+    snd_seq_port_info_malloc(&m_Info);
+    snd_seq_port_info_copy(m_Info, other);
 }
 
 PortInfo::~PortInfo()
 {
-	snd_seq_port_info_free(m_Info);
-	freeSubscribers();
+    snd_seq_port_info_free(m_Info);
+    freeSubscribers();
 }
 
-PortInfo*
-PortInfo::clone()
+PortInfo* PortInfo::clone()
 {
-	return new PortInfo(m_Info);
+    return new PortInfo(m_Info);
 }
 
-PortInfo&
-PortInfo::operator=(const PortInfo& other)
+PortInfo& PortInfo::operator=(const PortInfo& other)
 {
-	snd_seq_port_info_copy(m_Info, other.m_Info);
-	m_Subscribers = other.m_Subscribers;
-	return *this;
+    snd_seq_port_info_copy(m_Info, other.m_Info);
+    m_Subscribers = other.m_Subscribers;
+    return *this;
 }
 
-int 
+int
 PortInfo::getClient()
 {
     return snd_seq_port_info_get_client(m_Info);
 }
 
-int 
+int
 PortInfo::getPort()
 {
     return snd_seq_port_info_get_port(m_Info);
 }
 
-const snd_seq_addr_t* 
+const snd_seq_addr_t*
 PortInfo::getAddr()
 {
-	return snd_seq_port_info_get_addr(m_Info);
+    return snd_seq_port_info_get_addr(m_Info);
 }
 
-QString 
+QString
 PortInfo::getName()
 {
-	return QString(snd_seq_port_info_get_name(m_Info));
+    return QString(snd_seq_port_info_get_name(m_Info));
 }
 
-unsigned int 
+unsigned int
 PortInfo::getCapability()
 {
-	return snd_seq_port_info_get_capability(m_Info);
+    return snd_seq_port_info_get_capability(m_Info);
 }
 
-unsigned int 
+unsigned int
 PortInfo::getType()
 {
-	return snd_seq_port_info_get_type(m_Info);
+    return snd_seq_port_info_get_type(m_Info);
 }
 
 int
@@ -115,106 +113,106 @@ PortInfo::getMidiChannels()
 int
 PortInfo::getMidiVoices()
 {
-	return snd_seq_port_info_get_midi_voices(m_Info);
+    return snd_seq_port_info_get_midi_voices(m_Info);
 }
 
-int 
+int
 PortInfo::getSynthVoices()
 {
-	return snd_seq_port_info_get_synth_voices(m_Info);
+    return snd_seq_port_info_get_synth_voices(m_Info);
 }
 
-int 
+int
 PortInfo::getReadUse()
 {
     return snd_seq_port_info_get_read_use(m_Info);
 }
 
-int 
+int
 PortInfo::getWriteUse()
 {
-	return snd_seq_port_info_get_write_use(m_Info);
+    return snd_seq_port_info_get_write_use(m_Info);
 }
 
-int 
+int
 PortInfo::getPortSpecified()
 {
-	return snd_seq_port_info_get_port_specified(m_Info);
+    return snd_seq_port_info_get_port_specified(m_Info);
 }
 
-void 
+void
 PortInfo::setClient(int client)
 {
     snd_seq_port_info_set_client(m_Info, client);
 }
 
-void 
+void
 PortInfo::setPort(int port)
 {
     snd_seq_port_info_set_port(m_Info, port);
 }
 
-void 
+void
 PortInfo::setAddr(snd_seq_addr_t* addr)
 {
     snd_seq_port_info_set_addr(m_Info, addr);
 }
 
-void 
+void
 PortInfo::setName(QString const& name)
 {
     snd_seq_port_info_set_name(m_Info, name.toLocal8Bit().data());
 }
 
-void 
+void
 PortInfo::setCapability(unsigned int capability)
 {
     snd_seq_port_info_set_capability(m_Info, capability);
 }
 
-void 
+void
 PortInfo::setType(unsigned int _type)
 {
     snd_seq_port_info_set_type(m_Info, _type);
 }
 
-void 
+void
 PortInfo::setMidiChannels(int channels)
 {
     snd_seq_port_info_set_midi_channels(m_Info, channels);
 }
 
-void 
+void
 PortInfo::setMidiVoices(int voices)
 {
     snd_seq_port_info_set_midi_voices(m_Info, voices);
 }
 
-void 
+void
 PortInfo::setSynthVoices(int voices)
 {
     snd_seq_port_info_set_synth_voices(m_Info, voices);
 }
 
-void 
+void
 PortInfo::setPortSpecified(int val)
 {
     snd_seq_port_info_set_port_specified(m_Info, val);
 }
 
-unsigned int 
+unsigned int
 PortInfo::getSubscribersCount()
 {
-	return m_Subscribers.size();
+    return m_Subscribers.size();
 }
 
 Subscriber&
 PortInfo::getSubscriber(int j)
 {
-	return m_Subscribers[j];
+    return m_Subscribers[j];
 }
 
-void 
+void
 PortInfo::readSubscribers(MidiClient* seq)
 {
     Subscriber subs;
@@ -226,8 +224,9 @@ PortInfo::readSubscribers(MidiClient* seq)
     subs.setType(SND_SEQ_QUERY_SUBS_READ);
     subs.setIndex(0);
     subs.setRoot(&tmp);
-    while (snd_seq_query_port_subscribers(seq->getHandle(), subs.m_Info) >= 0) {
-    	m_Subscribers.append(subs);
+    while (snd_seq_query_port_subscribers(seq->getHandle(), subs.m_Info) >= 0)
+    {
+        m_Subscribers.append(subs);
         subs.setIndex(subs.getIndex() + 1);
     }
 }
@@ -237,40 +236,41 @@ PortInfo::freeSubscribers()
 {
     m_Subscribers.clear();
 }
-	
+
 /************/
 /* MidiPort */
 /************/
 
 MidiPort::MidiPort( QObject* parent ) :
-	QObject( parent ),
-	m_MidiClient(NULL),
-	m_Info(NULL),
-	m_Attached(false),
-	m_AutoAttach(false)
+QObject( parent ),
+m_MidiClient(NULL),
+m_Info(NULL),
+m_Attached(false),
+m_AutoAttach(false)
 {
     m_Info = new PortInfo();
 }
 
 MidiPort::~MidiPort()
 {
-  unsubscribeAll();
-  detach();
-  freeSubscriptions();
-  if (m_Info != NULL)
-	  delete m_Info;
+    unsubscribeAll();
+    detach();
+    freeSubscriptions();
+    if (m_Info != NULL)
+    delete m_Info;
 }
 
 PortInfo*
 MidiPort::getPortInfo()
 {
-    if (m_Info == NULL) {
+    if (m_Info == NULL)
+    {
         m_Info = new PortInfo();
     }
     return m_Info;
 }
 
-int 
+int
 MidiPort::getSubscriptionCount()
 {
     return m_Subscriptions.size();
@@ -279,29 +279,31 @@ MidiPort::getSubscriptionCount()
 void
 MidiPort::freeSubscriptions()
 {
-	m_Subscriptions.clear();
+    m_Subscriptions.clear();
 }
 
 Subscription&
 MidiPort::getSubscription(int j)
 {
-	return m_Subscriptions[j];
+    return m_Subscriptions[j];
 }
 
-void 
+void
 MidiPort::setMidiClient( MidiClient* seq )
 {
-    if (m_MidiClient != seq) {
+    if (m_MidiClient != seq)
+    {
         emit midiClientChanged(this, seq);
         m_MidiClient = seq;
-        if (m_AutoAttach && !m_Attached) {
+        if (m_AutoAttach && !m_Attached)
+        {
             attach();
         }
         applyPortInfo();
     }
 }
 
-void 
+void
 MidiPort::subscribe(Subscription* subs)
 {
     subs->subscribe(m_MidiClient);
@@ -309,29 +311,31 @@ MidiPort::subscribe(Subscription* subs)
     emit subscribed(this, subs);
 }
 
-void 
+void
 MidiPort::unsubscribe( Subscription* subs )
 {
     Subscription subs2;
-    if (m_MidiClient == NULL) {
+    if (m_MidiClient == NULL)
+    {
         return;
     }
     subs->unsubscribe(m_MidiClient);
-	SubscriptionsList::iterator it;
-	for(it = m_Subscriptions.begin(); it != m_Subscriptions.end(); ++it)
-	{
+    SubscriptionsList::iterator it;
+    for(it = m_Subscriptions.begin(); it != m_Subscriptions.end(); ++it)
+    {
         subs2 = (*it);
-        if ((subs2.getSender()->client == subs->getSender()->client) && 
-            (subs2.getSender()->port == subs->getSender()->port) && 
-            (subs2.getDest()->client == subs->getDest()->client) && 
-            (subs2.getDest()->port == subs->getDest()->port)) {
+        if ((subs2.getSender()->client == subs->getSender()->client) &&
+                (subs2.getSender()->port == subs->getSender()->port) &&
+                (subs2.getDest()->client == subs->getDest()->client) &&
+                (subs2.getDest()->port == subs->getDest()->port))
+        {
             m_Subscriptions.erase(it);
             break;
         }
     }
 }
 
-void 
+void
 MidiPort::subscribeTo( PortInfo* info )
 {
     Subscription subs;
@@ -340,7 +344,7 @@ MidiPort::subscribeTo( PortInfo* info )
     subscribe(&subs);
 }
 
-void 
+void
 MidiPort::subscribeTo( int client, int port )
 {
     Subscription subs;
@@ -352,12 +356,13 @@ MidiPort::subscribeTo( int client, int port )
     subscribe(&subs);
 }
 
-void 
+void
 MidiPort::subscribeTo( QString const& name )
 {
     Subscription subs;
     snd_seq_addr addr;
-    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL)) {
+    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
+    {
         subs.setSender(m_Info->getAddr());
         snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.toLocal8Bit().data());
         subs.setDest(&addr);
@@ -365,7 +370,7 @@ MidiPort::subscribeTo( QString const& name )
     }
 }
 
-void 
+void
 MidiPort::subscribeFrom( PortInfo* port )
 {
     Subscription subs;
@@ -374,7 +379,7 @@ MidiPort::subscribeFrom( PortInfo* port )
     subscribe(&subs);
 }
 
-void 
+void
 MidiPort::subscribeFrom( int client, int port )
 {
     Subscription subs;
@@ -386,78 +391,81 @@ MidiPort::subscribeFrom( int client, int port )
     subscribe(&subs);
 }
 
-void 
+void
 MidiPort::subscribeFrom( QString const& name)
 {
     Subscription subs;
     snd_seq_addr addr;
-    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL)) {
-    	snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.toLocal8Bit().data());
-    	subs.setSender(&addr);
-    	subs.setDest(m_Info->getAddr());
-    	subscribe(&subs);
+    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
+    {
+        snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.toLocal8Bit().data());
+        subs.setSender(&addr);
+        subs.setDest(m_Info->getAddr());
+        subscribe(&subs);
     }
 }
-void 
+void
 MidiPort::subscribeFromAnnounce()
 {
     subscribeFrom(SND_SEQ_CLIENT_SYSTEM, SND_SEQ_PORT_SYSTEM_ANNOUNCE);
 }
 
-void 
+void
 MidiPort::unsubscribeAll()
 {
-    if (m_MidiClient == NULL) {
+    if (m_MidiClient == NULL)
+    {
         return;
     }
     foreach(Subscription s, m_Subscriptions)
     {
-    	s.unsubscribe(m_MidiClient);
+        s.unsubscribe(m_MidiClient);
     }
     m_Subscriptions.clear();
 }
 
-void 
+void
 MidiPort::applyPortInfo()
 {
-    if (m_Attached && (m_MidiClient != NULL) && (m_MidiClient->isOpened())) {
+    if (m_Attached && (m_MidiClient != NULL) && (m_MidiClient->isOpened()))
+    {
         snd_seq_set_port_info(m_MidiClient->getHandle(), m_Info->getPort(), m_Info->m_Info);
     }
 }
 
-QString 
+QString
 MidiPort::getPortName()
 {
     return m_Info->getName();
 }
 
-void 
+void
 MidiPort::setPortName( QString const& newName)
 {
     m_Info->setName(newName);
     applyPortInfo();
 }
 
-unsigned int 
+unsigned int
 MidiPort::getCapability()
 {
     return m_Info->getCapability();
 }
 
-void 
+void
 MidiPort::setCapability(unsigned int newValue)
 {
     m_Info->setCapability(newValue);
     applyPortInfo();
 }
 
-unsigned int 
+unsigned int
 MidiPort::getPortType()
 {
     return m_Info->getType();
 }
 
-void 
+void
 MidiPort::setPortType( unsigned int newValue)
 {
     m_Info->setType( newValue );
@@ -467,78 +475,85 @@ MidiPort::setPortType( unsigned int newValue)
 int
 MidiPort::getMidiChannels()
 {
-	return m_Info->getMidiChannels();
+    return m_Info->getMidiChannels();
 }
 
-void 
+void
 MidiPort::setMidiChannels(int newValue)
 {
     m_Info->setMidiChannels( newValue );
     applyPortInfo();
 }
 
-int 
+int
 MidiPort::getMidiVoices()
 {
-	return m_Info->getMidiVoices();
+    return m_Info->getMidiVoices();
 }
 
-void 
+void
 MidiPort::setMidiVoices(int newValue)
 {
     m_Info->setMidiVoices( newValue );
     applyPortInfo();
 }
 
-int 
+int
 MidiPort::getSynthVoices()
 {
     return m_Info->getSynthVoices();
 }
 
-void 
+void
 MidiPort::setSynthVoices(int newValue)
 {
     m_Info->setSynthVoices( newValue );
     applyPortInfo();
 }
 
-void 
+void
 MidiPort::attach()
 {
-    if (!m_Attached && (m_MidiClient != NULL)) {
+    if (!m_Attached && (m_MidiClient != NULL))
+    {
         m_MidiClient->portAttach(this);
         m_Attached = true;
         emit attached(this);
     }
 }
 
-void 
+void
 MidiPort::detach()
 {
-    if (m_Attached && (m_MidiClient != NULL)) {
+    if (m_Attached && (m_MidiClient != NULL))
+    {
         m_MidiClient->portDetach(this);
         m_Attached = false;
         emit detached(this);
     }
 }
 
-void 
+void
 MidiPort::setAttached(bool state)
 {
-    if (m_Attached != state) {
-        if (state) {
+    if (m_Attached != state)
+    {
+        if (state)
+        {
             attach();
-        } else {
+        }
+        else
+        {
             detach();
         }
     }
 }
 
-void 
+void
 MidiPort::setAutoAttach(bool state)
 {
-    if (m_AutoAttach != state) {
+    if (m_AutoAttach != state)
+    {
         m_AutoAttach = state;
     }
 }

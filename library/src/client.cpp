@@ -128,13 +128,14 @@ MidiClient::setOpenMode(int newMode)
     }
 }
 
-void
-MidiClient::setBlockMode(bool newValue)
+void MidiClient::setBlockMode(bool newValue)
 {
-    if (m_BlockMode != newValue) {
+    if (m_BlockMode != newValue)
+    {
         m_BlockMode = newValue;
-        if (m_SeqHandle != NULL) {
-        	snd_seq_nonblock(m_SeqHandle, m_BlockMode ? 0 : 1);
+        if (m_SeqHandle != NULL)
+        {
+            snd_seq_nonblock(m_SeqHandle, m_BlockMode ? 0 : 1);
         }
     }
 }
@@ -248,7 +249,7 @@ MidiClient::doEvents()
                     QApplication::postEvent(s, event->clone());
                 }
             }
-            emit eventReceived(event);
+            emit eventReceived(event->clone());
             delete event;
         }
     }

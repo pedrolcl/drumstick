@@ -30,15 +30,15 @@ namespace ALSA
 {
 namespace Sequencer 
 {
-  
+
 class MidiClient;
 
 class PortInfo
 {
-	friend class MidiPort;
-	friend class ClientInfo;
-	friend class MidiClient;
-	
+    friend class MidiPort;
+    friend class ClientInfo;
+    friend class MidiClient;
+
 public:
     PortInfo();
     PortInfo(const PortInfo& other);
@@ -46,7 +46,7 @@ public:
     virtual ~PortInfo(); 
     PortInfo* clone();
     PortInfo& operator=(const PortInfo& other);
-    
+
     int getClient();
     int getPort();
     const snd_seq_addr_t* getAddr();
@@ -72,25 +72,25 @@ public:
 
     unsigned int getSubscribersCount();
     Subscriber& getSubscriber(int j);
-    
+
 protected:    
     void readSubscribers(MidiClient* seq);
     void freeSubscribers();
-  
+
 private:
     snd_seq_port_info_t* m_Info;
     SubscribersList m_Subscribers;
 };
 
-  
+
 class MidiPort : public QObject
 {
-	Q_OBJECT
-	
+    Q_OBJECT
+
 public:
     MidiPort( QObject* parent );
     virtual ~MidiPort();
-    
+
     void attach();
     void detach();
     void subscribe( Subscription* subs );
@@ -103,10 +103,10 @@ public:
     void subscribeFrom( int client, int port ); 
     void subscribeFrom( QString const& name ); 
     void subscribeFromAnnounce();
-  
+
     int getSubscriptionCount();
     Subscription& getSubscription(int j);
-    
+
     void setMidiClient( MidiClient* seq);
     void applyPortInfo();
     QString getPortName();
@@ -124,16 +124,16 @@ public:
     void setAttached(bool state);
     void setAutoAttach(bool state);
     PortInfo* getPortInfo();
-  
-signals:
+
+    signals:
     void subscribed(MidiPort* port, Subscription* subs);
     void midiClientChanged(MidiPort* port, MidiClient* seq);
     void attached(MidiPort* port);
     void detached(MidiPort* port);
-    
+
 protected:
     void freeSubscriptions();
-	
+
 private:
     MidiClient* m_MidiClient;
     PortInfo* m_Info;

@@ -36,23 +36,23 @@ namespace Utils
 #define MTrk 0x4d54726b
 
 /* Standard MIDI Files meta event definitions */
-#define	meta_event          0xff
-#define	sequence_number     0x00
-#define	text_event          0x01
+#define meta_event          0xff
+#define sequence_number     0x00
+#define text_event          0x01
 #define copyright_notice    0x02
 #define sequence_name       0x03
 #define instrument_name     0x04
 #define lyric               0x05
 #define marker              0x06
-#define	cue_point           0x07
+#define cue_point           0x07
 #define forced_channel      0x20
 #define forced_port         0x21
-#define	end_of_track        0x2f
-#define	set_tempo           0x51
-#define	smpte_offset        0x54
-#define	time_signature      0x58
-#define	key_signature       0x59
-#define	sequencer_specific  0x7f
+#define end_of_track        0x2f
+#define set_tempo           0x51
+#define smpte_offset        0x54
+#define time_signature      0x58
+#define key_signature       0x59
+#define sequencer_specific  0x7f
 
 /* MIDI status commands most significant bit is 1 */
 #define note_off            0x80
@@ -87,12 +87,12 @@ public:
     void writeMetaEvent(long deltaTime, int type, const QByteArray& data);
     void writeMetaEvent(long deltaTime, int type, const QString& data);
     void writeMetaEvent(long deltaTime, int type);
-    
+
     void writeMidiEvent(long deltaTime, int type, int chan, int b1);
     void writeMidiEvent(long deltaTime, int type, int chan, int b1, int b2);
     void writeMidiEvent(long deltaTime, int type, int chan, const QByteArray& data);
     void writeMidiEvent(long deltaTime, int type, long len, char* data);
-    
+
     void writeTempo(long deltaTime, long tempo);
     void writeBpmTempo(long deltaTime, int tempo);
     void writeTimeSignature(long deltaTime, int num, int den, int cc, int bb);
@@ -109,7 +109,7 @@ public:
     int  getFileFormat();
     void setFileFormat(int fileFormat);
 
-signals:
+    signals:
     void signalSMFError(const QString& errorStr);
     void signalSMFHeader(int format, int ntrks, int division);
     void signalSMFNoteOn(int chan, int pitch, int vol);

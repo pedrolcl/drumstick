@@ -33,6 +33,11 @@
 
 using namespace ALSA::Sequencer;
 
+/* MidiClient can deliver SequencerEvents with only
+ * signals or posting QEvents to the QApplication loop */  
+#undef USE_QEVENTS
+//#define USE_QEVENTS
+
 class VPiano : public QMainWindow
 {
     Q_OBJECT
@@ -50,10 +55,16 @@ public slots:
     void slotNoteOff(int midiNote);
     void slotSubscription(MidiPort* port, Subscription* subs);
 
+#ifdef USE_QEVENTS  
 protected:
     virtual void customEvent( QEvent *ev );
+#else   
+    void sequencerEvent( SequencerEvent* ev ); 
+#endif
 
 private:
+    void displayEvent( SequencerEvent* ev );
+    
     int m_portId;
     int m_queueId;
     MidiClient* m_Client;

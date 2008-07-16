@@ -30,21 +30,21 @@ namespace Sequencer
 {
 
 class MidiClient; 
-  
+
 class SequencerInputThread: public QThread
 {
-	Q_OBJECT
-	
+    Q_OBJECT
+
 public:
     SequencerInputThread(MidiClient *seq, short events, int timeout) : QThread(),
-    	m_MidiClient(seq),
-    	m_Wait(timeout),
-    	m_Events(events),
-    	m_Terminated(false)
-    	{}
-    
+    m_MidiClient(seq),
+    m_Wait(timeout),
+    m_Events(events),
+    m_Terminated(false)
+    {}
+
     virtual ~SequencerInputThread() {}
-    
+
     virtual void run();
     bool isTerminated();
     void stop();

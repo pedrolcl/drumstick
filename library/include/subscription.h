@@ -33,8 +33,8 @@ class MidiClient;
 
 class Subscriber
 {
-	friend class PortInfo;
-	
+    friend class PortInfo;
+
 public:
     Subscriber();
     Subscriber(const Subscriber& other);
@@ -59,12 +59,12 @@ public:
     void setType(snd_seq_query_subs_type_t type);
     void setIndex(int index);
     Subscriber& operator=(const Subscriber& other);
-    
+
 private:
     snd_seq_query_subscribe_t* m_Info;
-  
+
 };
-  
+
 class Subscription
 {
 public:
@@ -73,12 +73,12 @@ public:
     Subscription(snd_seq_port_subscribe_t* other);
     virtual ~Subscription();
     Subscription* clone();
-   
+
     void setSender(unsigned char client, unsigned char port);
     void setDest(unsigned char client, unsigned char port);
     void subscribe(MidiClient* seq);
     void unsubscribe(MidiClient* seq);
-    
+
     const snd_seq_addr_t* getSender();
     const snd_seq_addr_t* getDest();
     int getQueue();
@@ -92,7 +92,7 @@ public:
     void setTimeUpdate(bool val);
     void setTimeReal(bool val);
     Subscription& operator=(const Subscription& other);
-  
+
 private:
     snd_seq_port_subscribe_t* m_Info;
 };

@@ -37,63 +37,63 @@ using namespace ALSA::Sequencer;
 class Song : public QList<SequencerEvent>
 {
 public:
-	void sort();
+    void sort();
 };
 
 class PlaySMF : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	PlaySMF();
-	virtual ~PlaySMF();
-	void play(QString fileName);
-	bool stopped();
-	void stop();
-	void appendEvent(SequencerEvent& ev);
-	void subscribe(const QString& portName);
+    PlaySMF();
+    virtual ~PlaySMF();
+    void play(QString fileName);
+    bool stopped();
+    void stop();
+    void appendEvent(SequencerEvent& ev);
+    void subscribe(const QString& portName);
     void dump(const QString& chan, const QString& event, const QString& data);
     void dumpStr(const QString& event, const QString& data);
     void shutupSound();
     void usage();
 
 public slots:
-	void headerEvent(int format, int ntrks, int division);
-//    void trackStartEvent();
-//    void trackEndEvent();
-//    void endOfTrackEvent();
-	void noteOnEvent(int chan, int pitch, int vol);
-	void noteOffEvent(int chan, int pitch, int vol);
-	void keyPressEvent(int chan, int pitch, int press);
-	void ctlChangeEvent(int chan, int ctl, int value);
-	void pitchBendEvent(int chan, int value);
-	void programEvent(int chan, int patch);
-	void chanPressEvent(int chan, int press);
-	void sysexEvent(const QByteArray& data);
-//	void variableEvent(const QByteArray& data);
-//	void metaMiscEvent(int typ, const QByteArray& data);
-//	void seqNum(int seq);
-//	void forcedChannel(int channel);
-//	void forcedPort(int port);
-	void textEvent(int typ, const QString& data);
-//	void smpteEvent(int b0, int b1, int b2, int b3, int b4);
-//	void timeSigEvent(int b0, int b1, int b2, int b3);
-//	void keySigEvent(int b0, int b1);
-	void tempoEvent(int tempo);
-	void errorHandler(const QString& errorStr);
+void headerEvent(int format, int ntrks, int division);
+    void noteOnEvent(int chan, int pitch, int vol);
+    void noteOffEvent(int chan, int pitch, int vol);
+    void keyPressEvent(int chan, int pitch, int press);
+    void ctlChangeEvent(int chan, int ctl, int value);
+    void pitchBendEvent(int chan, int value);
+    void programEvent(int chan, int patch);
+    void chanPressEvent(int chan, int press);
+    void sysexEvent(const QByteArray& data);
+    void textEvent(int typ, const QString& data);
+    void tempoEvent(int tempo);
+    void errorHandler(const QString& errorStr);
+//  void trackStartEvent();
+//  void trackEndEvent();
+//  void endOfTrackEvent();
+//  void variableEvent(const QByteArray& data);
+//  void metaMiscEvent(int typ, const QByteArray& data);
+//  void seqNum(int seq);
+//  void forcedChannel(int channel);
+//  void forcedPort(int port);
+//  void smpteEvent(int b0, int b1, int b2, int b3, int b4);
+//  void timeSigEvent(int b0, int b1, int b2, int b3);
+//  void keySigEvent(int b0, int b1);
 
 private:
-	int m_division;
-	int m_portId;
-	int m_queueId;
-	int m_initialTempo;
-	bool m_Stopped;
-	QMutex m_mutex;	
-	Song m_song;
-	QSmf* m_engine;
-	MidiClient* m_Client;
-	MidiPort* m_Port;
-	MidiQueue* m_Queue;
+    int m_division;
+    int m_portId;
+    int m_queueId;
+    int m_initialTempo;
+    bool m_Stopped;
+    QMutex m_mutex;
+    Song m_song;
+    QSmf* m_engine;
+    MidiClient* m_Client;
+    MidiPort* m_Port;
+    MidiQueue* m_Queue;
 };
 
 #endif /*PLAYSMF_H_*/

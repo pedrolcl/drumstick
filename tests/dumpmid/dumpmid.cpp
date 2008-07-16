@@ -39,7 +39,8 @@ QDumpMIDI::QDumpMIDI()
     m_Client->setClientName("DumpMIDI");
 #ifndef USE_QEVENTS // using signals instead
     connect(m_Client, SIGNAL(eventReceived(SequencerEvent*)), SLOT(sequencerEvent(SequencerEvent*)), Qt::DirectConnection);
-#endif	
+#endif
+
     m_Port->setMidiClient(m_Client);
     m_Port->setPortName("DumpMIDI port");
     m_Port->setCapability(SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE);
@@ -87,7 +88,7 @@ QDumpMIDI::subscription(MidiPort*, Subscription* subs)
 
 void QDumpMIDI::subscribe(const QString& portName)
 {
-    try	{
+    try {
         qDebug() << "Trying to subscribe" << portName.toLocal8Bit().data();
         m_Port->subscribeFrom(portName);
     } catch (FatalError *err) {
@@ -102,11 +103,11 @@ void QDumpMIDI::run()
 {
     cout << "Press Ctrl+C to exit" << endl;
     cout << "Source_ Event_________________ Ch _Data__" << endl;
-    try	{
+    try {
 #ifdef USE_QEVENTS
         m_Client->addSubscriber(this);
         m_Client->setEventsEnabled(true);
-#endif		
+#endif
         m_Client->createQueue();
         m_Client->startSequencerInput();
         m_Client->getQueue()->start();
@@ -132,7 +133,7 @@ void
 QDumpMIDI::customEvent(QEvent *ev)
 {
     if (ev->type() == SequencerEventType) {
-        SequencerEvent* sev = static_cast<SequencerEvent*>(ev);
+        SequencerEvent* sev = dynamic_cast<SequencerEvent*>(ev);
         if (sev != NULL) {
             dumpEvent(sev);
         }
@@ -142,8 +143,8 @@ QDumpMIDI::customEvent(QEvent *ev)
 void 
 QDumpMIDI::sequencerEvent(SequencerEvent *ev)
 {
-    //qDebug() << "Signal received!";
     dumpEvent(ev);
+    delete ev;
 }
 #endif
 
@@ -155,116 +156,148 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
 
     switch (sev->getSequencerType()) {
     case SND_SEQ_EVENT_NOTEON: {
-        NoteOnEvent* e = static_cast<NoteOnEvent*>(sev);
-        cout << qSetFieldWidth(23) << left << "Note on";
-        cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
-        cout << qSetFieldWidth(3) << e->getKey() << " ";
-        cout << qSetFieldWidth(3) << e->getVelocity();
+        NoteOnEvent* e = dynamic_cast<NoteOnEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(23) << left << "Note on";
+            cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
+            cout << qSetFieldWidth(3) << e->getKey() << " ";
+            cout << qSetFieldWidth(3) << e->getVelocity();
+        }
         break;
     }
     case SND_SEQ_EVENT_NOTEOFF: {
-        NoteOffEvent* e = static_cast<NoteOffEvent*>(sev);
-        cout << qSetFieldWidth(23) << left << "Note off";
-        cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
-        cout << qSetFieldWidth(3) << e->getKey() << " ";
-        cout << qSetFieldWidth(3) << e->getVelocity();
+        NoteOffEvent* e = dynamic_cast<NoteOffEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(23) << left << "Note off";
+            cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
+            cout << qSetFieldWidth(3) << e->getKey() << " ";
+            cout << qSetFieldWidth(3) << e->getVelocity();
+        }
         break;
     }
     case SND_SEQ_EVENT_KEYPRESS: {
-        KeyPressEvent* e = static_cast<KeyPressEvent*>(sev);
-        cout << qSetFieldWidth(23) << left << "Polyphonic aftertouch";
-        cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
-        cout << qSetFieldWidth(3) << e->getKey() << " ";
-        cout << qSetFieldWidth(3) << e->getVelocity();
+        KeyPressEvent* e = dynamic_cast<KeyPressEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(23) << left << "Polyphonic aftertouch";
+            cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
+            cout << qSetFieldWidth(3) << e->getKey() << " ";
+            cout << qSetFieldWidth(3) << e->getVelocity();
+        }
         break;
     }
     case SND_SEQ_EVENT_CONTROL14:
     case SND_SEQ_EVENT_NONREGPARAM:
     case SND_SEQ_EVENT_REGPARAM:
     case SND_SEQ_EVENT_CONTROLLER: {
-        ControllerEvent* e = static_cast<ControllerEvent*>(sev);
-        cout << qSetFieldWidth(23) << left << "Control change";
-        cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
-        cout << qSetFieldWidth(3) << e->getParam() << " ";
-        cout << qSetFieldWidth(3) << e->getValue();
+        ControllerEvent* e = dynamic_cast<ControllerEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(23) << left << "Control change";
+            cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
+            cout << qSetFieldWidth(3) << e->getParam() << " ";
+            cout << qSetFieldWidth(3) << e->getValue();
+        }
         break;
     }
     case SND_SEQ_EVENT_PGMCHANGE: {
-        ProgramChangeEvent* e = static_cast<ProgramChangeEvent*>(sev);
-        cout << qSetFieldWidth(23) << left << "Program change";
-        cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
-        cout << qSetFieldWidth(3) << e->getValue();
+        ProgramChangeEvent* e = dynamic_cast<ProgramChangeEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(23) << left << "Program change";
+            cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
+            cout << qSetFieldWidth(3) << e->getValue();
+        }
         break;
     }
     case SND_SEQ_EVENT_CHANPRESS: {
-        ChanPressEvent* e = static_cast<ChanPressEvent*>(sev);
-        cout << qSetFieldWidth(23) << left << "Channel aftertouch";
-        cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
-        cout << qSetFieldWidth(3) << e->getValue();
+        ChanPressEvent* e = dynamic_cast<ChanPressEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(23) << left << "Channel aftertouch";
+            cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
+            cout << qSetFieldWidth(3) << e->getValue();
+        }
         break;
     }
     case SND_SEQ_EVENT_PITCHBEND: {
-        PitchBendEvent* e = static_cast<PitchBendEvent*>(sev);
-        cout << qSetFieldWidth(23) << left << "Pitch bend";
-        cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
-        cout << qSetFieldWidth(5) << e->getValue();
+        PitchBendEvent* e = dynamic_cast<PitchBendEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(23) << left << "Pitch bend";
+            cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
+            cout << qSetFieldWidth(5) << e->getValue();
+        }
         break;
     }
     case SND_SEQ_EVENT_SONGPOS: {
-        ValueEvent* e = static_cast<ValueEvent*>(sev);
-        cout << qSetFieldWidth(26) << left << "Song position pointer" << qSetFieldWidth(0);
-        cout << e->getValue();
+        ValueEvent* e = dynamic_cast<ValueEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "Song position pointer" << qSetFieldWidth(0);
+            cout << e->getValue();
+        }
         break;
     }
     case SND_SEQ_EVENT_SONGSEL: {
-        ValueEvent* e = static_cast<ValueEvent*>(sev);
-        cout << qSetFieldWidth(26) << left << "Song select" << qSetFieldWidth(0);
-        cout << e->getValue();
+        ValueEvent* e = dynamic_cast<ValueEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "Song select" << qSetFieldWidth(0);
+            cout << e->getValue();
+        }
         break;
     }
     case SND_SEQ_EVENT_QFRAME: {
-        ValueEvent* e = static_cast<ValueEvent*>(sev);
-        cout << qSetFieldWidth(26) << left << "MTC quarter frame" << qSetFieldWidth(0);
-        cout << e->getValue();
+        ValueEvent* e = dynamic_cast<ValueEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "MTC quarter frame" << qSetFieldWidth(0);
+            cout << e->getValue();
+        }
         break;
     }
     case SND_SEQ_EVENT_TIMESIGN: {
-        ValueEvent* e = static_cast<ValueEvent*>(sev);
-        cout << qSetFieldWidth(26) << left << "SMF time signature" << qSetFieldWidth(0);
-        cout << hex << e->getValue();
-        cout << dec;
+        ValueEvent* e = dynamic_cast<ValueEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "SMF time signature" << qSetFieldWidth(0);
+            cout << hex << e->getValue();
+            cout << dec;
+        }
         break;
     }
     case SND_SEQ_EVENT_KEYSIGN: {
-        ValueEvent* e = static_cast<ValueEvent*>(sev);
-        cout << qSetFieldWidth(26) << left << "SMF key signature" << qSetFieldWidth(0);
-        cout << hex << e->getValue();
-        cout << dec;
+        ValueEvent* e = dynamic_cast<ValueEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "SMF key signature" << qSetFieldWidth(0);
+            cout << hex << e->getValue();
+            cout << dec;
+        }
         break;
     }
     case SND_SEQ_EVENT_SETPOS_TICK: {
-        QueueControlEvent* e = static_cast<QueueControlEvent*>(sev);
-        cout << qSetFieldWidth(26) << left << "Set tick queue pos." << qSetFieldWidth(0);
-        cout << e->getQueue();
+        QueueControlEvent* e = dynamic_cast<QueueControlEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "Set tick queue pos." << qSetFieldWidth(0);
+            cout << e->getQueue();
+        }
         break;
     }
     case SND_SEQ_EVENT_SETPOS_TIME: {
-        QueueControlEvent* e = static_cast<QueueControlEvent*>(sev);
-        cout << qSetFieldWidth(26) << left << "Set rt queue pos." << qSetFieldWidth(0);
-        cout << e->getQueue();
+        QueueControlEvent* e = dynamic_cast<QueueControlEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "Set rt queue pos." << qSetFieldWidth(0);
+            cout << e->getQueue();
+        }
         break;
     }
     case SND_SEQ_EVENT_TEMPO: {
-        TempoEvent* e = static_cast<TempoEvent*>(sev);
-        cout << qSetFieldWidth(26) << left << "Set queue tempo";
-        cout << qSetFieldWidth(3) << right << e->getQueue() << qSetFieldWidth(0) << " ";
-        cout << e->getValue();
+        TempoEvent* e = dynamic_cast<TempoEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "Set queue tempo";
+            cout << qSetFieldWidth(3) << right << e->getQueue() << qSetFieldWidth(0) << " ";
+            cout << e->getValue();
+        }
         break;
     }
     case SND_SEQ_EVENT_QUEUE_SKEW: {
-        QueueControlEvent* e = static_cast<QueueControlEvent*>(sev);
-        cout << qSetFieldWidth(26) << left << "Queue timer skew" << qSetFieldWidth(0);
-        cout << e->getQueue();
+        QueueControlEvent* e = dynamic_cast<QueueControlEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "Queue timer skew" << qSetFieldWidth(0);
+            cout << e->getQueue();
+        }
         break;
     }
     case SND_SEQ_EVENT_START:
@@ -292,63 +325,81 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
         cout << left << "Active Sensing";
         break;
     case SND_SEQ_EVENT_CLIENT_START: {
-        ClientEvent* e = static_cast<ClientEvent*>(sev); 
-        cout << qSetFieldWidth(26) << left << "Client start" << qSetFieldWidth(0);
-        cout << e->getClient();
+        ClientEvent* e = dynamic_cast<ClientEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "Client start" << qSetFieldWidth(0);
+            cout << e->getClient();
+        }
         break;
     }
     case SND_SEQ_EVENT_CLIENT_EXIT: {
-        ClientEvent* e = static_cast<ClientEvent*>(sev); 
-        cout << qSetFieldWidth(26) << left << "Client exit" << qSetFieldWidth(0);
-        cout << e->getClient();
+        ClientEvent* e = dynamic_cast<ClientEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "Client exit" << qSetFieldWidth(0);
+            cout << e->getClient();
+        }
         break;
     }
     case SND_SEQ_EVENT_CLIENT_CHANGE: {
-        ClientEvent* e = static_cast<ClientEvent*>(sev); 
-        cout << qSetFieldWidth(26) << left << "Client changed" << qSetFieldWidth(0);
-        cout << e->getClient();
+        ClientEvent* e = dynamic_cast<ClientEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "Client changed" << qSetFieldWidth(0);
+            cout << e->getClient();
+        }
         break;
     }
     case SND_SEQ_EVENT_PORT_START: {
-        PortEvent* e = static_cast<PortEvent*>(sev); 
-        cout << qSetFieldWidth(26) << left << "Port start" << qSetFieldWidth(0);
-        cout << e->getClient() << ":" << e->getPort();
+        PortEvent* e = dynamic_cast<PortEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "Port start" << qSetFieldWidth(0);
+            cout << e->getClient() << ":" << e->getPort();
+        }
         break;
     }
     case SND_SEQ_EVENT_PORT_EXIT: {
-        PortEvent* e = static_cast<PortEvent*>(sev); 
-        cout << qSetFieldWidth(26) << left << "Port exit" << qSetFieldWidth(0);
-        cout << e->getClient() << ":" << e->getPort();
+        PortEvent* e = dynamic_cast<PortEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "Port exit" << qSetFieldWidth(0);
+            cout << e->getClient() << ":" << e->getPort();
+        }
         break;
     }
     case SND_SEQ_EVENT_PORT_CHANGE: {
-        PortEvent* e = static_cast<PortEvent*>(sev); 
-        cout << qSetFieldWidth(26) << left << "Port changed" << qSetFieldWidth(0);
-        cout << e->getClient() << ":" << e->getPort();
+        PortEvent* e = dynamic_cast<PortEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "Port changed" << qSetFieldWidth(0);
+            cout << e->getClient() << ":" << e->getPort();
+        }
         break;
     }
     case SND_SEQ_EVENT_PORT_SUBSCRIBED: {
-        SubscriptionEvent* e = static_cast<SubscriptionEvent*>(sev);
-        cout << qSetFieldWidth(26) << left << "Port subscribed" << qSetFieldWidth(0);
-        cout << e->getSenderClient() << ":" << e->getSenderPort() << " -> ";
-        cout << e->getDestClient() << ":" << e->getDestPort();
+        SubscriptionEvent* e = dynamic_cast<SubscriptionEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "Port subscribed" << qSetFieldWidth(0);
+            cout << e->getSenderClient() << ":" << e->getSenderPort() << " -> ";
+            cout << e->getDestClient() << ":" << e->getDestPort();
+        }
         break;
     }
     case SND_SEQ_EVENT_PORT_UNSUBSCRIBED: {
-        SubscriptionEvent* e = static_cast<SubscriptionEvent*>(sev);
-        cout << qSetFieldWidth(26) << left << "Port unsubscribed" << qSetFieldWidth(0);
-        cout << e->getSenderClient() << ":" << e->getSenderPort() << " -> ";
-        cout << e->getDestClient() << ":" << e->getDestPort();
+        SubscriptionEvent* e = dynamic_cast<SubscriptionEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "Port unsubscribed" << qSetFieldWidth(0);
+            cout << e->getSenderClient() << ":" << e->getSenderPort() << " -> ";
+            cout << e->getDestClient() << ":" << e->getDestPort();
+        }
         break;
     }
     case SND_SEQ_EVENT_SYSEX: {
-        SysExEvent* e = static_cast<SysExEvent*>(sev);
-        cout << qSetFieldWidth(26) << left << "System exclusive" << qSetFieldWidth(0);
-        unsigned int i;
-        for (i = 0; i < e->getLength(); ++i) {
-            cout << hex << (int) e->getData()[i] << " ";
+        SysExEvent* e = dynamic_cast<SysExEvent*>(sev);
+        if (e != NULL) {
+            cout << qSetFieldWidth(26) << left << "System exclusive" << qSetFieldWidth(0);
+            unsigned int i;
+            for (i = 0; i < e->getLength(); ++i) {
+                cout << hex << (int) e->getData()[i] << " ";
+            }
+            cout << dec;
         }
-        cout << dec;
         break;
     }
     default:

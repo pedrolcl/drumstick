@@ -39,29 +39,29 @@ typedef quint8 MidiByte;
 
 class FatalError : public std::runtime_error
 {
-public:	
-	FatalError(std::string const& s, int rc) :
-		runtime_error(s), errCode(rc) 
-	{}
+public:
+    FatalError(std::string const& s, int rc) :
+        runtime_error(s), errCode(rc) 
+        {}
 
-	const QString qstrError() 
-	{
-		return QString(snd_strerror(errCode));
-	}
-	
-	int code() { return errCode; }
-	
+    const QString qstrError() 
+    {
+        return QString(snd_strerror(errCode));
+    }
+
+    int code() { return errCode; }
+
 private:
-	int errCode;
+    int errCode;
 };
 
 inline int checkErrorAndThrow(int rc, const char *where)
 {
-	if (rc < 0) {
-		qDebug() << "Error=" << rc << "(" <<  snd_strerror(rc) << ")\nlocation:" << where;
-		throw new FatalError(std::string(where), rc);
-	}
-	return rc;
+    if (rc < 0) {
+        qDebug() << "Error=" << rc << "(" <<  snd_strerror(rc) << ")\nlocation:" << where;
+        throw new FatalError(std::string(where), rc);
+    }
+    return rc;
 }
 
 #define CHECK_ERROR(x) (checkErrorAndThrow((x),__PRETTY_FUNCTION__))

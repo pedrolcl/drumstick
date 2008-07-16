@@ -27,19 +27,19 @@ namespace ALSA
 {
 namespace Sequencer 
 {
- 
+
 class MidiClient;
 
 class QueueInfo
 {
-	friend class MidiQueue;
-	
+    friend class MidiQueue;
+
 public:
     QueueInfo();
     QueueInfo(snd_seq_queue_info_t* other);
     virtual ~QueueInfo();
     QueueInfo* clone();
-    
+
     int getId();
     QString getName();
     int getOwner();
@@ -48,37 +48,37 @@ public:
     void setName(QString value);
     void setOwner(int value);
     void setFlags(unsigned int value);
-  
+
 private:
     snd_seq_queue_info_t* m_Info;
 };
- 
-  
+
+
 class QueueStatus
 {
-	friend class MidiQueue;
-	
+    friend class MidiQueue;
+
 public:
     QueueStatus();
     QueueStatus(snd_seq_queue_status_t* other);
     virtual ~QueueStatus();
     QueueStatus* clone();
-    
+
     int getId();
     int getEvents();
     const snd_seq_real_time_t* getRealtime();
     unsigned int getStatusBits();
     snd_seq_tick_time_t getTickTime();
-  
+
 private:
     snd_seq_queue_status_t* m_Info;
 };
- 
-  
+
+
 class QueueTempo
 {
-	friend class MidiQueue;
-	
+    friend class MidiQueue;
+
 public:
     QueueTempo();
     QueueTempo(snd_seq_queue_tempo_t* other);
@@ -94,22 +94,22 @@ public:
     void setSkew(unsigned int value);
     void setSkewBase(unsigned int value);
     void setTempo(unsigned int value);
-  
+
 private:
     snd_seq_queue_tempo_t* m_Info;
 };
-  
-  
+
+
 class QueueTimer
 {
-	friend class MidiQueue;
-	
+    friend class MidiQueue;
+
 public:
     QueueTimer();
     QueueTimer(snd_seq_queue_timer_t* other);
     virtual ~QueueTimer(); 
     QueueTimer* clone();
-    
+
     int getQueueId();
     snd_seq_queue_timer_type_t getType();
     const snd_timer_id_t* getId();
@@ -117,12 +117,12 @@ public:
     void setType(snd_seq_queue_timer_type_t value);
     void setId(snd_timer_id_t* value);
     void setResolution(unsigned int value);
-  
+
 private:
     snd_seq_queue_timer_t* m_Info;
 };
- 
-  
+
+
 class MidiQueue
 {
 public:
@@ -130,7 +130,7 @@ public:
     MidiQueue(MidiClient* seq,  QueueInfo* info);
     MidiQueue(MidiClient* seq,  QString name);
     virtual ~MidiQueue();
-    
+
     int getId() { return m_Id; }
     void start();
     void stop();
@@ -147,7 +147,7 @@ public:
     void setTempo(QueueTempo* value);
     void setTimer(QueueTimer* value);
     void setUsage(int used);
-    
+
 private:
     int m_Id;
     MidiClient* m_MidiClient;

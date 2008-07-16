@@ -24,43 +24,43 @@ static QTextStream cout(stdout, QIODevice::WriteOnly);
 
 TimerTest::TimerTest()
 {
-	m_query = new TimerQuery("hw", 0);
+    m_query = new TimerQuery("hw", 0);
 }
 
 TimerTest::~TimerTest()
 {
-	delete m_query;
+    delete m_query;
 }
 
 void
 TimerTest::run()
 {
-	TimerIdList ids = m_query->getTimers();
-	cout << "type__ Name________________ c/s/C/D/S Freq." << endl;
-	foreach(TimerId id, ids)
-	{
-		Timer* timer = new Timer(&id, SND_TIMER_OPEN_NONBLOCK);
-		TimerInfo* info = timer->getTimerInfo();
-		cout << qSetFieldWidth(7) << left << info->getId();
-		cout << qSetFieldWidth(20) << left << info->getName();
-		cout << qSetFieldWidth(0) << " ";
-		cout << id.getClass() << "/" << id.getSlaveClass() << "/";
-		cout << id.getCard() << "/" << id.getDevice() << "/" << id.getSubdevice() << " ";
-		if( info->isSlave() ) {
-			cout << "SLAVE";
-		} else {
-			cout << info->getFrequency() << " Hz"; 
-		}
-		cout << endl;
-		delete info;
-		delete timer;
-	}
+    TimerIdList ids = m_query->getTimers();
+    cout << "type__ Name________________ c/s/C/D/S Freq." << endl;
+    foreach(TimerId id, ids)
+    {
+        Timer* timer = new Timer(&id, SND_TIMER_OPEN_NONBLOCK);
+        TimerInfo* info = timer->getTimerInfo();
+        cout << qSetFieldWidth(7) << left << info->getId();
+        cout << qSetFieldWidth(20) << left << info->getName();
+        cout << qSetFieldWidth(0) << " ";
+        cout << id.getClass() << "/" << id.getSlaveClass() << "/";
+        cout << id.getCard() << "/" << id.getDevice() << "/" << id.getSubdevice() << " ";
+        if( info->isSlave() ) {
+            cout << "SLAVE";
+        } else {
+            cout << info->getFrequency() << " Hz"; 
+        }
+        cout << endl;
+        delete info;
+        delete timer;
+    }
 }
 
 int main(int argc, char **argv)
 {
-  QApplication app(argc, argv, false);
-  TimerTest test;
-  test.run();
-  return 0;
+    QApplication app(argc, argv, false);
+    TimerTest test;
+    test.run();
+    return 0;
 }
