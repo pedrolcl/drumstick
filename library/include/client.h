@@ -23,6 +23,7 @@
 #include "commons.h"
 #include "port.h"
 #include <QObject>
+#include <QPointer>
 #include <QList>
 
 namespace ALSA 
@@ -154,7 +155,7 @@ private:
     int  m_OpenMode;
 
     snd_seq_t* m_SeqHandle;
-    SequencerInputThread* m_Thread;
+    QPointer<SequencerInputThread> m_Thread;
     ClientInfo* m_Info;
     MidiQueue* m_Queue;
 

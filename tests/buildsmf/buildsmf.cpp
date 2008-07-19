@@ -24,7 +24,7 @@
 
 QSMFBuilder::QSMFBuilder() : QObject()
 {
-    m_engine = new QSmf();
+    m_engine = new QSmf(this);
     connect(m_engine, SIGNAL(signalSMFError(const QString&)), 
             this, SLOT(errorHandler(const QString&)));
     connect(m_engine, SIGNAL(signalSMFWriteTrack(int)), 

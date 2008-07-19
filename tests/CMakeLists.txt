@@ -129,17 +129,11 @@ TARGET_LINK_LIBRARIES(dumpmid
 
 SET(timertest_SRCS
     timertest/timertest.cpp
-    timertest/timertest.h
 )
-
-#SET(timertestd_qtobject_SRCS
-#    timertest/timertest.h
-#)
 
 #QT4_WRAP_CPP(timertest_moc_SRCS ${timertest_qtobject_SRCS})
 
 ADD_EXECUTABLE(timertest
-#    ${timertest_moc_SRCS}
     ${timertest_SRCS}
 )
 

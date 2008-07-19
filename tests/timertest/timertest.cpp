@@ -17,27 +17,22 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#include "timertest.h"
+#include "alsatimer.h"
 #include <QTextStream>
 
 static QTextStream cout(stdout, QIODevice::WriteOnly); 
 
-TimerTest::TimerTest()
-{
-    m_query = new TimerQuery("hw", 0);
-}
+using namespace ALSA;
 
-TimerTest::~TimerTest()
+void runTest()
 {
-    delete m_query;
-}
-
-void
-TimerTest::run()
-{
+    TimerQuery* query = new TimerQuery("hw", 0);
     cout << "type__ Name________________ c/s/C/D/S Freq." << endl;
-    foreach(TimerId id, m_query->getTimers())
+    TimerIdList lst = query->getTimers();
+    TimerIdList::ConstIterator it;
+    for( it = lst.begin(); it != lst.end(); ++it )
     {
+        TimerId id = *it;
         Timer* timer = new Timer(&id, SND_TIMER_OPEN_NONBLOCK);
         TimerInfo* info = timer->getTimerInfo();
         cout << qSetFieldWidth(7) << left << info->getId();
@@ -54,12 +49,12 @@ TimerTest::run()
         delete info;
         delete timer;
     }
+    delete query;
 }
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv, false);
-    TimerTest test;
-    test.run();
+    runTest();
     return 0;
 }

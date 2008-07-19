@@ -214,15 +214,14 @@ TimerQuery::~TimerQuery()
 void
 TimerQuery::readTimers()
 {
-    TimerId tid; //= new TimerId(); 
+    TimerId tid; 
     snd_timer_id_set_class(tid.m_Info, SND_TIMER_CLASS_NONE);
     for(;;)
     {
         int rc = snd_timer_query_next_device(m_Info, tid.m_Info);
-        if (rc < 0)
-        break;
-        if (tid.getClass() < 0)
-        break;
+        if ((rc < 0) || (tid.getClass() < 0)) {
+            break;
+        }
         m_timers.append(tid);
     }
 }

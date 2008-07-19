@@ -216,8 +216,8 @@ void QSpySMF::run(QString fileName)
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv, false);
-    QSpySMF *spy = new QSpySMF();
+    QSpySMF spy;
     if (app.argc() > 1)
-        spy->run(app.argv()[1]);
+        spy.run(app.argv()[1]);
 }
 

@@ -52,6 +52,7 @@ MidiClient::MidiClient( QObject* parent ) :
 
 MidiClient::~MidiClient()
 {
+    stopSequencerInput();
     detachAllPorts();
     if (m_Queue != NULL)
         delete m_Queue;
@@ -280,7 +281,7 @@ MidiClient::stopSequencerInput()
         if (!m_Thread->isFinished()) {
             m_Thread->terminate();
         }
-        m_Thread = NULL;
+        delete m_Thread;
     }
 }
 
