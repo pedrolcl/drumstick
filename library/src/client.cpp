@@ -245,8 +245,10 @@ MidiClient::doEvents()
                 break;
             }
             if (m_eventsEnabled) {
-                foreach(QObject* s, m_subscribers) {
-                    QApplication::postEvent(s, event->clone());
+                QObjectList::Iterator it;
+                for(it=m_subscribers.begin(); it!=m_subscribers.end(); ++it) {
+                    QObject* sub = (*it);
+                    QApplication::postEvent(sub, event->clone());
                 }
             }
             emit eventReceived(event->clone());
@@ -301,19 +303,13 @@ MidiClient::freeClients()
     m_ClientList.clear();
 }
 
-int 
-MidiClient::getClientInfoCount()
+ClientInfoList
+MidiClient::getAvailableClients()
 {
-    return m_ClientList.size();
-}
-
-ClientInfo* 
-MidiClient::getClientInfo(int j)
-{
-    if (j < m_ClientList.size()) {
-        return &m_ClientList[j];
-    } 
-    return NULL;
+    if (m_NeedRefreshClientList)
+        readClients();
+    ClientInfoList lst = m_ClientList; // copy
+    return lst;
 }
 
 ClientInfo* 
@@ -355,19 +351,11 @@ MidiClient::setClientName(QString const& newName)
     }
 }
 
-int 
-MidiClient::getPortCount()
+MidiPortList
+MidiClient::getMidiPorts() const
 {
-    return m_Ports.size();
-}
-
-MidiPort* 
-MidiClient::getPort(int j)
-{
-    if (j < m_Ports.size()) {
-        return m_Ports[j];
-    }
-    return NULL;
+    MidiPortList lst = m_Ports;  // copy
+    return lst;
 }
 
 MidiPort* 
@@ -555,21 +543,24 @@ PortInfoList
 MidiClient::filterPorts(unsigned int filter)
 {
     PortInfoList result;
-    ClientInfoList::iterator it;
-    unsigned int j;
+    ClientInfoList::ConstIterator itc;
+    PortInfoList::ConstIterator itp;
 
     if (m_NeedRefreshClientList)
         readClients();
 
-    for (it = m_ClientList.begin(); it != m_ClientList.end(); ++it) {
-        ClientInfo ci = (*it);
-        for (j=0; j < ci.getPortInfoCount(); ++j) {
-            PortInfo* pi = ci.getPortInfo(j);
-            unsigned int cap = pi->getCapability();
+    for (itc = m_ClientList.begin(); itc != m_ClientList.end(); ++itc) {
+        ClientInfo ci = (*itc);
+        if ((ci.getClientId() == SND_SEQ_CLIENT_SYSTEM) ||
+            (ci.getClientId() == m_Info->getClientId()))
+            continue;
+        PortInfoList lstPorts = ci.getPorts();
+        for(itp = lstPorts.begin(); itp != lstPorts.end(); ++itp) {
+            PortInfo pi = (*itp);
+            unsigned int cap = pi.getCapability();
             if ( ((filter & cap) != 0) && 
-                    ((SND_SEQ_PORT_CAP_NO_EXPORT & cap) == 0) && 
-                    (ci.getClientId() != SND_SEQ_CLIENT_SYSTEM) ) {
-                result.append(*pi);
+                 ((SND_SEQ_PORT_CAP_NO_EXPORT & cap) == 0) ) {
+                result.append(pi);
             }
         }
     }
@@ -644,6 +635,12 @@ ClientInfo::ClientInfo(snd_seq_client_info_t* other)
 {
     snd_seq_client_info_malloc(&m_Info);
     snd_seq_client_info_copy(m_Info, other);
+}
+
+ClientInfo::ClientInfo(MidiClient* seq, int id)
+{
+    snd_seq_client_info_malloc(&m_Info);
+    snd_seq_get_any_client_info(seq->getHandle(), id, m_Info);
 }
 
 ClientInfo::~ClientInfo()
@@ -750,6 +747,7 @@ ClientInfo::readPorts(MidiClient* seq)
     PortInfo info;
     freePorts();
     info.setClient(getClientId());
+    info.setClientName(getName());
     info.setPort(-1);
     while (snd_seq_query_next_port(seq->getHandle(), info.m_Info) >= 0) {
         info.readSubscribers(seq);
@@ -763,21 +761,12 @@ ClientInfo::freePorts()
     m_Ports.clear();
 }
 
-unsigned int 
-ClientInfo::getPortInfoCount()
+PortInfoList 
+ClientInfo::getPorts() const
 {
-    return m_Ports.size();
-}
-
-PortInfo*
-ClientInfo::getPortInfo(int j)
-{
-    if (j < m_Ports.size()) {
-        return &m_Ports[j];
-    }
-    return NULL;
+    PortInfoList lst = m_Ports; // copy
+    return lst;
 }
 
 }
 }
-

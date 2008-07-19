@@ -58,7 +58,7 @@ PlaySMF::PlaySMF() :
 
     m_Queue = m_Client->createQueue();
     m_queueId = m_Queue->getId();
-    m_portId = m_Port->getPortInfo()->getPort();
+    m_portId = m_Port->getPortId();
 
     m_engine = new QSmf(this);
     connect(m_engine, SIGNAL(signalSMFHeader(int,int,int)), SLOT(headerEvent(int,int,int)));

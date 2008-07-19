@@ -20,8 +20,11 @@
 #ifndef CONNECTIONS_H
 #define CONNECTIONS_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
+#include "port.h"
 #include "ui_connections.h"
+
+using namespace ALSA::Sequencer;
 
 class Connections : public QDialog
 {
@@ -29,8 +32,10 @@ class Connections : public QDialog
 
 public:
     Connections(QWidget *parent = 0);
-    //QStringList getSelectedInputs() const;
-    //QStringList getSelectedOutputs() const;
+    void setInputs(PortInfoList inputs, SubscribersList subscribers);
+    void setOutputs(PortInfoList outputs, SubscribersList subscribers);
+    QStringList getSelectedInputs() const;
+    QStringList getSelectedOutputs() const;
 
 private:
     Ui::ConnectionsClass ui;

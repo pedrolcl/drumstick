@@ -49,6 +49,7 @@ public:
 
     int getClient();
     int getPort();
+    QString getClientName() const { return m_ClientName; }
     const snd_seq_addr_t* getAddr();
     QString getName();
     unsigned int getCapability();
@@ -69,23 +70,26 @@ public:
     void setMidiVoices(int voices);
     void setSynthVoices(int voices);
     void setPortSpecified(int val);
-
-    unsigned int getSubscribersCount();
-    Subscriber& getSubscriber(int j);
+    SubscribersList getReadSubscribers() const;
+    SubscribersList getWriteSubscribers() const;
 
 protected:    
     void readSubscribers(MidiClient* seq);
     void freeSubscribers();
+    void setClientName(QString name) { m_ClientName = name; }
 
 private:
     snd_seq_port_info_t* m_Info;
-    SubscribersList m_Subscribers;
+    QString m_ClientName;
+    SubscribersList m_ReadSubscribers;
+    SubscribersList m_WriteSubscribers;
 };
 
 
 class MidiPort : public QObject
 {
     Q_OBJECT
+    friend class MidiClient;
 
 public:
     MidiPort( QObject* parent );
@@ -96,6 +100,8 @@ public:
     void subscribe( Subscription* subs );
     void unsubscribe( Subscription* subs );
     void unsubscribeAll();
+    void unsubscribeTo( QString const& name );
+    void unsubscribeFrom( QString const& name );
     void subscribeTo( PortInfo* port); 
     void subscribeTo( int client, int port ); 
     void subscribeTo( QString const& name ); 
@@ -103,14 +109,16 @@ public:
     void subscribeFrom( int client, int port ); 
     void subscribeFrom( QString const& name ); 
     void subscribeFromAnnounce();
+    void updateSubscribers();
+    SubscribersList getReadSubscribers() const;
+    SubscribersList getWriteSubscribers() const;
+    SubscriptionsList getSubscriptions() const;
 
-    int getSubscriptionCount();
-    Subscription& getSubscription(int j);
-
-    void setMidiClient( MidiClient* seq);
+    void setMidiClient( MidiClient* seq );
     void applyPortInfo();
     QString getPortName();
     void setPortName( QString const& newName);
+    int getPortId() const;
     unsigned int getCapability();
     void setCapability( unsigned int newValue);
     unsigned int getPortType();
@@ -123,15 +131,15 @@ public:
     void setSynthVoices(int newValue);
     void setAttached(bool state);
     void setAutoAttach(bool state);
-    PortInfo* getPortInfo();
 
-    signals:
+signals:
     void subscribed(MidiPort* port, Subscription* subs);
     void midiClientChanged(MidiPort* port, MidiClient* seq);
     void attached(MidiPort* port);
     void detached(MidiPort* port);
 
 protected:
+    PortInfo* getPortInfo();
     void freeSubscriptions();
 
 private:

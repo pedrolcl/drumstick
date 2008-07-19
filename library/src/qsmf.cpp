@@ -716,8 +716,10 @@ quint64 QSmf::findTempo()
     QSmfRecTempo rec = m_TempoList.last();
     old_tempo = m_CurrTempo;
     new_tempo = m_CurrTempo;
-    foreach(rec, m_TempoList)
+    QList<QSmfRecTempo>::Iterator it;
+    for( it = m_TempoList.begin(); it != m_TempoList.end(); ++it )
     {
+        rec = (*it);
         if (rec.time <= m_CurrTime)
         {
             old_tempo = rec.tempo;

@@ -25,19 +25,66 @@ Connections::Connections(QWidget *parent)
     ui.setupUi(this);
 }
 
-/*QStringList Connections::getSelectedInputs() const
+void Connections::setInputs(PortInfoList inputs, SubscribersList subs)
+{
+    ui.m_listInputs->clear();
+    //qDebug() << "setInputs()";
+    PortInfoList::ConstIterator it;
+    for( it = inputs.begin(); it != inputs.end(); ++it) {
+        PortInfo pi = (*it);
+        //qDebug() << "Port=" << pi.getClient() << ":" << pi.getPort();
+        QListWidgetItem *itm = new QListWidgetItem(QString("%1:%2").
+                                                   arg(pi.getClientName()).
+                                                   arg(pi.getPort()));
+        itm->setCheckState(Qt::Unchecked);
+        SubscribersList::ConstIterator it;
+        for( it = subs.begin(); it != subs.end(); ++it ) {
+            Subscriber s = *it;
+            //qDebug() << "Subscriber=" << s.getAddr()->client << ":" << s.getAddr()->port;
+            if ((s.getAddr()->client == pi.getClient()) &&
+                (s.getAddr()->port == pi.getPort())) {
+                itm->setCheckState(Qt::Checked);
+                break;
+            }
+        }
+        ui.m_listInputs->addItem(itm);
+    }
+}
+
+void Connections::setOutputs(PortInfoList outputs, SubscribersList subs)
+{
+    ui.m_listOutputs->clear();
+    //qDebug() << "setOutputs()";
+    PortInfoList::ConstIterator it;
+    for( it = outputs.begin(); it != outputs.end(); ++it) {
+        PortInfo pi = (*it);
+        //qDebug() << "Port=" << pi.getClient() << ":" << pi.getPort();
+        QListWidgetItem *itm = new QListWidgetItem(QString("%1:%2").
+                                                   arg(pi.getClientName()).
+                                                   arg(pi.getPort()));
+        itm->setCheckState(Qt::Unchecked);
+        SubscribersList::ConstIterator it;
+        for( it = subs.begin(); it != subs.end(); ++it ) {
+            Subscriber s = *it;
+            //qDebug() << "Subscriber=" << s.getAddr()->client << ":" << s.getAddr()->port;
+            if ((s.getAddr()->client == pi.getClient()) &&
+                (s.getAddr()->port == pi.getPort())) {
+                itm->setCheckState(Qt::Checked);
+                break;
+            }
+        }
+        ui.m_listOutputs->addItem(itm);
+    }
+}
+
+QStringList Connections::getSelectedInputs() const
 {
     QStringList lst;
-    QObjectList btns = *group->children();
-    for (QObject *obj = btns.first(); obj; obj = btns.next())
-    {
-        if (obj->isA("QCheckBox"))
-        {
-            QCheckBox *chk =( QCheckBox *)obj;
-            if (chk->isChecked())
-            {
-                lst += chk->text().remove("&");
-            }
+    int row;
+    for ( row = 0; row < ui.m_listInputs->count(); ++row ) {
+        QListWidgetItem *itm = ui.m_listInputs->item(row);
+        if (itm->checkState() == Qt::Checked) {
+            lst << itm->text();
         }
     }
     return lst;
@@ -46,17 +93,12 @@ Connections::Connections(QWidget *parent)
 QStringList Connections::getSelectedOutputs() const
 {
     QStringList lst;
-    QObjectList btns = *group->children();
-    for (QObject *obj = btns.first(); obj; obj = btns.next())
-    {
-        if (obj->isA("QCheckBox"))
-        {
-            QCheckBox *chk =( QCheckBox *)obj;
-            if (chk->isChecked())
-            {
-                lst += chk->text().remove("&");
-            }
+    int row;
+    for ( row = 0; row < ui.m_listOutputs->count(); ++row ) {
+        QListWidgetItem *itm = ui.m_listOutputs->item(row);
+        if (itm->checkState() == Qt::Checked) {
+            lst << itm->text();
         }
     }
     return lst;
-}*/
+}

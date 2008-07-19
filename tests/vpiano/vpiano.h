@@ -49,6 +49,7 @@ public:
 
 public slots:
     void slotAbout();
+    void slotAboutQt();
     void slotConnections();
     void slotPreferences();
     void slotNoteOn(int midiNote);
@@ -64,6 +65,8 @@ protected:
 
 private:
     void displayEvent( SequencerEvent* ev );
+    QStringList subscribersToStringList(SubscribersList subs);
+    void updateConnections(QStringList& subs, QStringList& desired, bool isOut);
     
     int m_portId;
     int m_queueId;

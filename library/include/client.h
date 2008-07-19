@@ -43,6 +43,7 @@ public:
     ClientInfo();
     ClientInfo(const ClientInfo& other);
     ClientInfo(snd_seq_client_info_t* other); 
+    ClientInfo(MidiClient* seq, int id);
     virtual ~ClientInfo();
     ClientInfo* clone();
     ClientInfo& operator=(const ClientInfo& other);
@@ -60,9 +61,7 @@ public:
     void setErrorBounce(bool val);
     const unsigned char* getEventFilter();
     void setEventFilter(unsigned char* filter);
-
-    unsigned int getPortInfoCount();
-    PortInfo* getPortInfo(int j);
+    PortInfoList getPorts() const;
 
 protected:    
     void readPorts(MidiClient* seq);
@@ -127,10 +126,8 @@ public:
 
     ClientInfo* getThisClientInfo();
     void setThisClientInfo(ClientInfo* val);
-    int getPortCount();
-    MidiPort* getPort(int j);
-    int getClientInfoCount();
-    ClientInfo* getClientInfo(int j);
+    MidiPortList getMidiPorts() const;
+    ClientInfoList getAvailableClients();
     PortInfoList getAvailableInputs();
     PortInfoList getAvailableOutputs();
 
@@ -139,10 +136,10 @@ public:
     void setEventsEnabled(const bool bEnabled);
     bool getEventsEnabled() const { return m_eventsEnabled; }
 
-    signals:    
+signals:
     void eventReceived(SequencerEvent* ev);
 
-protected:    
+protected:
     void doEvents();
     void applyClientInfo();
     void readClients();
@@ -166,7 +163,7 @@ private:
     MidiPortList m_Ports;
     PortInfoList m_OutputsAvail;
     PortInfoList m_InputsAvail;
-    QList<QObject*> m_subscribers;
+    QObjectList m_subscribers;
 };
 
 }

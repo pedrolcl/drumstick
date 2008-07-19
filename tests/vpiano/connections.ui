@@ -16,19 +16,27 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabInput" >
       <attribute name="title" >
        <string>Input</string>
       </attribute>
-      <layout class="QVBoxLayout" />
+      <layout class="QVBoxLayout" >
+       <item>
+        <widget class="QListWidget" name="m_listInputs" />
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="tabOutput" >
       <attribute name="title" >
        <string>Output</string>
       </attribute>
-      <layout class="QVBoxLayout" />
+      <layout class="QVBoxLayout" >
+       <item>
+        <widget class="QListWidget" name="m_listOutputs" />
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>

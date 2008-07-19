@@ -39,9 +39,9 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
 #ifdef USE_QEVENTS
     m_Client->addSubscriber(this);
     m_Client->setEventsEnabled(true);
-#else USE_QEVENTS // using signals instead
+#else // USE_QEVENTS (using signals instead)
     connect(m_Client, SIGNAL(eventReceived(SequencerEvent*)), SLOT(sequencerEvent(SequencerEvent*)));
-#endif  
+#endif // USE_QEVENTS
 
     m_Port = new MidiPort(this);
     m_Port->setMidiClient(m_Client);
@@ -53,10 +53,11 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
 
     m_Queue = m_Client->createQueue();
     m_queueId = m_Queue->getId();
-    m_portId = m_Port->getPortInfo()->getPort();
+    m_portId = m_Port->getPortId();
 
     connect(ui.actionExit, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(ui.actionAbout, SIGNAL(triggered()), SLOT(slotAbout()));
+    connect(ui.actionAbout_Qt, SIGNAL(triggered()), SLOT(slotAboutQt()));
     connect(ui.actionConnections, SIGNAL(triggered()), SLOT(slotConnections()));
     connect(ui.actionPreferences, SIGNAL(triggered()), SLOT(slotPreferences()));
     connect(ui.pianokeybd, SIGNAL(noteOn(int)), SLOT(slotNoteOn(int)));
@@ -176,9 +177,66 @@ void VPiano::slotAbout()
     dlgAbout.exec();
 }
 
+void VPiano::slotAboutQt()
+{
+    qApp->aboutQt();
+}
+
+QStringList VPiano::subscribersToStringList(SubscribersList subs)
+{
+    QStringList lst;
+    SubscribersList::ConstIterator it;
+    for( it = subs.begin(); it != subs.end(); ++it) {
+        Subscriber s = *it;
+        if (s.getAddr()->client != SND_SEQ_CLIENT_SYSTEM) {
+            ClientInfo c(m_Client, s.getAddr()->client);
+            lst << QString("%1:%2").arg(c.getName()).
+                                    arg(s.getAddr()->port);
+        }
+    }
+    return lst;
+}
+
+void VPiano::updateConnections(QStringList& subs, QStringList& desired, bool isOut)
+{
+    QStringList::Iterator i;
+    for (i = subs.begin(); i != subs.end(); ++i)
+    {
+        if (desired.contains(*i) == 0)
+        {
+            if (isOut)
+                m_Port->unsubscribeTo(*i);
+            else
+                m_Port->unsubscribeFrom(*i);
+        }
+    }
+    for (i = desired.begin(); i != desired.end(); ++i)
+    {
+        if (subs.contains(*i) == 0)
+        {
+            if (isOut)
+                m_Port->subscribeTo(*i);
+            else
+                m_Port->subscribeFrom(*i);
+        }
+    }
+}
+
 void VPiano::slotConnections()
 {
-    dlgConnections.exec();
+    m_Port->updateSubscribers();
+    dlgConnections.setInputs(m_Client->getAvailableInputs(),
+                             m_Port->getWriteSubscribers());
+    dlgConnections.setOutputs(m_Client->getAvailableOutputs(),
+                              m_Port->getReadSubscribers());
+    if (dlgConnections.exec() == QDialog::Accepted) {
+        QStringList subs = subscribersToStringList(m_Port->getWriteSubscribers());
+        QStringList desired = dlgConnections.getSelectedInputs();
+        updateConnections(subs, desired, false);
+        subs = subscribersToStringList(m_Port->getReadSubscribers());
+        desired = dlgConnections.getSelectedOutputs();
+        updateConnections(subs, desired, true);
+    }
 }
 
 void VPiano::slotPreferences()

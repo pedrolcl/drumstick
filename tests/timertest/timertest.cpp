@@ -35,9 +35,8 @@ TimerTest::~TimerTest()
 void
 TimerTest::run()
 {
-    TimerIdList ids = m_query->getTimers();
     cout << "type__ Name________________ c/s/C/D/S Freq." << endl;
-    foreach(TimerId id, ids)
+    foreach(TimerId id, m_query->getTimers())
     {
         Timer* timer = new Timer(&id, SND_TIMER_OPEN_NONBLOCK);
         TimerInfo* info = timer->getTimerInfo();
