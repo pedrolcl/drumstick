@@ -59,6 +59,7 @@ public:
     void setType(snd_seq_query_subs_type_t type);
     void setIndex(int index);
     Subscriber& operator=(const Subscriber& other);
+    bool operator==(Subscriber& other);
 
 private:
     snd_seq_query_subscribe_t* m_Info;

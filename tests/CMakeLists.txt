@@ -191,6 +191,7 @@ SET(vpiano_SRCS
     vpiano/pianokeybd.h
     vpiano/about.cpp
     vpiano/about.h
+    vpiano/connectionitem.h
     vpiano/connections.cpp
     vpiano/connections.h
     vpiano/preferences.cpp

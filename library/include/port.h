@@ -43,10 +43,12 @@ public:
     PortInfo();
     PortInfo(const PortInfo& other);
     PortInfo(snd_seq_port_info_t* other);
+    PortInfo(MidiClient* seq, const int client, const int port);
     virtual ~PortInfo(); 
     PortInfo* clone();
     PortInfo& operator=(const PortInfo& other);
-
+    bool operator==(PortInfo& other);
+    
     int getClient();
     int getPort();
     QString getClientName() const { return m_ClientName; }
@@ -62,7 +64,7 @@ public:
     int getPortSpecified();
     void setClient(int client);
     void setPort(int port);
-    void setAddr(snd_seq_addr_t* addr);
+    void setAddr(const snd_seq_addr_t* addr);
     void setName( QString const& name );
     void setCapability(unsigned int capability);
     void setType(unsigned int type);
@@ -85,6 +87,7 @@ private:
     SubscribersList m_WriteSubscribers;
 };
 
+typedef QList<PortInfo> PortInfoList;
 
 class MidiPort : public QObject
 {
@@ -101,7 +104,11 @@ public:
     void unsubscribe( Subscription* subs );
     void unsubscribeAll();
     void unsubscribeTo( QString const& name );
+    void unsubscribeTo( PortInfo* port );
+    void unsubscribeTo( const snd_seq_addr_t* addr );
     void unsubscribeFrom( QString const& name );
+    void unsubscribeFrom( PortInfo* port );
+    void unsubscribeFrom( const snd_seq_addr_t* addr );
     void subscribeTo( PortInfo* port); 
     void subscribeTo( int client, int port ); 
     void subscribeTo( QString const& name ); 
@@ -110,10 +117,13 @@ public:
     void subscribeFrom( QString const& name ); 
     void subscribeFromAnnounce();
     void updateSubscribers();
-    SubscribersList getReadSubscribers() const;
-    SubscribersList getWriteSubscribers() const;
     SubscriptionsList getSubscriptions() const;
-
+    PortInfoList getReadSubscribers() const;
+    PortInfoList getWriteSubscribers() const;
+    void updateConnectionsTo(const PortInfoList& desired);
+    void updateConnectionsFrom(const PortInfoList& desired);
+    bool containsAddress(const snd_seq_addr_t* addr, const PortInfoList& lst);
+    
     void setMidiClient( MidiClient* seq );
     void applyPortInfo();
     QString getPortName();
@@ -150,7 +160,6 @@ private:
     SubscriptionsList m_Subscriptions;
 };
 
-typedef QList<PortInfo> PortInfoList;
 typedef QList<MidiPort*> MidiPortList;
 
 }

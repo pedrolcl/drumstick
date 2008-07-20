@@ -52,6 +52,12 @@ PortInfo::PortInfo(snd_seq_port_info_t* other)
     snd_seq_port_info_copy(m_Info, other);
 }
 
+PortInfo::PortInfo(MidiClient* seq, const int client, const int port)
+{
+    snd_seq_port_info_malloc(&m_Info);
+    CHECK_EXCEPT(snd_seq_get_any_port_info(seq->getHandle(), client, port, m_Info));
+}
+
 PortInfo::~PortInfo()
 {
     snd_seq_port_info_free(m_Info);
@@ -70,6 +76,12 @@ PortInfo& PortInfo::operator=(const PortInfo& other)
     m_WriteSubscribers = other.m_WriteSubscribers;
     m_ClientName = other.m_ClientName;
     return *this;
+}
+
+bool PortInfo::operator==(PortInfo& other)
+{
+    return (getAddr()->client == other.getAddr()->client) &&
+           (getAddr()->port == other.getAddr()->port);
 }
 
 int
@@ -157,7 +169,7 @@ PortInfo::setPort(int port)
 }
 
 void
-PortInfo::setAddr(snd_seq_addr_t* addr)
+PortInfo::setAddr(const snd_seq_addr_t* addr)
 {
     snd_seq_port_info_set_addr(m_Info, addr);
 }
@@ -258,11 +270,11 @@ PortInfo::freeSubscribers()
 /************/
 
 MidiPort::MidiPort( QObject* parent ) :
-QObject( parent ),
-m_MidiClient(NULL),
-m_Info(NULL),
-m_Attached(false),
-m_AutoAttach(false)
+    QObject( parent ),
+    m_MidiClient(NULL),
+    m_Info(NULL),
+    m_Attached(false),
+    m_AutoAttach(false)
 {
     m_Info = new PortInfo();
 }
@@ -396,6 +408,30 @@ MidiPort::unsubscribeTo( QString const& name )
 }
 
 void
+MidiPort::unsubscribeTo( PortInfo* port )
+{
+    Subscription subs;
+    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
+    {
+        subs.setSender(m_Info->getAddr());
+        subs.setDest(port->getAddr());
+        unsubscribe(&subs);
+    }
+}
+
+void
+MidiPort::unsubscribeTo( const snd_seq_addr_t* addr )
+{
+    Subscription subs;
+    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
+    {
+        subs.setSender(m_Info->getAddr());
+        subs.setDest(addr);
+        unsubscribe(&subs);
+    }
+}
+
+void
 MidiPort::subscribeFrom( PortInfo* port )
 {
     Subscription subs;
@@ -445,6 +481,30 @@ MidiPort::unsubscribeFrom( QString const& name)
 }
 
 void
+MidiPort::unsubscribeFrom( PortInfo* port )
+{
+    Subscription subs;
+    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
+    {
+        subs.setSender(port->getAddr());
+        subs.setDest(m_Info->getAddr());
+        unsubscribe(&subs);
+    }
+}
+
+void
+MidiPort::unsubscribeFrom( const snd_seq_addr_t* addr )
+{
+    Subscription subs;
+    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
+    {
+        subs.setSender(addr);
+        subs.setDest(m_Info->getAddr());
+        unsubscribe(&subs);
+    }
+}
+
+void
 MidiPort::subscribeFromAnnounce()
 {
     subscribeFrom(SND_SEQ_CLIENT_SYSTEM, SND_SEQ_PORT_SYSTEM_ANNOUNCE);
@@ -469,7 +529,7 @@ MidiPort::applyPortInfo()
 {
     if (m_Attached && (m_MidiClient != NULL) && (m_MidiClient->isOpened()))
     {
-        snd_seq_set_port_info(m_MidiClient->getHandle(), m_Info->getPort(), m_Info->m_Info);
+        CHECK_EXCEPT(snd_seq_set_port_info(m_MidiClient->getHandle(), m_Info->getPort(), m_Info->m_Info));
     }
 }
 
@@ -560,8 +620,7 @@ MidiPort::setSynthVoices(int newValue)
 void
 MidiPort::attach()
 {
-    if (!m_Attached && (m_MidiClient != NULL))
-    {
+    if (!m_Attached && (m_MidiClient != NULL)) {
         m_MidiClient->portAttach(this);
         m_Attached = true;
         emit attached(this);
@@ -571,8 +630,7 @@ MidiPort::attach()
 void
 MidiPort::detach()
 {
-    if (m_Attached && (m_MidiClient != NULL))
-    {
+    if (m_Attached && (m_MidiClient != NULL)) {
         m_MidiClient->portDetach(this);
         m_Attached = false;
         emit detached(this);
@@ -582,14 +640,10 @@ MidiPort::detach()
 void
 MidiPort::setAttached(bool state)
 {
-    if (m_Attached != state)
-    {
-        if (state)
-        {
+    if (m_Attached != state) {
+        if (state) {
             attach();
-        }
-        else
-        {
+        } else {
             detach();
         }
     }
@@ -598,8 +652,7 @@ MidiPort::setAttached(bool state)
 void
 MidiPort::setAutoAttach(bool state)
 {
-    if (m_AutoAttach != state)
-    {
+    if (m_AutoAttach != state) {
         m_AutoAttach = state;
     }
 }
@@ -610,16 +663,96 @@ MidiPort::updateSubscribers()
     m_Info->readSubscribers(m_MidiClient);
 }
 
-SubscribersList 
+PortInfoList 
 MidiPort::getReadSubscribers() const
 {
-    return m_Info->getReadSubscribers();
+    const SubscribersList subs(m_Info->getReadSubscribers());
+    PortInfoList lst;
+    SubscribersList::ConstIterator it;
+    for(it = subs.begin(); it != subs.end(); ++it) {
+        Subscriber s = *it;
+        int client = s.getAddr()->client;
+        if ((client != SND_SEQ_CLIENT_SYSTEM) && (client != m_Info->getClient())) {
+            int port = s.getAddr()->port;
+            PortInfo p(m_MidiClient, client, port);
+            if ((p.getCapability() & SND_SEQ_PORT_CAP_NO_EXPORT) == 0) {
+                lst << p;
+            }
+        }
+    }
+    return lst;
 }
 
-SubscribersList 
+PortInfoList 
 MidiPort::getWriteSubscribers() const
 {
-    return m_Info->getWriteSubscribers();
+    const SubscribersList subs(m_Info->getWriteSubscribers());
+    PortInfoList lst;
+    SubscribersList::ConstIterator it;
+    for(it = subs.begin(); it != subs.end(); ++it) {
+        Subscriber s = *it;
+        int client = s.getAddr()->client;
+        if ((client != SND_SEQ_CLIENT_SYSTEM) && (client != m_Info->getClient())) {
+            int port = s.getAddr()->port;
+            PortInfo p(m_MidiClient, client, port);
+            if ((p.getCapability() & SND_SEQ_PORT_CAP_NO_EXPORT) == 0) {
+                lst << p;
+            }
+        }
+    }
+    return lst;
+}
+
+bool 
+MidiPort::containsAddress(const snd_seq_addr_t* addr, const PortInfoList& lst)
+{
+    PortInfoList::ConstIterator i;
+    for( i = lst.begin(); i != lst.end(); ++i) {
+        PortInfo p = *i;
+        if ((p.getAddr()->client == addr->client) &&
+            (p.getAddr()->port == addr->port)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void 
+MidiPort::updateConnectionsTo(const PortInfoList& ports)
+{
+    PortInfoList subs(getReadSubscribers());
+    PortInfoList::ConstIterator i;
+    for (i = subs.begin(); i != subs.end(); ++i) {
+        PortInfo s = *i;
+        if (!containsAddress(s.getAddr(), ports)) {
+            unsubscribeTo(s.getAddr());
+        }
+    }
+    for (i = ports.begin(); i != ports.end(); ++i) {
+        PortInfo p = *i;
+        if (!containsAddress(p.getAddr(), subs)) {
+            subscribeTo(&p);
+        }
+    }
+}
+
+void 
+MidiPort::updateConnectionsFrom(const PortInfoList& ports)
+{
+    PortInfoList subs(getWriteSubscribers());
+    PortInfoList::ConstIterator i;
+    for (i = subs.begin(); i != subs.end(); ++i) {
+        PortInfo s = *i;
+        if (!containsAddress(s.getAddr(), ports)) {
+            unsubscribeFrom(s.getAddr());
+        }
+    }
+    for (i = ports.begin(); i != ports.end(); ++i) {
+        PortInfo p = *i;
+        if (!containsAddress(p.getAddr(), subs)) {
+            subscribeFrom(&p);
+        }
+    }
 }
 
 }

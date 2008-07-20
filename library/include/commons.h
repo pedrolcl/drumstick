@@ -55,16 +55,47 @@ private:
     int errCode;
 };
 
+class SequencerError : public std::logic_error
+{
+public:
+    SequencerError(std::string const& s, int rc) :
+        logic_error(s), errCode(rc) 
+        {}
+
+    const QString qstrError() 
+    {
+        return QString(snd_strerror(errCode));
+    }
+
+    int code() { return errCode; }
+
+private:
+    int errCode;
+};
+
+
 inline int checkErrorAndThrow(int rc, const char *where)
 {
     if (rc < 0) {
-        qDebug() << "Error=" << rc << "(" <<  snd_strerror(rc) << ")\nlocation:" << where;
+        qDebug() << "Error code:" << rc << "(" <<  snd_strerror(rc) << ")";
+        qDebug() << "Location:" << where;
         throw new FatalError(std::string(where), rc);
     }
     return rc;
 }
 
+inline int checkExceptAndThrow(int rc, const char *where)
+{
+    if (rc < 0) {
+        qDebug() << "Exception code:" << rc << "(" <<  snd_strerror(rc) << ")";
+        qDebug() << "Location:" << where;
+        throw new SequencerError(std::string(where), rc);
+    }
+    return rc;
+}
+
 #define CHECK_ERROR(x) (checkErrorAndThrow((x),__PRETTY_FUNCTION__))
+#define CHECK_EXCEPT(x) (checkExceptAndThrow((x),__PRETTY_FUNCTION__))
 
 }
 }

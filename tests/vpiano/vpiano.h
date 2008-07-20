@@ -45,7 +45,6 @@ class VPiano : public QMainWindow
 public:
     VPiano( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
     virtual ~VPiano();
-    void subscribe(const QString& portName);
 
 public slots:
     void slotAbout();
@@ -65,8 +64,6 @@ protected:
 
 private:
     void displayEvent( SequencerEvent* ev );
-    QStringList subscribersToStringList(SubscribersList subs);
-    void updateConnections(QStringList& subs, QStringList& desired, bool isOut);
     
     int m_portId;
     int m_queueId;

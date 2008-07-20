@@ -18,6 +18,7 @@
 */
 
 #include "connections.h"
+#include "connectionitem.h"
 
 Connections::Connections(QWidget *parent)
     : QDialog(parent)
@@ -25,79 +26,64 @@ Connections::Connections(QWidget *parent)
     ui.setupUi(this);
 }
 
-void Connections::setInputs(PortInfoList inputs, SubscribersList subs)
+ConnectionItem* Connections::createConnectionItem(PortInfo& pi, PortInfoList& subs)
+{
+    ConnectionItem *itm = new ConnectionItem(QString("%1:%2").
+                                             arg(pi.getClientName()).
+                                             arg(pi.getPort()));
+    itm->setCheckState(Qt::Unchecked);
+    itm->setPortInfo(pi);
+    PortInfoList::ConstIterator it;
+    for( it = subs.begin(); it != subs.end(); ++it ) {
+        PortInfo s = *it;
+        if ((s.getClient() == pi.getClient()) &&
+            (s.getPort() == pi.getPort())) {
+            itm->setCheckState(Qt::Checked);
+            break;
+        }
+    }
+    return itm;
+}
+
+void Connections::setInputs(PortInfoList inputs, PortInfoList subs)
 {
     ui.m_listInputs->clear();
-    //qDebug() << "setInputs()";
-    PortInfoList::ConstIterator it;
+    PortInfoList::Iterator it;
     for( it = inputs.begin(); it != inputs.end(); ++it) {
-        PortInfo pi = (*it);
-        //qDebug() << "Port=" << pi.getClient() << ":" << pi.getPort();
-        QListWidgetItem *itm = new QListWidgetItem(QString("%1:%2").
-                                                   arg(pi.getClientName()).
-                                                   arg(pi.getPort()));
-        itm->setCheckState(Qt::Unchecked);
-        SubscribersList::ConstIterator it;
-        for( it = subs.begin(); it != subs.end(); ++it ) {
-            Subscriber s = *it;
-            //qDebug() << "Subscriber=" << s.getAddr()->client << ":" << s.getAddr()->port;
-            if ((s.getAddr()->client == pi.getClient()) &&
-                (s.getAddr()->port == pi.getPort())) {
-                itm->setCheckState(Qt::Checked);
-                break;
-            }
-        }
-        ui.m_listInputs->addItem(itm);
+        ui.m_listInputs->addItem(createConnectionItem(*it, subs));
     }
 }
 
-void Connections::setOutputs(PortInfoList outputs, SubscribersList subs)
+void Connections::setOutputs(PortInfoList outputs, PortInfoList subs)
 {
     ui.m_listOutputs->clear();
-    //qDebug() << "setOutputs()";
-    PortInfoList::ConstIterator it;
+    PortInfoList::Iterator it;
     for( it = outputs.begin(); it != outputs.end(); ++it) {
-        PortInfo pi = (*it);
-        //qDebug() << "Port=" << pi.getClient() << ":" << pi.getPort();
-        QListWidgetItem *itm = new QListWidgetItem(QString("%1:%2").
-                                                   arg(pi.getClientName()).
-                                                   arg(pi.getPort()));
-        itm->setCheckState(Qt::Unchecked);
-        SubscribersList::ConstIterator it;
-        for( it = subs.begin(); it != subs.end(); ++it ) {
-            Subscriber s = *it;
-            //qDebug() << "Subscriber=" << s.getAddr()->client << ":" << s.getAddr()->port;
-            if ((s.getAddr()->client == pi.getClient()) &&
-                (s.getAddr()->port == pi.getPort())) {
-                itm->setCheckState(Qt::Checked);
-                break;
-            }
-        }
-        ui.m_listOutputs->addItem(itm);
+        ui.m_listOutputs->addItem(createConnectionItem(*it, subs));
     }
 }
 
-QStringList Connections::getSelectedInputs() const
+PortInfoList Connections::getSelectedInputPorts() const
 {
-    QStringList lst;
+    PortInfoList lst;
     int row;
     for ( row = 0; row < ui.m_listInputs->count(); ++row ) {
-        QListWidgetItem *itm = ui.m_listInputs->item(row);
-        if (itm->checkState() == Qt::Checked) {
-            lst << itm->text();
+        ConnectionItem *itm = dynamic_cast<ConnectionItem*>(ui.m_listInputs->item(row));
+        if ((itm != NULL) && (itm->checkState() == Qt::Checked)) {
+            lst << itm->getPortInfo();
         }
     }
     return lst;
 }
 
-QStringList Connections::getSelectedOutputs() const
+PortInfoList Connections::getSelectedOutputPorts() const
 {
-    QStringList lst;
+    PortInfoList lst;
     int row;
     for ( row = 0; row < ui.m_listOutputs->count(); ++row ) {
-        QListWidgetItem *itm = ui.m_listOutputs->item(row);
-        if (itm->checkState() == Qt::Checked) {
-            lst << itm->text();
+        ConnectionItem *itm = dynamic_cast<ConnectionItem*>(ui.m_listOutputs->item(row));
+        if ((itm != NULL) && (itm->checkState() == Qt::Checked)) {
+            lst << itm->getPortInfo();
         }
     }
     return lst;

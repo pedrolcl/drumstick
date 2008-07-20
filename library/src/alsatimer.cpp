@@ -505,7 +505,7 @@ TimerStatus::getQueue()
 
 Timer::Timer(const QString& deviceName, int openMode)
 {
-    CHECK_ERROR(snd_timer_open (&m_Info, deviceName.toLocal8Bit().data(), openMode));
+    CHECK_ERROR(snd_timer_open(&m_Info, deviceName.toLocal8Bit().data(), openMode));
 }
 
 Timer::Timer(TimerId* id, int openMode)
@@ -516,12 +516,12 @@ Timer::Timer(TimerId* id, int openMode)
     .arg(id->getCard())
     .arg(id->getDevice())
     .arg(id->getSubdevice());
-    CHECK_ERROR(snd_timer_open (&m_Info, deviceName.toLocal8Bit().data(), openMode));
+    CHECK_ERROR(snd_timer_open(&m_Info, deviceName.toLocal8Bit().data(), openMode));
 }
 
 Timer::~Timer()
 {
-    CHECK_ERROR(snd_timer_close (m_Info));
+    CHECK_ERROR(snd_timer_close(m_Info));
 }
 
 void
@@ -539,19 +539,19 @@ Timer::addAsyncTimerHandler(snd_async_callback_t callback, void *private_data)
 int
 Timer::getPollDescriptorsCount()
 {
-    return snd_timer_poll_descriptors_count (m_Info);
+    return snd_timer_poll_descriptors_count(m_Info);
 }
 
 void
 Timer::pollDescriptors(struct pollfd *pfds, unsigned int space)
 {
-    snd_timer_poll_descriptors (m_Info, pfds, space);
+    CHECK_EXCEPT(snd_timer_poll_descriptors(m_Info, pfds, space));
 }
 
 void
 Timer::pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds, unsigned short *revents)
 {
-    snd_timer_poll_descriptors_revents (m_Info, pfds, nfds, revents);
+    CHECK_EXCEPT(snd_timer_poll_descriptors_revents(m_Info, pfds, nfds, revents));
 }
 
 TimerInfo*
@@ -566,7 +566,7 @@ Timer::getTimerInfo()
 void
 Timer::setTimerParams(TimerParams* params)
 {
-    snd_timer_params (m_Info, params->m_Info);
+    CHECK_EXCEPT(snd_timer_params(m_Info, params->m_Info));
 }
 
 TimerStatus*
@@ -574,32 +574,32 @@ Timer::getTimerStatus()
 {
     snd_timer_status_t *status;
     snd_timer_status_alloca(&status);
-    snd_timer_status (m_Info, status);
+    CHECK_EXCEPT(snd_timer_status(m_Info, status));
     return new TimerStatus(status);
 }
 
 void
 Timer::start()
 {
-    snd_timer_start (m_Info);
+    CHECK_EXCEPT(snd_timer_start(m_Info));
 }
 
 void
 Timer::stop()
 {
-    snd_timer_stop (m_Info);
+    CHECK_EXCEPT(snd_timer_stop(m_Info));
 }
 
 void
 Timer::continueRunning()
 {
-    snd_timer_continue (m_Info);
+    CHECK_EXCEPT(snd_timer_continue(m_Info));
 }
 
 ssize_t
 Timer::read(void *buffer, size_t size)
 {
-    return snd_timer_read (m_Info, buffer, size);
+    return snd_timer_read(m_Info, buffer, size);
 }
 
 }

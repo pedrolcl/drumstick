@@ -294,8 +294,7 @@ Subscription::subscribe(MidiClient* seq)
     {
         return;
     }
-    //CHECK_ERROR(snd_seq_subscribe_port(seq->getHandle(), m_Info));
-    snd_seq_subscribe_port(seq->getHandle(), m_Info);
+    CHECK_EXCEPT(snd_seq_subscribe_port(seq->getHandle(), m_Info));
 }
 
 void
@@ -305,8 +304,7 @@ Subscription::unsubscribe(MidiClient* seq)
     {
         return;
     }
-    //CHECK_ERROR(snd_seq_unsubscribe_port(seq->getHandle(), m_Info));
-    snd_seq_unsubscribe_port(seq->getHandle(), m_Info);
+    CHECK_EXCEPT(snd_seq_unsubscribe_port(seq->getHandle(), m_Info));
 }
 
 }

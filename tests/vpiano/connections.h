@@ -23,6 +23,7 @@
 #include <QDialog>
 #include "port.h"
 #include "ui_connections.h"
+#include "connectionitem.h"
 
 using namespace ALSA::Sequencer;
 
@@ -32,12 +33,13 @@ class Connections : public QDialog
 
 public:
     Connections(QWidget *parent = 0);
-    void setInputs(PortInfoList inputs, SubscribersList subscribers);
-    void setOutputs(PortInfoList outputs, SubscribersList subscribers);
-    QStringList getSelectedInputs() const;
-    QStringList getSelectedOutputs() const;
+    void setInputs(PortInfoList inputs, PortInfoList subs);
+    void setOutputs(PortInfoList outputs, PortInfoList subs);
+    PortInfoList getSelectedInputPorts() const;
+    PortInfoList getSelectedOutputPorts() const;
 
 private:
+    ConnectionItem* createConnectionItem(PortInfo& pi, PortInfoList& subs);
     Ui::ConnectionsClass ui;
 };
 

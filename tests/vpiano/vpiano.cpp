@@ -67,7 +67,6 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     m_Port->subscribeFromAnnounce();
     m_Client->startSequencerInput();
     m_Queue->start();
-    qDebug() << "VPiano MainWindow Constructor Done" << endl;
 }
 
 VPiano::~VPiano()
@@ -154,22 +153,8 @@ VPiano::sequencerEvent(SequencerEvent *ev)
 
 void VPiano::slotSubscription(MidiPort*, Subscription* subs)
 {
-    qDebug() << "Subscription made from" << subs->getSender()->client 
+    qDebug() << "Subscription made with" << subs->getSender()->client 
              << ":" << subs->getSender()->port;
-    subs->setQueue(m_Client->getQueue()->getId());
-}
-
-void VPiano::subscribe(const QString& portName)
-{
-    try {
-        qDebug() << "Trying to subscribe" << portName.toLocal8Bit().data();
-        m_Port->subscribeFrom(portName);
-    } catch (FatalError *err) {
-        qDebug() << "FatalError exception. Error code: " << err->code() 
-                 << " (" << err->qstrError() << ")";
-        qDebug() << "Location: " << err->what();
-        throw err;
-    }
 }
 
 void VPiano::slotAbout()
@@ -182,46 +167,6 @@ void VPiano::slotAboutQt()
     qApp->aboutQt();
 }
 
-QStringList VPiano::subscribersToStringList(SubscribersList subs)
-{
-    QStringList lst;
-    SubscribersList::ConstIterator it;
-    for( it = subs.begin(); it != subs.end(); ++it) {
-        Subscriber s = *it;
-        if (s.getAddr()->client != SND_SEQ_CLIENT_SYSTEM) {
-            ClientInfo c(m_Client, s.getAddr()->client);
-            lst << QString("%1:%2").arg(c.getName()).
-                                    arg(s.getAddr()->port);
-        }
-    }
-    return lst;
-}
-
-void VPiano::updateConnections(QStringList& subs, QStringList& desired, bool isOut)
-{
-    QStringList::Iterator i;
-    for (i = subs.begin(); i != subs.end(); ++i)
-    {
-        if (desired.contains(*i) == 0)
-        {
-            if (isOut)
-                m_Port->unsubscribeTo(*i);
-            else
-                m_Port->unsubscribeFrom(*i);
-        }
-    }
-    for (i = desired.begin(); i != desired.end(); ++i)
-    {
-        if (subs.contains(*i) == 0)
-        {
-            if (isOut)
-                m_Port->subscribeTo(*i);
-            else
-                m_Port->subscribeFrom(*i);
-        }
-    }
-}
-
 void VPiano::slotConnections()
 {
     m_Port->updateSubscribers();
@@ -230,12 +175,8 @@ void VPiano::slotConnections()
     dlgConnections.setOutputs(m_Client->getAvailableOutputs(),
                               m_Port->getReadSubscribers());
     if (dlgConnections.exec() == QDialog::Accepted) {
-        QStringList subs = subscribersToStringList(m_Port->getWriteSubscribers());
-        QStringList desired = dlgConnections.getSelectedInputs();
-        updateConnections(subs, desired, false);
-        subs = subscribersToStringList(m_Port->getReadSubscribers());
-        desired = dlgConnections.getSelectedOutputs();
-        updateConnections(subs, desired, true);
+        m_Port->updateConnectionsFrom(dlgConnections.getSelectedInputPorts());
+        m_Port->updateConnectionsTo(dlgConnections.getSelectedOutputPorts());
     }
 }
 

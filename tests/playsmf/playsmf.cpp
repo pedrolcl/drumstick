@@ -42,9 +42,10 @@ PlaySMF::PlaySMF() :
     m_queueId(-1),
     m_initialTempo(-1),
     m_Stopped(true)
-    {
+{
     m_Client = new MidiClient(this);
     m_Port = new MidiPort(this);
+
     m_Client->setOpenMode(SND_SEQ_OPEN_DUPLEX);
     m_Client->setBlockMode(false);
     m_Client->open();
@@ -62,9 +63,6 @@ PlaySMF::PlaySMF() :
 
     m_engine = new QSmf(this);
     connect(m_engine, SIGNAL(signalSMFHeader(int,int,int)), SLOT(headerEvent(int,int,int)));
-    //connect(m_engine, SIGNAL(signalSMFTrackStart()), SLOT(trackStartEvent()));
-    //connect(m_engine, SIGNAL(signalSMFTrackEnd()), SLOT(trackEndEvent()));
-    //connect(m_engine, SIGNAL(signalSMFendOfTrack()), SLOT(endOfTrackEvent()));
     connect(m_engine, SIGNAL(signalSMFNoteOn(int,int,int)), SLOT(noteOnEvent(int,int,int)));
     connect(m_engine, SIGNAL(signalSMFNoteOff(int,int,int)), SLOT(noteOffEvent(int,int,int)));
     connect(m_engine, SIGNAL(signalSMFKeyPress(int,int,int)), SLOT(keyPressEvent(int,int,int)));
@@ -73,18 +71,22 @@ PlaySMF::PlaySMF() :
     connect(m_engine, SIGNAL(signalSMFProgram(int,int)), SLOT(programEvent(int,int)));
     connect(m_engine, SIGNAL(signalSMFChanPress(int,int)), SLOT(chanPressEvent(int,int)));
     connect(m_engine, SIGNAL(signalSMFSysex(const QByteArray&)), SLOT(sysexEvent(const QByteArray&)));
+    connect(m_engine, SIGNAL(signalSMFText(int,const QString&)), SLOT(textEvent(int,const QString&)));
+    connect(m_engine, SIGNAL(signalSMFTempo(int)), SLOT(tempoEvent(int)));
+    connect(m_engine, SIGNAL(signalSMFTimeSig(int,int,int,int)), SLOT(timeSigEvent(int,int,int,int)));
+    connect(m_engine, SIGNAL(signalSMFKeySig(int,int)), SLOT(keySigEvent(int,int)));
+    connect(m_engine, SIGNAL(signalSMFError(const QString&)), SLOT(errorHandler(const QString&)));
+
+    //connect(m_engine, SIGNAL(signalSMFTrackStart()), SLOT(trackStartEvent()));
+    //connect(m_engine, SIGNAL(signalSMFTrackEnd()), SLOT(trackEndEvent()));
+    //connect(m_engine, SIGNAL(signalSMFendOfTrack()), SLOT(endOfTrackEvent()));
     //connect(m_engine, SIGNAL(signalSMFMetaMisc(int, const QByteArray&)), SLOT(metaMiscEvent(int, const QByteArray&)));
     //connect(m_engine, SIGNAL(signalSMFVariable(const QByteArray&)), SLOT(variableEvent(const QByteArray&)));
     //connect(m_engine, SIGNAL(signalSMFSequenceNum(int)), SLOT(seqNum(int)));
     //connect(m_engine, SIGNAL(signalSMFforcedChannel(int)), SLOT(forcedChannel(int)));
     //connect(m_engine, SIGNAL(signalSMFforcedPort(int)), SLOT(forcedPort(int)));
-    connect(m_engine, SIGNAL(signalSMFText(int,const QString&)), SLOT(textEvent(int,const QString&)));
-    //connect(m_engine, SIGNAL(signalSMFTimeSig(int,int,int,int)), SLOT(timeSigEvent(int,int,int,int)));
     //connect(m_engine, SIGNAL(signalSMFSmpte(int,int,int,int,int)), SLOT(smpteEvent(int,int,int,int,int)));
-    //connect(m_engine, SIGNAL(signalSMFKeySig(int,int)), SLOT(keySigEvent(int,int)));
-    connect(m_engine, SIGNAL(signalSMFTempo(int)), SLOT(tempoEvent(int)));
-    connect(m_engine, SIGNAL(signalSMFError(const QString&)), SLOT(errorHandler(const QString&)));
-    }
+}
 
 PlaySMF::~PlaySMF()
 {
@@ -123,8 +125,7 @@ void PlaySMF::stop()
 void PlaySMF::shutupSound()
 {
     int channel;
-    for (channel = 0; channel < 16; ++channel)
-    {
+    for (channel = 0; channel < 16; ++channel) {
         ControllerEvent ev(channel, MIDI_CTL_ALL_SOUNDS_OFF, 0);
         ev.setSource(m_portId);
         ev.setSubscribers();
@@ -170,21 +171,6 @@ void PlaySMF::headerEvent(int format, int ntrks, int division)
     dumpStr("SMF Header", QString("Format=%1, Tracks=%2, Division=%3").
             arg(format).arg(ntrks).arg(division));
 }
-
-/*void PlaySMF::trackStartEvent()
-{
-    dumpStr("Track", "Start");
-}
-
-void PlaySMF::trackEndEvent()
-{
-    dumpStr("Track", "End");
-}
-
-void PlaySMF::endOfTrackEvent()
-{
-    dumpStr("Meta Event", "End Of Track");
-}*/
 
 void PlaySMF::noteOnEvent(int chan, int pitch, int vol)
 {
@@ -234,47 +220,9 @@ void PlaySMF::sysexEvent(const QByteArray& data)
     appendEvent(ev);
 }
 
-/*void PlaySMF::variableEvent(const QByteArray& data)
-{
-    int j;
-    QString s;
-    for (j = 0; j < data.count(); ++j)
-        s.append(QString("%1 ").arg(data[j] & 0xff, 2, 16));
-    dumpStr("Variable event", s);
-}
-
-void PlaySMF::metaMiscEvent(int typ, const QByteArray& data)
-{
-    int j;
-    QString s = QString("type=%1 ").arg(typ);
-    for (j = 0; j < data.count(); ++j)
-        s.append(QString("%1 ").arg(data[j] & 0xff, 2, 16));
-    dumpStr("Meta", s);
-}
-
-void PlaySMF::seqNum(int seq)
-{  
-    dump("--", "Sequence num.", QString::number(seq));
-}
-
-void PlaySMF::forcedChannel(int channel)
-{
-    dump("--", "Forced channel", QString::number(channel));
-}
-
-void PlaySMF::forcedPort(int port)
-{
-    dump("--", "Forced port", QString::number(port));
-}*/
-
 void PlaySMF::textEvent(int typ, const QString& data)
 {
     dumpStr(QString("Text (%1)").arg(typ), data);
-}
-
-/*void PlaySMF::smpteEvent(int b0, int b1, int b2, int b3, int b4)
-{
-    dump("--", "SMPTE", QString("%1, %2, %3, %4, %5").arg(b0).arg(b1).arg(b2).arg(b3).arg(b4));
 }
 
 void PlaySMF::timeSigEvent(int b0, int b1, int b2, int b3)
@@ -285,7 +233,7 @@ void PlaySMF::timeSigEvent(int b0, int b1, int b2, int b3)
 void PlaySMF::keySigEvent(int b0, int b1)
 {
     dump("--", "Key Signature", QString("%1, %2").arg(b0).arg(b1));
-}*/
+}
 
 void PlaySMF::tempoEvent(int tempo)
 {
@@ -293,7 +241,6 @@ void PlaySMF::tempoEvent(int tempo)
     {
         m_initialTempo = tempo;
     }
-    //dump("--", "Tempo", QString::number(tempo));
     TempoEvent ev(m_queueId, tempo);
     appendEvent(ev);
 }
@@ -352,7 +299,7 @@ void PlaySMF::usage()
     cout << "\tplaysmf PORT FILE.MID" << endl;
 }
 
-PlaySMF *player;
+PlaySMF player;
 
 void signalHandler(int sig)
 {
@@ -360,21 +307,20 @@ void signalHandler(int sig)
         qDebug() << "Caught a SIGINT. Exiting";
     else if (sig == SIGTERM)
         qDebug() << "Caught a SIGTERM. Exiting";
-    player->stop();
+    player.stop();
 }
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv, false);
-    player = new PlaySMF();
     signal(SIGINT, signalHandler);
     signal(SIGTERM, signalHandler);
     if (app.argc() == 3) {
         QString portName(app.argv()[1]);
-        player->subscribe(portName);
+        player.subscribe(portName);
         QString fileName(app.argv()[2]);
-        player->play(fileName);
+        player.play(fileName);
     } else {
-        player->usage();
+        player.usage();
     }
 }

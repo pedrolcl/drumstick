@@ -72,7 +72,7 @@ MidiClient::open()
         blockMode = SND_SEQ_NONBLOCK;
     }
     CHECK_ERROR(snd_seq_open(&m_SeqHandle, m_DeviceName.toLocal8Bit().data(), m_OpenMode, blockMode));
-    snd_seq_get_client_info(m_SeqHandle, m_Info->m_Info);
+    CHECK_EXCEPT(snd_seq_get_client_info(m_SeqHandle, m_Info->m_Info));
 }
 
 void 
@@ -80,7 +80,7 @@ MidiClient::close()
 {
     if (m_SeqHandle != NULL) {
         stopSequencerInput();
-        CHECK_ERROR(snd_seq_close(m_SeqHandle));
+        CHECK_EXCEPT(snd_seq_close(m_SeqHandle));
         m_SeqHandle = NULL;
     }
 }
@@ -95,7 +95,7 @@ void
 MidiClient::setOutputBufferSize(size_t newSize)
 {
     if (getOutputBufferSize() != newSize) {
-        CHECK_ERROR(snd_seq_set_output_buffer_size(m_SeqHandle, newSize));
+        CHECK_EXCEPT(snd_seq_set_output_buffer_size(m_SeqHandle, newSize));
     }
 }
 
@@ -109,7 +109,7 @@ void
 MidiClient::setInputBufferSize(size_t newSize)
 {
     if (getInputBufferSize() != newSize) {
-        CHECK_ERROR(snd_seq_set_input_buffer_size(m_SeqHandle, newSize));
+        CHECK_EXCEPT(snd_seq_set_input_buffer_size(m_SeqHandle, newSize));
     }
 }
 
@@ -136,7 +136,7 @@ void MidiClient::setBlockMode(bool newValue)
         m_BlockMode = newValue;
         if (m_SeqHandle != NULL)
         {
-            snd_seq_nonblock(m_SeqHandle, m_BlockMode ? 0 : 1);
+            CHECK_EXCEPT(snd_seq_nonblock(m_SeqHandle, m_BlockMode ? 0 : 1));
         }
     }
 }
@@ -144,7 +144,7 @@ void MidiClient::setBlockMode(bool newValue)
 int 
 MidiClient::getClientId()
 {
-    return snd_seq_client_id(m_SeqHandle);
+    return CHECK_EXCEPT(snd_seq_client_id(m_SeqHandle));
 }
 
 snd_seq_type_t 
