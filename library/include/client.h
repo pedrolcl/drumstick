@@ -132,8 +132,8 @@ public:
     PortInfoList getAvailableInputs();
     PortInfoList getAvailableOutputs();
 
-    void addSubscriber(QObject* subscriber);
-    void removeSubscriber(QObject* subscriber);
+    void addListener(QObject* listener);
+    void removeListener(QObject* listener);
     void setEventsEnabled(const bool bEnabled);
     bool getEventsEnabled() const { return m_eventsEnabled; }
 
@@ -164,7 +164,7 @@ private:
     MidiPortList m_Ports;
     PortInfoList m_OutputsAvail;
     PortInfoList m_InputsAvail;
-    QObjectList m_subscribers;
+    QObjectList m_listeners;
 };
 
 }

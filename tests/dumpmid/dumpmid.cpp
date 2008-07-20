@@ -105,7 +105,7 @@ void QDumpMIDI::run()
     cout << "Source_ Event_________________ Ch _Data__" << endl;
     try {
 #ifdef USE_QEVENTS
-        m_Client->addSubscriber(this);
+        m_Client->addListener(this);
         m_Client->setEventsEnabled(true);
 #endif
         m_Client->createQueue();

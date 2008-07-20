@@ -247,7 +247,7 @@ MidiClient::doEvents()
             }
             if (m_eventsEnabled) {
                 QObjectList::Iterator it;
-                for(it=m_subscribers.begin(); it!=m_subscribers.end(); ++it) {
+                for(it=m_listeners.begin(); it!=m_listeners.end(); ++it) {
                     QObject* sub = (*it);
                     QApplication::postEvent(sub, event->clone());
                 }
@@ -596,23 +596,22 @@ MidiClient::getAvailableOutputs()
 }
 
 void 
-MidiClient::addSubscriber(QObject* subscriber)
+MidiClient::addListener(QObject* listener)
 {
-    m_subscribers.append(subscriber);
+    m_listeners.append(listener);
 }
 
 void 
-MidiClient::removeSubscriber(QObject* subscriber)
+MidiClient::removeListener(QObject* listener)
 {
-    m_subscribers.removeAll(subscriber);
+    m_listeners.removeAll(listener);
 }
 
 void 
 MidiClient::setEventsEnabled(bool bEnabled)
 {
-    if (bEnabled != m_eventsEnabled)
-    {
-        m_eventsEnabled = (bEnabled & !m_subscribers.empty());
+    if (bEnabled != m_eventsEnabled) {
+        m_eventsEnabled = (bEnabled & !m_listeners.empty());
     }
 }
 

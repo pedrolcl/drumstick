@@ -37,7 +37,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     m_Client->open();
     m_Client->setClientName("Virtual Piano");
 #ifdef USE_QEVENTS
-    m_Client->addSubscriber(this);
+    m_Client->addListener(this);
     m_Client->setEventsEnabled(true);
 #else // USE_QEVENTS (using signals instead)
     connect(m_Client, SIGNAL(eventReceived(SequencerEvent*)), SLOT(sequencerEvent(SequencerEvent*)));
