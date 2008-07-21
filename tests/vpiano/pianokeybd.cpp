@@ -22,14 +22,14 @@
 #include <QApplication>
 
 PianoKeybd::PianoKeybd(QWidget *parent) 
-    : QGraphicsView(parent)
+    : QGraphicsView(parent), m_rotation(0)
 {
     initialize();
     initScene(4, 3);
 }
 
 PianoKeybd::PianoKeybd(const int baseOctave, const int numOctaves, QWidget *parent) 
-    : QGraphicsView(parent)
+    : QGraphicsView(parent), m_rotation(0)
 {
     initialize();
     initScene(baseOctave, numOctaves);
@@ -101,6 +101,21 @@ void PianoKeybd::setNumOctaves(const int numOctaves)
         int baseOctave = m_scene->baseOctave();
         delete m_scene;
         initScene(baseOctave, numOctaves);
-        update();
+        fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
     }
+}
+
+void PianoKeybd::setRotation(int r)
+{
+    if (r != m_rotation) {
+        m_rotation = r;
+        resetTransform();
+        rotate(m_rotation);
+        fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
+    }
+}
+
+QSize PianoKeybd::sizeHint() const 
+{ 
+    return mapFromScene(sceneRect()).boundingRect().size();
 }

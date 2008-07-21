@@ -29,6 +29,7 @@ class QDESIGNER_WIDGET_EXPORT PianoKeybd : public QGraphicsView
     Q_OBJECT
     Q_PROPERTY( int baseOctave READ baseOctave WRITE setBaseOctave )
     Q_PROPERTY( int numOctaves READ numOctaves WRITE setNumOctaves )
+    Q_PROPERTY( int rotation READ getRotation WRITE setRotation )
 
 public:
     PianoKeybd(QWidget *parent = 0);
@@ -38,7 +39,9 @@ public:
     int numOctaves() const { return m_scene->numOctaves(); }
     void setBaseOctave(const int baseOctave) { m_scene->setBaseOctave(baseOctave); }
     void setNumOctaves(const int numOctaves);
-    QSize sizeHint() const { return m_scene->sizeHint(); }
+    QSize sizeHint() const;
+    int getRotation() const { return m_rotation; }
+    void setRotation(int r);
 
 public slots:
     void showNoteOn( int midiNote );
@@ -54,7 +57,8 @@ protected:
     void initScene(int base, int num);
     void resizeEvent(QResizeEvent *event);
 
-private:    
+private:
+    int m_rotation;
     PianoScene *m_scene;
     KeyboardMap m_defaultMap;
 };

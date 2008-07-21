@@ -144,7 +144,7 @@ void PianoScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent )
     PianoKey* key = getKeyForPos(mouseEvent->scenePos());
     if (key != NULL) {
         keyOff(key);
-        m_mousePressed = false;
+        m_mousePressed = false;	
         mouseEvent->accept();
         return;
     }
@@ -190,6 +190,6 @@ void PianoScene::keyReleaseEvent ( QKeyEvent * keyEvent )
             keyEvent->accept();
             return;
         }
-    }
+    }	
     keyEvent->ignore();
 }
