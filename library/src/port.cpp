@@ -78,12 +78,6 @@ PortInfo& PortInfo::operator=(const PortInfo& other)
     return *this;
 }
 
-bool PortInfo::operator==(PortInfo& other)
-{
-    return (getAddr()->client == other.getAddr()->client) &&
-           (getAddr()->port == other.getAddr()->port);
-}
-
 int
 PortInfo::getClient()
 {

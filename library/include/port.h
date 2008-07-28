@@ -47,7 +47,6 @@ public:
     virtual ~PortInfo(); 
     PortInfo* clone();
     PortInfo& operator=(const PortInfo& other);
-    bool operator==(PortInfo& other);
     
     int getClient();
     int getPort();

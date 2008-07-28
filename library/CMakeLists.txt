@@ -24,7 +24,8 @@ SET(aseqmm_qtobject_SRCS
     include/client.h
     include/port.h
     include/qsmf.h
-    include/qmidithread.h
+    include/recthread.h
+    include/playthread.h
 )
 
 SET(aseqmm_SRCS
@@ -32,7 +33,8 @@ SET(aseqmm_SRCS
     include/commons.h
     include/event.h
     include/port.h
-    include/qmidithread.h
+    include/recthread.h
+    include/playthread.h
     include/qsmf.h
     include/queue.h
     include/subscription.h
@@ -40,7 +42,8 @@ SET(aseqmm_SRCS
     src/client.cpp
     src/event.cpp
     src/port.cpp
-    src/qmidithread.cpp
+    src/recthread.cpp
+    src/playthread.cpp
     src/qsmf.cpp
     src/queue.cpp
     src/subscription.cpp

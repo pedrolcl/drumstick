@@ -36,10 +36,12 @@ class QueueInfo
 
 public:
     QueueInfo();
+    QueueInfo(const QueueInfo& other);
     QueueInfo(snd_seq_queue_info_t* other);
     virtual ~QueueInfo();
     QueueInfo* clone();
-
+    QueueInfo& operator=(const QueueInfo& other);
+    
     int getId();
     QString getName();
     int getOwner();
@@ -60,9 +62,11 @@ class QueueStatus
 
 public:
     QueueStatus();
+    QueueStatus(const QueueStatus& other);
     QueueStatus(snd_seq_queue_status_t* other);
     virtual ~QueueStatus();
     QueueStatus* clone();
+    QueueStatus& operator=(const QueueStatus& other);
 
     int getId();
     int getEvents();
@@ -81,9 +85,11 @@ class QueueTempo
 
 public:
     QueueTempo();
+    QueueTempo(const QueueTempo& other);
     QueueTempo(snd_seq_queue_tempo_t* other);
     virtual ~QueueTempo(); 
     QueueTempo* clone();
+    QueueTempo& operator=(const QueueTempo& other);
 
     int getId();
     int getPPQ();
@@ -106,9 +112,11 @@ class QueueTimer
 
 public:
     QueueTimer();
+    QueueTimer(const QueueTimer& other);
     QueueTimer(snd_seq_queue_timer_t* other);
     virtual ~QueueTimer(); 
     QueueTimer* clone();
+    QueueTimer& operator=(const QueueTimer& other);
 
     int getQueueId();
     snd_seq_queue_timer_type_t getType();
@@ -127,33 +135,34 @@ class MidiQueue
 {
 public:
     MidiQueue(MidiClient* seq);
-    MidiQueue(MidiClient* seq,  QueueInfo* info);
-    MidiQueue(MidiClient* seq,  QString name);
+    MidiQueue(MidiClient* seq,  const QueueInfo info);
+    MidiQueue(MidiClient* seq,  const QString name);
     virtual ~MidiQueue();
 
-    int getId() { return m_Id; }
+    int getId() const { return m_Id; }
     void start();
     void stop();
     void continueRunning();
     void clear();
     void setTickPosition(snd_seq_tick_time_t pos);
     void setRealTimePosition(snd_seq_real_time_t* pos);
-    QueueInfo* getInfo();
-    QueueStatus* getStatus();
-    QueueTempo* getTempo();
-    QueueTimer* getTimer();
+    QueueInfo& getInfo();
+    QueueStatus& getStatus();
+    QueueTempo& getTempo();
+    QueueTimer& getTimer();
     int getUsage();
-    void setInfo(QueueInfo* value);
-    void setTempo(QueueTempo* value);
-    void setTimer(QueueTimer* value);
+    void setInfo(const QueueInfo& value);
+    void setTempo(const QueueTempo& value);
+    void setTimer(const QueueTimer& value);
     void setUsage(int used);
 
 private:
     int m_Id;
     MidiClient* m_MidiClient;
-    QueueInfo*  m_Info;
-    QueueTempo* m_Tempo;
-    QueueTimer* m_Timer;
+    QueueInfo  m_Info;
+    QueueTempo m_Tempo;
+    QueueTimer m_Timer;
+    QueueStatus m_Status;
 };
 
 }

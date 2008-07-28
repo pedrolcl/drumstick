@@ -1,0 +1,168 @@
+<ui version="4.0" >
+ <class>SMFPlayerClass</class>
+ <widget class="QWidget" name="SMFPlayerClass" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>536</width>
+    <height>152</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>SMFPlayer</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <item>
+    <layout class="QGridLayout" >
+     <item rowspan="3" row="0" column="0" >
+      <widget class="QLabel" name="lblTime" >
+       <property name="font" >
+        <font>
+         <pointsize>40</pointsize>
+        </font>
+       </property>
+       <property name="text" >
+        <string>00:00:00</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" >
+      <widget class="QLabel" name="lblName" />
+     </item>
+     <item row="1" column="1" >
+      <widget class="QLabel" name="lblCopyright" />
+     </item>
+     <item row="2" column="1" >
+      <widget class="QLabel" name="lblOther" />
+     </item>
+     <item row="3" column="0" colspan="2" >
+      <widget class="QProgressBar" name="progressBar" >
+       <property name="value" >
+        <number>0</number>
+       </property>
+       <property name="alignment" >
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="textVisible" >
+        <bool>true</bool>
+       </property>
+       <property name="textDirection" >
+        <enum>QProgressBar::TopToBottom</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <item>
+      <widget class="QPushButton" name="btnPlay" >
+       <property name="text" >
+        <string>play</string>
+       </property>
+       <property name="icon" >
+        <iconset resource="smfplayer.qrc" >:/resources/play.png</iconset>
+       </property>
+       <property name="checkable" >
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive" >
+        <bool>true</bool>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+       <property name="flat" >
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnPause" >
+       <property name="text" >
+        <string>pause</string>
+       </property>
+       <property name="icon" >
+        <iconset resource="smfplayer.qrc" >:/resources/pause.png</iconset>
+       </property>
+       <property name="checkable" >
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnStop" >
+       <property name="text" >
+        <string>stop</string>
+       </property>
+       <property name="icon" >
+        <iconset resource="smfplayer.qrc" >:/resources/stop.png</iconset>
+       </property>
+       <property name="checkable" >
+        <bool>true</bool>
+       </property>
+       <property name="checked" >
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnOpen" >
+       <property name="text" >
+        <string>open</string>
+       </property>
+       <property name="icon" >
+        <iconset resource="smfplayer.qrc" >:/resources/open.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnSetup" >
+       <property name="text" >
+        <string>setup</string>
+       </property>
+       <property name="icon" >
+        <iconset resource="smfplayer.qrc" >:/resources/setup.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnExit" >
+       <property name="text" >
+        <string>exit</string>
+       </property>
+       <property name="icon" >
+        <iconset resource="smfplayer.qrc" >:/resources/quit.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <resources>
+  <include location="smfplayer.qrc" />
+ </resources>
+ <connections/>
+</ui>

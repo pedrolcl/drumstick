@@ -167,6 +167,45 @@ TARGET_LINK_LIBRARIES(playsmf
     aseqmm
 )
 
+# playmid
+
+SET(playmid_forms_SRCS
+    playmid/smfplayer.ui
+)
+SET(playmid_SRCS
+    playmid/smfplayer.cpp
+    playmid/smfplayer.h
+    playmid/player.cpp
+    playmid/player.h
+    playmid/song.cpp
+    playmid/song.h
+    playmid/main.cpp
+)
+
+SET(playmid_qtobject_SRCS
+    playmid/player.h
+    playmid/smfplayer.h
+)
+
+QT4_WRAP_UI(playmid_ui_SRCS ${playmid_forms_SRCS})
+
+QT4_WRAP_CPP(playmid_moc_SRCS ${playmid_qtobject_SRCS})
+
+QT4_ADD_RESOURCES(playmid_resources playmid/smfplayer.qrc)
+
+ADD_EXECUTABLE(smfplayer
+    ${playmid_resources}
+    ${playmid_ui_SRCS}
+    ${playmid_moc_SRCS}
+    ${playmid_SRCS}
+)
+
+TARGET_LINK_LIBRARIES(smfplayer
+    ${QT_LIBRARIES} 
+    ${ALSA_LIBS} 
+    aseqmm
+)
+
 # vpiano
 
 INCLUDE_DIRECTORIES ( 

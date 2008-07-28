@@ -96,11 +96,11 @@ public:
     void portDetach(MidiPort* port);
     void detachAllPorts();
     void addEventFilter(int evtype);
-    void output(SequencerEvent* ev);
-    void outputDirect(SequencerEvent* ev);
-    void outputBuffer(SequencerEvent* ev);
-    void drainOutput(); 
-    void drainOutput(int timeout); 
+    void output(SequencerEvent* ev, bool async = false, int timeout = -1);
+    void output(const SequencerEvent& ev, bool async = false, int timeout = -1);
+    void outputDirect(SequencerEvent* ev, bool async = false, int timeout = -1);
+    void outputBuffer(SequencerEvent* ev, bool async = false, int timeout = -1);
+    void drainOutput(bool async = false, int timeout = -1); 
     void synchronizeOutput();
 
     int getClientId();

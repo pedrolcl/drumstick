@@ -18,7 +18,7 @@
 */
 
 #include "commons.h"
-#include "qmidithread.h"
+#include "recthread.h"
 #include "client.h"
 
 namespace ALSA 
@@ -27,7 +27,7 @@ namespace Sequencer
 {
 
 bool 
-SequencerInputThread::isTerminated() 
+SequencerInputThread::stopped() 
 { 
     m_mutex.lock();
     bool bTmp = m_Terminated;
@@ -55,7 +55,7 @@ void SequencerInputThread::run()
         try
         {
             snd_seq_poll_descriptors(m_MidiClient->getHandle(), pfd, npfd, m_Events);
-            while (!isTerminated() && (m_MidiClient != NULL))
+            while (!stopped() && (m_MidiClient != NULL))
             {
                 rt = poll(pfd, npfd, m_Wait);
                 if (rt > 0) {

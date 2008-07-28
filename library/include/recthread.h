@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
  
-#ifndef INCLUDED_QMIDITHREAD_H
-#define INCLUDED_QMIDITHREAD_H
+#ifndef INCLUDED_RECTHREAD_H
+#define INCLUDED_RECTHREAD_H
 
 #include "commons.h"
 #include <QThread>
@@ -46,7 +46,7 @@ public:
     virtual ~SequencerInputThread() {}
 
     virtual void run();
-    bool isTerminated();
+    bool stopped();
     void stop();
 
 private:
@@ -60,4 +60,4 @@ private:
 }
 }
 
-#endif //INCLUDED_QMIDITHREAD_H
+#endif //INCLUDED_RECTHREAD_H

@@ -257,10 +257,10 @@ void PlaySMF::play(QString fileName)
     cout << "___time ch event__________ data____" << endl;
     m_engine->readFromFile(fileName);
     m_song.sort();
-    QueueTempo* firstTempo = m_Queue->getTempo();
-    firstTempo->setPPQ(m_division);
+    QueueTempo firstTempo = m_Queue->getTempo();
+    firstTempo.setPPQ(m_division);
     if (m_initialTempo > 0)
-        firstTempo->setTempo(m_initialTempo);
+        firstTempo.setTempo(m_initialTempo);
     m_Queue->setTempo(firstTempo);
     m_Client->drainOutput();
     cout << "Starting playback" << endl;
@@ -270,17 +270,13 @@ void PlaySMF::play(QString fileName)
         m_Stopped = false;
         m_Queue->start();
         while (!stopped() && i.hasNext()) {
-            SequencerEvent ev = i.next();
-            m_Client->output(&ev);
-        }
-        if (!stopped()) {
-            m_Client->drainOutput();
+            m_Client->output(i.next());
         }
         if (stopped()) {
             m_Queue->clear();
             shutupSound();
-        }
-        if (!stopped()) {
+        } else {
+            m_Client->drainOutput();
             m_Client->synchronizeOutput();
         }
         m_Queue->stop();

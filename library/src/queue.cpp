@@ -42,6 +42,12 @@ QueueInfo::QueueInfo(snd_seq_queue_info_t* other)
     snd_seq_queue_info_copy(m_Info, other);
 }
 
+QueueInfo::QueueInfo(const QueueInfo& other)
+{
+    snd_seq_queue_info_malloc(&m_Info);
+    snd_seq_queue_info_copy(m_Info, other.m_Info);
+}
+
 QueueInfo::~QueueInfo()
 {
     snd_seq_queue_info_free(m_Info);
@@ -50,6 +56,12 @@ QueueInfo::~QueueInfo()
 QueueInfo* QueueInfo::clone()
 {
     return new QueueInfo(m_Info);
+}
+
+QueueInfo& QueueInfo::operator=(const QueueInfo& other)
+{
+    snd_seq_queue_info_copy(m_Info, other.m_Info);
+    return *this;
 }
 
 int QueueInfo::getId()
@@ -107,6 +119,12 @@ QueueStatus::QueueStatus(snd_seq_queue_status_t* other)
     snd_seq_queue_status_copy(m_Info, other);
 }
 
+QueueStatus::QueueStatus(const QueueStatus& other)
+{
+    snd_seq_queue_status_malloc(&m_Info);
+    snd_seq_queue_status_copy(m_Info, other.m_Info);
+}
+
 QueueStatus::~QueueStatus()
 {
     snd_seq_queue_status_free(m_Info);
@@ -115,6 +133,12 @@ QueueStatus::~QueueStatus()
 QueueStatus* QueueStatus::clone()
 {
     return new QueueStatus(m_Info);
+}
+
+QueueStatus& QueueStatus::operator=(const QueueStatus& other)
+{
+    snd_seq_queue_status_copy(m_Info, other.m_Info);
+    return *this;
 }
 
 int QueueStatus::getId()
@@ -157,6 +181,12 @@ QueueTempo::QueueTempo(snd_seq_queue_tempo_t* other)
     snd_seq_queue_tempo_copy(m_Info, other);
 }
 
+QueueTempo::QueueTempo(const QueueTempo& other)
+{
+    snd_seq_queue_tempo_malloc(&m_Info);
+    snd_seq_queue_tempo_copy(m_Info, other.m_Info);
+}
+
 QueueTempo::~QueueTempo()
 {
     snd_seq_queue_tempo_free(m_Info);
@@ -165,6 +195,12 @@ QueueTempo::~QueueTempo()
 QueueTempo* QueueTempo::clone()
 {
     return new QueueTempo(m_Info);
+}
+
+QueueTempo& QueueTempo::operator=(const QueueTempo& other)
+{
+    snd_seq_queue_tempo_copy(m_Info, other.m_Info);
+    return *this;
 }
 
 int QueueTempo::getId()
@@ -227,6 +263,12 @@ QueueTimer::QueueTimer(snd_seq_queue_timer_t* other)
     snd_seq_queue_timer_copy(m_Info, other);
 }
 
+QueueTimer::QueueTimer(const QueueTimer& other)
+{
+    snd_seq_queue_timer_malloc(&m_Info);
+    snd_seq_queue_timer_copy(m_Info, other.m_Info);
+}
+
 QueueTimer::~QueueTimer()
 {
     snd_seq_queue_timer_free(m_Info);
@@ -235,6 +277,12 @@ QueueTimer::~QueueTimer()
 QueueTimer* QueueTimer::clone()
 {
     return new QueueTimer(m_Info);
+}
+
+QueueTimer& QueueTimer::operator=(const QueueTimer& other)
+{
+    snd_seq_queue_timer_copy(m_Info, other.m_Info);
+    return *this;
 }
 
 int QueueTimer::getQueueId()
@@ -272,9 +320,9 @@ void QueueTimer::setResolution(unsigned int value)
     snd_seq_queue_timer_set_resolution(m_Info, value);
 }
 
-/*********/
+/*************/
 /* MidiQueue */
-/*********/
+/*************/
 
 MidiQueue::MidiQueue(MidiClient* seq) :
     m_MidiClient(NULL), m_Info(NULL), m_Tempo(NULL), m_Timer(NULL)
@@ -283,14 +331,14 @@ MidiQueue::MidiQueue(MidiClient* seq) :
     m_Id = CHECK_ERROR(snd_seq_alloc_queue(m_MidiClient->getHandle()));
 }
 
-MidiQueue::MidiQueue(MidiClient* seq, QueueInfo* info)
+MidiQueue::MidiQueue(MidiClient* seq, const QueueInfo info)
 {
     m_MidiClient = seq;
     m_Info = info;
-    m_Id = CHECK_ERROR(snd_seq_create_queue(m_MidiClient->getHandle(), m_Info->m_Info));
+    m_Id = CHECK_ERROR(snd_seq_create_queue(m_MidiClient->getHandle(), m_Info.m_Info));
 }
 
-MidiQueue::MidiQueue(MidiClient* seq, QString name)
+MidiQueue::MidiQueue(MidiClient* seq, const QString name)
 {
     m_MidiClient = seq;
     m_Id = CHECK_ERROR(snd_seq_alloc_named_queue(m_MidiClient->getHandle(), name.toLocal8Bit().data()));
@@ -302,72 +350,48 @@ MidiQueue::~MidiQueue()
     {
         CHECK_ERROR(snd_seq_free_queue(m_MidiClient->getHandle(), m_Id));
     }
-    if (m_Tempo != NULL)
-        delete m_Tempo;
-    if (m_Timer != NULL)
-        delete m_Timer;
-    if (m_Info != NULL)
-        delete m_Info;
 }
 
-QueueInfo* MidiQueue::getInfo()
+QueueInfo& MidiQueue::getInfo()
 {
-    if (m_Info == NULL)
-    {
-        snd_seq_queue_info_t* info;
-        snd_seq_queue_info_alloca(&info);
-        CHECK_EXCEPT(snd_seq_get_queue_info(m_MidiClient->getHandle(), m_Id, info));
-        m_Info = new QueueInfo(info);
-    }
+    CHECK_EXCEPT(snd_seq_get_queue_info(m_MidiClient->getHandle(), m_Id, m_Info.m_Info));
     return m_Info;
 }
 
-QueueStatus* MidiQueue::getStatus()
+QueueStatus& MidiQueue::getStatus()
 {
-    snd_seq_queue_status_t* info;
-    snd_seq_queue_status_alloca(&info);
-    CHECK_EXCEPT(snd_seq_get_queue_status(m_MidiClient->getHandle(), m_Id, info));
-    return new QueueStatus(info);
+    CHECK_EXCEPT(snd_seq_get_queue_status(m_MidiClient->getHandle(), m_Id, m_Status.m_Info));
+    return m_Status;
 }
 
-QueueTempo* MidiQueue::getTempo()
+QueueTempo& MidiQueue::getTempo()
 {
-    if (m_Tempo == NULL) {
-        snd_seq_queue_tempo_t* info;
-        snd_seq_queue_tempo_alloca(&info);
-        CHECK_EXCEPT(snd_seq_get_queue_tempo(m_MidiClient->getHandle(), m_Id, info));
-        m_Tempo = new QueueTempo(info);
-    }
+    CHECK_EXCEPT(snd_seq_get_queue_tempo(m_MidiClient->getHandle(), m_Id, m_Tempo.m_Info));
     return m_Tempo;
 }
 
-QueueTimer* MidiQueue::getTimer()
+QueueTimer& MidiQueue::getTimer()
 {
-    if (m_Timer == NULL) {
-        snd_seq_queue_timer_t* info;
-        snd_seq_queue_timer_alloca(&info);
-        CHECK_EXCEPT(snd_seq_get_queue_timer(m_MidiClient->getHandle(), m_Id, info));
-        m_Timer = new QueueTimer(info);
-    }
+    CHECK_EXCEPT(snd_seq_get_queue_timer(m_MidiClient->getHandle(), m_Id, m_Timer.m_Info));
     return m_Timer;
 }
 
-void MidiQueue::setInfo(QueueInfo* value)
+void MidiQueue::setInfo(const QueueInfo& value)
 {
-    CHECK_EXCEPT(snd_seq_set_queue_info(m_MidiClient->getHandle(), m_Id, value->m_Info));
     m_Info = value;
+    CHECK_EXCEPT(snd_seq_set_queue_info(m_MidiClient->getHandle(), m_Id, m_Info.m_Info));
 }
 
-void MidiQueue::setTempo(QueueTempo* value)
+void MidiQueue::setTempo(const QueueTempo& value)
 {
-    CHECK_EXCEPT(snd_seq_set_queue_tempo(m_MidiClient->getHandle(), m_Id, value->m_Info));
     m_Tempo = value;
+    CHECK_EXCEPT(snd_seq_set_queue_tempo(m_MidiClient->getHandle(), m_Id, m_Tempo.m_Info));
 }
 
-void MidiQueue::setTimer(QueueTimer* value)
+void MidiQueue::setTimer(const QueueTimer& value)
 {
-    CHECK_EXCEPT(snd_seq_set_queue_timer(m_MidiClient->getHandle(), m_Id, value->m_Info));
     m_Timer = value;
+    CHECK_EXCEPT(snd_seq_set_queue_timer(m_MidiClient->getHandle(), m_Id, m_Timer.m_Info));
 }
 
 int MidiQueue::getUsage()

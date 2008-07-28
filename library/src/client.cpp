@@ -21,7 +21,7 @@
 #include "client.h"
 #include "queue.h"
 #include "event.h"
-#include "qmidithread.h"
+#include "recthread.h"
 #include "port.h"
 #include <QThread>
 #include <QApplication>
@@ -443,66 +443,90 @@ MidiClient::setErrorBounce(bool newValue)
     applyClientInfo();
 }
 
-void MidiClient::output(SequencerEvent* ev)
+void MidiClient::output(const SequencerEvent& ev, bool async, int timeout)
 {
     int npfds;
     pollfd* pfds;
-
-    npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
-    pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
-    snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-    while (snd_seq_event_output(m_SeqHandle, ev->getEvent()) < 0)
-    {
-        poll(pfds, npfds, -1);
+    SequencerEvent evCopy = ev;
+    if (async) {
+        CHECK_EXCEPT(snd_seq_event_output(m_SeqHandle, evCopy.getEvent()));
+    } else {
+        npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
+        pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
+        snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
+        while (snd_seq_event_output(m_SeqHandle, evCopy.getEvent()) < 0)
+        {
+            poll(pfds, npfds, timeout);
+        }
     }
 }
 
-void MidiClient::outputDirect(SequencerEvent* ev)
+void MidiClient::output(SequencerEvent* ev, bool async, int timeout)
 {
     int npfds;
     pollfd* pfds;
-
-    npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
-    pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
-    snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-    while (snd_seq_event_output_direct(m_SeqHandle, ev->getEvent()) < 0)
-    {
-        poll(pfds, npfds, -1);
+    if (async) {
+        CHECK_EXCEPT(snd_seq_event_output(m_SeqHandle, ev->getEvent()));
+    } else {
+        npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
+        pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
+        snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
+        while (snd_seq_event_output(m_SeqHandle, ev->getEvent()) < 0)
+        {
+            poll(pfds, npfds, timeout);
+        }
     }
 }
 
-void MidiClient::outputBuffer(SequencerEvent* ev)
+void MidiClient::outputDirect(SequencerEvent* ev, bool async, int timeout)
 {
     int npfds;
     pollfd* pfds;
-
-    npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
-    pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
-    snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-    while (snd_seq_event_output_buffer(m_SeqHandle, ev->getEvent()) < 0)
-    {
-        poll(pfds, npfds, -1);
+    if (async) {
+        CHECK_EXCEPT(snd_seq_event_output_direct(m_SeqHandle, ev->getEvent()));
+    } else {
+        npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
+        pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
+        snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
+        while (snd_seq_event_output_direct(m_SeqHandle, ev->getEvent()) < 0)
+        {
+            poll(pfds, npfds, timeout);
+        }
     }
 }
 
-void MidiClient::drainOutput(int timeout)
+void MidiClient::outputBuffer(SequencerEvent* ev, bool async, int timeout)
 {
     int npfds;
     pollfd* pfds;
-
-    npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
-    pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
-    snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-    while (snd_seq_drain_output(m_SeqHandle) < 0)
-    {
-        poll(pfds, npfds, timeout);
+    if (async) {
+        CHECK_EXCEPT(snd_seq_event_output_buffer(m_SeqHandle, ev->getEvent()));
+    } else {
+        npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
+        pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
+        snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
+        while (snd_seq_event_output_buffer(m_SeqHandle, ev->getEvent()) < 0)
+        {
+            poll(pfds, npfds, timeout);
+        }
     }
 }
 
-void 
-MidiClient::drainOutput()
+void MidiClient::drainOutput(bool async, int timeout)
 {
-    drainOutput(-1);
+    int npfds;
+    pollfd* pfds;
+    if (async) {
+        CHECK_EXCEPT(snd_seq_drain_output(m_SeqHandle));
+    } else {
+        npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
+        pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
+        snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
+        while (snd_seq_drain_output(m_SeqHandle) < 0)
+        {
+            poll(pfds, npfds, timeout);
+        }
+    }
 }
 
 void 
