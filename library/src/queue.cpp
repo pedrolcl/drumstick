@@ -324,8 +324,7 @@ void QueueTimer::setResolution(unsigned int value)
 /* MidiQueue */
 /*************/
 
-MidiQueue::MidiQueue(MidiClient* seq) :
-    m_MidiClient(NULL), m_Info(NULL), m_Tempo(NULL), m_Timer(NULL)
+MidiQueue::MidiQueue(MidiClient* seq)
 {
     m_MidiClient = seq;
     m_Id = CHECK_ERROR(snd_seq_alloc_queue(m_MidiClient->getHandle()));

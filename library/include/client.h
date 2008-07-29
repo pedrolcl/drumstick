@@ -125,8 +125,8 @@ public:
     bool getErrorBounce();
     void setErrorBounce(bool newValue);
 
-    ClientInfo* getThisClientInfo();
-    void setThisClientInfo(ClientInfo* val);
+    ClientInfo& getThisClientInfo();
+    void setThisClientInfo(const ClientInfo& val);
     MidiPortList getMidiPorts() const;
     ClientInfoList getAvailableClients();
     PortInfoList getAvailableInputs();
@@ -153,13 +153,13 @@ private:
     bool m_BlockMode;
     bool m_NeedRefreshClientList;
     int  m_OpenMode;
+    QString m_DeviceName;
 
     snd_seq_t* m_SeqHandle;
     QPointer<SequencerInputThread> m_Thread;
-    ClientInfo* m_Info;
     MidiQueue* m_Queue;
 
-    QString m_DeviceName;
+    ClientInfo m_Info;
     ClientInfoList m_ClientList;
     MidiPortList m_Ports;
     PortInfoList m_OutputsAvail;

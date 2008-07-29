@@ -32,12 +32,15 @@ class TimerGlobalInfo;
 
 class TimerInfo
 {
+    friend class Timer;
 public:
     TimerInfo();
+    TimerInfo(const TimerInfo& other);
     TimerInfo(const snd_timer_info_t* other);
     virtual ~TimerInfo();
     TimerInfo* clone();
-
+    TimerInfo& operator=(const TimerInfo& other);
+    
     bool isSlave();
     int getCard();
     QString getId();
@@ -81,14 +84,17 @@ typedef QList<TimerId> TimerIdList;
 
 class TimerGlobalInfo
 {
+    friend class TimerQuery;
 public:
     TimerGlobalInfo();
-    TimerGlobalInfo(snd_timer_ginfo_t* other);
+    TimerGlobalInfo(const TimerGlobalInfo& other);
+    TimerGlobalInfo(const snd_timer_ginfo_t* other);
     virtual ~TimerGlobalInfo();
     TimerGlobalInfo* clone();
+    TimerGlobalInfo& operator=(const TimerGlobalInfo& other);
 
-    void setTimerId(TimerId *tid);
-    TimerId* getTimerId();
+    void setTimerId(const TimerId& tid);
+    TimerId& getTimerId();
     unsigned int getFlags();
     int getCard();
     QString getId();
@@ -100,6 +106,7 @@ public:
 
 private:
     snd_timer_ginfo_t* m_Info;
+    TimerId m_Id;
 };
 
 class TimerQuery
@@ -109,7 +116,7 @@ public:
     virtual ~TimerQuery();
 
     TimerIdList getTimers() { return m_timers; }
-    TimerGlobalInfo* getGlobalInfo();
+    TimerGlobalInfo& getGlobalInfo();
     void setGlobalParams(snd_timer_gparams_t* params);
     void getGlobalParams(snd_timer_gparams_t* params);
     void getGlobalStatus(snd_timer_gstatus_t* status);
@@ -121,17 +128,19 @@ protected:
 private:
     snd_timer_query_t *m_Info;
     TimerIdList m_timers;
+    TimerGlobalInfo m_GlobalInfo;
 };
 
 class TimerParams
 {
     friend class Timer;
-
 public:
     TimerParams();
+    TimerParams(const TimerParams& other);
     TimerParams(const snd_timer_params_t* other);
     virtual ~TimerParams();
     TimerParams* clone();
+    TimerParams& operator=(const TimerParams& other);
 
     void setAutoStart(bool auto_start);
     bool getAutoStart();
@@ -152,11 +161,14 @@ private:
 
 class TimerStatus
 {
+    friend class Timer;
 public:
     TimerStatus();
-    TimerStatus(snd_timer_status_t* other);
+    TimerStatus(const TimerStatus& other);
+    TimerStatus(const snd_timer_status_t* other);
     virtual ~TimerStatus();
     TimerStatus* clone();
+    TimerStatus& operator=(const TimerStatus& other);
 
     snd_htimestamp_t getTimestamp();
     long getResolution();
@@ -172,17 +184,17 @@ class Timer
 {
 public:
     Timer(const QString& deviceName, int openMode);
-    Timer(TimerId* id, int openMode);
+    Timer(TimerId& id, int openMode);
     virtual ~Timer();
+    
     snd_timer_t* getHandle() { return m_Info; }
-
     void addAsyncTimerHandler(snd_async_callback_t callback, void *private_data);
     int getPollDescriptorsCount();
     void pollDescriptors(struct pollfd *pfds, unsigned int space);
     void pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds, unsigned short *revents);
-    TimerInfo* getTimerInfo();
-    void setTimerParams(TimerParams* params);
-    TimerStatus* getTimerStatus();
+    void setTimerParams(const TimerParams& params);
+    TimerInfo& getTimerInfo();
+    TimerStatus& getTimerStatus();
     void start();
     void stop();
     void continueRunning();
@@ -191,6 +203,9 @@ public:
 private:
     snd_timer_t *m_Info;
     snd_async_handler_t *m_asyncHandler;
+    TimerInfo m_TimerInfo;
+    TimerStatus m_TimerStatus;
+    QString m_deviceName;
 };
 
 }

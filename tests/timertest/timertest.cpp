@@ -33,20 +33,19 @@ void runTest()
     for( it = lst.begin(); it != lst.end(); ++it )
     {
         TimerId id = *it;
-        Timer* timer = new Timer(&id, SND_TIMER_OPEN_NONBLOCK);
-        TimerInfo* info = timer->getTimerInfo();
-        cout << qSetFieldWidth(7) << left << info->getId();
-        cout << qSetFieldWidth(20) << left << info->getName();
+        Timer* timer = new Timer(id, SND_TIMER_OPEN_NONBLOCK);
+        TimerInfo info = timer->getTimerInfo();
+        cout << qSetFieldWidth(7) << left << info.getId();
+        cout << qSetFieldWidth(20) << left << info.getName();
         cout << qSetFieldWidth(0) << " ";
         cout << id.getClass() << "/" << id.getSlaveClass() << "/";
         cout << id.getCard() << "/" << id.getDevice() << "/" << id.getSubdevice() << " ";
-        if( info->isSlave() ) {
+        if( info.isSlave() ) {
             cout << "SLAVE";
         } else {
-            cout << info->getFrequency() << " Hz"; 
+            cout << info.getFrequency() << " Hz"; 
         }
         cout << endl;
-        delete info;
         delete timer;
     }
     delete query;

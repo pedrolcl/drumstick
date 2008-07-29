@@ -35,6 +35,12 @@ TimerInfo::TimerInfo(const snd_timer_info_t *other)
     snd_timer_info_copy(m_Info, other);
 }
 
+TimerInfo::TimerInfo(const TimerInfo& other)
+{
+    snd_timer_info_malloc(&m_Info);
+    snd_timer_info_copy(m_Info, other.m_Info);
+}
+
 TimerInfo::~TimerInfo()
 {
     snd_timer_info_free(m_Info);
@@ -43,6 +49,12 @@ TimerInfo::~TimerInfo()
 TimerInfo* TimerInfo::clone()
 {
     return new TimerInfo(m_Info);
+}
+
+TimerInfo& TimerInfo::operator=(const TimerInfo& other)
+{
+    snd_timer_info_copy(m_Info, other.m_Info);
+    return *this;
 }
 
 bool TimerInfo::isSlave()
@@ -232,13 +244,11 @@ TimerQuery::freeTimers()
     m_timers.clear();
 }
 
-TimerGlobalInfo*
+TimerGlobalInfo&
 TimerQuery::getGlobalInfo()
 {
-    snd_timer_ginfo_t *info;
-    snd_timer_ginfo_alloca(&info);
-    snd_timer_query_info(m_Info, info);
-    return new TimerGlobalInfo(info);
+    snd_timer_query_info(m_Info, m_GlobalInfo.m_Info);
+    return m_GlobalInfo;
 }
 
 void
@@ -268,10 +278,16 @@ TimerGlobalInfo::TimerGlobalInfo()
     snd_timer_ginfo_malloc(&m_Info);
 }
 
-TimerGlobalInfo::TimerGlobalInfo(snd_timer_ginfo_t* other)
+TimerGlobalInfo::TimerGlobalInfo(const snd_timer_ginfo_t* other)
 {
     snd_timer_ginfo_malloc(&m_Info);
     snd_timer_ginfo_copy(m_Info, other);
+}
+
+TimerGlobalInfo::TimerGlobalInfo(const TimerGlobalInfo& other)
+{
+    snd_timer_ginfo_malloc(&m_Info);
+    snd_timer_ginfo_copy(m_Info, other.m_Info);
 }
 
 TimerGlobalInfo::~TimerGlobalInfo()
@@ -285,16 +301,25 @@ TimerGlobalInfo::clone()
     return new TimerGlobalInfo(m_Info);
 }
 
-void
-TimerGlobalInfo::setTimerId(TimerId *tid)
+TimerGlobalInfo&
+TimerGlobalInfo::operator=(const TimerGlobalInfo& other)
 {
-    snd_timer_ginfo_set_tid (m_Info, tid->m_Info);
+    snd_timer_ginfo_copy(m_Info, other.m_Info);
+    return *this;
 }
 
-TimerId*
+void
+TimerGlobalInfo::setTimerId(const TimerId& tid)
+{
+    m_Id = tid;
+    snd_timer_ginfo_set_tid (m_Info, m_Id.m_Info);
+}
+
+TimerId&
 TimerGlobalInfo::getTimerId()
 {
-    return new TimerId(snd_timer_ginfo_get_tid (m_Info));
+    m_Id = TimerId(snd_timer_ginfo_get_tid (m_Info));
+    return m_Id;
 }
 
 unsigned int
@@ -360,6 +385,12 @@ TimerParams::TimerParams(const snd_timer_params_t *other)
     snd_timer_params_copy (m_Info, other);
 }
 
+TimerParams::TimerParams(const TimerParams& other)
+{
+    snd_timer_params_malloc (&m_Info);
+    snd_timer_params_copy (m_Info, other.m_Info);
+}
+
 TimerParams::~TimerParams()
 {
     snd_timer_params_free (m_Info);
@@ -369,6 +400,13 @@ TimerParams*
 TimerParams::clone()
 {
     return new TimerParams(m_Info);
+}
+
+TimerParams&
+TimerParams::operator=(const TimerParams& other)
+{
+    snd_timer_params_copy (m_Info, other.m_Info);
+    return *this;
 }
 
 void
@@ -452,21 +490,34 @@ TimerStatus::TimerStatus()
     snd_timer_status_malloc (&m_Info);
 }
 
-TimerStatus::~TimerStatus()
-{
-    snd_timer_status_free (m_Info);
-}
-
-TimerStatus::TimerStatus(snd_timer_status_t *other)
+TimerStatus::TimerStatus(const snd_timer_status_t *other)
 {
     snd_timer_status_malloc (&m_Info);
     snd_timer_status_copy (m_Info, other);
+}
+
+TimerStatus::TimerStatus(const TimerStatus& other)
+{
+    snd_timer_status_malloc (&m_Info);
+    snd_timer_status_copy (m_Info, other.m_Info);
+}
+
+TimerStatus::~TimerStatus()
+{
+    snd_timer_status_free (m_Info);
 }
 
 TimerStatus*
 TimerStatus::clone()
 {
     return new TimerStatus(m_Info);
+}
+
+TimerStatus&
+TimerStatus::operator=(const TimerStatus& other)
+{
+    snd_timer_status_copy (m_Info, other.m_Info);
+    return *this;
 }
 
 snd_htimestamp_t
@@ -505,18 +556,19 @@ TimerStatus::getQueue()
 
 Timer::Timer(const QString& deviceName, int openMode)
 {
-    CHECK_ERROR(snd_timer_open(&m_Info, deviceName.toLocal8Bit().data(), openMode));
+    m_deviceName = deviceName;
+    CHECK_ERROR(snd_timer_open(&m_Info, m_deviceName.toLocal8Bit().data(), openMode));
 }
 
-Timer::Timer(TimerId* id, int openMode)
+Timer::Timer(TimerId& id, int openMode)
 {
-    QString deviceName = QString("hw:CLASS=%1,SCLASS=%2,CARD=%3,DEV=%4,SUBDEV=%5")
-    .arg(id->getClass())
-    .arg(id->getSlaveClass())
-    .arg(id->getCard())
-    .arg(id->getDevice())
-    .arg(id->getSubdevice());
-    CHECK_ERROR(snd_timer_open(&m_Info, deviceName.toLocal8Bit().data(), openMode));
+    m_deviceName = QString("hw:CLASS=%1,SCLASS=%2,CARD=%3,DEV=%4,SUBDEV=%5")
+    .arg(id.getClass())
+    .arg(id.getSlaveClass())
+    .arg(id.getCard())
+    .arg(id.getDevice())
+    .arg(id.getSubdevice());
+    CHECK_ERROR(snd_timer_open(&m_Info, m_deviceName.toLocal8Bit().data(), openMode));
 }
 
 Timer::~Timer()
@@ -554,28 +606,24 @@ Timer::pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds, unsigned s
     CHECK_EXCEPT(snd_timer_poll_descriptors_revents(m_Info, pfds, nfds, revents));
 }
 
-TimerInfo*
+TimerInfo&
 Timer::getTimerInfo()
 {
-    snd_timer_info_t *info;
-    snd_timer_info_alloca(&info);
-    snd_timer_info (m_Info, info);
-    return new TimerInfo(info);
+    snd_timer_info (m_Info, m_TimerInfo.m_Info);
+    return m_TimerInfo;
 }
 
 void
-Timer::setTimerParams(TimerParams* params)
+Timer::setTimerParams(const TimerParams& params)
 {
-    CHECK_EXCEPT(snd_timer_params(m_Info, params->m_Info));
+    CHECK_EXCEPT(snd_timer_params(m_Info, params.m_Info));
 }
 
-TimerStatus*
+TimerStatus&
 Timer::getTimerStatus()
 {
-    snd_timer_status_t *status;
-    snd_timer_status_alloca(&status);
-    CHECK_EXCEPT(snd_timer_status(m_Info, status));
-    return new TimerStatus(status);
+    CHECK_EXCEPT(snd_timer_status(m_Info, m_TimerStatus.m_Info));
+    return m_TimerStatus;
 }
 
 void

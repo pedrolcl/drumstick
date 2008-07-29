@@ -41,14 +41,11 @@ MidiClient::MidiClient( QObject* parent ) :
     m_BlockMode(false),
     m_NeedRefreshClientList(true),
     m_OpenMode(SND_SEQ_OPEN_DUPLEX),
+    m_DeviceName("default"),
     m_SeqHandle(0),
     m_Thread(NULL),
-    m_Info(NULL),
-    m_Queue(NULL),
-    m_DeviceName("default")
-{
-    m_Info = new ClientInfo();
-}
+    m_Queue(NULL)
+{ }
 
 MidiClient::~MidiClient()
 {
@@ -60,8 +57,6 @@ MidiClient::~MidiClient()
     freeClients();
     if (m_Thread != NULL)
         delete m_Thread;
-    if (m_Info != NULL)
-        delete m_Info;
 }
 
 void 
@@ -72,7 +67,7 @@ MidiClient::open()
         blockMode = SND_SEQ_NONBLOCK;
     }
     CHECK_ERROR(snd_seq_open(&m_SeqHandle, m_DeviceName.toLocal8Bit().data(), m_OpenMode, blockMode));
-    CHECK_EXCEPT(snd_seq_get_client_info(m_SeqHandle, m_Info->m_Info));
+    CHECK_EXCEPT(snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info));
 }
 
 void 
@@ -313,41 +308,39 @@ MidiClient::getAvailableClients()
     return lst;
 }
 
-ClientInfo* 
+ClientInfo& 
 MidiClient::getThisClientInfo()
 {
-    snd_seq_get_client_info(m_SeqHandle, m_Info->m_Info);
+    snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info);
     return m_Info;
 }
 
 void 
-MidiClient::setThisClientInfo(ClientInfo* val)
+MidiClient::setThisClientInfo(const ClientInfo& val)
 {
-    if (m_Info != val) {
-        m_Info = val;
-        snd_seq_set_client_info(m_SeqHandle, m_Info->m_Info);
-    }
+    m_Info = val;
+    snd_seq_set_client_info(m_SeqHandle, m_Info.m_Info);
 }
 
 void 
 MidiClient::applyClientInfo()
 {
     if (m_SeqHandle != NULL) {
-        snd_seq_set_client_info(m_SeqHandle, m_Info->m_Info);
+        snd_seq_set_client_info(m_SeqHandle, m_Info.m_Info);
     }
 }
 
 QString 
 MidiClient::getClientName()
 {
-    return m_Info->getName();
+    return m_Info.getName();
 }
 
 void 
 MidiClient::setClientName(QString const& newName)
 {
-    if (newName != m_Info->getName()) {
-        m_Info->setName(newName);
+    if (newName != m_Info.getName()) {
+        m_Info.setName(newName);
         applyClientInfo();
     }
 }
@@ -420,26 +413,26 @@ MidiClient::addEventFilter(int evtype)
 bool 
 MidiClient::getBroadcastFilter()
 {
-    return m_Info->getBroadcastFilter();
+    return m_Info.getBroadcastFilter();
 }
 
 void 
 MidiClient::setBroadcastFilter(bool newValue)
 {
-    m_Info->setBroadcastFilter(newValue);
+    m_Info.setBroadcastFilter(newValue);
     applyClientInfo();
 }
 
 bool 
 MidiClient::getErrorBounce()
 {
-    return m_Info->getErrorBounce();
+    return m_Info.getErrorBounce();
 }
 
 void 
 MidiClient::setErrorBounce(bool newValue)
 {
-    m_Info->setErrorBounce(newValue);
+    m_Info.setErrorBounce(newValue);
     applyClientInfo();
 }
 
@@ -577,7 +570,7 @@ MidiClient::filterPorts(unsigned int filter)
     for (itc = m_ClientList.begin(); itc != m_ClientList.end(); ++itc) {
         ClientInfo ci = (*itc);
         if ((ci.getClientId() == SND_SEQ_CLIENT_SYSTEM) ||
-            (ci.getClientId() == m_Info->getClientId()))
+            (ci.getClientId() == m_Info.getClientId()))
             continue;
         PortInfoList lstPorts = ci.getPorts();
         for(itp = lstPorts.begin(); itp != lstPorts.end(); ++itp) {
