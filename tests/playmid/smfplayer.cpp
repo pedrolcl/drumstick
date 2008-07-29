@@ -47,12 +47,14 @@ SMFPlayer::SMFPlayer(QWidget *parent)
     m_Client->setBlockMode(false);
     m_Client->open();
     m_Client->setClientName("MIDI Player");
-    connect(m_Client, SIGNAL(eventReceived(SequencerEvent*)), SLOT(sequencerEvent(SequencerEvent*)));
+    connect(m_Client, SIGNAL(eventReceived(SequencerEvent*)), 
+                      SLOT(sequencerEvent(SequencerEvent*)));
 
     m_Port->setMidiClient(m_Client);
     m_Port->setPortName("MIDI Player port");
-    m_Port->setCapability( SND_SEQ_PORT_CAP_READ  | SND_SEQ_PORT_CAP_SUBS_READ | 
-                           SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE );
+    m_Port->setCapability( SND_SEQ_PORT_CAP_READ  | 
+                           SND_SEQ_PORT_CAP_SUBS_READ | 
+                           SND_SEQ_PORT_CAP_WRITE );
     m_Port->setPortType(SND_SEQ_PORT_TYPE_APPLICATION);
     m_Port->attach();
 
@@ -72,8 +74,6 @@ SMFPlayer::SMFPlayer(QWidget *parent)
     connect(m_engine, SIGNAL(signalSMFSysex(const QByteArray&)), SLOT(sysexEvent(const QByteArray&)));
     connect(m_engine, SIGNAL(signalSMFText(int,const QString&)), SLOT(textEvent(int,const QString&)));
     connect(m_engine, SIGNAL(signalSMFTempo(int)), SLOT(tempoEvent(int)));
-    //connect(m_engine, SIGNAL(signalSMFTimeSig(int,int,int,int)), SLOT(timeSigEvent(int,int,int,int)));
-    //connect(m_engine, SIGNAL(signalSMFKeySig(int,int)), SLOT(keySigEvent(int,int)));
     connect(m_engine, SIGNAL(signalSMFError(const QString&)), SLOT(errorHandler(const QString&)));
     
     m_player = new Player(m_Client, m_portId);
@@ -150,6 +150,7 @@ void SMFPlayer::open()
         QStringList fileNames = dlg.selectedFiles();
         QString firstName = fileNames.takeFirst();
         m_song.clear();
+        m_tick = 0;
         m_engine->readFromFile(firstName);
         m_song.sort();
         m_player->setSong(&m_song);
@@ -163,14 +164,17 @@ void SMFPlayer::open()
 void SMFPlayer::setup()
 {
     bool ok;
+    int current;
     QStringList items;
     QListIterator<PortInfo> it(m_Client->getAvailableOutputs());
     while(it.hasNext()) {
         PortInfo p = it.next();
         items << QString("%1:%2").arg(p.getClientName()).arg(p.getPort());
     }
+    current = items.indexOf(m_subscription);
     QString item = QInputDialog::getItem(this, "Player subscription", 
-                                         "Output port:", items, 0, false, &ok);
+                                         "Output port:", items, 
+                                         current, false, &ok);
     if (ok && !item.isEmpty()) {
         subscribe(item);
     }
@@ -270,16 +274,6 @@ void SMFPlayer::textEvent(int type, const QString& data)
 {
     m_song.addText(type, data);
 }
-
-//void SMFPlayer::timeSigEvent(int b0, int b1, int b2, int b3)
-//{
-//    dump("--", "Time Signature", QString("%1, %2, %3, %4").arg(b0).arg(b1).arg(b2).arg(b3));
-//}
-//
-//void SMFPlayer::keySigEvent(int b0, int b1)
-//{
-//    //dump("--", "Key Signature", QString("%1, %2").arg(b0).arg(b1));
-//}
 
 void SMFPlayer::tempoEvent(int tempo)
 {

@@ -70,8 +70,6 @@ public slots:
     void sysexEvent(const QByteArray& data);
     void textEvent(int type, const QString& data);
     void tempoEvent(int tempo);
-    //void timeSigEvent(int b0, int b1, int b2, int b3);
-    //void keySigEvent(int b0, int b1);
     void errorHandler(const QString& errorStr);
     
 private:
