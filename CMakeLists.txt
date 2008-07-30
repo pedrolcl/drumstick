@@ -25,12 +25,7 @@ PROJECT(ASEQMM)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.4.4)
 
 # Show full commands and messages. 
-# Necessary for Eclipse warning/error parser
-IF(NOT CMAKE_VERBOSE_MAKEFILE)
-    SET(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL
-	"If this value is on all commands will be echoed to the console during the make."
-    FORCE)
-ENDIF(NOT CMAKE_VERBOSE_MAKEFILE)
+# SET(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL
 
 SET(CMAKE_INSTALL_PREFIX "/usr" CACHE PATH
 	"Install path prefix, prepended onto install directories." FORCE)

@@ -33,23 +33,19 @@ namespace Sequencer
 class MidiClient; 
 class MidiQueue;
 
-class SequencerOutputThread: public QThread
+class SequencerOutputThread : public QThread
 {
     Q_OBJECT
 
 public:
     SequencerOutputThread(MidiClient *seq, int portId);
-    virtual ~SequencerOutputThread(); 
-
     virtual void run();
-    bool stopped();
-    void stop();
     virtual unsigned int getInitialPosition() { return 0; }
     virtual unsigned int getEchoResolution() { return 0; }
-
-    /* Virtual methods to be reimplemented */
-    virtual bool hasNext() = 0;
-    virtual SequencerEvent* nextEvent() = 0;
+    virtual bool hasNext() = 0; /* to be reimplemented */
+    virtual SequencerEvent* nextEvent() = 0; /* to be reimplemented */
+    bool stopped();
+    void stop();
 
 signals:
     void finished();
@@ -63,9 +59,9 @@ protected:
 
 private:
     MidiClient *m_MidiClient;
+    MidiQueue *m_Queue;
     int m_PortId;
     bool m_Stopped;
-    MidiQueue *m_Queue;
     int m_QueueId;
     int m_npfds;
     pollfd* m_pfds;

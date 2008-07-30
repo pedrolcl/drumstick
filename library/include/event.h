@@ -62,7 +62,7 @@ public:
     void setPriority(const bool high);
     int getTag() const { return m_event.tag; }
     void setTag(const int aTag);
-    snd_seq_event_t* getEvent() { return &m_event; }
+    snd_seq_event_t* getHandle() { return &m_event; }
     CLONE_EVENT_DECLARATION(SequencerEvent);
 
 protected:

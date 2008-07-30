@@ -36,15 +36,11 @@ class SequencerInputThread: public QThread
     Q_OBJECT
 
 public:
-    SequencerInputThread(MidiClient *seq, short events, int timeout) : QThread(),
-    m_MidiClient(seq),
-    m_Wait(timeout),
-    m_Events(events),
-    m_Terminated(false)
-    {}
-
-    virtual ~SequencerInputThread() {}
-
+    SequencerInputThread(MidiClient *seq, int timeout) 
+        : QThread(),
+        m_MidiClient(seq),
+        m_Wait(timeout),
+        m_Stopped(false) { }
     virtual void run();
     bool stopped();
     void stop();
@@ -52,8 +48,7 @@ public:
 private:
     MidiClient *m_MidiClient;
     int m_Wait;
-    short m_Events;
-    bool m_Terminated;
+    bool m_Stopped;
     QMutex m_mutex;
 };
 

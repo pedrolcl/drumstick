@@ -30,21 +30,20 @@ namespace Sequencer
 
 const int TIMEOUT = 100;
 
-SequencerOutputThread::SequencerOutputThread(MidiClient *seq, int portId) : QThread(),
+SequencerOutputThread::SequencerOutputThread(MidiClient *seq, int portId) 
+    : QThread(),
     m_MidiClient(seq),
+    m_Queue(0),
     m_PortId(portId),
-    m_Stopped(false)
+    m_Stopped(false),
+    m_QueueId(0),
+    m_npfds(0),
+    m_pfds(0)
 {
-    m_Queue = m_MidiClient->getQueue();
-    m_QueueId = m_Queue->getId();
-    m_npfds = snd_seq_poll_descriptors_count(m_MidiClient->getHandle(), POLLOUT);
-    m_pfds = (pollfd*) calloc(m_npfds, sizeof(pollfd));
-    snd_seq_poll_descriptors(m_MidiClient->getHandle(), m_pfds, m_npfds, POLLOUT);
-}
-
-SequencerOutputThread::~SequencerOutputThread() 
-{
-    free(m_pfds);
+    if (m_MidiClient != NULL) {
+        m_Queue = m_MidiClient->getQueue();
+        m_QueueId = m_Queue->getId();
+    }
 }
 
 bool 
@@ -67,46 +66,44 @@ SequencerOutputThread::stop()
 void
 SequencerOutputThread::sendEchoEvent(int tick)
 {
-    SystemEvent ev(SND_SEQ_EVENT_ECHO);
-    ev.setSource(m_PortId);
-    ev.setDestination(m_MidiClient->getClientId(), m_PortId);
-    ev.scheduleTick(m_QueueId, tick, false);
-    sendSongEvent(&ev);
+    if (m_MidiClient != NULL) {
+        SystemEvent ev(SND_SEQ_EVENT_ECHO);
+        ev.setSource(m_PortId);
+        ev.setDestination(m_MidiClient->getClientId(), m_PortId);
+        ev.scheduleTick(m_QueueId, tick, false);
+        sendSongEvent(&ev);
+    }
 }
 
 void 
 SequencerOutputThread::sendSongEvent(SequencerEvent* ev)
 {
-//    if (ev->getSequencerType() == SND_SEQ_EVENT_SYSEX) {
-//        unsigned int j;
-//        QString s;
-//        SysExEvent* sev = dynamic_cast<SysExEvent*>(ev);
-//        const char* data = sev->getData();
-//        for (j = 0; j < sev->getLength(); ++j) {
-//            s.append(QString("%1 ").arg((int)(data[j] & 0xff), 2, 16));
-//        }
-//        qDebug() << "sysex len:" << sev->getLength() << "data:" << s;
-//    }
-    
-    while ((snd_seq_event_output(m_MidiClient->getHandle(), ev->getEvent()) < 0) 
-            && !stopped()) 
-        poll(m_pfds, m_npfds, TIMEOUT);
+    if (m_MidiClient != NULL) {    
+        while ((snd_seq_event_output(m_MidiClient->getHandle(), ev->getHandle()) < 0) 
+                && !stopped())
+            poll(m_pfds, m_npfds, TIMEOUT);
+    }
 }
 
 void
 SequencerOutputThread::drainOutput()
 {
-    while ((snd_seq_drain_output(m_MidiClient->getHandle()) < 0) && !stopped())
-        poll(m_pfds, m_npfds, TIMEOUT);
+    if (m_MidiClient != NULL) {
+        while ((snd_seq_drain_output(m_MidiClient->getHandle()) < 0) 
+                && !stopped())
+            poll(m_pfds, m_npfds, TIMEOUT);
+    }
 }
 
 void
 SequencerOutputThread::syncOutput()
 {
-    QueueStatus status = m_Queue->getStatus(); 
-    while ((status.getEvents() > 0) && !stopped()) {
-       usleep(TIMEOUT*1000);
-       status = m_Queue->getStatus();
+    if (m_MidiClient != NULL) {    
+        QueueStatus status = m_Queue->getStatus(); 
+        while ((status.getEvents() > 0) && !stopped()) {
+           usleep(TIMEOUT*1000);
+           status = m_Queue->getStatus();
+        }
     }
 }
 
@@ -114,21 +111,26 @@ void
 SequencerOutputThread::shutupSound()
 {
     int channel;
-    for (channel = 0; channel < 16; ++channel) {
-        ControllerEvent ev(channel, MIDI_CTL_ALL_SOUNDS_OFF, 0);
-        ev.setSource(m_PortId);
-        ev.setSubscribers();
-        ev.setDirect();
-        sendSongEvent(&ev);
+    if (m_MidiClient != NULL) {    
+        for (channel = 0; channel < 16; ++channel) {
+            ControllerEvent ev(channel, MIDI_CTL_ALL_SOUNDS_OFF, 0);
+            ev.setSource(m_PortId);
+            ev.setSubscribers();
+            ev.setDirect();
+            sendSongEvent(&ev);
+        }
+        drainOutput();
     }
-    drainOutput();
 }
 
 void SequencerOutputThread::run()
 {
-    unsigned int last_tick = 0;
+    unsigned int last_tick;
     if (m_MidiClient != NULL) {
         try  {
+            m_npfds = snd_seq_poll_descriptors_count(m_MidiClient->getHandle(), POLLOUT);
+            m_pfds = (pollfd*) alloca(m_npfds * sizeof(pollfd));
+            snd_seq_poll_descriptors(m_MidiClient->getHandle(), m_pfds, m_npfds, POLLOUT);
             last_tick = getInitialPosition();
             if (last_tick == 0) {
                 m_Queue->start();
@@ -162,6 +164,8 @@ void SequencerOutputThread::run()
         } catch (...) {
             qWarning("exception in output thread");
         }
+        m_npfds = 0;
+        m_pfds = 0;
     }
 }
 

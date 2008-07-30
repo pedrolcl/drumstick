@@ -124,7 +124,8 @@ MidiClient::setOpenMode(int newMode)
     }
 }
 
-void MidiClient::setBlockMode(bool newValue)
+void 
+MidiClient::setBlockMode(bool newValue)
 {
     if (m_BlockMode != newValue)
     {
@@ -151,7 +152,6 @@ MidiClient::getSequencerType()
 void 
 MidiClient::doEvents()
 {
-    //qDebug() << "--> MidiClient::doEvents()";
     do {
         int err = 0;
         snd_seq_event_t* evp = NULL;
@@ -252,14 +252,13 @@ MidiClient::doEvents()
         }
     }
     while (snd_seq_event_input_pending(m_SeqHandle, 0) > 0);
-    //qDebug() << "<-- MidiClient::doEvents()";
 }
 
 void 
 MidiClient::startSequencerInput()
 {
     if (m_Thread == NULL) {
-        m_Thread = new SequencerInputThread(this, POLLIN, 500);
+        m_Thread = new SequencerInputThread(this, 500);
         m_Thread->start();
     }
 }
@@ -436,35 +435,17 @@ MidiClient::setErrorBounce(bool newValue)
     applyClientInfo();
 }
 
-void MidiClient::output(const SequencerEvent& ev, bool async, int timeout)
-{
-    int npfds;
-    pollfd* pfds;
-    SequencerEvent evCopy = ev;
-    if (async) {
-        CHECK_EXCEPT(snd_seq_event_output(m_SeqHandle, evCopy.getEvent()));
-    } else {
-        npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
-        pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
-        snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-        while (snd_seq_event_output(m_SeqHandle, evCopy.getEvent()) < 0)
-        {
-            poll(pfds, npfds, timeout);
-        }
-    }
-}
-
 void MidiClient::output(SequencerEvent* ev, bool async, int timeout)
 {
     int npfds;
     pollfd* pfds;
     if (async) {
-        CHECK_EXCEPT(snd_seq_event_output(m_SeqHandle, ev->getEvent()));
+        CHECK_EXCEPT(snd_seq_event_output(m_SeqHandle, ev->getHandle()));
     } else {
         npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
         pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
         snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-        while (snd_seq_event_output(m_SeqHandle, ev->getEvent()) < 0)
+        while (snd_seq_event_output(m_SeqHandle, ev->getHandle()) < 0)
         {
             poll(pfds, npfds, timeout);
         }
@@ -476,12 +457,12 @@ void MidiClient::outputDirect(SequencerEvent* ev, bool async, int timeout)
     int npfds;
     pollfd* pfds;
     if (async) {
-        CHECK_EXCEPT(snd_seq_event_output_direct(m_SeqHandle, ev->getEvent()));
+        CHECK_EXCEPT(snd_seq_event_output_direct(m_SeqHandle, ev->getHandle()));
     } else {
         npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
         pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
         snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-        while (snd_seq_event_output_direct(m_SeqHandle, ev->getEvent()) < 0)
+        while (snd_seq_event_output_direct(m_SeqHandle, ev->getHandle()) < 0)
         {
             poll(pfds, npfds, timeout);
         }
@@ -493,12 +474,12 @@ void MidiClient::outputBuffer(SequencerEvent* ev, bool async, int timeout)
     int npfds;
     pollfd* pfds;
     if (async) {
-        CHECK_EXCEPT(snd_seq_event_output_buffer(m_SeqHandle, ev->getEvent()));
+        CHECK_EXCEPT(snd_seq_event_output_buffer(m_SeqHandle, ev->getHandle()));
     } else {
         npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
         pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
         snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-        while (snd_seq_event_output_buffer(m_SeqHandle, ev->getEvent()) < 0)
+        while (snd_seq_event_output_buffer(m_SeqHandle, ev->getHandle()) < 0)
         {
             poll(pfds, npfds, timeout);
         }
@@ -590,8 +571,10 @@ MidiClient::updateAvailablePorts()
 {
     m_InputsAvail.clear();
     m_OutputsAvail.clear();
-    m_InputsAvail = filterPorts( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ );
-    m_OutputsAvail = filterPorts( SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE );
+    m_InputsAvail = filterPorts( SND_SEQ_PORT_CAP_READ | 
+                                 SND_SEQ_PORT_CAP_SUBS_READ );
+    m_OutputsAvail = filterPorts( SND_SEQ_PORT_CAP_WRITE | 
+                                  SND_SEQ_PORT_CAP_SUBS_WRITE );
 }
 
 PortInfoList 

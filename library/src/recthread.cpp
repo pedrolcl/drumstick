@@ -26,20 +26,18 @@ namespace ALSA
 namespace Sequencer 
 {
 
-bool 
-SequencerInputThread::stopped() 
+bool SequencerInputThread::stopped() 
 { 
     m_mutex.lock();
-    bool bTmp = m_Terminated;
+    bool bTmp = m_Stopped;
     m_mutex.unlock();
     return  bTmp;
 }
 
-void 
-SequencerInputThread::stop() 
+void SequencerInputThread::stop() 
 { 
     m_mutex.lock();
-    m_Terminated = true;
+    m_Stopped = true;
     m_mutex.unlock();
 }
 
@@ -50,11 +48,11 @@ void SequencerInputThread::run()
     int rt;
 
     if (m_MidiClient != NULL) {
-        npfd = snd_seq_poll_descriptors_count(m_MidiClient->getHandle(), m_Events);
+        npfd = snd_seq_poll_descriptors_count(m_MidiClient->getHandle(), POLLIN);
         pfd = (pollfd *) alloca(npfd * sizeof(pollfd));
         try
         {
-            snd_seq_poll_descriptors(m_MidiClient->getHandle(), pfd, npfd, m_Events);
+            snd_seq_poll_descriptors(m_MidiClient->getHandle(), pfd, npfd, POLLIN);
             while (!stopped() && (m_MidiClient != NULL))
             {
                 rt = poll(pfd, npfd, m_Wait);

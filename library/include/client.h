@@ -97,7 +97,6 @@ public:
     void detachAllPorts();
     void addEventFilter(int evtype);
     void output(SequencerEvent* ev, bool async = false, int timeout = -1);
-    void output(const SequencerEvent& ev, bool async = false, int timeout = -1);
     void outputDirect(SequencerEvent* ev, bool async = false, int timeout = -1);
     void outputBuffer(SequencerEvent* ev, bool async = false, int timeout = -1);
     void drainOutput(bool async = false, int timeout = -1); 

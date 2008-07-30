@@ -429,7 +429,7 @@ void MidiQueue::clear()
 void MidiQueue::setTickPosition(snd_seq_tick_time_t pos)
 {
     SystemEvent* event = new SystemEvent(SND_SEQ_EVENT_SETPOS_TICK);
-    snd_seq_ev_set_queue_pos_tick(event->getEvent(), m_Id, pos);
+    snd_seq_ev_set_queue_pos_tick(event->getHandle(), m_Id, pos);
     event->setDirect();
     m_MidiClient->outputDirect(event);
     m_MidiClient->drainOutput();
@@ -438,7 +438,7 @@ void MidiQueue::setTickPosition(snd_seq_tick_time_t pos)
 void MidiQueue::setRealTimePosition(snd_seq_real_time_t* pos)
 {
     SystemEvent* event = new SystemEvent(SND_SEQ_EVENT_SETPOS_TIME);
-    snd_seq_ev_set_queue_pos_real(event->getEvent(), m_Id, pos);
+    snd_seq_ev_set_queue_pos_real(event->getHandle(), m_Id, pos);
     event->setDirect();
     m_MidiClient->outputDirect(event);
     m_MidiClient->drainOutput();
