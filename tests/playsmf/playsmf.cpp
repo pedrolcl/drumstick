@@ -26,14 +26,25 @@
 static QTextStream cout(stdout, QIODevice::WriteOnly); 
 static QTextStream cerr(stderr, QIODevice::WriteOnly); 
 
-static inline bool eventLessThan(const SequencerEvent &s1, const SequencerEvent &s2)
+static inline bool eventLessThan(const SequencerEvent* s1, const SequencerEvent *s2)
 {
-    return s1.getTick() < s2.getTick();
+    return s1->getTick() < s2->getTick();
 }
 
 void Song::sort() 
 {
     qStableSort(begin(), end(), eventLessThan);
+}
+
+void Song::clear() 
+{
+    while (!isEmpty())
+        delete takeFirst();
+}
+
+Song::~Song()
+{
+    clear();
 }
 
 PlaySMF::PlaySMF() :
@@ -135,14 +146,14 @@ void PlaySMF::shutupSound()
     m_Client->drainOutput();
 }
 
-void PlaySMF::appendEvent(SequencerEvent& ev)
+void PlaySMF::appendEvent(SequencerEvent* ev)
 {
     long tick = m_engine->getCurrentTime();
-    ev.setSource(m_portId);
-    if (ev.getSequencerType() != SND_SEQ_EVENT_TEMPO) {
-        ev.setSubscribers();
+    ev->setSource(m_portId);
+    if (ev->getSequencerType() != SND_SEQ_EVENT_TEMPO) {
+        ev->setSubscribers();
     }
-    ev.scheduleTick(m_queueId, tick, false);
+    ev->scheduleTick(m_queueId, tick, false);
     m_song.append(ev);
 }
 
@@ -174,49 +185,49 @@ void PlaySMF::headerEvent(int format, int ntrks, int division)
 
 void PlaySMF::noteOnEvent(int chan, int pitch, int vol)
 {
-    NoteOnEvent ev(chan, pitch, vol);
+    NoteOnEvent* ev = new NoteOnEvent (chan, pitch, vol);
     appendEvent(ev);
 }
 
 void PlaySMF::noteOffEvent(int chan, int pitch, int vol)
 {
-    NoteOffEvent ev(chan, pitch, vol);
+    SequencerEvent* ev = new NoteOffEvent(chan, pitch, vol);
     appendEvent(ev);
 }
 
 void PlaySMF::keyPressEvent(int chan, int pitch, int press)
 {
-    KeyPressEvent ev(chan, pitch, press);
+    SequencerEvent* ev = new KeyPressEvent (chan, pitch, press);
     appendEvent(ev);
 }
 
 void PlaySMF::ctlChangeEvent(int chan, int ctl, int value)
 {
-    ControllerEvent ev(chan, ctl, value);
+    SequencerEvent* ev = new ControllerEvent (chan, ctl, value);
     appendEvent(ev);
 }
 
 void PlaySMF::pitchBendEvent(int chan, int value)
 {
-    PitchBendEvent ev(chan, value);
+    SequencerEvent* ev = new PitchBendEvent (chan, value);
     appendEvent(ev);
 }
 
 void PlaySMF::programEvent(int chan, int patch)
 {
-    ProgramChangeEvent ev(chan, patch);
+    SequencerEvent* ev = new ProgramChangeEvent (chan, patch);
     appendEvent(ev);
 }
 
 void PlaySMF::chanPressEvent(int chan, int press)
 {
-    ChanPressEvent ev(chan, press);
+    SequencerEvent* ev = new ChanPressEvent (chan, press);
     appendEvent(ev);
 }
 
 void PlaySMF::sysexEvent(const QByteArray& data)
 {
-    SysExEvent ev(data.length(), (char *)data.data());
+    SysExEvent* ev = new SysExEvent(data);
     appendEvent(ev);
 }
 
@@ -241,7 +252,7 @@ void PlaySMF::tempoEvent(int tempo)
     {
         m_initialTempo = tempo;
     }
-    TempoEvent ev(m_queueId, tempo);
+    TempoEvent* ev = new TempoEvent(m_queueId, tempo);
     appendEvent(ev);
 }
 
@@ -266,7 +277,7 @@ void PlaySMF::play(QString fileName)
     cout << "Starting playback" << endl;
     cout << "Press Ctrl+C to exit" << endl;
     try {
-        QListIterator<SequencerEvent> i(m_song);
+        QListIterator<SequencerEvent*> i(m_song);
         m_Stopped = false;
         m_Queue->start();
         while (!stopped() && i.hasNext()) {

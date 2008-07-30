@@ -173,9 +173,61 @@ ChanPressEvent::ChanPressEvent(int ch, int val) : ChannelEvent()
     snd_seq_ev_set_chanpress(&m_event, ch, val);
 }
 
-SysExEvent::SysExEvent(const uint datalen,  char* dataptr) : SequencerEvent()
+VariableEvent::VariableEvent(const QByteArray& data)
 {
-    snd_seq_ev_set_sysex(&m_event, datalen, dataptr);
+    snd_seq_ev_clear( &m_event ); 
+    m_data = data;
+    snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );  
+}
+
+VariableEvent::VariableEvent(const VariableEvent& other) 
+    : SequencerEvent(other)
+{
+    m_data = other.m_data;
+    snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );  
+}
+
+VariableEvent::VariableEvent(const unsigned int datalen, char* dataptr) 
+    : SequencerEvent()
+{
+    unsigned int i;
+    m_data.clear();
+    for ( i = 0; i < datalen; ++i ) {
+        m_data.append(dataptr[i]);
+    }
+    snd_seq_ev_set_variable( &m_event, m_data.size(), m_data.data() );
+}
+
+VariableEvent& VariableEvent::operator=(const VariableEvent& other)
+{
+    m_event = other.m_event;
+    m_data = other.m_data;
+    snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );  
+    return *this;
+}
+
+SysExEvent::SysExEvent(snd_seq_event_t* event)
+    : VariableEvent(event)
+{
+    snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
+}
+
+SysExEvent::SysExEvent(const QByteArray& data)
+    : VariableEvent( data )
+{
+    snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
+}
+
+SysExEvent::SysExEvent(const SysExEvent& other)
+    : VariableEvent( other )
+{
+    snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
+}
+
+SysExEvent::SysExEvent(const unsigned int datalen, char* dataptr) 
+    : VariableEvent( datalen, dataptr )
+{
+    snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
 }
 
 SystemEvent::SystemEvent(int statusByte) : SequencerEvent()

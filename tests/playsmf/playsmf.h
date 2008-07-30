@@ -34,10 +34,12 @@
 using namespace MIDI::Utils;
 using namespace ALSA::Sequencer;
 
-class Song : public QList<SequencerEvent>
+class Song : public QList<SequencerEvent*>
 {
 public:
+    virtual ~Song();
     void sort();
+    void clear();
 };
 
 class PlaySMF : public QObject
@@ -50,7 +52,7 @@ public:
     void play(QString fileName);
     bool stopped();
     void stop();
-    void appendEvent(SequencerEvent& ev);
+    void appendEvent(SequencerEvent* ev);
     void subscribe(const QString& portName);
     void dump(const QString& chan, const QString& event, const QString& data);
     void dumpStr(const QString& event, const QString& data);

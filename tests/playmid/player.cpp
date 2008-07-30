@@ -64,7 +64,7 @@ void Player::setPosition(unsigned int pos)
     m_songPosition = pos;
     m_songIterator->toFront();
     while (m_songIterator->hasNext() &&
-          (m_songIterator->next().getTick() < pos));
+          (m_songIterator->next()->getTick() < pos));
     if (m_songIterator->hasPrevious())
         m_songIterator->previous();
 }
@@ -74,7 +74,7 @@ bool Player::hasNext()
     return m_songIterator->hasNext();
 }
 
-const SequencerEvent& Player::nextEvent()
+SequencerEvent* Player::nextEvent()
 {
     return m_songIterator->next();
 }

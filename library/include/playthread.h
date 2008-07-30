@@ -49,7 +49,7 @@ public:
 
     /* Virtual methods to be reimplemented */
     virtual bool hasNext() = 0;
-    virtual const SequencerEvent& nextEvent() = 0;
+    virtual SequencerEvent* nextEvent() = 0;
 
 signals:
     void finished();
@@ -57,7 +57,7 @@ signals:
 protected:    
     void shutupSound();
     void sendEchoEvent(int tick);
-    void sendSongEvent(SequencerEvent& ev);
+    void sendSongEvent(SequencerEvent* ev);
     void drainOutput();
     void syncOutput();
 

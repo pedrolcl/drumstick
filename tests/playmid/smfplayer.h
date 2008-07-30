@@ -47,7 +47,7 @@ public:
     SMFPlayer(QWidget *parent = 0);
     ~SMFPlayer();
     
-    void appendEvent(SequencerEvent& ev);
+    void appendEvent(SequencerEvent* ev);
     void subscribe(const QString& portName);
     void updateTimeLabel(int mins, int secs, int cnts);
     
@@ -58,7 +58,7 @@ public slots:
     void open();
     void setup();
     void songFinished();
-    void sequencerEvent(SequencerEvent *ev);
+    void sequencerEvent(SequencerEvent* ev);
     void headerEvent(int format, int ntrks, int division);
     void noteOnEvent(int chan, int pitch, int vol);
     void noteOffEvent(int chan, int pitch, int vol);

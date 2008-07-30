@@ -26,7 +26,7 @@
 
 using namespace ALSA::Sequencer;
 
-class Song : public QList<SequencerEvent>
+class Song : public QList<SequencerEvent*>
 {
 public:
     enum TextType { 
@@ -34,11 +34,12 @@ public:
         InstrumentName = 4, Lyric = 5, Marker = 6, Cue = 7
     };
     
-    Song() : QList<SequencerEvent>(),
+    Song() : QList<SequencerEvent*>(),
         m_format(0),
         m_ntrks(0),
         m_division(0)
     { }
+    virtual ~Song();
     
     void clear();
     void sort();
@@ -61,6 +62,6 @@ private:
     QStringList m_text;
 };
 
-typedef QListIterator<SequencerEvent> SongIterator;
+typedef QListIterator<SequencerEvent*> SongIterator;
 
 #endif /*INCLUDED_SONG_H*/

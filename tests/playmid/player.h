@@ -33,7 +33,7 @@ public:
 	Player(MidiClient *seq, int portId);
 	virtual ~Player();
     virtual bool hasNext();
-    virtual const SequencerEvent& nextEvent();
+    virtual SequencerEvent* nextEvent();
     virtual unsigned int getInitialPosition() { return m_songPosition; }
     virtual unsigned int getEchoResolution() { return m_echoResolution; }
     void setSong(Song* s);

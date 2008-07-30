@@ -71,13 +71,24 @@ SequencerOutputThread::sendEchoEvent(int tick)
     ev.setSource(m_PortId);
     ev.setDestination(m_MidiClient->getClientId(), m_PortId);
     ev.scheduleTick(m_QueueId, tick, false);
-    sendSongEvent(ev);
+    sendSongEvent(&ev);
 }
 
 void 
-SequencerOutputThread::sendSongEvent(SequencerEvent& ev)
+SequencerOutputThread::sendSongEvent(SequencerEvent* ev)
 {
-    while ((snd_seq_event_output(m_MidiClient->getHandle(), ev.getEvent()) < 0) 
+//    if (ev->getSequencerType() == SND_SEQ_EVENT_SYSEX) {
+//        unsigned int j;
+//        QString s;
+//        SysExEvent* sev = dynamic_cast<SysExEvent*>(ev);
+//        const char* data = sev->getData();
+//        for (j = 0; j < sev->getLength(); ++j) {
+//            s.append(QString("%1 ").arg((int)(data[j] & 0xff), 2, 16));
+//        }
+//        qDebug() << "sysex len:" << sev->getLength() << "data:" << s;
+//    }
+    
+    while ((snd_seq_event_output(m_MidiClient->getHandle(), ev->getEvent()) < 0) 
             && !stopped()) 
         poll(m_pfds, m_npfds, TIMEOUT);
 }
@@ -108,7 +119,7 @@ SequencerOutputThread::shutupSound()
         ev.setSource(m_PortId);
         ev.setSubscribers();
         ev.setDirect();
-        sendSongEvent(ev);
+        sendSongEvent(&ev);
     }
     drainOutput();
 }
@@ -127,9 +138,9 @@ void SequencerOutputThread::run()
             }
             m_Stopped = false;
             while (!stopped() && hasNext()) {
-                SequencerEvent ev = nextEvent();
+                SequencerEvent* ev = nextEvent();
                 if (getEchoResolution() > 0) {
-                    while (last_tick < ev.getTick()) {
+                    while (last_tick < ev->getTick()) {
                         last_tick += getEchoResolution();
                         sendEchoEvent(last_tick);
                     }

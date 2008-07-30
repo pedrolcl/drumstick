@@ -19,9 +19,14 @@
 
 #include "song.h"
 
-static inline bool eventLessThan(const SequencerEvent &s1, const SequencerEvent &s2)
+static inline bool eventLessThan(const SequencerEvent* s1, const SequencerEvent* s2)
 {
-    return s1.getTick() < s2.getTick();
+    return s1->getTick() < s2->getTick();
+}
+
+Song::~Song()
+{
+    clear();
 }
 
 void Song::sort() 
@@ -31,7 +36,8 @@ void Song::sort()
 
 void Song::clear()
 {
-    QList<SequencerEvent>::clear();
+    while (!isEmpty())
+        delete takeFirst();
     m_fileName.clear();
     m_text.clear();
     m_format = 0;

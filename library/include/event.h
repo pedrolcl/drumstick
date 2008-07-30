@@ -95,7 +95,7 @@ public:
 class NoteEvent : public KeyEvent
 {
 public:
-    NoteEvent() : KeyEvent() {}
+    NoteEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_NOTE; }
     NoteEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     NoteEvent(const int ch, const int key, const int vel, const int dur);
 
@@ -107,7 +107,7 @@ public:
 class NoteOnEvent : public KeyEvent 
 {
 public:
-    NoteOnEvent() : KeyEvent() {}
+    NoteOnEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_NOTEON; }
     NoteOnEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     NoteOnEvent(const int ch, const int key, const int vel);
     CLONE_EVENT_DECLARATION(NoteOnEvent)
@@ -116,7 +116,7 @@ public:
 class NoteOffEvent : public KeyEvent 
 {
 public:
-    NoteOffEvent() : KeyEvent() {}
+    NoteOffEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_NOTEOFF; }
     NoteOffEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     NoteOffEvent(const int ch, const int key, const int vel);
     CLONE_EVENT_DECLARATION(NoteOffEvent)
@@ -125,7 +125,7 @@ public:
 class KeyPressEvent : public KeyEvent 
 {
 public:
-    KeyPressEvent() : KeyEvent() {}
+    KeyPressEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_KEYPRESS; }
     KeyPressEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     KeyPressEvent(const int ch, const int key, const int vel);
     CLONE_EVENT_DECLARATION(KeyPressEvent)
@@ -148,7 +148,7 @@ public:
 class ProgramChangeEvent : public ChannelEvent
 {
 public:
-    ProgramChangeEvent() : ChannelEvent() {}
+    ProgramChangeEvent() : ChannelEvent() { m_event.type = SND_SEQ_EVENT_PGMCHANGE; }
     ProgramChangeEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
     ProgramChangeEvent(const int ch, const int val);
 
@@ -160,7 +160,7 @@ public:
 class PitchBendEvent : public ChannelEvent
 {
 public:
-    PitchBendEvent() : ChannelEvent() {}
+    PitchBendEvent() : ChannelEvent() { m_event.type = SND_SEQ_EVENT_PITCHBEND; }
     PitchBendEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
     PitchBendEvent(const int ch, const int val);
 
@@ -172,7 +172,7 @@ public:
 class ChanPressEvent : public ChannelEvent
 {
 public:
-    ChanPressEvent() : ChannelEvent() {}
+    ChanPressEvent() : ChannelEvent() { m_event.type = SND_SEQ_EVENT_CHANPRESS; }
     ChanPressEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
     ChanPressEvent( const int ch, const int val);
 
@@ -181,18 +181,34 @@ public:
     CLONE_EVENT_DECLARATION(ChanPressEvent)
 };
   
-class SysExEvent : public SequencerEvent
+class VariableEvent : public SequencerEvent
+{
+public:    
+    VariableEvent() : SequencerEvent() { m_event.flags &= ~SND_SEQ_EVENT_LENGTH_MASK;
+                                         m_event.flags |= SND_SEQ_EVENT_LENGTH_VARIABLE; }
+    VariableEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
+    VariableEvent(const QByteArray& data);
+    VariableEvent(const VariableEvent& other);
+    VariableEvent(const unsigned int datalen, char* dataptr);
+    VariableEvent& operator=(const VariableEvent& other);
+    CLONE_EVENT_DECLARATION(VariableEvent)
+protected:    
+    QByteArray m_data;    
+};
+
+class SysExEvent : public VariableEvent
 {
 public:
-    SysExEvent() : SequencerEvent() {}
-    SysExEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
-    SysExEvent(const uint datalen, char* dataptr);
-
-    uint getLength() const { return m_event.data.ext.len; }
-    const uchar* getData() const { return static_cast<const uchar*>(m_event.data.ext.ptr); }
+    SysExEvent() : VariableEvent() { m_event.type = SND_SEQ_EVENT_SYSEX; }
+    SysExEvent(snd_seq_event_t* event);
+    SysExEvent(const QByteArray& data);
+    SysExEvent(const SysExEvent& other);
+    SysExEvent(const unsigned int datalen, char* dataptr);
+    unsigned int getLength() const { return m_event.data.ext.len; }
+    const char* getData() const { return static_cast<const char*>(m_event.data.ext.ptr); }
     CLONE_EVENT_DECLARATION(SysExEvent)
 };
- 
+
 class SystemEvent : public SequencerEvent
 {
 public:

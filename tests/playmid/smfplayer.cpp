@@ -205,14 +205,14 @@ void SMFPlayer::sequencerEvent(SequencerEvent *ev)
     delete ev;
 }
 
-void SMFPlayer::appendEvent(SequencerEvent& ev)
+void SMFPlayer::appendEvent(SequencerEvent* ev)
 {
     unsigned long tick = m_engine->getCurrentTime();
-    ev.setSource(m_portId);
-    if (ev.getSequencerType() != SND_SEQ_EVENT_TEMPO) {
-        ev.setSubscribers();
+    ev->setSource(m_portId);
+    if (ev->getSequencerType() != SND_SEQ_EVENT_TEMPO) {
+        ev->setSubscribers();
     }
-    ev.scheduleTick(m_queueId, tick, false);
+    ev->scheduleTick(m_queueId, tick, false);
     m_song.append(ev);
     if (tick > m_tick) m_tick = tick;
 }
@@ -224,49 +224,49 @@ void SMFPlayer::headerEvent(int format, int ntrks, int division)
 
 void SMFPlayer::noteOnEvent(int chan, int pitch, int vol)
 {
-    NoteOnEvent ev(chan, pitch, vol);
+    SequencerEvent* ev = new NoteOnEvent (chan, pitch, vol);
     appendEvent(ev);
 }
 
 void SMFPlayer::noteOffEvent(int chan, int pitch, int vol)
 {
-    NoteOffEvent ev(chan, pitch, vol);
+    SequencerEvent* ev = new NoteOffEvent (chan, pitch, vol);
     appendEvent(ev);
 }
 
 void SMFPlayer::keyPressEvent(int chan, int pitch, int press)
 {
-    KeyPressEvent ev(chan, pitch, press);
+    SequencerEvent* ev = new KeyPressEvent (chan, pitch, press);
     appendEvent(ev);
 }
 
 void SMFPlayer::ctlChangeEvent(int chan, int ctl, int value)
 {
-    ControllerEvent ev(chan, ctl, value);
+    SequencerEvent* ev = new ControllerEvent (chan, ctl, value);
     appendEvent(ev);
 }
 
 void SMFPlayer::pitchBendEvent(int chan, int value)
 {
-    PitchBendEvent ev(chan, value);
+    SequencerEvent* ev = new PitchBendEvent (chan, value);
     appendEvent(ev);
 }
 
 void SMFPlayer::programEvent(int chan, int patch)
 {
-    ProgramChangeEvent ev(chan, patch);
+    SequencerEvent* ev = new ProgramChangeEvent (chan, patch);
     appendEvent(ev);
 }
 
 void SMFPlayer::chanPressEvent(int chan, int press)
 {
-    ChanPressEvent ev(chan, press);
+    SequencerEvent* ev = new ChanPressEvent (chan, press);
     appendEvent(ev);
 }
 
 void SMFPlayer::sysexEvent(const QByteArray& data)
 {
-    SysExEvent ev(data.length(), (char *)data.data());
+    SequencerEvent* ev = new SysExEvent (data);
     appendEvent(ev);
 }
 
@@ -281,7 +281,7 @@ void SMFPlayer::tempoEvent(int tempo)
     {
         m_initialTempo = tempo;
     }
-    TempoEvent ev(m_queueId, tempo);
+    SequencerEvent* ev = new TempoEvent (m_queueId, tempo);
     appendEvent(ev);
 }
 
