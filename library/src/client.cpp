@@ -67,7 +67,7 @@ MidiClient::open()
         blockMode = SND_SEQ_NONBLOCK;
     }
     CHECK_ERROR(snd_seq_open(&m_SeqHandle, m_DeviceName.toLocal8Bit().data(), m_OpenMode, blockMode));
-    CHECK_EXCEPT(snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info));
+    CHECK_WARNING(snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info));
 }
 
 void 
@@ -75,7 +75,7 @@ MidiClient::close()
 {
     if (m_SeqHandle != NULL) {
         stopSequencerInput();
-        CHECK_EXCEPT(snd_seq_close(m_SeqHandle));
+        CHECK_WARNING(snd_seq_close(m_SeqHandle));
         m_SeqHandle = NULL;
     }
 }
@@ -90,7 +90,7 @@ void
 MidiClient::setOutputBufferSize(size_t newSize)
 {
     if (getOutputBufferSize() != newSize) {
-        CHECK_EXCEPT(snd_seq_set_output_buffer_size(m_SeqHandle, newSize));
+        CHECK_WARNING(snd_seq_set_output_buffer_size(m_SeqHandle, newSize));
     }
 }
 
@@ -104,7 +104,7 @@ void
 MidiClient::setInputBufferSize(size_t newSize)
 {
     if (getInputBufferSize() != newSize) {
-        CHECK_EXCEPT(snd_seq_set_input_buffer_size(m_SeqHandle, newSize));
+        CHECK_WARNING(snd_seq_set_input_buffer_size(m_SeqHandle, newSize));
     }
 }
 
@@ -132,7 +132,7 @@ MidiClient::setBlockMode(bool newValue)
         m_BlockMode = newValue;
         if (m_SeqHandle != NULL)
         {
-            CHECK_EXCEPT(snd_seq_nonblock(m_SeqHandle, m_BlockMode ? 0 : 1));
+            CHECK_WARNING(snd_seq_nonblock(m_SeqHandle, m_BlockMode ? 0 : 1));
         }
     }
 }
@@ -140,7 +140,7 @@ MidiClient::setBlockMode(bool newValue)
 int 
 MidiClient::getClientId()
 {
-    return CHECK_EXCEPT(snd_seq_client_id(m_SeqHandle));
+    return CHECK_WARNING(snd_seq_client_id(m_SeqHandle));
 }
 
 snd_seq_type_t 
@@ -440,7 +440,7 @@ void MidiClient::output(SequencerEvent* ev, bool async, int timeout)
     int npfds;
     pollfd* pfds;
     if (async) {
-        CHECK_EXCEPT(snd_seq_event_output(m_SeqHandle, ev->getHandle()));
+        CHECK_WARNING(snd_seq_event_output(m_SeqHandle, ev->getHandle()));
     } else {
         npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
         pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
@@ -457,7 +457,7 @@ void MidiClient::outputDirect(SequencerEvent* ev, bool async, int timeout)
     int npfds;
     pollfd* pfds;
     if (async) {
-        CHECK_EXCEPT(snd_seq_event_output_direct(m_SeqHandle, ev->getHandle()));
+        CHECK_WARNING(snd_seq_event_output_direct(m_SeqHandle, ev->getHandle()));
     } else {
         npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
         pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
@@ -474,7 +474,7 @@ void MidiClient::outputBuffer(SequencerEvent* ev, bool async, int timeout)
     int npfds;
     pollfd* pfds;
     if (async) {
-        CHECK_EXCEPT(snd_seq_event_output_buffer(m_SeqHandle, ev->getHandle()));
+        CHECK_WARNING(snd_seq_event_output_buffer(m_SeqHandle, ev->getHandle()));
     } else {
         npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
         pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
@@ -491,7 +491,7 @@ void MidiClient::drainOutput(bool async, int timeout)
     int npfds;
     pollfd* pfds;
     if (async) {
-        CHECK_EXCEPT(snd_seq_drain_output(m_SeqHandle));
+        CHECK_WARNING(snd_seq_drain_output(m_SeqHandle));
     } else {
         npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
         pfds = (pollfd*) alloca(npfds * sizeof(pollfd));

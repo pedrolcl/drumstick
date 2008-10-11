@@ -110,10 +110,10 @@ void PlaySMF::subscribe(const QString& portName)
     try {
         qDebug() << "Trying to subscribe to " << portName.toLocal8Bit().data();
         m_Port->subscribeTo(portName);
-    } catch (FatalError *err) {
-        cerr << "FatalError exception. Error code: " << err->code() 
-        << " (" << err->qstrError() << ")" << endl;
-        cerr << "Location: " << err->what() << endl;
+    } catch (SequencerError& err) {
+        cerr << "SequencerError exception. Error code: " << err.code() 
+        << " (" << err.qstrError() << ")" << endl;
+        cerr << "Location: " << err.location() << endl;
         throw err;
     }
 }
@@ -291,10 +291,10 @@ void PlaySMF::play(QString fileName)
             m_Client->synchronizeOutput();
         }
         m_Queue->stop();
-    } catch (FatalError *err) {
-        cerr << "FatalError exception. Error code: " << err->code() 
-        << " (" << err->qstrError() << ")" << endl;
-        cerr << "Location: " << err->what() << endl;
+    } catch (SequencerError& err) {
+        cerr << "SequencerError exception. Error code: " << err.code() 
+        << " (" << err.qstrError() << ")" << endl;
+        cerr << "Location: " << err.location() << endl;
         throw err;
     }
 }

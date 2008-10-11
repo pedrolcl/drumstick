@@ -55,7 +55,7 @@ PortInfo::PortInfo(snd_seq_port_info_t* other)
 PortInfo::PortInfo(MidiClient* seq, const int client, const int port)
 {
     snd_seq_port_info_malloc(&m_Info);
-    CHECK_EXCEPT(snd_seq_get_any_port_info(seq->getHandle(), client, port, m_Info));
+    CHECK_WARNING(snd_seq_get_any_port_info(seq->getHandle(), client, port, m_Info));
 }
 
 PortInfo::~PortInfo()
@@ -523,7 +523,7 @@ MidiPort::applyPortInfo()
 {
     if (m_Attached && (m_MidiClient != NULL) && (m_MidiClient->isOpened()))
     {
-        CHECK_EXCEPT(snd_seq_set_port_info(m_MidiClient->getHandle(), m_Info->getPort(), m_Info->m_Info));
+        CHECK_WARNING(snd_seq_set_port_info(m_MidiClient->getHandle(), m_Info->getPort(), m_Info->m_Info));
     }
 }
 

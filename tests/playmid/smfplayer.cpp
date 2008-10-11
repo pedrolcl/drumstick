@@ -98,10 +98,10 @@ void SMFPlayer::subscribe(const QString& portName)
         }
         m_subscription = portName;
         m_Port->subscribeTo(m_subscription);
-    } catch (FatalError *err) {
-        qDebug() << "FatalError exception. Error code: " << err->code() 
-                 << " (" << err->qstrError() << ")";
-        qDebug() << "Location: " << err->what();
+    } catch (SequencerError& err) {
+        qDebug() << "SequencerError exception. Error code: " << err.code() 
+                 << " (" << err.qstrError() << ")";
+        qDebug() << "Location: " << err.location();
     }
 }
 

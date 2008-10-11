@@ -91,10 +91,10 @@ void QDumpMIDI::subscribe(const QString& portName)
     try {
         qDebug() << "Trying to subscribe" << portName.toLocal8Bit().data();
         m_Port->subscribeFrom(portName);
-    } catch (FatalError *err) {
-        cerr << "FatalError exception. Error code: " << err->code() 
-        << " (" << err->qstrError() << ")" << endl;
-        cerr << "Location: " << err->what() << endl;
+    } catch (SequencerError& err) {
+        cerr << "SequencerError exception. Error code: " << err.code() 
+        << " (" << err.qstrError() << ")" << endl;
+        cerr << "Location: " << err.location() << endl;
         throw err;
     }
 }
@@ -120,10 +120,10 @@ void QDumpMIDI::run()
         }
         m_Client->getQueue()->stop();
         m_Client->stopSequencerInput();
-    } catch (FatalError *err) {
-        cerr << "FatalError exception. Error code: " << err->code() 
-        << " (" << err->qstrError() << ")" << endl;
-        cerr << "Location: " << err->what() << endl;
+    } catch (SequencerError& err) {
+        cerr << "SequencerError exception. Error code: " << err.code() 
+        << " (" << err.qstrError() << ")" << endl;
+        cerr << "Location: " << err.location() << endl;
         throw err;
     }
 }

@@ -4,7 +4,7 @@
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation; either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+    with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
 #ifndef PIANOKEY_H_
@@ -26,12 +25,18 @@
 class PianoKey : public QGraphicsRectItem
 {
 public:
-    PianoKey(QGraphicsItem * parent = 0 ) : QGraphicsRectItem(parent) { }
+    PianoKey(QGraphicsItem * parent = 0 ) 
+        : QGraphicsRectItem(parent), m_pressed(false) { }
     PianoKey(const QRectF &rect, const QBrush &brush, const int note); 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
     int getNote() const { return m_note; }
+    void setPressedBrush(const QBrush& b) { m_selectedBrush = b; }
+    bool isPressed() { return m_pressed; }
+    void setPressed(bool p);
 
 private:
+    bool m_pressed;
+    QBrush m_selectedBrush;
     QBrush m_brush;
     int m_note;
 };

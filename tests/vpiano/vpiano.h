@@ -51,8 +51,8 @@ public slots:
     void slotAboutQt();
     void slotConnections();
     void slotPreferences();
-    void slotNoteOn(int midiNote);
-    void slotNoteOff(int midiNote);
+    void slotNoteOn(const int midiNote);
+    void slotNoteOff(const int midiNote);
     void slotSubscription(MidiPort* port, Subscription* subs);
 
 #ifdef USE_QEVENTS  

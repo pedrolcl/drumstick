@@ -353,72 +353,72 @@ MidiQueue::~MidiQueue()
 
 QueueInfo& MidiQueue::getInfo()
 {
-    CHECK_EXCEPT(snd_seq_get_queue_info(m_MidiClient->getHandle(), m_Id, m_Info.m_Info));
+    CHECK_WARNING(snd_seq_get_queue_info(m_MidiClient->getHandle(), m_Id, m_Info.m_Info));
     return m_Info;
 }
 
 QueueStatus& MidiQueue::getStatus()
 {
-    CHECK_EXCEPT(snd_seq_get_queue_status(m_MidiClient->getHandle(), m_Id, m_Status.m_Info));
+    CHECK_WARNING(snd_seq_get_queue_status(m_MidiClient->getHandle(), m_Id, m_Status.m_Info));
     return m_Status;
 }
 
 QueueTempo& MidiQueue::getTempo()
 {
-    CHECK_EXCEPT(snd_seq_get_queue_tempo(m_MidiClient->getHandle(), m_Id, m_Tempo.m_Info));
+    CHECK_WARNING(snd_seq_get_queue_tempo(m_MidiClient->getHandle(), m_Id, m_Tempo.m_Info));
     return m_Tempo;
 }
 
 QueueTimer& MidiQueue::getTimer()
 {
-    CHECK_EXCEPT(snd_seq_get_queue_timer(m_MidiClient->getHandle(), m_Id, m_Timer.m_Info));
+    CHECK_WARNING(snd_seq_get_queue_timer(m_MidiClient->getHandle(), m_Id, m_Timer.m_Info));
     return m_Timer;
 }
 
 void MidiQueue::setInfo(const QueueInfo& value)
 {
     m_Info = value;
-    CHECK_EXCEPT(snd_seq_set_queue_info(m_MidiClient->getHandle(), m_Id, m_Info.m_Info));
+    CHECK_WARNING(snd_seq_set_queue_info(m_MidiClient->getHandle(), m_Id, m_Info.m_Info));
 }
 
 void MidiQueue::setTempo(const QueueTempo& value)
 {
     m_Tempo = value;
-    CHECK_EXCEPT(snd_seq_set_queue_tempo(m_MidiClient->getHandle(), m_Id, m_Tempo.m_Info));
+    CHECK_WARNING(snd_seq_set_queue_tempo(m_MidiClient->getHandle(), m_Id, m_Tempo.m_Info));
 }
 
 void MidiQueue::setTimer(const QueueTimer& value)
 {
     m_Timer = value;
-    CHECK_EXCEPT(snd_seq_set_queue_timer(m_MidiClient->getHandle(), m_Id, m_Timer.m_Info));
+    CHECK_WARNING(snd_seq_set_queue_timer(m_MidiClient->getHandle(), m_Id, m_Timer.m_Info));
 }
 
 int MidiQueue::getUsage()
 {
-    return CHECK_EXCEPT(snd_seq_get_queue_usage(m_MidiClient->getHandle(), m_Id));
+    return CHECK_WARNING(snd_seq_get_queue_usage(m_MidiClient->getHandle(), m_Id));
 }
 
 void MidiQueue::setUsage(int used)
 {
-    CHECK_EXCEPT(snd_seq_set_queue_usage(m_MidiClient->getHandle(), m_Id, used));
+    CHECK_WARNING(snd_seq_set_queue_usage(m_MidiClient->getHandle(), m_Id, used));
 }
 
 void MidiQueue::start()
 {
-    CHECK_EXCEPT(snd_seq_start_queue(m_MidiClient->getHandle(), m_Id, NULL));
-    CHECK_EXCEPT(snd_seq_drain_output(m_MidiClient->getHandle()));
+    CHECK_WARNING(snd_seq_start_queue(m_MidiClient->getHandle(), m_Id, NULL));
+    CHECK_WARNING(snd_seq_drain_output(m_MidiClient->getHandle()));
 }
 
 void MidiQueue::stop()
 {
-    CHECK_EXCEPT(snd_seq_stop_queue(m_MidiClient->getHandle(), m_Id, NULL));
-    CHECK_EXCEPT(snd_seq_drain_output(m_MidiClient->getHandle()));
+    CHECK_WARNING(snd_seq_stop_queue(m_MidiClient->getHandle(), m_Id, NULL));
+    CHECK_WARNING(snd_seq_drain_output(m_MidiClient->getHandle()));
 }
 
 void MidiQueue::continueRunning()
 {
-    CHECK_EXCEPT(snd_seq_continue_queue(m_MidiClient->getHandle(), m_Id, NULL));
-    CHECK_EXCEPT(snd_seq_drain_output(m_MidiClient->getHandle()));
+    CHECK_WARNING(snd_seq_continue_queue(m_MidiClient->getHandle(), m_Id, NULL));
+    CHECK_WARNING(snd_seq_drain_output(m_MidiClient->getHandle()));
 }
 
 void MidiQueue::clear()

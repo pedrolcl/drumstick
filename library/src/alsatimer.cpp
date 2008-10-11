@@ -597,13 +597,13 @@ Timer::getPollDescriptorsCount()
 void
 Timer::pollDescriptors(struct pollfd *pfds, unsigned int space)
 {
-    CHECK_EXCEPT(snd_timer_poll_descriptors(m_Info, pfds, space));
+    CHECK_WARNING(snd_timer_poll_descriptors(m_Info, pfds, space));
 }
 
 void
 Timer::pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds, unsigned short *revents)
 {
-    CHECK_EXCEPT(snd_timer_poll_descriptors_revents(m_Info, pfds, nfds, revents));
+    CHECK_WARNING(snd_timer_poll_descriptors_revents(m_Info, pfds, nfds, revents));
 }
 
 TimerInfo&
@@ -616,32 +616,32 @@ Timer::getTimerInfo()
 void
 Timer::setTimerParams(const TimerParams& params)
 {
-    CHECK_EXCEPT(snd_timer_params(m_Info, params.m_Info));
+    CHECK_WARNING(snd_timer_params(m_Info, params.m_Info));
 }
 
 TimerStatus&
 Timer::getTimerStatus()
 {
-    CHECK_EXCEPT(snd_timer_status(m_Info, m_TimerStatus.m_Info));
+    CHECK_WARNING(snd_timer_status(m_Info, m_TimerStatus.m_Info));
     return m_TimerStatus;
 }
 
 void
 Timer::start()
 {
-    CHECK_EXCEPT(snd_timer_start(m_Info));
+    CHECK_WARNING(snd_timer_start(m_Info));
 }
 
 void
 Timer::stop()
 {
-    CHECK_EXCEPT(snd_timer_stop(m_Info));
+    CHECK_WARNING(snd_timer_stop(m_Info));
 }
 
 void
 Timer::continueRunning()
 {
-    CHECK_EXCEPT(snd_timer_continue(m_Info));
+    CHECK_WARNING(snd_timer_continue(m_Info));
 }
 
 ssize_t

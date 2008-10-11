@@ -20,7 +20,6 @@
 #ifndef COMMONS_H_
 #define COMMONS_H_
 
-#include <stdexcept>
 #include <qglobal.h>
 #include <QString>
 #include <QApplication>
@@ -37,65 +36,55 @@ namespace Sequencer
 
 typedef quint8 MidiByte;  
 
-class FatalError : public std::runtime_error
+class SequencerError
 {
 public:
-    FatalError(std::string const& s, int rc) :
-        runtime_error(s), errCode(rc) 
-        {}
-
-    const QString qstrError() 
+    SequencerError(QString const& s, int rc) :
+        m_location(s), m_errCode(rc) {}
+    
+    virtual ~SequencerError() {}
+    
+    const QString qstrError() const 
     {
-        return QString(snd_strerror(errCode));
+        return QString(snd_strerror(m_errCode));
     }
 
-    int code() { return errCode; }
-
-private:
-    int errCode;
-};
-
-class SequencerError : public std::logic_error
-{
-public:
-    SequencerError(std::string const& s, int rc) :
-        logic_error(s), errCode(rc) 
-        {}
-
-    const QString qstrError() 
-    {
-        return QString(snd_strerror(errCode));
+    int code() const 
+    { 
+        return m_errCode; 
+    }
+    
+    const QString& location() const 
+    { 
+        return m_location; 
     }
 
-    int code() { return errCode; }
-
 private:
-    int errCode;
+    QString m_location;
+    int     m_errCode;
 };
-
 
 inline int checkErrorAndThrow(int rc, const char *where)
 {
     if (rc < 0) {
         qDebug() << "Error code:" << rc << "(" <<  snd_strerror(rc) << ")";
         qDebug() << "Location:" << where;
-        throw new FatalError(std::string(where), rc);
+        throw SequencerError(QString(where), rc);
     }
     return rc;
 }
 
-inline int checkExceptAndThrow(int rc, const char *where)
+inline int checkWarning(int rc, const char *where)
 {
     if (rc < 0) {
-        qDebug() << "Exception code:" << rc << "(" <<  snd_strerror(rc) << ")";
-        qDebug() << "Location:" << where;
-        throw new SequencerError(std::string(where), rc);
+        qWarning() << "Exception code:" << rc << "(" <<  snd_strerror(rc) << ")";
+        qWarning() << "Location:" << where;
     }
     return rc;
 }
 
-#define CHECK_ERROR(x) (checkErrorAndThrow((x),__PRETTY_FUNCTION__))
-#define CHECK_EXCEPT(x) (checkExceptAndThrow((x),__PRETTY_FUNCTION__))
+#define CHECK_ERROR(x)   (checkErrorAndThrow((x),__PRETTY_FUNCTION__))
+#define CHECK_WARNING(x) (checkWarning((x),__PRETTY_FUNCTION__))
 
 }
 }

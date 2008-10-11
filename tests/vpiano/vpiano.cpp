@@ -45,7 +45,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
 
     m_Port = new MidiPort(this);
     m_Port->setMidiClient(m_Client);
-    m_Port->setPortName("Virtual Piano port");
+    m_Port->setPortName("Virtual Piano");
     m_Port->setCapability( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ |
                            SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE );
     m_Port->setPortType( SND_SEQ_PORT_TYPE_APPLICATION );
@@ -78,7 +78,7 @@ VPiano::~VPiano()
     qDebug() << "Cheers!";
 }
 
-void VPiano::slotNoteOn(int midiNote)
+void VPiano::slotNoteOn(const int midiNote)
 {
     int chan = dlgPreferences.getOutChannel();
     int vel = dlgPreferences.getVelocity();
@@ -88,7 +88,8 @@ void VPiano::slotNoteOn(int midiNote)
     ev.setDirect();
     m_Client->outputDirect(&ev);
 }
-void VPiano::slotNoteOff(int midiNote)
+
+void VPiano::slotNoteOff(const int midiNote)
 {
     int chan = dlgPreferences.getOutChannel();
     int vel = dlgPreferences.getVelocity();
@@ -124,10 +125,10 @@ void VPiano::displayEvent(SequencerEvent *ev)
         default:
             break;
         }
-    } catch (FatalError *err) {
-        qDebug() << "FatalError exception. Error code: " << err->code() 
-        << " (" << err->qstrError() << ")";
-        qDebug() << "Location: " << err->what();
+    } catch (SequencerError& err) {
+        qDebug() << "SequencerError exception. Error code: " << err.code() 
+        << " (" << err.qstrError() << ")";
+        qDebug() << "Location: " << err.location();
         throw err;
     }
 }

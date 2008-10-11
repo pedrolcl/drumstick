@@ -59,21 +59,7 @@ ADD_DEFINITIONS(-D'VERSION="${VERSION}"')
 MESSAGE(STATUS "aseqmm ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
 
 # User options
-OPTION(WANT_DEBUG "Include debug support (source code line numbers and function names)" ON)
 OPTION(WANT_STATIC "Build a static library (.a) instead of dynamic (.so)" ON)
-
-# BUILD SETUP: None, Debug, Release, .. or custom ones
-IF(WANT_DEBUG)
-    SET(CMAKE_BUILD_TYPE Debug CACHE STRING 
-		"Choose the type of build, options are: Debug Release" FORCE)
-    SET(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3 -Wall -W -fexceptions -pipe -fPIC -D_REENTRANT -DDEBUG")
-    SET(CMAKE_C_FLAGS_DEBUG "-O0 -g3 -Wall -W -pipe")
-ELSE(WANT_DEBUG)
-    SET(CMAKE_BUILD_TYPE Release CACHE STRING
-		"Choose the type of build, options are: Debug Release" FORCE)
-    SET(CMAKE_CXX_FLAGS_RELEASE "-O2 -w -fexceptions -pipe -fPIC -D_REENTRANT -DNDEBUG -DQT_NO_DEBUG")
-    SET(CMAKE_C_FLAGS_RELEASE "-O2 -w -pipe")
-ENDIF(WANT_DEBUG)
 MESSAGE(STATUS "Build configuration: ${CMAKE_BUILD_TYPE}")
 
 # LIBRARY BUILD TYPE

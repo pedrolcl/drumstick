@@ -42,12 +42,12 @@ SET(buildsmf_qtobject_SRCS
 
 QT4_WRAP_CPP(buildsmf_moc_SRCS ${buildsmf_qtobject_SRCS})
 
-ADD_EXECUTABLE(buildsmf 
+ADD_EXECUTABLE(aseqmm-buildsmf 
     ${buildsmf_moc_SRCS}
     ${buildsmf_SRCS}
 )
 
-TARGET_LINK_LIBRARIES(buildsmf
+TARGET_LINK_LIBRARIES(aseqmm-buildsmf
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     aseqmm
@@ -66,12 +66,12 @@ SET(dumpsmf_qtobject_SRCS
 
 QT4_WRAP_CPP(dumpsmf_moc_SRCS ${dumpsmf_qtobject_SRCS})
 
-ADD_EXECUTABLE(dumpsmf 
+ADD_EXECUTABLE(aseqmm-dumpsmf 
     ${dumpsmf_moc_SRCS}
     ${dumpsmf_SRCS}
 )
 
-TARGET_LINK_LIBRARIES(dumpsmf
+TARGET_LINK_LIBRARIES(aseqmm-dumpsmf
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     aseqmm
@@ -90,12 +90,12 @@ SET(testevents_qtobject_SRCS
 
 QT4_WRAP_CPP(testevents_moc_SRCS ${testevents_qtobject_SRCS})
 
-ADD_EXECUTABLE(testevents
+ADD_EXECUTABLE(aseqmm-testevents
     ${testevents_moc_SRCS}
     ${testevents_SRCS}
 )
 
-TARGET_LINK_LIBRARIES(testevents
+TARGET_LINK_LIBRARIES(aseqmm-testevents
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     aseqmm
@@ -114,12 +114,12 @@ SET(dumpmid_qtobject_SRCS
 
 QT4_WRAP_CPP(dumpmid_moc_SRCS ${dumpmid_qtobject_SRCS})
 
-ADD_EXECUTABLE(dumpmid
+ADD_EXECUTABLE(aseqmm-dumpmid
     ${dumpmid_moc_SRCS}
     ${dumpmid_SRCS}
 )
 
-TARGET_LINK_LIBRARIES(dumpmid
+TARGET_LINK_LIBRARIES(aseqmm-dumpmid
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     aseqmm
@@ -133,11 +133,11 @@ SET(timertest_SRCS
 
 #QT4_WRAP_CPP(timertest_moc_SRCS ${timertest_qtobject_SRCS})
 
-ADD_EXECUTABLE(timertest
+ADD_EXECUTABLE(aseqmm-timertest
     ${timertest_SRCS}
 )
 
-TARGET_LINK_LIBRARIES(timertest
+TARGET_LINK_LIBRARIES(aseqmm-timertest
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     aseqmm
@@ -156,12 +156,12 @@ SET(playsmf_qtobject_SRCS
 
 QT4_WRAP_CPP(playsmf_moc_SRCS ${playsmf_qtobject_SRCS})
 
-ADD_EXECUTABLE(playsmf
+ADD_EXECUTABLE(aseqmm-playsmf
     ${playsmf_moc_SRCS}
     ${playsmf_SRCS}
 )
 
-TARGET_LINK_LIBRARIES(playsmf
+TARGET_LINK_LIBRARIES(aseqmm-playsmf
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     aseqmm
@@ -193,14 +193,14 @@ QT4_WRAP_CPP(playmid_moc_SRCS ${playmid_qtobject_SRCS})
 
 QT4_ADD_RESOURCES(playmid_resources playmid/smfplayer.qrc)
 
-ADD_EXECUTABLE(smfplayer
+ADD_EXECUTABLE(aseqmm-smfplayer
     ${playmid_resources}
     ${playmid_ui_SRCS}
     ${playmid_moc_SRCS}
     ${playmid_SRCS}
 )
 
-TARGET_LINK_LIBRARIES(smfplayer
+TARGET_LINK_LIBRARIES(aseqmm-smfplayer
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     aseqmm
@@ -251,20 +251,27 @@ SET(vpiano_qtobject_SRCS
 
 QT4_WRAP_CPP(vpiano_moc_SRCS ${vpiano_qtobject_SRCS})
 
-ADD_EXECUTABLE(vpiano
+ADD_EXECUTABLE(aseqmm-vpiano
     ${vpiano_ui_SRCS}
     ${vpiano_moc_SRCS}
     ${vpiano_SRCS}
 )
 
-TARGET_LINK_LIBRARIES(vpiano
+TARGET_LINK_LIBRARIES(aseqmm-vpiano
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     aseqmm
 )
 
 # we should install some files...
-INSTALL(TARGETS buildsmf dumpsmf testevents dumpmid playsmf vpiano
+INSTALL(TARGETS aseqmm-buildsmf 
+                aseqmm-dumpsmf 
+                aseqmm-testevents
+                aseqmm-timertest 
+                aseqmm-dumpmid 
+                aseqmm-playsmf 
+                aseqmm-smfplayer
+                aseqmm-vpiano
 		RUNTIME DESTINATION bin
 		ARCHIVE DESTINATION lib
 		LIBRARY DESTINATION lib)

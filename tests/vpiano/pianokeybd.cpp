@@ -4,7 +4,7 @@
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation; either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+    with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "pianokeybd.h"
@@ -35,10 +34,10 @@ PianoKeybd::PianoKeybd(const int baseOctave, const int numOctaves, QWidget *pare
     initScene(baseOctave, numOctaves);
 }
 
-void PianoKeybd::initScene(int base, int num)
+void PianoKeybd::initScene(int base, int num, const QColor& c)
 {
-    m_scene = new PianoScene(base, num, this);
-    m_scene->setKeyboardMap(m_defaultMap);
+    m_scene = new PianoScene(base, num, c, this);
+    m_scene->setKeyboardMap(&m_defaultMap);
     connect(m_scene, SIGNAL(noteOn(int)), SIGNAL(noteOn(int)));
     connect(m_scene, SIGNAL(noteOff(int)), SIGNAL(noteOff(int)));
     setScene(m_scene);
@@ -49,9 +48,12 @@ void PianoKeybd::initialize()
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setCacheMode(CacheBackground);
-    setViewportUpdateMode(FullViewportUpdate);
+    setViewportUpdateMode(MinimalViewportUpdate);
     setRenderHints(QPainter::Antialiasing);
-    setBackgroundBrush(QApplication::palette().brush(QPalette::Background));
+    setOptimizationFlag(DontClipPainter, true);
+    setOptimizationFlag(DontSavePainterState, true);
+    setOptimizationFlag(DontAdjustForAntialiasing, true);
+    setBackgroundBrush(QApplication::palette().background());
     initDefaultMap();
 }
 
@@ -73,34 +75,56 @@ void PianoKeybd::showNoteOff(int midiNote)
 
 void PianoKeybd::initDefaultMap()
 {
-    m_defaultMap.insert(QKeySequence(Qt::Key_A), 8);
-    m_defaultMap.insert(QKeySequence(Qt::Key_Z), 9);
-    m_defaultMap.insert(QKeySequence(Qt::Key_S), 10);
-    m_defaultMap.insert(QKeySequence(Qt::Key_X), 11);
-    m_defaultMap.insert(QKeySequence(Qt::Key_C), 12);
-    m_defaultMap.insert(QKeySequence(Qt::Key_F), 13);
-    m_defaultMap.insert(QKeySequence(Qt::Key_V), 14);
-    m_defaultMap.insert(QKeySequence(Qt::Key_G), 15);
-    m_defaultMap.insert(QKeySequence(Qt::Key_B), 16);
-    m_defaultMap.insert(QKeySequence(Qt::Key_N), 17);
-    m_defaultMap.insert(QKeySequence(Qt::Key_J), 18);
-    m_defaultMap.insert(QKeySequence(Qt::Key_M), 19);
-    m_defaultMap.insert(QKeySequence(Qt::Key_K), 20);
-    m_defaultMap.insert(QKeySequence(Qt::Key_Comma), 21);
-    m_defaultMap.insert(QKeySequence(Qt::Key_L), 22);
-    m_defaultMap.insert(QKeySequence(Qt::Key_Period), 23);
-    m_defaultMap.insert(QKeySequence(Qt::Key_Slash), 24);
-    m_defaultMap.insert(QKeySequence(Qt::Key_Apostrophe), 25);
-    m_defaultMap.insert(QKeySequence(Qt::Key_Backslash), 26);
-    m_defaultMap.insert(QKeySequence(Qt::Key_Dead_Grave), 27);
+    m_defaultMap.insert(Qt::Key_Z, 12);
+    m_defaultMap.insert(Qt::Key_S, 13);
+    m_defaultMap.insert(Qt::Key_X, 14);
+    m_defaultMap.insert(Qt::Key_D, 15);
+    m_defaultMap.insert(Qt::Key_C, 16);
+    m_defaultMap.insert(Qt::Key_V, 17);
+    m_defaultMap.insert(Qt::Key_G, 18);
+    m_defaultMap.insert(Qt::Key_B, 19);
+    m_defaultMap.insert(Qt::Key_H, 20);
+    m_defaultMap.insert(Qt::Key_N, 21);
+    m_defaultMap.insert(Qt::Key_J, 22);
+    m_defaultMap.insert(Qt::Key_M, 23);
+    
+    m_defaultMap.insert(Qt::Key_Q, 24);
+    m_defaultMap.insert(Qt::Key_2, 25);
+    m_defaultMap.insert(Qt::Key_W, 26);
+    m_defaultMap.insert(Qt::Key_3, 27);
+    m_defaultMap.insert(Qt::Key_E, 28);
+    m_defaultMap.insert(Qt::Key_R, 29);
+    m_defaultMap.insert(Qt::Key_5, 30);
+    m_defaultMap.insert(Qt::Key_T, 31);
+    m_defaultMap.insert(Qt::Key_6, 32);
+    m_defaultMap.insert(Qt::Key_Y, 33);
+    m_defaultMap.insert(Qt::Key_7, 34);
+    m_defaultMap.insert(Qt::Key_U, 35);
+    m_defaultMap.insert(Qt::Key_I, 36);
+    m_defaultMap.insert(Qt::Key_9, 37);
+    m_defaultMap.insert(Qt::Key_O, 38);
+    m_defaultMap.insert(Qt::Key_0, 39);
+    m_defaultMap.insert(Qt::Key_P, 40);
 }
 
 void PianoKeybd::setNumOctaves(const int numOctaves)
 {
     if (numOctaves != m_scene->numOctaves()) {
         int baseOctave = m_scene->baseOctave();
+        QColor color = m_scene->getSelectedColor();
         delete m_scene;
-        initScene(baseOctave, numOctaves);
+        initScene(baseOctave, numOctaves, color);
+        fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
+    }
+}
+
+void PianoKeybd::setSelectedColor(const QColor& color)
+{
+    if (color != m_scene->getSelectedColor()) {
+        int baseOctave = m_scene->baseOctave();
+        int numOctaves = m_scene->numOctaves();
+        delete m_scene;
+        initScene(baseOctave, numOctaves, color);
         fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
     }
 }
@@ -118,4 +142,9 @@ void PianoKeybd::setRotation(int r)
 QSize PianoKeybd::sizeHint() const 
 { 
     return mapFromScene(sceneRect()).boundingRect().size();
+}
+
+void PianoKeybd::allKeysOff()
+{
+    m_scene->allKeysOff();
 }
