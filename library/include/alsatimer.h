@@ -180,11 +180,12 @@ private:
     snd_timer_status_t* m_Info;
 };
 
-class Timer
+class Timer : public QObject
 {
+    Q_OBJECT
 public:
-    Timer(const QString& deviceName, int openMode);
-    Timer(TimerId& id, int openMode);
+    Timer(const QString& deviceName, int openMode, QObject* parent = 0);
+    Timer(TimerId& id, int openMode, QObject* parent = 0);
     virtual ~Timer();
     
     snd_timer_t* getHandle() { return m_Info; }

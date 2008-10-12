@@ -324,20 +324,23 @@ void QueueTimer::setResolution(unsigned int value)
 /* MidiQueue */
 /*************/
 
-MidiQueue::MidiQueue(MidiClient* seq)
+MidiQueue::MidiQueue(MidiClient* seq, QObject* parent) 
+    : QObject(parent)
 {
     m_MidiClient = seq;
     m_Id = CHECK_ERROR(snd_seq_alloc_queue(m_MidiClient->getHandle()));
 }
 
-MidiQueue::MidiQueue(MidiClient* seq, const QueueInfo info)
+MidiQueue::MidiQueue(MidiClient* seq, const QueueInfo info, QObject* parent)
+    : QObject(parent)
 {
     m_MidiClient = seq;
     m_Info = info;
     m_Id = CHECK_ERROR(snd_seq_create_queue(m_MidiClient->getHandle(), m_Info.m_Info));
 }
 
-MidiQueue::MidiQueue(MidiClient* seq, const QString name)
+MidiQueue::MidiQueue(MidiClient* seq, const QString name, QObject* parent)
+    : QObject(parent)
 {
     m_MidiClient = seq;
     m_Id = CHECK_ERROR(snd_seq_alloc_named_queue(m_MidiClient->getHandle(), name.toLocal8Bit().data()));

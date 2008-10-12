@@ -21,9 +21,11 @@ INCLUDE_DIRECTORIES(
 )
 
 SET(aseqmm_qtobject_SRCS
+    include/alsatimer.h
     include/client.h
     include/port.h
     include/qsmf.h
+    include/queue.h
     include/recthread.h
     include/playthread.h
 )

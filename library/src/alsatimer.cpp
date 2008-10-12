@@ -554,13 +554,15 @@ TimerStatus::getQueue()
  * Timer *
  *********/
 
-Timer::Timer(const QString& deviceName, int openMode)
+Timer::Timer(const QString& deviceName, int openMode, QObject* parent)
+    : QObject(parent)
 {
     m_deviceName = deviceName;
     CHECK_ERROR(snd_timer_open(&m_Info, m_deviceName.toLocal8Bit().data(), openMode));
 }
 
-Timer::Timer(TimerId& id, int openMode)
+Timer::Timer(TimerId& id, int openMode, QObject* parent)
+    : QObject(parent)
 {
     m_deviceName = QString("hw:CLASS=%1,SCLASS=%2,CARD=%3,DEV=%4,SUBDEV=%5")
     .arg(id.getClass())

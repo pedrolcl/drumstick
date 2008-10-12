@@ -131,12 +131,13 @@ private:
 };
 
 
-class MidiQueue
+class MidiQueue : public QObject
 {
+    Q_OBJECT
 public:
-    MidiQueue(MidiClient* seq);
-    MidiQueue(MidiClient* seq,  const QueueInfo info);
-    MidiQueue(MidiClient* seq,  const QString name);
+    MidiQueue(MidiClient* seq, QObject* parent = 0);
+    MidiQueue(MidiClient* seq, const QueueInfo info, QObject* parent = 0);
+    MidiQueue(MidiClient* seq, const QString name, QObject* parent = 0);
     virtual ~MidiQueue();
 
     int getId() const { return m_Id; }
