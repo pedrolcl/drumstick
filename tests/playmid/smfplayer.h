@@ -39,6 +39,8 @@
 using namespace MIDI::Utils;
 using namespace ALSA::Sequencer;
 
+#define SKEW_BASE 0x10000 // Should be fixed in ALSA kernel
+
 class SMFPlayer : public QWidget
 {
     Q_OBJECT
@@ -50,6 +52,7 @@ public:
     void appendEvent(SequencerEvent* ev);
     void subscribe(const QString& portName);
     void updateTimeLabel(int mins, int secs, int cnts);
+    void updateTempoLabel(int itempo);
     
 public slots:
     void play();
@@ -57,6 +60,9 @@ public slots:
     void stop();
     void open();
     void setup();
+    void tempoReset();
+    void tempoSlider(int value);
+    
     void songFinished();
     void sequencerEvent(SequencerEvent* ev);
     void headerEvent(int format, int ntrks, int division);
@@ -76,6 +82,7 @@ private:
     int m_portId;
     int m_queueId;
     int m_initialTempo;
+    float m_tempoFactor;
     unsigned long m_tick;
     
     QSmf* m_engine;

@@ -93,11 +93,11 @@ public:
 
     int getId();
     int getPPQ();
-    unsigned int getSkew();
+    unsigned int getSkewValue();
     unsigned int getSkewBase();
     unsigned int getTempo();
     void setPPQ(int value);
-    void setSkew(unsigned int value);
+    void setSkewValue(unsigned int value);
     void setSkewBase(unsigned int value);
     void setTempo(unsigned int value);
 

@@ -30,6 +30,7 @@ SMFPlayer::SMFPlayer(QWidget *parent)
     m_portId(-1),
     m_queueId(-1),
     m_initialTempo(0),
+    m_tempoFactor(1.0),
     m_tick(0)
 {
 	ui.setupUi(this);
@@ -38,6 +39,9 @@ SMFPlayer::SMFPlayer(QWidget *parent)
     connect(ui.btnStop, SIGNAL(clicked()), SLOT(stop()));
     connect(ui.btnOpen, SIGNAL(clicked()), SLOT(open()));
     connect(ui.btnSetup, SIGNAL(clicked()), SLOT(setup()));
+    connect(ui.btnReset, SIGNAL(clicked()), SLOT(tempoReset()));
+    connect(ui.sliderTempo, SIGNAL(valueChanged(int)), SLOT(tempoSlider(int)));
+    
 	connect(ui.btnExit, SIGNAL(clicked()), qApp, SLOT(quit()));
 
     m_Client = new MidiClient(this);
@@ -119,8 +123,9 @@ void SMFPlayer::play()
     if (m_player->getInitialPosition() == 0) {
         QueueTempo firstTempo = m_Queue->getTempo();
         firstTempo.setPPQ(m_song.getDivision());
-        if (m_initialTempo > 0)
-            firstTempo.setTempo(m_initialTempo);
+        firstTempo.setTempo(m_initialTempo);
+        firstTempo.setSkewValue(floor(SKEW_BASE * m_tempoFactor));
+        firstTempo.setSkewBase(SKEW_BASE);
         m_Queue->setTempo(firstTempo);
         m_Client->drainOutput();
     }
@@ -138,6 +143,7 @@ void SMFPlayer::stop()
     m_player->stop();
     m_player->resetPosition();
     updateTimeLabel(0,0,0);
+    updateTempoLabel(m_initialTempo);
 }
 
 void SMFPlayer::open()
@@ -151,13 +157,19 @@ void SMFPlayer::open()
         QString firstName = fileNames.takeFirst();
         m_song.clear();
         m_tick = 0;
+        m_initialTempo = 0;
         m_engine->readFromFile(firstName);
         m_song.sort();
         m_player->setSong(&m_song);
+        if (m_initialTempo == 0) {
+            m_initialTempo = 500000;
+        }
         QFileInfo fi(firstName);
         ui.lblName->setText(fi.fileName());
         ui.lblCopyright->setText(m_song.getCopyright());
+        ui.progressBar->setValue(0);
         updateTimeLabel(0,0,0);
+        updateTempoLabel(m_initialTempo);
     }
 }
 
@@ -187,6 +199,15 @@ void SMFPlayer::songFinished()
     updateTimeLabel(0,0,0);    
 }
 
+void SMFPlayer::updateTempoLabel(int itempo)
+{
+    int tempo = 0;
+    if (itempo != 0) tempo = floor(6.0e7 / itempo);
+    QString stempo = QString("%1 bpm x %2").arg(tempo)
+                                           .arg(m_tempoFactor, 0, 'f', 2);
+    ui.lblOther->setText(stempo);
+}
+
 void SMFPlayer::sequencerEvent(SequencerEvent *ev)
 {
     if (ev->getSequencerType() == SND_SEQ_EVENT_ECHO) {
@@ -195,11 +216,8 @@ void SMFPlayer::sequencerEvent(SequencerEvent *ev)
         int mins = rt->tv_sec / 60; 
         int secs =  rt->tv_sec % 60;
         int cnts = floor( rt->tv_nsec / 1.0e7 );
-        int itempo = floor( 6.0e7 / m_Queue->getTempo().getTempo() );
-        QString stempo = QString("%1 bpm").arg(itempo);
-
+        updateTempoLabel(m_Queue->getTempo().getTempo());
         updateTimeLabel(mins, secs, cnts);
-        ui.lblOther->setText(stempo);
         ui.progressBar->setValue(pos);
     }
     delete ev;
@@ -291,4 +309,25 @@ void SMFPlayer::errorHandler(const QString& errorStr)
     exit(1);
 }
 
+void SMFPlayer::tempoReset()
+{
+    ui.sliderTempo->setValue(100);
+    m_tempoFactor = 1.0;
+}
 
+void SMFPlayer::tempoSlider(int value)
+{
+    int rtempo = m_initialTempo;
+    m_tempoFactor = value / 100.0;
+    if (!m_player->stopped()) {
+        QueueTempo qtempo = m_Queue->getTempo();
+        int rtempo = qtempo.getTempo();
+        qtempo.setSkewValue(floor(SKEW_BASE * value / 100.0));
+        qtempo.setSkewBase(SKEW_BASE);
+        m_Queue->setTempo(qtempo);
+        m_Client->drainOutput();
+    } else {
+        qDebug() << "player stopped";
+    }
+    updateTempoLabel(rtempo);
+}

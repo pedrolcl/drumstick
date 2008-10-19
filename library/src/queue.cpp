@@ -213,7 +213,7 @@ int QueueTempo::getPPQ()
     return snd_seq_queue_tempo_get_ppq(m_Info);
 }
 
-unsigned int QueueTempo::getSkew()
+unsigned int QueueTempo::getSkewValue()
 {
     return snd_seq_queue_tempo_get_skew(m_Info);
 }
@@ -233,7 +233,7 @@ void QueueTempo::setPPQ(int value)
     snd_seq_queue_tempo_set_ppq(m_Info, value);
 }
 
-void QueueTempo::setSkew(unsigned int value)
+void QueueTempo::setSkewValue(unsigned int value)
 {
     snd_seq_queue_tempo_set_skew(m_Info, value);
 }
