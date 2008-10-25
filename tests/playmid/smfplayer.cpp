@@ -41,8 +41,7 @@ SMFPlayer::SMFPlayer(QWidget *parent)
     connect(ui.btnSetup, SIGNAL(clicked()), SLOT(setup()));
     connect(ui.btnReset, SIGNAL(clicked()), SLOT(tempoReset()));
     connect(ui.sliderTempo, SIGNAL(valueChanged(int)), SLOT(tempoSlider(int)));
-    
-	connect(ui.btnExit, SIGNAL(clicked()), qApp, SLOT(quit()));
+	connect(ui.btnExit, SIGNAL(clicked()), SLOT(quit()));
 
     m_Client = new MidiClient(this);
     m_Port = new MidiPort(this);
@@ -50,6 +49,7 @@ SMFPlayer::SMFPlayer(QWidget *parent)
     m_Client->setOpenMode(SND_SEQ_OPEN_DUPLEX);
     m_Client->setBlockMode(false);
     m_Client->open();
+    m_Client->setPoolOutput(100);
     m_Client->setClientName("MIDI Player");
     connect(m_Client, SIGNAL(eventReceived(SequencerEvent*)), 
                       SLOT(sequencerEvent(SequencerEvent*)));
@@ -120,12 +120,13 @@ void SMFPlayer::updateTimeLabel(int mins, int secs, int cnts)
 
 void SMFPlayer::play()
 {
+    if (m_initialTempo == 0) 
+        return;
     if (m_player->getInitialPosition() == 0) {
         QueueTempo firstTempo = m_Queue->getTempo();
         firstTempo.setPPQ(m_song.getDivision());
         firstTempo.setTempo(m_initialTempo);
-        firstTempo.setSkewValue(floor(SKEW_BASE * m_tempoFactor));
-        firstTempo.setSkewBase(SKEW_BASE);
+        firstTempo.setTempoFactor(m_tempoFactor);
         m_Queue->setTempo(firstTempo);
         m_Client->drainOutput();
     }
@@ -134,16 +135,20 @@ void SMFPlayer::play()
 
 void SMFPlayer::pause()
 {
-    m_player->stop();
-    m_player->setPosition(m_Queue->getStatus().getTickTime());
+    if (m_player->isRunning()) {
+        m_player->stop();
+        m_player->setPosition(m_Queue->getStatus().getTickTime());
+    }
 }
 
 void SMFPlayer::stop()
 {
-    m_player->stop();
-    m_player->resetPosition();
-    updateTimeLabel(0,0,0);
-    updateTempoLabel(m_initialTempo);
+    if (m_initialTempo != 0) {
+        m_player->stop();
+        m_player->resetPosition();
+        updateTimeLabel(0,0,0);
+        updateTempoLabel(6.0e7f / m_initialTempo);
+    }
 }
 
 void SMFPlayer::open()
@@ -169,7 +174,7 @@ void SMFPlayer::open()
         ui.lblCopyright->setText(m_song.getCopyright());
         ui.progressBar->setValue(0);
         updateTimeLabel(0,0,0);
-        updateTempoLabel(m_initialTempo);
+        updateTempoLabel(6.0e7f / m_initialTempo);
     }
 }
 
@@ -199,12 +204,9 @@ void SMFPlayer::songFinished()
     updateTimeLabel(0,0,0);    
 }
 
-void SMFPlayer::updateTempoLabel(int itempo)
+void SMFPlayer::updateTempoLabel(float ftempo)
 {
-    int tempo = 0;
-    if (itempo != 0) tempo = floor(6.0e7 / itempo);
-    QString stempo = QString("%1 bpm x %2").arg(tempo)
-                                           .arg(m_tempoFactor, 0, 'f', 2);
+    QString stempo = QString("%1 bpm").arg(ftempo, 0, 'f', 2);
     ui.lblOther->setText(stempo);
 }
 
@@ -216,7 +218,7 @@ void SMFPlayer::sequencerEvent(SequencerEvent *ev)
         int mins = rt->tv_sec / 60; 
         int secs =  rt->tv_sec % 60;
         int cnts = floor( rt->tv_nsec / 1.0e7 );
-        updateTempoLabel(m_Queue->getTempo().getTempo());
+        updateTempoLabel(m_Queue->getTempo().getRealBPM());
         updateTimeLabel(mins, secs, cnts);
         ui.progressBar->setValue(pos);
     }
@@ -317,17 +319,19 @@ void SMFPlayer::tempoReset()
 
 void SMFPlayer::tempoSlider(int value)
 {
-    int rtempo = m_initialTempo;
     m_tempoFactor = value / 100.0;
-    if (!m_player->stopped()) {
-        QueueTempo qtempo = m_Queue->getTempo();
-        int rtempo = qtempo.getTempo();
-        qtempo.setSkewValue(floor(SKEW_BASE * value / 100.0));
-        qtempo.setSkewBase(SKEW_BASE);
-        m_Queue->setTempo(qtempo);
-        m_Client->drainOutput();
-    } else {
-        qDebug() << "player stopped";
+    QueueTempo qtempo = m_Queue->getTempo();
+    qtempo.setTempoFactor(m_tempoFactor);
+    m_Queue->setTempo(qtempo);
+    m_Client->drainOutput();
+    if (!m_player->isRunning()) {
+        updateTempoLabel(qtempo.getRealBPM());
     }
-    updateTempoLabel(rtempo);
+}
+
+void SMFPlayer::quit()
+{
+    stop();
+    m_player->wait();
+    QApplication::quit();
 }

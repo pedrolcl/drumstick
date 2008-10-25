@@ -26,6 +26,10 @@
 static QTextStream cout(stdout, QIODevice::WriteOnly); 
 static QTextStream cerr(stderr, QIODevice::WriteOnly); 
 
+/* ********** *
+ * Song class
+ * ********** */
+
 static inline bool eventLessThan(const SequencerEvent* s1, const SequencerEvent *s2)
 {
     return s1->getTick() < s2->getTick();
@@ -46,6 +50,10 @@ Song::~Song()
 {
     clear();
 }
+
+/* ************* *
+ * PlaySMF class
+ * ************* */
 
 PlaySMF::PlaySMF() :
     m_division(-1),
@@ -130,6 +138,7 @@ void PlaySMF::stop()
 {
     m_mutex.lock();
     m_Stopped = true;
+    m_Client->dropOutput();
     m_mutex.unlock();
 }
 
@@ -268,6 +277,8 @@ void PlaySMF::play(QString fileName)
     cout << "___time ch event__________ data____" << endl;
     m_engine->readFromFile(fileName);
     m_song.sort();
+    m_Client->setPoolOutput(100);
+    
     QueueTempo firstTempo = m_Queue->getTempo();
     firstTempo.setPPQ(m_division);
     if (m_initialTempo > 0)
@@ -277,11 +288,16 @@ void PlaySMF::play(QString fileName)
     cout << "Starting playback" << endl;
     cout << "Press Ctrl+C to exit" << endl;
     try {
+        //int pending  = m_song.size();
         QListIterator<SequencerEvent*> i(m_song);
         m_Stopped = false;
         m_Queue->start();
         while (!stopped() && i.hasNext()) {
-            m_Client->output(i.next());
+            m_Client->outputDirect(i.next());
+            //pending--;
+            //if ((pending % 50) == 0) {
+            //    cout << pending << " pending. Pool free: " << m_Client->getPoolInfo().getOutputFree() << endl;
+            //}
         }
         if (stopped()) {
             m_Queue->clear();
@@ -306,6 +322,18 @@ void PlaySMF::usage()
     cout << "\tplaysmf PORT FILE.MID" << endl;
 }
 
+void PlaySMF::info()
+{
+    SystemInfo info = m_Client->getSystemInfo();
+    cout << "ALSA Sequencer System Info" << endl;
+    cout << "\tMax Clients: " << info.getMaxClients() << endl;
+    cout << "\tMax Ports: " << info.getMaxPorts() << endl;
+    cout << "\tMax Queues: " << info.getMaxQueues() << endl;
+    cout << "\tMax Channels: " << info.getMaxChannels() << endl;
+    cout << "\tCurrent Queues: " << info.getCurrentQueues() << endl;
+    cout << "\tCurrent Clients: " << info.getCurrentClients() << endl;
+}
+
 PlaySMF player;
 
 void signalHandler(int sig)
@@ -322,6 +350,7 @@ int main(int argc, char **argv)
     QApplication app(argc, argv, false);
     signal(SIGINT, signalHandler);
     signal(SIGTERM, signalHandler);
+    //player.info();
     if (app.argc() == 3) {
         QString portName(app.argv()[1]);
         player.subscribe(portName);

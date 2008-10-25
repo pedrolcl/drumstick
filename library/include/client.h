@@ -48,6 +48,7 @@ public:
     virtual ~ClientInfo();
     ClientInfo* clone();
     ClientInfo& operator=(const ClientInfo& other);
+    int getSizeOfInfo();
 
     int getClientId();
     snd_seq_client_type_t getClientType();
@@ -74,6 +75,59 @@ private:
 };
 
 typedef QList<ClientInfo> ClientInfoList;
+
+class SystemInfo
+{
+    friend class MidiClient;
+
+public:
+    SystemInfo();
+    SystemInfo(const SystemInfo& other);
+    SystemInfo(snd_seq_system_info_t* other); 
+    SystemInfo(MidiClient* seq);
+    virtual ~SystemInfo();
+    SystemInfo* clone();
+    SystemInfo& operator=(const SystemInfo& other);
+    int getSizeOfInfo();
+    
+    int getMaxClients();
+    int getMaxPorts();
+    int getMaxQueues();
+    int getMaxChannels();
+    int getCurrentQueues();
+    int getCurrentClients();
+
+private:
+    snd_seq_system_info_t* m_Info;
+};
+
+class PoolInfo
+{
+    friend class MidiClient;
+
+public:
+    PoolInfo();
+    PoolInfo(const PoolInfo& other);
+    PoolInfo(snd_seq_client_pool_t* other); 
+    PoolInfo(MidiClient* seq);
+    virtual ~PoolInfo();
+    PoolInfo* clone();
+    PoolInfo& operator=(const PoolInfo& other);
+    int getSizeOfInfo();
+    
+    int getClientId();
+    int getInputFree();
+    int getInputPool();
+    int getOutputFree();
+    int getOutputPool();
+    int getOutputRoom();
+    void setInputPool(int size);
+    void setOutputPool(int size);
+    void setOutputRoom(int size);
+
+private:    
+    snd_seq_client_pool_t* m_Info;
+};
 
 class MidiClient : public QObject
 {
@@ -130,6 +184,18 @@ public:
     ClientInfoList getAvailableClients();
     PortInfoList getAvailableInputs();
     PortInfoList getAvailableOutputs();
+    SystemInfo& getSystemInfo();
+    PoolInfo& getPoolInfo();
+    void setPoolInfo(const PoolInfo& info);
+    void setPoolInput(int size);
+    void setPoolOutput(int size);
+    void setPoolOutputRoom(int size);
+    void resetPoolInput();
+    void resetPoolOutput();
+    void dropInput();
+    void dropInputBuffer();
+    void dropOutput();
+    void dropOutputBuffer();
 
     void addListener(QObject* listener);
     void removeListener(QObject* listener);
@@ -164,6 +230,8 @@ private:
     PortInfoList m_OutputsAvail;
     PortInfoList m_InputsAvail;
     QObjectList m_listeners;
+    SystemInfo m_sysInfo;
+    PoolInfo m_poolInfo;
 };
 
 }

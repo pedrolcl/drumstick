@@ -1,0 +1,7 @@
+#!/bin/bash
+objdump -t -j *UND* build/libaseqmm.a | awk '{print $4}' | grep "^snd" > lib.txt
+nm --defined-only -D /usr/lib/libasound.so | awk '{print $3}'| egrep "^snd_(seq|midi|timer)" |\
+while read W; do
+    grep -q $W lib.txt || echo $W
+done
+rm -f lib.txt

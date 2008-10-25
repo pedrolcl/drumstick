@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>639</width>
-    <height>152</height>
+    <width>645</width>
+    <height>150</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -14,47 +14,71 @@
   </property>
   <layout class="QGridLayout" >
    <item rowspan="2" row="0" column="0" >
+    <widget class="QLabel" name="lblTime" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize" >
+      <size>
+       <width>210</width>
+       <height>62</height>
+      </size>
+     </property>
+     <property name="maximumSize" >
+      <size>
+       <width>210</width>
+       <height>62</height>
+      </size>
+     </property>
+     <property name="baseSize" >
+      <size>
+       <width>210</width>
+       <height>62</height>
+      </size>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>40</pointsize>
+      </font>
+     </property>
+     <property name="text" >
+      <string>00:00:00</string>
+     </property>
+    </widget>
+   </item>
+   <item rowspan="2" row="0" column="1" >
     <layout class="QGridLayout" >
-     <item rowspan="3" row="0" column="0" >
-      <widget class="QLabel" name="lblTime" >
-       <property name="font" >
-        <font>
-         <pointsize>40</pointsize>
-        </font>
-       </property>
-       <property name="text" >
-        <string>00:00:00</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1" colspan="2" >
+     <item row="0" column="0" colspan="2" >
       <widget class="QLabel" name="lbl1" >
        <property name="text" >
         <string>File Name:</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="3" colspan="2" >
+     <item row="0" column="2" colspan="2" >
       <widget class="QLabel" name="lblName" />
      </item>
-     <item row="1" column="1" colspan="2" >
+     <item row="1" column="0" colspan="2" >
       <widget class="QLabel" name="lbl2" >
        <property name="text" >
         <string>Copyright:</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="3" colspan="2" >
+     <item row="1" column="2" colspan="2" >
       <widget class="QLabel" name="lblCopyright" />
      </item>
-     <item row="2" column="1" >
+     <item row="2" column="0" >
       <widget class="QLabel" name="lbl3" >
        <property name="text" >
         <string>Tempo:</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="2" colspan="2" >
+     <item row="2" column="1" colspan="2" >
       <widget class="QLabel" name="lblOther" >
        <property name="sizePolicy" >
         <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
@@ -70,7 +94,7 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="4" >
+     <item row="2" column="3" >
       <widget class="QSlider" name="sliderTempo" >
        <property name="minimumSize" >
         <size>
@@ -84,17 +108,29 @@
        <property name="maximum" >
         <number>200</number>
        </property>
+       <property name="singleStep" >
+        <number>1</number>
+       </property>
+       <property name="pageStep" >
+        <number>2</number>
+       </property>
        <property name="value" >
         <number>100</number>
        </property>
        <property name="orientation" >
         <enum>Qt::Horizontal</enum>
        </property>
+       <property name="tickPosition" >
+        <enum>QSlider::TicksAbove</enum>
+       </property>
+       <property name="tickInterval" >
+        <number>5</number>
+       </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="0" column="1" >
+   <item row="0" column="2" >
     <spacer>
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
@@ -107,7 +143,7 @@
      </property>
     </spacer>
    </item>
-   <item row="1" column="1" >
+   <item row="1" column="2" >
     <widget class="QPushButton" name="btnReset" >
      <property name="sizePolicy" >
       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
@@ -126,7 +162,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2" >
+   <item row="2" column="0" colspan="3" >
     <widget class="QProgressBar" name="progressBar" >
      <property name="value" >
       <number>0</number>
@@ -142,7 +178,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0" colspan="2" >
+   <item row="3" column="0" colspan="3" >
     <layout class="QHBoxLayout" >
      <item>
       <widget class="QPushButton" name="btnPlay" >

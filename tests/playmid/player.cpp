@@ -30,7 +30,7 @@ Player::Player(MidiClient *seq, int portId)
 
 Player::~Player()
 {
-    if (!stopped()) {
+    if (isRunning() && !stopped()) {
         stop();
     }
     if (m_songIterator != NULL) {

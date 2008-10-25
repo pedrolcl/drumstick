@@ -615,6 +615,81 @@ MidiClient::setEventsEnabled(bool bEnabled)
     }
 }
 
+SystemInfo&
+MidiClient::getSystemInfo()
+{
+    snd_seq_system_info(m_SeqHandle, m_sysInfo.m_Info);
+    return m_sysInfo;
+}
+
+PoolInfo& 
+MidiClient::getPoolInfo()
+{
+    snd_seq_get_client_pool(m_SeqHandle, m_poolInfo.m_Info);
+    return m_poolInfo;
+}
+
+void 
+MidiClient::setPoolInfo(const PoolInfo& info)
+{
+    m_poolInfo = info;
+    CHECK_WARNING(snd_seq_set_client_pool(m_SeqHandle, m_poolInfo.m_Info));
+}
+
+void 
+MidiClient::resetPoolInput()
+{
+    CHECK_WARNING(snd_seq_reset_pool_input(m_SeqHandle));
+}
+
+void 
+MidiClient::resetPoolOutput()
+{
+    CHECK_WARNING(snd_seq_reset_pool_output(m_SeqHandle));
+}
+
+void 
+MidiClient::setPoolInput(int size)
+{
+    CHECK_WARNING(snd_seq_set_client_pool_input(m_SeqHandle, size));
+}
+
+void 
+MidiClient::setPoolOutput(int size)
+{
+    CHECK_WARNING(snd_seq_set_client_pool_output(m_SeqHandle, size));
+}
+
+void 
+MidiClient::setPoolOutputRoom(int size)
+{
+    CHECK_WARNING(snd_seq_set_client_pool_output_room(m_SeqHandle, size));
+}
+
+void 
+MidiClient::dropInput()
+{
+    CHECK_WARNING(snd_seq_drop_input(m_SeqHandle));
+}
+
+void 
+MidiClient::dropInputBuffer()
+{
+    CHECK_WARNING(snd_seq_drop_input_buffer(m_SeqHandle));
+}
+
+void 
+MidiClient::dropOutput()
+{
+    CHECK_WARNING(snd_seq_drop_output(m_SeqHandle));
+}
+
+void 
+MidiClient::dropOutputBuffer()
+{
+    CHECK_WARNING(snd_seq_drop_output_buffer(m_SeqHandle));
+}
+
 /**************/
 /* ClientInfo */
 /**************/
@@ -766,6 +841,185 @@ ClientInfo::getPorts() const
 {
     PortInfoList lst = m_Ports; // copy
     return lst;
+}
+
+int
+ClientInfo::getSizeOfInfo()
+{
+    return snd_seq_client_info_sizeof();
+}
+
+/**************
+ * SystemInfo *
+ **************/
+
+SystemInfo::SystemInfo()
+{
+    snd_seq_system_info_malloc(&m_Info);
+}
+
+SystemInfo::SystemInfo(const SystemInfo& other)
+{
+    snd_seq_system_info_malloc(&m_Info);
+    snd_seq_system_info_copy(m_Info, other.m_Info);
+}
+
+SystemInfo::SystemInfo(snd_seq_system_info_t* other)
+{
+    snd_seq_system_info_malloc(&m_Info);
+    snd_seq_system_info_copy(m_Info, other);
+}
+
+SystemInfo::SystemInfo(MidiClient* seq)
+{
+    snd_seq_system_info_malloc(&m_Info);
+    snd_seq_system_info(seq->getHandle(), m_Info);
+}
+
+SystemInfo::~SystemInfo()
+{
+    snd_seq_system_info_free(m_Info);
+}
+
+SystemInfo* 
+SystemInfo::clone()
+{
+    return new SystemInfo(m_Info);    
+}
+
+SystemInfo& 
+SystemInfo::operator=(const SystemInfo& other)
+{
+    snd_seq_system_info_copy(m_Info, other.m_Info);
+    return *this;
+}
+
+int SystemInfo::getSizeOfInfo()
+{
+    return snd_seq_system_info_sizeof();
+}
+
+int SystemInfo::getMaxClients()
+{
+    return snd_seq_system_info_get_clients(m_Info);
+}
+
+int SystemInfo::getMaxPorts()
+{
+    return snd_seq_system_info_get_ports(m_Info);
+}
+
+int SystemInfo::getMaxQueues()
+{
+    return snd_seq_system_info_get_queues(m_Info);
+}
+
+int SystemInfo::getMaxChannels()
+{
+    return snd_seq_system_info_get_channels(m_Info);
+}
+
+int SystemInfo::getCurrentQueues()
+{
+    return snd_seq_system_info_get_cur_queues(m_Info);
+}
+
+int SystemInfo::getCurrentClients()
+{
+    return snd_seq_system_info_get_cur_clients(m_Info);
+}
+
+/************
+ * PoolInfo *
+ ************/
+
+PoolInfo::PoolInfo()
+{
+    snd_seq_client_pool_malloc(&m_Info);
+}
+
+PoolInfo::PoolInfo(const PoolInfo& other)
+{
+    snd_seq_client_pool_malloc(&m_Info);    
+    snd_seq_client_pool_copy(m_Info, other.m_Info);
+}
+
+PoolInfo::PoolInfo(snd_seq_client_pool_t* other)
+{
+    snd_seq_client_pool_malloc(&m_Info);    
+    snd_seq_client_pool_copy(m_Info, other);
+}
+
+PoolInfo::PoolInfo(MidiClient* seq)
+{
+    snd_seq_client_pool_malloc(&m_Info);    
+    snd_seq_get_client_pool(seq->getHandle(), m_Info);    
+}
+
+PoolInfo::~PoolInfo()
+{
+    snd_seq_client_pool_free(m_Info);
+}
+
+PoolInfo* PoolInfo::clone()
+{
+    return new PoolInfo(m_Info);
+}
+
+PoolInfo& PoolInfo::operator=(const PoolInfo& other)
+{
+    snd_seq_client_pool_copy(m_Info, other.m_Info);
+    return *this;
+}
+
+int PoolInfo::getSizeOfInfo()
+{
+    return snd_seq_client_pool_sizeof();
+}
+
+int PoolInfo::getClientId()
+{
+    return snd_seq_client_pool_get_client(m_Info);
+}
+
+int PoolInfo::getInputFree()
+{
+    return snd_seq_client_pool_get_input_free(m_Info);
+}
+
+int PoolInfo::getInputPool()
+{
+    return snd_seq_client_pool_get_input_pool(m_Info);
+}
+
+int PoolInfo::getOutputFree()
+{
+    return snd_seq_client_pool_get_output_free(m_Info);
+}
+
+int PoolInfo::getOutputPool()
+{
+    return snd_seq_client_pool_get_output_pool(m_Info);
+}
+
+int PoolInfo::getOutputRoom()
+{
+    return snd_seq_client_pool_get_output_room(m_Info);    
+}
+
+void PoolInfo::setInputPool(int size)
+{
+    snd_seq_client_pool_set_input_pool(m_Info, size);
+}
+
+void PoolInfo::setOutputPool(int size)
+{
+    snd_seq_client_pool_set_output_pool(m_Info, size);
+}
+
+void PoolInfo::setOutputRoom(int size)
+{
+    snd_seq_client_pool_set_output_room(m_Info, size);
 }
 
 }

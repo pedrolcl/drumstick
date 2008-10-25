@@ -28,6 +28,8 @@ namespace ALSA
 namespace Sequencer 
 {
 
+#define SKEW_BASE 0x10000 // Should be fixed in ALSA kernel
+
 class MidiClient;
 
 class QueueInfo
@@ -41,6 +43,7 @@ public:
     virtual ~QueueInfo();
     QueueInfo* clone();
     QueueInfo& operator=(const QueueInfo& other);
+    int getInfoSize();
     
     int getId();
     QString getName();
@@ -67,6 +70,7 @@ public:
     virtual ~QueueStatus();
     QueueStatus* clone();
     QueueStatus& operator=(const QueueStatus& other);
+    int getInfoSize();
 
     int getId();
     int getEvents();
@@ -90,6 +94,7 @@ public:
     virtual ~QueueTempo(); 
     QueueTempo* clone();
     QueueTempo& operator=(const QueueTempo& other);
+    int getInfoSize();
 
     int getId();
     int getPPQ();
@@ -98,9 +103,16 @@ public:
     unsigned int getTempo();
     void setPPQ(int value);
     void setSkewValue(unsigned int value);
-    void setSkewBase(unsigned int value);
     void setTempo(unsigned int value);
+    
+    float getNominalBPM();
+    float getRealBPM();
+    void setTempoFactor(float value);
+    void setNominalBPM(float value);
 
+protected:
+    void setSkewBase(unsigned int value);
+    
 private:
     snd_seq_queue_tempo_t* m_Info;
 };
@@ -117,7 +129,8 @@ public:
     virtual ~QueueTimer(); 
     QueueTimer* clone();
     QueueTimer& operator=(const QueueTimer& other);
-
+    int getInfoSize();
+    
     int getQueueId();
     snd_seq_queue_timer_type_t getType();
     const snd_timer_id_t* getId();

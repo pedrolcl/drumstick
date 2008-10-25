@@ -79,7 +79,7 @@ void
 SequencerOutputThread::sendSongEvent(SequencerEvent* ev)
 {
     if (m_MidiClient != NULL) {    
-        while ((snd_seq_event_output(m_MidiClient->getHandle(), ev->getHandle()) < 0) 
+        while ((snd_seq_event_output_direct(m_MidiClient->getHandle(), ev->getHandle()) < 0) 
                 && !stopped())
             poll(m_pfds, m_npfds, TIMEOUT);
     }

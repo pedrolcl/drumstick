@@ -21,6 +21,7 @@
 #include "queue.h"
 #include "client.h"
 #include "event.h"
+#include <cmath>
 
 namespace ALSA
 {
@@ -104,6 +105,11 @@ void QueueInfo::setFlags(unsigned int value)
     snd_seq_queue_info_set_flags(m_Info, value);
 }
 
+int QueueInfo::getInfoSize()
+{
+    return snd_seq_queue_info_sizeof();
+}
+
 /***************/
 /* QueueStatus */
 /***************/
@@ -164,6 +170,11 @@ unsigned int QueueStatus::getStatusBits()
 snd_seq_tick_time_t QueueStatus::getTickTime()
 {
     return snd_seq_queue_status_get_tick_time(m_Info);
+}
+
+int QueueStatus::getInfoSize()
+{
+    return snd_seq_queue_status_sizeof();
 }
 
 /**************/
@@ -248,6 +259,36 @@ void QueueTempo::setTempo(unsigned int value)
     snd_seq_queue_tempo_set_tempo(m_Info, value);
 }
 
+float QueueTempo::getNominalBPM() 
+{
+    int itempo = getTempo();
+    if (itempo != 0)
+        return 6.0e7f / itempo;
+    return 0.0f;
+}
+
+float QueueTempo::getRealBPM() 
+{
+    float tempo = getNominalBPM();
+    return tempo * getSkewValue() / SKEW_BASE;
+}
+
+void QueueTempo::setTempoFactor(float value) 
+{
+    setSkewValue(floor(SKEW_BASE * value));
+    setSkewBase(SKEW_BASE);
+}
+
+void QueueTempo::setNominalBPM(float value)
+{
+    setTempo(floor(6.0e7f / value));
+}
+
+int QueueTempo::getInfoSize()
+{
+    return snd_seq_queue_tempo_sizeof();
+}
+
 /**************/
 /* QueueTimer */
 /**************/
@@ -318,6 +359,11 @@ void QueueTimer::setId(snd_timer_id_t* value)
 void QueueTimer::setResolution(unsigned int value)
 {
     snd_seq_queue_timer_set_resolution(m_Info, value);
+}
+
+int QueueTimer::getInfoSize()
+{
+    return snd_seq_queue_timer_sizeof();
 }
 
 /*************/
