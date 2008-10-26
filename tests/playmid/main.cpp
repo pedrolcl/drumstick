@@ -22,8 +22,14 @@
 #include <QtGui>
 #include <QApplication>
 
+const QString QSTR_DOMAIN("kmetronome.sourceforge.net");
+const QString QSTR_APPNAME("SMFPlayer");
+
 int main(int argc, char *argv[])
 {
+    QCoreApplication::setOrganizationName(QSTR_DOMAIN);
+    QCoreApplication::setOrganizationDomain(QSTR_DOMAIN);
+    QCoreApplication::setApplicationName(QSTR_APPNAME);    
     QApplication a(argc, argv);
     SMFPlayer w;
     w.show();

@@ -25,6 +25,7 @@
 #include <QList>
 #include <QMutex>
 #include <QWidget>
+#include <QProgressDialog>
 
 #include "qsmf.h"
 #include "event.h"
@@ -51,7 +52,14 @@ public:
     void subscribe(const QString& portName);
     void updateTimeLabel(int mins, int secs, int cnts);
     void updateTempoLabel(float ftempo);
-    
+    void dragEnterEvent(QDragEnterEvent* event);
+    void dropEvent(QDropEvent* event);
+    void closeEvent(QCloseEvent* event);
+    bool event(QEvent* event);
+    void openFile(const QString& fileName);
+    void readSettings();
+    void writeSettings();
+
 public slots:
     void play();
     void pause();
@@ -89,10 +97,12 @@ private:
     MidiPort* m_Port;
     MidiQueue* m_Queue;
     Player* m_player;
-    
+
     QString m_subscription;
+    QString m_lastDirectory;
     Song m_song;
     Ui::SMFPlayerClass ui;
+    QPointer<QProgressDialog> m_pd;
 };
 
 #endif // INCLUDED_SMFPLAYER_H

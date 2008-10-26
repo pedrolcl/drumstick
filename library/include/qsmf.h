@@ -102,14 +102,15 @@ public:
     long getCurrentTime();
     long getCurrentTempo();
     long getRealTime();
+    long getFilePos();
     int  getDivision();
     void setDivision(int division);
     int  getTracks();
     void setTracks(int tracks);
     int  getFileFormat();
     void setFileFormat(int fileFormat);
-
-    signals:
+    
+signals:
     void signalSMFError(const QString& errorStr);
     void signalSMFHeader(int format, int ntrks, int division);
     void signalSMFNoteOn(int chan, int pitch, int vol);

@@ -20,7 +20,13 @@
 #include <QApplication>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QUrl>
 #include <QInputDialog>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QCloseEvent>
+#include <QToolTip>
+#include <QSettings>
 #include <cmath>
 
 #include "smfplayer.h"
@@ -34,6 +40,7 @@ SMFPlayer::SMFPlayer(QWidget *parent)
     m_tick(0)
 {
 	ui.setupUi(this);
+    tempoReset();
     connect(ui.btnPlay, SIGNAL(clicked()), SLOT(play()));
     connect(ui.btnPause, SIGNAL(clicked()), SLOT(pause()));
     connect(ui.btnStop, SIGNAL(clicked()), SLOT(stop()));
@@ -55,11 +62,12 @@ SMFPlayer::SMFPlayer(QWidget *parent)
                       SLOT(sequencerEvent(SequencerEvent*)));
 
     m_Port->setMidiClient(m_Client);
-    m_Port->setPortName("MIDI Player port");
+    m_Port->setPortName("MIDI Player Output Port");
     m_Port->setCapability( SND_SEQ_PORT_CAP_READ  | 
                            SND_SEQ_PORT_CAP_SUBS_READ | 
                            SND_SEQ_PORT_CAP_WRITE );
-    m_Port->setPortType(SND_SEQ_PORT_TYPE_APPLICATION);
+    m_Port->setPortType( SND_SEQ_PORT_TYPE_APPLICATION |
+                         SND_SEQ_PORT_TYPE_MIDI_GENERIC );
     m_Port->attach();
 
     m_Queue = m_Client->createQueue("SMFPlayer");
@@ -120,9 +128,10 @@ void SMFPlayer::updateTimeLabel(int mins, int secs, int cnts)
 
 void SMFPlayer::play()
 {
-    if (m_initialTempo == 0) 
-        return;
     if (m_player->getInitialPosition() == 0) {
+        if (m_initialTempo == 0) { 
+            return;
+        }
         QueueTempo firstTempo = m_Queue->getTempo();
         firstTempo.setPPQ(m_song.getDivision());
         firstTempo.setTempo(m_initialTempo);
@@ -143,38 +152,54 @@ void SMFPlayer::pause()
 
 void SMFPlayer::stop()
 {
-    if (m_initialTempo != 0) {
+    if (m_player->isRunning() && (m_initialTempo != 0)) {
         m_player->stop();
         m_player->resetPosition();
         updateTimeLabel(0,0,0);
         updateTempoLabel(6.0e7f / m_initialTempo);
+        ui.btnStop->setChecked(true);
+    }
+}
+
+void SMFPlayer::openFile(const QString& fileName)
+{
+    QFileInfo finfo(fileName);
+    if (finfo.exists()) {
+        m_song.clear();
+        m_tick = 0;
+        m_initialTempo = 0;
+        try {
+            m_pd = new QProgressDialog(0, 0, 0, finfo.size(), this);
+            m_pd->setWindowTitle("Loading MIDI file...");
+            m_pd->setMinimumDuration(1000);
+            m_pd->setValue(0);
+            m_engine->readFromFile(fileName);
+            m_song.sort();
+            m_player->setSong(&m_song);
+            if (m_initialTempo == 0) {
+                m_initialTempo = 500000;
+            }
+            ui.lblName->setText(fileName);
+            ui.lblCopyright->setText(m_song.getCopyright());
+            ui.progressBar->setValue(0);
+            updateTimeLabel(0,0,0);
+            updateTempoLabel(6.0e7f / m_initialTempo);
+            m_lastDirectory = finfo.absolutePath();
+        } catch (...) {}
+        delete m_pd;
     }
 }
 
 void SMFPlayer::open()
 {
-    QFileDialog dlg(this, "Open MIDI File",
-                    NULL, "MIDI Files (*.mid);;Karaoke files (*.kar)");
-    
+    QFileDialog dlg(this, "Open MIDI File", m_lastDirectory, 
+                    "MIDI Files (*.mid *.midi);;Karaoke files (*.kar)");
     if (dlg.exec())
     {
+        stop();
         QStringList fileNames = dlg.selectedFiles();
         QString firstName = fileNames.takeFirst();
-        m_song.clear();
-        m_tick = 0;
-        m_initialTempo = 0;
-        m_engine->readFromFile(firstName);
-        m_song.sort();
-        m_player->setSong(&m_song);
-        if (m_initialTempo == 0) {
-            m_initialTempo = 500000;
-        }
-        QFileInfo fi(firstName);
-        ui.lblName->setText(fi.fileName());
-        ui.lblCopyright->setText(m_song.getCopyright());
-        ui.progressBar->setValue(0);
-        updateTimeLabel(0,0,0);
-        updateTempoLabel(6.0e7f / m_initialTempo);
+        openFile(firstName);
     }
 }
 
@@ -235,11 +260,17 @@ void SMFPlayer::appendEvent(SequencerEvent* ev)
     ev->scheduleTick(m_queueId, tick, false);
     m_song.append(ev);
     if (tick > m_tick) m_tick = tick;
+    if (m_pd != NULL) {
+        m_pd->setValue(m_engine->getFilePos());
+    }
 }
 
 void SMFPlayer::headerEvent(int format, int ntrks, int division)
 {
     m_song.setHeader(format, ntrks, division);
+    if (m_pd != NULL) {
+        m_pd->setValue(m_engine->getFilePos());
+    }
 }
 
 void SMFPlayer::noteOnEvent(int chan, int pitch, int vol)
@@ -293,6 +324,9 @@ void SMFPlayer::sysexEvent(const QByteArray& data)
 void SMFPlayer::textEvent(int type, const QString& data)
 {
     m_song.addText(type, data);
+    if (m_pd != NULL) {
+        m_pd->setValue(m_engine->getFilePos());
+    }
 }
 
 void SMFPlayer::tempoEvent(int tempo)
@@ -314,6 +348,7 @@ void SMFPlayer::errorHandler(const QString& errorStr)
 void SMFPlayer::tempoReset()
 {
     ui.sliderTempo->setValue(100);
+    ui.sliderTempo->setToolTip("100%");
     m_tempoFactor = 1.0;
 }
 
@@ -327,11 +362,91 @@ void SMFPlayer::tempoSlider(int value)
     if (!m_player->isRunning()) {
         updateTempoLabel(qtempo.getRealBPM());
     }
+    // Slider tooltip
+    QString tip = QString("%1\%").arg(value);
+    ui.sliderTempo->setToolTip(tip);
+    QToolTip::showText(QCursor::pos(), tip, ui.sliderTempo);    
 }
 
 void SMFPlayer::quit()
 {
     stop();
     m_player->wait();
-    QApplication::quit();
+    close();
+}
+
+void SMFPlayer::dragEnterEvent( QDragEnterEvent * event )
+{
+    if (event->mimeData()->hasFormat("text/uri-list")) {
+        event->acceptProposedAction();
+    }
+}
+
+void SMFPlayer::dropEvent( QDropEvent * event )
+{
+    QString data = event->mimeData()->text();
+    QString fileName = QUrl(data).path().trimmed();
+    QString lname = fileName.toLower(); 
+    if ( lname.endsWith(".mid") || lname.endsWith(".midi") || 
+         lname.endsWith(".kar") ) {
+        stop();
+        openFile(fileName);
+        event->accept();
+    } else {
+        qDebug() << "Dropped object is not supported: " << data << endl;
+    }
+}
+
+bool SMFPlayer::event( QEvent * event )
+{
+    if(event->type() == QEvent::Polish) {
+        readSettings();
+        /* Process the command line arguments.
+           The first argument should be a MIDI file name */  
+        QStringList args = QCoreApplication::arguments();
+        if (args.size() > 1) {
+            QString first = args.at(1);
+            openFile(first);
+        }
+        event->accept();
+    }
+    return QWidget::event(event);
+}
+
+void SMFPlayer::readSettings()
+{
+    QSettings settings;
+    
+    settings.beginGroup("Window");
+    restoreGeometry(settings.value("Geometry").toByteArray());
+    settings.endGroup();
+    
+    settings.beginGroup("Preferences");
+    m_lastDirectory = settings.value("LastDirectory").toString();
+    QString midiConn = settings.value("MIDIConnection").toString();
+    settings.endGroup();
+    
+    if (midiConn.length() > 0) {
+        subscribe(midiConn);
+    }
+}
+
+void SMFPlayer::writeSettings()
+{
+    QSettings settings;
+
+    settings.beginGroup("Window");
+    settings.setValue("Geometry", saveGeometry());
+    settings.endGroup();
+
+    settings.beginGroup("Preferences");
+    settings.setValue("LastDirectory", m_lastDirectory);
+    settings.setValue("MIDIConnection", m_subscription);
+    settings.endGroup();
+}
+
+void SMFPlayer::closeEvent( QCloseEvent *event )
+{
+    writeSettings();
+    event->accept();
 }

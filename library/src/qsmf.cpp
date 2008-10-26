@@ -947,6 +947,10 @@ void QSmf::setFileFormat(int fileFormat)
     m_fileFormat = fileFormat;
 }
 
-}
+long QSmf::getFilePos()
+{
+    return (long) m_IOStream->device()->pos();
 }
 
+}
+}
