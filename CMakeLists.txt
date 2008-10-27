@@ -27,8 +27,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.4.4)
 # Show full commands and messages. 
 # SET(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL
 
-SET(CMAKE_INSTALL_PREFIX "/usr" CACHE PATH
-	"Install path prefix, prepended onto install directories." FORCE)
+#SET(CMAKE_INSTALL_PREFIX "/usr" CACHE PATH
+#	"Install path prefix, prepended onto install directories." FORCE)
 
 #SET(EXECUTABLE_OUTPUT_PATH "bin" CACHE PATH
 #    "Single output directory for building all executables." FORCE)

@@ -843,10 +843,9 @@ ClientInfo::getPorts() const
     return lst;
 }
 
-int
-ClientInfo::getSizeOfInfo()
+int ClientInfo::getSizeOfInfo() const 
 {
-    return snd_seq_client_info_sizeof();
+    return snd_seq_client_info_sizeof(); 
 }
 
 /**************
@@ -894,11 +893,6 @@ SystemInfo::operator=(const SystemInfo& other)
     return *this;
 }
 
-int SystemInfo::getSizeOfInfo()
-{
-    return snd_seq_system_info_sizeof();
-}
-
 int SystemInfo::getMaxClients()
 {
     return snd_seq_system_info_get_clients(m_Info);
@@ -927,6 +921,11 @@ int SystemInfo::getCurrentQueues()
 int SystemInfo::getCurrentClients()
 {
     return snd_seq_system_info_get_cur_clients(m_Info);
+}
+
+int SystemInfo::getSizeOfInfo() const 
+{
+    return snd_seq_system_info_sizeof(); 
 }
 
 /************
@@ -972,11 +971,6 @@ PoolInfo& PoolInfo::operator=(const PoolInfo& other)
     return *this;
 }
 
-int PoolInfo::getSizeOfInfo()
-{
-    return snd_seq_client_pool_sizeof();
-}
-
 int PoolInfo::getClientId()
 {
     return snd_seq_client_pool_get_client(m_Info);
@@ -1020,6 +1014,11 @@ void PoolInfo::setOutputPool(int size)
 void PoolInfo::setOutputRoom(int size)
 {
     snd_seq_client_pool_set_output_room(m_Info, size);
+}
+
+int PoolInfo::getSizeOfInfo() const 
+{
+    return snd_seq_client_pool_sizeof();
 }
 
 }

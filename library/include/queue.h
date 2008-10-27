@@ -43,7 +43,7 @@ public:
     virtual ~QueueInfo();
     QueueInfo* clone();
     QueueInfo& operator=(const QueueInfo& other);
-    int getInfoSize();
+    int getInfoSize() const;
     
     int getId();
     QString getName();
@@ -70,7 +70,7 @@ public:
     virtual ~QueueStatus();
     QueueStatus* clone();
     QueueStatus& operator=(const QueueStatus& other);
-    int getInfoSize();
+    int getInfoSize() const;
 
     int getId();
     int getEvents();
@@ -94,7 +94,7 @@ public:
     virtual ~QueueTempo(); 
     QueueTempo* clone();
     QueueTempo& operator=(const QueueTempo& other);
-    int getInfoSize();
+    int getInfoSize() const;
 
     int getId();
     int getPPQ();
@@ -129,7 +129,7 @@ public:
     virtual ~QueueTimer(); 
     QueueTimer* clone();
     QueueTimer& operator=(const QueueTimer& other);
-    int getInfoSize();
+    int getInfoSize() const;
     
     int getQueueId();
     snd_seq_queue_timer_type_t getType();

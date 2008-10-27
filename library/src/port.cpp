@@ -259,6 +259,12 @@ PortInfo::freeSubscribers()
     m_WriteSubscribers.clear();
 }
 
+int 
+PortInfo::getSizeOfInfo() const 
+{
+    return  snd_seq_port_info_sizeof();
+}
+
 /************/
 /* MidiPort */
 /************/

@@ -41,7 +41,8 @@ public:
     Subscriber(snd_seq_query_subscribe_t* other);
     virtual ~Subscriber();
     Subscriber* clone();
-
+    int getSizeOfInfo() const;
+    
     int getClient();
     int getPort();
     const snd_seq_addr_t* getRoot();
@@ -74,7 +75,8 @@ public:
     Subscription(snd_seq_port_subscribe_t* other);
     virtual ~Subscription();
     Subscription* clone();
-
+    int getSizeOfInfo() const;
+    
     void setSender(unsigned char client, unsigned char port);
     void setDest(unsigned char client, unsigned char port);
     void subscribe(MidiClient* seq);

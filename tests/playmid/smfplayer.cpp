@@ -86,6 +86,9 @@ SMFPlayer::SMFPlayer(QWidget *parent)
     connect(m_engine, SIGNAL(signalSMFSysex(const QByteArray&)), SLOT(sysexEvent(const QByteArray&)));
     connect(m_engine, SIGNAL(signalSMFText(int,const QString&)), SLOT(textEvent(int,const QString&)));
     connect(m_engine, SIGNAL(signalSMFTempo(int)), SLOT(tempoEvent(int)));
+    connect(m_engine, SIGNAL(signalSMFTrackStart()), SLOT(updateLoadProgress()));
+    connect(m_engine, SIGNAL(signalSMFTrackEnd()), SLOT(updateLoadProgress()));
+    connect(m_engine, SIGNAL(signalSMFendOfTrack()), SLOT(updateLoadProgress()));
     connect(m_engine, SIGNAL(signalSMFError(const QString&)), SLOT(errorHandler(const QString&)));
     
     m_player = new Player(m_Client, m_portId);
@@ -174,6 +177,7 @@ void SMFPlayer::openFile(const QString& fileName)
             m_pd->setMinimumDuration(1000);
             m_pd->setValue(0);
             m_engine->readFromFile(fileName);
+            m_pd->setValue(finfo.size());
             m_song.sort();
             m_player->setSong(&m_song);
             if (m_initialTempo == 0) {
@@ -260,17 +264,13 @@ void SMFPlayer::appendEvent(SequencerEvent* ev)
     ev->scheduleTick(m_queueId, tick, false);
     m_song.append(ev);
     if (tick > m_tick) m_tick = tick;
-    if (m_pd != NULL) {
-        m_pd->setValue(m_engine->getFilePos());
-    }
+    updateLoadProgress();
 }
 
 void SMFPlayer::headerEvent(int format, int ntrks, int division)
 {
     m_song.setHeader(format, ntrks, division);
-    if (m_pd != NULL) {
-        m_pd->setValue(m_engine->getFilePos());
-    }
+    updateLoadProgress();
 }
 
 void SMFPlayer::noteOnEvent(int chan, int pitch, int vol)
@@ -324,9 +324,7 @@ void SMFPlayer::sysexEvent(const QByteArray& data)
 void SMFPlayer::textEvent(int type, const QString& data)
 {
     m_song.addText(type, data);
-    if (m_pd != NULL) {
-        m_pd->setValue(m_engine->getFilePos());
-    }
+    updateLoadProgress();
 }
 
 void SMFPlayer::tempoEvent(int tempo)
@@ -365,7 +363,7 @@ void SMFPlayer::tempoSlider(int value)
     // Slider tooltip
     QString tip = QString("%1\%").arg(value);
     ui.sliderTempo->setToolTip(tip);
-    QToolTip::showText(QCursor::pos(), tip, ui.sliderTempo);    
+    QToolTip::showText(QCursor::pos(), tip, this);    
 }
 
 void SMFPlayer::quit()
@@ -449,4 +447,11 @@ void SMFPlayer::closeEvent( QCloseEvent *event )
 {
     writeSettings();
     event->accept();
+}
+
+void SMFPlayer::updateLoadProgress()
+{
+    if (m_pd != NULL) {
+        m_pd->setValue(m_engine->getFilePos());
+    }
 }

@@ -46,43 +46,51 @@ TimerInfo::~TimerInfo()
     snd_timer_info_free(m_Info);
 }
 
-TimerInfo* TimerInfo::clone()
+TimerInfo* 
+TimerInfo::clone()
 {
     return new TimerInfo(m_Info);
 }
 
-TimerInfo& TimerInfo::operator=(const TimerInfo& other)
+TimerInfo& 
+TimerInfo::operator=(const TimerInfo& other)
 {
     snd_timer_info_copy(m_Info, other.m_Info);
     return *this;
 }
 
-bool TimerInfo::isSlave()
+bool 
+TimerInfo::isSlave()
 {
     return (snd_timer_info_is_slave(m_Info) != 0);
 }
 
-int TimerInfo::getCard()
+int 
+TimerInfo::getCard()
 {
     return snd_timer_info_get_card(m_Info);
 }
 
-QString TimerInfo::getId()
+QString 
+TimerInfo::getId()
 {
     return QString(snd_timer_info_get_id(m_Info));
 }
 
-QString TimerInfo::getName()
+QString 
+TimerInfo::getName()
 {
     return QString(snd_timer_info_get_name(m_Info));
 }
 
-long TimerInfo::getResolution()
+long 
+TimerInfo::getResolution()
 {
     return snd_timer_info_get_resolution(m_Info);
 }
 
-long TimerInfo::getFrequency()
+long 
+TimerInfo::getFrequency()
 {
     long res = getResolution();
     if (res > 0)
@@ -90,6 +98,12 @@ long TimerInfo::getFrequency()
         return 1000000000 / res;
     }
     return 0;
+}
+
+int 
+TimerInfo::getSizeOfInfo() const
+{
+    return snd_timer_info_sizeof(); 
 }
 
 /***********
@@ -130,12 +144,14 @@ TimerId::~TimerId()
     snd_timer_id_free(m_Info);
 }
 
-TimerId* TimerId::clone()
+TimerId* 
+TimerId::clone()
 {
     return new TimerId(m_Info);
 }
 
-TimerId& TimerId::operator=(const TimerId& other)
+TimerId& 
+TimerId::operator=(const TimerId& other)
 {
     snd_timer_id_copy(m_Info, other.m_Info);
     if (getCard() < 0)
@@ -205,6 +221,12 @@ int
 TimerId::getSubdevice()
 {
     return snd_timer_id_get_subdevice(m_Info);
+}
+
+int 
+TimerId::getSizeOfInfo() const
+{
+    return snd_timer_id_sizeof(); 
 }
 
 /**************
@@ -370,6 +392,12 @@ TimerGlobalInfo::getClients()
     return snd_timer_ginfo_get_clients(m_Info);
 }
 
+int 
+TimerGlobalInfo::getSizeOfInfo() const
+{
+    return snd_timer_ginfo_sizeof();
+}
+
 /***************
  * TimerParams *
  ***************/
@@ -481,6 +509,12 @@ TimerParams::getFilter()
     return snd_timer_params_get_filter (m_Info);
 }
 
+int 
+TimerParams::getSizeOfInfo() const
+{
+    return snd_timer_params_sizeof();
+}
+
 /***************
  * TimerStatus *
  ***************/
@@ -548,6 +582,12 @@ long
 TimerStatus::getQueue()
 {
     return snd_timer_status_get_queue (m_Info);
+}
+
+int 
+TimerStatus::getSizeOfInfo() const
+{
+    return snd_timer_status_sizeof();
 }
 
 /*********

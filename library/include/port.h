@@ -47,7 +47,8 @@ public:
     virtual ~PortInfo(); 
     PortInfo* clone();
     PortInfo& operator=(const PortInfo& other);
-    
+    int getSizeOfInfo() const;
+        
     int getClient();
     int getPort();
     QString getClientName() const { return m_ClientName; }

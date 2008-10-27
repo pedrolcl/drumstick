@@ -105,7 +105,7 @@ void QueueInfo::setFlags(unsigned int value)
     snd_seq_queue_info_set_flags(m_Info, value);
 }
 
-int QueueInfo::getInfoSize()
+int QueueInfo::getInfoSize() const
 {
     return snd_seq_queue_info_sizeof();
 }
@@ -172,7 +172,7 @@ snd_seq_tick_time_t QueueStatus::getTickTime()
     return snd_seq_queue_status_get_tick_time(m_Info);
 }
 
-int QueueStatus::getInfoSize()
+int QueueStatus::getInfoSize() const
 {
     return snd_seq_queue_status_sizeof();
 }
@@ -284,7 +284,7 @@ void QueueTempo::setNominalBPM(float value)
     setTempo(floor(6.0e7f / value));
 }
 
-int QueueTempo::getInfoSize()
+int QueueTempo::getInfoSize() const
 {
     return snd_seq_queue_tempo_sizeof();
 }
@@ -361,7 +361,7 @@ void QueueTimer::setResolution(unsigned int value)
     snd_seq_queue_timer_set_resolution(m_Info, value);
 }
 
-int QueueTimer::getInfoSize()
+int QueueTimer::getInfoSize() const
 {
     return snd_seq_queue_timer_sizeof();
 }

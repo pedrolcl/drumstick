@@ -48,7 +48,7 @@ public:
     virtual ~ClientInfo();
     ClientInfo* clone();
     ClientInfo& operator=(const ClientInfo& other);
-    int getSizeOfInfo();
+    int getSizeOfInfo() const;
 
     int getClientId();
     snd_seq_client_type_t getClientType();
@@ -88,7 +88,7 @@ public:
     virtual ~SystemInfo();
     SystemInfo* clone();
     SystemInfo& operator=(const SystemInfo& other);
-    int getSizeOfInfo();
+    int getSizeOfInfo() const;
     
     int getMaxClients();
     int getMaxPorts();
@@ -113,7 +113,7 @@ public:
     virtual ~PoolInfo();
     PoolInfo* clone();
     PoolInfo& operator=(const PoolInfo& other);
-    int getSizeOfInfo();
+    int getSizeOfInfo() const;
     
     int getClientId();
     int getInputFree();

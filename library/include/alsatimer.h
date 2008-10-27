@@ -33,6 +33,7 @@ class TimerGlobalInfo;
 class TimerInfo
 {
     friend class Timer;
+
 public:
     TimerInfo();
     TimerInfo(const TimerInfo& other);
@@ -40,6 +41,7 @@ public:
     virtual ~TimerInfo();
     TimerInfo* clone();
     TimerInfo& operator=(const TimerInfo& other);
+    int getSizeOfInfo() const;
     
     bool isSlave();
     int getCard();
@@ -64,6 +66,7 @@ public:
     virtual ~TimerId();
     TimerId* clone();
     TimerId& operator=(const TimerId& other);
+    int getSizeOfInfo() const;
 
     void setClass(int devclass);
     int getClass();
@@ -85,6 +88,7 @@ typedef QList<TimerId> TimerIdList;
 class TimerGlobalInfo
 {
     friend class TimerQuery;
+
 public:
     TimerGlobalInfo();
     TimerGlobalInfo(const TimerGlobalInfo& other);
@@ -92,6 +96,7 @@ public:
     virtual ~TimerGlobalInfo();
     TimerGlobalInfo* clone();
     TimerGlobalInfo& operator=(const TimerGlobalInfo& other);
+    int getSizeOfInfo() const;
 
     void setTimerId(const TimerId& tid);
     TimerId& getTimerId();
@@ -134,6 +139,7 @@ private:
 class TimerParams
 {
     friend class Timer;
+
 public:
     TimerParams();
     TimerParams(const TimerParams& other);
@@ -141,6 +147,7 @@ public:
     virtual ~TimerParams();
     TimerParams* clone();
     TimerParams& operator=(const TimerParams& other);
+    int getSizeOfInfo() const;
 
     void setAutoStart(bool auto_start);
     bool getAutoStart();
@@ -162,6 +169,7 @@ private:
 class TimerStatus
 {
     friend class Timer;
+
 public:
     TimerStatus();
     TimerStatus(const TimerStatus& other);
@@ -169,6 +177,7 @@ public:
     virtual ~TimerStatus();
     TimerStatus* clone();
     TimerStatus& operator=(const TimerStatus& other);
+    int getSizeOfInfo() const;
 
     snd_htimestamp_t getTimestamp();
     long getResolution();
@@ -183,6 +192,7 @@ private:
 class Timer : public QObject
 {
     Q_OBJECT
+
 public:
     Timer(const QString& deviceName, int openMode, QObject* parent = 0);
     Timer(TimerId& id, int openMode, QObject* parent = 0);

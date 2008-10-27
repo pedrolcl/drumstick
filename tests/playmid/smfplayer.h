@@ -84,6 +84,7 @@ public slots:
     void textEvent(int type, const QString& data);
     void tempoEvent(int tempo);
     void errorHandler(const QString& errorStr);
+    void updateLoadProgress();
 
 private:
     int m_portId;

@@ -158,6 +158,12 @@ Subscriber::setIndex(int index)
     snd_seq_query_subscribe_set_index(m_Info, index);
 }
 
+int 
+Subscriber::getSizeOfInfo() const
+{
+    return snd_seq_query_subscribe_sizeof();
+}
+
 /****************/
 /* Subscription */
 /****************/
@@ -305,6 +311,12 @@ Subscription::unsubscribe(MidiClient* seq)
         return;
     }
     CHECK_WARNING(snd_seq_unsubscribe_port(seq->getHandle(), m_Info));
+}
+
+int 
+Subscription::getSizeOfInfo() const
+{
+    return snd_seq_port_subscribe_sizeof();
 }
 
 }
