@@ -40,6 +40,9 @@
 using namespace MIDI::Utils;
 using namespace ALSA::Sequencer;
 
+const QString QSTR_DOMAIN("kmetronome.sourceforge.net");
+const QString QSTR_APPNAME("SMFPlayer");
+
 class SMFPlayer : public QWidget
 {
     Q_OBJECT

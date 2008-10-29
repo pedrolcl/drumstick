@@ -35,7 +35,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.4.4)
 
 #SET(LIBRARY_OUTPUT_PATH "lib" CACHE PATH
 #	"Single output directory for building all libraries." FORCE)
- 
+
 # Seems that relative paths break the link scripts. Don't set it ON
 SET(CMAKE_USE_RELATIVE_PATHS OFF)
 

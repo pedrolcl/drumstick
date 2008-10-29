@@ -27,6 +27,7 @@
 #include <QCloseEvent>
 #include <QToolTip>
 #include <QSettings>
+#include <QMessageBox>
 #include <cmath>
 
 #include "smfplayer.h"
@@ -90,7 +91,7 @@ SMFPlayer::SMFPlayer(QWidget *parent)
     connect(m_engine, SIGNAL(signalSMFTrackEnd()), SLOT(updateLoadProgress()));
     connect(m_engine, SIGNAL(signalSMFendOfTrack()), SLOT(updateLoadProgress()));
     connect(m_engine, SIGNAL(signalSMFError(const QString&)), SLOT(errorHandler(const QString&)));
-    
+
     m_player = new Player(m_Client, m_portId);
     connect(m_player, SIGNAL(finished()), SLOT(songFinished()));
 
@@ -131,18 +132,20 @@ void SMFPlayer::updateTimeLabel(int mins, int secs, int cnts)
 
 void SMFPlayer::play()
 {
-    if (m_player->getInitialPosition() == 0) {
-        if (m_initialTempo == 0) { 
-            return;
+    if (!m_song.isEmpty()) {
+        if (m_player->getInitialPosition() == 0) {
+            if (m_initialTempo == 0) { 
+                return;
+            }
+            QueueTempo firstTempo = m_Queue->getTempo();
+            firstTempo.setPPQ(m_song.getDivision());
+            firstTempo.setTempo(m_initialTempo);
+            firstTempo.setTempoFactor(m_tempoFactor);
+            m_Queue->setTempo(firstTempo);
+            m_Client->drainOutput();
         }
-        QueueTempo firstTempo = m_Queue->getTempo();
-        firstTempo.setPPQ(m_song.getDivision());
-        firstTempo.setTempo(m_initialTempo);
-        firstTempo.setTempoFactor(m_tempoFactor);
-        m_Queue->setTempo(firstTempo);
-        m_Client->drainOutput();
+        m_player->start();
     }
-    m_player->start();
 }
 
 void SMFPlayer::pause()
@@ -157,10 +160,7 @@ void SMFPlayer::stop()
 {
     if (m_player->isRunning() && (m_initialTempo != 0)) {
         m_player->stop();
-        m_player->resetPosition();
-        updateTimeLabel(0,0,0);
-        updateTempoLabel(6.0e7f / m_initialTempo);
-        ui.btnStop->setChecked(true);
+        songFinished();
     }
 }
 
@@ -178,32 +178,40 @@ void SMFPlayer::openFile(const QString& fileName)
             m_pd->setValue(0);
             m_engine->readFromFile(fileName);
             m_pd->setValue(finfo.size());
-            m_song.sort();
-            m_player->setSong(&m_song);
-            if (m_initialTempo == 0) {
-                m_initialTempo = 500000;
+            if (m_song.isEmpty()) {
+                ui.lblName->clear();
+                ui.lblCopyright->clear();
+            } else {
+                m_song.sort();
+                m_player->setSong(&m_song);
+                ui.lblName->setText(fileName);
+                ui.lblCopyright->setText(m_song.getCopyright());
+                m_lastDirectory = finfo.absolutePath();
             }
-            ui.lblName->setText(fileName);
-            ui.lblCopyright->setText(m_song.getCopyright());
-            ui.progressBar->setValue(0);
-            updateTimeLabel(0,0,0);
-            updateTempoLabel(6.0e7f / m_initialTempo);
-            m_lastDirectory = finfo.absolutePath();
-        } catch (...) {}
+        } catch (...) {
+            m_song.clear();
+            ui.lblName->clear();
+            ui.lblCopyright->clear();
+        }
         delete m_pd;
+        if (m_initialTempo == 0) {
+            m_initialTempo = 500000;
+        }
+        updateTimeLabel(0,0,0);
+        updateTempoLabel(6.0e7f / m_initialTempo);
+        ui.progressBar->setValue(0);
     }
 }
 
 void SMFPlayer::open()
 {
     QFileDialog dlg(this, "Open MIDI File", m_lastDirectory, 
-                    "MIDI Files (*.mid *.midi);;Karaoke files (*.kar)");
+        "MIDI Files (*.mid *.midi);;Karaoke files (*.kar);;All files (*.*)");
     if (dlg.exec())
     {
         stop();
         QStringList fileNames = dlg.selectedFiles();
-        QString firstName = fileNames.takeFirst();
-        openFile(firstName);
+        openFile(fileNames.takeFirst());
     }
 }
 
@@ -230,7 +238,6 @@ void SMFPlayer::songFinished()
 {
     m_player->resetPosition();
     ui.btnStop->setChecked(true);
-    updateTimeLabel(0,0,0);    
 }
 
 void SMFPlayer::updateTempoLabel(float ftempo)
@@ -241,7 +248,7 @@ void SMFPlayer::updateTempoLabel(float ftempo)
 
 void SMFPlayer::sequencerEvent(SequencerEvent *ev)
 {
-    if (ev->getSequencerType() == SND_SEQ_EVENT_ECHO) {
+    if ((ev->getSequencerType() == SND_SEQ_EVENT_ECHO) && (m_tick != 0)){
         int pos = 100 * ev->getTick() / m_tick;
         const snd_seq_real_time_t* rt = m_Queue->getStatus().getRealtime();
         int mins = rt->tv_sec / 60; 
@@ -339,8 +346,8 @@ void SMFPlayer::tempoEvent(int tempo)
 
 void SMFPlayer::errorHandler(const QString& errorStr)
 {
-    qDebug() << errorStr;
-    exit(1);
+    QMessageBox::warning(this, QSTR_APPNAME, errorStr);
+    m_song.clear();
 }
 
 void SMFPlayer::tempoReset()
