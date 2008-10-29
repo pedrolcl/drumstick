@@ -7,15 +7,6 @@ snd_seq_change_bit
 snd_seq_get_bit
 snd_seq_set_bit
 
-INFO SIZE
-
-snd_seq_port_subscribe_sizeof
-snd_seq_query_subscribe_sizeof
-snd_seq_queue_info_sizeof
-snd_seq_queue_status_sizeof
-snd_seq_queue_tempo_sizeof
-snd_seq_queue_timer_sizeof
-
 MIDDLE LEVEL
 
 snd_seq_connect_from
@@ -24,67 +15,20 @@ snd_seq_create_simple_port
 snd_seq_delete_simple_port
 snd_seq_disconnect_from
 snd_seq_disconnect_to
-
-snd_seq_create_event
-snd_seq_event_length
 snd_seq_event_output_pending
-snd_seq_event_types
-snd_seq_free_event
-
 snd_seq_extract_output
-
 snd_seq_get_port_info
 snd_seq_get_port_subscription
 snd_seq_queue_info_set_locked
-
 snd_seq_hw_open
 snd_seq_hw_ops
-
 snd_seq_name
 snd_seq_set_client_name
 snd_seq_open_lconf
-
 snd_seq_poll_descriptors_revents
-
-snd_seq_port_info_get_timestamp_queue
-snd_seq_port_info_get_timestamp_real
-snd_seq_port_info_get_timestamping
-snd_seq_port_info_set_timestamp_queue
-snd_seq_port_info_set_timestamp_real
-snd_seq_port_info_set_timestamping
-snd_seq_port_info_sizeof
-
 snd_seq_query_named_queue
 
-REMOVE EVENTS
-
-snd_seq_remove_events
-snd_seq_remove_events_copy
-snd_seq_remove_events_free
-snd_seq_remove_events_get_channel
-snd_seq_remove_events_get_condition
-snd_seq_remove_events_get_dest
-snd_seq_remove_events_get_event_type
-snd_seq_remove_events_get_queue
-snd_seq_remove_events_get_tag
-snd_seq_remove_events_get_time
-snd_seq_remove_events_malloc
-snd_seq_remove_events_set_channel
-snd_seq_remove_events_set_condition
-snd_seq_remove_events_set_dest
-snd_seq_remove_events_set_event_type
-snd_seq_remove_events_set_queue
-snd_seq_remove_events_set_tag
-snd_seq_remove_events_set_time
-snd_seq_remove_events_sizeof
-
 TIMER
-
-snd_timer_ginfo_sizeof
-snd_timer_info_sizeof
-snd_timer_params_sizeof
-snd_timer_status_sizeof
-snd_timer_id_sizeof
 
 snd_timer_async
 snd_timer_hw_open
@@ -95,3 +39,15 @@ snd_timer_open_lconf
 snd_timer_query_hw_open
 snd_timer_query_open_lconf
 snd_timer_type
+
+ENCODER / DECODER
+
+snd_midi_event_decode
+snd_midi_event_encode
+snd_midi_event_encode_byte
+snd_midi_event_free
+snd_midi_event_init
+snd_midi_event_new
+snd_midi_event_no_status
+snd_midi_event_reset_decode
+snd_midi_event_reset_encode

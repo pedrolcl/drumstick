@@ -63,7 +63,11 @@ public:
     int getTag() const { return m_event.tag; }
     void setTag(const int aTag);
     snd_seq_event_t* getHandle() { return &m_event; }
+    int getEncodedLength();
     CLONE_EVENT_DECLARATION(SequencerEvent);
+
+private:
+    void free() __attribute__((deprecated));
 
 protected:
     snd_seq_event_t m_event;
@@ -292,6 +296,40 @@ public:
     int getPort() const { return m_event.data.addr.port; }
     CLONE_EVENT_DECLARATION(PortEvent)
 };
+
+class RemoveEvents
+{
+public:
+    friend class MidiClient;
+
+public:
+    RemoveEvents();
+    RemoveEvents(const RemoveEvents& other);
+    RemoveEvents(snd_seq_remove_events_t* other); 
+    virtual ~RemoveEvents();
+    RemoveEvents* clone();
+    RemoveEvents& operator=(const RemoveEvents& other);
+    int getSizeOfInfo() const;
+
+    int getChannel();
+    unsigned int getCondition();
+    const snd_seq_addr_t* getDest();
+    int getEventType();
+    int getQueue();
+    int getTag();
+    const snd_seq_timestamp_t* getTime();
+    void setChannel(int chan);
+    void setCondition(unsigned int cond);
+    void setDest(const snd_seq_addr_t* dest);
+    void setEventType(int type);
+    void setQueue(int queue);
+    void setTag(int tag);
+    void setTime(const snd_seq_timestamp_t* time);
+
+private:
+    snd_seq_remove_events_t* m_Info;
+};
+
 
 }
 }

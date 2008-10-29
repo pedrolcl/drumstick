@@ -265,6 +265,42 @@ PortInfo::getSizeOfInfo() const
     return  snd_seq_port_info_sizeof();
 }
 
+bool 
+PortInfo::getTimestamping()
+{
+    return (snd_seq_port_info_get_timestamping(m_Info) == 1); 
+}
+
+bool 
+PortInfo::getTimestampReal()
+{
+    return (snd_seq_port_info_get_timestamp_real(m_Info) == 1); 
+}
+
+int 
+PortInfo::getTimestampQueue()
+{
+    return snd_seq_port_info_get_timestamp_queue(m_Info);
+}
+
+void 
+PortInfo::setTimestamping(bool value)
+{
+    snd_seq_port_info_set_timestamp_queue(m_Info, value?1:0);
+}
+
+void 
+PortInfo::setTimestampReal(bool value)
+{
+    snd_seq_port_info_set_timestamp_real(m_Info, value?1:0);
+}
+
+void 
+PortInfo::setTimestampQueue(int queueId)
+{
+    snd_seq_port_info_set_timestamping(m_Info, queueId);
+}
+
 /************/
 /* MidiPort */
 /************/

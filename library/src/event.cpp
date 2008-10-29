@@ -133,6 +133,16 @@ void SequencerEvent::setTag(int aTag)
     snd_seq_ev_set_tag(&m_event, aTag);
 }
 
+void SequencerEvent::free()
+{
+    snd_seq_free_event(&m_event);
+}
+
+int SequencerEvent::getEncodedLength()
+{
+    return snd_seq_event_length(&m_event);       
+}
+
 NoteEvent::NoteEvent(int ch, int key, int vel, int dur) : KeyEvent()
 {
     snd_seq_ev_set_note(&m_event, ch, key, vel, dur);
@@ -251,6 +261,135 @@ ValueEvent::ValueEvent(int statusByte, int val) : SequencerEvent()
 TempoEvent::TempoEvent(int queue, int tempo) : QueueControlEvent()
 {
     snd_seq_ev_set_queue_tempo(&m_event, queue, tempo);
+}
+
+/****************
+ * RemoveEvents *
+ ****************/
+
+RemoveEvents::RemoveEvents()
+{
+    snd_seq_remove_events_malloc(&m_Info);    
+}
+
+RemoveEvents::RemoveEvents(const RemoveEvents& other)
+{
+    snd_seq_remove_events_malloc(&m_Info);    
+    snd_seq_remove_events_copy(m_Info, other.m_Info);
+}
+
+RemoveEvents::RemoveEvents(snd_seq_remove_events_t* other)
+{
+    snd_seq_remove_events_malloc(&m_Info);
+    snd_seq_remove_events_copy(m_Info, other);
+}
+
+RemoveEvents::~RemoveEvents()
+{
+    snd_seq_remove_events_free(m_Info);    
+}
+
+RemoveEvents* 
+RemoveEvents::clone()
+{
+    return new RemoveEvents(m_Info);
+}
+
+RemoveEvents& 
+RemoveEvents::operator=(const RemoveEvents& other)
+{
+    snd_seq_remove_events_copy(m_Info, other.m_Info);
+    return *this;
+}
+
+int 
+RemoveEvents::getSizeOfInfo() const
+{
+    return snd_seq_remove_events_sizeof();
+}
+
+int 
+RemoveEvents::getChannel()
+{
+    return snd_seq_remove_events_get_channel(m_Info);
+}
+
+unsigned int 
+RemoveEvents::getCondition()
+{
+    return snd_seq_remove_events_get_condition(m_Info);
+}
+
+const snd_seq_addr_t* 
+RemoveEvents::getDest()
+{
+    return snd_seq_remove_events_get_dest(m_Info);
+}
+
+int 
+RemoveEvents::getEventType()
+{
+    return snd_seq_remove_events_get_event_type(m_Info);
+}
+
+int 
+RemoveEvents::getQueue()
+{
+    return snd_seq_remove_events_get_queue(m_Info);
+}
+
+int 
+RemoveEvents::getTag()
+{
+    return snd_seq_remove_events_get_tag(m_Info);
+}
+
+const snd_seq_timestamp_t* 
+RemoveEvents::getTime()
+{
+    return snd_seq_remove_events_get_time(m_Info);
+}
+
+void
+RemoveEvents::setChannel(int chan)
+{
+    snd_seq_remove_events_set_channel(m_Info, chan);
+}
+
+void
+RemoveEvents::setCondition(unsigned int cond)
+{
+    snd_seq_remove_events_set_condition(m_Info, cond);
+}
+
+void
+RemoveEvents::setDest(const snd_seq_addr_t* dest)
+{
+    snd_seq_remove_events_set_dest(m_Info, dest);
+}
+
+void
+RemoveEvents::setEventType(int type)
+{
+    snd_seq_remove_events_set_event_type(m_Info, type);
+}
+
+void
+RemoveEvents::setQueue(int queue)
+{
+    snd_seq_remove_events_set_queue(m_Info, queue);
+}
+
+void
+RemoveEvents::setTag(int tag)
+{
+    snd_seq_remove_events_set_tag(m_Info, tag);
+}
+
+void
+RemoveEvents::setTime(const snd_seq_timestamp_t* time)
+{
+    snd_seq_remove_events_set_time(m_Info, time);
 }
 
 }

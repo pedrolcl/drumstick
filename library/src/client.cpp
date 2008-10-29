@@ -690,6 +690,12 @@ MidiClient::dropOutputBuffer()
     CHECK_WARNING(snd_seq_drop_output_buffer(m_SeqHandle));
 }
 
+void 
+MidiClient::removeEvents(const RemoveEvents* spec)
+{
+    CHECK_WARNING(snd_seq_remove_events(m_SeqHandle, spec->m_Info));
+}
+
 /**************/
 /* ClientInfo */
 /**************/

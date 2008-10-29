@@ -35,6 +35,7 @@ class MidiQueue;
 class MidiClient;
 class SequencerEvent;
 class SequencerInputThread;
+class RemoveEvents;
 
 class ClientInfo
 {
@@ -201,7 +202,8 @@ public:
     void removeListener(QObject* listener);
     void setEventsEnabled(const bool bEnabled);
     bool getEventsEnabled() const { return m_eventsEnabled; }
-
+    void removeEvents(const RemoveEvents* spec);
+    
 signals:
     void eventReceived(SequencerEvent* ev);
 

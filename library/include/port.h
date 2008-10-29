@@ -75,6 +75,13 @@ public:
     SubscribersList getReadSubscribers() const;
     SubscribersList getWriteSubscribers() const;
 
+    bool getTimestamping();
+    bool getTimestampReal();
+    int getTimestampQueue();
+    void setTimestamping(bool value);
+    void setTimestampReal(bool value);
+    void setTimestampQueue(int queueId);
+
 protected:    
     void readSubscribers(MidiClient* seq);
     void freeSubscribers();
