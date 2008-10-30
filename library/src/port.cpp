@@ -58,6 +58,12 @@ PortInfo::PortInfo(MidiClient* seq, const int client, const int port)
     CHECK_WARNING(snd_seq_get_any_port_info(seq->getHandle(), client, port, m_Info));
 }
 
+PortInfo::PortInfo(MidiClient* seq, const int port)
+{
+    snd_seq_port_info_malloc(&m_Info);
+    CHECK_WARNING(snd_seq_get_port_info(seq->getHandle(), port, m_Info));
+}
+
 PortInfo::~PortInfo()
 {
     snd_seq_port_info_free(m_Info);

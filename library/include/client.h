@@ -173,7 +173,7 @@ public:
     bool getBlockMode() { return m_BlockMode; }
     void setBlockMode(bool newValue);
     QString getClientName();
-    void setClientName( QString const& newName);
+    void setClientName(QString const& newName);
     bool getBroadcastFilter();
     void setBroadcastFilter(bool newValue);
     bool getErrorBounce();
@@ -197,12 +197,16 @@ public:
     void dropInputBuffer();
     void dropOutput();
     void dropOutputBuffer();
+    void removeEvents(const RemoveEvents* spec);
+    SequencerEvent* extractOutput();
+    int outputPending();
+    int inputPending(bool fetch);
+    int getQueueId(const QString& name);
 
     void addListener(QObject* listener);
     void removeListener(QObject* listener);
     void setEventsEnabled(const bool bEnabled);
     bool getEventsEnabled() const { return m_eventsEnabled; }
-    void removeEvents(const RemoveEvents* spec);
     
 signals:
     void eventReceived(SequencerEvent* ev);

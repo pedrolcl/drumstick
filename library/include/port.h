@@ -44,6 +44,7 @@ public:
     PortInfo(const PortInfo& other);
     PortInfo(snd_seq_port_info_t* other);
     PortInfo(MidiClient* seq, const int client, const int port);
+    PortInfo(MidiClient* seq, const int port);
     virtual ~PortInfo(); 
     PortInfo* clone();
     PortInfo& operator=(const PortInfo& other);

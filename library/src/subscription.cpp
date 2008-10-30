@@ -185,6 +185,12 @@ Subscription::Subscription(snd_seq_port_subscribe_t* other)
     snd_seq_port_subscribe_copy(m_Info, other);
 }
 
+Subscription::Subscription(MidiClient* seq)
+{
+    snd_seq_port_subscribe_malloc(&m_Info);
+    CHECK_WARNING(snd_seq_get_port_subscription(seq->getHandle(), m_Info));
+}
+
 Subscription::~Subscription()
 {
     snd_seq_port_subscribe_free(m_Info);

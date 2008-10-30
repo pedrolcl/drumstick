@@ -80,7 +80,7 @@ int QueueInfo::getOwner()
     return snd_seq_queue_info_get_owner(m_Info);
 }
 
-bool QueueInfo::getLocked()
+bool QueueInfo::isLocked()
 {
     return (snd_seq_queue_info_get_locked(m_Info) != 0);
 }
@@ -103,6 +103,11 @@ void QueueInfo::setOwner(int value)
 void QueueInfo::setFlags(unsigned int value)
 {
     snd_seq_queue_info_set_flags(m_Info, value);
+}
+
+void QueueInfo::setLocked(bool locked)
+{
+    snd_seq_queue_info_set_locked(m_Info, locked ? 1 : 0);
 }
 
 int QueueInfo::getInfoSize() const

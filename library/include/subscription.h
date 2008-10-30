@@ -73,6 +73,7 @@ public:
     Subscription();
     Subscription(const Subscription& other);
     Subscription(snd_seq_port_subscribe_t* other);
+    Subscription(MidiClient* seq);
     virtual ~Subscription();
     Subscription* clone();
     int getSizeOfInfo() const;

@@ -48,10 +48,12 @@ public:
     int getId();
     QString getName();
     int getOwner();
-    bool getLocked();
+    bool isLocked();
     unsigned int getFlags();
+    
     void setName(QString value);
     void setOwner(int value);
+    void setLocked(bool locked);
     void setFlags(unsigned int value);
 
 private:

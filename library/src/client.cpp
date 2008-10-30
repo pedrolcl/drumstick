@@ -696,6 +696,34 @@ MidiClient::removeEvents(const RemoveEvents* spec)
     CHECK_WARNING(snd_seq_remove_events(m_SeqHandle, spec->m_Info));
 }
 
+SequencerEvent* 
+MidiClient::extractOutput()
+{
+    snd_seq_event_t* ev;
+    if (CHECK_WARNING(snd_seq_extract_output(m_SeqHandle, &ev) == 0)) {
+        return new SequencerEvent(ev);
+    }
+    return NULL;
+}
+
+int 
+MidiClient::outputPending()
+{
+    return snd_seq_event_output_pending(m_SeqHandle);
+}
+
+int 
+MidiClient::inputPending(bool fetch)
+{
+    return snd_seq_event_input_pending(m_SeqHandle, fetch ? 1 : 0);
+}
+
+int 
+MidiClient::getQueueId(const QString& name)
+{
+    return snd_seq_query_named_queue(m_SeqHandle, name.toLocal8Bit().data());
+}
+
 /**************/
 /* ClientInfo */
 /**************/
