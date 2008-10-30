@@ -392,5 +392,72 @@ RemoveEvents::setTime(const snd_seq_timestamp_t* time)
     snd_seq_remove_events_set_time(m_Info, time);
 }
 
+/*************
+ * MIDICodec *
+ *************/
+
+MIDICodec::MIDICodec(QObject* parent, int bufsize) : QObject(parent)
+{
+    CHECK_WARNING(snd_midi_event_new(bufsize, &m_Info));
+}
+
+MIDICodec::~MIDICodec()
+{
+    snd_midi_event_free(m_Info);
+}
+
+void
+MIDICodec::init()
+{
+    snd_midi_event_init(m_Info);
+}
+
+long
+MIDICodec::decode(unsigned char *buf,
+                  long count,
+                  const snd_seq_event_t *ev)
+{
+    return CHECK_WARNING(snd_midi_event_decode(m_Info, buf, count, ev));
+}
+
+long
+MIDICodec::encode(const unsigned char *buf,
+                  long count,
+                  snd_seq_event_t *ev)
+{
+    return CHECK_WARNING(snd_midi_event_encode(m_Info, buf, count, ev));
+}
+
+long
+MIDICodec::encode(int c,
+                  snd_seq_event_t *ev)
+{
+    return CHECK_WARNING(snd_midi_event_encode_byte(m_Info, c, ev));
+}
+
+void
+MIDICodec::enableRunningStatus(bool enable)
+{
+    snd_midi_event_no_status(m_Info, enable ? 0 : 1);
+}
+
+void
+MIDICodec::resetDecoder()
+{
+    snd_midi_event_reset_decode(m_Info);
+}
+
+void
+MIDICodec::resetEncoder()
+{
+    snd_midi_event_reset_encode(m_Info);
+}
+
+void
+MIDICodec::resizeBuffer(int bufsize)
+{
+    CHECK_WARNING(snd_midi_event_resize_buffer(m_Info, bufsize));
+}
+
 }
 }

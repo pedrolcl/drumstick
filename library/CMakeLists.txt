@@ -23,24 +23,26 @@ INCLUDE_DIRECTORIES(
 SET(aseqmm_qtobject_SRCS
     include/alsatimer.h
     include/client.h
-    include/port.h
-    include/qsmf.h
-    include/queue.h
-    include/recthread.h
+    include/event.h
     include/playthread.h
+    include/port.h
+    include/queue.h
+    include/qsmf.h
+    include/recthread.h
 )
 
 SET(aseqmm_SRCS
+    include/alsatimer.h
     include/client.h
     include/commons.h
     include/event.h
-    include/port.h
-    include/recthread.h
     include/playthread.h
-    include/qsmf.h
+    include/port.h
     include/queue.h
+    include/qsmf.h
+    include/recthread.h
     include/subscription.h
-    include/alsatimer.h
+    src/alsatimer.cpp
     src/client.cpp
     src/event.cpp
     src/port.cpp
@@ -49,7 +51,6 @@ SET(aseqmm_SRCS
     src/qsmf.cpp
     src/queue.cpp
     src/subscription.cpp
-    src/alsatimer.cpp
 )
 
 QT4_WRAP_CPP(aseqmm_moc_SRCS ${aseqmm_qtobject_SRCS})

@@ -330,6 +330,29 @@ private:
     snd_seq_remove_events_t* m_Info;
 };
 
+class MIDICodec : public QObject
+{
+    Q_OBJECT
+public:
+    MIDICodec(QObject* parent, int bufsize);
+    ~MIDICodec();
+    
+    void init();
+    long decode(unsigned char *buf,
+                long count,
+                const snd_seq_event_t *ev);
+    long encode(const unsigned char *buf,
+                long count,
+                snd_seq_event_t *ev);
+    long encode(int c,
+                snd_seq_event_t *ev);
+    void enableRunningStatus(bool enable);
+    void resetEncoder();
+    void resetDecoder();
+    void resizeBuffer(int bufsize);
+private:
+    snd_midi_event_t* m_Info;
+};
 
 }
 }

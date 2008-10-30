@@ -39,15 +39,3 @@ snd_timer_open_lconf
 snd_timer_query_hw_open
 snd_timer_query_open_lconf
 snd_timer_type
-
-ENCODER / DECODER
-
-snd_midi_event_decode
-snd_midi_event_encode
-snd_midi_event_encode_byte
-snd_midi_event_free
-snd_midi_event_init
-snd_midi_event_new
-snd_midi_event_no_status
-snd_midi_event_reset_decode
-snd_midi_event_reset_encode
