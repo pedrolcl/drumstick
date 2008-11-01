@@ -1,5 +1,5 @@
-Pending Functions from ALSA library 
-===================================
+Functions from ALSA library reported by chkcoverage.
+The following functions won't be used in aseqmm.  
 
 MISC (event filter)
 
@@ -7,29 +7,18 @@ snd_seq_change_bit
 snd_seq_get_bit
 snd_seq_set_bit
 
-MIDDLE LEVEL
+CLIENT - private functions
 
-snd_seq_connect_from
-snd_seq_connect_to
-snd_seq_create_simple_port
-snd_seq_delete_simple_port
-snd_seq_disconnect_from
-snd_seq_disconnect_to
-snd_seq_name
-snd_seq_set_client_name
 snd_seq_hw_open
 snd_seq_hw_ops
-snd_seq_open_lconf
-snd_seq_poll_descriptors_revents
+snd_seq_create_event
+snd_seq_event_types
 
-TIMER
+TIMER - private functions
 
 snd_timer_async
-snd_timer_hw_open
-snd_timer_info_get_ticks
 snd_timer_name
+snd_timer_hw_open
 snd_timer_nonblock
-snd_timer_open_lconf
 snd_timer_query_hw_open
-snd_timer_query_open_lconf
 snd_timer_type

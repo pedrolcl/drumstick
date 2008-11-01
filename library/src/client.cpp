@@ -62,11 +62,19 @@ MidiClient::~MidiClient()
 void 
 MidiClient::open()
 {
-    int blockMode = 0; 
-    if (!m_BlockMode) {
-        blockMode = SND_SEQ_NONBLOCK;
-    }
-    CHECK_ERROR(snd_seq_open(&m_SeqHandle, m_DeviceName.toLocal8Bit().data(), m_OpenMode, blockMode));
+    CHECK_ERROR(snd_seq_open(&m_SeqHandle, m_DeviceName.toLocal8Bit().data(), 
+                             m_OpenMode, m_BlockMode ? 0 : SND_SEQ_NONBLOCK));
+    CHECK_WARNING(snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info));
+}
+
+void 
+MidiClient::open(snd_config_t* conf)
+{
+    CHECK_ERROR(snd_seq_open_lconf( &m_SeqHandle, 
+                                    m_DeviceName.toLocal8Bit().data(), 
+                                    m_OpenMode, 
+                                    m_BlockMode ? 0 : SND_SEQ_NONBLOCK,
+                                    conf ));
     CHECK_WARNING(snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info));
 }
 
@@ -722,6 +730,80 @@ int
 MidiClient::getQueueId(const QString& name)
 {
     return snd_seq_query_named_queue(m_SeqHandle, name.toLocal8Bit().data());
+}
+
+int 
+MidiClient::getPollDescriptorsCount(short events)
+{
+    return snd_seq_poll_descriptors_count(m_SeqHandle, events);
+}
+
+int
+MidiClient::pollDescriptors( struct pollfd *pfds, unsigned int space, 
+                             short events )
+{
+    return snd_seq_poll_descriptors(m_SeqHandle, pfds, space, events);     
+}
+
+unsigned short
+MidiClient::pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds)
+{
+    unsigned short revents;
+    CHECK_WARNING( snd_seq_poll_descriptors_revents( m_SeqHandle, 
+                                                     pfds, nfds, 
+                                                     &revents ));
+    return revents;
+}
+
+const char * 
+MidiClient::_getDeviceName()
+{
+    return snd_seq_name(m_SeqHandle);
+}
+
+void 
+MidiClient::_setClientName(const char *name)
+{
+    CHECK_WARNING(snd_seq_set_client_name(m_SeqHandle, name));
+}
+
+int 
+MidiClient::createSimplePort( const char *name,
+                              unsigned int caps,
+                              unsigned int type )
+{
+    return CHECK_WARNING( snd_seq_create_simple_port( m_SeqHandle, 
+                                                      name, caps, type ));
+}
+
+void
+MidiClient::deleteSimplePort(int port)
+{
+    CHECK_WARNING( snd_seq_delete_simple_port( m_SeqHandle, port ));
+}
+
+void 
+MidiClient::connectFrom(int myport, int client, int port)
+{
+    CHECK_WARNING( snd_seq_connect_from(m_SeqHandle, myport, client, port ));
+}
+
+void 
+MidiClient::connectTo(int myport, int client, int port)
+{
+    CHECK_WARNING( snd_seq_connect_to(m_SeqHandle, myport, client, port ));
+}
+
+void 
+MidiClient::disconnectFrom(int myport, int client, int port)
+{
+    CHECK_WARNING( snd_seq_disconnect_from(m_SeqHandle, myport, client, port ));
+}
+
+void 
+MidiClient::disconnectTo(int myport, int client, int port)
+{
+    CHECK_WARNING( snd_seq_disconnect_to(m_SeqHandle, myport, client, port ));
 }
 
 /**************/

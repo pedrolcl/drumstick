@@ -50,6 +50,9 @@ public:
     long getResolution();
     long getFrequency();
 
+protected:
+    long getTicks() __attribute__((deprecated));
+    
 private:
     snd_timer_info_t *m_Info;
 };
@@ -118,9 +121,10 @@ class TimerQuery
 {
 public:
     TimerQuery(const QString& deviceName, int openMode);
+    TimerQuery(const QString& deviceName, int openMode, snd_config_t* conf);
     virtual ~TimerQuery();
 
-    TimerIdList getTimers() { return m_timers; }
+    TimerIdList getTimers() const { return m_timers; }
     TimerGlobalInfo& getGlobalInfo();
     void setGlobalParams(snd_timer_gparams_t* params);
     void getGlobalParams(snd_timer_gparams_t* params);
@@ -195,6 +199,7 @@ class Timer : public QObject
 
 public:
     Timer(const QString& deviceName, int openMode, QObject* parent = 0);
+    Timer(const QString& deviceName, int openMode, snd_config_t* config, QObject* parent = 0);
     Timer(TimerId& id, int openMode, QObject* parent = 0);
     virtual ~Timer();
     

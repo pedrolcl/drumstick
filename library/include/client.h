@@ -140,6 +140,7 @@ public:
     virtual ~MidiClient();
 
     void open();
+    void open(snd_config_t* conf);
     void close();
     void startSequencerInput();
     void stopSequencerInput();
@@ -218,6 +219,23 @@ protected:
     void freeClients();
     void updateAvailablePorts();
     PortInfoList filterPorts(unsigned int filter);
+
+    /* low level public functions */
+    const char * _getDeviceName();
+    int getPollDescriptorsCount(short events);
+    int pollDescriptors(struct pollfd *pfds, unsigned int space, short events);
+    unsigned short pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds);
+    
+    /* mid level functions */
+    void _setClientName( const char *name );
+    int createSimplePort( const char *name,
+                          unsigned int caps,
+                          unsigned int type );  
+    void deleteSimplePort( int port );
+    void connectFrom(int myport, int client, int port);
+    void connectTo(int myport, int client, int port);
+    void disconnectFrom(int myport, int client, int port);
+    void disconnectTo(int myport, int client, int port);
 
 private:
     bool m_eventsEnabled;

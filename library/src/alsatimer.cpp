@@ -106,6 +106,12 @@ TimerInfo::getSizeOfInfo() const
     return snd_timer_info_sizeof(); 
 }
 
+long
+TimerInfo::getTicks()
+{
+    return snd_timer_info_get_ticks(m_Info);
+}
+
 /***********
  * TimerId *
  ***********/
@@ -235,7 +241,18 @@ TimerId::getSizeOfInfo() const
 
 TimerQuery::TimerQuery(const QString& deviceName, int openMode)
 {
-    snd_timer_query_open(&m_Info, deviceName.toLocal8Bit().data(), openMode);
+    CHECK_WARNING( snd_timer_query_open( &m_Info, 
+                                         deviceName.toLocal8Bit().data(), 
+                                         openMode ));
+    readTimers();
+}
+
+TimerQuery::TimerQuery( const QString& deviceName, int openMode, 
+                        snd_config_t* conf )
+{
+    CHECK_WARNING( snd_timer_query_open_lconf( &m_Info, 
+                                               deviceName.toLocal8Bit().data(), 
+                                               openMode, conf ));
     readTimers();
 }
 
@@ -594,14 +611,25 @@ TimerStatus::getSizeOfInfo() const
  * Timer *
  *********/
 
-Timer::Timer(const QString& deviceName, int openMode, QObject* parent)
+Timer::Timer( const QString& deviceName, int openMode, QObject* parent )
     : QObject(parent)
 {
     m_deviceName = deviceName;
-    CHECK_ERROR(snd_timer_open(&m_Info, m_deviceName.toLocal8Bit().data(), openMode));
+    CHECK_ERROR( snd_timer_open( &m_Info, m_deviceName.toLocal8Bit().data(), 
+                                 openMode ));
 }
 
-Timer::Timer(TimerId& id, int openMode, QObject* parent)
+Timer::Timer( const QString& deviceName, int openMode, snd_config_t* conf, 
+              QObject* parent )
+    : QObject(parent)
+{
+    m_deviceName = deviceName;
+    CHECK_ERROR( snd_timer_open_lconf( &m_Info, 
+                                       m_deviceName.toLocal8Bit().data(), 
+                                       openMode, conf ));
+}
+
+Timer::Timer( TimerId& id, int openMode, QObject* parent )
     : QObject(parent)
 {
     m_deviceName = QString("hw:CLASS=%1,SCLASS=%2,CARD=%3,DEV=%4,SUBDEV=%5")
@@ -610,7 +638,9 @@ Timer::Timer(TimerId& id, int openMode, QObject* parent)
     .arg(id.getCard())
     .arg(id.getDevice())
     .arg(id.getSubdevice());
-    CHECK_ERROR(snd_timer_open(&m_Info, m_deviceName.toLocal8Bit().data(), openMode));
+    CHECK_ERROR( snd_timer_open( &m_Info, 
+                                 m_deviceName.toLocal8Bit().data(), 
+                                 openMode ));
 }
 
 Timer::~Timer()
@@ -658,13 +688,13 @@ Timer::getTimerInfo()
 void
 Timer::setTimerParams(const TimerParams& params)
 {
-    CHECK_WARNING(snd_timer_params(m_Info, params.m_Info));
+    CHECK_WARNING( snd_timer_params(m_Info, params.m_Info) );
 }
 
 TimerStatus&
 Timer::getTimerStatus()
 {
-    CHECK_WARNING(snd_timer_status(m_Info, m_TimerStatus.m_Info));
+    CHECK_WARNING( snd_timer_status(m_Info, m_TimerStatus.m_Info) );
     return m_TimerStatus;
 }
 
