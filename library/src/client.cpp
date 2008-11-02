@@ -42,7 +42,7 @@ MidiClient::MidiClient( QObject* parent ) :
     m_NeedRefreshClientList(true),
     m_OpenMode(SND_SEQ_OPEN_DUPLEX),
     m_DeviceName("default"),
-    m_SeqHandle(0),
+    m_SeqHandle(NULL),
     m_Thread(NULL),
     m_Queue(NULL)
 { }
@@ -959,9 +959,34 @@ ClientInfo::getPorts() const
     return lst;
 }
 
-int ClientInfo::getSizeOfInfo() const 
+int 
+ClientInfo::getSizeOfInfo() const 
 {
     return snd_seq_client_info_sizeof(); 
+}
+
+void 
+ClientInfo::addFilter(int eventType)
+{
+    snd_seq_client_info_event_filter_add(m_Info, eventType);
+}
+
+bool 
+ClientInfo::isFiltered(int eventType)
+{
+    return (snd_seq_client_info_event_filter_check(m_Info, eventType) != 0);
+}
+
+void 
+ClientInfo::clearFilter()
+{
+    snd_seq_client_info_event_filter_clear(m_Info);
+}
+
+void 
+ClientInfo::removeFilter(int eventType)
+{
+    snd_seq_client_info_event_filter_del(m_Info, eventType);
 }
 
 /**************

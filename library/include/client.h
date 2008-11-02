@@ -62,13 +62,19 @@ public:
     void setName(QString name);
     void setBroadcastFilter(bool val);
     void setErrorBounce(bool val);
-    const unsigned char* getEventFilter();
-    void setEventFilter(unsigned char* filter);
     PortInfoList getPorts() const;
 
+    void addFilter(int eventType);
+    bool isFiltered(int eventType);
+    void clearFilter();
+    void removeFilter(int eventType);
+    
 protected:    
     void readPorts(MidiClient* seq);
     void freePorts();
+
+    const unsigned char* getEventFilter() __attribute__((deprecated));
+    void setEventFilter(unsigned char* filter) __attribute__((deprecated));
 
 private:
     snd_seq_client_info_t* m_Info;
@@ -243,10 +249,9 @@ private:
     bool m_NeedRefreshClientList;
     int  m_OpenMode;
     QString m_DeviceName;
-
     snd_seq_t* m_SeqHandle;
     QPointer<SequencerInputThread> m_Thread;
-    MidiQueue* m_Queue;
+    QPointer<MidiQueue> m_Queue;
 
     ClientInfo m_Info;
     ClientInfoList m_ClientList;

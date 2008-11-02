@@ -6,6 +6,7 @@ MISC (event filter)
 snd_seq_change_bit
 snd_seq_get_bit
 snd_seq_set_bit
+snd_seq_unset_bit
 
 CLIENT - private functions
 
