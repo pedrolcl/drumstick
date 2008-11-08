@@ -1,3 +1,9 @@
+Planned:
+    * Migrate KMidimon, KMetronome and Kaseq to KDE4 and this library
+    * Documentation
+    * More test cases
+    * Public release
+
 Functions from ALSA library reported by chkcoverage.
 The following functions won't be used in aseqmm.  
 

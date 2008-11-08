@@ -1,0 +1,103 @@
+#
+# spec file for package aseqmm (Version @VERSION@)
+#
+# MIDI Sequencer C++ Library
+# Copyright (C) 2005-2008 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+#
+# This file and all modifications and additions to the pristine
+# package are under the same license as the package itself.
+#
+
+# norootforbuild
+
+Name:           aseqmm
+Version:        @VERSION@
+Release:        0
+License:        GPL v2 or later
+Summary:        MIDI Sequencer C++ Library Bindings
+Group:          System/Libraries
+URL:            http://kmetronome.sourceforge.net/aseqmm
+Source:         %name-%version.tar.bz2
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildRequires:  cmake
+BuildRequires:  alsa-devel
+BuildRequires:  libqt4-devel
+
+%description
+MIDI Sequencer C++ Library bindings using Qt4 and ALSA
+
+
+
+Authors:
+--------
+    Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+
+%package devel
+License:        GPL v2 or later
+Summary:        Development package for the libaseqmm library
+Group:          Development/Libraries/C and C++
+Requires:       %{name} = %{version} glibc-devel libstdc++-devel libqt4-devel
+
+%description devel
+This package contains the files needed to compile programs that use the
+libaseqmm library.
+
+
+
+Authors:
+--------
+    Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+
+%package progs
+License:        GPL v2 or later
+Summary:        Example Programs for libaseqmm
+Group:          System/Libraries
+
+%description progs
+This package includes the example programs for libaseqmm.
+
+
+
+Authors:
+--------
+    Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+
+%debug_package
+%prep
+%setup -q
+
+%build
+CXXFLAGS="$RPM_OPT_FLAGS -g -fexceptions" \
+    cmake .  -DWANT_STATIC=NO -DCMAKE_INSTALL_PREFIX=%{_prefix}
+make %{?jobs:-j %jobs} VERBOSE=1
+
+%install
+make install DESTDIR=$RPM_BUILD_ROOT
+
+%post -p /sbin/ldconfig
+
+%postun -p /sbin/ldconfig
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root)
+%doc AUTHORS COPYING ChangeLog INSTALL NEWS README TODO
+%{_libdir}/libaseqmm.so.*
+
+%files progs
+%defattr(-, root, root)
+%{_bindir}/*
+
+%files devel
+%defattr(-, root, root)
+%dir %{_includedir}/aseqmm
+%{_libdir}/libaseqmm.so
+%{_includedir}/aseqmm.h
+%{_includedir}/aseqmm/*.h
+%{_libdir}/pkgconfig/*.pc
+
+%changelog
+* Sun Nov 9 2008 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.0.2cvs
+- first public release

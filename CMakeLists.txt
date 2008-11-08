@@ -52,14 +52,14 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_admin")
 SET (VERSION_MAJOR "0")
 SET (VERSION_MINOR "0")
 SET (VERSION_PATCH "2")
-SET (VERSION_SUFFIX "test")
-SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}-${VERSION_SUFFIX})
+SET (VERSION_SUFFIX "cvs")
+SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 ADD_DEFINITIONS(-D'VERSION="${VERSION}"')
 
 MESSAGE(STATUS "aseqmm ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
 
 # User options
-OPTION(WANT_STATIC "Build a static library (.a) instead of dynamic (.so)" ON)
+OPTION(WANT_STATIC "Build a static library (.a) instead of dynamic (.so)" OFF)
 MESSAGE(STATUS "Build configuration: ${CMAKE_BUILD_TYPE}")
 
 # LIBRARY BUILD TYPE
@@ -82,7 +82,7 @@ IF(QT4_FOUND)
 			 ${QT_CORE_LIB_DEPENDENCIES} 
 			 ${QT_GUI_LIB_DEPENDENCIES})
     ENDIF (NOT QT_LIBRARIES)    
-    MESSAGE(STATUS "Found Qt4. ${QT_EDITION}, version = ${QTVERSION}")
+    MESSAGE(STATUS "Found Qt4 ${QT_EDITION} version = ${QTVERSION}")
     #MESSAGE("QT_DEFINITIONS: ${QT_DEFINITIONS}")
     #MESSAGE("QT_LIBRARIES: ${QT_LIBRARIES}")
     #MESSAGE("QT_QTCORE_LIBRARY: ${QT_QTCORE_LIBRARY}")
@@ -138,6 +138,9 @@ INCLUDE_DIRECTORIES(
 ADD_SUBDIRECTORY(library build/library)
 ADD_SUBDIRECTORY(tests build/tests)
 
+CONFIGURE_FILE(aseqmm.pc.in aseqmm.pc IMMEDIATE @ONLY)
+CONFIGURE_FILE(aseqmm.spec.in aseqmm.spec IMMEDIATE @ONLY)
+
 # uninstall custom target
 CONFIGURE_FILE(
     "${CMAKE_SOURCE_DIR}/cmake_admin/cmake_uninstall.cmake.in"
@@ -149,6 +152,7 @@ ADD_CUSTOM_TARGET ( uninstall
 
 # Custom target trying to clean the CMake generated files
 ADD_CUSTOM_TARGET ( distclean
+    COMMAND rm -f  aseqmm.pc aseqmm.spec
     COMMAND rm -f  {,library/,tests/}CMakeCache.txt
     COMMAND rm -f  {,library/,tests/}cmake_install.cmake
     COMMAND rm -f  {,library/,tests/}cmake_uninstall.cmake
@@ -156,6 +160,7 @@ ADD_CUSTOM_TARGET ( distclean
     COMMAND rm -f  {,library/,tests/}CPackSourceConfig.cmake
     COMMAND rm -f  {,library/,tests/}install_manifest.txt
     COMMAND rm -f  {,library/,tests/}progress.make
+    COMMAND rm -f  {,library/,tests/}Makefile
     COMMAND rm -f  {,library/,tests/}Makefile
     COMMAND rm -rf {,library/,tests/}CMakeFiles
     COMMAND rm -rf {,library/,tests/}_CPack_Packages
@@ -171,7 +176,7 @@ ADD_CUSTOM_TARGET ( tarball
     COMMAND cp -r doc aseqmm-${VERSION}
     COMMAND cp -r library aseqmm-${VERSION}
     COMMAND cp -r tests aseqmm-${VERSION}
-    COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO *.spec* aseqmm-${VERSION}
+    COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO aseqmm.spec.in aseqmm.pc.in aseqmm-${VERSION}
     COMMAND tar -cj --exclude CVS --exclude .cvsignore -f aseqmm-${VERSION}.tar.bz2 aseqmm-${VERSION}
     COMMAND tar -cz --exclude CVS --exclude .cvsignore -f aseqmm-${VERSION}.tar.gz aseqmm-${VERSION}
     COMMAND rm -rf aseqmm-${VERSION}
@@ -186,5 +191,8 @@ INSTALL(FILES
 	    README
 	    TODO
 	DESTINATION 
-	    share/docs/aseqmm	
+	    share/doc/packages/aseqmm	
 )
+
+INSTALL(FILES aseqmm.pc
+        DESTINATION lib/pkgconfig)

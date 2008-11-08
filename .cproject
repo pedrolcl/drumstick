@@ -72,6 +72,7 @@
 </storageModule>
 
 
+
 <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
 <buildTargets>
 <target name="distclean" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
@@ -85,7 +86,7 @@
 <target name="cmake" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>cmake</buildCommand>
 <buildArguments/>
-<buildTarget>. -DCMAKE_BUILD_TYPE=Debug</buildTarget>
+<buildTarget>. -DCMAKE_BUILD_TYPE=Debug -DWANT_STATIC=1</buildTarget>
 <stopOnError>false</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 <runAllBuilders>true</runAllBuilders>

@@ -1,0 +1,33 @@
+Basic build commands
+--------------------
+
+$ cd aseqmm-x.x.x
+$ cmake .
+$ make
+$ sudo make install
+
+Requirements
+------------
+
+* CMake 2.4
+* ALSA 1.0
+
+Optional CMake parameters
+-------------------------
+ 
+    -DWANT_STATIC=YES|ON|1 
+    Build a static library instead of a shared object
+
+    -DWANT_STATIC=NO|OFF|0
+    Build a dynamic library
+
+    -DCMAKE_BUILD_TYPE=Debug 
+    Compile with debug flag enabled
+    
+    -DCMAKE_BUILD_TYPE=Release
+    Compile without debug flag, and optimization enabled
+    
+    -DCMAKE_INSTALL_PREFIX=/usr/local   
+    Specify the desired install prefix
+
+ 

@@ -85,3 +85,6 @@ INSTALL(TARGETS aseqmm
 
 INSTALL(FILES ${aseqmm_HEADERS}
         DESTINATION include/aseqmm)
+
+INSTALL(FILES include/aseqmm.h
+        DESTINATION include)
