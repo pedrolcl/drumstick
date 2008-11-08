@@ -31,25 +31,28 @@ SET(aseqmm_qtobject_SRCS
     include/recthread.h
 )
 
-SET(aseqmm_SRCS
+SET(aseqmm_HEADERS
     include/alsatimer.h
     include/client.h
     include/commons.h
     include/event.h
     include/playthread.h
     include/port.h
-    include/queue.h
     include/qsmf.h
+    include/queue.h
     include/recthread.h
     include/subscription.h
+)
+
+SET(aseqmm_SRCS
     src/alsatimer.cpp
     src/client.cpp
     src/event.cpp
-    src/port.cpp
-    src/recthread.cpp
     src/playthread.cpp
+    src/port.cpp
     src/qsmf.cpp
     src/queue.cpp
+    src/recthread.cpp
     src/subscription.cpp
 )
 
@@ -58,6 +61,7 @@ QT4_WRAP_CPP(aseqmm_moc_SRCS ${aseqmm_qtobject_SRCS})
 ADD_LIBRARY(aseqmm 
     ${aseqmm_moc_SRCS}
     ${aseqmm_SRCS} 
+    ${aseqmm_HEADERS} 
 )
 
 TARGET_LINK_LIBRARIES(aseqmm
@@ -73,7 +77,11 @@ IF(NOT WANT_STATIC)
 ENDIF(NOT WANT_STATIC)
 
 # we should install some files...
+
 INSTALL(TARGETS aseqmm
 	RUNTIME DESTINATION bin
 	ARCHIVE DESTINATION lib
 	LIBRARY DESTINATION lib)
+
+INSTALL(FILES ${aseqmm_HEADERS}
+        DESTINATION include/aseqmm)
