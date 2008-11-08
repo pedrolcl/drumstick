@@ -87,6 +87,9 @@ inline int checkWarning(int rc, const char *where)
 #define CHECK_WARNING(x) (checkWarning((x),__PRETTY_FUNCTION__))
 
 }
+
+const QString LIBRARY_VERSION(SND_LIB_VERSION_STR);
+
 }
 
 #endif /*COMMONS_H_*/

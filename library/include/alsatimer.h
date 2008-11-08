@@ -66,6 +66,7 @@ public:
     TimerId();
     TimerId(const TimerId& other);
     TimerId(const snd_timer_id_t *other);
+    TimerId(int cls, int scls, int card, int dev, int sdev);
     virtual ~TimerId();
     TimerId* clone();
     TimerId& operator=(const TimerId& other);
@@ -198,24 +199,28 @@ class Timer : public QObject
     Q_OBJECT
 
 public:
+    Timer(int cls, int scls, int card, int dev, int sdev, int openMode, QObject* parent = 0);
     Timer(const QString& deviceName, int openMode, QObject* parent = 0);
     Timer(const QString& deviceName, int openMode, snd_config_t* config, QObject* parent = 0);
     Timer(TimerId& id, int openMode, QObject* parent = 0);
     virtual ~Timer();
     
     snd_timer_t* getHandle() { return m_Info; }
+    TimerInfo& getTimerInfo();
+    TimerStatus& getTimerStatus();
+    void setTimerParams(const TimerParams& params);
+    
+    void start();
+    void stop();
+    void continueRunning();
+
     void addAsyncTimerHandler(snd_async_callback_t callback, void *private_data);
     int getPollDescriptorsCount();
     void pollDescriptors(struct pollfd *pfds, unsigned int space);
     void pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds, unsigned short *revents);
-    void setTimerParams(const TimerParams& params);
-    TimerInfo& getTimerInfo();
-    TimerStatus& getTimerStatus();
-    void start();
-    void stop();
-    void continueRunning();
     ssize_t read(void *buffer, size_t size);
-
+    snd_timer_t* getTimerHandle();
+    
 private:
     snd_timer_t *m_Info;
     snd_async_handler_t *m_asyncHandler;

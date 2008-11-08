@@ -145,6 +145,16 @@ TimerId::TimerId(const TimerId& other)
         setSubdevice(0);
 }
 
+TimerId::TimerId(int cls, int scls, int card, int dev, int sdev)
+{
+    snd_timer_id_malloc(&m_Info);
+    setClass(cls);
+    setSlaveClass(scls);
+    setCard(card);
+    setDevice(dev);
+    setSubdevice(sdev);
+}
+
 TimerId::~TimerId()
 {
     snd_timer_id_free(m_Info);
@@ -612,25 +622,28 @@ TimerStatus::getSizeOfInfo() const
  *********/
 
 Timer::Timer( const QString& deviceName, int openMode, QObject* parent )
-    : QObject(parent)
+    : QObject(parent),
+    m_deviceName(deviceName),
+    m_asyncHandler(NULL)
 {
-    m_deviceName = deviceName;
     CHECK_ERROR( snd_timer_open( &m_Info, m_deviceName.toLocal8Bit().data(), 
                                  openMode ));
 }
 
 Timer::Timer( const QString& deviceName, int openMode, snd_config_t* conf, 
               QObject* parent )
-    : QObject(parent)
+    : QObject(parent),
+    m_deviceName(deviceName),
+    m_asyncHandler(NULL)
 {
-    m_deviceName = deviceName;
     CHECK_ERROR( snd_timer_open_lconf( &m_Info, 
                                        m_deviceName.toLocal8Bit().data(), 
                                        openMode, conf ));
 }
 
 Timer::Timer( TimerId& id, int openMode, QObject* parent )
-    : QObject(parent)
+    : QObject(parent), 
+    m_asyncHandler(NULL)
 {
     m_deviceName = QString("hw:CLASS=%1,SCLASS=%2,CARD=%3,DEV=%4,SUBDEV=%5")
     .arg(id.getClass())
@@ -643,22 +656,38 @@ Timer::Timer( TimerId& id, int openMode, QObject* parent )
                                  openMode ));
 }
 
+Timer::Timer( int cls, int scls, int card, int dev, int sdev, 
+              int openMode, QObject* parent )
+    : QObject(parent), 
+    m_asyncHandler(NULL)
+{
+    m_deviceName = QString("hw:CLASS=%1,SCLASS=%2,CARD=%3,DEV=%4,SUBDEV=%5")
+        .arg(cls)
+        .arg(scls)
+        .arg(card)
+        .arg(dev)
+        .arg(sdev);
+    CHECK_ERROR( snd_timer_open( &m_Info, 
+                                 m_deviceName.toLocal8Bit().data(), 
+                                 openMode ));
+}
+
 Timer::~Timer()
 {
-    CHECK_ERROR(snd_timer_close(m_Info));
+    CHECK_WARNING(snd_timer_close(m_Info));
 }
 
 void
 Timer::addAsyncTimerHandler(snd_async_callback_t callback, void *private_data)
 {
-    snd_async_add_timer_handler (&m_asyncHandler, m_Info, callback, private_data);
+    CHECK_WARNING(snd_async_add_timer_handler(&m_asyncHandler, m_Info, callback, private_data));
 }
 
-/*snd_timer_t* 
- Timer::getTimer()
- {
-     return snd_async_handler_get_timer (m_asyncHandler);
- }*/
+snd_timer_t* 
+Timer::getTimerHandle()
+{
+    return snd_async_handler_get_timer(m_asyncHandler);
+}
 
 int
 Timer::getPollDescriptorsCount()
