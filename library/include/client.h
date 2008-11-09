@@ -64,11 +64,13 @@ public:
     void setErrorBounce(bool val);
     PortInfoList getPorts() const;
 
+#if SND_LIB_SUBMINOR > 16    
     void addFilter(int eventType);
     bool isFiltered(int eventType);
     void clearFilter();
     void removeFilter(int eventType);
-    
+#endif
+
 protected:    
     void readPorts(MidiClient* seq);
     void freePorts();

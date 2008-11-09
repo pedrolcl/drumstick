@@ -272,6 +272,4 @@ INSTALL(TARGETS aseqmm-buildsmf
                 aseqmm-playsmf 
                 aseqmm-smfplayer
                 aseqmm-vpiano
-		RUNTIME DESTINATION bin
-		ARCHIVE DESTINATION lib
-		LIBRARY DESTINATION lib)
+		RUNTIME DESTINATION bin)

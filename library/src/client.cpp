@@ -965,6 +965,7 @@ ClientInfo::getSizeOfInfo() const
     return snd_seq_client_info_sizeof(); 
 }
 
+#if SND_LIB_SUBMINOR > 16
 void 
 ClientInfo::addFilter(int eventType)
 {
@@ -988,6 +989,7 @@ ClientInfo::removeFilter(int eventType)
 {
     snd_seq_client_info_event_filter_del(m_Info, eventType);
 }
+#endif
 
 /**************
  * SystemInfo *

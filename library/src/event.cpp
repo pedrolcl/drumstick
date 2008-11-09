@@ -130,7 +130,11 @@ void SequencerEvent::setPriority(bool high)
 
 void SequencerEvent::setTag(int aTag)
 {
+#if SND_LIB_SUBMINOR > 8     
     snd_seq_ev_set_tag(&m_event, aTag);
+#else
+    m_event.tag = aTag; 
+#endif    
 }
 
 void SequencerEvent::free()

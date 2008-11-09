@@ -21,6 +21,7 @@
 
 #include "qsmf.h"
 #include "dumpsmf.h"
+#include <cstdlib>
 #include <QObject>
 #include <QString>
 #include <QApplication>

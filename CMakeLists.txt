@@ -23,6 +23,9 @@ PROJECT(ASEQMM)
 
 # CMake minimum version
 CMAKE_MINIMUM_REQUIRED(VERSION 2.4.4)
+IF(COMMAND CMAKE_POLICY)
+    CMAKE_POLICY(SET CMP0003 NEW)
+ENDIF(COMMAND CMAKE_POLICY)
 
 # Show full commands and messages. 
 # SET(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL
@@ -35,6 +38,12 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.4.4)
 
 #SET(LIBRARY_OUTPUT_PATH "lib" CACHE PATH
 #	"Single output directory for building all libraries." FORCE)
+
+IF(CMAKE_SIZEOF_VOID_P MATCHES "8")
+    SET(LIB "lib64" CACHE STRING "library install directory: lib, lib32, lib64")
+ELSE(CMAKE_SIZEOF_VOID_P MATCHES "8")
+    SET(LIB "lib" CACHE STRING "library install directory: lib, lib32, lib64")
+ENDIF(CMAKE_SIZEOF_VOID_P MATCHES "8")
 
 # Seems that relative paths break the link scripts. Don't set it ON
 SET(CMAKE_USE_RELATIVE_PATHS OFF)
@@ -52,7 +61,7 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_admin")
 SET (VERSION_MAJOR "0")
 SET (VERSION_MINOR "0")
 SET (VERSION_PATCH "2")
-SET (VERSION_SUFFIX "pre2cvs")
+SET (VERSION_SUFFIX "pre2")
 SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 ADD_DEFINITIONS(-D'VERSION="${VERSION}"')
 
@@ -60,6 +69,7 @@ MESSAGE(STATUS "aseqmm ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
 
 # User options
 OPTION(WANT_STATIC "Build a static library (.a) instead of dynamic (.so)" OFF)
+
 MESSAGE(STATUS "Build configuration: ${CMAKE_BUILD_TYPE}")
 
 # LIBRARY BUILD TYPE
@@ -108,8 +118,8 @@ ENDIF(PKG_CONFIG_FOUND)
 # Initialize some variables
 SET(HAVE_ALSA FALSE)
 
-# Check for ALSA 1.0
-PKG_CHECK_MODULES(ALSA REQUIRED alsa>=1.0)
+# Check for ALSA 1.0.0
+PKG_CHECK_MODULES(ALSA REQUIRED alsa>=1.0.0)
 IF(ALSA_FOUND)
     SET(HAVE_ALSA TRUE)
     ADD_DEFINITIONS(-DHAVE_ALSA)
@@ -183,16 +193,16 @@ ADD_CUSTOM_TARGET ( tarball
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
-INSTALL(FILES 
-	    AUTHORS
-	    COPYING
-	    ChangeLog
-	    NEWS
-	    README
-	    TODO
-	DESTINATION 
-	    share/doc/packages/aseqmm	
-)
+#INSTALL(FILES 
+#	    AUTHORS
+#	    COPYING
+#	    ChangeLog
+#	    NEWS
+#	    README
+#	    TODO
+#	DESTINATION 
+#	    share/doc/packages/aseqmm	
+#)
 
 INSTALL(FILES aseqmm.pc
-        DESTINATION lib/pkgconfig)
+        DESTINATION ${LIB}/pkgconfig)

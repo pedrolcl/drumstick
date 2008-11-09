@@ -10,14 +10,14 @@
 
 # norootforbuild
 
-Name:           aseqmm
+Name:           libaseqmm0
 Version:        @VERSION@
 Release:        0
 License:        GPL v2 or later
 Summary:        MIDI Sequencer C++ Library Bindings
 Group:          System/Libraries
 URL:            http://kmetronome.sourceforge.net/aseqmm
-Source:         %name-%version.tar.bz2
+Source:         aseqmm-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  cmake
 BuildRequires:  alsa-devel
@@ -49,7 +49,6 @@ Authors:
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
 %package progs
-License:        GPL v2 or later
 Summary:        Example Programs for libaseqmm
 Group:          System/Libraries
 
@@ -64,11 +63,13 @@ Authors:
 
 %debug_package
 %prep
-%setup -q
+%setup -q -n aseqmm-%{version}
 
 %build
 CXXFLAGS="$RPM_OPT_FLAGS -g -fexceptions" \
-    cmake . -DWANT_STATIC=no -DCMAKE_INSTALL_PREFIX=%{_prefix}
+    cmake . -DWANT_STATIC=no \
+            -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+            -DLIB=%{_lib}
 make %{?jobs:-j %jobs} VERBOSE=1
 
 %install
@@ -83,7 +84,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS COPYING ChangeLog INSTALL NEWS README TODO
 %{_libdir}/libaseqmm.so.*
 
 %files progs
