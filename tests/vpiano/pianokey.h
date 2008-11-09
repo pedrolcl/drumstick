@@ -31,7 +31,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
     int getNote() const { return m_note; }
     void setPressedBrush(const QBrush& b) { m_selectedBrush = b; }
-    bool isPressed() { return m_pressed; }
+    bool isPressed() const { return m_pressed; }
     void setPressed(bool p);
 
 private:

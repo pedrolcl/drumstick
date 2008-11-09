@@ -24,7 +24,7 @@ PianoKeybd::PianoKeybd(QWidget *parent)
     : QGraphicsView(parent), m_rotation(0)
 {
     initialize();
-    initScene(4, 3);
+    initScene(3, 5);
 }
 
 PianoKeybd::PianoKeybd(const int baseOctave, const int numOctaves, QWidget *parent) 
@@ -111,20 +111,13 @@ void PianoKeybd::setNumOctaves(const int numOctaves)
 {
     if (numOctaves != m_scene->numOctaves()) {
         int baseOctave = m_scene->baseOctave();
-        QColor color = m_scene->getSelectedColor();
+        QColor color = m_scene->getKeyPressedColor();
+        PianoHandler* handler = m_scene->getPianoHandler();
+        KeyboardMap* keyMap = m_scene->getKeyboardMap();
         delete m_scene;
         initScene(baseOctave, numOctaves, color);
-        fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
-    }
-}
-
-void PianoKeybd::setSelectedColor(const QColor& color)
-{
-    if (color != m_scene->getSelectedColor()) {
-        int baseOctave = m_scene->baseOctave();
-        int numOctaves = m_scene->numOctaves();
-        delete m_scene;
-        initScene(baseOctave, numOctaves, color);
+        m_scene->setPianoHandler(handler);
+        m_scene->setKeyboardMap(keyMap);
         fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
     }
 }
@@ -142,9 +135,4 @@ void PianoKeybd::setRotation(int r)
 QSize PianoKeybd::sizeHint() const 
 { 
     return mapFromScene(sceneRect()).boundingRect().size();
-}
-
-void PianoKeybd::allKeysOff()
-{
-    m_scene->allKeysOff();
 }

@@ -29,12 +29,12 @@ class QDESIGNER_WIDGET_EXPORT PianoKeybd : public QGraphicsView
     Q_PROPERTY( int baseOctave READ baseOctave WRITE setBaseOctave )
     Q_PROPERTY( int numOctaves READ numOctaves WRITE setNumOctaves )
     Q_PROPERTY( int rotation READ getRotation WRITE setRotation )
-    Q_PROPERTY( QColor selectedColor READ getSelectedColor WRITE setSelectedColor )
+    Q_PROPERTY( QColor keyPressedColor READ getKeyPressedColor WRITE setKeyPressedColor )
 
 public:
     PianoKeybd(QWidget *parent = 0);
     PianoKeybd(const int baseOctave, const int numOctaves, QWidget *parent = 0);
-    void setKeyboardMap(const KeyboardMap* m) { m_scene->setKeyboardMap(m); }
+    void setKeyboardMap(KeyboardMap* m) { m_scene->setKeyboardMap(m); }
     KeyboardMap* getKeyboardMap() { return m_scene->getKeyboardMap(); }
     int baseOctave() const { return m_scene->baseOctave(); }
     int numOctaves() const { return m_scene->numOctaves(); }
@@ -43,11 +43,15 @@ public:
     QSize sizeHint() const;
     int getRotation() const { return m_rotation; }
     void setRotation(int r);
-    QColor getSelectedColor() const { return m_scene->getSelectedColor(); }
-    void setSelectedColor(const QColor& c);
-    void allKeysOff();
+    QColor getKeyPressedColor() const { return m_scene->getKeyPressedColor(); }
+    void setKeyPressedColor(const QColor& c) { m_scene->setKeyPressedColor(c); }
+    void allKeysOff() { m_scene->allKeysOff(); }
     void setPianoHandler(PianoHandler* handler) { m_scene->setPianoHandler(handler); }
-    
+    int minNote() const { return m_scene->getMinNote(); }
+    void setMinNote(int n) { m_scene->setMinNote(n); }
+    int maxNote() const { return m_scene->getMaxNote(); }
+    void setMaxNote(int n) { m_scene->setMaxNote(n); }
+
 public slots:
     void showNoteOn( int midiNote );
     void showNoteOff( int midiNote );

@@ -1,7 +1,7 @@
 #
 # spec file for package aseqmm (Version @VERSION@)
 #
-# MIDI Sequencer C++ Library
+# MIDI Sequencer C++ Library Bindings for Qt4 and ALSA
 # Copyright (C) 2005-2008 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 #
 # This file and all modifications and additions to the pristine
@@ -24,7 +24,7 @@ BuildRequires:  alsa-devel
 BuildRequires:  libqt4-devel
 
 %description
-MIDI Sequencer C++ Library bindings using Qt4 and ALSA
+MIDI Sequencer C++ Library Bindings for Qt4 and ALSA
 
 
 
@@ -68,7 +68,7 @@ Authors:
 
 %build
 CXXFLAGS="$RPM_OPT_FLAGS -g -fexceptions" \
-    cmake .  -DWANT_STATIC=NO -DCMAKE_INSTALL_PREFIX=%{_prefix}
+    cmake . -DWANT_STATIC=no -DCMAKE_INSTALL_PREFIX=%{_prefix}
 make %{?jobs:-j %jobs} VERBOSE=1
 
 %install
@@ -99,5 +99,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
-* Sun Nov 9 2008 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.0.2cvs
-- first public release
+* Sun Nov 9 2008 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.0.2pre
+- first public (pre)release

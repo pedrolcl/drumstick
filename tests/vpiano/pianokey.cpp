@@ -27,8 +27,6 @@ PianoKey::PianoKey(const QRectF &rect, const QBrush &brush, const int note)
     m_brush(brush), 
     m_note(note) 
 {
-    //setFlag(QGraphicsItem::ItemIsSelectable, false);
-    //setFlag(QGraphicsItem::ItemIsFocusable, false);
     setAcceptedMouseButtons(Qt::NoButton);
 }
 

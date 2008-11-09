@@ -1,9 +1,12 @@
 prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
 libdir=${prefix}/lib
 includedir=${prefix}/include
 
 Name: aseqmm
 Version: @VERSION@
-Description: MIDI Sequencer C++ Library Bindings
+Description: MIDI Sequencer C++ Library Bindings for ALSA and Qt4
+URL: http://sourceforge.net/projects/kmetronome
+Requires: alsa >= 1.0.0, QtCore >= 4.0.0, QtGui >= 4.0.0 
 Libs: -L${libdir} -laseqmm
 Cflags: -I${includedir}
