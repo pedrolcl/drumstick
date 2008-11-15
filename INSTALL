@@ -4,38 +4,47 @@ Basic build commands
 $ cd aseqmm-x.x.x
 
 $ cmake .
-(or ccmake .)
-(or cmake . -options, see below...)
+    (or ccmake .)
+    (or cmake . -options, see below...)
+    (for simple development scenarios you can also use qmake)
 
 $ make
-(or make VERBOSE=1)
+    (or make VERBOSE=1)
 
 $ sudo make install
 
 $ sudo ldconfig
-(not needed if you only WANT_STATIC)
+    (not needed if you only WANT_STATIC)
 
 Requirements
 ------------
 
+Minimum supported versions:
+
 * CMake 2.4
 * ALSA 1.0
-* Qt4 4.x
+* Qt4 4.3
 
 Optional CMake parameters
 -------------------------
- 
+
     -DWANT_STATIC=YES|ON|1 
     Build a static library instead of a shared object
 
     -DWANT_STATIC=NO|OFF|0
-    Build a dynamic library
+    Build a dynamic library (default)
+
+    -DWANT_PCH=YES|ON|NO|OFF|1|0
+    Build tests using precompiled headers (faster compilation)
 
     -DCMAKE_BUILD_TYPE=Debug 
     Compile with debug flag enabled
-    
+
     -DCMAKE_BUILD_TYPE=Release
     Compile without debug flag, and optimization enabled
-    
+
+    -DCMAKE_CXX_FLAGS="-W -Wall"
+    Specify custom compilation flags    
+
     -DCMAKE_INSTALL_PREFIX=/usr/local   
     Specify the desired install prefix

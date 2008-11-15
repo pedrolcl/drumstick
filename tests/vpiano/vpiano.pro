@@ -1,10 +1,8 @@
 TEMPLATE = app
-TARGET = vpiano
-DEPENDPATH += .
-DEPENDPATH += ../../library
-INCLUDEPATH += .
-DEPENDPATH +=  ../../library/include
-LIBS = -L../../library -laseqmm
+TARGET = aseqmm-vpiano
+INCLUDEPATH += . ../../library/include
+DEPENDPATH += . ../../library ../../library/include
+LIBS = -L../../library -laseqmm -lasound
 # Input
 FORMS += vpiano.ui connections.ui about.ui preferences.ui
 HEADERS += pianokey.h pianokeybd.h pianoscene.h vpiano.h \

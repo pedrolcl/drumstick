@@ -182,8 +182,7 @@ ADD_CUSTOM_TARGET ( distclean
     COMMAND rm -f  {,library/,tests/}CPackSourceConfig.cmake
     COMMAND rm -f  {,library/,tests/}install_manifest.txt
     COMMAND rm -f  {,library/,tests/}progress.make
-    COMMAND rm -f  {,library/,tests/}Makefile
-    COMMAND rm -f  {,library/,tests/}Makefile
+    COMMAND rm -rf {,library/,tests/}Makefile
     COMMAND rm -rf {,library/,tests/}CMakeFiles
     COMMAND rm -rf {,library/,tests/}_CPack_Packages
     COMMAND rm -rf build/*
@@ -198,7 +197,7 @@ ADD_CUSTOM_TARGET ( tarball
     COMMAND cp -r doc aseqmm-${VERSION}
     COMMAND cp -r library aseqmm-${VERSION}
     COMMAND cp -r tests aseqmm-${VERSION}
-    COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO aseqmm.spec.in aseqmm.pc.in aseqmm-${VERSION}
+    COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO aseqmm.spec.in aseqmm.pc.in aseqmm.pro aseqmm-${VERSION}
     COMMAND tar -cj --exclude CVS --exclude .cvsignore -f aseqmm-${VERSION}.tar.bz2 aseqmm-${VERSION}
     COMMAND tar -cz --exclude CVS --exclude .cvsignore -f aseqmm-${VERSION}.tar.gz aseqmm-${VERSION}
     COMMAND rm -rf aseqmm-${VERSION}
