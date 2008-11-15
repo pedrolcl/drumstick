@@ -623,8 +623,8 @@ TimerStatus::getSizeOfInfo() const
 
 Timer::Timer( const QString& deviceName, int openMode, QObject* parent )
     : QObject(parent),
-    m_deviceName(deviceName),
-    m_asyncHandler(NULL)
+    m_asyncHandler(NULL),
+    m_deviceName(deviceName)
 {
     CHECK_ERROR( snd_timer_open( &m_Info, m_deviceName.toLocal8Bit().data(), 
                                  openMode ));
@@ -633,8 +633,8 @@ Timer::Timer( const QString& deviceName, int openMode, QObject* parent )
 Timer::Timer( const QString& deviceName, int openMode, snd_config_t* conf, 
               QObject* parent )
     : QObject(parent),
-    m_deviceName(deviceName),
-    m_asyncHandler(NULL)
+    m_asyncHandler(NULL),
+    m_deviceName(deviceName)
 {
     CHECK_ERROR( snd_timer_open_lconf( &m_Info, 
                                        m_deviceName.toLocal8Bit().data(), 

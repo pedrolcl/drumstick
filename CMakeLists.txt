@@ -61,7 +61,7 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_admin")
 SET (VERSION_MAJOR "0")
 SET (VERSION_MINOR "0")
 SET (VERSION_PATCH "2")
-SET (VERSION_SUFFIX "pre2")
+SET (VERSION_SUFFIX "pre3")
 SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 ADD_DEFINITIONS(-D'VERSION="${VERSION}"')
 
@@ -69,6 +69,7 @@ MESSAGE(STATUS "aseqmm ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
 
 # User options
 OPTION(WANT_STATIC "Build a static library (.a) instead of dynamic (.so)" OFF)
+OPTION(WANT_PCH "Build using precompiled headers" OFF)
 
 MESSAGE(STATUS "Build configuration: ${CMAKE_BUILD_TYPE}")
 
@@ -144,6 +145,17 @@ INCLUDE_DIRECTORIES(
     ${ALSA_INC_DIR}
     ${ASEQMM_SOURCE_DIR}/library/include
 )
+
+# Check GCC for PCH support
+SET(USE_PCH FALSE)
+IF(WANT_PCH)
+    FIND_PACKAGE(PCHSupport)
+    IF(PCHSupport_FOUND)
+        SET(USE_PCH TRUE)
+        ADD_DEFINITIONS(-DUSE_PCH)
+        MESSAGE(STATUS "Enabling precompiled headers for GCC ${gcc_compiler_version}") 
+    ENDIF(PCHSupport_FOUND)
+ENDIF(WANT_PCH)
 
 ADD_SUBDIRECTORY(library build/library)
 ADD_SUBDIRECTORY(tests build/tests)

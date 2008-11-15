@@ -29,6 +29,10 @@ LINK_DIRECTORIES (
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+IF(USE_PCH)
+    ADD_PRECOMPILED_HEADER(precompiled_headers stableheaders.h)
+ENDIF(USE_PCH)
+
 # buildsmf 
 
 SET(buildsmf_SRCS
@@ -46,6 +50,10 @@ ADD_EXECUTABLE(aseqmm-buildsmf
     ${buildsmf_moc_SRCS}
     ${buildsmf_SRCS}
 )
+
+IF(USE_PCH)
+    ADD_DEPENDENCIES(aseqmm-buildsmf precompiled_headers)
+ENDIF(USE_PCH)
 
 TARGET_LINK_LIBRARIES(aseqmm-buildsmf
     ${QT_LIBRARIES} 
@@ -71,6 +79,10 @@ ADD_EXECUTABLE(aseqmm-dumpsmf
     ${dumpsmf_SRCS}
 )
 
+IF(USE_PCH)
+    ADD_DEPENDENCIES(aseqmm-dumpsmf precompiled_headers)
+ENDIF(USE_PCH)
+
 TARGET_LINK_LIBRARIES(aseqmm-dumpsmf
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
@@ -94,6 +106,10 @@ ADD_EXECUTABLE(aseqmm-testevents
     ${testevents_moc_SRCS}
     ${testevents_SRCS}
 )
+
+IF(USE_PCH)
+    ADD_DEPENDENCIES(aseqmm-testevents precompiled_headers)
+ENDIF(USE_PCH)
 
 TARGET_LINK_LIBRARIES(aseqmm-testevents
     ${QT_LIBRARIES} 
@@ -119,6 +135,10 @@ ADD_EXECUTABLE(aseqmm-dumpmid
     ${dumpmid_SRCS}
 )
 
+IF(USE_PCH)
+    ADD_DEPENDENCIES(aseqmm-dumpmid precompiled_headers)
+ENDIF(USE_PCH)
+
 TARGET_LINK_LIBRARIES(aseqmm-dumpmid
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
@@ -136,6 +156,10 @@ SET(timertest_SRCS
 ADD_EXECUTABLE(aseqmm-timertest
     ${timertest_SRCS}
 )
+
+IF(USE_PCH)
+    ADD_DEPENDENCIES(aseqmm-timertest precompiled_headers)
+ENDIF(USE_PCH)
 
 TARGET_LINK_LIBRARIES(aseqmm-timertest
     ${QT_LIBRARIES} 
@@ -160,6 +184,10 @@ ADD_EXECUTABLE(aseqmm-playsmf
     ${playsmf_moc_SRCS}
     ${playsmf_SRCS}
 )
+
+IF(USE_PCH)
+    ADD_DEPENDENCIES(aseqmm-playsmf precompiled_headers)
+ENDIF(USE_PCH)
 
 TARGET_LINK_LIBRARIES(aseqmm-playsmf
     ${QT_LIBRARIES} 
@@ -199,6 +227,10 @@ ADD_EXECUTABLE(aseqmm-smfplayer
     ${playmid_moc_SRCS}
     ${playmid_SRCS}
 )
+
+IF(USE_PCH)
+    ADD_DEPENDENCIES(aseqmm-smfplayer precompiled_headers)
+ENDIF(USE_PCH)
 
 TARGET_LINK_LIBRARIES(aseqmm-smfplayer
     ${QT_LIBRARIES} 
@@ -256,6 +288,10 @@ ADD_EXECUTABLE(aseqmm-vpiano
     ${vpiano_moc_SRCS}
     ${vpiano_SRCS}
 )
+
+IF(USE_PCH)
+    ADD_DEPENDENCIES(aseqmm-vpiano precompiled_headers)
+ENDIF(USE_PCH)
 
 TARGET_LINK_LIBRARIES(aseqmm-vpiano
     ${QT_LIBRARIES} 
