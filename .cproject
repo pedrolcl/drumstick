@@ -64,12 +64,7 @@
 
 
 
-<storageModule moduleId="org.eclipse.cdt.core.pathentry">
-<pathentry kind="src" path="library"/>
-<pathentry kind="src" path="tests"/>
-<pathentry kind="out" path="build"/>
-<pathentry kind="con" path="org.eclipse.cdt.make.core.DISCOVERED_SCANNER_INFO"/>
-</storageModule>
+
 
 
 
@@ -102,6 +97,13 @@
 <runAllBuilders>true</runAllBuilders>
 </target>
 </buildTargets>
+</storageModule>
+
+<storageModule moduleId="org.eclipse.cdt.core.pathentry">
+<pathentry kind="src" path="tests"/>
+<pathentry kind="src" path="library"/>
+<pathentry kind="out" path="build"/>
+<pathentry kind="con" path="org.eclipse.cdt.make.core.DISCOVERED_SCANNER_INFO"/>
 </storageModule>
 </cconfiguration>
 </storageModule>

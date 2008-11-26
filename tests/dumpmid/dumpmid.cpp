@@ -396,7 +396,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
             cout << qSetFieldWidth(26) << left << "System exclusive" << qSetFieldWidth(0);
             unsigned int i;
             for (i = 0; i < e->getLength(); ++i) {
-                cout << hex << (int) e->getData()[i] << " ";
+                cout << hex << (unsigned char) e->getData()[i] << " ";
             }
             cout << dec;
         }

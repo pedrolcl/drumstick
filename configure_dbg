@@ -1,0 +1,7 @@
+#!/bin/bash
+# a typical configuration for production usage...
+cmake . -DCMAKE_CXX_FLAGS="-W -Wall" \
+	-DCMAKE_BUILD_TYPE=Debug \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DWANT_STATIC=YES \
+	-DWANT_PCH=NO $*

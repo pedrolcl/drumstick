@@ -188,13 +188,14 @@ public:
 class VariableEvent : public SequencerEvent
 {
 public:    
-    VariableEvent() : SequencerEvent() { m_event.flags &= ~SND_SEQ_EVENT_LENGTH_MASK;
-                                         m_event.flags |= SND_SEQ_EVENT_LENGTH_VARIABLE; }
-    VariableEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
+    VariableEvent();
+    VariableEvent(snd_seq_event_t* event);
     VariableEvent(const QByteArray& data);
     VariableEvent(const VariableEvent& other);
     VariableEvent(const unsigned int datalen, char* dataptr);
     VariableEvent& operator=(const VariableEvent& other);
+    unsigned int getLength() const { return m_event.data.ext.len; }
+    const char* getData() const { return static_cast<const char*>(m_event.data.ext.ptr); }
     CLONE_EVENT_DECLARATION(VariableEvent)
 protected:    
     QByteArray m_data;    
@@ -203,13 +204,11 @@ protected:
 class SysExEvent : public VariableEvent
 {
 public:
-    SysExEvent() : VariableEvent() { m_event.type = SND_SEQ_EVENT_SYSEX; }
+    SysExEvent();
     SysExEvent(snd_seq_event_t* event);
     SysExEvent(const QByteArray& data);
     SysExEvent(const SysExEvent& other);
     SysExEvent(const unsigned int datalen, char* dataptr);
-    unsigned int getLength() const { return m_event.data.ext.len; }
-    const char* getData() const { return static_cast<const char*>(m_event.data.ext.ptr); }
     CLONE_EVENT_DECLARATION(SysExEvent)
 };
 
