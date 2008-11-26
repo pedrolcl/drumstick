@@ -192,8 +192,6 @@ VariableEvent::VariableEvent()
 { 
     m_data.clear();
     snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );  
-    qDebug() << "constructor VariableEvent() length = " 
-             << m_data.size();
 }
 
 VariableEvent::VariableEvent(snd_seq_event_t* event) 
@@ -202,8 +200,6 @@ VariableEvent::VariableEvent(snd_seq_event_t* event)
     m_data = QByteArray((char *) event->data.ext.ptr,
                         event->data.ext.len);
     snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );  
-    qDebug() << "constructor VariableEvent() length = " 
-             << m_data.size();
 }
 
 VariableEvent::VariableEvent(const QByteArray& data)
@@ -211,8 +207,6 @@ VariableEvent::VariableEvent(const QByteArray& data)
 {
     m_data = data;
     snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );  
-    qDebug() << "constructor VariableEvent(const QByteArray& data) length = " 
-             << m_data.size();
 }
 
 VariableEvent::VariableEvent(const VariableEvent& other) 
@@ -220,8 +214,6 @@ VariableEvent::VariableEvent(const VariableEvent& other)
 {
     m_data = other.m_data;
     snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );  
-    qDebug() << "constructor VariableEvent(const VariableEvent& other) length = "
-             << m_data.size();
 }
 
 VariableEvent::VariableEvent(const unsigned int datalen, char* dataptr) 
@@ -229,8 +221,6 @@ VariableEvent::VariableEvent(const unsigned int datalen, char* dataptr)
 {
     m_data = QByteArray(dataptr, datalen);
     snd_seq_ev_set_variable( &m_event, m_data.size(), m_data.data() );
-    qDebug() << "constructor VariableEvent(const unsigned int datalen, char* dataptr) length = "
-             << m_data.size();
 }
 
 VariableEvent& VariableEvent::operator=(const VariableEvent& other)
@@ -245,40 +235,30 @@ SysExEvent::SysExEvent()
     : VariableEvent()
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
-    qDebug() << "constructor SysExEvent() length = "
-             << m_data.size();
 }
 
 SysExEvent::SysExEvent(snd_seq_event_t* event)
     : VariableEvent(event)
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
-    qDebug() << "constructor SysExEvent(snd_seq_event_t* event) length = "
-             << m_data.size();
 }
 
 SysExEvent::SysExEvent(const QByteArray& data)
     : VariableEvent( data )
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
-    qDebug() << "constructor SysExEvent(const QByteArray& data) length = "
-             << m_data.size();
 }
 
 SysExEvent::SysExEvent(const SysExEvent& other)
     : VariableEvent( other )
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
-    qDebug() << "constructor SysExEvent(const SysExEvent& other) length = "
-             << m_data.size();
 }
 
 SysExEvent::SysExEvent(const unsigned int datalen, char* dataptr) 
     : VariableEvent( datalen, dataptr )
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
-    qDebug() << "constructor SysExEvent(const unsigned int datalen, char* dataptr) length = "
-             << m_data.size();
 }
 
 SystemEvent::SystemEvent(int statusByte) : SequencerEvent()
