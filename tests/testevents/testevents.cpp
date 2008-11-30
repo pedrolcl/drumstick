@@ -232,7 +232,7 @@ void QTestEvents::dumpEvent(SequencerEvent* sev)
         cout << qSetFieldWidth(26) << left << "System exclusive" << qSetFieldWidth(0);
         unsigned int i;
         for (i = 0; i < e->getLength(); ++i) {
-            cout << hex << (int) e->getData()[i] << " ";
+            cout << hex << (unsigned char) e->getData()[i] << " ";
         }
         cout << dec;
         break;
@@ -255,6 +255,8 @@ void QTestEvents::run()
     dumpEvent(new KeyPressEvent(5, 60, 124));
     dumpEvent(new ChanPressEvent(6, 111));
     dumpEvent(new PitchBendEvent(7, 1234));
+    char sysex[] = {0xf0, 0x41, 0x10, 0x42, 0x12, 0x40, 0, 0x7f, 0, 0x41, 0xf7};
+    dumpEvent(new SysExEvent(QByteArray(sysex, sizeof(sysex))));
 }
 
 int main(int argc, char **argv)

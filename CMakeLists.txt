@@ -194,7 +194,6 @@ ADD_DEPENDENCIES(distclean clean)
 ADD_CUSTOM_TARGET ( tarball
     COMMAND mkdir -p aseqmm-${VERSION}
     COMMAND cp -r cmake_admin aseqmm-${VERSION}
-    COMMAND cp -r doc aseqmm-${VERSION}
     COMMAND cp -r library aseqmm-${VERSION}
     COMMAND cp -r tests aseqmm-${VERSION}
     COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO aseqmm.spec.in aseqmm.pc.in aseqmm.pro aseqmm-${VERSION}
