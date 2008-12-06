@@ -26,7 +26,7 @@
 //#define USE_QEVENTS
 
 #include <QObject>
-#include <QMutex>
+#include <QReadWriteLock>
 
 #include "commons.h"
 #include "event.h"
@@ -52,7 +52,7 @@ public:
     void run();
 
 public slots:
-void subscription(MidiPort* port, Subscription* subs);
+    void subscription(MidiPort* port, Subscription* subs);
 
 #ifdef USE_QEVENTS
 protected:
@@ -65,7 +65,7 @@ private:
     MidiClient* m_Client;
     MidiPort* m_Port;
     bool m_Stopped;
-    QMutex m;
+    QReadWriteLock m_mutex;
 };
 
 #endif /*DUMPMIDI_H_*/

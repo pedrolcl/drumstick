@@ -23,7 +23,7 @@
 #include "commons.h"
 #include "event.h"
 #include <QThread>
-#include <QMutex>
+#include <QReadWriteLock>
 
 namespace ALSA 
 {
@@ -65,7 +65,7 @@ private:
     int m_QueueId;
     int m_npfds;
     pollfd* m_pfds;
-    QMutex m_mutex;
+    QReadWriteLock m_mutex;
 };
 
 }

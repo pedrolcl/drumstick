@@ -28,7 +28,7 @@ namespace Sequencer
 
 bool SequencerInputThread::stopped() 
 { 
-    m_mutex.lock();
+    m_mutex.lockForRead();
     bool bTmp = m_Stopped;
     m_mutex.unlock();
     return  bTmp;
@@ -36,7 +36,7 @@ bool SequencerInputThread::stopped()
 
 void SequencerInputThread::stop() 
 { 
-    m_mutex.lock();
+    m_mutex.lockForWrite();
     m_Stopped = true;
     m_mutex.unlock();
 }
@@ -63,7 +63,7 @@ void SequencerInputThread::run()
         }
         catch (...)
         {
-            qWarning("exception in input thread");
+            qWarning() << "exception in input thread";
         }
     }
 }

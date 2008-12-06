@@ -22,7 +22,7 @@
 
 #include "commons.h"
 #include <QThread>
-#include <QMutex>
+#include <QReadWriteLock>
 
 namespace ALSA 
 {
@@ -49,7 +49,7 @@ private:
     MidiClient *m_MidiClient;
     int m_Wait;
     bool m_Stopped;
-    QMutex m_mutex;
+    QReadWriteLock m_mutex;
 };
 
 }

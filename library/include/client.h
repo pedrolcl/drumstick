@@ -138,6 +138,13 @@ private:
     snd_seq_client_pool_t* m_Info;
 };
 
+class SequencerEventHandler
+{
+public:
+    virtual ~SequencerEventHandler() {}
+    virtual void handleSequencerEvent(SequencerEvent* ev) = 0;
+};
+
 class MidiClient : public QObject
 {
     Q_OBJECT
@@ -216,7 +223,8 @@ public:
     void removeListener(QObject* listener);
     void setEventsEnabled(const bool bEnabled);
     bool getEventsEnabled() const { return m_eventsEnabled; }
-    
+    void setHandler(SequencerEventHandler* handler);
+
 signals:
     void eventReceived(SequencerEvent* ev);
 
@@ -254,6 +262,7 @@ private:
     snd_seq_t* m_SeqHandle;
     QPointer<SequencerInputThread> m_Thread;
     QPointer<MidiQueue> m_Queue;
+    SequencerEventHandler* m_handler;
 
     ClientInfo m_Info;
     ClientInfoList m_ClientList;

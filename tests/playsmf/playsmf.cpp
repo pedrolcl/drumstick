@@ -128,7 +128,7 @@ void PlaySMF::subscribe(const QString& portName)
 
 bool PlaySMF::stopped()
 {
-    m_mutex.lock();
+    m_mutex.lockForRead();
     bool bTmp = m_Stopped;
     m_mutex.unlock();
     return bTmp;
@@ -136,7 +136,7 @@ bool PlaySMF::stopped()
 
 void PlaySMF::stop()
 {
-    m_mutex.lock();
+    m_mutex.lockForWrite();
     m_Stopped = true;
     m_Client->dropOutput();
     m_mutex.unlock();

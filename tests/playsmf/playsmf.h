@@ -23,7 +23,7 @@
 #include <QObject>
 #include <QString>
 #include <QList>
-#include <QMutex>
+#include <QReadWriteLock>
 
 #include "qsmf.h"
 #include "event.h"
@@ -92,7 +92,7 @@ private:
     int m_queueId;
     int m_initialTempo;
     bool m_Stopped;
-    QMutex m_mutex;
+    QReadWriteLock m_mutex;
     Song m_song;
     QSmf* m_engine;
     MidiClient* m_Client;

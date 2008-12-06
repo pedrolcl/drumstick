@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName(QSTR_APPNAME);    
     QApplication a(argc, argv);
     SMFPlayer w;
+    w.setAttribute(Qt::WA_QuitOnClose);
     w.show();
     return a.exec();
 }

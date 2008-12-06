@@ -44,7 +44,8 @@ MidiClient::MidiClient( QObject* parent ) :
     m_DeviceName("default"),
     m_SeqHandle(NULL),
     m_Thread(NULL),
-    m_Queue(NULL)
+    m_Queue(NULL),
+    m_handler(NULL)
 { }
 
 MidiClient::~MidiClient()
@@ -248,13 +249,18 @@ MidiClient::doEvents()
                 event = new SequencerEvent(evp);
                 break;
             }
+            // first, process the callback (if any)
+            if (m_handler != NULL)
+                m_handler->handleSequencerEvent(event->clone());
+            // second, process the event listeners
             if (m_eventsEnabled) {
-                QObjectList::Iterator it;
+               QObjectList::Iterator it;
                 for(it=m_listeners.begin(); it!=m_listeners.end(); ++it) {
                     QObject* sub = (*it);
                     QApplication::postEvent(sub, event->clone());
                 }
             }
+            // finally, process signals
             emit eventReceived(event->clone());
             delete event;
         }
@@ -621,6 +627,12 @@ MidiClient::setEventsEnabled(bool bEnabled)
     if (bEnabled != m_eventsEnabled) {
         m_eventsEnabled = (bEnabled & !m_listeners.empty());
     }
+}
+
+void 
+MidiClient::setHandler(SequencerEventHandler* handler)
+{
+    m_handler = handler;
 }
 
 SystemInfo&

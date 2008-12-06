@@ -49,7 +49,7 @@ SequencerOutputThread::SequencerOutputThread(MidiClient *seq, int portId)
 bool 
 SequencerOutputThread::stopped() 
 { 
-    m_mutex.lock();
+    m_mutex.lockForRead();
     bool bTmp = m_Stopped;
     m_mutex.unlock();
     return  bTmp;
@@ -58,7 +58,7 @@ SequencerOutputThread::stopped()
 void 
 SequencerOutputThread::stop() 
 { 
-    m_mutex.lock();
+    m_mutex.lockForWrite();
     m_Stopped = true;
     m_mutex.unlock();
 }

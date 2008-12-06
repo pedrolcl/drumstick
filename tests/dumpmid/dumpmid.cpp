@@ -63,18 +63,18 @@ QDumpMIDI::~QDumpMIDI()
 bool
 QDumpMIDI::stopped()
 {
-    m.lock();
+    m_mutex.lockForRead();
     bool bTmp = m_Stopped;
-    m.unlock();
+    m_mutex.unlock();
     return bTmp;
 }
 
 void
 QDumpMIDI::stop()
 {
-    m.lock();
+    m_mutex.lockForWrite();
     m_Stopped = true;
-    m.unlock();
+    m_mutex.unlock();
 }
 
 void 
