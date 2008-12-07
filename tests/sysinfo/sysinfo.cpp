@@ -19,16 +19,44 @@
 
 #include <QTextStream>
 #include "client.h"
+#include "alsatimer.h"
 
 static QTextStream cout(stdout, QIODevice::WriteOnly); 
 
-using namespace ALSA::Sequencer;
-
-void runTest()
+void queryTimers()
 {
-    MidiClient* client = new MidiClient();
+    cout << endl << "ALSA Timers" << endl;
+    ALSA::TimerQuery* query = new ALSA::TimerQuery("hw", 0);
+    cout << "type__ Name________________ c/s/C/D/S Freq." << endl;
+    ALSA::TimerIdList lst = query->getTimers();
+    ALSA::TimerIdList::ConstIterator it;
+    for( it = lst.begin(); it != lst.end(); ++it )
+    {
+        ALSA::TimerId id = *it;
+        ALSA::Timer* timer = new ALSA::Timer(id, SND_TIMER_OPEN_NONBLOCK);
+        ALSA::TimerInfo info = timer->getTimerInfo();
+        cout << qSetFieldWidth(7) << left << info.getId();
+        cout << qSetFieldWidth(20) << left << info.getName();
+        cout << qSetFieldWidth(0) << " ";
+        cout << id.getClass() << "/" << id.getSlaveClass() << "/";
+        cout << id.getCard() << "/" << id.getDevice() << "/" << id.getSubdevice() << " ";
+        if( info.isSlave() ) {
+            cout << "SLAVE";
+        } else {
+            long freq = info.getFrequency();
+            cout << freq << " Hz";
+        }
+        cout << endl;
+        delete timer;
+    }
+    delete query;
+}
+
+void systemInfo()
+{
+    ALSA::Sequencer::MidiClient* client = new ALSA::Sequencer::MidiClient();
     client->open();
-    SystemInfo info = client->getSystemInfo();
+    ALSA::Sequencer::SystemInfo info = client->getSystemInfo();
     cout << "ALSA Sequencer System Info" << endl;
     cout << "Max Clients: " << info.getMaxClients() << endl;
     cout << "Max Ports: " << info.getMaxPorts() << endl;
@@ -42,6 +70,7 @@ void runTest()
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv, false);
-    runTest();
+    systemInfo();
+    queryTimers();
     return 0;
 }

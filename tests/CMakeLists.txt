@@ -169,10 +169,18 @@ TARGET_LINK_LIBRARIES(aseqmm-dumpmid
 
 SET(timertest_SRCS
     timertest/timertest.cpp
+    timertest/timertest.h
 )
+
+SET(timertest_qtobject_SRCS
+    timertest/timertest.h
+)
+
+QT4_WRAP_CPP(timertest_moc_SRCS ${timertest_qtobject_SRCS})
 
 ADD_EXECUTABLE(aseqmm-timertest
     ${timertest_SRCS}
+    ${timertest_moc_SRCS}
 )
 
 IF(USE_PCH)

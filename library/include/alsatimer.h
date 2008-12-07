@@ -22,6 +22,9 @@
 
 #include "commons.h"
 #include <QList>
+#include <QThread>
+#include <QReadWriteLock>
+#include <QPointer>
 
 namespace ALSA
 {
@@ -194,9 +197,35 @@ private:
     snd_timer_status_t* m_Info;
 };
 
+class TimerEventHandler
+{
+public:    
+    virtual void handleTimerEvent(int ticks, int msecs) = 0;
+};
+
 class Timer : public QObject
 {
     Q_OBJECT
+    
+private:
+    class TimerInputThread : public QThread
+    {
+    public: 
+       TimerInputThread(Timer* t, int timeout)
+           : QThread(),
+           m_timer(t),
+           m_Wait(timeout),
+           m_Stopped(false) {}
+       virtual ~TimerInputThread() {}
+       virtual void run();
+       bool stopped();
+       void stop();       
+    private:
+        Timer* m_timer;
+        int m_Wait;
+        bool m_Stopped;
+        QReadWriteLock m_mutex;        
+    };
 
 public:
     Timer(int cls, int scls, int card, int dev, int sdev, int openMode, QObject* parent = 0);
@@ -220,13 +249,25 @@ public:
     void pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds, unsigned short *revents);
     ssize_t read(void *buffer, size_t size);
     snd_timer_t* getTimerHandle();
+    void setHandler(TimerEventHandler* h) { m_handler = h; }
+    void startEvents();
+    void stopEvents();
     
+protected:
+    void doEvents();
+
+signals:    
+    void timerExpired(int ticks, int msecs);
+
 private:
     snd_timer_t *m_Info;
     snd_async_handler_t *m_asyncHandler;
+    TimerEventHandler* m_handler;
+    QPointer<TimerInputThread> m_thread;
     TimerInfo m_TimerInfo;
     TimerStatus m_TimerStatus;
     QString m_deviceName;
+    snd_htimestamp_t m_last_time;
 };
 
 }

@@ -18,11 +18,10 @@
 */
 
 #include "alsatimer.h"
+#include <cmath>
 
 namespace ALSA
 {
-
-using namespace Sequencer;
 
 TimerInfo::TimerInfo()
 {
@@ -95,7 +94,7 @@ TimerInfo::getFrequency()
     long res = getResolution();
     if (res > 0)
     {
-        return 1000000000 / res;
+        return 1000000000L / res;
     }
     return 0;
 }
@@ -624,6 +623,8 @@ TimerStatus::getSizeOfInfo() const
 Timer::Timer( const QString& deviceName, int openMode, QObject* parent )
     : QObject(parent),
     m_asyncHandler(NULL),
+    m_handler(NULL),
+    m_thread(NULL),
     m_deviceName(deviceName)
 {
     CHECK_ERROR( snd_timer_open( &m_Info, m_deviceName.toLocal8Bit().data(), 
@@ -634,6 +635,8 @@ Timer::Timer( const QString& deviceName, int openMode, snd_config_t* conf,
               QObject* parent )
     : QObject(parent),
     m_asyncHandler(NULL),
+    m_handler(NULL),
+    m_thread(NULL),
     m_deviceName(deviceName)
 {
     CHECK_ERROR( snd_timer_open_lconf( &m_Info, 
@@ -643,7 +646,9 @@ Timer::Timer( const QString& deviceName, int openMode, snd_config_t* conf,
 
 Timer::Timer( TimerId& id, int openMode, QObject* parent )
     : QObject(parent), 
-    m_asyncHandler(NULL)
+    m_asyncHandler(NULL),
+    m_handler(NULL),
+    m_thread(NULL)
 {
     m_deviceName = QString("hw:CLASS=%1,SCLASS=%2,CARD=%3,DEV=%4,SUBDEV=%5")
     .arg(id.getClass())
@@ -659,7 +664,9 @@ Timer::Timer( TimerId& id, int openMode, QObject* parent )
 Timer::Timer( int cls, int scls, int card, int dev, int sdev, 
               int openMode, QObject* parent )
     : QObject(parent), 
-    m_asyncHandler(NULL)
+    m_asyncHandler(NULL),
+    m_handler(NULL),
+    m_thread(NULL)
 {
     m_deviceName = QString("hw:CLASS=%1,SCLASS=%2,CARD=%3,DEV=%4,SUBDEV=%5")
         .arg(cls)
@@ -674,6 +681,9 @@ Timer::Timer( int cls, int scls, int card, int dev, int sdev,
 
 Timer::~Timer()
 {
+    stopEvents();
+    if (m_thread != NULL)
+        delete m_thread;
     CHECK_WARNING(snd_timer_close(m_Info));
 }
 
@@ -749,6 +759,101 @@ ssize_t
 Timer::read(void *buffer, size_t size)
 {
     return snd_timer_read(m_Info, buffer, size);
+}
+
+void 
+Timer::doEvents()
+{
+    snd_timer_tread_t tr;
+    while ( read(&tr, sizeof(tr)) == sizeof(tr) ) {
+        int msecs = ((tr.tstamp.tv_sec - m_last_time.tv_sec) * 1000) + 
+                    round((tr.tstamp.tv_nsec - m_last_time.tv_nsec) / 1000000.0);
+        m_last_time = tr.tstamp;
+        if ( m_handler != NULL )
+            m_handler->handleTimerEvent(tr.val, msecs);
+        else
+            emit timerExpired(tr.val, msecs);
+    }
+}
+
+void Timer::startEvents()
+{
+    m_last_time = getTimerStatus().getTimestamp();
+    if (m_thread == NULL) {
+        m_thread = new TimerInputThread(this, 500);
+        m_thread->start();
+    }
+}
+
+void Timer::stopEvents()
+{
+    int counter = 0;
+    if (m_thread != NULL) {
+        m_thread->stop();
+        while (!m_thread->wait(500) && (counter < 10)) {
+            counter++;
+        }
+        if (!m_thread->isFinished()) {
+            m_thread->terminate();
+        }
+        delete m_thread;
+    }
+}
+
+/* *********************** *
+ * Timer::TimerInputThread *
+ * *********************** */ 
+
+void 
+Timer::TimerInputThread::run()
+{
+    int err, count;
+    struct pollfd *fds;
+    if (m_timer == NULL) return;
+    
+    count = m_timer->getPollDescriptorsCount();
+    fds = (pollfd *) calloc(count, sizeof(struct pollfd));
+    if (fds == NULL) {
+        qWarning() << "allocation error!"; 
+        return;
+    }
+    fds->events = POLLIN;
+    fds->revents = 0;
+    
+    try {
+        while (!stopped() && (m_timer != NULL)) {
+            m_timer->pollDescriptors(fds, count);
+            if ((err = poll(fds, count, m_Wait)) < 0) {
+                qWarning() << "poll error " << err << "(" << strerror(err) << ")";
+                return;
+            }
+            if (err == 0) {
+                qWarning() << "timer time out";
+                return;
+            }
+            m_timer->doEvents();
+        }
+    } catch (...) {
+        qWarning() << "exception in input thread";
+    }
+    free(fds);
+}
+
+bool 
+Timer::TimerInputThread::stopped()
+{ 
+    m_mutex.lockForRead();
+    bool bTmp = m_Stopped;
+    m_mutex.unlock();
+    return  bTmp;
+}
+
+void 
+Timer::TimerInputThread::stop()
+{ 
+    m_mutex.lockForWrite();
+    m_Stopped = true;
+    m_mutex.unlock();
 }
 
 }

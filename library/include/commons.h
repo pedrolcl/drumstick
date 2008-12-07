@@ -64,12 +64,14 @@ private:
     int     m_errCode;
 };
 
+}
+
 inline int checkErrorAndThrow(int rc, const char *where)
 {
     if (rc < 0) {
         qDebug() << "Error code:" << rc << "(" <<  snd_strerror(rc) << ")";
         qDebug() << "Location:" << where;
-        throw SequencerError(QString(where), rc);
+        throw Sequencer::SequencerError(QString(where), rc);
     }
     return rc;
 }
@@ -85,8 +87,6 @@ inline int checkWarning(int rc, const char *where)
 
 #define CHECK_ERROR(x)   (checkErrorAndThrow((x),__PRETTY_FUNCTION__))
 #define CHECK_WARNING(x) (checkWarning((x),__PRETTY_FUNCTION__))
-
-}
 
 const QString LIBRARY_VERSION(SND_LIB_VERSION_STR);
 

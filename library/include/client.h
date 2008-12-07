@@ -159,7 +159,8 @@ private:
             : QThread(),
             m_MidiClient(seq),
             m_Wait(timeout),
-            m_Stopped(false) { }
+            m_Stopped(false) {}
+        virtual ~SequencerInputThread() {}
         virtual void run();
         bool stopped();
         void stop();
