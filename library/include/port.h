@@ -103,7 +103,7 @@ class MidiPort : public QObject
     friend class MidiClient;
 
 public:
-    MidiPort( QObject* parent );
+    MidiPort( QObject* parent = 0 );
     virtual ~MidiPort();
 
     void attach();

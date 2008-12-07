@@ -417,9 +417,9 @@ RemoveEvents::setTime(const snd_seq_timestamp_t* time)
  * MIDICodec *
  *************/
 
-MIDICodec::MIDICodec(QObject* parent, int bufsize) : QObject(parent)
+MIDICodec::MIDICodec( int bufsize, QObject* parent ) : QObject(parent)
 {
-    CHECK_WARNING(snd_midi_event_new(bufsize, &m_Info));
+    CHECK_ERROR(snd_midi_event_new(bufsize, &m_Info));
 }
 
 MIDICodec::~MIDICodec()

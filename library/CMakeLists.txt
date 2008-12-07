@@ -28,7 +28,6 @@ SET(aseqmm_qtobject_SRCS
     include/port.h
     include/queue.h
     include/qsmf.h
-    include/recthread.h
 )
 
 SET(aseqmm_HEADERS
@@ -40,7 +39,6 @@ SET(aseqmm_HEADERS
     include/port.h
     include/qsmf.h
     include/queue.h
-    include/recthread.h
     include/subscription.h
 )
 
@@ -52,7 +50,6 @@ SET(aseqmm_SRCS
     src/port.cpp
     src/qsmf.cpp
     src/queue.cpp
-    src/recthread.cpp
     src/subscription.cpp
 )
 

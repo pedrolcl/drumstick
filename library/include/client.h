@@ -25,6 +25,8 @@
 #include <QObject>
 #include <QPointer>
 #include <QList>
+#include <QThread>
+#include <QReadWriteLock>
 
 namespace ALSA 
 {
@@ -148,10 +150,28 @@ public:
 class MidiClient : public QObject
 {
     Q_OBJECT
-    friend class SequencerInputThread;
+
+private:    
+    class SequencerInputThread: public QThread
+    {
+    public:
+        SequencerInputThread(MidiClient *seq, int timeout) 
+            : QThread(),
+            m_MidiClient(seq),
+            m_Wait(timeout),
+            m_Stopped(false) { }
+        virtual void run();
+        bool stopped();
+        void stop();
+    private:
+        MidiClient *m_MidiClient;
+        int m_Wait;
+        bool m_Stopped;
+        QReadWriteLock m_mutex;
+    };    
 
 public:
-    MidiClient( QObject* parent );
+    MidiClient( QObject* parent = 0 );
     virtual ~MidiClient();
 
     void open();

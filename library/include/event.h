@@ -333,7 +333,7 @@ class MIDICodec : public QObject
 {
     Q_OBJECT
 public:
-    MIDICodec(QObject* parent, int bufsize);
+    MIDICodec(int bufsize, QObject* parent = 0);
     ~MIDICodec();
     
     void init();

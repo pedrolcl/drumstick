@@ -28,8 +28,8 @@
 #include "port.h"
 #include "qsmf.h"
 #include "queue.h"
-#include "recthread.h"
 #include "subscription.h"
+
 #include <QtCore>
 #include <QtGui>
 

@@ -33,6 +33,26 @@ IF(USE_PCH)
     ADD_PRECOMPILED_HEADER(precompiled_headers stableheaders.h)
 ENDIF(USE_PCH)
 
+# sysinfo
+
+SET(sysinfo_SRCS
+    sysinfo/sysinfo.cpp
+)
+
+ADD_EXECUTABLE(aseqmm-sysinfo
+    ${sysinfo_SRCS}
+)
+
+IF(USE_PCH)
+    ADD_DEPENDENCIES(aseqmm-sysinfo precompiled_headers)
+ENDIF(USE_PCH)
+
+TARGET_LINK_LIBRARIES(aseqmm-sysinfo
+    ${QT_LIBRARIES} 
+    ${ALSA_LIBS} 
+    aseqmm
+)
+
 # buildsmf 
 
 SET(buildsmf_SRCS
@@ -150,8 +170,6 @@ TARGET_LINK_LIBRARIES(aseqmm-dumpmid
 SET(timertest_SRCS
     timertest/timertest.cpp
 )
-
-#QT4_WRAP_CPP(timertest_moc_SRCS ${timertest_qtobject_SRCS})
 
 ADD_EXECUTABLE(aseqmm-timertest
     ${timertest_SRCS}
@@ -301,11 +319,12 @@ TARGET_LINK_LIBRARIES(aseqmm-vpiano
 
 # we should install some files...
 INSTALL(TARGETS aseqmm-buildsmf 
+                aseqmm-dumpmid 
                 aseqmm-dumpsmf 
+                aseqmm-playsmf
+                aseqmm-smfplayer
+                aseqmm-sysinfo 
                 aseqmm-testevents
                 aseqmm-timertest 
-                aseqmm-dumpmid 
-                aseqmm-playsmf 
-                aseqmm-smfplayer
                 aseqmm-vpiano
 		RUNTIME DESTINATION bin)

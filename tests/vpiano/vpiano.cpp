@@ -108,7 +108,10 @@ void VPiano::displayEvent(SequencerEvent *ev)
             NoteOnEvent* e = dynamic_cast<NoteOnEvent*>(ev);
             if ((e != NULL) && (dlgPreferences.getInChannel() == e->getChannel())) {
                 int note = e->getKey();
-                ui.pianokeybd->showNoteOn(note);
+                if (e->getVelocity() == 0)
+                    ui.pianokeybd->showNoteOff(note);
+                else
+                    ui.pianokeybd->showNoteOn(note);
                 //qDebug() << "NoteOn" << note;
             }
             break;

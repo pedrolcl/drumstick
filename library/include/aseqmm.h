@@ -28,7 +28,6 @@
 #include <aseqmm/port.h>
 #include <aseqmm/qsmf.h>
 #include <aseqmm/queue.h>
-#include <aseqmm/recthread.h>
 #include <aseqmm/subscription.h>
 
 #endif /*ASEQMM_H_*/

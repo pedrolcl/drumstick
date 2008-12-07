@@ -4,6 +4,7 @@ SUBDIRS += buildsmf \
            dumpsmf \
            playmid \
            playsmf \
+           sysinfo \
            testevents \
            timertest \
            vpiano

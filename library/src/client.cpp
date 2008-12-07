@@ -21,7 +21,6 @@
 #include "client.h"
 #include "queue.h"
 #include "event.h"
-#include "recthread.h"
 #include "port.h"
 #include <QThread>
 #include <QApplication>
@@ -280,9 +279,9 @@ MidiClient::startSequencerInput()
 void 
 MidiClient::stopSequencerInput()
 {
+    int counter = 0;
     if (m_Thread != NULL) {
         m_Thread->stop();
-        int counter = 0;
         while (!m_Thread->wait(500) && (counter < 10)) {
             counter++;
         }
@@ -816,6 +815,52 @@ void
 MidiClient::disconnectTo(int myport, int client, int port)
 {
     CHECK_WARNING( snd_seq_disconnect_to(m_SeqHandle, myport, client, port ));
+}
+
+/* ******************** *
+ * SequencerInputThread *
+ * ******************** */ 
+
+bool MidiClient::SequencerInputThread::stopped() 
+{ 
+    m_mutex.lockForRead();
+    bool bTmp = m_Stopped;
+    m_mutex.unlock();
+    return  bTmp;
+}
+
+void MidiClient::SequencerInputThread::stop() 
+{ 
+    m_mutex.lockForWrite();
+    m_Stopped = true;
+    m_mutex.unlock();
+}
+
+void MidiClient::SequencerInputThread::run()
+{
+    unsigned long npfd;
+    pollfd* pfd;
+    int rt;
+
+    if (m_MidiClient != NULL) {
+        npfd = snd_seq_poll_descriptors_count(m_MidiClient->getHandle(), POLLIN);
+        pfd = (pollfd *) alloca(npfd * sizeof(pollfd));
+        try
+        {
+            snd_seq_poll_descriptors(m_MidiClient->getHandle(), pfd, npfd, POLLIN);
+            while (!stopped() && (m_MidiClient != NULL))
+            {
+                rt = poll(pfd, npfd, m_Wait);
+                if (rt > 0) {
+                    m_MidiClient->doEvents();
+                }
+            }
+        }
+        catch (...)
+        {
+            qWarning() << "exception in input thread";
+        }
+    }
 }
 
 /**************/
