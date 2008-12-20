@@ -78,6 +78,8 @@ public:
     int getEvents();
     const snd_seq_real_time_t* getRealtime();
     unsigned int getStatusBits();
+    bool isRunning();
+    double getClockTime();
     snd_seq_tick_time_t getTickTime();
 
 private:
@@ -153,6 +155,7 @@ public:
     MidiQueue(MidiClient* seq, QObject* parent = 0);
     MidiQueue(MidiClient* seq, const QueueInfo info, QObject* parent = 0);
     MidiQueue(MidiClient* seq, const QString name, QObject* parent = 0);
+    MidiQueue(MidiClient* seq, const int queue_id, QObject* parent = 0);
     virtual ~MidiQueue();
 
     int getId() const { return m_Id; }
@@ -173,6 +176,7 @@ public:
     void setUsage(int used);
 
 private:
+    bool m_allocated;
     int m_Id;
     MidiClient* m_MidiClient;
     QueueInfo  m_Info;

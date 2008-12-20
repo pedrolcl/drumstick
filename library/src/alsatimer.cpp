@@ -800,6 +800,50 @@ void Timer::stopEvents()
     }
 }
 
+Timer* 
+Timer::bestGlobalTimer(int openMode, QObject* parent)
+{
+    TimerId id;
+    snd_timer_t* timer;
+    snd_timer_info_t* info;
+    long res, best_res = LONG_MAX;
+    char timername[64];
+    int MAX_GLOBAL_TIMERS = 3;
+    int clas = SND_TIMER_CLASS_GLOBAL;
+    int scls = SND_TIMER_SCLASS_NONE; 
+    int card = 0;
+    int dev  = SND_TIMER_GLOBAL_SYSTEM;
+    int sdev = 0;
+    int err = 0;
+    int is_slave = 0;
+    snd_timer_info_alloca(&info);
+    // default system timer
+    id.setClass(clas);
+    id.setSlaveClass(scls);
+    id.setCard(card);
+    id.setDevice(dev);
+    id.setSubdevice(sdev);
+    // select a non slave timer with the lowest resolution value
+    for( dev = 0; dev < MAX_GLOBAL_TIMERS; ++dev ) 
+    {
+        sprintf( timername, "hw:CLASS=%i,SCLASS=%i,CARD=%i,DEV=%i,SUBDEV=%i",
+                 clas, scls, card, dev, sdev );        
+        err = snd_timer_open(&timer, timername, SND_TIMER_OPEN_NONBLOCK);
+        if (err < 0) continue;
+        err = snd_timer_info(timer, info);
+        if (err == 0) {
+            is_slave = snd_timer_info_is_slave(info);
+            res = snd_timer_info_get_resolution(info);
+            if ((is_slave == 0) && (best_res > res)) {
+                best_res = res;
+                id.setDevice(dev);
+            }
+        }
+        snd_timer_close(timer);
+    }
+    return new Timer(id, openMode, parent);
+}
+
 /* *********************** *
  * Timer::TimerInputThread *
  * *********************** */ 

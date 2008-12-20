@@ -23,8 +23,6 @@
 
 static QTextStream cout(stdout, QIODevice::WriteOnly); 
 
-using namespace ALSA;
-
 void TimerTest::handleTimerEvent(int ticks, int msecs)
 {
     cout << "Timer callback msecs = " << msecs
@@ -52,11 +50,10 @@ void TimerTest::showInfo()
     cout << "  frequency = " << m_info.getFrequency() << " Hz" << endl;
 }
 
-void TimerTest::look4BestTimer()
+void TimerTest::queryTimers()
 {
-    long max_freq = 0;
     TimerQuery* query = new TimerQuery("hw", 0);
-    cout << "type__ Name________________ c/s/C/D/S Freq." << endl;
+    cout << endl << "type__ Name________________ c/s/C/D/S Freq." << endl;
     TimerIdList lst = query->getTimers();
     TimerIdList::ConstIterator it;
     for( it = lst.begin(); it != lst.end(); ++it )
@@ -74,10 +71,6 @@ void TimerTest::look4BestTimer()
         } else {
             long freq = info.getFrequency();
             cout << freq << " Hz";
-            if (freq > max_freq) {
-                max_freq = freq;
-                m_bestId = id;
-            }
         }
         cout << endl;
         delete timer;
@@ -87,15 +80,15 @@ void TimerTest::look4BestTimer()
 
 void TimerTest::runTest()
 {
-    cout << "Here is a listing of your available ALSA timers ..." << endl;
-    look4BestTimer();
-    cout << endl << "Testing now the best available timer ..." << endl;
+    cout << "Looking for the best global ALSA timer ..." << endl;
+    m_timer = Timer::bestGlobalTimer( SND_TIMER_OPEN_NONBLOCK | 
+                                      SND_TIMER_OPEN_TREAD );
+    m_info = m_timer->getTimerInfo();
+    showInfo();
+    cout << endl << "Here is a listing of all your available ALSA timers ..." << endl;
+    queryTimers();
+    cout << endl << "Testing the best available timer ..." << endl;
     try {
-        m_timer = new Timer(m_bestId, 
-                            SND_TIMER_OPEN_NONBLOCK | 
-                            SND_TIMER_OPEN_TREAD );
-        m_info = m_timer->getTimerInfo();
-        showInfo();
         m_params.setAutoStart(true);
         if (!m_info.isSlave()) {
             /* 50 Hz */

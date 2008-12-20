@@ -537,7 +537,7 @@ MidiClient::createQueue()
     if (m_Queue != NULL) {
         delete m_Queue;
     }
-    m_Queue = new MidiQueue(this);
+    m_Queue = new MidiQueue(this, this);
     return m_Queue;
 }
 
@@ -547,8 +547,58 @@ MidiClient::createQueue(QString const& queueName )
     if (m_Queue != NULL) {
         delete m_Queue;
     }
-    m_Queue = new MidiQueue(this, queueName);
+    m_Queue = new MidiQueue(this, queueName, this);
     return m_Queue;
+}
+
+MidiQueue* 
+MidiClient::useQueue(int queue_id)
+{
+    if (m_Queue != NULL) {
+        delete m_Queue;
+    }
+    m_Queue = new MidiQueue(this, queue_id, this);
+    return m_Queue;
+}
+
+MidiQueue* 
+MidiClient::useQueue(const QString& name)
+{
+    if (m_Queue != NULL) {
+        delete m_Queue;
+    }
+    int queue_id = getQueueId(name);
+    if ( queue_id >= 0) {
+       m_Queue = new MidiQueue(this, queue_id, this);
+    }
+    return m_Queue;
+}
+
+MidiQueue* 
+MidiClient::useQueue(MidiQueue* queue)
+{
+    if (m_Queue != NULL) {
+        delete m_Queue;
+    }
+    queue->setParent(this);
+    m_Queue = queue;
+    return m_Queue;    
+}
+
+QList<int> MidiClient::getAvailableQueues()
+{
+    int q, err, max;
+    QList<int> queues;
+    snd_seq_queue_info_t* qinfo;
+    snd_seq_queue_info_alloca(&qinfo);
+    max = getSystemInfo().getMaxQueues();
+    for ( q = 0; q < max; ++q ) {
+        err = snd_seq_get_queue_info(m_SeqHandle, q, qinfo);
+        if (err == 0) {
+            queues.append(q);
+        }
+    }
+    return queues;
 }
 
 PortInfoList

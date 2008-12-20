@@ -182,6 +182,17 @@ int QueueStatus::getInfoSize() const
     return snd_seq_queue_status_sizeof();
 }
 
+bool QueueStatus::isRunning()
+{
+    return (snd_seq_queue_status_get_status(m_Info) != 0);
+}
+
+double QueueStatus::getClockTime()
+{
+    const snd_seq_real_time_t* time = snd_seq_queue_status_get_real_time(m_Info);
+    return (time->tv_sec * 1.0) + (time->tv_nsec * 1.0e-9);
+}
+
 /**************/
 /* QueueTempo */
 /**************/
@@ -380,6 +391,7 @@ MidiQueue::MidiQueue(MidiClient* seq, QObject* parent)
 {
     m_MidiClient = seq;
     m_Id = CHECK_ERROR(snd_seq_alloc_queue(m_MidiClient->getHandle()));
+    m_allocated = !(m_Id < 0);
 }
 
 MidiQueue::MidiQueue(MidiClient* seq, const QueueInfo info, QObject* parent)
@@ -388,6 +400,7 @@ MidiQueue::MidiQueue(MidiClient* seq, const QueueInfo info, QObject* parent)
     m_MidiClient = seq;
     m_Info = info;
     m_Id = CHECK_ERROR(snd_seq_create_queue(m_MidiClient->getHandle(), m_Info.m_Info));
+    m_allocated = !(m_Id < 0);
 }
 
 MidiQueue::MidiQueue(MidiClient* seq, const QString name, QObject* parent)
@@ -395,11 +408,20 @@ MidiQueue::MidiQueue(MidiClient* seq, const QString name, QObject* parent)
 {
     m_MidiClient = seq;
     m_Id = CHECK_ERROR(snd_seq_alloc_named_queue(m_MidiClient->getHandle(), name.toLocal8Bit().data()));
+    m_allocated = !(m_Id < 0);
+}
+
+MidiQueue::MidiQueue(MidiClient* seq, const int queue_id, QObject* parent)
+    : QObject(parent)
+{
+    m_MidiClient = seq;
+    m_Id = queue_id;
+    m_allocated = false;
 }
 
 MidiQueue::~MidiQueue()
 {
-    if (m_MidiClient->getHandle() != NULL)
+    if ( m_allocated && (m_MidiClient->getHandle() != NULL) )
     {
         CHECK_ERROR(snd_seq_free_queue(m_MidiClient->getHandle(), m_Id));
     }

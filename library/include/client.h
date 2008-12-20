@@ -184,6 +184,9 @@ public:
     MidiQueue* createQueue(); 
     MidiQueue* createQueue(QString const& name);
     MidiQueue* getQueue();
+    MidiQueue* useQueue(int queue_id);
+    MidiQueue* useQueue(const QString& name);
+    MidiQueue* useQueue(MidiQueue* queue);
     void portAttach(MidiPort* port);
     void portDetach(MidiPort* port);
     void detachAllPorts();
@@ -223,6 +226,8 @@ public:
     PortInfoList getAvailableInputs();
     PortInfoList getAvailableOutputs();
     SystemInfo& getSystemInfo();
+    QList<int> getAvailableQueues();
+    
     PoolInfo& getPoolInfo();
     void setPoolInfo(const PoolInfo& info);
     void setPoolInput(int size);

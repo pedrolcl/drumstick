@@ -34,7 +34,7 @@ public:
     TimerTest(QObject* parent = 0): QObject(parent) {};
     virtual ~TimerTest() {};
 
-    void look4BestTimer();
+    void queryTimers();
     void showStatus();
     void showInfo();
     void runTest();
@@ -43,11 +43,9 @@ public:
     void handleTimerEvent(int ticks, int msecs);
 
 private:
-    TimerId     m_bestId;
     TimerInfo   m_info;
     TimerStatus m_status;
     TimerParams m_params;
-    
     QPointer<Timer> m_timer;
  };
 

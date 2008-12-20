@@ -234,6 +234,8 @@ public:
     Timer(TimerId& id, int openMode, QObject* parent = 0);
     virtual ~Timer();
     
+    static Timer* bestGlobalTimer(int openMode, QObject* parent = 0);
+    
     snd_timer_t* getHandle() { return m_Info; }
     TimerInfo& getTimerInfo();
     TimerStatus& getTimerStatus();
