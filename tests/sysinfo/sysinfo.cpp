@@ -104,12 +104,14 @@ QString clientTypeName(snd_seq_client_type_t ctype)
 QString portTypeNames(int ptype)
 {
     QStringList lst;
-    if ((ptype & SND_SEQ_PORT_TYPE_APPLICATION) != 0)
-        lst << "Application";
-    if ((ptype & SND_SEQ_PORT_TYPE_DIRECT_SAMPLE) != 0)
-        lst << "Direct Sample";
     if ((ptype & SND_SEQ_PORT_TYPE_HARDWARE) != 0)
         lst << "Hardware";
+    if ((ptype & SND_SEQ_PORT_TYPE_SOFTWARE) != 0)
+        lst << "Software";
+    if ((ptype & SND_SEQ_PORT_TYPE_PORT) != 0)
+        lst << "Port";
+    if ((ptype & SND_SEQ_PORT_TYPE_DIRECT_SAMPLE) != 0)
+        lst << "Direct Sample";
     if ((ptype & SND_SEQ_PORT_TYPE_MIDI_GENERIC) != 0)
         lst << "MIDI Generic";
     if ((ptype & SND_SEQ_PORT_TYPE_MIDI_GM) != 0)
@@ -122,16 +124,14 @@ QString portTypeNames(int ptype)
         lst << "MT32";
     if ((ptype & SND_SEQ_PORT_TYPE_MIDI_XG) != 0)
         lst << "XG";
-    if ((ptype & SND_SEQ_PORT_TYPE_PORT) != 0)
-        lst << "Port";
     if ((ptype & SND_SEQ_PORT_TYPE_SAMPLE) != 0)
         lst << "Sample";
-    if ((ptype & SND_SEQ_PORT_TYPE_SOFTWARE) != 0)
-        lst << "Software";
     if ((ptype & SND_SEQ_PORT_TYPE_SPECIFIC) != 0)
         lst << "Specific";
     if ((ptype & SND_SEQ_PORT_TYPE_SYNTH) != 0)
         lst << "Synth";
+    if ((ptype & SND_SEQ_PORT_TYPE_APPLICATION) != 0)
+        lst << "Application";
     if ((ptype & SND_SEQ_PORT_TYPE_SYNTHESIZER) != 0)
         lst << "Synthesizer";
     return " (" + lst.join(", ") + ")";
