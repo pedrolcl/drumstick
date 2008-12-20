@@ -137,7 +137,7 @@ QString portTypeNames(int ptype)
     return " (" + lst.join(", ") + ")";
 }
 
-QString subsNames(ALSA::Sequencer::SubscribersList subs)
+QString subsNames(ALSA::Sequencer::SubscribersList& subs)
 {
     QStringList lst;
     foreach( ALSA::Sequencer::Subscriber s, subs ) {
@@ -165,12 +165,10 @@ void queryClients(ALSA::Sequencer::MidiClient* c)
                  << qSetFieldWidth(0) << " : \"" << pinfo.getName() << "\""
                  << (pinfo.getType() != 0 ? portTypeNames(pinfo.getType()) : "")
                  << endl;
-            if (from.count() > 0) {
+            if ( from.count() > 0 )
                 cout << "    Connected From: " << subsNames(from) << endl;
-            }
-            if (to.count() > 0) {
+            if ( to.count() > 0 )
                 cout << "    Connecting To: " << subsNames(to) << endl;
-            }
         }
     }
 }
