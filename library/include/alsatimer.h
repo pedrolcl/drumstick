@@ -199,7 +199,8 @@ private:
 
 class TimerEventHandler
 {
-public:    
+public:
+    virtual ~TimerEventHandler() {}
     virtual void handleTimerEvent(int ticks, int msecs) = 0;
 };
 

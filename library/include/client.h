@@ -143,6 +143,7 @@ private:
 class SequencerEventHandler
 {
 public:
+    virtual ~SequencerEventHandler() {}
     virtual void handleSequencerEvent(SequencerEvent* ev) = 0;
 };
 
