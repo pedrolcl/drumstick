@@ -678,12 +678,6 @@ MidiClient::setEventsEnabled(bool bEnabled)
     }
 }
 
-void 
-MidiClient::setHandler(SequencerEventHandler* handler)
-{
-    m_handler = handler;
-}
-
 SystemInfo&
 MidiClient::getSystemInfo()
 {

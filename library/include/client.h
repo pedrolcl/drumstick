@@ -143,7 +143,6 @@ private:
 class SequencerEventHandler
 {
 public:
-    virtual ~SequencerEventHandler() {}
     virtual void handleSequencerEvent(SequencerEvent* ev) = 0;
 };
 
@@ -249,7 +248,7 @@ public:
     void removeListener(QObject* listener);
     void setEventsEnabled(const bool bEnabled);
     bool getEventsEnabled() const { return m_eventsEnabled; }
-    void setHandler(SequencerEventHandler* handler);
+    void setHandler(SequencerEventHandler* handler)  { m_handler = handler; }
 
 signals:
     void eventReceived(SequencerEvent* ev);
