@@ -19,6 +19,7 @@
 
 #include "alsatimer.h"
 #include <cmath>
+#include <cstdio>
 
 namespace ALSA
 {
