@@ -1,20 +1,20 @@
 /*
-    MIDI Sequencer C++ library 
+    MIDI Sequencer C++ library
     Copyright (C) 2006-2008, Pedro Lopez-Cabanillas <plcl@users.sf.net>
- 
+
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include "commons.h"
@@ -25,16 +25,16 @@
 #include <QThread>
 #include <QApplication>
 
-namespace ALSA 
+namespace ALSA
 {
-namespace Sequencer 
+namespace Sequencer
 {
 
 /**************/
 /* MidiClient */
 /**************/
 
-MidiClient::MidiClient( QObject* parent ) : 
+MidiClient::MidiClient( QObject* parent ) :
     QObject(parent),
     m_eventsEnabled(false),
     m_BlockMode(false),
@@ -59,26 +59,26 @@ MidiClient::~MidiClient()
         delete m_Thread;
 }
 
-void 
+void
 MidiClient::open()
 {
-    CHECK_ERROR(snd_seq_open(&m_SeqHandle, m_DeviceName.toLocal8Bit().data(), 
+    CHECK_ERROR(snd_seq_open(&m_SeqHandle, m_DeviceName.toLocal8Bit().data(),
                              m_OpenMode, m_BlockMode ? 0 : SND_SEQ_NONBLOCK));
     CHECK_WARNING(snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info));
 }
 
-void 
+void
 MidiClient::open(snd_config_t* conf)
 {
-    CHECK_ERROR(snd_seq_open_lconf( &m_SeqHandle, 
-                                    m_DeviceName.toLocal8Bit().data(), 
-                                    m_OpenMode, 
+    CHECK_ERROR(snd_seq_open_lconf( &m_SeqHandle,
+                                    m_DeviceName.toLocal8Bit().data(),
+                                    m_OpenMode,
                                     m_BlockMode ? 0 : SND_SEQ_NONBLOCK,
                                     conf ));
     CHECK_WARNING(snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info));
 }
 
-void 
+void
 MidiClient::close()
 {
     if (m_SeqHandle != NULL) {
@@ -88,13 +88,13 @@ MidiClient::close()
     }
 }
 
-size_t 
+size_t
 MidiClient::getOutputBufferSize()
 {
     return snd_seq_get_output_buffer_size(m_SeqHandle);
 }
 
-void 
+void
 MidiClient::setOutputBufferSize(size_t newSize)
 {
     if (getOutputBufferSize() != newSize) {
@@ -108,7 +108,7 @@ MidiClient::getInputBufferSize()
     return snd_seq_get_input_buffer_size(m_SeqHandle);
 }
 
-void 
+void
 MidiClient::setInputBufferSize(size_t newSize)
 {
     if (getInputBufferSize() != newSize) {
@@ -116,7 +116,7 @@ MidiClient::setInputBufferSize(size_t newSize)
     }
 }
 
-void 
+void
 MidiClient::setDeviceName( QString const& newName)
 {
     if ((m_DeviceName != newName) && (m_SeqHandle == NULL)) {
@@ -124,7 +124,7 @@ MidiClient::setDeviceName( QString const& newName)
     }
 }
 
-void 
+void
 MidiClient::setOpenMode(int newMode)
 {
     if ((m_OpenMode != newMode) && (m_SeqHandle == NULL)) {
@@ -132,7 +132,7 @@ MidiClient::setOpenMode(int newMode)
     }
 }
 
-void 
+void
 MidiClient::setBlockMode(bool newValue)
 {
     if (m_BlockMode != newValue)
@@ -145,19 +145,19 @@ MidiClient::setBlockMode(bool newValue)
     }
 }
 
-int 
+int
 MidiClient::getClientId()
 {
     return CHECK_WARNING(snd_seq_client_id(m_SeqHandle));
 }
 
-snd_seq_type_t 
+snd_seq_type_t
 MidiClient::getSequencerType()
 {
     return snd_seq_type(m_SeqHandle);
 }
 
-void 
+void
 MidiClient::doEvents()
 {
     do {
@@ -180,30 +180,30 @@ MidiClient::doEvents()
                 event = new NoteOffEvent(evp);
                 break;
 
-            case SND_SEQ_EVENT_KEYPRESS: 
+            case SND_SEQ_EVENT_KEYPRESS:
                 event = new KeyPressEvent(evp);
                 break;
 
-            case SND_SEQ_EVENT_CONTROLLER: 
+            case SND_SEQ_EVENT_CONTROLLER:
             case SND_SEQ_EVENT_CONTROL14:
             case SND_SEQ_EVENT_REGPARAM:
             case SND_SEQ_EVENT_NONREGPARAM:
                 event = new ControllerEvent(evp);
                 break;
 
-            case SND_SEQ_EVENT_PGMCHANGE: 
+            case SND_SEQ_EVENT_PGMCHANGE:
                 event = new ProgramChangeEvent(evp);
                 break;
 
-            case SND_SEQ_EVENT_CHANPRESS: 
+            case SND_SEQ_EVENT_CHANPRESS:
                 event = new ChanPressEvent(evp);
                 break;
 
-            case SND_SEQ_EVENT_PITCHBEND: 
+            case SND_SEQ_EVENT_PITCHBEND:
                 event = new PitchBendEvent(evp);
                 break;
 
-            case SND_SEQ_EVENT_SYSEX: 
+            case SND_SEQ_EVENT_SYSEX:
                 event = new SysExEvent(evp);
                 break;
 
@@ -244,7 +244,7 @@ MidiClient::doEvents()
                 event = new TempoEvent(evp);
                 break;
 
-            default: 
+            default:
                 event = new SequencerEvent(evp);
                 break;
             }
@@ -267,7 +267,7 @@ MidiClient::doEvents()
     while (snd_seq_event_input_pending(m_SeqHandle, 0) > 0);
 }
 
-void 
+void
 MidiClient::startSequencerInput()
 {
     if (m_Thread == NULL) {
@@ -276,7 +276,7 @@ MidiClient::startSequencerInput()
     }
 }
 
-void 
+void
 MidiClient::stopSequencerInput()
 {
     int counter = 0;
@@ -292,10 +292,10 @@ MidiClient::stopSequencerInput()
     }
 }
 
-void 
+void
 MidiClient::readClients()
 {
-    ClientInfo cInfo; 
+    ClientInfo cInfo;
     freeClients();
     cInfo.setClient(-1);
     while (snd_seq_query_next_client(m_SeqHandle, cInfo.m_Info) >= 0) {
@@ -320,21 +320,21 @@ MidiClient::getAvailableClients()
     return lst;
 }
 
-ClientInfo& 
+ClientInfo&
 MidiClient::getThisClientInfo()
 {
     snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info);
     return m_Info;
 }
 
-void 
+void
 MidiClient::setThisClientInfo(const ClientInfo& val)
 {
     m_Info = val;
     snd_seq_set_client_info(m_SeqHandle, m_Info.m_Info);
 }
 
-void 
+void
 MidiClient::applyClientInfo()
 {
     if (m_SeqHandle != NULL) {
@@ -342,13 +342,13 @@ MidiClient::applyClientInfo()
     }
 }
 
-QString 
+QString
 MidiClient::getClientName()
 {
     return m_Info.getName();
 }
 
-void 
+void
 MidiClient::setClientName(QString const& newName)
 {
     if (newName != m_Info.getName()) {
@@ -364,7 +364,7 @@ MidiClient::getMidiPorts() const
     return lst;
 }
 
-MidiPort* 
+MidiPort*
 MidiClient::createPort()
 {
     MidiPort* port = new MidiPort(this);
@@ -372,16 +372,16 @@ MidiClient::createPort()
     return port;
 }
 
-void 
+void
 MidiClient::portAttach(MidiPort* port)
 {
     if (m_SeqHandle != NULL) {
-        CHECK_ERROR(snd_seq_create_port(m_SeqHandle, port->getPortInfo()->m_Info));
+        CHECK_ERROR(snd_seq_create_port(m_SeqHandle, port->m_Info.m_Info));
         m_Ports.push_back(port);
     }
 }
 
-void 
+void
 MidiClient::portDetach(MidiPort* port)
 {
     if (m_SeqHandle != NULL) {
@@ -416,32 +416,32 @@ void MidiClient::detachAllPorts()
     }
 }
 
-void 
+void
 MidiClient::addEventFilter(int evtype)
 {
     snd_seq_set_client_event_filter(m_SeqHandle, evtype);
 }
 
-bool 
+bool
 MidiClient::getBroadcastFilter()
 {
     return m_Info.getBroadcastFilter();
 }
 
-void 
+void
 MidiClient::setBroadcastFilter(bool newValue)
 {
     m_Info.setBroadcastFilter(newValue);
     applyClientInfo();
 }
 
-bool 
+bool
 MidiClient::getErrorBounce()
 {
     return m_Info.getErrorBounce();
 }
 
-void 
+void
 MidiClient::setErrorBounce(bool newValue)
 {
     m_Info.setErrorBounce(newValue);
@@ -516,13 +516,13 @@ void MidiClient::drainOutput(bool async, int timeout)
     }
 }
 
-void 
+void
 MidiClient::synchronizeOutput()
 {
     snd_seq_sync_output_queue(m_SeqHandle);
 }
 
-MidiQueue* 
+MidiQueue*
 MidiClient::getQueue()
 {
     if (m_Queue == NULL) {
@@ -531,7 +531,7 @@ MidiClient::getQueue()
     return m_Queue;
 }
 
-MidiQueue* 
+MidiQueue*
 MidiClient::createQueue()
 {
     if (m_Queue != NULL) {
@@ -541,7 +541,7 @@ MidiClient::createQueue()
     return m_Queue;
 }
 
-MidiQueue* 
+MidiQueue*
 MidiClient::createQueue(QString const& queueName )
 {
     if (m_Queue != NULL) {
@@ -551,7 +551,7 @@ MidiClient::createQueue(QString const& queueName )
     return m_Queue;
 }
 
-MidiQueue* 
+MidiQueue*
 MidiClient::useQueue(int queue_id)
 {
     if (m_Queue != NULL) {
@@ -561,7 +561,7 @@ MidiClient::useQueue(int queue_id)
     return m_Queue;
 }
 
-MidiQueue* 
+MidiQueue*
 MidiClient::useQueue(const QString& name)
 {
     if (m_Queue != NULL) {
@@ -574,7 +574,7 @@ MidiClient::useQueue(const QString& name)
     return m_Queue;
 }
 
-MidiQueue* 
+MidiQueue*
 MidiClient::useQueue(MidiQueue* queue)
 {
     if (m_Queue != NULL) {
@@ -582,7 +582,7 @@ MidiClient::useQueue(MidiQueue* queue)
     }
     queue->setParent(this);
     m_Queue = queue;
-    return m_Queue;    
+    return m_Queue;
 }
 
 QList<int> MidiClient::getAvailableQueues()
@@ -620,7 +620,7 @@ MidiClient::filterPorts(unsigned int filter)
         for(itp = lstPorts.begin(); itp != lstPorts.end(); ++itp) {
             PortInfo pi = (*itp);
             unsigned int cap = pi.getCapability();
-            if ( ((filter & cap) != 0) && 
+            if ( ((filter & cap) != 0) &&
                  ((SND_SEQ_PORT_CAP_NO_EXPORT & cap) == 0) ) {
                 result.append(pi);
             }
@@ -629,18 +629,18 @@ MidiClient::filterPorts(unsigned int filter)
     return result;
 }
 
-void 
+void
 MidiClient::updateAvailablePorts()
 {
     m_InputsAvail.clear();
     m_OutputsAvail.clear();
-    m_InputsAvail = filterPorts( SND_SEQ_PORT_CAP_READ | 
+    m_InputsAvail = filterPorts( SND_SEQ_PORT_CAP_READ |
                                  SND_SEQ_PORT_CAP_SUBS_READ );
-    m_OutputsAvail = filterPorts( SND_SEQ_PORT_CAP_WRITE | 
+    m_OutputsAvail = filterPorts( SND_SEQ_PORT_CAP_WRITE |
                                   SND_SEQ_PORT_CAP_SUBS_WRITE );
 }
 
-PortInfoList 
+PortInfoList
 MidiClient::getAvailableInputs()
 {
     if (m_NeedRefreshClientList || m_InputsAvail.empty()) {
@@ -649,7 +649,7 @@ MidiClient::getAvailableInputs()
     return m_InputsAvail;
 }
 
-PortInfoList 
+PortInfoList
 MidiClient::getAvailableOutputs()
 {
     if (m_NeedRefreshClientList || m_OutputsAvail.empty()) {
@@ -658,19 +658,19 @@ MidiClient::getAvailableOutputs()
     return m_OutputsAvail;
 }
 
-void 
+void
 MidiClient::addListener(QObject* listener)
 {
     m_listeners.append(listener);
 }
 
-void 
+void
 MidiClient::removeListener(QObject* listener)
 {
     m_listeners.removeAll(listener);
 }
 
-void 
+void
 MidiClient::setEventsEnabled(bool bEnabled)
 {
     if (bEnabled != m_eventsEnabled) {
@@ -685,81 +685,81 @@ MidiClient::getSystemInfo()
     return m_sysInfo;
 }
 
-PoolInfo& 
+PoolInfo&
 MidiClient::getPoolInfo()
 {
     snd_seq_get_client_pool(m_SeqHandle, m_poolInfo.m_Info);
     return m_poolInfo;
 }
 
-void 
+void
 MidiClient::setPoolInfo(const PoolInfo& info)
 {
     m_poolInfo = info;
     CHECK_WARNING(snd_seq_set_client_pool(m_SeqHandle, m_poolInfo.m_Info));
 }
 
-void 
+void
 MidiClient::resetPoolInput()
 {
     CHECK_WARNING(snd_seq_reset_pool_input(m_SeqHandle));
 }
 
-void 
+void
 MidiClient::resetPoolOutput()
 {
     CHECK_WARNING(snd_seq_reset_pool_output(m_SeqHandle));
 }
 
-void 
+void
 MidiClient::setPoolInput(int size)
 {
     CHECK_WARNING(snd_seq_set_client_pool_input(m_SeqHandle, size));
 }
 
-void 
+void
 MidiClient::setPoolOutput(int size)
 {
     CHECK_WARNING(snd_seq_set_client_pool_output(m_SeqHandle, size));
 }
 
-void 
+void
 MidiClient::setPoolOutputRoom(int size)
 {
     CHECK_WARNING(snd_seq_set_client_pool_output_room(m_SeqHandle, size));
 }
 
-void 
+void
 MidiClient::dropInput()
 {
     CHECK_WARNING(snd_seq_drop_input(m_SeqHandle));
 }
 
-void 
+void
 MidiClient::dropInputBuffer()
 {
     CHECK_WARNING(snd_seq_drop_input_buffer(m_SeqHandle));
 }
 
-void 
+void
 MidiClient::dropOutput()
 {
     CHECK_WARNING(snd_seq_drop_output(m_SeqHandle));
 }
 
-void 
+void
 MidiClient::dropOutputBuffer()
 {
     CHECK_WARNING(snd_seq_drop_output_buffer(m_SeqHandle));
 }
 
-void 
+void
 MidiClient::removeEvents(const RemoveEvents* spec)
 {
     CHECK_WARNING(snd_seq_remove_events(m_SeqHandle, spec->m_Info));
 }
 
-SequencerEvent* 
+SequencerEvent*
 MidiClient::extractOutput()
 {
     snd_seq_event_t* ev;
@@ -769,65 +769,65 @@ MidiClient::extractOutput()
     return NULL;
 }
 
-int 
+int
 MidiClient::outputPending()
 {
     return snd_seq_event_output_pending(m_SeqHandle);
 }
 
-int 
+int
 MidiClient::inputPending(bool fetch)
 {
     return snd_seq_event_input_pending(m_SeqHandle, fetch ? 1 : 0);
 }
 
-int 
+int
 MidiClient::getQueueId(const QString& name)
 {
     return snd_seq_query_named_queue(m_SeqHandle, name.toLocal8Bit().data());
 }
 
-int 
+int
 MidiClient::getPollDescriptorsCount(short events)
 {
     return snd_seq_poll_descriptors_count(m_SeqHandle, events);
 }
 
 int
-MidiClient::pollDescriptors( struct pollfd *pfds, unsigned int space, 
+MidiClient::pollDescriptors( struct pollfd *pfds, unsigned int space,
                              short events )
 {
-    return snd_seq_poll_descriptors(m_SeqHandle, pfds, space, events);     
+    return snd_seq_poll_descriptors(m_SeqHandle, pfds, space, events);
 }
 
 unsigned short
 MidiClient::pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds)
 {
     unsigned short revents;
-    CHECK_WARNING( snd_seq_poll_descriptors_revents( m_SeqHandle, 
-                                                     pfds, nfds, 
+    CHECK_WARNING( snd_seq_poll_descriptors_revents( m_SeqHandle,
+                                                     pfds, nfds,
                                                      &revents ));
     return revents;
 }
 
-const char * 
+const char *
 MidiClient::_getDeviceName()
 {
     return snd_seq_name(m_SeqHandle);
 }
 
-void 
+void
 MidiClient::_setClientName(const char *name)
 {
     CHECK_WARNING(snd_seq_set_client_name(m_SeqHandle, name));
 }
 
-int 
+int
 MidiClient::createSimplePort( const char *name,
                               unsigned int caps,
                               unsigned int type )
 {
-    return CHECK_WARNING( snd_seq_create_simple_port( m_SeqHandle, 
+    return CHECK_WARNING( snd_seq_create_simple_port( m_SeqHandle,
                                                       name, caps, type ));
 }
 
@@ -837,25 +837,25 @@ MidiClient::deleteSimplePort(int port)
     CHECK_WARNING( snd_seq_delete_simple_port( m_SeqHandle, port ));
 }
 
-void 
+void
 MidiClient::connectFrom(int myport, int client, int port)
 {
     CHECK_WARNING( snd_seq_connect_from(m_SeqHandle, myport, client, port ));
 }
 
-void 
+void
 MidiClient::connectTo(int myport, int client, int port)
 {
     CHECK_WARNING( snd_seq_connect_to(m_SeqHandle, myport, client, port ));
 }
 
-void 
+void
 MidiClient::disconnectFrom(int myport, int client, int port)
 {
     CHECK_WARNING( snd_seq_disconnect_from(m_SeqHandle, myport, client, port ));
 }
 
-void 
+void
 MidiClient::disconnectTo(int myport, int client, int port)
 {
     CHECK_WARNING( snd_seq_disconnect_to(m_SeqHandle, myport, client, port ));
@@ -863,18 +863,18 @@ MidiClient::disconnectTo(int myport, int client, int port)
 
 /* ******************** *
  * SequencerInputThread *
- * ******************** */ 
+ * ******************** */
 
-bool MidiClient::SequencerInputThread::stopped() 
-{ 
+bool MidiClient::SequencerInputThread::stopped()
+{
     m_mutex.lockForRead();
     bool bTmp = m_Stopped;
     m_mutex.unlock();
     return  bTmp;
 }
 
-void MidiClient::SequencerInputThread::stop() 
-{ 
+void MidiClient::SequencerInputThread::stop()
+{
     m_mutex.lockForWrite();
     m_Stopped = true;
     m_mutex.unlock();
@@ -955,73 +955,73 @@ ClientInfo::operator=(const ClientInfo& other)
     return *this;
 }
 
-int 
+int
 ClientInfo::getClientId()
 {
     return snd_seq_client_info_get_client(m_Info);
 }
 
-snd_seq_client_type_t 
+snd_seq_client_type_t
 ClientInfo::getClientType()
 {
     return snd_seq_client_info_get_type(m_Info);
 }
 
-QString 
+QString
 ClientInfo::getName()
 {
     return QString(snd_seq_client_info_get_name(m_Info));
 }
 
-bool 
+bool
 ClientInfo::getBroadcastFilter()
 {
     return (snd_seq_client_info_get_broadcast_filter(m_Info) != 0);
 }
 
-bool 
+bool
 ClientInfo::getErrorBounce()
 {
     return (snd_seq_client_info_get_error_bounce(m_Info) != 0);
 }
 
-const unsigned char* 
+const unsigned char*
 ClientInfo::getEventFilter()
 {
     return snd_seq_client_info_get_event_filter(m_Info);
 }
 
-int 
+int
 ClientInfo::getNumPorts()
 {
     return snd_seq_client_info_get_num_ports(m_Info);
 }
 
-int 
+int
 ClientInfo::getEventLost()
 {
     return snd_seq_client_info_get_event_lost(m_Info);
 }
 
-void 
+void
 ClientInfo::setClient(int client)
 {
     snd_seq_client_info_set_client(m_Info, client);
 }
 
-void 
+void
 ClientInfo::setName(QString name)
 {
     snd_seq_client_info_set_name(m_Info, name.toLocal8Bit().data());
 }
 
-void 
+void
 ClientInfo::setBroadcastFilter(bool val)
 {
     snd_seq_client_info_set_broadcast_filter(m_Info, val ? 1 : 0);
 }
 
-void 
+void
 ClientInfo::setErrorBounce(bool val)
 {
     snd_seq_client_info_set_error_bounce(m_Info, val ? 1 : 0);
@@ -1033,7 +1033,7 @@ ClientInfo::setEventFilter(unsigned char *filter)
     snd_seq_client_info_set_event_filter(m_Info, filter);
 }
 
-void 
+void
 ClientInfo::readPorts(MidiClient* seq)
 {
     PortInfo info;
@@ -1053,39 +1053,39 @@ ClientInfo::freePorts()
     m_Ports.clear();
 }
 
-PortInfoList 
+PortInfoList
 ClientInfo::getPorts() const
 {
     PortInfoList lst = m_Ports; // copy
     return lst;
 }
 
-int 
-ClientInfo::getSizeOfInfo() const 
+int
+ClientInfo::getSizeOfInfo() const
 {
-    return snd_seq_client_info_sizeof(); 
+    return snd_seq_client_info_sizeof();
 }
 
 #if SND_LIB_SUBMINOR > 16
-void 
+void
 ClientInfo::addFilter(int eventType)
 {
     snd_seq_client_info_event_filter_add(m_Info, eventType);
 }
 
-bool 
+bool
 ClientInfo::isFiltered(int eventType)
 {
     return (snd_seq_client_info_event_filter_check(m_Info, eventType) != 0);
 }
 
-void 
+void
 ClientInfo::clearFilter()
 {
     snd_seq_client_info_event_filter_clear(m_Info);
 }
 
-void 
+void
 ClientInfo::removeFilter(int eventType)
 {
     snd_seq_client_info_event_filter_del(m_Info, eventType);
@@ -1124,13 +1124,13 @@ SystemInfo::~SystemInfo()
     snd_seq_system_info_free(m_Info);
 }
 
-SystemInfo* 
+SystemInfo*
 SystemInfo::clone()
 {
-    return new SystemInfo(m_Info);    
+    return new SystemInfo(m_Info);
 }
 
-SystemInfo& 
+SystemInfo&
 SystemInfo::operator=(const SystemInfo& other)
 {
     snd_seq_system_info_copy(m_Info, other.m_Info);
@@ -1167,9 +1167,9 @@ int SystemInfo::getCurrentClients()
     return snd_seq_system_info_get_cur_clients(m_Info);
 }
 
-int SystemInfo::getSizeOfInfo() const 
+int SystemInfo::getSizeOfInfo() const
 {
-    return snd_seq_system_info_sizeof(); 
+    return snd_seq_system_info_sizeof();
 }
 
 /************
@@ -1183,20 +1183,20 @@ PoolInfo::PoolInfo()
 
 PoolInfo::PoolInfo(const PoolInfo& other)
 {
-    snd_seq_client_pool_malloc(&m_Info);    
+    snd_seq_client_pool_malloc(&m_Info);
     snd_seq_client_pool_copy(m_Info, other.m_Info);
 }
 
 PoolInfo::PoolInfo(snd_seq_client_pool_t* other)
 {
-    snd_seq_client_pool_malloc(&m_Info);    
+    snd_seq_client_pool_malloc(&m_Info);
     snd_seq_client_pool_copy(m_Info, other);
 }
 
 PoolInfo::PoolInfo(MidiClient* seq)
 {
-    snd_seq_client_pool_malloc(&m_Info);    
-    snd_seq_get_client_pool(seq->getHandle(), m_Info);    
+    snd_seq_client_pool_malloc(&m_Info);
+    snd_seq_get_client_pool(seq->getHandle(), m_Info);
 }
 
 PoolInfo::~PoolInfo()
@@ -1242,7 +1242,7 @@ int PoolInfo::getOutputPool()
 
 int PoolInfo::getOutputRoom()
 {
-    return snd_seq_client_pool_get_output_room(m_Info);    
+    return snd_seq_client_pool_get_output_room(m_Info);
 }
 
 void PoolInfo::setInputPool(int size)
@@ -1260,7 +1260,7 @@ void PoolInfo::setOutputRoom(int size)
     snd_seq_client_pool_set_output_room(m_Info, size);
 }
 
-int PoolInfo::getSizeOfInfo() const 
+int PoolInfo::getSizeOfInfo() const
 {
     return snd_seq_client_pool_sizeof();
 }

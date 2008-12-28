@@ -1,5 +1,5 @@
 /*
-    MIDI Sequencer C++ library 
+    MIDI Sequencer C++ library
     Copyright (C) 2006-2008, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
@@ -12,12 +12,12 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
- 
+
 #ifndef INCLUDED_PORT_H
 #define INCLUDED_PORT_H
 
@@ -26,9 +26,9 @@
 #include <QObject>
 #include <QList>
 
-namespace ALSA 
+namespace ALSA
 {
-namespace Sequencer 
+namespace Sequencer
 {
 
 class MidiClient;
@@ -45,11 +45,11 @@ public:
     PortInfo(snd_seq_port_info_t* other);
     PortInfo(MidiClient* seq, const int client, const int port);
     PortInfo(MidiClient* seq, const int port);
-    virtual ~PortInfo(); 
+    virtual ~PortInfo();
     PortInfo* clone();
     PortInfo& operator=(const PortInfo& other);
     int getSizeOfInfo() const;
-        
+
     int getClient();
     int getPort();
     QString getClientName() const { return m_ClientName; }
@@ -83,7 +83,7 @@ public:
     void setTimestampReal(bool value);
     void setTimestampQueue(int queueId);
 
-protected:    
+protected:
     void readSubscribers(MidiClient* seq);
     void freeSubscribers();
     void setClientName(QString name) { m_ClientName = name; }
@@ -117,26 +117,26 @@ public:
     void unsubscribeFrom( QString const& name );
     void unsubscribeFrom( PortInfo* port );
     void unsubscribeFrom( const snd_seq_addr_t* addr );
-    void subscribeTo( PortInfo* port); 
-    void subscribeTo( int client, int port ); 
-    void subscribeTo( QString const& name ); 
-    void subscribeFrom( PortInfo* port ); 
-    void subscribeFrom( int client, int port ); 
-    void subscribeFrom( QString const& name ); 
+    void subscribeTo( PortInfo* port);
+    void subscribeTo( int client, int port );
+    void subscribeTo( QString const& name );
+    void subscribeFrom( PortInfo* port );
+    void subscribeFrom( int client, int port );
+    void subscribeFrom( QString const& name );
     void subscribeFromAnnounce();
     void updateSubscribers();
     SubscriptionsList getSubscriptions() const;
-    PortInfoList getReadSubscribers() const;
-    PortInfoList getWriteSubscribers() const;
+    PortInfoList getReadSubscribers();
+    PortInfoList getWriteSubscribers();
     void updateConnectionsTo(const PortInfoList& desired);
     void updateConnectionsFrom(const PortInfoList& desired);
     bool containsAddress(const snd_seq_addr_t* addr, const PortInfoList& lst);
-    
+
     void setMidiClient( MidiClient* seq );
     void applyPortInfo();
     QString getPortName();
     void setPortName( QString const& newName);
-    int getPortId() const;
+    int getPortId();
     unsigned int getCapability();
     void setCapability( unsigned int newValue);
     unsigned int getPortType();
@@ -147,6 +147,13 @@ public:
     void setMidiVoices(int newValue);
     int getSynthVoices();
     void setSynthVoices(int newValue);
+    bool getTimestamping();
+    bool getTimestampReal();
+    int getTimestampQueue();
+    void setTimestamping(bool value);
+    void setTimestampReal(bool value);
+    void setTimestampQueue(int queueId);
+
     void setAttached(bool state);
     void setAutoAttach(bool state);
 
@@ -162,7 +169,7 @@ protected:
 
 private:
     MidiClient* m_MidiClient;
-    PortInfo* m_Info;
+    PortInfo m_Info;
     bool m_Attached;
     bool m_AutoAttach;
     SubscriptionsList m_Subscriptions;

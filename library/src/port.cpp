@@ -1,20 +1,20 @@
 /*
-    MIDI Sequencer C++ library 
+    MIDI Sequencer C++ library
     Copyright (C) 2006-2008, Pedro Lopez-Cabanillas <plcl@users.sf.net>
- 
+
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include "port.h"
@@ -265,43 +265,43 @@ PortInfo::freeSubscribers()
     m_WriteSubscribers.clear();
 }
 
-int 
-PortInfo::getSizeOfInfo() const 
+int
+PortInfo::getSizeOfInfo() const
 {
     return  snd_seq_port_info_sizeof();
 }
 
-bool 
+bool
 PortInfo::getTimestamping()
 {
-    return (snd_seq_port_info_get_timestamping(m_Info) == 1); 
+    return (snd_seq_port_info_get_timestamping(m_Info) == 1);
 }
 
-bool 
+bool
 PortInfo::getTimestampReal()
 {
-    return (snd_seq_port_info_get_timestamp_real(m_Info) == 1); 
+    return (snd_seq_port_info_get_timestamp_real(m_Info) == 1);
 }
 
-int 
+int
 PortInfo::getTimestampQueue()
 {
     return snd_seq_port_info_get_timestamp_queue(m_Info);
 }
 
-void 
+void
 PortInfo::setTimestamping(bool value)
 {
     snd_seq_port_info_set_timestamp_queue(m_Info, value?1:0);
 }
 
-void 
+void
 PortInfo::setTimestampReal(bool value)
 {
     snd_seq_port_info_set_timestamp_real(m_Info, value?1:0);
 }
 
-void 
+void
 PortInfo::setTimestampQueue(int queueId)
 {
     snd_seq_port_info_set_timestamping(m_Info, queueId);
@@ -314,30 +314,21 @@ PortInfo::setTimestampQueue(int queueId)
 MidiPort::MidiPort( QObject* parent ) :
     QObject( parent ),
     m_MidiClient(NULL),
-    m_Info(NULL),
     m_Attached(false),
     m_AutoAttach(false)
-{
-    m_Info = new PortInfo();
-}
+{}
 
 MidiPort::~MidiPort()
 {
     unsubscribeAll();
     detach();
     freeSubscriptions();
-    if (m_Info != NULL)
-    delete m_Info;
 }
 
 PortInfo*
 MidiPort::getPortInfo()
 {
-    if (m_Info == NULL)
-    {
-        m_Info = new PortInfo();
-    }
-    return m_Info;
+    return &m_Info;
 }
 
 SubscriptionsList
@@ -404,7 +395,7 @@ void
 MidiPort::subscribeTo( PortInfo* info )
 {
     Subscription subs;
-    subs.setSender(m_Info->getAddr());
+    subs.setSender(m_Info.getAddr());
     subs.setDest(info->getAddr());
     subscribe(&subs);
 }
@@ -416,7 +407,7 @@ MidiPort::subscribeTo( int client, int port )
     snd_seq_addr addr;
     addr.client = client;
     addr.port = port;
-    subs.setSender(m_Info->getAddr());
+    subs.setSender(m_Info.getAddr());
     subs.setDest(&addr);
     subscribe(&subs);
 }
@@ -428,7 +419,7 @@ MidiPort::subscribeTo( QString const& name )
     snd_seq_addr addr;
     if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
     {
-        subs.setSender(m_Info->getAddr());
+        subs.setSender(m_Info.getAddr());
         snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.toLocal8Bit().data());
         subs.setDest(&addr);
         subscribe(&subs);
@@ -442,7 +433,7 @@ MidiPort::unsubscribeTo( QString const& name )
     snd_seq_addr addr;
     if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
     {
-        subs.setSender(m_Info->getAddr());
+        subs.setSender(m_Info.getAddr());
         snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.toLocal8Bit().data());
         subs.setDest(&addr);
         unsubscribe(&subs);
@@ -455,7 +446,7 @@ MidiPort::unsubscribeTo( PortInfo* port )
     Subscription subs;
     if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
     {
-        subs.setSender(m_Info->getAddr());
+        subs.setSender(m_Info.getAddr());
         subs.setDest(port->getAddr());
         unsubscribe(&subs);
     }
@@ -467,7 +458,7 @@ MidiPort::unsubscribeTo( const snd_seq_addr_t* addr )
     Subscription subs;
     if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
     {
-        subs.setSender(m_Info->getAddr());
+        subs.setSender(m_Info.getAddr());
         subs.setDest(addr);
         unsubscribe(&subs);
     }
@@ -478,7 +469,7 @@ MidiPort::subscribeFrom( PortInfo* port )
 {
     Subscription subs;
     subs.setSender( port->getAddr() );
-    subs.setDest( m_Info->getAddr() );
+    subs.setDest( m_Info.getAddr() );
     subscribe(&subs);
 }
 
@@ -490,7 +481,7 @@ MidiPort::subscribeFrom( int client, int port )
     addr.client = client;
     addr.port = port;
     subs.setSender(&addr);
-    subs.setDest(m_Info->getAddr());
+    subs.setDest(m_Info.getAddr());
     subscribe(&subs);
 }
 
@@ -503,7 +494,7 @@ MidiPort::subscribeFrom( QString const& name)
     {
         snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.toLocal8Bit().data());
         subs.setSender(&addr);
-        subs.setDest(m_Info->getAddr());
+        subs.setDest(m_Info.getAddr());
         subscribe(&subs);
     }
 }
@@ -517,7 +508,7 @@ MidiPort::unsubscribeFrom( QString const& name)
     {
         snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.toLocal8Bit().data());
         subs.setSender(&addr);
-        subs.setDest(m_Info->getAddr());
+        subs.setDest(m_Info.getAddr());
         unsubscribe(&subs);
     }
 }
@@ -529,7 +520,7 @@ MidiPort::unsubscribeFrom( PortInfo* port )
     if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
     {
         subs.setSender(port->getAddr());
-        subs.setDest(m_Info->getAddr());
+        subs.setDest(m_Info.getAddr());
         unsubscribe(&subs);
     }
 }
@@ -541,7 +532,7 @@ MidiPort::unsubscribeFrom( const snd_seq_addr_t* addr )
     if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
     {
         subs.setSender(addr);
-        subs.setDest(m_Info->getAddr());
+        subs.setDest(m_Info.getAddr());
         unsubscribe(&subs);
     }
 }
@@ -571,92 +562,132 @@ MidiPort::applyPortInfo()
 {
     if (m_Attached && (m_MidiClient != NULL) && (m_MidiClient->isOpened()))
     {
-        CHECK_WARNING(snd_seq_set_port_info(m_MidiClient->getHandle(), m_Info->getPort(), m_Info->m_Info));
+        CHECK_WARNING(snd_seq_set_port_info( m_MidiClient->getHandle(),
+        		                             m_Info.getPort(), m_Info.m_Info ));
     }
 }
 
 QString
 MidiPort::getPortName()
 {
-    return m_Info->getName();
+    return m_Info.getName();
 }
 
 void
 MidiPort::setPortName( QString const& newName)
 {
-    m_Info->setName(newName);
+    m_Info.setName(newName);
     applyPortInfo();
 }
 
 int
-MidiPort::getPortId() const
+MidiPort::getPortId()
 {
-    return m_Info->getPort();
+    return m_Info.getPort();
 }
 
 unsigned int
 MidiPort::getCapability()
 {
-    return m_Info->getCapability();
+    return m_Info.getCapability();
 }
 
 void
 MidiPort::setCapability(unsigned int newValue)
 {
-    m_Info->setCapability(newValue);
+    m_Info.setCapability(newValue);
     applyPortInfo();
 }
 
 unsigned int
 MidiPort::getPortType()
 {
-    return m_Info->getType();
+    return m_Info.getType();
 }
 
 void
 MidiPort::setPortType( unsigned int newValue)
 {
-    m_Info->setType( newValue );
+    m_Info.setType( newValue );
     applyPortInfo();
 }
 
 int
 MidiPort::getMidiChannels()
 {
-    return m_Info->getMidiChannels();
+    return m_Info.getMidiChannels();
 }
 
 void
 MidiPort::setMidiChannels(int newValue)
 {
-    m_Info->setMidiChannels( newValue );
+    m_Info.setMidiChannels( newValue );
     applyPortInfo();
 }
 
 int
 MidiPort::getMidiVoices()
 {
-    return m_Info->getMidiVoices();
+    return m_Info.getMidiVoices();
 }
 
 void
 MidiPort::setMidiVoices(int newValue)
 {
-    m_Info->setMidiVoices( newValue );
+    m_Info.setMidiVoices( newValue );
     applyPortInfo();
 }
 
 int
 MidiPort::getSynthVoices()
 {
-    return m_Info->getSynthVoices();
+    return m_Info.getSynthVoices();
 }
 
 void
 MidiPort::setSynthVoices(int newValue)
 {
-    m_Info->setSynthVoices( newValue );
+    m_Info.setSynthVoices( newValue );
     applyPortInfo();
+}
+
+bool
+MidiPort::getTimestamping()
+{
+	return m_Info.getTimestamping();
+}
+
+bool
+MidiPort::getTimestampReal()
+{
+	return m_Info.getTimestampReal();
+}
+
+int
+MidiPort::getTimestampQueue()
+{
+	return m_Info.getTimestampQueue();
+}
+
+void
+MidiPort::setTimestamping(bool value)
+{
+	m_Info.setTimestamping(value);
+	applyPortInfo();
+}
+
+void
+MidiPort::setTimestampReal(bool value)
+{
+	m_Info.setTimestampReal(value);
+	applyPortInfo();
+}
+
+void
+MidiPort::setTimestampQueue(int queueId)
+{
+	m_Info.setTimestampQueue(queueId);
+	applyPortInfo();
 }
 
 void
@@ -702,19 +733,19 @@ MidiPort::setAutoAttach(bool state)
 void
 MidiPort::updateSubscribers()
 {
-    m_Info->readSubscribers(m_MidiClient);
+    m_Info.readSubscribers(m_MidiClient);
 }
 
-PortInfoList 
-MidiPort::getReadSubscribers() const
+PortInfoList
+MidiPort::getReadSubscribers()
 {
-    const SubscribersList subs(m_Info->getReadSubscribers());
+    const SubscribersList subs(m_Info.getReadSubscribers());
     PortInfoList lst;
     SubscribersList::ConstIterator it;
-    for(it = subs.begin(); it != subs.end(); ++it) {
+    for(it = subs.constBegin(); it != subs.constEnd(); ++it) {
         Subscriber s = *it;
         int client = s.getAddr()->client;
-        if ((client != SND_SEQ_CLIENT_SYSTEM) && (client != m_Info->getClient())) {
+        if ((client != SND_SEQ_CLIENT_SYSTEM) && (client != m_Info.getClient())) {
             int port = s.getAddr()->port;
             PortInfo p(m_MidiClient, client, port);
             if ((p.getCapability() & SND_SEQ_PORT_CAP_NO_EXPORT) == 0) {
@@ -725,16 +756,16 @@ MidiPort::getReadSubscribers() const
     return lst;
 }
 
-PortInfoList 
-MidiPort::getWriteSubscribers() const
+PortInfoList
+MidiPort::getWriteSubscribers()
 {
-    const SubscribersList subs(m_Info->getWriteSubscribers());
+    const SubscribersList subs(m_Info.getWriteSubscribers());
     PortInfoList lst;
     SubscribersList::ConstIterator it;
-    for(it = subs.begin(); it != subs.end(); ++it) {
+    for(it = subs.constBegin(); it != subs.constEnd(); ++it) {
         Subscriber s = *it;
         int client = s.getAddr()->client;
-        if ((client != SND_SEQ_CLIENT_SYSTEM) && (client != m_Info->getClient())) {
+        if ((client != SND_SEQ_CLIENT_SYSTEM) && (client != m_Info.getClient())) {
             int port = s.getAddr()->port;
             PortInfo p(m_MidiClient, client, port);
             if ((p.getCapability() & SND_SEQ_PORT_CAP_NO_EXPORT) == 0) {
@@ -745,7 +776,7 @@ MidiPort::getWriteSubscribers() const
     return lst;
 }
 
-bool 
+bool
 MidiPort::containsAddress(const snd_seq_addr_t* addr, const PortInfoList& lst)
 {
     PortInfoList::ConstIterator i;
@@ -759,7 +790,7 @@ MidiPort::containsAddress(const snd_seq_addr_t* addr, const PortInfoList& lst)
     return false;
 }
 
-void 
+void
 MidiPort::updateConnectionsTo(const PortInfoList& ports)
 {
     PortInfoList subs(getReadSubscribers());
@@ -778,7 +809,7 @@ MidiPort::updateConnectionsTo(const PortInfoList& ports)
     }
 }
 
-void 
+void
 MidiPort::updateConnectionsFrom(const PortInfoList& ports)
 {
     PortInfoList subs(getWriteSubscribers());
