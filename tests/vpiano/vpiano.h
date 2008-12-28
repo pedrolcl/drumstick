@@ -1,5 +1,5 @@
 /*
-    Virtual Piano test using the MIDI Sequencer C++ library 
+    Virtual Piano test using the MIDI Sequencer C++ library
     Copyright (C) 2006-2008, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
@@ -12,9 +12,9 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #ifndef VPIANO_H
@@ -34,7 +34,7 @@
 using namespace ALSA::Sequencer;
 
 /* MidiClient can deliver SequencerEvents with only
- * signals or posting QEvents to the QApplication loop */  
+ * signals or posting QEvents to the QApplication loop */
 #undef USE_QEVENTS
 //#define USE_QEVENTS
 
@@ -55,21 +55,19 @@ public slots:
     void slotNoteOff(const int midiNote);
     void slotSubscription(MidiPort* port, Subscription* subs);
 
-#ifdef USE_QEVENTS  
+#ifdef USE_QEVENTS
 protected:
     virtual void customEvent( QEvent *ev );
-#else   
-    void sequencerEvent( SequencerEvent* ev ); 
+#else
+    void sequencerEvent( SequencerEvent* ev );
 #endif
 
 private:
     void displayEvent( SequencerEvent* ev );
-    
+
     int m_portId;
-    int m_queueId;
     MidiClient* m_Client;
     MidiPort* m_Port;
-    MidiQueue* m_Queue;
     Ui::VPiano ui;
     About dlgAbout;
     Connections dlgConnections;

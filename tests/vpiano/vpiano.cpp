@@ -1,5 +1,5 @@
 /*
-    Virtual Piano test using the MIDI Sequencer C++ library 
+    Virtual Piano test using the MIDI Sequencer C++ library
     Copyright (C) 2006-2008, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
@@ -12,9 +12,9 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <QDebug>
@@ -23,10 +23,8 @@
 VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     : QMainWindow(parent, flags),
     m_portId(-1),
-    m_queueId(-1),
     m_Client(0),
-    m_Port(0),
-    m_Queue(0)
+    m_Port(0)
 {
     ui.setupUi(this);
     ui.statusBar->hide();
@@ -51,8 +49,6 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     m_Port->setPortType( SND_SEQ_PORT_TYPE_APPLICATION );
     m_Port->attach();
 
-    m_Queue = m_Client->createQueue();
-    m_queueId = m_Queue->getId();
     m_portId = m_Port->getPortId();
 
     connect(ui.actionExit, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -66,12 +62,10 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
 
     m_Port->subscribeFromAnnounce();
     m_Client->startSequencerInput();
-    m_Queue->start();
 }
 
 VPiano::~VPiano()
 {
-    m_Queue->stop();
     m_Client->stopSequencerInput();
     m_Port->detach();
     m_Client->close();
@@ -129,7 +123,7 @@ void VPiano::displayEvent(SequencerEvent *ev)
             break;
         }
     } catch (SequencerError& err) {
-        qDebug() << "SequencerError exception. Error code: " << err.code() 
+        qDebug() << "SequencerError exception. Error code: " << err.code()
         << " (" << err.qstrError() << ")";
         qDebug() << "Location: " << err.location();
         throw err;
@@ -139,7 +133,7 @@ void VPiano::displayEvent(SequencerEvent *ev)
 #ifdef USE_QEVENTS
 void VPiano::customEvent(QEvent *ev)
 {
-    if (ev->type() != SequencerEventType) 
+    if (ev->type() != SequencerEventType)
         return;
     SequencerEvent* sev = dynamic_cast<SequencerEvent*>(ev);
     if (sev != NULL) {
@@ -147,7 +141,7 @@ void VPiano::customEvent(QEvent *ev)
     }
 }
 #else
-void 
+void
 VPiano::sequencerEvent(SequencerEvent *ev)
 {
     displayEvent( ev );
@@ -157,7 +151,7 @@ VPiano::sequencerEvent(SequencerEvent *ev)
 
 void VPiano::slotSubscription(MidiPort*, Subscription* subs)
 {
-    qDebug() << "Subscription made with" << subs->getSender()->client 
+    qDebug() << "Subscription made with" << subs->getSender()->client
              << ":" << subs->getSender()->port;
 }
 

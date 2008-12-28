@@ -219,15 +219,13 @@ PortInfo::setPortSpecified(int val)
 SubscribersList
 PortInfo::getReadSubscribers() const
 {
-    SubscribersList lst = m_ReadSubscribers; // copy
-    return lst;
+    return m_ReadSubscribers; // copy
 }
 
 SubscribersList
 PortInfo::getWriteSubscribers() const
 {
-    SubscribersList lst = m_WriteSubscribers; // copy
-    return lst;
+    return m_WriteSubscribers; // copy
 }
 
 void
@@ -292,7 +290,7 @@ PortInfo::getTimestampQueue()
 void
 PortInfo::setTimestamping(bool value)
 {
-    snd_seq_port_info_set_timestamp_queue(m_Info, value?1:0);
+    snd_seq_port_info_set_timestamping(m_Info, value?1:0);
 }
 
 void
@@ -304,7 +302,7 @@ PortInfo::setTimestampReal(bool value)
 void
 PortInfo::setTimestampQueue(int queueId)
 {
-    snd_seq_port_info_set_timestamping(m_Info, queueId);
+    snd_seq_port_info_set_timestamp_queue(m_Info, queueId);
 }
 
 /************/
@@ -749,6 +747,7 @@ MidiPort::getReadSubscribers()
             int port = s.getAddr()->port;
             PortInfo p(m_MidiClient, client, port);
             if ((p.getCapability() & SND_SEQ_PORT_CAP_NO_EXPORT) == 0) {
+            	p.setClientName(m_MidiClient->getClientName(client));
                 lst << p;
             }
         }
@@ -769,6 +768,7 @@ MidiPort::getWriteSubscribers()
             int port = s.getAddr()->port;
             PortInfo p(m_MidiClient, client, port);
             if ((p.getCapability() & SND_SEQ_PORT_CAP_NO_EXPORT) == 0) {
+            	p.setClientName(m_MidiClient->getClientName(client));
                 lst << p;
             }
         }

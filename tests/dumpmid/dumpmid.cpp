@@ -45,6 +45,9 @@ QDumpMIDI::QDumpMIDI()
     m_Port->setPortName("DumpMIDI port");
     m_Port->setCapability(SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE);
     m_Port->setPortType(SND_SEQ_PORT_TYPE_APPLICATION);
+	//m_Port->setTimestamping(true);
+	//m_Port->setTimestampReal(true);
+	//m_Port->setTimestampQueue(m_Client->getQueue()->getId());
     connect(m_Port, SIGNAL(subscribed(MidiPort*,Subscription*)), SLOT(subscription(MidiPort*,Subscription*)));
 
     m_Port->attach();
@@ -81,9 +84,9 @@ void
 QDumpMIDI::subscription(MidiPort*, Subscription* subs)
 {
     qDebug() << "Subscription made from" << subs->getSender()->client << ":" << subs->getSender()->port;
-    subs->setQueue(m_Client->getQueue()->getId());
-    subs->setTimeReal(true);
-    subs->setTimeUpdate(true);
+    //subs->setQueue(m_Client->getQueue()->getId());
+    //subs->setTimeReal(false);
+    //subs->setTimeUpdate(true);
 }
 
 void QDumpMIDI::subscribe(const QString& portName)
@@ -406,6 +409,9 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
         cout << qSetFieldWidth(26) << "Unknown event type" << qSetFieldWidth(0);
         cout << sev->getSequencerType();
     };
+    //cout << qSetFieldWidth(8) << right << sev->getTick();
+    //cout << qSetFieldWidth(8) << right << sev->getRealTimeSecs();
+    //cout << qSetFieldWidth(12) << right << sev->getRealTimeNanos();
     cout << qSetFieldWidth(0) << endl;
 }
 

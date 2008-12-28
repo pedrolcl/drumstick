@@ -1,5 +1,5 @@
 /*
-    MIDI Sequencer C++ library 
+    MIDI Sequencer C++ library
     Copyright (C) 2006-2008, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
@@ -12,11 +12,11 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
- 
+
 #ifndef INCLUDED_CLIENT_H
 #define INCLUDED_CLIENT_H
 
@@ -28,9 +28,9 @@
 #include <QThread>
 #include <QReadWriteLock>
 
-namespace ALSA 
+namespace ALSA
 {
-namespace Sequencer 
+namespace Sequencer
 {
 
 class MidiQueue;
@@ -46,7 +46,7 @@ class ClientInfo
 public:
     ClientInfo();
     ClientInfo(const ClientInfo& other);
-    ClientInfo(snd_seq_client_info_t* other); 
+    ClientInfo(snd_seq_client_info_t* other);
     ClientInfo(MidiClient* seq, int id);
     virtual ~ClientInfo();
     ClientInfo* clone();
@@ -66,14 +66,14 @@ public:
     void setErrorBounce(bool val);
     PortInfoList getPorts() const;
 
-#if SND_LIB_SUBMINOR > 16    
+#if SND_LIB_SUBMINOR > 16
     void addFilter(int eventType);
     bool isFiltered(int eventType);
     void clearFilter();
     void removeFilter(int eventType);
 #endif
 
-protected:    
+protected:
     void readPorts(MidiClient* seq);
     void freePorts();
 
@@ -94,13 +94,13 @@ class SystemInfo
 public:
     SystemInfo();
     SystemInfo(const SystemInfo& other);
-    SystemInfo(snd_seq_system_info_t* other); 
+    SystemInfo(snd_seq_system_info_t* other);
     SystemInfo(MidiClient* seq);
     virtual ~SystemInfo();
     SystemInfo* clone();
     SystemInfo& operator=(const SystemInfo& other);
     int getSizeOfInfo() const;
-    
+
     int getMaxClients();
     int getMaxPorts();
     int getMaxQueues();
@@ -119,13 +119,13 @@ class PoolInfo
 public:
     PoolInfo();
     PoolInfo(const PoolInfo& other);
-    PoolInfo(snd_seq_client_pool_t* other); 
+    PoolInfo(snd_seq_client_pool_t* other);
     PoolInfo(MidiClient* seq);
     virtual ~PoolInfo();
     PoolInfo* clone();
     PoolInfo& operator=(const PoolInfo& other);
     int getSizeOfInfo() const;
-    
+
     int getClientId();
     int getInputFree();
     int getInputPool();
@@ -136,7 +136,7 @@ public:
     void setOutputPool(int size);
     void setOutputRoom(int size);
 
-private:    
+private:
     snd_seq_client_pool_t* m_Info;
 };
 
@@ -151,11 +151,11 @@ class MidiClient : public QObject
 {
     Q_OBJECT
 
-private:    
+private:
     class SequencerInputThread: public QThread
     {
     public:
-        SequencerInputThread(MidiClient *seq, int timeout) 
+        SequencerInputThread(MidiClient *seq, int timeout)
             : QThread(),
             m_MidiClient(seq),
             m_Wait(timeout),
@@ -169,7 +169,7 @@ private:
         int m_Wait;
         bool m_Stopped;
         QReadWriteLock m_mutex;
-    };    
+    };
 
 public:
     MidiClient( QObject* parent = 0 );
@@ -181,7 +181,7 @@ public:
     void startSequencerInput();
     void stopSequencerInput();
     MidiPort* createPort();
-    MidiQueue* createQueue(); 
+    MidiQueue* createQueue();
     MidiQueue* createQueue(QString const& name);
     MidiQueue* getQueue();
     MidiQueue* useQueue(int queue_id);
@@ -194,7 +194,7 @@ public:
     void output(SequencerEvent* ev, bool async = false, int timeout = -1);
     void outputDirect(SequencerEvent* ev, bool async = false, int timeout = -1);
     void outputBuffer(SequencerEvent* ev, bool async = false, int timeout = -1);
-    void drainOutput(bool async = false, int timeout = -1); 
+    void drainOutput(bool async = false, int timeout = -1);
     void synchronizeOutput();
 
     int getClientId();
@@ -213,6 +213,7 @@ public:
     bool getBlockMode() { return m_BlockMode; }
     void setBlockMode(bool newValue);
     QString getClientName();
+    QString getClientName(const int clientId);
     void setClientName(QString const& newName);
     bool getBroadcastFilter();
     void setBroadcastFilter(bool newValue);
@@ -227,7 +228,7 @@ public:
     PortInfoList getAvailableOutputs();
     SystemInfo& getSystemInfo();
     QList<int> getAvailableQueues();
-    
+
     PoolInfo& getPoolInfo();
     void setPoolInfo(const PoolInfo& info);
     void setPoolInput(int size);
@@ -267,12 +268,12 @@ protected:
     int getPollDescriptorsCount(short events);
     int pollDescriptors(struct pollfd *pfds, unsigned int space, short events);
     unsigned short pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds);
-    
+
     /* mid level functions */
     void _setClientName( const char *name );
     int createSimplePort( const char *name,
                           unsigned int caps,
-                          unsigned int type );  
+                          unsigned int type );
     void deleteSimplePort( int port );
     void connectFrom(int myport, int client, int port);
     void connectTo(int myport, int client, int port);

@@ -348,6 +348,19 @@ MidiClient::getClientName()
     return m_Info.getName();
 }
 
+QString
+MidiClient::getClientName(const int clientId)
+{
+	ClientInfoList::Iterator it;
+	if (m_NeedRefreshClientList)
+        readClients();
+	for( it = m_ClientList.begin(); it != m_ClientList.end(); ++it ) {
+		if ((*it).getClientId() == clientId) {
+			return (*it).getName();
+		}
+	}
+}
+
 void
 MidiClient::setClientName(QString const& newName)
 {
