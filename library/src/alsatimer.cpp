@@ -1,20 +1,20 @@
 /*
-    MIDI Sequencer C++ library 
+    MIDI Sequencer C++ library
     Copyright (C) 2006-2008, Pedro Lopez-Cabanillas <plcl@users.sf.net>
- 
+
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include "alsatimer.h"
@@ -46,50 +46,50 @@ TimerInfo::~TimerInfo()
     snd_timer_info_free(m_Info);
 }
 
-TimerInfo* 
+TimerInfo*
 TimerInfo::clone()
 {
     return new TimerInfo(m_Info);
 }
 
-TimerInfo& 
+TimerInfo&
 TimerInfo::operator=(const TimerInfo& other)
 {
     snd_timer_info_copy(m_Info, other.m_Info);
     return *this;
 }
 
-bool 
+bool
 TimerInfo::isSlave()
 {
     return (snd_timer_info_is_slave(m_Info) != 0);
 }
 
-int 
+int
 TimerInfo::getCard()
 {
     return snd_timer_info_get_card(m_Info);
 }
 
-QString 
+QString
 TimerInfo::getId()
 {
     return QString(snd_timer_info_get_id(m_Info));
 }
 
-QString 
+QString
 TimerInfo::getName()
 {
     return QString(snd_timer_info_get_name(m_Info));
 }
 
-long 
+long
 TimerInfo::getResolution()
 {
     return snd_timer_info_get_resolution(m_Info);
 }
 
-long 
+long
 TimerInfo::getFrequency()
 {
     long res = getResolution();
@@ -100,10 +100,10 @@ TimerInfo::getFrequency()
     return 0;
 }
 
-int 
+int
 TimerInfo::getSizeOfInfo() const
 {
-    return snd_timer_info_sizeof(); 
+    return snd_timer_info_sizeof();
 }
 
 long
@@ -160,13 +160,13 @@ TimerId::~TimerId()
     snd_timer_id_free(m_Info);
 }
 
-TimerId* 
+TimerId*
 TimerId::clone()
 {
     return new TimerId(m_Info);
 }
 
-TimerId& 
+TimerId&
 TimerId::operator=(const TimerId& other)
 {
     snd_timer_id_copy(m_Info, other.m_Info);
@@ -239,10 +239,10 @@ TimerId::getSubdevice()
     return snd_timer_id_get_subdevice(m_Info);
 }
 
-int 
+int
 TimerId::getSizeOfInfo() const
 {
-    return snd_timer_id_sizeof(); 
+    return snd_timer_id_sizeof();
 }
 
 /**************
@@ -251,17 +251,17 @@ TimerId::getSizeOfInfo() const
 
 TimerQuery::TimerQuery(const QString& deviceName, int openMode)
 {
-    CHECK_WARNING( snd_timer_query_open( &m_Info, 
-                                         deviceName.toLocal8Bit().data(), 
+    CHECK_WARNING( snd_timer_query_open( &m_Info,
+                                         deviceName.toLocal8Bit().data(),
                                          openMode ));
     readTimers();
 }
 
-TimerQuery::TimerQuery( const QString& deviceName, int openMode, 
+TimerQuery::TimerQuery( const QString& deviceName, int openMode,
                         snd_config_t* conf )
 {
-    CHECK_WARNING( snd_timer_query_open_lconf( &m_Info, 
-                                               deviceName.toLocal8Bit().data(), 
+    CHECK_WARNING( snd_timer_query_open_lconf( &m_Info,
+                                               deviceName.toLocal8Bit().data(),
                                                openMode, conf ));
     readTimers();
 }
@@ -275,7 +275,7 @@ TimerQuery::~TimerQuery()
 void
 TimerQuery::readTimers()
 {
-    TimerId tid; 
+    TimerId tid;
     snd_timer_id_set_class(tid.m_Info, SND_TIMER_CLASS_NONE);
     for(;;)
     {
@@ -419,7 +419,7 @@ TimerGlobalInfo::getClients()
     return snd_timer_ginfo_get_clients(m_Info);
 }
 
-int 
+int
 TimerGlobalInfo::getSizeOfInfo() const
 {
     return snd_timer_ginfo_sizeof();
@@ -536,7 +536,7 @@ TimerParams::getFilter()
     return snd_timer_params_get_filter (m_Info);
 }
 
-int 
+int
 TimerParams::getSizeOfInfo() const
 {
     return snd_timer_params_sizeof();
@@ -611,7 +611,7 @@ TimerStatus::getQueue()
     return snd_timer_status_get_queue (m_Info);
 }
 
-int 
+int
 TimerStatus::getSizeOfInfo() const
 {
     return snd_timer_status_sizeof();
@@ -628,11 +628,11 @@ Timer::Timer( const QString& deviceName, int openMode, QObject* parent )
     m_thread(NULL),
     m_deviceName(deviceName)
 {
-    CHECK_ERROR( snd_timer_open( &m_Info, m_deviceName.toLocal8Bit().data(), 
+    CHECK_ERROR( snd_timer_open( &m_Info, m_deviceName.toLocal8Bit().data(),
                                  openMode ));
 }
 
-Timer::Timer( const QString& deviceName, int openMode, snd_config_t* conf, 
+Timer::Timer( const QString& deviceName, int openMode, snd_config_t* conf,
               QObject* parent )
     : QObject(parent),
     m_asyncHandler(NULL),
@@ -640,13 +640,13 @@ Timer::Timer( const QString& deviceName, int openMode, snd_config_t* conf,
     m_thread(NULL),
     m_deviceName(deviceName)
 {
-    CHECK_ERROR( snd_timer_open_lconf( &m_Info, 
-                                       m_deviceName.toLocal8Bit().data(), 
+    CHECK_ERROR( snd_timer_open_lconf( &m_Info,
+                                       m_deviceName.toLocal8Bit().data(),
                                        openMode, conf ));
 }
 
 Timer::Timer( TimerId& id, int openMode, QObject* parent )
-    : QObject(parent), 
+    : QObject(parent),
     m_asyncHandler(NULL),
     m_handler(NULL),
     m_thread(NULL)
@@ -657,14 +657,14 @@ Timer::Timer( TimerId& id, int openMode, QObject* parent )
     .arg(id.getCard())
     .arg(id.getDevice())
     .arg(id.getSubdevice());
-    CHECK_ERROR( snd_timer_open( &m_Info, 
-                                 m_deviceName.toLocal8Bit().data(), 
+    CHECK_ERROR( snd_timer_open( &m_Info,
+                                 m_deviceName.toLocal8Bit().data(),
                                  openMode ));
 }
 
-Timer::Timer( int cls, int scls, int card, int dev, int sdev, 
+Timer::Timer( int cls, int scls, int card, int dev, int sdev,
               int openMode, QObject* parent )
-    : QObject(parent), 
+    : QObject(parent),
     m_asyncHandler(NULL),
     m_handler(NULL),
     m_thread(NULL)
@@ -675,8 +675,8 @@ Timer::Timer( int cls, int scls, int card, int dev, int sdev,
         .arg(card)
         .arg(dev)
         .arg(sdev);
-    CHECK_ERROR( snd_timer_open( &m_Info, 
-                                 m_deviceName.toLocal8Bit().data(), 
+    CHECK_ERROR( snd_timer_open( &m_Info,
+                                 m_deviceName.toLocal8Bit().data(),
                                  openMode ));
 }
 
@@ -694,7 +694,7 @@ Timer::addAsyncTimerHandler(snd_async_callback_t callback, void *private_data)
     CHECK_WARNING(snd_async_add_timer_handler(&m_asyncHandler, m_Info, callback, private_data));
 }
 
-snd_timer_t* 
+snd_timer_t*
 Timer::getTimerHandle()
 {
     return snd_async_handler_get_timer(m_asyncHandler);
@@ -762,12 +762,12 @@ Timer::read(void *buffer, size_t size)
     return snd_timer_read(m_Info, buffer, size);
 }
 
-void 
+void
 Timer::doEvents()
 {
     snd_timer_tread_t tr;
     while ( read(&tr, sizeof(tr)) == sizeof(tr) ) {
-        int msecs = ((tr.tstamp.tv_sec - m_last_time.tv_sec) * 1000) + 
+        int msecs = ((tr.tstamp.tv_sec - m_last_time.tv_sec) * 1000) +
                     round((tr.tstamp.tv_nsec - m_last_time.tv_nsec) / 1000000.0);
         m_last_time = tr.tstamp;
         if ( m_handler != NULL )
@@ -801,7 +801,7 @@ void Timer::stopEvents()
     }
 }
 
-Timer* 
+Timer*
 Timer::bestGlobalTimer(int openMode, QObject* parent)
 {
     TimerId id;
@@ -809,14 +809,22 @@ Timer::bestGlobalTimer(int openMode, QObject* parent)
     snd_timer_info_t* info;
     long res, best_res = LONG_MAX;
     char timername[64];
-    int MAX_GLOBAL_TIMERS = 3;
+    int test_devs[] = {
+          SND_TIMER_GLOBAL_SYSTEM
+        , SND_TIMER_GLOBAL_RTC
+#ifdef SND_TIMER_GLOBAL_HPET
+        , SND_TIMER_GLOBAL_HPET
+#endif
+    };
+    int max_global_timers = sizeof(test_devs)/sizeof(int);
     int clas = SND_TIMER_CLASS_GLOBAL;
-    int scls = SND_TIMER_SCLASS_NONE; 
+    int scls = SND_TIMER_SCLASS_NONE;
     int card = 0;
     int dev  = SND_TIMER_GLOBAL_SYSTEM;
     int sdev = 0;
     int err = 0;
     int is_slave = 0;
+    int i;
     snd_timer_info_alloca(&info);
     // default system timer
     id.setClass(clas);
@@ -825,10 +833,11 @@ Timer::bestGlobalTimer(int openMode, QObject* parent)
     id.setDevice(dev);
     id.setSubdevice(sdev);
     // select a non slave timer with the lowest resolution value
-    for( dev = 0; dev < MAX_GLOBAL_TIMERS; ++dev ) 
+    for( i = 0; i < max_global_timers; ++i )
     {
+        dev = test_devs[i];
         sprintf( timername, "hw:CLASS=%i,SCLASS=%i,CARD=%i,DEV=%i,SUBDEV=%i",
-                 clas, scls, card, dev, sdev );        
+                 clas, scls, card, dev, sdev );
         err = snd_timer_open(&timer, timername, SND_TIMER_OPEN_NONBLOCK);
         if (err < 0) continue;
         err = snd_timer_info(timer, info);
@@ -847,24 +856,24 @@ Timer::bestGlobalTimer(int openMode, QObject* parent)
 
 /* *********************** *
  * Timer::TimerInputThread *
- * *********************** */ 
+ * *********************** */
 
-void 
+void
 Timer::TimerInputThread::run()
 {
     int err, count;
     struct pollfd *fds;
     if (m_timer == NULL) return;
-    
+
     count = m_timer->getPollDescriptorsCount();
     fds = (pollfd *) calloc(count, sizeof(struct pollfd));
     if (fds == NULL) {
-        qWarning() << "allocation error!"; 
+        qWarning() << "allocation error!";
         return;
     }
     fds->events = POLLIN;
     fds->revents = 0;
-    
+
     try {
         while (!stopped() && (m_timer != NULL)) {
             m_timer->pollDescriptors(fds, count);
@@ -884,18 +893,18 @@ Timer::TimerInputThread::run()
     free(fds);
 }
 
-bool 
+bool
 Timer::TimerInputThread::stopped()
-{ 
+{
     m_mutex.lockForRead();
     bool bTmp = m_Stopped;
     m_mutex.unlock();
     return  bTmp;
 }
 
-void 
+void
 Timer::TimerInputThread::stop()
-{ 
+{
     m_mutex.lockForWrite();
     m_Stopped = true;
     m_mutex.unlock();
