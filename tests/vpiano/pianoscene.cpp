@@ -1,6 +1,6 @@
 /*
-    Virtual Piano Widget for Qt4 
-    Copyright (C) 2008, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Virtual Piano Widget for Qt4
+    Copyright (C) 2008-2009, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along 
+    You should have received a copy of the GNU General Public License along
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -27,8 +27,8 @@
 #define KEYWIDTH  18
 #define KEYHEIGHT 72
 
-PianoScene::PianoScene ( const int baseOctave, 
-                         const int numOctaves, 
+PianoScene::PianoScene ( const int baseOctave,
+                         const int numOctaves,
                          const QColor& keyPressedColor,
                          QObject * parent )
     : QGraphicsScene( QRectF(0, 0, KEYWIDTH * numOctaves * 7, KEYHEIGHT), parent ),
@@ -141,7 +141,7 @@ void PianoScene::mouseMoveEvent ( QGraphicsSceneMouseEvent * mouseEvent )
         if ((lastkey != NULL) && (lastkey != key) && lastkey->isPressed()) {
             keyOff(lastkey);
         }
-        if ((key != NULL) && !key->isPressed()) { 
+        if ((key != NULL) && !key->isPressed()) {
             keyOn(key);
         }
         mouseEvent->accept();
@@ -164,7 +164,7 @@ void PianoScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 
 void PianoScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 {
-    m_mousePressed = false; 
+    m_mousePressed = false;
     PianoKey* key = getKeyForPos(mouseEvent->scenePos());
     if (key != NULL) {
         keyOff(key);
@@ -189,7 +189,7 @@ PianoKey* PianoScene::getPianoKey( const int key ) const
 
 void PianoScene::keyPressEvent ( QKeyEvent * keyEvent )
 {
-    if (!keyEvent->isAutoRepeat()) { // ignore auto-repeats 
+    if (!keyEvent->isAutoRepeat()) { // ignore auto-repeats
         PianoKey* key = getPianoKey(keyEvent->key());
         if (key != NULL) {
             keyOn(key);
@@ -205,13 +205,13 @@ void PianoScene::keyReleaseEvent ( QKeyEvent * keyEvent )
         if (key != NULL) {
             keyOff(key);
         }
-    }   
+    }
     keyEvent->accept();
 }
 
 void PianoScene::allKeysOff()
 {
-    QList<PianoKey*>::ConstIterator it; 
+    QList<PianoKey*>::ConstIterator it;
     for(it = m_keys.begin(); it != m_keys.end(); ++it) {
         (*it)->setPressed(false);
     }
@@ -252,7 +252,7 @@ void PianoScene::setMaxNote(const int note)
 }
 
 void PianoScene::setBaseOctave(const int base)
-{ 
+{
     m_baseOctave = base;
     hideOrShowKeys();
 }

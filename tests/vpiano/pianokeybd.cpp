@@ -1,6 +1,6 @@
 /*
-    Virtual Piano Widget for Qt4 
-    Copyright (C) 2008, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Virtual Piano Widget for Qt4
+    Copyright (C) 2008-2009, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along 
+    You should have received a copy of the GNU General Public License along
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -20,14 +20,14 @@
 #include "pianoscene.h"
 #include <QApplication>
 
-PianoKeybd::PianoKeybd(QWidget *parent) 
+PianoKeybd::PianoKeybd(QWidget *parent)
     : QGraphicsView(parent), m_rotation(0)
 {
     initialize();
     initScene(3, 5);
 }
 
-PianoKeybd::PianoKeybd(const int baseOctave, const int numOctaves, QWidget *parent) 
+PianoKeybd::PianoKeybd(const int baseOctave, const int numOctaves, QWidget *parent)
     : QGraphicsView(parent), m_rotation(0)
 {
     initialize();
@@ -87,7 +87,7 @@ void PianoKeybd::initDefaultMap()
     m_defaultMap.insert(Qt::Key_N, 21);
     m_defaultMap.insert(Qt::Key_J, 22);
     m_defaultMap.insert(Qt::Key_M, 23);
-    
+
     m_defaultMap.insert(Qt::Key_Q, 24);
     m_defaultMap.insert(Qt::Key_2, 25);
     m_defaultMap.insert(Qt::Key_W, 26);
@@ -132,7 +132,7 @@ void PianoKeybd::setRotation(int r)
     }
 }
 
-QSize PianoKeybd::sizeHint() const 
-{ 
+QSize PianoKeybd::sizeHint() const
+{
     return mapFromScene(sceneRect()).boundingRect().size();
 }

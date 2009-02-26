@@ -1,6 +1,6 @@
 /*
-    Virtual Piano Widget for Qt4 
-    Copyright (C) 2008, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Virtual Piano Widget for Qt4
+    Copyright (C) 2008-2009, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along 
+    You should have received a copy of the GNU General Public License along
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -25,9 +25,9 @@
 class PianoKey : public QGraphicsRectItem
 {
 public:
-    PianoKey(QGraphicsItem * parent = 0 ) 
+    PianoKey(QGraphicsItem * parent = 0 )
         : QGraphicsRectItem(parent), m_pressed(false) { }
-    PianoKey(const QRectF &rect, const QBrush &brush, const int note); 
+    PianoKey(const QRectF &rect, const QBrush &brush, const int note);
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
     int getNote() const { return m_note; }
     void setPressedBrush(const QBrush& b) { m_selectedBrush = b; }

@@ -2,7 +2,7 @@
 # spec file for package aseqmm (Version @VERSION@)
 #
 # MIDI Sequencer C++ Library Bindings for Qt4 and ALSA
-# Copyright (C) 2005-2008 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+# Copyright (C) 2005-2009 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 #
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
