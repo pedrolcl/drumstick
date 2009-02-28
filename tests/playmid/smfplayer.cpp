@@ -1,5 +1,5 @@
 /*
-    SMF GUI Player test using the MIDI Sequencer C++ library 
+    SMF GUI Player test using the MIDI Sequencer C++ library
     Copyright (C) 2006-2009, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
@@ -12,9 +12,9 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <QApplication>
@@ -59,13 +59,13 @@ SMFPlayer::SMFPlayer(QWidget *parent)
     m_Client->open();
     m_Client->setPoolOutput(100);
     m_Client->setClientName("MIDI Player");
-    connect(m_Client, SIGNAL(eventReceived(SequencerEvent*)), 
+    connect(m_Client, SIGNAL(eventReceived(SequencerEvent*)),
                       SLOT(sequencerEvent(SequencerEvent*)));
 
     m_Port->setMidiClient(m_Client);
     m_Port->setPortName("MIDI Player Output Port");
-    m_Port->setCapability( SND_SEQ_PORT_CAP_READ  | 
-                           SND_SEQ_PORT_CAP_SUBS_READ | 
+    m_Port->setCapability( SND_SEQ_PORT_CAP_READ  |
+                           SND_SEQ_PORT_CAP_SUBS_READ |
                            SND_SEQ_PORT_CAP_WRITE );
     m_Port->setPortType( SND_SEQ_PORT_TYPE_APPLICATION |
                          SND_SEQ_PORT_TYPE_MIDI_GENERIC );
@@ -115,7 +115,7 @@ void SMFPlayer::subscribe(const QString& portName)
         m_subscription = portName;
         m_Port->subscribeTo(m_subscription);
     } catch (SequencerError& err) {
-        qDebug() << "SequencerError exception. Error code: " << err.code() 
+        qDebug() << "SequencerError exception. Error code: " << err.code()
                  << " (" << err.qstrError() << ")";
         qDebug() << "Location: " << err.location();
     }
@@ -134,7 +134,7 @@ void SMFPlayer::play()
 {
     if (!m_song.isEmpty()) {
         if (m_player->getInitialPosition() == 0) {
-            if (m_initialTempo == 0) { 
+            if (m_initialTempo == 0) {
                 return;
             }
             QueueTempo firstTempo = m_Queue->getTempo();
@@ -169,6 +169,7 @@ void SMFPlayer::openFile(const QString& fileName)
     QFileInfo finfo(fileName);
     if (finfo.exists()) {
         m_song.clear();
+        m_loadingMessages.clear();
         m_tick = 0;
         m_initialTempo = 0;
         try {
@@ -200,12 +201,16 @@ void SMFPlayer::openFile(const QString& fileName)
         updateTimeLabel(0,0,0);
         updateTempoLabel(6.0e7f / m_initialTempo);
         ui.progressBar->setValue(0);
+        if (!m_loadingMessages.isEmpty()) {
+            m_loadingMessages.insert(0, "Warning, this file may be non-standard or damaged<br>");
+            QMessageBox::warning(this, QSTR_APPNAME, m_loadingMessages);
+        }
     }
 }
 
 void SMFPlayer::open()
 {
-    QFileDialog dlg(this, "Open MIDI File", m_lastDirectory, 
+    QFileDialog dlg(this, "Open MIDI File", m_lastDirectory,
         "MIDI Files (*.mid *.midi);;Karaoke files (*.kar);;All files (*.*)");
     if (dlg.exec())
     {
@@ -226,8 +231,8 @@ void SMFPlayer::setup()
         items << QString("%1:%2").arg(p.getClientName()).arg(p.getPort());
     }
     current = items.indexOf(m_subscription);
-    QString item = QInputDialog::getItem(this, "Player subscription", 
-                                         "Output port:", items, 
+    QString item = QInputDialog::getItem(this, "Player subscription",
+                                         "Output port:", items,
                                          current, false, &ok);
     if (ok && !item.isEmpty()) {
         subscribe(item);
@@ -251,7 +256,7 @@ void SMFPlayer::sequencerEvent(SequencerEvent *ev)
     if ((ev->getSequencerType() == SND_SEQ_EVENT_ECHO) && (m_tick != 0)){
         int pos = 100 * ev->getTick() / m_tick;
         const snd_seq_real_time_t* rt = m_Queue->getStatus().getRealtime();
-        int mins = rt->tv_sec / 60; 
+        int mins = rt->tv_sec / 60;
         int secs =  rt->tv_sec % 60;
         int cnts = floor( rt->tv_nsec / 1.0e7 );
         updateTempoLabel(m_Queue->getTempo().getRealBPM());
@@ -346,8 +351,9 @@ void SMFPlayer::tempoEvent(int tempo)
 
 void SMFPlayer::errorHandler(const QString& errorStr)
 {
-    QMessageBox::warning(this, QSTR_APPNAME, errorStr);
-    m_song.clear();
+    if (m_loadingMessages.length() < 1024)
+        m_loadingMessages.append(QString("%1 at file offset %2<br>")
+            .arg(errorStr).arg(m_engine->getFilePos()));
 }
 
 void SMFPlayer::tempoReset()
@@ -370,7 +376,7 @@ void SMFPlayer::tempoSlider(int value)
     // Slider tooltip
     QString tip = QString("%1\%").arg(value);
     ui.sliderTempo->setToolTip(tip);
-    QToolTip::showText(QCursor::pos(), tip, this);    
+    QToolTip::showText(QCursor::pos(), tip, this);
 }
 
 void SMFPlayer::quit()
@@ -391,14 +397,15 @@ void SMFPlayer::dropEvent( QDropEvent * event )
 {
     QString data = event->mimeData()->text();
     QString fileName = QUrl(data).path().trimmed();
-    QString lname = fileName.toLower(); 
-    if ( lname.endsWith(".mid") || lname.endsWith(".midi") || 
-         lname.endsWith(".kar") ) {
+    while (fileName.endsWith(QChar::Null)) fileName.chop(1);
+    if ( fileName.endsWith(".mid", Qt::CaseInsensitive) ||
+         fileName.endsWith(".midi", Qt::CaseInsensitive) ||
+         fileName.endsWith(".kar", Qt::CaseInsensitive) ) {
         stop();
         openFile(fileName);
         event->accept();
     } else {
-        qDebug() << "Dropped object is not supported: " << data << endl;
+        qDebug() << "Dropped object is not supported:" << fileName;
     }
 }
 
@@ -407,7 +414,7 @@ bool SMFPlayer::event( QEvent * event )
     if(event->type() == QEvent::Polish) {
         readSettings();
         /* Process the command line arguments.
-           The first argument should be a MIDI file name */  
+           The first argument should be a MIDI file name */
         QStringList args = QCoreApplication::arguments();
         if (args.size() > 1) {
             QString first = args.at(1);
@@ -421,16 +428,16 @@ bool SMFPlayer::event( QEvent * event )
 void SMFPlayer::readSettings()
 {
     QSettings settings;
-    
+
     settings.beginGroup("Window");
     restoreGeometry(settings.value("Geometry").toByteArray());
     settings.endGroup();
-    
+
     settings.beginGroup("Preferences");
     m_lastDirectory = settings.value("LastDirectory").toString();
     QString midiConn = settings.value("MIDIConnection").toString();
     settings.endGroup();
-    
+
     if (midiConn.length() > 0) {
         subscribe(midiConn);
     }

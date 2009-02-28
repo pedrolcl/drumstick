@@ -1,22 +1,22 @@
 /*
-    Standard MIDI File dump program 
+    Standard MIDI File dump program
     Copyright (C) 2006-2009, Pedro Lopez-Cabanillas <plcl@users.sf.net>
- 
+
     Based on midifile.c by Tim Thompson, M.Czeiszperger and Greg Lee
- 
+
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include "qsmf.h"
@@ -27,12 +27,10 @@
 #include <QApplication>
 #include <QTextStream>
 
-static QTextStream cout(stdout, QIODevice::WriteOnly); 
-static QTextStream cerr(stderr, QIODevice::WriteOnly); 
+static QTextStream cout(stdout, QIODevice::WriteOnly);
 
-
-
-QSpySMF::QSpySMF()
+QSpySMF::QSpySMF():
+    m_currentTrack(0)
 {
     m_engine = new QSmf(this);
     connect(m_engine, SIGNAL(signalSMFHeader(int,int,int)), this, SLOT(headerEvent(int,int,int)));
@@ -58,12 +56,15 @@ QSpySMF::QSpySMF()
     connect(m_engine, SIGNAL(signalSMFKeySig(int,int)), this, SLOT(keySigEvent(int,int)));
     connect(m_engine, SIGNAL(signalSMFTempo(int)), this, SLOT(tempoEvent(int)));
     connect(m_engine, SIGNAL(signalSMFError(const QString&)), this, SLOT(errorHandler(const QString&)));
+    cout.setRealNumberNotation(QTextStream::FixedNotation);
+    cout.setRealNumberPrecision(4);
 }
 
 void QSpySMF::dump(const QString& chan, const QString& event,
                    const QString& data)
 {
     cout << right << qSetFieldWidth(7) << m_engine->getCurrentTime();
+    cout << right << qSetFieldWidth(10) << m_engine->getRealTime() / 1600.0;
     cout << qSetFieldWidth(3) << chan;
     cout << qSetFieldWidth(0) << left << " ";
     cout << qSetFieldWidth(15) << event;
@@ -73,6 +74,7 @@ void QSpySMF::dump(const QString& chan, const QString& event,
 void QSpySMF::dumpStr(const QString& event, const QString& data)
 {
     cout << right << qSetFieldWidth(7) << m_engine->getCurrentTime();
+    cout << right << qSetFieldWidth(10) << m_engine->getRealTime() / 1600.0;
     cout << qSetFieldWidth(3) << "--";
     cout << qSetFieldWidth(0) << left << " ";
     cout << qSetFieldWidth(15) << event;
@@ -81,18 +83,19 @@ void QSpySMF::dumpStr(const QString& event, const QString& data)
 
 void QSpySMF::headerEvent(int format, int ntrks, int division)
 {
-    dumpStr("SMF Header", QString("Format=%1, Tracks=%2, Division=%3").
-    arg(format).arg(ntrks).arg(division));
+    dumpStr("SMF Header", QString("Format=%1, Tracks=%2, Division=%3")
+            .arg(format).arg(ntrks).arg(division));
 }
 
 void QSpySMF::trackStartEvent()
 {
-    dumpStr("Track", "Start");
+    m_currentTrack++;
+    dumpStr("Track", QString("Start: %1").arg(m_currentTrack));
 }
 
 void QSpySMF::trackEndEvent()
 {
-    dumpStr("Track", "End");
+    dumpStr("Track", QString("End: %1").arg(m_currentTrack));
 }
 
 void QSpySMF::endOfTrackEvent()
@@ -204,13 +207,14 @@ void QSpySMF::tempoEvent(int tempo)
 
 void QSpySMF::errorHandler(const QString& errorStr)
 {
-    cerr << errorStr << endl;
-    exit(1);
+    cout << "*** Warning! " << errorStr
+         << " at file offset " << m_engine->getFilePos()
+         << endl;
 }
 
 void QSpySMF::run(QString fileName)
 {
-    cout << "___time ch event__________ data____" << endl;
+    cout << "__ticks __seconds ch event__________ data____" << endl;
     m_engine->readFromFile(fileName);
 }
 

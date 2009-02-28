@@ -1,22 +1,22 @@
 /*
-    Standard MIDI File component 
+    Standard MIDI File component
     Copyright (C) 2006-2009, Pedro Lopez-Cabanillas <plcl@users.sf.net>
- 
+
     Based on midifile.c by Tim Thompson, M.Czeiszperger and Greg Lee
- 
+
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include <limits>
@@ -313,7 +313,7 @@ void QSmf::SMFRead()
 /**
  * Every MIDI file starts with a header
  * In format 1 files, the first track is a tempo map
- * The rest of the file is a series of tracks 
+ * The rest of the file is a series of tracks
  */
 void QSmf::SMFWrite()
 {
@@ -771,11 +771,13 @@ void QSmf::channelMessage(quint8 status, quint8 c1, quint8 c2)
     chan = status & midi_channel_mask;
     if (c1 > 127)
     {
-        SMFError(QString("ChannelMessage: bad c1 = %1").arg(c1));
+        SMFError(QString("ChannelMessage with bad c1 = %1").arg(c1));
+        //c1 &= 127;
     }
     if (c2 > 127)
     {
-        c2 = 127;
+        SMFError(QString("ChannelMessage with bad c2 = %1").arg(c2));
+        //c2 &= 127;
     }
     switch (status & midi_command_mask)
     {
@@ -802,7 +804,7 @@ void QSmf::channelMessage(quint8 status, quint8 c1, quint8 c2)
         emit signalSMFPitchBend(chan, k);
         break;
     default:
-        qWarning("Unknown MIDI status, unhandled event");
+        SMFError(QString("Invalid MIDI status %1. Unhandled event").arg(status));
         break;
     }
 }

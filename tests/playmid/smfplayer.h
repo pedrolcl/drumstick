@@ -1,5 +1,5 @@
 /*
-    SMF GUI Player test using the MIDI Sequencer C++ library 
+    SMF GUI Player test using the MIDI Sequencer C++ library
     Copyright (C) 2006-2009, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
@@ -12,9 +12,9 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #ifndef INCLUDED_SMFPLAYER_H
@@ -46,11 +46,11 @@ const QString QSTR_APPNAME("SMFPlayer");
 class SMFPlayer : public QWidget
 {
     Q_OBJECT
- 
+
 public:
     SMFPlayer(QWidget *parent = 0);
     ~SMFPlayer();
-    
+
     void appendEvent(SequencerEvent* ev);
     void subscribe(const QString& portName);
     void updateTimeLabel(int mins, int secs, int cnts);
@@ -95,7 +95,7 @@ private:
     int m_initialTempo;
     float m_tempoFactor;
     unsigned long m_tick;
-    
+
     QSmf* m_engine;
     MidiClient* m_Client;
     MidiPort* m_Port;
@@ -104,6 +104,7 @@ private:
 
     QString m_subscription;
     QString m_lastDirectory;
+    QString m_loadingMessages;
     Song m_song;
     Ui::SMFPlayerClass ui;
     QPointer<QProgressDialog> m_pd;

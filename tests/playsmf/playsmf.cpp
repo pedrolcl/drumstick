@@ -1,20 +1,20 @@
 /*
-    Standard MIDI File player program 
+    Standard MIDI File player program
     Copyright (C) 2006-2009, Pedro Lopez-Cabanillas <plcl@users.sf.net>
- 
+
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include "playsmf.h"
@@ -23,8 +23,7 @@
 #include <QTextStream>
 #include <QtAlgorithms>
 
-static QTextStream cout(stdout, QIODevice::WriteOnly); 
-static QTextStream cerr(stderr, QIODevice::WriteOnly); 
+static QTextStream cout(stdout, QIODevice::WriteOnly);
 
 /* ********** *
  * Song class
@@ -35,12 +34,12 @@ static inline bool eventLessThan(const SequencerEvent* s1, const SequencerEvent 
     return s1->getTick() < s2->getTick();
 }
 
-void Song::sort() 
+void Song::sort()
 {
     qStableSort(begin(), end(), eventLessThan);
 }
 
-void Song::clear() 
+void Song::clear()
 {
     while (!isEmpty())
         delete takeFirst();
@@ -119,9 +118,9 @@ void PlaySMF::subscribe(const QString& portName)
         qDebug() << "Trying to subscribe to " << portName.toLocal8Bit().data();
         m_Port->subscribeTo(portName);
     } catch (SequencerError& err) {
-        cerr << "SequencerError exception. Error code: " << err.code() 
+        cout << "SequencerError exception. Error code: " << err.code()
         << " (" << err.qstrError() << ")" << endl;
-        cerr << "Location: " << err.location() << endl;
+        cout << "Location: " << err.location() << endl;
         throw err;
     }
 }
@@ -267,18 +266,19 @@ void PlaySMF::tempoEvent(int tempo)
 
 void PlaySMF::errorHandler(const QString& errorStr)
 {
-    cerr << errorStr << endl;
-    exit(1);
+    cout << "*** Warning! " << errorStr
+         << " at file offset " << m_engine->getFilePos()
+         << endl;
 }
 
 void PlaySMF::play(QString fileName)
-{  
+{
     cout << "Reading song: " << fileName << endl;
     cout << "___time ch event__________ data____" << endl;
     m_engine->readFromFile(fileName);
     m_song.sort();
     m_Client->setPoolOutput(100);
-    
+
     QueueTempo firstTempo = m_Queue->getTempo();
     firstTempo.setPPQ(m_division);
     if (m_initialTempo > 0)
@@ -308,9 +308,9 @@ void PlaySMF::play(QString fileName)
         }
         m_Queue->stop();
     } catch (SequencerError& err) {
-        cerr << "SequencerError exception. Error code: " << err.code() 
+        cout << "SequencerError exception. Error code: " << err.code()
         << " (" << err.qstrError() << ")" << endl;
-        cerr << "Location: " << err.location() << endl;
+        cout << "Location: " << err.location() << endl;
         throw err;
     }
 }
