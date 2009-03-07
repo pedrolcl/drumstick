@@ -1,29 +1,33 @@
 /*
-    MIDI Sequencer C++ library 
+    MIDI Sequencer C++ library
     Copyright (C) 2006-2009, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #ifndef DUMPMIDI_H_
 #define DUMPMIDI_H_
 
 /* MidiClient can deliver SequencerEvents with only
- * signals or posting QEvents to the QApplication loop */  
+ * signals or posting QEvents to the QApplication loop */
 #undef USE_QEVENTS
 //#define USE_QEVENTS
+
+/* Tp get timestamped events from ALSA, you need a running queue */
+//#undef WANT_TIMESTAMPS
+#define WANT_TIMESTAMPS
 
 #include <QObject>
 #include <QReadWriteLock>
@@ -58,12 +62,15 @@ public slots:
 protected:
     virtual void customEvent( QEvent *ev );
 #else
-    void sequencerEvent( SequencerEvent* ev ); 
+    void sequencerEvent( SequencerEvent* ev );
 #endif
 
 private:
     MidiClient* m_Client;
     MidiPort* m_Port;
+#ifdef WANT_TIMESTAMPS
+    MidiQueue* m_Queue;
+#endif
     bool m_Stopped;
     QReadWriteLock m_mutex;
 };

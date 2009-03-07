@@ -32,24 +32,30 @@ QDumpMIDI::QDumpMIDI()
     : QObject()
 {
     m_Client = new MidiClient(this);
-    m_Port = new MidiPort(this);
     m_Client->setOpenMode(SND_SEQ_OPEN_DUPLEX);
     m_Client->setBlockMode(false);
     m_Client->open();
     m_Client->setClientName("DumpMIDI");
 #ifndef USE_QEVENTS // using signals instead
-    connect(m_Client, SIGNAL(eventReceived(SequencerEvent*)), SLOT(sequencerEvent(SequencerEvent*)), Qt::DirectConnection);
+    connect( m_Client, SIGNAL(eventReceived(SequencerEvent*)),
+                       SLOT(sequencerEvent(SequencerEvent*)),
+                       Qt::DirectConnection );
 #endif
-
+    m_Port = new MidiPort(this);
     m_Port->setMidiClient(m_Client);
     m_Port->setPortName("DumpMIDI port");
-    m_Port->setCapability(SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE);
-    m_Port->setPortType(SND_SEQ_PORT_TYPE_APPLICATION);
-	//m_Port->setTimestamping(true);
-	//m_Port->setTimestampReal(true);
-	//m_Port->setTimestampQueue(m_Client->getQueue()->getId());
-    connect(m_Port, SIGNAL(subscribed(MidiPort*,Subscription*)), SLOT(subscription(MidiPort*,Subscription*)));
-
+    m_Port->setCapability( SND_SEQ_PORT_CAP_WRITE |
+                           SND_SEQ_PORT_CAP_SUBS_WRITE );
+    m_Port->setPortType( SND_SEQ_PORT_TYPE_APPLICATION |
+                         SND_SEQ_PORT_TYPE_MIDI_GENERIC );
+#ifdef WANT_TIMESTAMPS
+    m_Queue = m_Client->createQueue("DumpMIDI");
+    m_Port->setTimestamping(true);
+    //m_Port->setTimestampReal(true);
+    m_Port->setTimestampQueue(m_Queue->getId());
+#endif
+    connect( m_Port, SIGNAL(subscribed(MidiPort*,Subscription*)),
+                     SLOT(subscription(MidiPort*,Subscription*)));
     m_Port->attach();
     qDebug() << "Trying to subscribe from Announce";
     m_Port->subscribeFromAnnounce();
@@ -83,10 +89,9 @@ QDumpMIDI::stop()
 void
 QDumpMIDI::subscription(MidiPort*, Subscription* subs)
 {
-    qDebug() << "Subscription made from" << subs->getSender()->client << ":" << subs->getSender()->port;
-    //subs->setQueue(m_Client->getQueue()->getId());
-    //subs->setTimeReal(false);
-    //subs->setTimeUpdate(true);
+    qDebug() << "Subscription made from"
+             << subs->getSender()->client << ":"
+             << subs->getSender()->port;
 }
 
 void QDumpMIDI::subscribe(const QString& portName)
@@ -105,15 +110,19 @@ void QDumpMIDI::subscribe(const QString& portName)
 void QDumpMIDI::run()
 {
     cout << "Press Ctrl+C to exit" << endl;
+#ifdef WANT_TIMESTAMPS
+    cout << "___Ticks ";
+#endif
     cout << "Source_ Event_________________ Ch _Data__" << endl;
     try {
 #ifdef USE_QEVENTS
         m_Client->addListener(this);
         m_Client->setEventsEnabled(true);
 #endif
-        m_Client->createQueue();
         m_Client->startSequencerInput();
-        //m_Client->getQueue()->start();
+#ifdef WANT_TIMESTAMPS
+        m_Queue->start();
+#endif
         m_Stopped = false;
         while (!stopped()) {
 #ifdef USE_QEVENTS
@@ -121,7 +130,9 @@ void QDumpMIDI::run()
 #endif
             sleep(1);
         }
-        //m_Client->getQueue()->stop();
+#ifdef WANT_TIMESTAMPS
+        m_Queue->stop();
+#endif
         m_Client->stopSequencerInput();
     } catch (SequencerError& err) {
         cerr << "SequencerError exception. Error code: " << err.code()
@@ -154,6 +165,18 @@ QDumpMIDI::sequencerEvent(SequencerEvent *ev)
 void
 QDumpMIDI::dumpEvent(SequencerEvent* sev)
 {
+#ifdef WANT_TIMESTAMPS
+    cout << qSetFieldWidth(8) << right << sev->getTick();
+    /* More timestamp options:
+    cout << sev->getRealTimeSecs();
+    cout << sev->getRealTimeNanos(); */
+    /* Getting the time from the queue status object;
+    QueueStatus sts = m_Queue->getStatus();
+    cout << qSetFieldWidth(8) << right << sts.getClockTime();
+    cout << sts.getTickTime(); */
+    cout << qSetFieldWidth(0) << " ";
+#endif
+
     cout << qSetFieldWidth(3) << right << sev->getSourceClient() << qSetFieldWidth(0) << ":";
     cout << qSetFieldWidth(3) << left << sev->getSourcePort() << qSetFieldWidth(0) << " ";
 
@@ -330,24 +353,24 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     case SND_SEQ_EVENT_CLIENT_START: {
         ClientEvent* e = dynamic_cast<ClientEvent*>(sev);
         if (e != NULL) {
-            cout << qSetFieldWidth(26) << left << "Client start" << qSetFieldWidth(0);
-            cout << e->getClient();
+            cout << qSetFieldWidth(26) << left << "Client start"
+                 << qSetFieldWidth(0) << e->getClient();
         }
         break;
     }
     case SND_SEQ_EVENT_CLIENT_EXIT: {
         ClientEvent* e = dynamic_cast<ClientEvent*>(sev);
         if (e != NULL) {
-            cout << qSetFieldWidth(26) << left << "Client exit" << qSetFieldWidth(0);
-            cout << e->getClient();
+            cout << qSetFieldWidth(26) << left << "Client exit"
+                 << qSetFieldWidth(0) << e->getClient();
         }
         break;
     }
     case SND_SEQ_EVENT_CLIENT_CHANGE: {
         ClientEvent* e = dynamic_cast<ClientEvent*>(sev);
         if (e != NULL) {
-            cout << qSetFieldWidth(26) << left << "Client changed" << qSetFieldWidth(0);
-            cout << e->getClient();
+            cout << qSetFieldWidth(26) << left << "Client changed"
+                 << qSetFieldWidth(0) << e->getClient();
         }
         break;
     }
@@ -409,9 +432,6 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
         cout << qSetFieldWidth(26) << "Unknown event type" << qSetFieldWidth(0);
         cout << sev->getSequencerType();
     };
-    //cout << qSetFieldWidth(8) << right << sev->getTick();
-    //cout << qSetFieldWidth(8) << right << sev->getRealTimeSecs();
-    //cout << qSetFieldWidth(12) << right << sev->getRealTimeNanos();
     cout << qSetFieldWidth(0) << endl;
 }
 
@@ -432,8 +452,7 @@ int main(int argc, char **argv)
     test = new QDumpMIDI();
     signal(SIGINT, signalHandler);
     signal(SIGTERM, signalHandler);
-    if (argc > 1)
-    {
+    if (argc > 1) {
         QString portName(argv[1]);
         test->subscribe(portName);
     }
