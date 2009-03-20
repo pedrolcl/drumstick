@@ -1,47 +1,47 @@
 /*
-    MIDI Sequencer C++ library 
+    MIDI Sequencer C++ library
     Copyright (C) 2006-2009, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include "event.h"
- 
-namespace ALSA 
+
+namespace ALSA
 {
-namespace Sequencer 
+namespace Sequencer
 {
 
 SequencerEvent::SequencerEvent() : QEvent(SequencerEventType)
 {
-    snd_seq_ev_clear( &m_event ); 
+    snd_seq_ev_clear( &m_event );
 }
 
 SequencerEvent::SequencerEvent(snd_seq_event_t* event) : QEvent(SequencerEventType)
 {
-    snd_seq_ev_clear( &m_event ); 
+    snd_seq_ev_clear( &m_event );
     m_event = *event;
 }
 
 SequencerEvent::SequencerEvent(const SequencerEvent& other) : QEvent(SequencerEventType)
 {
-    snd_seq_ev_clear( &m_event );  
+    snd_seq_ev_clear( &m_event );
     m_event = other.m_event;
 }
 
-SequencerEvent& 
+SequencerEvent&
 SequencerEvent::operator=(const SequencerEvent& other)
 {
     m_event = other.m_event;
@@ -49,22 +49,22 @@ SequencerEvent::operator=(const SequencerEvent& other)
 }
 
 bool SequencerEvent::isSubscription() const
-{   
-    return (m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED || 
+{
+    return (m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED ||
             m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED );
 }
 
 bool SequencerEvent::isPort() const
 {
-    return (m_event.type == SND_SEQ_EVENT_PORT_START || 
-            m_event.type == SND_SEQ_EVENT_PORT_EXIT || 
+    return (m_event.type == SND_SEQ_EVENT_PORT_START ||
+            m_event.type == SND_SEQ_EVENT_PORT_EXIT ||
             m_event.type == SND_SEQ_EVENT_PORT_CHANGE );
 }
 
-bool SequencerEvent::isClient() const  
-{   
-    return (m_event.type == SND_SEQ_EVENT_CLIENT_START || 
-            m_event.type == SND_SEQ_EVENT_CLIENT_EXIT || 
+bool SequencerEvent::isClient() const
+{
+    return (m_event.type == SND_SEQ_EVENT_CLIENT_START ||
+            m_event.type == SND_SEQ_EVENT_CLIENT_EXIT ||
             m_event.type == SND_SEQ_EVENT_CLIENT_CHANGE );
 }
 
@@ -130,11 +130,11 @@ void SequencerEvent::setPriority(bool high)
 
 void SequencerEvent::setTag(int aTag)
 {
-#if SND_LIB_SUBMINOR > 8     
+#if SND_LIB_SUBMINOR > 8
     snd_seq_ev_set_tag(&m_event, aTag);
 #else
-    m_event.tag = aTag; 
-#endif    
+    m_event.tag = aTag;
+#endif
 }
 
 void SequencerEvent::free()
@@ -144,7 +144,7 @@ void SequencerEvent::free()
 
 int SequencerEvent::getEncodedLength()
 {
-    return snd_seq_event_length(&m_event);       
+    return snd_seq_event_length(&m_event);
 }
 
 NoteEvent::NoteEvent(int ch, int key, int vel, int dur) : KeyEvent()
@@ -187,37 +187,37 @@ ChanPressEvent::ChanPressEvent(int ch, int val) : ChannelEvent()
     snd_seq_ev_set_chanpress(&m_event, ch, val);
 }
 
-VariableEvent::VariableEvent() 
-    : SequencerEvent() 
-{ 
+VariableEvent::VariableEvent()
+    : SequencerEvent()
+{
     m_data.clear();
-    snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );  
+    snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );
 }
 
-VariableEvent::VariableEvent(snd_seq_event_t* event) 
-    : SequencerEvent() 
+VariableEvent::VariableEvent(snd_seq_event_t* event)
+    : SequencerEvent(event)
 {
     m_data = QByteArray((char *) event->data.ext.ptr,
                         event->data.ext.len);
-    snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );  
+    snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );
 }
 
 VariableEvent::VariableEvent(const QByteArray& data)
-    : SequencerEvent() 
+    : SequencerEvent()
 {
     m_data = data;
-    snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );  
+    snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );
 }
 
-VariableEvent::VariableEvent(const VariableEvent& other) 
-    : SequencerEvent() 
+VariableEvent::VariableEvent(const VariableEvent& other)
+    : SequencerEvent()
 {
     m_data = other.m_data;
-    snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );  
+    snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );
 }
 
-VariableEvent::VariableEvent(const unsigned int datalen, char* dataptr) 
-    : SequencerEvent() 
+VariableEvent::VariableEvent(const unsigned int datalen, char* dataptr)
+    : SequencerEvent()
 {
     m_data = QByteArray(dataptr, datalen);
     snd_seq_ev_set_variable( &m_event, m_data.size(), m_data.data() );
@@ -227,7 +227,7 @@ VariableEvent& VariableEvent::operator=(const VariableEvent& other)
 {
     m_event = other.m_event;
     m_data = other.m_data;
-    snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );  
+    snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );
     return *this;
 }
 
@@ -255,7 +255,7 @@ SysExEvent::SysExEvent(const SysExEvent& other)
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
 }
 
-SysExEvent::SysExEvent(const unsigned int datalen, char* dataptr) 
+SysExEvent::SysExEvent(const unsigned int datalen, char* dataptr)
     : VariableEvent( datalen, dataptr )
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
@@ -267,7 +267,8 @@ SystemEvent::SystemEvent(int statusByte) : SequencerEvent()
     setSequencerType(statusByte);
 }
 
-QueueControlEvent::QueueControlEvent(int type, int queue, int value) : SequencerEvent()
+QueueControlEvent::QueueControlEvent(int type, int queue, int value)
+    : SequencerEvent()
 {
     snd_seq_ev_set_queue_control(&m_event, type, queue, value);
 }
@@ -290,12 +291,12 @@ TempoEvent::TempoEvent(int queue, int tempo) : QueueControlEvent()
 
 RemoveEvents::RemoveEvents()
 {
-    snd_seq_remove_events_malloc(&m_Info);    
+    snd_seq_remove_events_malloc(&m_Info);
 }
 
 RemoveEvents::RemoveEvents(const RemoveEvents& other)
 {
-    snd_seq_remove_events_malloc(&m_Info);    
+    snd_seq_remove_events_malloc(&m_Info);
     snd_seq_remove_events_copy(m_Info, other.m_Info);
 }
 
@@ -307,65 +308,65 @@ RemoveEvents::RemoveEvents(snd_seq_remove_events_t* other)
 
 RemoveEvents::~RemoveEvents()
 {
-    snd_seq_remove_events_free(m_Info);    
+    snd_seq_remove_events_free(m_Info);
 }
 
-RemoveEvents* 
+RemoveEvents*
 RemoveEvents::clone()
 {
     return new RemoveEvents(m_Info);
 }
 
-RemoveEvents& 
+RemoveEvents&
 RemoveEvents::operator=(const RemoveEvents& other)
 {
     snd_seq_remove_events_copy(m_Info, other.m_Info);
     return *this;
 }
 
-int 
+int
 RemoveEvents::getSizeOfInfo() const
 {
     return snd_seq_remove_events_sizeof();
 }
 
-int 
+int
 RemoveEvents::getChannel()
 {
     return snd_seq_remove_events_get_channel(m_Info);
 }
 
-unsigned int 
+unsigned int
 RemoveEvents::getCondition()
 {
     return snd_seq_remove_events_get_condition(m_Info);
 }
 
-const snd_seq_addr_t* 
+const snd_seq_addr_t*
 RemoveEvents::getDest()
 {
     return snd_seq_remove_events_get_dest(m_Info);
 }
 
-int 
+int
 RemoveEvents::getEventType()
 {
     return snd_seq_remove_events_get_event_type(m_Info);
 }
 
-int 
+int
 RemoveEvents::getQueue()
 {
     return snd_seq_remove_events_get_queue(m_Info);
 }
 
-int 
+int
 RemoveEvents::getTag()
 {
     return snd_seq_remove_events_get_tag(m_Info);
 }
 
-const snd_seq_timestamp_t* 
+const snd_seq_timestamp_t*
 RemoveEvents::getTime()
 {
     return snd_seq_remove_events_get_time(m_Info);
