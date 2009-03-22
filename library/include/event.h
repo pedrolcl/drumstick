@@ -1,5 +1,5 @@
 /*
-    MIDI Sequencer C++ library 
+    MIDI Sequencer C++ library
     Copyright (C) 2006-2009, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
@@ -12,20 +12,20 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
- 
+
 #ifndef INCLUDED_EVENT_H
 #define INCLUDED_EVENT_H
 
 #include "commons.h"
 #include <QEvent>
 
-namespace ALSA 
+namespace ALSA
 {
-namespace Sequencer 
+namespace Sequencer
 {
 
 const QEvent::Type SequencerEventType = QEvent::Type(QEvent::User + 4154); // :-)
@@ -81,21 +81,21 @@ public:
     ChannelEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
 
     void setChannel(const MidiByte c) { m_event.data.note.channel = (c & 0xf); }
-    int getChannel() { return m_event.data.note.channel; }
+    int getChannel() const { return m_event.data.note.channel; }
 };
-  
+
 class KeyEvent : public ChannelEvent
 {
 public:
     KeyEvent() : ChannelEvent() {}
     KeyEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
 
-    int getKey()  const { return m_event.data.note.note; }
+    int getKey() const { return m_event.data.note.note; }
     void setKey(const MidiByte b) { m_event.data.note.note = b; }
     int getVelocity() const { return m_event.data.note.velocity; }
     void setVelocity(const MidiByte b) { m_event.data.note.velocity = b; }
-};   
-  
+};
+
 class NoteEvent : public KeyEvent
 {
 public:
@@ -107,8 +107,8 @@ public:
     void setDuration(const ulong d) { m_event.data.note.duration = d; }
     CLONE_EVENT_DECLARATION(NoteEvent)
 };
-  
-class NoteOnEvent : public KeyEvent 
+
+class NoteOnEvent : public KeyEvent
 {
 public:
     NoteOnEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_NOTEON; }
@@ -116,8 +116,8 @@ public:
     NoteOnEvent(const int ch, const int key, const int vel);
     CLONE_EVENT_DECLARATION(NoteOnEvent)
 };
-  
-class NoteOffEvent : public KeyEvent 
+
+class NoteOffEvent : public KeyEvent
 {
 public:
     NoteOffEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_NOTEOFF; }
@@ -125,8 +125,8 @@ public:
     NoteOffEvent(const int ch, const int key, const int vel);
     CLONE_EVENT_DECLARATION(NoteOffEvent)
 };
-  
-class KeyPressEvent : public KeyEvent 
+
+class KeyPressEvent : public KeyEvent
 {
 public:
     KeyPressEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_KEYPRESS; }
@@ -134,7 +134,7 @@ public:
     KeyPressEvent(const int ch, const int key, const int vel);
     CLONE_EVENT_DECLARATION(KeyPressEvent)
 };
-  
+
 class ControllerEvent : public ChannelEvent
 {
 public:
@@ -148,7 +148,7 @@ public:
     void setValue( const int v ) { m_event.data.control.value = v; }
     CLONE_EVENT_DECLARATION(ControllerEvent)
 };
-  
+
 class ProgramChangeEvent : public ChannelEvent
 {
 public:
@@ -160,7 +160,7 @@ public:
     void setValue( const int v ) { m_event.data.control.value = v; }
     CLONE_EVENT_DECLARATION(ProgramChangeEvent)
 };
-  
+
 class PitchBendEvent : public ChannelEvent
 {
 public:
@@ -172,7 +172,7 @@ public:
     void setValue( const int v ) { m_event.data.control.value = v; }
     CLONE_EVENT_DECLARATION(PitchBendEvent)
 };
-  
+
 class ChanPressEvent : public ChannelEvent
 {
 public:
@@ -184,10 +184,10 @@ public:
     void setValue( const int v ) { m_event.data.control.value = v; }
     CLONE_EVENT_DECLARATION(ChanPressEvent)
 };
-  
+
 class VariableEvent : public SequencerEvent
 {
-public:    
+public:
     VariableEvent();
     VariableEvent(snd_seq_event_t* event);
     VariableEvent(const QByteArray& data);
@@ -197,8 +197,8 @@ public:
     unsigned int getLength() const { return m_event.data.ext.len; }
     const char* getData() const { return static_cast<const char*>(m_event.data.ext.ptr); }
     CLONE_EVENT_DECLARATION(VariableEvent)
-protected:    
-    QByteArray m_data;    
+protected:
+    QByteArray m_data;
 };
 
 class SysExEvent : public VariableEvent
@@ -241,7 +241,7 @@ public:
     void setSkewValue(const uint val) {m_event.data.queue.param.skew.value = val; }
     CLONE_EVENT_DECLARATION(QueueControlEvent)
 };
-  
+
 class ValueEvent : public SequencerEvent
 {
 public:
@@ -304,7 +304,7 @@ public:
 public:
     RemoveEvents();
     RemoveEvents(const RemoveEvents& other);
-    RemoveEvents(snd_seq_remove_events_t* other); 
+    RemoveEvents(snd_seq_remove_events_t* other);
     virtual ~RemoveEvents();
     RemoveEvents* clone();
     RemoveEvents& operator=(const RemoveEvents& other);
@@ -335,7 +335,7 @@ class MIDICodec : public QObject
 public:
     MIDICodec(int bufsize, QObject* parent = 0);
     ~MIDICodec();
-    
+
     void init();
     long decode(unsigned char *buf,
                 long count,
