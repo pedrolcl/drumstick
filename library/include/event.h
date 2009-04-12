@@ -212,6 +212,21 @@ public:
     CLONE_EVENT_DECLARATION(SysExEvent)
 };
 
+class TextEvent : public VariableEvent
+{
+public:
+    TextEvent();
+    TextEvent(snd_seq_event_t* event);
+    TextEvent(const QString& text, const int textType = 1);
+    TextEvent(const TextEvent& other);
+    TextEvent(const unsigned int datalen, char* dataptr);
+    QString getText() const;
+    int getTextType() const;
+    CLONE_EVENT_DECLARATION(TextEvent)
+protected:
+    int m_textType;
+};
+
 class SystemEvent : public SequencerEvent
 {
 public:

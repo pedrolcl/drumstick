@@ -244,13 +244,13 @@ SysExEvent::SysExEvent(snd_seq_event_t* event)
 }
 
 SysExEvent::SysExEvent(const QByteArray& data)
-    : VariableEvent( data )
+    : VariableEvent(data)
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
 }
 
 SysExEvent::SysExEvent(const SysExEvent& other)
-    : VariableEvent( other )
+    : VariableEvent(other)
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
 }
@@ -259,6 +259,47 @@ SysExEvent::SysExEvent(const unsigned int datalen, char* dataptr)
     : VariableEvent( datalen, dataptr )
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
+}
+
+TextEvent::TextEvent()
+    : VariableEvent(), m_textType(1)
+{
+    setSequencerType(SND_SEQ_EVENT_USR_VAR0);
+}
+
+TextEvent::TextEvent(snd_seq_event_t* event)
+    : VariableEvent(event), m_textType(1)
+{
+    setSequencerType(SND_SEQ_EVENT_USR_VAR0);
+}
+
+TextEvent::TextEvent(const QString& text, const int textType)
+    : VariableEvent(text.toAscii()), m_textType(textType)
+{
+    setSequencerType(SND_SEQ_EVENT_USR_VAR0);
+}
+
+TextEvent::TextEvent(const TextEvent& other)
+    : VariableEvent(other)
+{
+    setSequencerType(SND_SEQ_EVENT_USR_VAR0);
+    m_textType = other.getTextType();
+}
+
+TextEvent::TextEvent(const unsigned int datalen, char* dataptr)
+    : VariableEvent(datalen, dataptr), m_textType(1)
+{
+    setSequencerType(SND_SEQ_EVENT_USR_VAR0);
+}
+
+QString TextEvent::getText() const
+{
+    return QString::fromAscii(m_data.data(), m_data.size());
+}
+
+int TextEvent::getTextType() const
+{
+    return m_textType;
 }
 
 SystemEvent::SystemEvent(int statusByte) : SequencerEvent()

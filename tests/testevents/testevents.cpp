@@ -1,20 +1,20 @@
 /*
-    MIDI Sequencer C++ library 
+    MIDI Sequencer C++ library
     Copyright (C) 2006-2009, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include "testevents.h"
@@ -23,7 +23,7 @@
 #include <QApplication>
 #include <QTextStream>
 
-static QTextStream cout(stdout, QIODevice::WriteOnly); 
+static QTextStream cout(stdout, QIODevice::WriteOnly);
 
 void QTestEvents::dumpEvent(SequencerEvent* sev)
 {
@@ -178,37 +178,37 @@ void QTestEvents::dumpEvent(SequencerEvent* sev)
         cout << left << "Active Sensing";
         break;
     case SND_SEQ_EVENT_CLIENT_START: {
-        ClientEvent* e = dynamic_cast<ClientEvent*>(sev); 
+        ClientEvent* e = dynamic_cast<ClientEvent*>(sev);
         cout << qSetFieldWidth(26) << left << "Client start";
         cout << qSetFieldWidth(0) << e->getClient();
         break;
     }
     case SND_SEQ_EVENT_CLIENT_EXIT: {
-        ClientEvent* e = dynamic_cast<ClientEvent*>(sev); 
+        ClientEvent* e = dynamic_cast<ClientEvent*>(sev);
         cout << qSetFieldWidth(26) << left << "Client exit";
         cout << qSetFieldWidth(0) << e->getClient();
         break;
     }
     case SND_SEQ_EVENT_CLIENT_CHANGE: {
-        ClientEvent* e = dynamic_cast<ClientEvent*>(sev); 
+        ClientEvent* e = dynamic_cast<ClientEvent*>(sev);
         cout << qSetFieldWidth(26) << left << "Client changed";
         cout << qSetFieldWidth(0) << e->getClient();
         break;
     }
     case SND_SEQ_EVENT_PORT_START: {
-        PortEvent* e = dynamic_cast<PortEvent*>(sev); 
+        PortEvent* e = dynamic_cast<PortEvent*>(sev);
         cout << qSetFieldWidth(26) << left << "Port start";
         cout << qSetFieldWidth(0) << e->getClient() << ":" << e->getPort();
         break;
     }
     case SND_SEQ_EVENT_PORT_EXIT: {
-        PortEvent* e = dynamic_cast<PortEvent*>(sev); 
+        PortEvent* e = dynamic_cast<PortEvent*>(sev);
         cout << qSetFieldWidth(26) << left << "Port exit";
         cout << qSetFieldWidth(0) << e->getClient() << ":" << e->getPort();
         break;
     }
     case SND_SEQ_EVENT_PORT_CHANGE: {
-        PortEvent* e = dynamic_cast<PortEvent*>(sev); 
+        PortEvent* e = dynamic_cast<PortEvent*>(sev);
         cout << qSetFieldWidth(26) << left << "Port changed";
         cout << qSetFieldWidth(0) << e->getClient() << ":" << e->getPort();
         break;
@@ -237,6 +237,12 @@ void QTestEvents::dumpEvent(SequencerEvent* sev)
         cout << dec;
         break;
     }
+    case SND_SEQ_EVENT_USR_VAR0: {
+        TextEvent* e = dynamic_cast<TextEvent*>(sev);
+        cout << qSetFieldWidth(0) << left << "Text (";
+        cout << e->getTextType() << ") " << e->getText();
+        break;
+    }
     default:
         cout << qSetFieldWidth(26) << "Unknown event type";
         cout << qSetFieldWidth(0) << sev->getSequencerType();
@@ -257,6 +263,9 @@ void QTestEvents::run()
     dumpEvent(new PitchBendEvent(7, 1234));
     char sysex[] = {0xf0, 0x41, 0x10, 0x42, 0x12, 0x40, 0, 0x7f, 0, 0x41, 0xf7};
     dumpEvent(new SysExEvent(QByteArray(sysex, sizeof(sysex))));
+    QString text = "This can be a copyright, song name, instrument, lyric...";
+    TextEvent te(text, 3);
+    dumpEvent(new TextEvent(te));
 }
 
 int main(int argc, char **argv)
