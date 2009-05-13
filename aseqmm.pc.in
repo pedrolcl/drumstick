@@ -8,5 +8,5 @@ Version: @VERSION@
 Description: MIDI Sequencer C++ Library Bindings for ALSA and Qt4
 URL: http://sourceforge.net/projects/kmetronome
 Requires: alsa >= 1.0.0, QtCore >= 4.3.0, QtGui >= 4.3.0 
-Libs: -L${libdir} -laseqmm
+Libs: -L${libdir} -laseqmm -lQtCore
 Cflags: -I${includedir}
