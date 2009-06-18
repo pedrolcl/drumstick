@@ -365,7 +365,7 @@ void SMFPlayer::tempoReset()
 
 void SMFPlayer::tempoSlider(int value)
 {
-    m_tempoFactor = value / 100.0;
+    m_tempoFactor = (value*value + 100.0*value + 20000.0) / 40000.0;
     QueueTempo qtempo = m_Queue->getTempo();
     qtempo.setTempoFactor(m_tempoFactor);
     m_Queue->setTempo(qtempo);
@@ -374,7 +374,7 @@ void SMFPlayer::tempoSlider(int value)
         updateTempoLabel(qtempo.getRealBPM());
     }
     // Slider tooltip
-    QString tip = QString("%1\%").arg(value);
+    QString tip = QString("%1\%").arg(m_tempoFactor*100.0, 0, 'f', 0);
     ui.sliderTempo->setToolTip(tip);
     QToolTip::showText(QCursor::pos(), tip, this);
 }

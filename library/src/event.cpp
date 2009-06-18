@@ -85,12 +85,12 @@ void SequencerEvent::setSequencerType(uchar eventType)
     m_event.type = eventType;
 }
 
-void SequencerEvent::setDestination(int client, int port)
+void SequencerEvent::setDestination(const unsigned char client, const unsigned char port)
 {
     snd_seq_ev_set_dest(&m_event, client, port);
 }
 
-void SequencerEvent::setSource(int port)
+void SequencerEvent::setSource(const unsigned char port)
 {
     snd_seq_ev_set_source(&m_event, port);
 }
@@ -123,12 +123,12 @@ void SequencerEvent::scheduleReal(int queue, ulong secs, ulong nanos, bool relat
     snd_seq_ev_schedule_real(&m_event, queue, relative, &rtime);
 }
 
-void SequencerEvent::setPriority(bool high)
+void SequencerEvent::setPriority(const bool high)
 {
     snd_seq_ev_set_priority(&m_event, high);
 }
 
-void SequencerEvent::setTag(int aTag)
+void SequencerEvent::setTag(const unsigned char aTag)
 {
 #if SND_LIB_SUBMINOR > 8
     snd_seq_ev_set_tag(&m_event, aTag);

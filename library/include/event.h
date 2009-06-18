@@ -47,10 +47,10 @@ public:
     bool isConnectionChange() const;
     void setSequencerType(const snd_seq_event_type_t eventType);
     snd_seq_event_type_t getSequencerType() const { return m_event.type; }
-    void setDestination(const int client, const int port);
-    void setSource(const int port);
-    int getSourceClient() const { return m_event.source.client; }
-    int getSourcePort() const { return m_event.source.port; }
+    void setDestination(const unsigned char client, const unsigned char port);
+    void setSource(const unsigned char port);
+    unsigned char getSourceClient() const { return m_event.source.client; }
+    unsigned char getSourcePort() const { return m_event.source.port; }
     snd_seq_tick_time_t getTick() const { return m_event.time.tick; }
     unsigned int getRealTimeSecs() const { return m_event.time.time.tv_sec; }
     unsigned int getRealTimeNanos() const { return m_event.time.time.tv_nsec; }
@@ -60,8 +60,8 @@ public:
     void scheduleTick(const int queue, const int tick, const bool relative);
     void scheduleReal(const int queue, const ulong secs, const ulong nanos, const bool relative);
     void setPriority(const bool high);
-    int getTag() const { return m_event.tag; }
-    void setTag(const int aTag);
+    unsigned char getTag() const { return m_event.tag; }
+    void setTag(const unsigned char aTag);
     snd_seq_event_t* getHandle() { return &m_event; }
     int getEncodedLength();
     CLONE_EVENT_DECLARATION(SequencerEvent);
