@@ -233,6 +233,10 @@ public:
     SystemEvent() : SequencerEvent() {}
     SystemEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
     SystemEvent(const int statusByte);
+    unsigned int getRaw32(const unsigned int n) const;
+    void setRaw32(const unsigned int n, const unsigned int value);
+    unsigned char getRaw8(const unsigned int n) const;
+    void setRaw8(const unsigned int n, const unsigned char value);
     CLONE_EVENT_DECLARATION(SystemEvent)
 };
 

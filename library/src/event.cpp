@@ -308,6 +308,28 @@ SystemEvent::SystemEvent(int statusByte) : SequencerEvent()
     setSequencerType(statusByte);
 }
 
+unsigned int SystemEvent::getRaw32(const unsigned int n) const
+{
+    if (n < 3) return m_event.data.raw32.d[n];
+    return 0;
+}
+
+void SystemEvent::setRaw32(const unsigned int n, const unsigned int value)
+{
+    if (n < 3) m_event.data.raw32.d[n] = value;
+}
+
+unsigned char SystemEvent::getRaw8(const unsigned int n) const
+{
+    if (n < 12) return m_event.data.raw8.d[n];
+    return 0;
+}
+
+void SystemEvent::setRaw8(const unsigned int n, const unsigned char value)
+{
+    if (n < 12) m_event.data.raw8.d[n] = value;
+}
+
 QueueControlEvent::QueueControlEvent(int type, int queue, int value)
     : SequencerEvent()
 {

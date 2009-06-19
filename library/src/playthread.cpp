@@ -1,5 +1,5 @@
 /*
-    MIDI Sequencer C++ library 
+    MIDI Sequencer C++ library
     Copyright (C) 2006-2009, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
@@ -12,9 +12,9 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include "commons.h"
@@ -23,14 +23,14 @@
 #include "queue.h"
 #include "event.h"
 
-namespace ALSA 
+namespace ALSA
 {
-namespace Sequencer 
+namespace Sequencer
 {
 
 const int TIMEOUT = 100;
 
-SequencerOutputThread::SequencerOutputThread(MidiClient *seq, int portId) 
+SequencerOutputThread::SequencerOutputThread(MidiClient *seq, int portId)
     : QThread(),
     m_MidiClient(seq),
     m_Queue(0),
@@ -46,18 +46,18 @@ SequencerOutputThread::SequencerOutputThread(MidiClient *seq, int portId)
     }
 }
 
-bool 
-SequencerOutputThread::stopped() 
-{ 
+bool
+SequencerOutputThread::stopped()
+{
     m_mutex.lockForRead();
     bool bTmp = m_Stopped;
     m_mutex.unlock();
     return  bTmp;
 }
 
-void 
-SequencerOutputThread::stop() 
-{ 
+void
+SequencerOutputThread::stop()
+{
     m_mutex.lockForWrite();
     m_Stopped = true;
     m_mutex.unlock();
@@ -75,11 +75,11 @@ SequencerOutputThread::sendEchoEvent(int tick)
     }
 }
 
-void 
+void
 SequencerOutputThread::sendSongEvent(SequencerEvent* ev)
 {
-    if (m_MidiClient != NULL) {    
-        while ((snd_seq_event_output_direct(m_MidiClient->getHandle(), ev->getHandle()) < 0) 
+    if (m_MidiClient != NULL) {
+        while ((snd_seq_event_output_direct(m_MidiClient->getHandle(), ev->getHandle()) < 0)
                 && !stopped())
             poll(m_pfds, m_npfds, TIMEOUT);
     }
@@ -89,7 +89,7 @@ void
 SequencerOutputThread::drainOutput()
 {
     if (m_MidiClient != NULL) {
-        while ((snd_seq_drain_output(m_MidiClient->getHandle()) < 0) 
+        while ((snd_seq_drain_output(m_MidiClient->getHandle()) < 0)
                 && !stopped())
             poll(m_pfds, m_npfds, TIMEOUT);
     }
@@ -98,8 +98,8 @@ SequencerOutputThread::drainOutput()
 void
 SequencerOutputThread::syncOutput()
 {
-    if (m_MidiClient != NULL) {    
-        QueueStatus status = m_Queue->getStatus(); 
+    if (m_MidiClient != NULL) {
+        QueueStatus status = m_Queue->getStatus();
         while ((status.getEvents() > 0) && !stopped()) {
            usleep(TIMEOUT*1000);
            status = m_Queue->getStatus();
@@ -111,7 +111,7 @@ void
 SequencerOutputThread::shutupSound()
 {
     int channel;
-    if (m_MidiClient != NULL) {    
+    if (m_MidiClient != NULL) {
         for (channel = 0; channel < 16; ++channel) {
             ControllerEvent ev(channel, MIDI_CTL_ALL_SOUNDS_OFF, 0);
             ev.setSource(m_PortId);
@@ -147,7 +147,8 @@ void SequencerOutputThread::run()
                         sendEchoEvent(last_tick);
                     }
                 }
-                sendSongEvent(ev);
+                if (!ev->isConnectionChange())
+                    sendSongEvent(ev);
             }
             if (stopped()) {
                 m_Queue->clear();
