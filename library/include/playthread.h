@@ -44,18 +44,18 @@ public:
     virtual unsigned int getEchoResolution() { return 0; }
     virtual bool hasNext() = 0; /* to be reimplemented */
     virtual SequencerEvent* nextEvent() = 0; /* to be reimplemented */
-    bool stopped();
-    void stop();
+    virtual bool stopped();
+    virtual void stop();
 
 signals:
     void finished();
 
 protected:
-    void shutupSound();
-    void sendEchoEvent(int tick);
-    void sendSongEvent(SequencerEvent* ev);
-    void drainOutput();
-    void syncOutput();
+    virtual void shutupSound();
+    virtual void sendEchoEvent(int tick);
+    virtual void sendSongEvent(SequencerEvent* ev);
+    virtual void drainOutput();
+    virtual void syncOutput();
 
     MidiClient *m_MidiClient;
     MidiQueue *m_Queue;
