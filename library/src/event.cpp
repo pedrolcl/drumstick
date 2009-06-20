@@ -137,6 +137,28 @@ void SequencerEvent::setTag(const unsigned char aTag)
 #endif
 }
 
+unsigned int SequencerEvent::getRaw32(const unsigned int n) const
+{
+    if (n < 3) return m_event.data.raw32.d[n];
+    return 0;
+}
+
+void SequencerEvent::setRaw32(const unsigned int n, const unsigned int value)
+{
+    if (n < 3) m_event.data.raw32.d[n] = value;
+}
+
+unsigned char SequencerEvent::getRaw8(const unsigned int n) const
+{
+    if (n < 12) return m_event.data.raw8.d[n];
+    return 0;
+}
+
+void SequencerEvent::setRaw8(const unsigned int n, const unsigned char value)
+{
+    if (n < 12) m_event.data.raw8.d[n] = value;
+}
+
 void SequencerEvent::free()
 {
     snd_seq_free_event(&m_event);
@@ -306,28 +328,6 @@ SystemEvent::SystemEvent(int statusByte) : SequencerEvent()
 {
     snd_seq_ev_set_fixed(&m_event);
     setSequencerType(statusByte);
-}
-
-unsigned int SystemEvent::getRaw32(const unsigned int n) const
-{
-    if (n < 3) return m_event.data.raw32.d[n];
-    return 0;
-}
-
-void SystemEvent::setRaw32(const unsigned int n, const unsigned int value)
-{
-    if (n < 3) m_event.data.raw32.d[n] = value;
-}
-
-unsigned char SystemEvent::getRaw8(const unsigned int n) const
-{
-    if (n < 12) return m_event.data.raw8.d[n];
-    return 0;
-}
-
-void SystemEvent::setRaw8(const unsigned int n, const unsigned char value)
-{
-    if (n < 12) m_event.data.raw8.d[n] = value;
 }
 
 QueueControlEvent::QueueControlEvent(int type, int queue, int value)
