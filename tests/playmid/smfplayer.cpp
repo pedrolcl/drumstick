@@ -210,13 +210,12 @@ void SMFPlayer::openFile(const QString& fileName)
 
 void SMFPlayer::open()
 {
-    QFileDialog dlg(this, "Open MIDI File", m_lastDirectory,
-        "MIDI Files (*.mid *.midi);;Karaoke files (*.kar);;All files (*.*)");
-    if (dlg.exec())
-    {
+    QString fileName = QFileDialog::getOpenFileName(this,
+          "Open MIDI File", m_lastDirectory,
+          "MIDI Files (*.mid *.midi);;Karaoke files (*.kar);;All files (*.*)");
+    if (! fileName.isEmpty() ) {
         stop();
-        QStringList fileNames = dlg.selectedFiles();
-        openFile(fileNames.takeFirst());
+        openFile(fileName);
     }
 }
 
