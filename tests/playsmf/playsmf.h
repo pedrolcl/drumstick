@@ -26,13 +26,13 @@
 #include <QReadWriteLock>
 
 #include "qsmf.h"
-#include "event.h"
-#include "client.h"
-#include "queue.h"
-#include "port.h"
+#include "alsaevent.h"
+#include "alsaclient.h"
+#include "alsaqueue.h"
+#include "alsaport.h"
 
-using namespace MIDI::Utils;
-using namespace ALSA::Sequencer;
+USE_MIDIUTIL_NAMESPACE
+USE_ALSASEQ_NAMESPACE
 
 class Song : public QList<SequencerEvent*>
 {

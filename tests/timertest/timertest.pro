@@ -4,4 +4,5 @@ INCLUDEPATH += . ../../library/include
 DEPENDPATH += . ../../library ../../library/include
 LIBS = -L../../library -laseqmm  -lasound
 # Input
-SOURCES += timertest.cpp
+HEADERS = timertest.h
+SOURCES = timertest.cpp

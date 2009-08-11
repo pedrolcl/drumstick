@@ -17,21 +17,19 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef INCLUDED_CLIENT_H
-#define INCLUDED_CLIENT_H
+#ifndef INCLUDED_ALSACLIENT_H
+#define INCLUDED_ALSACLIENT_H
 
-#include "commons.h"
-#include "port.h"
+#include "aseqmmcommon.h"
+#include "alsaport.h"
+
 #include <QObject>
 #include <QPointer>
 #include <QList>
 #include <QThread>
 #include <QReadWriteLock>
 
-namespace ALSA
-{
-namespace Sequencer
-{
+BEGIN_ALSASEQ_NAMESPACE
 
 class MidiQueue;
 class MidiClient;
@@ -301,7 +299,6 @@ private:
     PoolInfo m_poolInfo;
 };
 
-}
-}
+END_ALSASEQ_NAMESPACE
 
-#endif //INCLUDED_CLIENT_H
+#endif //INCLUDED_ALSACLIENT_H

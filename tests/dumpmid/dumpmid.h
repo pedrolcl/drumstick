@@ -32,14 +32,13 @@
 #include <QObject>
 #include <QReadWriteLock>
 
-#include "commons.h"
-#include "event.h"
-#include "client.h"
-#include "port.h"
-#include "queue.h"
+#include "alsaevent.h"
+#include "alsaclient.h"
+#include "alsaport.h"
+#include "alsaqueue.h"
 #include "subscription.h"
 
-using namespace ALSA::Sequencer;
+USE_ALSASEQ_NAMESPACE
 
 class QDumpMIDI : public QObject
 {

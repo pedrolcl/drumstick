@@ -20,14 +20,14 @@
 #ifndef ASEQMM_H_
 #define ASEQMM_H_
 
+#include <aseqmm/alsaclient.h>
+#include <aseqmm/alsaevent.h>
+#include <aseqmm/alsaport.h>
+#include <aseqmm/alsaqueue.h>
 #include <aseqmm/alsatimer.h>
-#include <aseqmm/client.h>
-#include <aseqmm/commons.h>
-#include <aseqmm/event.h>
+#include <aseqmm/aseqmmcommon.h>
 #include <aseqmm/playthread.h>
-#include <aseqmm/port.h>
 #include <aseqmm/qsmf.h>
-#include <aseqmm/queue.h>
 #include <aseqmm/subscription.h>
 
 #endif /*ASEQMM_H_*/

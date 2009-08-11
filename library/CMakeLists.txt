@@ -23,35 +23,35 @@ INCLUDE_DIRECTORIES(
 )
 
 SET(aseqmm_qtobject_SRCS
+    include/alsaclient.h
+    include/alsaevent.h
+    include/alsaport.h
+    include/alsaqueue.h
     include/alsatimer.h
-    include/client.h
-    include/event.h
     include/playthread.h
-    include/port.h
-    include/queue.h
     include/qsmf.h
 )
 
 SET(aseqmm_HEADERS
+    include/alsaclient.h
+    include/alsaevent.h
+    include/alsaport.h
+    include/alsaqueue.h
     include/alsatimer.h
-    include/client.h
-    include/commons.h
-    include/event.h
+    include/aseqmmcommon.h
     include/playthread.h
-    include/port.h
     include/qsmf.h
-    include/queue.h
     include/subscription.h
 )
 
 SET(aseqmm_SRCS
+    src/alsaclient.cpp
+    src/alsaevent.cpp
+    src/alsaport.cpp
+    src/alsaqueue.cpp
     src/alsatimer.cpp
-    src/client.cpp
-    src/event.cpp
     src/playthread.cpp
-    src/port.cpp
     src/qsmf.cpp
-    src/queue.cpp
     src/subscription.cpp
 )
 

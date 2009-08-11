@@ -20,25 +20,29 @@
 #include <QTextStream>
 #include <QStringList>
 #include <QFileInfo>
+
 #include "alsatimer.h"
-#include "queue.h"
-#include "client.h"
+#include "alsaqueue.h"
+#include "alsaclient.h"
 #include "subscription.h"
 
 static QTextStream cout(stdout, QIODevice::WriteOnly); 
 
+USE_ALSA_NAMESPACE
+USE_ALSASEQ_NAMESPACE
+
 void queryTimers()
 {
     cout << endl << "ALSA Timers" << endl;
-    ALSA::TimerQuery* query = new ALSA::TimerQuery("hw", 0);
+    TimerQuery* query = new TimerQuery("hw", 0);
     cout << "type__ Name________________ c/s/C/D/S Freq." << endl;
-    ALSA::TimerIdList lst = query->getTimers();
-    ALSA::TimerIdList::ConstIterator it;
+    TimerIdList lst = query->getTimers();
+    TimerIdList::ConstIterator it;
     for( it = lst.begin(); it != lst.end(); ++it )
     {
-        ALSA::TimerId id = *it;
-        ALSA::Timer* timer = new ALSA::Timer(id, SND_TIMER_OPEN_NONBLOCK);
-        ALSA::TimerInfo info = timer->getTimerInfo();
+        TimerId id = *it;
+        Timer* timer = new Timer(id, SND_TIMER_OPEN_NONBLOCK);
+        TimerInfo info = timer->getTimerInfo();
         cout << qSetFieldWidth(7) << left << info.getId() 
              << qSetFieldWidth(20) << left << info.getName().left(20)
              << qSetFieldWidth(0) << " " 
@@ -57,22 +61,22 @@ void queryTimers()
     delete query;
 }
 
-void queryQueues(ALSA::Sequencer::MidiClient* c)
+void queryQueues(MidiClient* c)
 {
     cout << endl << "ALSA Queues" << endl;    
     cout << "id Queue_Name__________ Timer_Name__________ owner status "
          << "  state PPQ  Tempo BPM   Ticks Time" << endl; 
     QList<int> queues = c->getAvailableQueues();
     foreach( int q, queues ) {
-        ALSA::Sequencer::MidiQueue* queue = new ALSA::Sequencer::MidiQueue(c, q);
+        MidiQueue* queue = new MidiQueue(c, q);
         if (queue != NULL) {
-            ALSA::Sequencer::QueueInfo qinfo = queue->getInfo();
-            ALSA::Sequencer::QueueStatus qsts = queue->getStatus();
-            ALSA::Sequencer::QueueTempo qtmp = queue->getTempo();
-            ALSA::Sequencer::QueueTimer qtmr = queue->getTimer();
-            ALSA::TimerId tid(qtmr.getId());
-            ALSA::Timer* timer = new ALSA::Timer(tid, SND_TIMER_OPEN_NONBLOCK);
-            ALSA::TimerInfo tinfo = timer->getTimerInfo();
+            QueueInfo qinfo = queue->getInfo();
+            QueueStatus qsts = queue->getStatus();
+            QueueTempo qtmp = queue->getTempo();
+            QueueTimer qtmr = queue->getTimer();
+            TimerId tid(qtmr.getId());
+            Timer* timer = new Timer(tid, SND_TIMER_OPEN_NONBLOCK);
+            TimerInfo tinfo = timer->getTimerInfo();
             cout << qSetFieldWidth(3)  << left << qinfo.getId()
                  << qSetFieldWidth(20) << qinfo.getName().left(20)
                  << qSetFieldWidth(0)  << " "
@@ -137,10 +141,10 @@ QString portTypeNames(int ptype)
     return " (" + lst.join(", ") + ")";
 }
 
-QString subsNames(ALSA::Sequencer::SubscribersList& subs)
+QString subsNames(SubscribersList& subs)
 {
     QStringList lst;
-    foreach( ALSA::Sequencer::Subscriber s, subs ) {
+    foreach( Subscriber s, subs ) {
         QString sname = QString("%1:%2").arg((int)s.getAddr()->client)
                                         .arg((int)s.getAddr()->port);
         lst << sname;
@@ -148,19 +152,19 @@ QString subsNames(ALSA::Sequencer::SubscribersList& subs)
     return lst.join(", ");
 }
 
-void queryClients(ALSA::Sequencer::MidiClient* c)
+void queryClients(MidiClient* c)
 {
     cout << endl << "ALSA Sequencer clients" << endl;
-    ALSA::Sequencer::ClientInfoList clients = c->getAvailableClients();
-    foreach( ALSA::Sequencer::ClientInfo cinfo, clients ) {
-        ALSA::Sequencer::PortInfoList plist = cinfo.getPorts();
+    ClientInfoList clients = c->getAvailableClients();
+    foreach( ClientInfo cinfo, clients ) {
+        PortInfoList plist = cinfo.getPorts();
         cout << "Client" << qSetFieldWidth(4) << cinfo.getClientId()
              << qSetFieldWidth(0) << " : \"" << cinfo.getName() << "\" ["
              << clientTypeName(cinfo.getClientType())
              << "]" << endl;
-        foreach( ALSA::Sequencer::PortInfo pinfo, plist ) {
-            ALSA::Sequencer::SubscribersList to = pinfo.getReadSubscribers();
-            ALSA::Sequencer::SubscribersList from = pinfo.getWriteSubscribers();
+        foreach( PortInfo pinfo, plist ) {
+            SubscribersList to = pinfo.getReadSubscribers();
+            SubscribersList from = pinfo.getWriteSubscribers();
             cout << "  Port" << qSetFieldWidth(4) << pinfo.getPort()
                  << qSetFieldWidth(0) << " : \"" << pinfo.getName() << "\""
                  << (pinfo.getType() != 0 ? portTypeNames(pinfo.getType()) : "")
@@ -175,11 +179,11 @@ void queryClients(ALSA::Sequencer::MidiClient* c)
 
 void systemInfo()
 {
-    ALSA::Sequencer::MidiClient* client = new ALSA::Sequencer::MidiClient();
+    MidiClient* client = new MidiClient();
     QFileInfo pgmi(qApp->arguments().at(0));
     client->open();
     client->setClientName(pgmi.baseName());
-    ALSA::Sequencer::SystemInfo info = client->getSystemInfo();
+    SystemInfo info = client->getSystemInfo();
     cout << "ALSA Sequencer System Info" << endl;
     cout << "Max Clients: " << info.getMaxClients() << endl;
     cout << "Max Ports: " << info.getMaxPorts() << endl;

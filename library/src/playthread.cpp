@@ -17,16 +17,12 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include "commons.h"
+#include "alsaclient.h"
+#include "alsaevent.h"
+#include "alsaqueue.h"
 #include "playthread.h"
-#include "client.h"
-#include "queue.h"
-#include "event.h"
 
-namespace ALSA
-{
-namespace Sequencer
-{
+BEGIN_ALSASEQ_NAMESPACE
 
 const int TIMEOUT = 100;
 
@@ -170,5 +166,4 @@ void SequencerOutputThread::run()
     }
 }
 
-}
-}
+END_ALSASEQ_NAMESPACE

@@ -26,12 +26,12 @@
 #include "connections.h"
 #include "preferences.h"
 
-#include "event.h"
-#include "client.h"
-#include "port.h"
-#include "queue.h"
+#include "alsaevent.h"
+#include "alsaclient.h"
+#include "alsaport.h"
+#include "alsaqueue.h"
 
-using namespace ALSA::Sequencer;
+USE_ALSASEQ_NAMESPACE
 
 /* MidiClient can deliver SequencerEvents with only
  * signals or posting QEvents to the QApplication loop */

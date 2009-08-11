@@ -21,8 +21,7 @@
 #include <cmath>
 #include <cstdio>
 
-namespace ALSA
-{
+BEGIN_ALSA_NAMESPACE
 
 TimerInfo::TimerInfo()
 {
@@ -910,4 +909,4 @@ Timer::TimerInputThread::stop()
     m_mutex.unlock();
 }
 
-}
+END_ALSA_NAMESPACE

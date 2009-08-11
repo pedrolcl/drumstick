@@ -22,15 +22,13 @@
 #ifndef INCLUDED_SMF_H
 #define INCLUDED_SMF_H
 
+#include "aseqmmcommon.h"
 #include <QObject>
 #include <QDataStream>
 #include <QString>
 #include <QList>
 
-namespace MIDI
-{
-namespace Utils
-{
+BEGIN_MIDIUTIL_NAMESPACE
 
 #define MThd 0x4d546864
 #define MTrk 0x4d54726b
@@ -198,7 +196,6 @@ private:
     void writeTrackChunk(int track);
 };
 
-}
-}
+END_MIDIUTIL_NAMESPACE
 
 #endif

@@ -21,11 +21,11 @@
 #define CONNECTIONS_H
 
 #include <QDialog>
-#include "port.h"
+#include "alsaport.h"
 #include "ui_connections.h"
 #include "connectionitem.h"
 
-using namespace ALSA::Sequencer;
+USE_ALSASEQ_NAMESPACE
 
 class Connections : public QDialog
 {

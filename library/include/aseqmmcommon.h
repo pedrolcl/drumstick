@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#ifndef COMMONS_H_
-#define COMMONS_H_
+#ifndef ASEQMMCOMMON_H_
+#define ASEQMMCOMMON_H_
 
 #include <qglobal.h>
 #include <QString>
@@ -29,10 +29,35 @@ extern "C" {
 #include <alsa/asoundlib.h>
 }
 
-namespace ALSA 
-{
-namespace Sequencer 
-{
+#if defined(ASEQMM_NAMESPACES)
+#define BEGIN_ALSA_NAMESPACE     namespace ALSA {
+#define END_ALSA_NAMESPACE       }
+#define BEGIN_ALSASEQ_NAMESPACE  namespace ALSA { namespace Sequencer {
+#define END_ALSASEQ_NAMESPACE    } }
+#define BEGIN_MIDI_NAMESPACE     namespace MIDI {
+#define END_MIDI_NAMESPACE       }
+#define BEGIN_MIDIUTIL_NAMESPACE namespace MIDI { namespace Utils {
+#define END_MIDIUTIL_NAMESPACE   } }
+#define USE_ALSA_NAMESPACE       using namespace ALSA;
+#define USE_ALSASEQ_NAMESPACE    using namespace ALSA::Sequencer;
+#define USE_MIDI_NAMESPACE       using namespace MIDI;
+#define USE_MIDIUTIL_NAMESPACE   using namespace MIDI::Utils;
+#else
+#define BEGIN_ALSA_NAMESPACE
+#define END_ALSA_NAMESPACE
+#define BEGIN_ALSASEQ_NAMESPACE
+#define END_ALSASEQ_NAMESPACE
+#define BEGIN_MIDI_NAMESPACE
+#define END_MIDI_NAMESPACE
+#define BEGIN_MIDIUTIL_NAMESPACE
+#define END_MIDIUTIL_NAMESPACE
+#define USE_ALSA_NAMESPACE
+#define USE_ALSASEQ_NAMESPACE
+#define USE_MIDI_NAMESPACE
+#define USE_MIDIUTIL_NAMESPACE
+#endif
+
+BEGIN_ALSA_NAMESPACE
 
 typedef quint8 MidiByte;  
 
@@ -64,14 +89,12 @@ private:
     int     m_errCode;
 };
 
-}
-
 inline int checkErrorAndThrow(int rc, const char *where)
 {
     if (rc < 0) {
         qDebug() << "Error code:" << rc << "(" <<  snd_strerror(rc) << ")";
         qDebug() << "Location:" << where;
-        throw Sequencer::SequencerError(QString(where), rc);
+        throw SequencerError(QString(where), rc);
     }
     return rc;
 }
@@ -90,6 +113,6 @@ inline int checkWarning(int rc, const char *where)
 
 const QString LIBRARY_VERSION(SND_LIB_VERSION_STR);
 
-}
+END_ALSA_NAMESPACE
 
-#endif /*COMMONS_H_*/
+#endif /*ASEQMMCOMMON_H_*/

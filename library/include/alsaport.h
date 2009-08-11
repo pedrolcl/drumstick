@@ -18,18 +18,15 @@
 */
 
 
-#ifndef INCLUDED_PORT_H
-#define INCLUDED_PORT_H
+#ifndef INCLUDED_ALSAPORT_H
+#define INCLUDED_ALSAPORT_H
 
-#include "commons.h"
+#include "aseqmmcommon.h"
 #include "subscription.h"
 #include <QObject>
 #include <QList>
 
-namespace ALSA
-{
-namespace Sequencer
-{
+BEGIN_ALSASEQ_NAMESPACE
 
 class MidiClient;
 
@@ -177,7 +174,6 @@ private:
 
 typedef QList<MidiPort*> MidiPortList;
 
-}
-}
+END_ALSASEQ_NAMESPACE
 
-#endif //INCLUDED_PORT_H
+#endif //INCLUDED_ALSAPORT_H

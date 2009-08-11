@@ -19,15 +19,13 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+#include "qsmf.h"
+
 #include <limits>
 #include <QObject>
 #include <QFile>
-#include "qsmf.h"
 
-namespace MIDI
-{
-namespace Utils
-{
+BEGIN_MIDIUTIL_NAMESPACE
 
 QSmf::QSmf(QObject * parent) :
     QObject(parent)
@@ -954,5 +952,4 @@ long QSmf::getFilePos()
     return (long) m_IOStream->device()->pos();
 }
 
-}
-}
+END_MIDIUTIL_NAMESPACE

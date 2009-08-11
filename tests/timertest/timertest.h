@@ -24,7 +24,7 @@
 #include <QPointer>
 #include "alsatimer.h"
 
-using namespace ALSA;
+USE_ALSA_NAMESPACE
 
 class TimerTest : public QObject, public TimerEventHandler
 {

@@ -18,15 +18,12 @@
 */
 
  
-#ifndef INCLUDED_QUEUE_H
-#define INCLUDED_QUEUE_H
+#ifndef INCLUDED_ALSAQUEUE_H
+#define INCLUDED_ALSAQUEUE_H
 
-#include "commons.h"
+#include "aseqmmcommon.h"
 
-namespace ALSA 
-{
-namespace Sequencer 
-{
+BEGIN_ALSASEQ_NAMESPACE
 
 #define SKEW_BASE 0x10000 // Should be fixed in ALSA kernel
 
@@ -185,7 +182,6 @@ private:
     QueueStatus m_Status;
 };
 
-}
-}
+END_ALSASEQ_NAMESPACE
 
-#endif //INCLUDED_QUEUE_H
+#endif //INCLUDED_ALSAQUEUE_H

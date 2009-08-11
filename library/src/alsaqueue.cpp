@@ -17,16 +17,12 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#include "commons.h"
-#include "queue.h"
-#include "client.h"
-#include "event.h"
+#include "alsaqueue.h"
+#include "alsaclient.h"
+#include "alsaevent.h"
 #include <cmath>
 
-namespace ALSA
-{
-namespace Sequencer
-{
+BEGIN_ALSASEQ_NAMESPACE
 
 /*************/
 /* QueueInfo */
@@ -520,5 +516,4 @@ void MidiQueue::setRealTimePosition(snd_seq_real_time_t* pos)
     m_MidiClient->drainOutput();
 }
 
-}
-}
+END_ALSASEQ_NAMESPACE

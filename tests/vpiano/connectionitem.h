@@ -2,11 +2,11 @@
 #define CONNECTIONITEM_H_
 
 #include <QListWidgetItem>
-#include "port.h"
+#include "alsaport.h"
 
 const int ConnectionItemType(QListWidgetItem::UserType + 1);
 
-using namespace ALSA::Sequencer;
+USE_ALSASEQ_NAMESPACE
 
 class ConnectionItem : public QListWidgetItem
 {

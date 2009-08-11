@@ -21,13 +21,10 @@
 #ifndef INCLUDED_SUBSCRIPTION_H
 #define INCLUDED_SUBSCRIPTION_H
 
-#include "commons.h"
+#include "aseqmmcommon.h"
 #include <QList>
 
-namespace ALSA 
-{
-namespace Sequencer 
-{
+BEGIN_ALSASEQ_NAMESPACE
 
 class MidiClient;
 
@@ -104,7 +101,6 @@ private:
 typedef QList<Subscription> SubscriptionsList;
 typedef QList<Subscriber> SubscribersList;
 
-}
-}
+END_ALSASEQ_NAMESPACE
 
 #endif //INCLUDED_SUBSCRIPTION_H

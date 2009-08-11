@@ -20,15 +20,12 @@
 #ifndef INCLUDED_PLAYTHREAD_H
 #define INCLUDED_PLAYTHREAD_H
 
-#include "commons.h"
-#include "event.h"
+#include "aseqmmcommon.h"
+#include "alsaevent.h"
 #include <QThread>
 #include <QReadWriteLock>
 
-namespace ALSA
-{
-namespace Sequencer
-{
+BEGIN_ALSASEQ_NAMESPACE
 
 class MidiClient;
 class MidiQueue;
@@ -67,7 +64,6 @@ protected:
     QReadWriteLock m_mutex;
 };
 
-}
-}
+END_ALSASEQ_NAMESPACE
 
 #endif /*INCLUDED_PLAYTHREAD_H*/

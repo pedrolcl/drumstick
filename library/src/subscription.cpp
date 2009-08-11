@@ -17,13 +17,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
+#include "alsaclient.h"
 #include "subscription.h"
-#include "client.h"
 
-namespace ALSA
-{
-namespace Sequencer
-{
+BEGIN_ALSASEQ_NAMESPACE
 
 /******************/
 /* Subscriber */
@@ -325,5 +322,4 @@ Subscription::getSizeOfInfo() const
     return snd_seq_port_subscribe_sizeof();
 }
 
-}
-}
+END_ALSASEQ_NAMESPACE

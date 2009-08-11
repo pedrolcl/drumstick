@@ -17,12 +17,9 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include "event.h"
+#include "alsaevent.h"
 
-namespace ALSA
-{
-namespace Sequencer
-{
+BEGIN_ALSASEQ_NAMESPACE
 
 SequencerEvent::SequencerEvent() : QEvent(SequencerEventType)
 {
@@ -544,5 +541,4 @@ MIDICodec::resizeBuffer(int bufsize)
     CHECK_WARNING(snd_midi_event_resize_buffer(m_Info, bufsize));
 }
 
-}
-}
+END_ALSASEQ_NAMESPACE

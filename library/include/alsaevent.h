@@ -17,16 +17,13 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef INCLUDED_EVENT_H
-#define INCLUDED_EVENT_H
+#ifndef INCLUDED_ALSAEVENT_H
+#define INCLUDED_ALSAEVENT_H
 
-#include "commons.h"
+#include "aseqmmcommon.h"
 #include <QEvent>
 
-namespace ALSA
-{
-namespace Sequencer
-{
+BEGIN_ALSASEQ_NAMESPACE
 
 const QEvent::Type SequencerEventType = QEvent::Type(QEvent::User + 4154); // :-)
 
@@ -372,7 +369,6 @@ private:
     snd_midi_event_t* m_Info;
 };
 
-}
-}
+END_ALSASEQ_NAMESPACE
 
-#endif //INCLUDED_EVENT_H
+#endif //INCLUDED_ALSAEVENT_H

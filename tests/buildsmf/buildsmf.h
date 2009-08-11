@@ -19,7 +19,7 @@
 
 #include "qsmf.h"
 
-using namespace MIDI::Utils;
+USE_MIDIUTIL_NAMESPACE
 
 class QSMFBuilder : public QObject
 {

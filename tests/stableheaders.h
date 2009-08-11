@@ -20,15 +20,14 @@
 #ifndef STABLEHEADERS_H_
 #define STABLEHEADERS_H_
 
-#include "alsatimer.h"
-#include "client.h"
-#include "commons.h"
-#include "event.h"
-#include "playthread.h"
-#include "port.h"
-#include "qsmf.h"
-#include "queue.h"
-#include "subscription.h"
+extern "C" {
+#include <alsa/asoundlib.h>
+}
+
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <limits>
 
 #include <QtCore>
 #include <QtGui>

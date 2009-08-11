@@ -20,14 +20,13 @@
 #ifndef INCLUDED_TIMER_H
 #define INCLUDED_TIMER_H
 
-#include "commons.h"
+#include "aseqmmcommon.h"
 #include <QList>
 #include <QThread>
 #include <QReadWriteLock>
 #include <QPointer>
 
-namespace ALSA
-{
+BEGIN_ALSA_NAMESPACE
 
 class TimerQuery;
 class TimerId;
@@ -273,6 +272,6 @@ private:
     snd_htimestamp_t m_last_time;
 };
 
-}
+END_ALSA_NAMESPACE
 
 #endif /*INCLUDED_TIMER_H*/

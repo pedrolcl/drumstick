@@ -17,18 +17,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include "commons.h"
-#include "client.h"
-#include "queue.h"
-#include "event.h"
-#include "port.h"
+#include "alsaclient.h"
+#include "alsaqueue.h"
+#include "alsaevent.h"
+#include "alsaport.h"
 #include <QThread>
 #include <QApplication>
 
-namespace ALSA
-{
-namespace Sequencer
-{
+BEGIN_ALSASEQ_NAMESPACE
 
 /**************/
 /* MidiClient */
@@ -1277,5 +1273,5 @@ int PoolInfo::getSizeOfInfo() const
     return snd_seq_client_pool_sizeof();
 }
 
-}
-}
+END_ALSASEQ_NAMESPACE
+

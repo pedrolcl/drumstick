@@ -1,5 +1,7 @@
-Planned:
+Done:
     * Migrate KMidimon, KMetronome and Kaseq to KDE4 and this library
+
+Planned:
     * Documentation
     * More test cases
     * Public release

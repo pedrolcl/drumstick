@@ -1,0 +1,78 @@
+#!/bin/bash
+if [ ! -d ../aseqmm ]; then
+    echo "Error: the directory ../aseqmm doesn's exists. Checkout aseqmm first."
+    exit
+fi
+if [ -d aseqmm ]; then
+    echo "Error: the local directory aseqmm already exists."
+    exit
+fi
+
+mkdir -p aseqmm/include
+pushd aseqmm/include
+for F in ../../../aseqmm/library/include/*.h; do
+    ln -s $F .
+done
+popd
+
+mkdir -p aseqmm/src
+pushd aseqmm/src
+for F in ../../../aseqmm/library/src/*.cpp; do
+    ln -s  $F .
+done
+popd
+
+pushd aseqmm
+cat >CMakeLists.txt <<EOF
+INCLUDE_DIRECTORIES(
+    \${CMAKE_CURRENT_BINARY_DIR}
+    \${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+SET(aseqmm_qtobject_SRCS
+    include/alsaclient.h
+    include/alsaevent.h
+    include/alsaport.h
+    include/alsaqueue.h
+    include/alsatimer.h
+    include/playthread.h
+    include/qsmf.h
+)
+
+SET(aseqmm_HEADERS
+    include/alsaclient.h
+    include/alsaevent.h
+    include/alsaport.h
+    include/alsaqueue.h
+    include/alsatimer.h
+    include/aseqmmcommon.h
+    include/playthread.h
+    include/qsmf.h
+    include/subscription.h
+)
+
+SET(aseqmm_SRCS
+    src/alsaclient.cpp
+    src/alsaevent.cpp
+    src/alsaport.cpp
+    src/alsaqueue.cpp
+    src/alsatimer.cpp
+    src/playthread.cpp
+    src/qsmf.cpp
+    src/subscription.cpp
+)
+
+QT4_WRAP_CPP(aseqmm_moc_SRCS \${aseqmm_qtobject_SRCS})
+
+ADD_LIBRARY(aseqmm 
+    \${aseqmm_moc_SRCS}
+    \${aseqmm_SRCS} 
+    \${aseqmm_HEADERS} 
+)
+
+TARGET_LINK_LIBRARIES(aseqmm
+    \${QT_LIBRARIES}
+    \${ALSA_LIBS}
+)
+EOF
+popd

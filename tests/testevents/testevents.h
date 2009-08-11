@@ -20,10 +20,10 @@
 #ifndef TESTEVENTS_H_
 #define TESTEVENTS_H_
 
-#include "event.h"
+#include "alsaevent.h"
 #include <QObject>
 
-using namespace ALSA::Sequencer;
+USE_ALSASEQ_NAMESPACE
 
 class QTestEvents : public QObject
 {

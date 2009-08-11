@@ -23,7 +23,7 @@
 #include "playthread.h" 
 #include "song.h"
 
-using namespace ALSA::Sequencer;
+USE_ALSASEQ_NAMESPACE
 
 class Player : public SequencerOutputThread
 {

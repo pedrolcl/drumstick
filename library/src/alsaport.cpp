@@ -17,16 +17,12 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include "port.h"
-#include "queue.h"
+#include "alsaport.h"
+#include "alsaqueue.h"
 #include "subscription.h"
-#include "client.h"
-#include "commons.h"
+#include "alsaclient.h"
 
-namespace ALSA
-{
-namespace Sequencer
-{
+BEGIN_ALSASEQ_NAMESPACE
 
 /************/
 /* PortInfo */
@@ -828,5 +824,4 @@ MidiPort::updateConnectionsFrom(const PortInfoList& ports)
     }
 }
 
-}
-}
+END_ALSASEQ_NAMESPACE
