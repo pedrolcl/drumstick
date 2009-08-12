@@ -22,6 +22,13 @@
 #ifndef INCLUDED_SMF_H
 #define INCLUDED_SMF_H
 
+/*!
+ * @file qsmf.h
+ * @brief Standard MIDI Files Input/Output
+ * @defgroup SMF Standard MIDI Files management (I/O)
+ * @{
+ */
+
 #include "aseqmmcommon.h"
 #include <QObject>
 #include <QDataStream>
@@ -197,5 +204,7 @@ private:
 };
 
 END_MIDIUTIL_NAMESPACE
+
+/*! @} */
 
 #endif

@@ -20,6 +20,11 @@
 #ifndef ASEQMM_H_
 #define ASEQMM_H_
 
+/*!
+ * @file aseqmm.h
+ * The main header that a program can include to use all the aseqmm features.
+ */
+
 #include <aseqmm/alsaclient.h>
 #include <aseqmm/alsaevent.h>
 #include <aseqmm/alsaport.h>

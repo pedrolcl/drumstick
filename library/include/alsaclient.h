@@ -20,6 +20,14 @@
 #ifndef INCLUDED_ALSACLIENT_H
 #define INCLUDED_ALSACLIENT_H
 
+/*!
+ * @file alsaclient.h
+ * @brief Classes managing ALSA Sequencer clients
+ *
+ * @defgroup ALSAClient Clients
+ * @{
+ */
+
 #include "aseqmmcommon.h"
 #include "alsaport.h"
 
@@ -37,6 +45,12 @@ class SequencerEvent;
 class SequencerInputThread;
 class RemoveEvents;
 
+/**
+ * @brief Client information
+ *
+ * This class is used to retrieve, hold and set some data from
+ * sequencer clients, like the name or id.
+ */
 class ClientInfo
 {
     friend class MidiClient;
@@ -83,8 +97,17 @@ private:
     PortInfoList m_Ports;
 };
 
+/**
+ * List of sequencer client information
+ */
 typedef QList<ClientInfo> ClientInfoList;
 
+/**
+ * @brief System information
+ *
+ * This class is used to retrieve and hold some data about the
+ * whole sequencer subsystem.
+ */
 class SystemInfo
 {
     friend class MidiClient;
@@ -110,6 +133,12 @@ private:
     snd_seq_system_info_t* m_Info;
 };
 
+/**
+ * @brief Sequencer Pool information
+ *
+ * This class is used to get and set the size of the input and output pool
+ * buffers for a sequencer client.
+ */
 class PoolInfo
 {
     friend class MidiClient;
@@ -138,6 +167,13 @@ private:
     snd_seq_client_pool_t* m_Info;
 };
 
+/**
+ * @brief Sequencer events handler
+ *
+ * This class is used to define an interface that other class can implement
+ * to receive sequencer events. It is one of the three methods of events
+ * delivering offered by the aseqmm library.
+ */
 class SequencerEventHandler
 {
 public:
@@ -145,6 +181,11 @@ public:
     virtual void handleSequencerEvent(SequencerEvent* ev) = 0;
 };
 
+/**
+ * @brief Client management
+ *
+ * This class represents a sequencer client.
+ */
 class MidiClient : public QObject
 {
     Q_OBJECT
@@ -300,5 +341,7 @@ private:
 };
 
 END_ALSASEQ_NAMESPACE
+
+/*! @} */
 
 #endif //INCLUDED_ALSACLIENT_H

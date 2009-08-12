@@ -21,6 +21,13 @@
 #ifndef INCLUDED_ALSAPORT_H
 #define INCLUDED_ALSAPORT_H
 
+/*!
+ * @file alsaport.h
+ * @brief Classes managing ALSA Sequencer ports
+ * @defgroup ALSAPort Ports
+ * @{
+ */
+
 #include "aseqmmcommon.h"
 #include "subscription.h"
 #include <QObject>
@@ -175,5 +182,7 @@ private:
 typedef QList<MidiPort*> MidiPortList;
 
 END_ALSASEQ_NAMESPACE
+
+/*! @} */
 
 #endif //INCLUDED_ALSAPORT_H

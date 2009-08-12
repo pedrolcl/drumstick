@@ -21,6 +21,13 @@
 #ifndef INCLUDED_SUBSCRIPTION_H
 #define INCLUDED_SUBSCRIPTION_H
 
+/*!
+ * @file subscription.h
+ * @brief Classes managing ALSA subscripions
+ * @defgroup ALSASubscription Subscriptions
+ * @{
+ */
+
 #include "aseqmmcommon.h"
 #include <QList>
 
@@ -102,5 +109,7 @@ typedef QList<Subscription> SubscriptionsList;
 typedef QList<Subscriber> SubscribersList;
 
 END_ALSASEQ_NAMESPACE
+
+/*! @} */
 
 #endif //INCLUDED_SUBSCRIPTION_H

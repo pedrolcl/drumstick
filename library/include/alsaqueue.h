@@ -16,10 +16,16 @@
     with this program; if not, write to the Free Software Foundation, Inc., 
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
-
  
 #ifndef INCLUDED_ALSAQUEUE_H
 #define INCLUDED_ALSAQUEUE_H
+
+/*!
+ * @file alsaqueue.h
+ * @brief Classes managing ALSA Sequencer queues
+ * @defgroup ALSAQueue Queues
+ * @{
+ */
 
 #include "aseqmmcommon.h"
 
@@ -183,5 +189,7 @@ private:
 };
 
 END_ALSASEQ_NAMESPACE
+
+/*! @} */
 
 #endif //INCLUDED_ALSAQUEUE_H

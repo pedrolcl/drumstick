@@ -20,6 +20,13 @@
 #ifndef ASEQMMCOMMON_H_
 #define ASEQMMCOMMON_H_
 
+/*!
+ * @file aseqmmcommon.h
+ * @brief Common functionality
+ * @defgroup Common Common functionality
+ * @{
+ */
+
 #include <qglobal.h>
 #include <QString>
 #include <QApplication>
@@ -114,5 +121,7 @@ inline int checkWarning(int rc, const char *where)
 const QString LIBRARY_VERSION(SND_LIB_VERSION_STR);
 
 END_ALSA_NAMESPACE
+
+/*! @} */
 
 #endif /*ASEQMMCOMMON_H_*/

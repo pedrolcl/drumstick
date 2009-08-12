@@ -20,6 +20,13 @@
 #ifndef INCLUDED_PLAYTHREAD_H
 #define INCLUDED_PLAYTHREAD_H
 
+/*!
+ * @file playthread.h
+ * @brief Sequencer output
+ * @defgroup PlayThread Sequencer output
+ * @{
+ */
+
 #include "aseqmmcommon.h"
 #include "alsaevent.h"
 #include <QThread>
@@ -65,5 +72,7 @@ protected:
 };
 
 END_ALSASEQ_NAMESPACE
+
+/*! @} */
 
 #endif /*INCLUDED_PLAYTHREAD_H*/

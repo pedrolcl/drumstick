@@ -77,7 +77,7 @@ bool SequencerEvent::isConnectionChange() const
             m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED );
 }
 
-void SequencerEvent::setSequencerType(uchar eventType)
+void SequencerEvent::setSequencerType(const snd_seq_event_type_t eventType)
 {
     m_event.type = eventType;
 }

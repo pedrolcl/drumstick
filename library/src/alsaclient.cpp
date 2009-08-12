@@ -17,6 +17,102 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+/*!
+\mainpage aseqmm documentation
+\author Copyright &copy; 2009 Pedro López-Cabanillas
+\version 0.0.3
+\date 2009-08-12
+
+This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
+To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/
+
+\section Abstract
+
+\section Contents Table of Contents
+
+- \ref Disclaimer
+- \ref Introduction
+- \ref Advanced
+
+\section Disclaimer
+
+This is a work in progress.
+
+\section Introduction
+
+Here is a simple program that outputs a note-on MIDI message
+
+\code
+#include <QApplication>
+#include <aseqmm.h>
+
+int main(int argc, char **argv) {
+    QApplication app(argc, argv, false);
+
+    // initialize the client
+    MidiClient *client = new MidiClient();
+    client->setOpenMode(SND_SEQ_OPEN_DUPLEX);
+    client->setBlockMode(false);
+    client->open();
+    client->setClientName("MyClient");
+
+    // initialize the port
+    MidiPort *port = client->createPort();
+    port->setPortName("MyPort");
+    port->setCapability(SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ);
+    port->setPortType(SND_SEQ_PORT_TYPE_APPLICATION | SND_SEQ_PORT_TYPE_MIDI_GENERIC);
+    port->attach();
+    // subscribe the port to some other client:port
+    port->subscribeTo("20:0");
+
+    // create and send a note on message
+    NoteOnEvent ev(0, 66, 100);
+    ev.setSource(port->getPortId());
+    ev.setSubscribers();
+    ev.setDirect();
+    client->output(&ev);
+    client->drainOutput();
+
+    // close and clean the created instances
+    client->close();
+    delete port;
+    delete client;
+    return 0;
+}
+\endcode
+
+\section Advanced Advanced features, not yet documented
+
+A lot. Almost all.
+
+\example dumpmid.cpp
+Print received sequencer events
+
+\example playsmf.cpp
+SMF playback, command line interface program
+
+\example smfplayer.cpp
+SMF playback, graphic user interface program
+
+\example buildsmf.cpp
+SMF output from scratch
+
+\example dumpsmf.cpp
+SMF read and print
+
+\example sysinfo.cpp
+Prints information about the ALSA sequencer subsystem
+
+\example testevents.cpp
+SequencerEvents test
+
+\example timertest.cpp
+ALSA Timers test
+
+\example vpiano.cpp
+A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
+*/
+
 #include "alsaclient.h"
 #include "alsaqueue.h"
 #include "alsaevent.h"

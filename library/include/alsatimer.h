@@ -26,6 +26,13 @@
 #include <QReadWriteLock>
 #include <QPointer>
 
+/*!
+ * @file alsatimer.h
+ * @brief Classes managing ALSA Timers
+ * @defgroup ALSATimer Timers
+ * @{
+ */
+
 BEGIN_ALSA_NAMESPACE
 
 class TimerQuery;
@@ -273,5 +280,7 @@ private:
 };
 
 END_ALSA_NAMESPACE
+
+/*! @} */
 
 #endif /*INCLUDED_TIMER_H*/

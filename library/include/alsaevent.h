@@ -20,6 +20,13 @@
 #ifndef INCLUDED_ALSAEVENT_H
 #define INCLUDED_ALSAEVENT_H
 
+/*!
+ * @file alsaevent.h
+ * @brief Classes managing ALSA Sequencer events
+ * @defgroup ALSAEvent Events
+ * @{
+ */
+
 #include "aseqmmcommon.h"
 #include <QEvent>
 
@@ -370,5 +377,7 @@ private:
 };
 
 END_ALSASEQ_NAMESPACE
+
+/*! @} */
 
 #endif //INCLUDED_ALSAEVENT_H
