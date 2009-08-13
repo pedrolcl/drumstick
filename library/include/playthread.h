@@ -37,6 +37,12 @@ BEGIN_ALSASEQ_NAMESPACE
 class MidiClient;
 class MidiQueue;
 
+/**
+ * @brief Sequence player auxiliary class
+ *
+ * This class is used to implement an asynchronous sequence player using
+ * ALSA sequencer scheduling
+ */
 class SequencerOutputThread : public QThread
 {
     Q_OBJECT

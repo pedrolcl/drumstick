@@ -35,10 +35,12 @@ BEGIN_ALSASEQ_NAMESPACE
 
 class MidiClient;
 
+/**
+ * @brief Subscriber management
+ */
 class Subscriber
 {
     friend class PortInfo;
-
 public:
     Subscriber();
     Subscriber(const Subscriber& other);
@@ -71,6 +73,9 @@ private:
 
 };
 
+/**
+ * @brief Subscription management
+ */
 class Subscription
 {
 public:
@@ -105,7 +110,14 @@ private:
     snd_seq_port_subscribe_t* m_Info;
 };
 
+/**
+ * @brief List of subscriptions
+ */
 typedef QList<Subscription> SubscriptionsList;
+
+/**
+ * @brief List of subscribers
+ */
 typedef QList<Subscriber> SubscribersList;
 
 END_ALSASEQ_NAMESPACE

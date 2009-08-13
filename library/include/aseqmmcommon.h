@@ -68,6 +68,9 @@ BEGIN_ALSA_NAMESPACE
 
 typedef quint8 MidiByte;  
 
+/**
+ * @brief Class used to report errors from the ALSA sequencer
+ */
 class SequencerError
 {
 public:

@@ -98,7 +98,7 @@ private:
 };
 
 /**
- * List of sequencer client information
+ * @brief List of sequencer client information
  */
 typedef QList<ClientInfo> ClientInfoList;
 
@@ -184,13 +184,16 @@ public:
 /**
  * @brief Client management
  *
- * This class represents a sequencer client.
+ * This class represents an ALSA sequencer client
  */
 class MidiClient : public QObject
 {
     Q_OBJECT
 
 private:
+    /**
+     * @brief This class manages event input from the ALSA sequencer
+     */
     class SequencerInputThread: public QThread
     {
     public:

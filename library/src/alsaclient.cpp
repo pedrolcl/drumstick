@@ -120,12 +120,32 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
 #include <QThread>
 #include <QApplication>
 
+/**
+ * @class QObject
+ * @brief The QObject class is the base class of all Qt objects.
+ * @see   http://doc.trolltech.com/qobject.html
+ */
+
+/**
+ * @class QThread
+ * @brief The QThread class provides platform-independent threads.
+ * @see   http://doc.trolltech.com/qthread.html
+ */
+
 BEGIN_ALSASEQ_NAMESPACE
 
-/**************/
-/* MidiClient */
-/**************/
+/*
+ * MidiClient
+ */
 
+/**
+ * This constructor initialize several members with default values, but it is
+ * necessary to invoke open() later to get the sequencer client handler from
+ * the ALSA sequencer subsystem.
+ *
+ * @param parent The parent object
+ * @return a MidiClient instance
+ */
 MidiClient::MidiClient( QObject* parent ) :
     QObject(parent),
     m_eventsEnabled(false),
@@ -139,6 +159,11 @@ MidiClient::MidiClient( QObject* parent ) :
     m_handler(NULL)
 { }
 
+/**
+ * @brief Destructor
+ *
+ * The ports and queue associated to this client are automatically released.
+ */
 MidiClient::~MidiClient()
 {
     stopSequencerInput();
@@ -151,6 +176,12 @@ MidiClient::~MidiClient()
         delete m_Thread;
 }
 
+/**
+ * @brief Open the sequencer device getting a handle
+ *
+ * Before opening the MidiClient instance, several properties should be set
+ * as the device name (m_DeviceName), the open mode and block mode.
+ */
 void
 MidiClient::open()
 {
@@ -159,6 +190,15 @@ MidiClient::open()
     CHECK_WARNING(snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info));
 }
 
+/**
+ * @brief Open the sequencer device getting a handle, providing a configuration
+ * object pointer.
+ *
+ * This method is like open() except that the configuration can be explicitly
+ * provided.
+ *
+ * @param conf
+ */
 void
 MidiClient::open(snd_config_t* conf)
 {
@@ -170,6 +210,9 @@ MidiClient::open(snd_config_t* conf)
     CHECK_WARNING(snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info));
 }
 
+/**
+ * Close the sequencer device
+ */
 void
 MidiClient::close()
 {

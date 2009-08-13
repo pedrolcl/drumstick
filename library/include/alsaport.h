@@ -17,7 +17,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-
 #ifndef INCLUDED_ALSAPORT_H
 #define INCLUDED_ALSAPORT_H
 
@@ -37,6 +36,9 @@ BEGIN_ALSASEQ_NAMESPACE
 
 class MidiClient;
 
+/**
+ * @brief Port information
+ */
 class PortInfo
 {
     friend class MidiPort;
@@ -99,8 +101,17 @@ private:
     SubscribersList m_WriteSubscribers;
 };
 
+
+/**
+ * @brief List of port information objects
+ */
 typedef QList<PortInfo> PortInfoList;
 
+/**
+ * @brief Port management
+ *
+ * This class represent an ALSA sequencer port
+ */
 class MidiPort : public QObject
 {
     Q_OBJECT
@@ -179,6 +190,9 @@ private:
     SubscriptionsList m_Subscriptions;
 };
 
+/**
+ * @brief List of Ports instances
+ */
 typedef QList<MidiPort*> MidiPortList;
 
 END_ALSASEQ_NAMESPACE

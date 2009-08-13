@@ -26,10 +26,10 @@
 #include <QReadWriteLock>
 #include <QPointer>
 
-/*!
+/**
  * @file alsatimer.h
  * @brief Classes managing ALSA Timers
- * @defgroup ALSATimer Timers
+ * @defgroup ALSATimer ALSA Timers
  * @{
  */
 
@@ -39,6 +39,9 @@ class TimerQuery;
 class TimerId;
 class TimerGlobalInfo;
 
+/**
+ * @brief ALSA Timer information
+ */
 class TimerInfo
 {
     friend class Timer;
@@ -66,6 +69,9 @@ private:
     snd_timer_info_t *m_Info;
 };
 
+/**
+ * @brief ALSA Timer identifier
+ */
 class TimerId
 {
     friend class TimerQuery;
@@ -96,8 +102,14 @@ private:
     snd_timer_id_t *m_Info;
 };
 
+/**
+ * @brief List of timer identifiers
+ */
 typedef QList<TimerId> TimerIdList;
 
+/**
+ * @brief Global timer information
+ */
 class TimerGlobalInfo
 {
     friend class TimerQuery;
@@ -127,6 +139,9 @@ private:
     TimerId m_Id;
 };
 
+/**
+ * @brief ALSA Timer inquiry helper
+ */
 class TimerQuery
 {
 public:
@@ -150,6 +165,9 @@ private:
     TimerGlobalInfo m_GlobalInfo;
 };
 
+/**
+ * @brief ALSA Timer parameters
+ */
 class TimerParams
 {
     friend class Timer;
@@ -180,6 +198,9 @@ private:
     snd_timer_params_t* m_Info;
 };
 
+/**
+ * @brief ALSA Timer status
+ */
 class TimerStatus
 {
     friend class Timer;
@@ -203,6 +224,12 @@ private:
     snd_timer_status_t* m_Info;
 };
 
+/**
+ * @brief ALSA Timer events handler
+ *
+ * This class is used to define an interface that other class can implement
+ * to receive timer events.
+ */
 class TimerEventHandler
 {
 public:
@@ -210,11 +237,17 @@ public:
     virtual void handleTimerEvent(int ticks, int msecs) = 0;
 };
 
+/**
+ * @brief ALSA Timer management
+ */
 class Timer : public QObject
 {
     Q_OBJECT
     
 private:
+    /**
+     * @brief This class manages timer events input from ALSA
+     */
     class TimerInputThread : public QThread
     {
     public: 

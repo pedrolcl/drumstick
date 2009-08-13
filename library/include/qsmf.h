@@ -76,6 +76,11 @@ BEGIN_MIDIUTIL_NAMESPACE
 #define major_mode          0
 #define minor_mode          1
 
+/**
+ * @brief Standard MIDI Files input/output
+ *
+ * This class is used to parse and encode SMF
+ */
 class QSmf : public QObject
 {
     Q_OBJECT
@@ -144,6 +149,9 @@ signals:
     void signalSMFWriteTrack(int track);
 
 private:
+    /**
+     * @brief Tempo change within a SMF or sequence
+     */
     struct QSmfRecTempo
     {
         quint64 tempo;

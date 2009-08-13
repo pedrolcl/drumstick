@@ -19,6 +19,12 @@
 
 #include "alsaevent.h"
 
+/**
+ * @class QEvent
+ * @brief The QEvent class is the base class of all event classes.
+ * @see http://doc.trolltech.com/qevent.html
+ */
+
 BEGIN_ALSASEQ_NAMESPACE
 
 SequencerEvent::SequencerEvent() : QEvent(SequencerEventType)
@@ -475,27 +481,27 @@ RemoveEvents::setTime(const snd_seq_timestamp_t* time)
 }
 
 /*************
- * MIDICodec *
+ * MidiCodec *
  *************/
 
-MIDICodec::MIDICodec( int bufsize, QObject* parent ) : QObject(parent)
+MidiCodec::MidiCodec( int bufsize, QObject* parent ) : QObject(parent)
 {
     CHECK_ERROR(snd_midi_event_new(bufsize, &m_Info));
 }
 
-MIDICodec::~MIDICodec()
+MidiCodec::~MidiCodec()
 {
     snd_midi_event_free(m_Info);
 }
 
 void
-MIDICodec::init()
+MidiCodec::init()
 {
     snd_midi_event_init(m_Info);
 }
 
 long
-MIDICodec::decode(unsigned char *buf,
+MidiCodec::decode(unsigned char *buf,
                   long count,
                   const snd_seq_event_t *ev)
 {
@@ -503,7 +509,7 @@ MIDICodec::decode(unsigned char *buf,
 }
 
 long
-MIDICodec::encode(const unsigned char *buf,
+MidiCodec::encode(const unsigned char *buf,
                   long count,
                   snd_seq_event_t *ev)
 {
@@ -511,32 +517,32 @@ MIDICodec::encode(const unsigned char *buf,
 }
 
 long
-MIDICodec::encode(int c,
+MidiCodec::encode(int c,
                   snd_seq_event_t *ev)
 {
     return CHECK_WARNING(snd_midi_event_encode_byte(m_Info, c, ev));
 }
 
 void
-MIDICodec::enableRunningStatus(bool enable)
+MidiCodec::enableRunningStatus(bool enable)
 {
     snd_midi_event_no_status(m_Info, enable ? 0 : 1);
 }
 
 void
-MIDICodec::resetDecoder()
+MidiCodec::resetDecoder()
 {
     snd_midi_event_reset_decode(m_Info);
 }
 
 void
-MIDICodec::resetEncoder()
+MidiCodec::resetEncoder()
 {
     snd_midi_event_reset_encode(m_Info);
 }
 
 void
-MIDICodec::resizeBuffer(int bufsize)
+MidiCodec::resizeBuffer(int bufsize)
 {
     CHECK_WARNING(snd_midi_event_resize_buffer(m_Info, bufsize));
 }

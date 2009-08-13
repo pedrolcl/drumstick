@@ -35,6 +35,9 @@ BEGIN_ALSASEQ_NAMESPACE
 
 class MidiClient;
 
+/**
+ * @brief Queue information
+ */
 class QueueInfo
 {
     friend class MidiQueue;
@@ -63,7 +66,9 @@ private:
     snd_seq_queue_info_t* m_Info;
 };
 
-
+/**
+ * @brief Queue status
+ */
 class QueueStatus
 {
     friend class MidiQueue;
@@ -89,7 +94,9 @@ private:
     snd_seq_queue_status_t* m_Info;
 };
 
-
+/**
+ * @brief Queue tempo
+ */
 class QueueTempo
 {
     friend class MidiQueue;
@@ -124,7 +131,9 @@ private:
     snd_seq_queue_tempo_t* m_Info;
 };
 
-
+/**
+ * @brief Queue timer
+ */
 class QueueTimer
 {
     friend class MidiQueue;
@@ -150,7 +159,11 @@ private:
     snd_seq_queue_timer_t* m_Info;
 };
 
-
+/**
+ * @brief Queue management
+ *
+ * This class represents an ALSA sequencer queue
+ */
 class MidiQueue : public QObject
 {
     Q_OBJECT
