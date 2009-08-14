@@ -21,7 +21,7 @@
 
 /**
  * @class QEvent
- * @brief The QEvent class is the base class of all event classes.
+ * The QEvent class is the base class of all event classes.
  * @see http://doc.trolltech.com/qevent.html
  */
 

@@ -20,9 +20,9 @@
 #ifndef INCLUDED_ALSACLIENT_H
 #define INCLUDED_ALSACLIENT_H
 
-/*!
+/**
  * @file alsaclient.h
- * @brief Classes managing ALSA Sequencer clients
+ * Classes managing ALSA Sequencer clients
  *
  * @defgroup ALSAClient Clients
  * @{
@@ -46,7 +46,7 @@ class SequencerInputThread;
 class RemoveEvents;
 
 /**
- * @brief Client information
+ * Client information
  *
  * This class is used to retrieve, hold and set some data from
  * sequencer clients, like the name or id.
@@ -98,12 +98,12 @@ private:
 };
 
 /**
- * @brief List of sequencer client information
+ * List of sequencer client information
  */
 typedef QList<ClientInfo> ClientInfoList;
 
 /**
- * @brief System information
+ * System information
  *
  * This class is used to retrieve and hold some data about the
  * whole sequencer subsystem.
@@ -134,7 +134,7 @@ private:
 };
 
 /**
- * @brief Sequencer Pool information
+ * Sequencer Pool information
  *
  * This class is used to get and set the size of the input and output pool
  * buffers for a sequencer client.
@@ -168,21 +168,31 @@ private:
 };
 
 /**
- * @brief Sequencer events handler
+ * Sequencer events handler
  *
- * This class is used to define an interface that other class can implement
- * to receive sequencer events. It is one of the three methods of events
- * delivering offered by the aseqmm library.
+ * This pure abstract class is used to define an interface that other class can
+ * implement to receive sequencer events. It is one of the three methods of
+ * delivering events offered by this library.
  */
 class SequencerEventHandler
 {
 public:
     virtual ~SequencerEventHandler() {}
+
+    /**
+     * Callback function to be implemented by the derived class.
+     * It will be invoked by the client to deliver received events to the
+     * registered listener.
+     *
+     * @param ev A pointer to the received SequencerEvent
+     * @see MidiClient::setHandler(), MidiClient::startSequencerInput(),
+     * MidiClient::stopSequencerInput()
+     */
     virtual void handleSequencerEvent(SequencerEvent* ev) = 0;
 };
 
 /**
- * @brief Client management
+ * Client management.
  *
  * This class represents an ALSA sequencer client
  */
@@ -192,7 +202,7 @@ class MidiClient : public QObject
 
 private:
     /**
-     * @brief This class manages event input from the ALSA sequencer
+     * This class manages event input from the ALSA sequencer.
      */
     class SequencerInputThread: public QThread
     {

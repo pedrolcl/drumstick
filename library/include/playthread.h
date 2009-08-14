@@ -22,7 +22,7 @@
 
 /*!
  * @file playthread.h
- * @brief Sequencer output
+ * Sequencer output
  * @defgroup PlayThread Sequencer output
  * @{
  */
@@ -38,7 +38,7 @@ class MidiClient;
 class MidiQueue;
 
 /**
- * @brief Sequence player auxiliary class
+ * Sequence player auxiliary class
  *
  * This class is used to implement an asynchronous sequence player using
  * ALSA sequencer scheduling

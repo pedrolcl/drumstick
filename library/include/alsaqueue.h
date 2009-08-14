@@ -20,9 +20,9 @@
 #ifndef INCLUDED_ALSAQUEUE_H
 #define INCLUDED_ALSAQUEUE_H
 
-/*!
+/**
  * @file alsaqueue.h
- * @brief Classes managing ALSA Sequencer queues
+ * Classes managing ALSA Sequencer queues
  * @defgroup ALSAQueue Queues
  * @{
  */
@@ -36,7 +36,7 @@ BEGIN_ALSASEQ_NAMESPACE
 class MidiClient;
 
 /**
- * @brief Queue information
+ * Queue information
  */
 class QueueInfo
 {
@@ -67,7 +67,7 @@ private:
 };
 
 /**
- * @brief Queue status
+ * Queue status
  */
 class QueueStatus
 {
@@ -95,7 +95,7 @@ private:
 };
 
 /**
- * @brief Queue tempo
+ * Queue tempo
  */
 class QueueTempo
 {
@@ -132,7 +132,7 @@ private:
 };
 
 /**
- * @brief Queue timer
+ * Queue timer
  */
 class QueueTimer
 {
@@ -160,7 +160,7 @@ private:
 };
 
 /**
- * @brief Queue management
+ * Queue management
  *
  * This class represents an ALSA sequencer queue
  */

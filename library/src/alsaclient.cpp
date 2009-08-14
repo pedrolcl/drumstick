@@ -17,32 +17,45 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-/*!
-\mainpage aseqmm documentation
-\author Copyright &copy; 2009 Pedro López-Cabanillas
-\version 0.0.3
-\date 2009-08-12
+/**
+@mainpage aseqmm Documentation
+@author Copyright &copy; 2009 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
+@version 0.0.3
+@date 2009-08-12
 
 This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/
 
-\section Abstract
+@section Abstract
 
-\section Contents Table of Contents
+This is the reference documentation for aseqmm. This library is a C++ wrapper
+around the ALSA library sequencer interface, using Qt4 objects, idioms and style.
+@see http://www.alsa-project.org/alsa-doc/alsa-lib/group___sequencer.html
+@see http://doc.trolltech.com/index.html
+@see http://cartan.cas.suffolk.edu/oopdocbook/opensource/index.html
 
-- \ref Disclaimer
-- \ref Introduction
-- \ref Advanced
+@section Contents Table of Contents
 
-\section Disclaimer
+- @ref Disclaimer
+- @ref Introduction
+- @ref Advanced
 
-This is a work in progress.
+@section Disclaimer
 
-\section Introduction
+This is a work in progress, in a very early state. It will be always in
+development.
 
-Here is a simple program that outputs a note-on MIDI message
+@section Introduction
 
-\code
+For an introduction to design and programming with C++ and Qt4, see the book
+"An Introduction to Design Patterns in C++ with Qt 4" by by Alan Ezust and Paul
+Ezust. It is available published on dead trees, and also
+<a href="http://cartan.cas.suffolk.edu/oopdocbook/opensource/index.html">
+online</a>.
+
+Here is a simple program that outputs a note-on MIDI message:
+
+@code
 #include <QApplication>
 #include <aseqmm.h>
 
@@ -51,8 +64,6 @@ int main(int argc, char **argv) {
 
     // initialize the client
     MidiClient *client = new MidiClient();
-    client->setOpenMode(SND_SEQ_OPEN_DUPLEX);
-    client->setBlockMode(false);
     client->open();
     client->setClientName("MyClient");
 
@@ -61,16 +72,16 @@ int main(int argc, char **argv) {
     port->setPortName("MyPort");
     port->setCapability(SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ);
     port->setPortType(SND_SEQ_PORT_TYPE_APPLICATION | SND_SEQ_PORT_TYPE_MIDI_GENERIC);
-    port->attach();
+    port->attach(); // here is where the ALSA port is created
     // subscribe the port to some other client:port
-    port->subscribeTo("20:0");
+    port->subscribeTo("20:0"); // or "name:port"
 
     // create and send a note on message
-    NoteOnEvent ev(0, 66, 100);
+    NoteOnEvent ev(0, 66, 100); // (channel, note number, velocity)
     ev.setSource(port->getPortId());
     ev.setSubscribers();
     ev.setDirect();
-    client->output(&ev);
+    client->output(&ev); // or outputDirect() if you prefer not buffered
     client->drainOutput();
 
     // close and clean the created instances
@@ -79,37 +90,37 @@ int main(int argc, char **argv) {
     delete client;
     return 0;
 }
-\endcode
+@endcode
 
-\section Advanced Advanced features, not yet documented
+@section Advanced Advanced features, not yet documented
 
 A lot. Almost all.
 
-\example dumpmid.cpp
+@example dumpmid.cpp
 Print received sequencer events
 
-\example playsmf.cpp
+@example playsmf.cpp
 SMF playback, command line interface program
 
-\example smfplayer.cpp
+@example smfplayer.cpp
 SMF playback, graphic user interface program
 
-\example buildsmf.cpp
+@example buildsmf.cpp
 SMF output from scratch
 
-\example dumpsmf.cpp
+@example dumpsmf.cpp
 SMF read and print
 
-\example sysinfo.cpp
+@example sysinfo.cpp
 Prints information about the ALSA sequencer subsystem
 
-\example testevents.cpp
+@example testevents.cpp
 SequencerEvents test
 
-\example timertest.cpp
+@example timertest.cpp
 ALSA Timers test
 
-\example vpiano.cpp
+@example vpiano.cpp
 A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
 */
 
@@ -122,14 +133,45 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
 
 /**
  * @class QObject
- * @brief The QObject class is the base class of all Qt objects.
+ * The QObject class is the base class of all Qt objects.
  * @see   http://doc.trolltech.com/qobject.html
  */
 
 /**
  * @class QThread
- * @brief The QThread class provides platform-independent threads.
+ * The QThread class provides platform-independent threads.
  * @see   http://doc.trolltech.com/qthread.html
+ */
+
+/**
+ * @addtogroup ALSAClient
+ *
+ * ALSA clients are any entities using ALSA sequencer services. A client
+ * may be an application or a device driver for an external MIDI port, like
+ * USB MIDI devices or the MIDI/game ports of some sound cards. This library
+ * allows to easily create applications managing ALSA clients.
+ *
+ * ALSA clients are also a file descriptor representing a sequencer device,
+ * that must be opened before reading or writing MIDI events. When the client
+ * is opened, it is given some handle and a number identifying it to other
+ * clients in the system. You can also provide a name for it.
+ *
+ * The ALSA sequencer clients can have some ports attached. The ports can be
+ * readable or writable, and can be subscribed in pairs: one readable port to
+ * one writable port. The subscriptions can be made and queried by external
+ * applications, like "aconnect" or "qjackctl".
+ *
+ * SystemInfo is an auxiliary class to query several system capabilities.
+ *
+ * The PoolInfo class represents a container to query and change some values
+ * for the memory pool assigned to an ALSA client.
+ *
+ * The ClientInfo class is another container to query and change values about
+ * the MidiClient itself.
+ *
+ * The SequencerEventHandler pure abstract class is used to define an interface
+ * that other class can implement to receive sequencer events. It is one of the
+ * three methods of delivering events offered by the library.
  */
 
 BEGIN_ALSASEQ_NAMESPACE
@@ -160,8 +202,7 @@ MidiClient::MidiClient( QObject* parent ) :
 { }
 
 /**
- * @brief Destructor
- *
+ * Destructor.
  * The ports and queue associated to this client are automatically released.
  */
 MidiClient::~MidiClient()
@@ -177,9 +218,9 @@ MidiClient::~MidiClient()
 }
 
 /**
- * @brief Open the sequencer device getting a handle
+ * Open the sequencer device getting a handle.
  *
- * Before opening the MidiClient instance, several properties should be set
+ * Before opening the MidiClient instance, several properties may be set
  * as the device name (m_DeviceName), the open mode and block mode.
  */
 void
@@ -191,13 +232,13 @@ MidiClient::open()
 }
 
 /**
- * @brief Open the sequencer device getting a handle, providing a configuration
+ * Open the sequencer device getting a handle, providing a configuration
  * object pointer.
  *
  * This method is like open() except that the configuration can be explicitly
  * provided.
  *
- * @param conf
+ * @param conf a configuration object pointer
  */
 void
 MidiClient::open(snd_config_t* conf)
@@ -223,6 +264,10 @@ MidiClient::close()
     }
 }
 
+/**
+ * Gets the size of the library output buffer for the ALSA client
+ * @return the size of the library output buffer
+ */
 size_t
 MidiClient::getOutputBufferSize()
 {

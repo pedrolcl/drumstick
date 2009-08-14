@@ -28,7 +28,7 @@
 
 /**
  * @file alsatimer.h
- * @brief Classes managing ALSA Timers
+ * Classes managing ALSA Timers
  * @defgroup ALSATimer ALSA Timers
  * @{
  */
@@ -40,7 +40,7 @@ class TimerId;
 class TimerGlobalInfo;
 
 /**
- * @brief ALSA Timer information
+ * ALSA Timer information
  */
 class TimerInfo
 {
@@ -70,7 +70,7 @@ private:
 };
 
 /**
- * @brief ALSA Timer identifier
+ * ALSA Timer identifier
  */
 class TimerId
 {
@@ -103,12 +103,12 @@ private:
 };
 
 /**
- * @brief List of timer identifiers
+ * List of timer identifiers
  */
 typedef QList<TimerId> TimerIdList;
 
 /**
- * @brief Global timer information
+ * Global timer information
  */
 class TimerGlobalInfo
 {
@@ -140,7 +140,7 @@ private:
 };
 
 /**
- * @brief ALSA Timer inquiry helper
+ * ALSA Timer inquiry helper
  */
 class TimerQuery
 {
@@ -166,7 +166,7 @@ private:
 };
 
 /**
- * @brief ALSA Timer parameters
+ * ALSA Timer parameters
  */
 class TimerParams
 {
@@ -199,7 +199,7 @@ private:
 };
 
 /**
- * @brief ALSA Timer status
+ * ALSA Timer status
  */
 class TimerStatus
 {
@@ -225,7 +225,7 @@ private:
 };
 
 /**
- * @brief ALSA Timer events handler
+ * ALSA Timer events handler
  *
  * This class is used to define an interface that other class can implement
  * to receive timer events.
@@ -238,7 +238,7 @@ public:
 };
 
 /**
- * @brief ALSA Timer management
+ * ALSA Timer management
  */
 class Timer : public QObject
 {
@@ -246,7 +246,7 @@ class Timer : public QObject
     
 private:
     /**
-     * @brief This class manages timer events input from ALSA
+     * This class manages timer events input from ALSA
      */
     class TimerInputThread : public QThread
     {

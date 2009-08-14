@@ -20,9 +20,9 @@
 #ifndef INCLUDED_ALSAPORT_H
 #define INCLUDED_ALSAPORT_H
 
-/*!
+/**
  * @file alsaport.h
- * @brief Classes managing ALSA Sequencer ports
+ * Classes managing ALSA Sequencer ports.
  * @defgroup ALSAPort Ports
  * @{
  */
@@ -37,7 +37,7 @@ BEGIN_ALSASEQ_NAMESPACE
 class MidiClient;
 
 /**
- * @brief Port information
+ * Port information
  */
 class PortInfo
 {
@@ -103,12 +103,12 @@ private:
 
 
 /**
- * @brief List of port information objects
+ * List of port information objects
  */
 typedef QList<PortInfo> PortInfoList;
 
 /**
- * @brief Port management
+ * Port management
  *
  * This class represent an ALSA sequencer port
  */
@@ -191,7 +191,7 @@ private:
 };
 
 /**
- * @brief List of Ports instances
+ * List of Ports instances
  */
 typedef QList<MidiPort*> MidiPortList;
 

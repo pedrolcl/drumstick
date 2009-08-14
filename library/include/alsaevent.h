@@ -22,7 +22,7 @@
 
 /**
  * @file alsaevent.h
- * @brief Classes managing ALSA Sequencer events
+ * Classes managing ALSA Sequencer events
  * @defgroup ALSAEvent Events
  * @{
  */
@@ -37,7 +37,7 @@ const QEvent::Type SequencerEventType = QEvent::Type(QEvent::User + 4154); // :-
 #define CLONE_EVENT_DECLARATION(T) virtual T* clone() { return new T(&m_event); }
 
 /**
- * @brief Base class for the event's hierarchy
+ * Base class for the event's hierarchy
  *
  * All event classes share this base class. It provides several common
  * properties and members.
@@ -89,7 +89,7 @@ protected:
 
 
 /**
- * @brief Base class for the events having a Channel property
+ * Base class for the events having a Channel property
  */
 class ChannelEvent : public SequencerEvent
 {
@@ -102,7 +102,7 @@ public:
 };
 
 /**
- * @brief Base class for the events having Key and Velocity properties.
+ * Base class for the events having Key and Velocity properties.
  */
 class KeyEvent : public ChannelEvent
 {
@@ -117,7 +117,7 @@ public:
 };
 
 /**
- * @brief Class representing a note event with duration
+ * Class representing a note event with duration
  *
  * Note events are converted into two MIDI events, a note-on and a note-off
  * over the wire.
@@ -135,7 +135,7 @@ public:
 };
 
 /**
- * @brief Event representing a note-on MIDI event
+ * Event representing a note-on MIDI event
  */
 class NoteOnEvent : public KeyEvent
 {
@@ -147,7 +147,7 @@ public:
 };
 
 /**
- * @brief Event representing a note-off MIDI event
+ * Event representing a note-off MIDI event
  */
 class NoteOffEvent : public KeyEvent
 {
@@ -159,7 +159,7 @@ public:
 };
 
 /**
- * @brief Event representing a MIDI key pressure, or polyphonic after-touch event
+ * Event representing a MIDI key pressure, or polyphonic after-touch event
  */
 class KeyPressEvent : public KeyEvent
 {
@@ -171,7 +171,7 @@ public:
 };
 
 /**
- * @brief Event representing a MIDI control change event
+ * Event representing a MIDI control change event
  */
 class ControllerEvent : public ChannelEvent
 {
@@ -188,7 +188,7 @@ public:
 };
 
 /**
- * @brief Event representing a MIDI program change event
+ * Event representing a MIDI program change event
  */
 class ProgramChangeEvent : public ChannelEvent
 {
@@ -203,7 +203,7 @@ public:
 };
 
 /**
- * @brief Event representing a MIDI bender, or pitch wheel event
+ * Event representing a MIDI bender, or pitch wheel event
  */
 class PitchBendEvent : public ChannelEvent
 {
@@ -218,7 +218,7 @@ public:
 };
 
 /**
- * @brief Event representing a MIDI channel pressure or after-touch event
+ * Event representing a MIDI channel pressure or after-touch event
  */
 class ChanPressEvent : public ChannelEvent
 {
@@ -233,7 +233,7 @@ public:
 };
 
 /**
- * @brief Base class for variable length events
+ * Base class for variable length events
  */
 class VariableEvent : public SequencerEvent
 {
@@ -252,7 +252,7 @@ protected:
 };
 
 /**
- * @brief Event representing a MIDI system exclusive event
+ * Event representing a MIDI system exclusive event
  */
 class SysExEvent : public VariableEvent
 {
@@ -266,7 +266,7 @@ public:
 };
 
 /**
- * @brief Event representing a SMF text event
+ * Event representing a SMF text event
  *
  * This event type is not intended to be transmitted over the wire to an
  * external device, but it is useful for sequencer programs or MIDI applications
@@ -287,7 +287,7 @@ protected:
 };
 
 /**
- * @brief Generic MIDI event
+ * Generic MIDI event
  */
 class SystemEvent : public SequencerEvent
 {
@@ -299,7 +299,7 @@ public:
 };
 
 /**
- * @brief ALSA Event representing a queue control command
+ * ALSA Event representing a queue control command
  *
  * This event is used to schedule changes to the ALSA queues
  */
@@ -325,7 +325,7 @@ public:
 };
 
 /**
- * @brief Generic event having a value property
+ * Generic event having a value property
  */
 class ValueEvent : public SequencerEvent
 {
@@ -340,7 +340,7 @@ public:
 };
 
 /**
- * @brief ALSA Event representing a tempo change for an ALSA queue
+ * ALSA Event representing a tempo change for an ALSA queue
  */
 class TempoEvent : public QueueControlEvent
 {
@@ -352,7 +352,7 @@ public:
 };
 
 /**
- * @brief ALSA Event representing a subscription between two ALSA clients and ports
+ * ALSA Event representing a subscription between two ALSA clients and ports
  */
 class SubscriptionEvent : public SequencerEvent
 {
@@ -370,7 +370,7 @@ public:
 };
 
 /**
- * @brief ALSA Event representing a change on some ALSA sequencer client on the system
+ * ALSA Event representing a change on some ALSA sequencer client on the system
  */
 class ClientEvent : public SequencerEvent
 {
@@ -382,7 +382,7 @@ public:
 };
 
 /**
- * @brief ALSA Event representing a change on some ALSA sequencer port on the system
+ * ALSA Event representing a change on some ALSA sequencer port on the system
  */
 class PortEvent : public ClientEvent
 {
@@ -394,7 +394,7 @@ public:
 };
 
 /**
- * @brief Auxiliary class to remove events from an ALSA queue
+ * Auxiliary class to remove events from an ALSA queue
  */
 class RemoveEvents
 {
@@ -430,7 +430,7 @@ private:
 };
 
 /**
- * @brief Auxiliary class to translate between raw MIDI streams and ALSA events
+ * Auxiliary class to translate between raw MIDI streams and ALSA events
  */
 class MidiCodec : public QObject
 {

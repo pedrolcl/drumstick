@@ -23,7 +23,7 @@
 
 /*!
  * @file subscription.h
- * @brief Classes managing ALSA subscripions
+ * Classes managing ALSA subscripions
  * @defgroup ALSASubscription Subscriptions
  * @{
  */
@@ -36,7 +36,7 @@ BEGIN_ALSASEQ_NAMESPACE
 class MidiClient;
 
 /**
- * @brief Subscriber management
+ * Subscriber management
  */
 class Subscriber
 {
@@ -74,7 +74,7 @@ private:
 };
 
 /**
- * @brief Subscription management
+ * Subscription management
  */
 class Subscription
 {
@@ -111,12 +111,12 @@ private:
 };
 
 /**
- * @brief List of subscriptions
+ * List of subscriptions
  */
 typedef QList<Subscription> SubscriptionsList;
 
 /**
- * @brief List of subscribers
+ * List of subscribers
  */
 typedef QList<Subscriber> SubscribersList;
 

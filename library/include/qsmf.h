@@ -24,7 +24,7 @@
 
 /*!
  * @file qsmf.h
- * @brief Standard MIDI Files Input/Output
+ * Standard MIDI Files Input/Output
  * @defgroup SMF Standard MIDI Files management (I/O)
  * @{
  */
@@ -77,7 +77,7 @@ BEGIN_MIDIUTIL_NAMESPACE
 #define minor_mode          1
 
 /**
- * @brief Standard MIDI Files input/output
+ * Standard MIDI Files input/output
  *
  * This class is used to parse and encode SMF
  */
@@ -150,7 +150,7 @@ signals:
 
 private:
     /**
-     * @brief Tempo change within a SMF or sequence
+     * Tempo change within a SMF or sequence
      */
     struct QSmfRecTempo
     {
