@@ -23,7 +23,7 @@
 #include "alsaevent.h"
 #include <QObject>
 
-USE_ALSASEQ_NAMESPACE
+using namespace aseqmm;
 
 class QTestEvents : public QObject
 {

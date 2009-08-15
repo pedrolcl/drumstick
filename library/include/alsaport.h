@@ -32,7 +32,7 @@
 #include <QObject>
 #include <QList>
 
-BEGIN_ALSASEQ_NAMESPACE
+namespace aseqmm {
 
 class MidiClient;
 
@@ -195,7 +195,7 @@ private:
  */
 typedef QList<MidiPort*> MidiPortList;
 
-END_ALSASEQ_NAMESPACE
+}
 
 /*! @} */
 

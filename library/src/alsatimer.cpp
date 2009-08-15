@@ -21,7 +21,7 @@
 #include <cmath>
 #include <cstdio>
 
-BEGIN_ALSA_NAMESPACE
+namespace aseqmm {
 
 TimerInfo::TimerInfo()
 {
@@ -909,4 +909,4 @@ Timer::TimerInputThread::stop()
     m_mutex.unlock();
 }
 
-END_ALSA_NAMESPACE
+}

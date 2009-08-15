@@ -37,8 +37,7 @@
 #include "song.h"
 #include "player.h"
 
-USE_MIDIUTIL_NAMESPACE
-USE_ALSASEQ_NAMESPACE
+using namespace aseqmm;
 
 const QString QSTR_DOMAIN("kmetronome.sourceforge.net");
 const QString QSTR_APPNAME("SMFPlayer");

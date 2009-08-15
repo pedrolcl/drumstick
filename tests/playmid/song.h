@@ -24,7 +24,7 @@
 
 #include "alsaevent.h"
 
-USE_ALSASEQ_NAMESPACE
+using namespace aseqmm;
 
 class Song : public QList<SequencerEvent*>
 {

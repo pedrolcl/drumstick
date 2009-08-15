@@ -35,7 +35,7 @@
 #include <QString>
 #include <QList>
 
-BEGIN_MIDIUTIL_NAMESPACE
+namespace aseqmm {
 
 #define MThd 0x4d546864
 #define MTrk 0x4d54726b
@@ -211,7 +211,7 @@ private:
     void writeTrackChunk(int track);
 };
 
-END_MIDIUTIL_NAMESPACE
+}
 
 /*! @} */
 

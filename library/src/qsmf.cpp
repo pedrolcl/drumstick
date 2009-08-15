@@ -25,7 +25,7 @@
 #include <QObject>
 #include <QFile>
 
-BEGIN_MIDIUTIL_NAMESPACE
+namespace aseqmm {
 
 QSmf::QSmf(QObject * parent) :
     QObject(parent)
@@ -952,4 +952,4 @@ long QSmf::getFilePos()
     return (long) m_IOStream->device()->pos();
 }
 
-END_MIDIUTIL_NAMESPACE
+}

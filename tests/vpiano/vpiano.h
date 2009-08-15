@@ -31,7 +31,7 @@
 #include "alsaport.h"
 #include "alsaqueue.h"
 
-USE_ALSASEQ_NAMESPACE
+using namespace aseqmm;
 
 /* MidiClient can deliver SequencerEvents with only
  * signals or posting QEvents to the QApplication loop */

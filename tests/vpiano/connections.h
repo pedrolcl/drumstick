@@ -25,7 +25,7 @@
 #include "ui_connections.h"
 #include "connectionitem.h"
 
-USE_ALSASEQ_NAMESPACE
+using namespace aseqmm;
 
 class Connections : public QDialog
 {

@@ -19,7 +19,7 @@
 
 #include "qsmf.h"
 
-USE_MIDIUTIL_NAMESPACE
+using namespace aseqmm;
 
 class QSMFBuilder : public QObject
 {

@@ -22,7 +22,7 @@
 #include "subscription.h"
 #include "alsaclient.h"
 
-BEGIN_ALSASEQ_NAMESPACE
+namespace aseqmm {
 
 /************/
 /* PortInfo */
@@ -824,4 +824,4 @@ MidiPort::updateConnectionsFrom(const PortInfoList& ports)
     }
 }
 
-END_ALSASEQ_NAMESPACE
+}

@@ -6,7 +6,7 @@
 
 const int ConnectionItemType(QListWidgetItem::UserType + 1);
 
-USE_ALSASEQ_NAMESPACE
+using namespace aseqmm;
 
 class ConnectionItem : public QListWidgetItem
 {

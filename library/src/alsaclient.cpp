@@ -30,8 +30,9 @@ To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/
 
 This is the reference documentation for aseqmm. This library is a C++ wrapper
 around the ALSA library sequencer interface, using Qt4 objects, idioms and style.
-@see http://www.alsa-project.org/alsa-doc/alsa-lib/group___sequencer.html
+
 @see http://doc.trolltech.com/index.html
+@see http://www.alsa-project.org/alsa-doc/alsa-lib/seq.html
 @see http://cartan.cas.suffolk.edu/oopdocbook/opensource/index.html
 
 @section Contents Table of Contents
@@ -174,7 +175,7 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * three methods of delivering events offered by the library.
  */
 
-BEGIN_ALSASEQ_NAMESPACE
+namespace aseqmm {
 
 /*
  * MidiClient
@@ -1457,5 +1458,5 @@ int PoolInfo::getSizeOfInfo() const
     return snd_seq_client_pool_sizeof();
 }
 
-END_ALSASEQ_NAMESPACE
+}
 

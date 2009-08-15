@@ -30,7 +30,7 @@
 #include "aseqmmcommon.h"
 #include <QEvent>
 
-BEGIN_ALSASEQ_NAMESPACE
+namespace aseqmm {
 
 const QEvent::Type SequencerEventType = QEvent::Type(QEvent::User + 4154); // :-)
 
@@ -456,7 +456,7 @@ private:
     snd_midi_event_t* m_Info;
 };
 
-END_ALSASEQ_NAMESPACE
+}
 
 /*! @} */
 

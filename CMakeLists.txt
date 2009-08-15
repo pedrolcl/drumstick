@@ -144,9 +144,6 @@ ENDIF(WANT_PCH)
 
 SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed")
 
-#doesn't work, because moc can't handle preprocessor directives
-#ADD_DEFINITIONS(-DASEQMM_NAMESPACES)
-
 ADD_SUBDIRECTORY(library build/library)
 ADD_SUBDIRECTORY(tests build/tests)
 

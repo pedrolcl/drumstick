@@ -33,7 +33,7 @@
  * @{
  */
 
-BEGIN_ALSA_NAMESPACE
+namespace aseqmm {
 
 class TimerQuery;
 class TimerId;
@@ -312,7 +312,7 @@ private:
     snd_htimestamp_t m_last_time;
 };
 
-END_ALSA_NAMESPACE
+}
 
 /*! @} */
 

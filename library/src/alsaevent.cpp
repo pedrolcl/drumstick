@@ -25,7 +25,7 @@
  * @see http://doc.trolltech.com/qevent.html
  */
 
-BEGIN_ALSASEQ_NAMESPACE
+namespace aseqmm {
 
 SequencerEvent::SequencerEvent() : QEvent(SequencerEventType)
 {
@@ -547,4 +547,4 @@ MidiCodec::resizeBuffer(int bufsize)
     CHECK_WARNING(snd_midi_event_resize_buffer(m_Info, bufsize));
 }
 
-END_ALSASEQ_NAMESPACE
+}

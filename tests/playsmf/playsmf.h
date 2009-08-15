@@ -31,8 +31,7 @@
 #include "alsaqueue.h"
 #include "alsaport.h"
 
-USE_MIDIUTIL_NAMESPACE
-USE_ALSASEQ_NAMESPACE
+using namespace aseqmm;
 
 class Song : public QList<SequencerEvent*>
 {

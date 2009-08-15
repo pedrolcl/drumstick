@@ -22,7 +22,7 @@
 #include "alsaevent.h"
 #include <cmath>
 
-BEGIN_ALSASEQ_NAMESPACE
+namespace aseqmm {
 
 /*************/
 /* QueueInfo */
@@ -516,4 +516,4 @@ void MidiQueue::setRealTimePosition(snd_seq_real_time_t* pos)
     m_MidiClient->drainOutput();
 }
 
-END_ALSASEQ_NAMESPACE
+}

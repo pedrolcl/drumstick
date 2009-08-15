@@ -37,7 +37,7 @@
 #include <QThread>
 #include <QReadWriteLock>
 
-BEGIN_ALSASEQ_NAMESPACE
+namespace aseqmm {
 
 class MidiQueue;
 class MidiClient;
@@ -353,7 +353,7 @@ private:
     PoolInfo m_poolInfo;
 };
 
-END_ALSASEQ_NAMESPACE
+}
 
 /*! @} */
 

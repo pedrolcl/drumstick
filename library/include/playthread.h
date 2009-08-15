@@ -32,7 +32,7 @@
 #include <QThread>
 #include <QReadWriteLock>
 
-BEGIN_ALSASEQ_NAMESPACE
+namespace aseqmm {
 
 class MidiClient;
 class MidiQueue;
@@ -77,7 +77,7 @@ protected:
     QReadWriteLock m_mutex;
 };
 
-END_ALSASEQ_NAMESPACE
+}
 
 /*! @} */
 

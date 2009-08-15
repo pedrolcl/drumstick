@@ -22,7 +22,7 @@
 #include "alsaqueue.h"
 #include "playthread.h"
 
-BEGIN_ALSASEQ_NAMESPACE
+namespace aseqmm {
 
 const int TIMEOUT = 100;
 
@@ -166,4 +166,4 @@ void SequencerOutputThread::run()
     }
 }
 
-END_ALSASEQ_NAMESPACE
+}

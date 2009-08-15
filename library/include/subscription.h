@@ -31,7 +31,7 @@
 #include "aseqmmcommon.h"
 #include <QList>
 
-BEGIN_ALSASEQ_NAMESPACE
+namespace aseqmm {
 
 class MidiClient;
 
@@ -120,7 +120,7 @@ typedef QList<Subscription> SubscriptionsList;
  */
 typedef QList<Subscriber> SubscribersList;
 
-END_ALSASEQ_NAMESPACE
+}
 
 /*! @} */
 

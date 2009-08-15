@@ -20,7 +20,7 @@
 #include "alsaclient.h"
 #include "subscription.h"
 
-BEGIN_ALSASEQ_NAMESPACE
+namespace aseqmm {
 
 /******************/
 /* Subscriber */
@@ -322,4 +322,4 @@ Subscription::getSizeOfInfo() const
     return snd_seq_port_subscribe_sizeof();
 }
 
-END_ALSASEQ_NAMESPACE
+}

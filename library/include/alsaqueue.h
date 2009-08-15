@@ -29,7 +29,7 @@
 
 #include "aseqmmcommon.h"
 
-BEGIN_ALSASEQ_NAMESPACE
+namespace aseqmm {
 
 #define SKEW_BASE 0x10000 // Should be fixed in ALSA kernel
 
@@ -201,7 +201,7 @@ private:
     QueueStatus m_Status;
 };
 
-END_ALSASEQ_NAMESPACE
+}
 
 /*! @} */
 

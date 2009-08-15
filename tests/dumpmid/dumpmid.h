@@ -38,7 +38,7 @@
 #include "alsaqueue.h"
 #include "subscription.h"
 
-USE_ALSASEQ_NAMESPACE
+using namespace aseqmm;
 
 class QDumpMIDI : public QObject
 {
