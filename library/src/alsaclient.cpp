@@ -35,16 +35,12 @@ around the ALSA library sequencer interface, using Qt4 objects, idioms and style
 @see http://www.alsa-project.org/alsa-doc/alsa-lib/seq.html
 @see http://cartan.cas.suffolk.edu/oopdocbook/opensource/index.html
 
-@section Contents Table of Contents
-
-- @ref Disclaimer
-- @ref Introduction
-- @ref Advanced
-
 @section Disclaimer
 
-This is a work in progress, in a very early state. It will be always in
-development.
+This document is a work in progress, in a very early state. It will be always in
+development. Please visit the aseqmm web site to read the latest version.
+
+@see http://kmetronome.sourceforge.net/aseqmm/
 
 @section Introduction
 
@@ -54,7 +50,7 @@ Ezust. It is available published on dead trees, and also
 <a href="http://cartan.cas.suffolk.edu/oopdocbook/opensource/index.html">
 online</a>.
 
-Here is a simple program that outputs a note-on MIDI message:
+Here is a simple program playing a note-on MIDI message:
 
 @code
 #include <QApplication>
@@ -73,11 +69,11 @@ int main(int argc, char **argv) {
     port->setPortName("MyPort");
     port->setCapability(SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ);
     port->setPortType(SND_SEQ_PORT_TYPE_APPLICATION | SND_SEQ_PORT_TYPE_MIDI_GENERIC);
-    port->attach(); // here is where the ALSA port is created
+    port->attach(); // here is where the ALSA port is created and becomes visible
     // subscribe the port to some other client:port
-    port->subscribeTo("20:0"); // or "name:port"
+    port->subscribeTo("20:0"); // or "name:port", like in "KMidimon:0"
 
-    // create and send a note on message
+    // create an event object on the stack, to send a note on message
     NoteOnEvent ev(0, 66, 100); // (channel, note number, velocity)
     ev.setSource(port->getPortId());
     ev.setSubscribers();
@@ -92,6 +88,12 @@ int main(int argc, char **argv) {
     return 0;
 }
 @endcode
+
+There are more examples in the source tree, under the tests/ directory, and
+you can also see the applications using this library: kmetronome and kmidimon.
+
+@see http://kmetronome.sourceforge.net/
+@see http://kmetronome.sourceforge.net/kmidimon/
 
 @section Advanced Advanced features, not yet documented
 
@@ -165,7 +167,7 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * SystemInfo is an auxiliary class to query several system capabilities.
  *
  * The PoolInfo class represents a container to query and change some values
- * for the memory pool assigned to an ALSA client.
+ * for the kernel memory pool assigned to an ALSA client.
  *
  * The ClientInfo class is another container to query and change values about
  * the MidiClient itself.
