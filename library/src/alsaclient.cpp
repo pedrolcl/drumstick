@@ -17,6 +17,15 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+#include "alsaclient.h"
+#include "alsaqueue.h"
+#include "alsaevent.h"
+#include "alsaport.h"
+#include <QThread>
+#include <QApplication>
+
+namespace aseqmm {
+
 /**
 @mainpage aseqmm Documentation
 @author Copyright &copy; 2009 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
@@ -50,7 +59,8 @@ Ezust. It is available published on dead trees, and also
 <a href="http://cartan.cas.suffolk.edu/oopdocbook/opensource/index.html">
 online</a>.
 
-Here is a simple program playing a note-on MIDI message:
+Here is how a simple program playing a note-on MIDI message using aseqmm
+looks like:
 
 @code
 #include <QApplication>
@@ -60,25 +70,25 @@ int main(int argc, char **argv) {
     QApplication app(argc, argv, false);
 
     // initialize the client
-    MidiClient *client = new MidiClient();
+    aseqmm::MidiClient *client = new aseqmm::MidiClient();
     client->open();
-    client->setClientName("MyClient");
+    client->setClientName( "MyClient" );
 
     // initialize the port
-    MidiPort *port = client->createPort();
-    port->setPortName("MyPort");
-    port->setCapability(SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ);
-    port->setPortType(SND_SEQ_PORT_TYPE_APPLICATION | SND_SEQ_PORT_TYPE_MIDI_GENERIC);
+    aseqmm::MidiPort *port = client->createPort();
+    port->setPortName( "MyPort" );
+    port->setCapability( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ );
+    port->setPortType( SND_SEQ_PORT_TYPE_APPLICATION | SND_SEQ_PORT_TYPE_MIDI_GENERIC );
     port->attach(); // here is where the ALSA port is created and becomes visible
     // subscribe the port to some other client:port
-    port->subscribeTo("20:0"); // or "name:port", like in "KMidimon:0"
+    port->subscribeTo( "20:0" ); // or "name:port", like in "KMidimon:0"
 
     // create an event object on the stack, to send a note on message
-    NoteOnEvent ev(0, 66, 100); // (channel, note number, velocity)
-    ev.setSource(port->getPortId());
+    aseqmm::NoteOnEvent ev( 0, 66, 100 ); // (channel, note number, velocity)
+    ev.setSource( port->getPortId() );
     ev.setSubscribers();
     ev.setDirect();
-    client->output(&ev); // or outputDirect() if you prefer not buffered
+    client->output( &ev ); // or outputDirect() if you prefer not buffered
     client->drainOutput();
 
     // close and clean the created instances
@@ -89,8 +99,11 @@ int main(int argc, char **argv) {
 }
 @endcode
 
+The above program creates two objects (MidiClient and MidiPort) on the heap and
+one event object (NoteOnEvent) on the stack.
+
 There are more examples in the source tree, under the tests/ directory, and
-you can also see the applications using this library: kmetronome and kmidimon.
+you can also see applications using this library, as kmetronome and kmidimon.
 
 @see http://kmetronome.sourceforge.net/
 @see http://kmetronome.sourceforge.net/kmidimon/
@@ -126,13 +139,6 @@ ALSA Timers test
 @example vpiano.cpp
 A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
 */
-
-#include "alsaclient.h"
-#include "alsaqueue.h"
-#include "alsaevent.h"
-#include "alsaport.h"
-#include <QThread>
-#include <QApplication>
 
 /**
  * @class QObject
@@ -177,14 +183,8 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * three methods of delivering events offered by the library.
  */
 
-namespace aseqmm {
-
-/*
- * MidiClient
- */
-
 /**
- * This constructor initialize several members with default values, but it is
+ * This constructor initializes several members with default values, but it is
  * necessary to invoke open() later to get the sequencer client handler from
  * the ALSA sequencer subsystem.
  *
@@ -1460,5 +1460,5 @@ int PoolInfo::getSizeOfInfo() const
     return snd_seq_client_pool_sizeof();
 }
 
-}
+} /* namespace aseqmm */
 

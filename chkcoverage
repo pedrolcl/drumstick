@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "List of ALSA sequencer/midi/timer symbols not yet wrapped by aseqmm"
 K=0
 objdump -t -j *UND* build/library/libaseqmm.a | awk '{print $4}' | grep "^snd" > lib.txt
 nm --defined-only -D /usr/lib/libasound.so | awk '{print $3}'| egrep "^snd_(seq|midi|timer)" |\

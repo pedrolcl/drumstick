@@ -2,6 +2,6 @@
 # a typical configuration for development usage...
 cmake . -DCMAKE_CXX_FLAGS="-W -Wall" \
 	-DCMAKE_BUILD_TYPE=Debug \
-	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_INSTALL_PREFIX=/usr/local \
 	-DWANT_STATIC=YES \
 	-DWANT_PCH=YES $*
