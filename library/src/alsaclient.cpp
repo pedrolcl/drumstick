@@ -69,17 +69,16 @@ looks like:
 int main(int argc, char **argv) {
     QApplication app(argc, argv, false);
 
-    // initialize the client
+    // create a client object on the heap
     aseqmm::MidiClient *client = new aseqmm::MidiClient();
     client->open();
     client->setClientName( "MyClient" );
 
-    // initialize the port
+    // create the port
     aseqmm::MidiPort *port = client->createPort();
     port->setPortName( "MyPort" );
     port->setCapability( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ );
     port->setPortType( SND_SEQ_PORT_TYPE_APPLICATION | SND_SEQ_PORT_TYPE_MIDI_GENERIC );
-    port->attach(); // here is where the ALSA port is created and becomes visible
     // subscribe the port to some other client:port
     port->subscribeTo( "20:0" ); // or "name:port", like in "KMidimon:0"
 
@@ -87,7 +86,7 @@ int main(int argc, char **argv) {
     aseqmm::NoteOnEvent ev( 0, 66, 100 ); // (channel, note number, velocity)
     ev.setSource( port->getPortId() );
     ev.setSubscribers();
-    ev.setDirect();
+    ev.setDirect(); // not scheduled
     client->output( &ev ); // or outputDirect() if you prefer not buffered
     client->drainOutput();
 
@@ -98,9 +97,6 @@ int main(int argc, char **argv) {
     return 0;
 }
 @endcode
-
-The above program creates two objects (MidiClient and MidiPort) on the heap and
-one event object (NoteOnEvent) on the stack.
 
 There are more examples in the source tree, under the tests/ directory, and
 you can also see applications using this library, as kmetronome and kmidimon.
@@ -227,11 +223,16 @@ MidiClient::~MidiClient()
  * as the device name (m_DeviceName), the open mode and block mode.
  */
 void
-MidiClient::open()
+MidiClient::open( const QString deviceName,
+                  const int openMode,
+                  const bool blockMode)
 {
-    CHECK_ERROR(snd_seq_open(&m_SeqHandle, m_DeviceName.toLocal8Bit().data(),
-                             m_OpenMode, m_BlockMode ? 0 : SND_SEQ_NONBLOCK));
-    CHECK_WARNING(snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info));
+    CHECK_ERROR( snd_seq_open( &m_SeqHandle, deviceName.toLocal8Bit().data(),
+                              openMode, blockMode ? 0 : SND_SEQ_NONBLOCK ) );
+    CHECK_WARNING( snd_seq_get_client_info( m_SeqHandle, m_Info.m_Info ) );
+    m_DeviceName = deviceName;
+    m_OpenMode = openMode;
+    m_BlockMode = blockMode;
 }
 
 /**
@@ -244,14 +245,20 @@ MidiClient::open()
  * @param conf a configuration object pointer
  */
 void
-MidiClient::open(snd_config_t* conf)
+MidiClient::open( snd_config_t* conf,
+                  const QString deviceName,
+                  const int openMode,
+                  const bool blockMode )
 {
-    CHECK_ERROR(snd_seq_open_lconf( &m_SeqHandle,
-                                    m_DeviceName.toLocal8Bit().data(),
-                                    m_OpenMode,
-                                    m_BlockMode ? 0 : SND_SEQ_NONBLOCK,
-                                    conf ));
-    CHECK_WARNING(snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info));
+    CHECK_ERROR( snd_seq_open_lconf( &m_SeqHandle,
+                                     deviceName.toLocal8Bit().data(),
+                                     openMode,
+                                     blockMode ? 0 : SND_SEQ_NONBLOCK,
+                                     conf ));
+    CHECK_WARNING( snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info));
+    m_DeviceName = deviceName;
+    m_OpenMode = openMode;
+    m_BlockMode = blockMode;
 }
 
 /**
@@ -299,21 +306,21 @@ MidiClient::setInputBufferSize(size_t newSize)
     }
 }
 
-void
-MidiClient::setDeviceName( QString const& newName)
-{
-    if ((m_DeviceName != newName) && (m_SeqHandle == NULL)) {
-        m_DeviceName = newName;
-    }
-}
+//void
+//MidiClient::setDeviceName( QString const& newName)
+//{
+//    if ((m_DeviceName != newName) && (m_SeqHandle == NULL)) {
+//        m_DeviceName = newName;
+//    }
+//}
 
-void
-MidiClient::setOpenMode(int newMode)
-{
-    if ((m_OpenMode != newMode) && (m_SeqHandle == NULL)) {
-        m_OpenMode = newMode;
-    }
-}
+//void
+//MidiClient::setOpenMode(int newMode)
+//{
+//    if ((m_OpenMode != newMode) && (m_SeqHandle == NULL)) {
+//        m_OpenMode = newMode;
+//    }
+//}
 
 void
 MidiClient::setBlockMode(bool newValue)
@@ -563,7 +570,7 @@ MidiPort*
 MidiClient::createPort()
 {
     MidiPort* port = new MidiPort(this);
-    port->setMidiClient(this);
+    port->attach(this);
     return port;
 }
 

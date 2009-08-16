@@ -52,24 +52,20 @@ SMFPlayer::SMFPlayer(QWidget *parent)
 	connect(ui.btnExit, SIGNAL(clicked()), SLOT(quit()));
 
     m_Client = new MidiClient(this);
-    m_Port = new MidiPort(this);
-
-    m_Client->setOpenMode(SND_SEQ_OPEN_DUPLEX);
-    m_Client->setBlockMode(false);
     m_Client->open();
     m_Client->setPoolOutput(100);
     m_Client->setClientName("MIDI Player");
     connect(m_Client, SIGNAL(eventReceived(SequencerEvent*)),
                       SLOT(sequencerEvent(SequencerEvent*)));
 
-    m_Port->setMidiClient(m_Client);
+    m_Port = new MidiPort(this);
+    m_Port->attach( m_Client );
     m_Port->setPortName("MIDI Player Output Port");
     m_Port->setCapability( SND_SEQ_PORT_CAP_READ  |
                            SND_SEQ_PORT_CAP_SUBS_READ |
                            SND_SEQ_PORT_CAP_WRITE );
     m_Port->setPortType( SND_SEQ_PORT_TYPE_APPLICATION |
                          SND_SEQ_PORT_TYPE_MIDI_GENERIC );
-    m_Port->attach();
 
     m_Queue = m_Client->createQueue("SMFPlayer");
     m_queueId = m_Queue->getId();

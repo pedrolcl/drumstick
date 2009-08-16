@@ -32,8 +32,6 @@ QDumpMIDI::QDumpMIDI()
     : QObject()
 {
     m_Client = new MidiClient(this);
-    m_Client->setOpenMode(SND_SEQ_OPEN_DUPLEX);
-    m_Client->setBlockMode(false);
     m_Client->open();
     m_Client->setClientName("DumpMIDI");
 #ifndef USE_QEVENTS // using signals instead
@@ -42,7 +40,7 @@ QDumpMIDI::QDumpMIDI()
                        Qt::DirectConnection );
 #endif
     m_Port = new MidiPort(this);
-    m_Port->setMidiClient(m_Client);
+    m_Port->attach( m_Client );
     m_Port->setPortName("DumpMIDI port");
     m_Port->setCapability( SND_SEQ_PORT_CAP_WRITE |
                            SND_SEQ_PORT_CAP_SUBS_WRITE );
@@ -56,7 +54,6 @@ QDumpMIDI::QDumpMIDI()
 #endif
     connect( m_Port, SIGNAL(subscribed(MidiPort*,Subscription*)),
                      SLOT(subscription(MidiPort*,Subscription*)));
-    m_Port->attach();
     qDebug() << "Trying to subscribe from Announce";
     m_Port->subscribeFromAnnounce();
 }

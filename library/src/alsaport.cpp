@@ -307,9 +307,8 @@ PortInfo::setTimestampQueue(int queueId)
 
 MidiPort::MidiPort( QObject* parent ) :
     QObject( parent ),
-    m_MidiClient(NULL),
-    m_Attached(false),
-    m_AutoAttach(false)
+    m_MidiClient( NULL ),
+    m_Attached( false )
 {}
 
 MidiPort::~MidiPort()
@@ -328,8 +327,7 @@ MidiPort::getPortInfo()
 SubscriptionsList
 MidiPort::getSubscriptions() const
 {
-    SubscriptionsList lst = m_Subscriptions;
-    return lst;
+    return m_Subscriptions;
 }
 
 void
@@ -343,12 +341,8 @@ MidiPort::setMidiClient( MidiClient* seq )
 {
     if (m_MidiClient != seq)
     {
-        emit midiClientChanged(this, seq);
         m_MidiClient = seq;
-        if (m_AutoAttach && !m_Attached)
-        {
-            attach();
-        }
+        emit midiClientChanged( this, m_MidiClient );
         applyPortInfo();
     }
 }
@@ -568,7 +562,7 @@ MidiPort::getPortName()
 }
 
 void
-MidiPort::setPortName( QString const& newName)
+MidiPort::setPortName( QString const& newName )
 {
     m_Info.setName(newName);
     applyPortInfo();
@@ -685,9 +679,10 @@ MidiPort::setTimestampQueue(int queueId)
 }
 
 void
-MidiPort::attach()
+MidiPort::attach( MidiClient* seq )
 {
-    if (!m_Attached && (m_MidiClient != NULL)) {
+    if (!m_Attached && (seq != NULL)) {
+        m_MidiClient = seq;
         m_MidiClient->portAttach(this);
         m_Attached = true;
         emit attached(this);
@@ -701,26 +696,6 @@ MidiPort::detach()
         m_MidiClient->portDetach(this);
         m_Attached = false;
         emit detached(this);
-    }
-}
-
-void
-MidiPort::setAttached(bool state)
-{
-    if (m_Attached != state) {
-        if (state) {
-            attach();
-        } else {
-            detach();
-        }
-    }
-}
-
-void
-MidiPort::setAutoAttach(bool state)
-{
-    if (m_AutoAttach != state) {
-        m_AutoAttach = state;
     }
 }
 
@@ -824,4 +799,4 @@ MidiPort::updateConnectionsFrom(const PortInfoList& ports)
     }
 }
 
-}
+} /* namespace aseqmm; */

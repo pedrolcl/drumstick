@@ -62,18 +62,14 @@ PlaySMF::PlaySMF() :
     m_Stopped(true)
 {
     m_Client = new MidiClient(this);
-    m_Port = new MidiPort(this);
-
-    m_Client->setOpenMode(SND_SEQ_OPEN_DUPLEX);
-    m_Client->setBlockMode(false);
     m_Client->open();
     m_Client->setClientName("MIDI Player");
 
-    m_Port->setMidiClient(m_Client);
+    m_Port = new MidiPort(this);
+    m_Port->attach( m_Client );
     m_Port->setPortName("MIDI Player port");
     m_Port->setCapability(SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ);
     m_Port->setPortType(SND_SEQ_PORT_TYPE_APPLICATION);
-    m_Port->attach();
 
     m_Queue = m_Client->createQueue();
     m_queueId = m_Queue->getId();

@@ -227,8 +227,13 @@ public:
     MidiClient( QObject* parent = 0 );
     virtual ~MidiClient();
 
-    void open();
-    void open(snd_config_t* conf);
+    void open( const QString deviceName = "default",
+               const int openMode = SND_SEQ_OPEN_DUPLEX,
+               const bool blockMode = false );
+    void open( snd_config_t* conf,
+               const QString deviceName = "default",
+               const int openMode = SND_SEQ_OPEN_DUPLEX,
+               const bool blockMode = false );
     void close();
     void startSequencerInput();
     void stopSequencerInput();
@@ -259,9 +264,7 @@ public:
     size_t getInputBufferSize();
     void setInputBufferSize(size_t newSize);
     QString getDeviceName() { return m_DeviceName; }
-    void setDeviceName( QString const& newName);
     int getOpenMode() { return m_OpenMode; }
-    void setOpenMode(int newMode);
     bool getBlockMode() { return m_BlockMode; }
     void setBlockMode(bool newValue);
     QString getClientName();
@@ -353,7 +356,7 @@ private:
     PoolInfo m_poolInfo;
 };
 
-}
+} /* namespace aseqmm */
 
 /*! @} */
 

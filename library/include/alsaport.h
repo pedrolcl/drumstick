@@ -121,7 +121,7 @@ public:
     MidiPort( QObject* parent = 0 );
     virtual ~MidiPort();
 
-    void attach();
+    void attach( MidiClient* seq );
     void detach();
     void subscribe( Subscription* subs );
     void unsubscribe( Subscription* subs );
@@ -147,7 +147,6 @@ public:
     void updateConnectionsFrom(const PortInfoList& desired);
     bool containsAddress(const snd_seq_addr_t* addr, const PortInfoList& lst);
 
-    void setMidiClient( MidiClient* seq );
     void applyPortInfo();
     QString getPortName();
     void setPortName( QString const& newName);
@@ -169,8 +168,8 @@ public:
     void setTimestampReal(bool value);
     void setTimestampQueue(int queueId);
 
-    void setAttached(bool state);
-    void setAutoAttach(bool state);
+    //void setAttached(bool state);
+    //void setAutoAttach(bool state);
 
 signals:
     void subscribed(MidiPort* port, Subscription* subs);
@@ -181,17 +180,17 @@ signals:
 protected:
     PortInfo* getPortInfo();
     void freeSubscriptions();
+    void setMidiClient( MidiClient* seq );
 
 private:
     MidiClient* m_MidiClient;
     PortInfo m_Info;
     bool m_Attached;
-    bool m_AutoAttach;
     SubscriptionsList m_Subscriptions;
 };
 
 /**
- * List of Ports instances
+ * List of Ports instances.
  */
 typedef QList<MidiPort*> MidiPortList;
 

@@ -30,8 +30,6 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     ui.statusBar->hide();
 
     m_Client = new MidiClient(this);
-    m_Client->setOpenMode(SND_SEQ_OPEN_DUPLEX);
-    m_Client->setBlockMode(false);
     m_Client->open();
     m_Client->setClientName("Virtual Piano");
 #ifdef USE_QEVENTS
@@ -42,12 +40,11 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
 #endif // USE_QEVENTS
 
     m_Port = new MidiPort(this);
-    m_Port->setMidiClient(m_Client);
+    m_Port->attach( m_Client );
     m_Port->setPortName("Virtual Piano");
     m_Port->setCapability( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ |
                            SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE );
     m_Port->setPortType( SND_SEQ_PORT_TYPE_APPLICATION );
-    m_Port->attach();
 
     m_portId = m_Port->getPortId();
 
