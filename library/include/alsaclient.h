@@ -170,9 +170,11 @@ private:
 /**
  * Sequencer events handler
  *
- * This pure abstract class is used to define an interface that other class can
+ * This abstract class is used to define an interface that other class can
  * implement to receive sequencer events. It is one of the three methods of
  * delivering events offered by this library.
+ *
+ * @see ALSAClient
  */
 class SequencerEventHandler
 {
@@ -186,7 +188,7 @@ public:
      *
      * @param ev A pointer to the received SequencerEvent
      * @see MidiClient::setHandler(), MidiClient::startSequencerInput(),
-     * MidiClient::stopSequencerInput()
+     * MidiClient::stopSequencerInput(), MidiClient::doEvents()
      */
     virtual void handleSequencerEvent(SequencerEvent* ev) = 0;
 };

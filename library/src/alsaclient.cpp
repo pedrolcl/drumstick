@@ -174,15 +174,40 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * The ClientInfo class is another container to query and change values about
  * the MidiClient itself.
  *
- * The SequencerEventHandler pure abstract class is used to define an interface
+ * The SequencerEventHandler abstract class is used to define an interface
  * that other class can implement to receive sequencer events. It is one of the
  * three methods of delivering events offered by the library.
+ *
+ * @section EventInput Sequencer Events Input
+ * There are three methods of events delivering:
+ * <ul>
+ * <li>A Callback method. To use this method, you must derive a class from
+ * SequencerEventHandler, overriding the method
+ * SequencerEventHandler::handleSequencerEvent() to
+ * provide your own event processing. You must provide the handler instance to
+ * the client using setHandler().</li>
+ * <li>Using QEvent listeners. To use this method, you must use one or more
+ * classes derived from QObject overriding the method QObject::customEvent().
+ * You must also use the method addListener() to add such objects to the
+ * client's listeners list.</li>
+ * <li>The third method involves signals and slots. Whenever a sequencer event
+ * is received, a signal eventReceived() is emitted, that can be connected to
+ * your own supplied slot(s) to process it.
+ * </ul>
+ *
  */
 
 /**
- * This constructor initializes several members with default values, but it is
- * necessary to invoke open() later to get the sequencer client handler from
- * the ALSA sequencer subsystem.
+ * Constructor.
+ *
+ * This constructor optionally gets a QObject parent. When you create a
+ * MidiClient with another object as parent, the MidiClient object will
+ * automatically add itself to the parent's children() list. The parent takes
+ * ownership of the object i.e. it will automatically delete its children in
+ * its destructor.
+ *
+ * It is necessary to invoke open() later to get the sequencer client handler
+ * from the ALSA sequencer subsystem.
  *
  * @param parent The parent object
  * @return a MidiClient instance
@@ -202,6 +227,7 @@ MidiClient::MidiClient( QObject* parent ) :
 
 /**
  * Destructor.
+ *
  * The ports and queue associated to this client are automatically released.
  */
 MidiClient::~MidiClient()
@@ -217,10 +243,24 @@ MidiClient::~MidiClient()
 }
 
 /**
- * Open the sequencer device getting a handle.
+ * Open the sequencer device.
  *
- * Before opening the MidiClient instance, several properties may be set
- * as the device name (m_DeviceName), the open mode and block mode.
+ * When opening the MidiClient instance, several properties may optionally
+ * be set as the device name, the open mode and block mode. Default values
+ * are provided for them. After a successful open, an event with
+ * SND_SEQ_EVENT_CLIENT_START is broadcast to the announce port.
+ *
+ * @param deviceName the sequencer device name, default value = &quot;default&quot;.
+ * This is not a name you make up for your own purposes; it has special
+ * significance to the ALSA library. Usually you need to pass &quot;default&quot; here.
+ * @param openMode the open mode, default value = SND_SEQ_OPEN_DUPLEX.
+ * The read/write mode of the sequencer. Can be one of these three values:
+ * <ul>
+ * <li>SND_SEQ_OPEN_OUTPUT - open the sequencer for output only</li>
+ * <li>SND_SEQ_OPEN_INPUT - open the sequencer for input only</li>
+ * <li>SND_SEQ_OPEN_DUPLEX - open the sequencer for output and input</li>
+ * </ul>
+ * @param blockMode open in blocking mode, default value = false.
  */
 void
 MidiClient::open( const QString deviceName,
@@ -236,13 +276,24 @@ MidiClient::open( const QString deviceName,
 }
 
 /**
- * Open the sequencer device getting a handle, providing a configuration
- * object pointer.
+ * Open the sequencer device, providing a configuration object pointer.
  *
- * This method is like open() except that the configuration can be explicitly
- * provided.
+ * This method is like open() except that a configuration can be explicitly
+ * provided. After a successful open, an event with SND_SEQ_EVENT_CLIENT_START
+ * is broadcast to the announce port.
  *
- * @param conf a configuration object pointer
+ * @param conf a configuration object pointer.
+ * @param deviceName the sequencer device name, default value = &quot;default&quot;.
+ * This is not a name you make up for your own purposes; it has special
+ * significance to the ALSA library. Usually you need to pass &quot;default&quot; here.
+ * @param openMode the open mode, default value = SND_SEQ_OPEN_DUPLEX.
+ * The read/write mode of the sequencer. Can be one of these three values:
+ * <ul>
+ * <li>SND_SEQ_OPEN_OUTPUT - open the sequencer for output only</li>
+ * <li>SND_SEQ_OPEN_INPUT - open the sequencer for input only</li>
+ * <li>SND_SEQ_OPEN_DUPLEX - open the sequencer for output and input</li>
+ * </ul>
+ * @param blockMode open in blocking mode, default value = false.
  */
 void
 MidiClient::open( snd_config_t* conf,
@@ -262,7 +313,11 @@ MidiClient::open( snd_config_t* conf,
 }
 
 /**
- * Close the sequencer device
+ * Close the sequencer device.
+ *
+ * After a client is closed, an event with SND_SEQ_EVENT_CLIENT_EXIT is
+ * broadcast to the announce port. The connection between other clients are
+ * disconnected. Call this just before exiting your program.
  */
 void
 MidiClient::close()
@@ -275,7 +330,11 @@ MidiClient::close()
 }
 
 /**
- * Gets the size of the library output buffer for the ALSA client
+ * Gets the size of the library output buffer for the ALSA client.
+ *
+ * This buffer is used to store the decoded byte-stream of output events before
+ * transferring to the sequencer.
+ *
  * @return the size of the library output buffer
  */
 size_t
@@ -284,6 +343,14 @@ MidiClient::getOutputBufferSize()
     return snd_seq_get_output_buffer_size(m_SeqHandle);
 }
 
+/**
+ * Sets the size of the library output buffer for the ALSA client.
+ *
+ * This buffer is used to store the decoded byte-stream of output events before
+ * transferring to the sequencer.
+ *
+ * @param newSize the size of the library output buffer
+ */
 void
 MidiClient::setOutputBufferSize(size_t newSize)
 {
@@ -292,12 +359,28 @@ MidiClient::setOutputBufferSize(size_t newSize)
     }
 }
 
+/**
+ * Gets the size of the library input buffer for the ALSA client.
+ *
+ * This buffer is used to read a byte-stream of input events before
+ * transferring from the sequencer.
+ *
+ * @return the size of the library input buffer
+ */
 size_t
 MidiClient::getInputBufferSize()
 {
     return snd_seq_get_input_buffer_size(m_SeqHandle);
 }
 
+/**
+ * Sets the size of the library input buffer for the ALSA client.
+ *
+ * This buffer is used to read a byte-stream of input events before
+ * transferring from the sequencer.
+ *
+ * @param newSize the size of the library input buffer
+ */
 void
 MidiClient::setInputBufferSize(size_t newSize)
 {
@@ -306,22 +389,15 @@ MidiClient::setInputBufferSize(size_t newSize)
     }
 }
 
-//void
-//MidiClient::setDeviceName( QString const& newName)
-//{
-//    if ((m_DeviceName != newName) && (m_SeqHandle == NULL)) {
-//        m_DeviceName = newName;
-//    }
-//}
-
-//void
-//MidiClient::setOpenMode(int newMode)
-//{
-//    if ((m_OpenMode != newMode) && (m_SeqHandle == NULL)) {
-//        m_OpenMode = newMode;
-//    }
-//}
-
+/**
+ * Change the blocking mode of the client.
+ *
+ * In block mode, the client falls into sleep when it fills the output memory
+ * pool with full events. The client will be woken up after a certain amount
+ * of free space becomes available.
+ *
+ * @param newValue the blocking mode
+ */
 void
 MidiClient::setBlockMode(bool newValue)
 {
@@ -335,18 +411,50 @@ MidiClient::setBlockMode(bool newValue)
     }
 }
 
+/**
+ * Gets the client ID.
+ *
+ * Returns the ID of the client. A client ID is necessary to inquiry or to set
+ * the client information. A user client ID is assigned from 128 to 191.
+ *
+ * @return the client ID.
+ */
 int
 MidiClient::getClientId()
 {
     return CHECK_WARNING(snd_seq_client_id(m_SeqHandle));
 }
 
+/**
+ * Returns the type snd_seq_type_t of the given sequencer handle.
+ * @return the type snd_seq_type_t of the given sequencer handle.
+ */
 snd_seq_type_t
 MidiClient::getSequencerType()
 {
     return snd_seq_type(m_SeqHandle);
 }
 
+/**
+ * Dispatch the events received from the Sequencer.
+ *
+ * There are three methods of events delivering:
+ * <ul>
+ * <li>A Callback method. To use this method, you must derive a class from
+ * SequencerEventHandler, overriding the method
+ * SequencerEventHandler::handleSequencerEvent() to
+ * provide your own event processing. You must provide the handler instance to
+ * the client using setHandler().</li>
+ * <li>Using QEvent listeners. To use this method, you must use one or more
+ * classes derived from QObject overriding the method QObject::customEvent().
+ * You must also use the method addListener() to add such objects to the
+ * client's listeners list.</li>
+ * <li>The third method involves signals and slots. Whenever a sequencer event
+ * is received, a signal eventReceived() is emitted, that can be connected to
+ * your own supplied slot(s) to process it.
+ * </ul>
+ * @see ALSAClient
+ */
 void
 MidiClient::doEvents()
 {
@@ -457,6 +565,9 @@ MidiClient::doEvents()
     while (snd_seq_event_input_pending(m_SeqHandle, 0) > 0);
 }
 
+/**
+ * Starts reading events from the ALSA sequencer.
+ */
 void
 MidiClient::startSequencerInput()
 {
@@ -466,6 +577,9 @@ MidiClient::startSequencerInput()
     }
 }
 
+/**
+ * Stops reading events from the ALSA sequencer.
+ */
 void
 MidiClient::stopSequencerInput()
 {
@@ -482,6 +596,9 @@ MidiClient::stopSequencerInput()
     }
 }
 
+/**
+ * Reads the ALSA sequencer's clients list.
+ */
 void
 MidiClient::readClients()
 {
@@ -495,12 +612,19 @@ MidiClient::readClients()
     m_NeedRefreshClientList = false;
 }
 
+/**
+ * Releases the list of ALSA sequencer's clients.
+ */
 void
 MidiClient::freeClients()
 {
     m_ClientList.clear();
 }
 
+/**
+ * Gets the list of clients from the ALSA sequencer.
+ * @return the list of clients.
+ */
 ClientInfoList
 MidiClient::getAvailableClients()
 {
@@ -510,6 +634,10 @@ MidiClient::getAvailableClients()
     return lst;
 }
 
+/**
+ * Gets the ClientInfo object holding data about this client.
+ * @return the ClientInfo object representing this client.
+ */
 ClientInfo&
 MidiClient::getThisClientInfo()
 {
@@ -517,6 +645,13 @@ MidiClient::getThisClientInfo()
     return m_Info;
 }
 
+/**
+ * Sets the data supplied by the ClientInfo object into the ALSA sequencer
+ * client. This allows to change the name, capabilities, type and other data
+ * in a single step.
+ *
+ * @param val a ClientInfo object reference
+ */
 void
 MidiClient::setThisClientInfo(const ClientInfo& val)
 {
@@ -524,6 +659,9 @@ MidiClient::setThisClientInfo(const ClientInfo& val)
     snd_seq_set_client_info(m_SeqHandle, m_Info.m_Info);
 }
 
+/**
+ * This internal method applies the ClientInfo data to the ALSA sequencer client
+ */
 void
 MidiClient::applyClientInfo()
 {
@@ -532,13 +670,23 @@ MidiClient::applyClientInfo()
     }
 }
 
+/**
+ * Gets the client's public name
+ * @return The client's name
+ */
 QString
 MidiClient::getClientName()
 {
     return m_Info.getName();
 }
 
-QString MidiClient::getClientName(const int clientId)
+/**
+ * Gets the public name corresponding to the given Client ID.
+ * @param clientId The ID of any existing sequencer client
+ * @return The client's name
+ */
+QString
+MidiClient::getClientName(const int clientId)
 {
     ClientInfoList::Iterator it;
     if (m_NeedRefreshClientList) readClients();
@@ -550,6 +698,10 @@ QString MidiClient::getClientName(const int clientId)
     return QString();
 }
 
+/**
+ * Changes the public name of the ALSA sequencer client.
+ * @param newName A new public name
+ */
 void
 MidiClient::setClientName(QString const& newName)
 {
@@ -559,13 +711,20 @@ MidiClient::setClientName(QString const& newName)
     }
 }
 
+/**
+ * Gets the list of MidiPort instances belonging to this client.
+ * @return The list of MidiPort instances.
+ */
 MidiPortList
 MidiClient::getMidiPorts() const
 {
-    MidiPortList lst = m_Ports;  // copy
-    return lst;
+    return m_Ports;
 }
 
+/**
+ * Create and attach a new MidiPort instance to this client.
+ * @return The pointer to the new MidiPort instance.
+ */
 MidiPort*
 MidiClient::createPort()
 {
@@ -574,6 +733,10 @@ MidiClient::createPort()
     return port;
 }
 
+/**
+ * Attach a MidiPort instance to this client
+ * @param port The MidiPort to be attached
+ */
 void
 MidiClient::portAttach(MidiPort* port)
 {
@@ -583,6 +746,10 @@ MidiClient::portAttach(MidiPort* port)
     }
 }
 
+/**
+ * Detach a MidiPort instance from this client
+ * @param port The MidiPort to be detached
+ */
 void
 MidiClient::portDetach(MidiPort* port)
 {
@@ -606,6 +773,9 @@ MidiClient::portDetach(MidiPort* port)
     }
 }
 
+/**
+ * Detach all the ports belonging to this client.
+ */
 void MidiClient::detachAllPorts()
 {
     if (m_SeqHandle != NULL) {
@@ -618,18 +788,32 @@ void MidiClient::detachAllPorts()
     }
 }
 
+/**
+ * Add an event filter to the client.
+ * @param evtype An event filter to be added.
+ */
 void
 MidiClient::addEventFilter(int evtype)
 {
     snd_seq_set_client_event_filter(m_SeqHandle, evtype);
 }
 
+/**
+ * Gets the broadcast filter usage of the client.
+ *
+ * @return The broadcast filter.
+ */
 bool
 MidiClient::getBroadcastFilter()
 {
     return m_Info.getBroadcastFilter();
 }
 
+/**
+ * Sets the broadcast filter usage of the client.
+ *
+ * @param newValue The broadcast filter.
+ */
 void
 MidiClient::setBroadcastFilter(bool newValue)
 {
@@ -637,12 +821,22 @@ MidiClient::setBroadcastFilter(bool newValue)
     applyClientInfo();
 }
 
+/**
+ * Get the error-bounce usage of the client.
+ *
+ * @return The error-bounce usage.
+ */
 bool
 MidiClient::getErrorBounce()
 {
     return m_Info.getErrorBounce();
 }
 
+/**
+ * Sets the error-bounce usage of the client.
+ *
+ * @param newValue The error-bounce usage.
+ */
 void
 MidiClient::setErrorBounce(bool newValue)
 {
@@ -650,7 +844,19 @@ MidiClient::setErrorBounce(bool newValue)
     applyClientInfo();
 }
 
-void MidiClient::output(SequencerEvent* ev, bool async, int timeout)
+/**
+ * Output an event using the library output buffer.
+ *
+ * An event is once expanded on the output buffer. The output buffer will be
+ * drained automatically if it becomes full.
+ *
+ * @param ev The event to be sent.
+ * @param async Use asynchronous mode. If false, this call will block until the
+ * buffer is flushed.
+ * @param timeout The maximum time to wait in synchronous mode.
+ */
+void
+MidiClient::output(SequencerEvent* ev, bool async, int timeout)
 {
     int npfds;
     pollfd* pfds;
@@ -667,6 +873,17 @@ void MidiClient::output(SequencerEvent* ev, bool async, int timeout)
     }
 }
 
+/**
+ * Output an event directly to the sequencer
+ *
+ * This function sends an event to the sequencer directly not using the library
+ * output buffer.
+ *
+ * @param ev The event to be sent.
+ * @param async Use asynchronous mode. If false, this call will block until the
+ * buffer is flushed.
+ * @param timeout The maximum time to wait in synchronous mode.
+ */
 void MidiClient::outputDirect(SequencerEvent* ev, bool async, int timeout)
 {
     int npfds;
@@ -684,7 +901,19 @@ void MidiClient::outputDirect(SequencerEvent* ev, bool async, int timeout)
     }
 }
 
-void MidiClient::outputBuffer(SequencerEvent* ev, bool async, int timeout)
+/**
+ * Output an event using the library output buffer, without draining the buffer.
+ *
+ * An event is once expanded on the output buffer. The output buffer will NOT be
+ * drained automatically if it becomes full.
+ *
+ * @param ev The event to be sent.
+ * @param async Use asynchronous mode. If false, this call will block until the
+ * buffer is flushed.
+ * @param timeout The maximum time to wait in synchronous mode.
+ */
+void
+MidiClient::outputBuffer(SequencerEvent* ev, bool async, int timeout)
 {
     int npfds;
     pollfd* pfds;
@@ -701,6 +930,17 @@ void MidiClient::outputBuffer(SequencerEvent* ev, bool async, int timeout)
     }
 }
 
+/**
+ * Drain the library output buffer.
+ *
+ * This function drains all pending events on the output buffer. The function
+ * returns immediately after the events are sent to the queues regardless
+ * whether the events are processed or not.
+ *
+ * @param async Use asynchronous mode. If false, this call will block until the
+ * buffer is flushed.
+ * @param timeout The maximum time to wait in synchronous mode.
+ */
 void MidiClient::drainOutput(bool async, int timeout)
 {
     int npfds;
@@ -718,12 +958,22 @@ void MidiClient::drainOutput(bool async, int timeout)
     }
 }
 
+/**
+ * Wait until all sent events are processed.
+ *
+ * This function waits until all events of this client are processed.
+ */
 void
 MidiClient::synchronizeOutput()
 {
     snd_seq_sync_output_queue(m_SeqHandle);
 }
 
+/**
+ * Get the MidiQueue instance associated to this client.
+ * If the client is not associated to a MidiQueue, one is created.
+ * @return A MidiQueue instance pointer
+ */
 MidiQueue*
 MidiClient::getQueue()
 {
@@ -733,6 +983,10 @@ MidiClient::getQueue()
     return m_Queue;
 }
 
+/**
+ * Create and return a new MidiQueue associated to this client.
+ * @return A new MidiQueue instance.
+ */
 MidiQueue*
 MidiClient::createQueue()
 {
@@ -743,6 +997,12 @@ MidiClient::createQueue()
     return m_Queue;
 }
 
+/**
+ * Create and return a new MidiQueue with the given name, associated to this
+ * client.
+ * @param queueName The name for the new queue.
+ * @return A new MidiQueue instance.
+ */
 MidiQueue*
 MidiClient::createQueue(QString const& queueName )
 {
@@ -753,6 +1013,13 @@ MidiClient::createQueue(QString const& queueName )
     return m_Queue;
 }
 
+/**
+ * Create a new MidiQueue instance using a queue already existing in the
+ * system, associating it to the client.
+ *
+ * @param queue_id An existing queue identifier.
+ * @return A new MidiQueue instance.
+ */
 MidiQueue*
 MidiClient::useQueue(int queue_id)
 {
@@ -763,6 +1030,13 @@ MidiClient::useQueue(int queue_id)
     return m_Queue;
 }
 
+/**
+ * Create a new MidiQueue instance using a queue already existing in the
+ * system, associating it to the client.
+ *
+ * @param name An existing queue name.
+ * @return A new MidiQueue instance.
+ */
 MidiQueue*
 MidiClient::useQueue(const QString& name)
 {
@@ -776,6 +1050,12 @@ MidiClient::useQueue(const QString& name)
     return m_Queue;
 }
 
+/**
+ * Associate an existing MidiQueue instance to the client.
+ *
+ * @param queue An existing MidiQueue.
+ * @return The provided MidiQueue instance.
+ */
 MidiQueue*
 MidiClient::useQueue(MidiQueue* queue)
 {
@@ -787,7 +1067,12 @@ MidiClient::useQueue(MidiQueue* queue)
     return m_Queue;
 }
 
-QList<int> MidiClient::getAvailableQueues()
+/**
+ * Get a list of the existing queues
+ * @return a list of existing queues
+ */
+QList<int>
+MidiClient::getAvailableQueues()
 {
     int q, err, max;
     QList<int> queues;
