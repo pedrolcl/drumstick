@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
     QApplication app(argc, argv, false);
 
     // create a client object on the heap
-    aseqmm::MidiClient *client = new aseqmm::MidiClient();
+    aseqmm::MidiClient *client = new aseqmm::MidiClient;
     client->open();
     client->setClientName( "MyClient" );
 
@@ -150,6 +150,7 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
 
 /**
  * @addtogroup ALSAClient
+ * @{
  *
  * ALSA clients are any entities using ALSA sequencer services. A client
  * may be an application or a device driver for an external MIDI port, like
@@ -179,7 +180,9 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * three methods of delivering events offered by the library.
  *
  * @section EventInput Sequencer Events Input
- * There are three methods of events delivering:
+ * MidiClient uses a separate thread to receive events from the ALSA sequencer.
+ * It is necessary to have this in mind when using this library to read events.
+ * There are three delivering methods of events:
  * <ul>
  * <li>A Callback method. To use this method, you must derive a class from
  * SequencerEventHandler, overriding the method
@@ -194,7 +197,51 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * is received, a signal eventReceived() is emitted, that can be connected to
  * your own supplied slot(s) to process it.
  * </ul>
+ * The selected method depends only on your requirements and your preferences.
+ * <ul>
+ * <li>The Callback method is preferred for real-time usage because the handler
+ * receives the events without any delay, but at the same time you must
+ * avoid calling methods of any GUI widgets within the handler. Instead,
+ * you can create QEvents and call QObject::postEvent() to notify the GUI.</li>
+ * <li>Inside QObject::eventReceiver() you can collect QEvents and call
+ * any method you want, but the events are not delivered in real-time. Instead,
+ * they are enqueued and dispatched by the main application's event loop.</li>
+ * <li>The signals/slots method can be real-time or queued, depending on the
+ * QObject::connect() last parameter. If it is Qt::DirectConnection, the signal
+ * is delivered in real-time, and the same rule about avoiding calls to any
+ * GUI widgets methods apply. If it is Qt::QueuedConnection, then the signal is
+ * enqueued using the application's event loop, and it is safe to call any GUI
+ * methods.</li>
+ * </ul>
+ * @see http://doc.trolltech.com/4.5/threads.html#qobject-reentrancy
  *
+ * @section EventOutput Sequencer Events Output
+ *
+ * The methods to send a single event to the ALSA sequencer are:
+ * <ul>
+ * <li>MidiClient::output() using the library buffer, automatically flushed.</li>
+ * <li>MidiClient::outputBuffer() using the library buffer. Not flushed.</li>
+ * <li>MidiClient::outputDirect() not using the library buffer.</li>
+ * </ul>
+ * The two first methods usually require a call to MidiClient::drainOutput() to
+ * flush the ALSA library output buffer. The third one bypasses the buffer, and
+ * doesn't require the call to MidiClient::drainOutput(). Note that the buffer
+ * can be automatically drained by the first method when it becomes full.
+ *
+ * After being dispatched to the ALSA Sequencer, the events can be scheduled at
+ * some time in the future, or immediately. This depends on the following
+ * methods of the SequencerEvent class:
+ * <ul>
+ * <li>SequencerEvent::setDirect() not scheduled</li>
+ * <li>SequencerEvent::scheduleTick() scheduled in musical time (ticks)</li>
+ * <li>SequencerEvent::scheduleReal() scheduled in clock time (seconds)</li>
+ * </ul>
+ *
+ * When you need to schedule a lot of events, for instance reproducing
+ * a Standard MIDI File (SMF) or a MIDI sequence, you may want to use the
+ * abstract class SequencerOutputThread.
+ *
+ * @}
  */
 
 /**
