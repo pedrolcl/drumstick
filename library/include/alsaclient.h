@@ -252,21 +252,26 @@ public:
     void addEventFilter(int evtype);
     void output(SequencerEvent* ev, bool async = false, int timeout = -1);
     void outputDirect(SequencerEvent* ev, bool async = false, int timeout = -1);
-    void outputBuffer(SequencerEvent* ev, bool async = false, int timeout = -1);
+    void outputBuffer(SequencerEvent* ev);
     void drainOutput(bool async = false, int timeout = -1);
     void synchronizeOutput();
 
     int getClientId();
     snd_seq_type_t getSequencerType();
+    /** Returns the sequencer handler managed by ALSA */
     snd_seq_t* getHandle() { return m_SeqHandle; }
+    /** Returns true if the sequencer is opened */
     bool isOpened() { return (m_SeqHandle != NULL); }
 
     size_t getOutputBufferSize();
     void setOutputBufferSize(size_t newSize);
     size_t getInputBufferSize();
     void setInputBufferSize(size_t newSize);
+    /** Returns the name of the sequencer device */
     QString getDeviceName() { return m_DeviceName; }
+    /** Returns the last open mode used in open() */
     int getOpenMode() { return m_OpenMode; }
+    /** Returns the last block mode used in open() */
     bool getBlockMode() { return m_BlockMode; }
     void setBlockMode(bool newValue);
     QString getClientName();
@@ -306,10 +311,13 @@ public:
     void addListener(QObject* listener);
     void removeListener(QObject* listener);
     void setEventsEnabled(const bool bEnabled);
+    /** Returns true if the events mode of delivery has been enabled */
     bool getEventsEnabled() const { return m_eventsEnabled; }
+    /** Sets a sequencer event handler enabling the callback delivery mode */
     void setHandler(SequencerEventHandler* handler)  { m_handler = handler; }
 
 signals:
+    /** Signal emitted when an event is received */
     void eventReceived(SequencerEvent* ev);
 
 protected:

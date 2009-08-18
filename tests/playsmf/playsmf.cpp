@@ -284,16 +284,12 @@ void PlaySMF::play(QString fileName)
     cout << "Starting playback" << endl;
     cout << "Press Ctrl+C to exit" << endl;
     try {
-        //int pending  = m_song.size();
         QListIterator<SequencerEvent*> i(m_song);
         m_Stopped = false;
         m_Queue->start();
         while (!stopped() && i.hasNext()) {
-            m_Client->outputDirect(i.next());
-            //pending--;
-            //if ((pending % 50) == 0) {
-            //    cout << pending << " pending. Pool free: " << m_Client->getPoolInfo().getOutputFree() << endl;
-            //}
+            //m_Client->outputDirect(i.next());
+            m_Client->output(i.next());
         }
         if (stopped()) {
             m_Queue->clear();

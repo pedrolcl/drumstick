@@ -157,12 +157,12 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * USB MIDI devices or the MIDI/game ports of some sound cards. This library
  * allows to easily create applications managing ALSA clients.
  *
- * ALSA clients are also a file descriptor representing a sequencer device,
+ * ALSA clients are also file descriptors representing a sequencer device,
  * that must be opened before reading or writing MIDI events. When the client
  * is opened, it is given some handle and a number identifying it to other
  * clients in the system. You can also provide a name for it.
  *
- * The ALSA sequencer clients can have some ports attached. The ports can be
+ * Each ALSA sequencer client can have several ports attached. The ports can be
  * readable or writable, and can be subscribed in pairs: one readable port to
  * one writable port. The subscriptions can be made and queried by external
  * applications, like "aconnect" or "qjackctl".
@@ -172,30 +172,32 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * The PoolInfo class represents a container to query and change some values
  * for the kernel memory pool assigned to an ALSA client.
  *
- * The ClientInfo class is another container to query and change values about
+ * The ClientInfo class is another container to query and change properties of
  * the MidiClient itself.
  *
  * The SequencerEventHandler abstract class is used to define an interface
  * that other class can implement to receive sequencer events. It is one of the
- * three methods of delivering events offered by the library.
+ * three methods of delivering input events offered by the library.
  *
- * @section EventInput Sequencer Events Input
+ * @section EventInput Input
  * MidiClient uses a separate thread to receive events from the ALSA sequencer.
- * It is necessary to have this in mind when using this library to read events.
- * There are three delivering methods of events:
+ * The input thread can be started and stopped using the methods
+ * MidiClient::startSequencerInput() and MidiClient::stopSequencerInput().
+ * It is necessary to have this thread in mind when using this library to read
+ * events. There are three delivering methods of input events:
  * <ul>
  * <li>A Callback method. To use this method, you must derive a class from
  * SequencerEventHandler, overriding the method
- * SequencerEventHandler::handleSequencerEvent() to
- * provide your own event processing. You must provide the handler instance to
- * the client using setHandler().</li>
- * <li>Using QEvent listeners. To use this method, you must use one or more
+ * SequencerEventHandler::handleSequencerEvent() to provide your own event
+ * processing code. You must give a handler instance pointer to
+ * the client using MidiClient::setHandler().</li>
+ * <li>Using QEvent listeners. To use this method, you must have one or more
  * classes derived from QObject overriding the method QObject::customEvent().
- * You must also use the method addListener() to add such objects to the
- * client's listeners list.</li>
+ * You must also use the method MidiClient::addListener() to add such objects
+ * to the client's listeners list, and MidiClient::setEventsEnabled().</li>
  * <li>The third method involves signals and slots. Whenever a sequencer event
- * is received, a signal eventReceived() is emitted, that can be connected to
- * your own supplied slot(s) to process it.
+ * is received, a signal MidiClient::eventReceived() is emitted, that can be
+ * connected to your own supplied slot(s) to process it.
  * </ul>
  * The selected method depends only on your requirements and your preferences.
  * <ul>
@@ -207,15 +209,16 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * any method you want, but the events are not delivered in real-time. Instead,
  * they are enqueued and dispatched by the main application's event loop.</li>
  * <li>The signals/slots method can be real-time or queued, depending on the
- * QObject::connect() last parameter. If it is Qt::DirectConnection, the signal
+ * last parameter of QObject::connect(). If it is Qt::DirectConnection, the signal
  * is delivered in real-time, and the same rule about avoiding calls to any
  * GUI widgets methods apply. If it is Qt::QueuedConnection, then the signal is
  * enqueued using the application's event loop, and it is safe to call any GUI
- * methods.</li>
+ * methods in this case.</li>
  * </ul>
+ *
  * @see http://doc.trolltech.com/4.5/threads.html#qobject-reentrancy
  *
- * @section EventOutput Sequencer Events Output
+ * @section EventOutput Output
  *
  * The methods to send a single event to the ALSA sequencer are:
  * <ul>
@@ -241,6 +244,14 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * a Standard MIDI File (SMF) or a MIDI sequence, you may want to use the
  * abstract class SequencerOutputThread.
  *
+ * @section Memory
+ *
+ * There are two memory issues: the memory pool belongs to the kernel sequencer,
+ * and can be managed by the class PoolInfo and the methods
+ * MidiClient::getPoolInfo() and MidiClient::setPoolInfo(). The library buffer
+ * can be controlled using the methods MidiClient::getOutputBufferSize() and
+ * MidiClient::setOutputBufferSize() as well as MidiClient::getInputBufferSize()
+ * and MidiClient::setInputBufferSize().
  * @}
  */
 
@@ -325,7 +336,7 @@ MidiClient::open( const QString deviceName,
 /**
  * Open the sequencer device, providing a configuration object pointer.
  *
- * This method is like open() except that a configuration can be explicitly
+ * This method is like open() except that a configuration is explicitly
  * provided. After a successful open, an event with SND_SEQ_EVENT_CLIENT_START
  * is broadcast to the announce port.
  *
@@ -899,7 +910,7 @@ MidiClient::setErrorBounce(bool newValue)
  *
  * @param ev The event to be sent.
  * @param async Use asynchronous mode. If false, this call will block until the
- * buffer is flushed.
+ * event can be delivered.
  * @param timeout The maximum time to wait in synchronous mode.
  */
 void
@@ -928,7 +939,7 @@ MidiClient::output(SequencerEvent* ev, bool async, int timeout)
  *
  * @param ev The event to be sent.
  * @param async Use asynchronous mode. If false, this call will block until the
- * buffer is flushed.
+ * event is delivered to the sequencer.
  * @param timeout The maximum time to wait in synchronous mode.
  */
 void MidiClient::outputDirect(SequencerEvent* ev, bool async, int timeout)
@@ -955,26 +966,11 @@ void MidiClient::outputDirect(SequencerEvent* ev, bool async, int timeout)
  * drained automatically if it becomes full.
  *
  * @param ev The event to be sent.
- * @param async Use asynchronous mode. If false, this call will block until the
- * buffer is flushed.
- * @param timeout The maximum time to wait in synchronous mode.
  */
 void
-MidiClient::outputBuffer(SequencerEvent* ev, bool async, int timeout)
+MidiClient::outputBuffer(SequencerEvent* ev)
 {
-    int npfds;
-    pollfd* pfds;
-    if (async) {
-        CHECK_WARNING(snd_seq_event_output_buffer(m_SeqHandle, ev->getHandle()));
-    } else {
-        npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
-        pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
-        snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-        while (snd_seq_event_output_buffer(m_SeqHandle, ev->getHandle()) < 0)
-        {
-            poll(pfds, npfds, timeout);
-        }
-    }
+    CHECK_WARNING(snd_seq_event_output_buffer(m_SeqHandle, ev->getHandle()));
 }
 
 /**
@@ -985,7 +981,7 @@ MidiClient::outputBuffer(SequencerEvent* ev, bool async, int timeout)
  * whether the events are processed or not.
  *
  * @param async Use asynchronous mode. If false, this call will block until the
- * buffer is flushed.
+ * buffer can be flushed.
  * @param timeout The maximum time to wait in synchronous mode.
  */
 void MidiClient::drainOutput(bool async, int timeout)
@@ -1135,6 +1131,13 @@ MidiClient::getAvailableQueues()
     return queues;
 }
 
+/**
+ * Gets a list of the available user ports in the system, filtered by the given
+ * bitmap of desired capabilities.
+ *
+ * @param filter A bitmap of capabilities.
+ * @return A filtered list of the available ports in the system.
+ */
 PortInfoList
 MidiClient::filterPorts(unsigned int filter)
 {
@@ -1163,6 +1166,9 @@ MidiClient::filterPorts(unsigned int filter)
     return result;
 }
 
+/**
+ * Update the internal lists of user ports.
+ */
 void
 MidiClient::updateAvailablePorts()
 {
@@ -1174,6 +1180,10 @@ MidiClient::updateAvailablePorts()
                                   SND_SEQ_PORT_CAP_SUBS_WRITE );
 }
 
+/**
+ * Gets the available user input ports in the system.
+ * @return The list of available input ports.
+ */
 PortInfoList
 MidiClient::getAvailableInputs()
 {
@@ -1183,6 +1193,10 @@ MidiClient::getAvailableInputs()
     return m_InputsAvail;
 }
 
+/**
+ * Gets the available user output ports in the system.
+ * @return The list of available output ports.
+ */
 PortInfoList
 MidiClient::getAvailableOutputs()
 {
@@ -1192,26 +1206,47 @@ MidiClient::getAvailableOutputs()
     return m_OutputsAvail;
 }
 
+/**
+ * Adds a QObject to the listeners list. This object should override the method
+ * QObject::customEvent() to receive SequencerEvent instances.
+ * @param listener A QObject listener to be notified of received events.
+ * @see removeListener(), setEventsEnabled()
+ */
 void
 MidiClient::addListener(QObject* listener)
 {
     m_listeners.append(listener);
 }
 
+/**
+ * Removes a QObject listener from the listeners list.
+ * @param listener listener A QObject listener to be removed of received events.
+ * @see addListener(), setEventsEnabled()
+ */
 void
 MidiClient::removeListener(QObject* listener)
 {
     m_listeners.removeAll(listener);
 }
 
+/**
+ * Enables the notification of received SequencerEvent instances to the listeners
+ * registered with addListener()
+ * @param bEnabled The new state of the events delivering mode.
+ * @see addListener(), removeListener(), setEventsEnabled()
+ */
 void
 MidiClient::setEventsEnabled(bool bEnabled)
 {
     if (bEnabled != m_eventsEnabled) {
-        m_eventsEnabled = (bEnabled & !m_listeners.empty());
+        m_eventsEnabled = bEnabled;
     }
 }
 
+/**
+ * Gets a SystemInfo instance with the updated state of the system.
+ * @return The updated system info.
+ */
 SystemInfo&
 MidiClient::getSystemInfo()
 {
@@ -1219,6 +1254,10 @@ MidiClient::getSystemInfo()
     return m_sysInfo;
 }
 
+/**
+ * Gets a PoolInfo instance with an updated state of the client memory pool
+ * @return The updated memory pool state.
+ */
 PoolInfo&
 MidiClient::getPoolInfo()
 {
@@ -1226,6 +1265,10 @@ MidiClient::getPoolInfo()
     return m_poolInfo;
 }
 
+/**
+ * Applies (updates) the client's PoolInfo data into the system.
+ * @param info The PoolInfo reference to be applied to the client.
+ */
 void
 MidiClient::setPoolInfo(const PoolInfo& info)
 {
@@ -1233,66 +1276,118 @@ MidiClient::setPoolInfo(const PoolInfo& info)
     CHECK_WARNING(snd_seq_set_client_pool(m_SeqHandle, m_poolInfo.m_Info));
 }
 
+/**
+ * Resets the client input pool.
+ * @see dropInput()
+ */
 void
 MidiClient::resetPoolInput()
 {
     CHECK_WARNING(snd_seq_reset_pool_input(m_SeqHandle));
 }
 
+/**
+ * Resets the client output pool.
+ * @see dropOutput()
+ */
 void
 MidiClient::resetPoolOutput()
 {
     CHECK_WARNING(snd_seq_reset_pool_output(m_SeqHandle));
 }
 
+/**
+ * Sets the size of the client's input pool.
+ * @param size The new size
+ */
 void
 MidiClient::setPoolInput(int size)
 {
     CHECK_WARNING(snd_seq_set_client_pool_input(m_SeqHandle, size));
 }
 
+/**
+ * Sets the size of the client's output pool.
+ * @param size The new size
+ */
 void
 MidiClient::setPoolOutput(int size)
 {
     CHECK_WARNING(snd_seq_set_client_pool_output(m_SeqHandle, size));
 }
 
+/**
+ * Sets the room size of the client's output pool.
+ * @param size The new size
+ */
 void
 MidiClient::setPoolOutputRoom(int size)
 {
     CHECK_WARNING(snd_seq_set_client_pool_output_room(m_SeqHandle, size));
 }
 
+/**
+ * Clears the client's input buffer and and remove events in sequencer queue.
+ * @see resetPoolInput()
+ */
 void
 MidiClient::dropInput()
 {
     CHECK_WARNING(snd_seq_drop_input(m_SeqHandle));
 }
 
+/**
+ * Remove all events on user-space input buffer.
+ * @see dropInput()
+ */
 void
 MidiClient::dropInputBuffer()
 {
     CHECK_WARNING(snd_seq_drop_input_buffer(m_SeqHandle));
 }
 
+/**
+ * Clears the client's output buffer and and remove events in sequencer queue.
+ *
+ * This method removes all events on both user-space output buffer and output
+ * memory pool on kernel.
+ * @see resetPoolOutput()
+ */
 void
 MidiClient::dropOutput()
 {
     CHECK_WARNING(snd_seq_drop_output(m_SeqHandle));
 }
 
+/**
+ * Removes all events on the library output buffer.
+ *
+ * Removes all events on the user-space output buffer. Unlike dropOutput(), this
+ * method doesn't remove events on the client's output memory pool.
+ * @see dropOutput()
+ */
 void
 MidiClient::dropOutputBuffer()
 {
     CHECK_WARNING(snd_seq_drop_output_buffer(m_SeqHandle));
 }
 
+/**
+ * Removes events on input/output buffers and pools.
+ * Removes matching events with the given condition from input/output buffers
+ * and pools. The removal condition is specified in the spec argument.
+ * @param spec A RemoveEvents instance specifying the removal condition.
+ */
 void
 MidiClient::removeEvents(const RemoveEvents* spec)
 {
     CHECK_WARNING(snd_seq_remove_events(m_SeqHandle, spec->m_Info));
 }
 
+/**
+ * Extracts (and removes) the first event in the output buffer.
+ * @return The extracted event.
+ */
 SequencerEvent*
 MidiClient::extractOutput()
 {
@@ -1303,30 +1398,72 @@ MidiClient::extractOutput()
     return NULL;
 }
 
+/**
+ * Returns the size of pending events on the output buffer.
+ *
+ * @return The size of pending events.
+ */
 int
 MidiClient::outputPending()
 {
     return snd_seq_event_output_pending(m_SeqHandle);
 }
 
+/**
+ * Gets the size of the events on the input buffer.
+ *
+ * If there are events remaining on the user-space input buffer, this method
+ * returns the total size of events on it. If the argument is true, this method
+ * checks the presence of events on the sequencer FIFO, and when events exist
+ * they are transferred to the input buffer, and the number of received events
+ * are returned. If the argument is false and no events remain on the input
+ * buffer, this method simply returns zero.
+ *
+ * @param fetch Check and fetch the sequencer input pool.
+ * @return The size in bytes of the remaining input events on the buffer.
+ */
 int
 MidiClient::inputPending(bool fetch)
 {
     return snd_seq_event_input_pending(m_SeqHandle, fetch ? 1 : 0);
 }
 
+/**
+ * Gets the queue's numeric identifier corresponding to the provided name.
+ *
+ * @param name The name string to query.
+ * @return The number of the matching queue.
+ */
 int
 MidiClient::getQueueId(const QString& name)
 {
     return snd_seq_query_named_queue(m_SeqHandle, name.toLocal8Bit().data());
 }
 
+/**
+ * Returns the number of poll descriptors.
+ * @param events Poll events to be checked (POLLIN and POLLOUT).
+ * @return The number of poll descriptors.
+ */
 int
 MidiClient::getPollDescriptorsCount(short events)
 {
     return snd_seq_poll_descriptors_count(m_SeqHandle, events);
 }
 
+/**
+ * Get poll descriptors.
+ *
+ * Get poll descriptors assigned to the sequencer handle. Since a sequencer
+ * handle can duplex streams, you need to set which direction(s) is/are polled
+ * in events argument. When POLLIN bit is specified, the incoming events to the
+ * ports are checked.
+ *
+ * @param pfds  Array of poll descriptors
+ * @param space Space in the poll descriptor array
+ * @param events Polling events to be checked (POLLIN and POLLOUT)
+ * @return Count of filled descriptors
+ */
 int
 MidiClient::pollDescriptors( struct pollfd *pfds, unsigned int space,
                              short events )
@@ -1334,6 +1471,12 @@ MidiClient::pollDescriptors( struct pollfd *pfds, unsigned int space,
     return snd_seq_poll_descriptors(m_SeqHandle, pfds, space, events);
 }
 
+/**
+ * Gets the number of returned events from poll descriptors
+ * @param pfds Array of poll descriptors.
+ * @param nfds Count of poll descriptors.
+ * @return Number of returned events.
+ */
 unsigned short
 MidiClient::pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds)
 {
@@ -1344,18 +1487,33 @@ MidiClient::pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds)
     return revents;
 }
 
+/**
+ * Gets the internal sequencer device name
+ * @return The device name.
+ */
 const char *
 MidiClient::_getDeviceName()
 {
     return snd_seq_name(m_SeqHandle);
 }
 
+/**
+ * Sets the client name
+ * @param name The new client name.
+ */
 void
 MidiClient::_setClientName(const char *name)
 {
     CHECK_WARNING(snd_seq_set_client_name(m_SeqHandle, name));
 }
 
+/**
+ * Create an ALSA sequencer port, without using MidiPort.
+ * @param name The name of the new port.
+ * @param caps The new port capabilities.
+ * @param type The type of the new port.
+ * @return The port numeric identifier.
+ */
 int
 MidiClient::createSimplePort( const char *name,
                               unsigned int caps,
@@ -1365,41 +1523,70 @@ MidiClient::createSimplePort( const char *name,
                                                       name, caps, type ));
 }
 
+/**
+ * Remove an ALSA sequencer port.
+ * @param port The numeric identifier of the port.
+ */
 void
 MidiClient::deleteSimplePort(int port)
 {
     CHECK_WARNING( snd_seq_delete_simple_port( m_SeqHandle, port ));
 }
 
+/**
+ * Subscribe one port from another arbitrary sequencer client:port.
+ * @param myport The number of the internal port.
+ * @param client The external client's identifier.
+ * @param port The external port's identifier.
+ */
 void
 MidiClient::connectFrom(int myport, int client, int port)
 {
     CHECK_WARNING( snd_seq_connect_from(m_SeqHandle, myport, client, port ));
 }
 
+/**
+ * Subscribe one port to another arbitrary sequencer client:port.
+ * @param myport The number of the internal port.
+ * @param client The external client's identifier.
+ * @param port The external port's identifier.
+ */
 void
 MidiClient::connectTo(int myport, int client, int port)
 {
     CHECK_WARNING( snd_seq_connect_to(m_SeqHandle, myport, client, port ));
 }
 
+/**
+ * Unsubscribe one port from another arbitrary sequencer client:port.
+ * @param myport The number of the internal port.
+ * @param client The external client's identifier.
+ * @param port The external port's identifier.
+ */
 void
 MidiClient::disconnectFrom(int myport, int client, int port)
 {
     CHECK_WARNING( snd_seq_disconnect_from(m_SeqHandle, myport, client, port ));
 }
 
+/**
+ * Unsubscribe one port to another arbitrary sequencer client:port.
+ * @param myport The number of the internal port.
+ * @param client The external client's identifier.
+ * @param port The external port's identifier.
+ */
 void
 MidiClient::disconnectTo(int myport, int client, int port)
 {
     CHECK_WARNING( snd_seq_disconnect_to(m_SeqHandle, myport, client, port ));
 }
 
-/* ******************** *
- * SequencerInputThread *
- * ******************** */
-
-bool MidiClient::SequencerInputThread::stopped()
+/**
+ * Returns true or false depending on the input thread state.
+ * @return true if the input thread is stopped.
+ */
+bool
+MidiClient::SequencerInputThread::stopped()
 {
     m_mutex.lockForRead();
     bool bTmp = m_Stopped;
@@ -1407,14 +1594,22 @@ bool MidiClient::SequencerInputThread::stopped()
     return  bTmp;
 }
 
-void MidiClient::SequencerInputThread::stop()
+/**
+ * Stops the input thread.
+ */
+void
+MidiClient::SequencerInputThread::stop()
 {
     m_mutex.lockForWrite();
     m_Stopped = true;
     m_mutex.unlock();
 }
 
-void MidiClient::SequencerInputThread::run()
+/**
+ * Main input thread process loop.
+ */
+void
+MidiClient::SequencerInputThread::run()
 {
     unsigned long npfd;
     pollfd* pfd;
@@ -1441,15 +1636,18 @@ void MidiClient::SequencerInputThread::run()
     }
 }
 
-/**************/
-/* ClientInfo */
-/**************/
-
+/**
+ * ClientInfo default constructor
+ */
 ClientInfo::ClientInfo()
 {
     snd_seq_client_info_malloc(&m_Info);
 }
 
+/**
+ * Copy constructor
+ * @param other Another ClientInfo reference to be copied
+ */
 ClientInfo::ClientInfo(const ClientInfo& other)
 {
     snd_seq_client_info_malloc(&m_Info);
@@ -1457,30 +1655,52 @@ ClientInfo::ClientInfo(const ClientInfo& other)
     m_Ports = other.m_Ports;
 }
 
+/**
+ * Copy constructor
+ * @param other An existing ALSA client info object
+ */
 ClientInfo::ClientInfo(snd_seq_client_info_t* other)
 {
     snd_seq_client_info_malloc(&m_Info);
     snd_seq_client_info_copy(m_Info, other);
 }
 
+/**
+ * Another constructor
+ * @param seq A MidiClient object
+ * @param id A numeric client id
+ */
 ClientInfo::ClientInfo(MidiClient* seq, int id)
 {
     snd_seq_client_info_malloc(&m_Info);
     snd_seq_get_any_client_info(seq->getHandle(), id, m_Info);
 }
 
+/**
+ * Destructor
+ */
 ClientInfo::~ClientInfo()
 {
     freePorts();
     snd_seq_client_info_free(m_Info);
 }
 
+/**
+ * Copy the client info object.
+ *
+ * @return A pointer to the new object.
+ */
 ClientInfo*
 ClientInfo::clone()
 {
     return new ClientInfo(m_Info);
 }
 
+/**
+ * Assignment operator
+ * @param other Another ClientInfo object
+ * @return This object
+ */
 ClientInfo&
 ClientInfo::operator=(const ClientInfo& other)
 {
@@ -1489,84 +1709,140 @@ ClientInfo::operator=(const ClientInfo& other)
     return *this;
 }
 
+/**
+ * Gets the client's numeric identifier.
+ * @return The client's numeric identifier.
+ */
 int
 ClientInfo::getClientId()
 {
     return snd_seq_client_info_get_client(m_Info);
 }
 
+/**
+ * Gets the client's type
+ * @return The client's type.
+ */
 snd_seq_client_type_t
 ClientInfo::getClientType()
 {
     return snd_seq_client_info_get_type(m_Info);
 }
 
+/**
+ * Gets the client's name
+ * @return The client's name.
+ */
 QString
 ClientInfo::getName()
 {
     return QString(snd_seq_client_info_get_name(m_Info));
 }
 
+/**
+ * Gets the client's broadcast filter
+ * @return The client's broadcast filter.
+ */
 bool
 ClientInfo::getBroadcastFilter()
 {
     return (snd_seq_client_info_get_broadcast_filter(m_Info) != 0);
 }
 
+/**
+ * Gets the client's error bounce
+ * @return The client's error bounce.
+ */
 bool
 ClientInfo::getErrorBounce()
 {
     return (snd_seq_client_info_get_error_bounce(m_Info) != 0);
 }
 
+/**
+ * Gets the client's event filter.
+ * @return The client's event filter.
+ */
 const unsigned char*
 ClientInfo::getEventFilter()
 {
     return snd_seq_client_info_get_event_filter(m_Info);
 }
 
+/**
+ * Gets the client's port count.
+ * @return The client's port count.
+ */
 int
 ClientInfo::getNumPorts()
 {
     return snd_seq_client_info_get_num_ports(m_Info);
 }
 
+/**
+ * Gets the number of lost events.
+ * @return The number of lost events.
+ */
 int
 ClientInfo::getEventLost()
 {
     return snd_seq_client_info_get_event_lost(m_Info);
 }
 
+/**
+ * Sets the client identifier number.
+ * @param client The client identifier number.
+ */
 void
 ClientInfo::setClient(int client)
 {
     snd_seq_client_info_set_client(m_Info, client);
 }
 
+/**
+ * Sets the client name.
+ * @param name The client name.
+ */
 void
 ClientInfo::setName(QString name)
 {
     snd_seq_client_info_set_name(m_Info, name.toLocal8Bit().data());
 }
 
+/**
+ * Sets the broadcast filter.
+ * @param val The broadcast filter.
+ */
 void
 ClientInfo::setBroadcastFilter(bool val)
 {
     snd_seq_client_info_set_broadcast_filter(m_Info, val ? 1 : 0);
 }
 
+/**
+ * Sets the error bounce.
+ * @param val The error bounce.
+ */
 void
 ClientInfo::setErrorBounce(bool val)
 {
     snd_seq_client_info_set_error_bounce(m_Info, val ? 1 : 0);
 }
 
+/**
+ * Sets the event filter.
+ * @param filter The event filter.
+ */
 void
 ClientInfo::setEventFilter(unsigned char *filter)
 {
     snd_seq_client_info_set_event_filter(m_Info, filter);
 }
 
+/**
+ * Read the client ports.
+ * @param seq The client instance.
+ */
 void
 ClientInfo::readPorts(MidiClient* seq)
 {
@@ -1581,12 +1857,19 @@ ClientInfo::readPorts(MidiClient* seq)
     }
 }
 
+/**
+ * Release the ports list.
+ */
 void
 ClientInfo::freePorts()
 {
     m_Ports.clear();
 }
 
+/**
+ * Gets the ports list.
+ * @return The ports list.
+ */
 PortInfoList
 ClientInfo::getPorts() const
 {
@@ -1594,6 +1877,10 @@ ClientInfo::getPorts() const
     return lst;
 }
 
+/**
+ * Gets the size of the internal object.
+ * @return The size of the internal object.
+ */
 int
 ClientInfo::getSizeOfInfo() const
 {
@@ -1601,24 +1888,41 @@ ClientInfo::getSizeOfInfo() const
 }
 
 #if SND_LIB_SUBMINOR > 16
+/**
+ * Adds an event type to the client's filter.
+ *
+ * @param eventType The new event's type.
+ */
 void
 ClientInfo::addFilter(int eventType)
 {
     snd_seq_client_info_event_filter_add(m_Info, eventType);
 }
 
+/**
+ * Checks id the given event's type is filtered.
+ * @param eventType The event's type.
+ * @return true if the event type is filtered
+ */
 bool
 ClientInfo::isFiltered(int eventType)
 {
     return (snd_seq_client_info_event_filter_check(m_Info, eventType) != 0);
 }
 
+/**
+ * Clear the client's event filter
+ */
 void
 ClientInfo::clearFilter()
 {
     snd_seq_client_info_event_filter_clear(m_Info);
 }
 
+/**
+ * Removes the event type from the client's filter.
+ * @param eventType The event's type.
+ */
 void
 ClientInfo::removeFilter(int eventType)
 {

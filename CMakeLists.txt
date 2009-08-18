@@ -173,6 +173,7 @@ ADD_CUSTOM_TARGET ( distclean
     COMMAND rm -rf {,library/,tests/}CMakeFiles
     COMMAND rm -rf {,library/,tests/}_CPack_Packages
     COMMAND rm -rf build/{library/,tests/}
+    COMMAND rm -rf doc/html/
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 ADD_DEPENDENCIES(distclean clean)
