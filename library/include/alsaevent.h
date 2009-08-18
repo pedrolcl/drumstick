@@ -32,8 +32,15 @@
 
 namespace aseqmm {
 
+/**
+ * constant SequencerEventType is the QEvent::type() of any SequencerEvent
+ * object to be used to check the argument in QObject::customEvent().
+ */
 const QEvent::Type SequencerEventType = QEvent::Type(QEvent::User + 4154); // :-)
 
+/**
+ * Macro to declare a clone() virtual method on SequencerEvent derived classes.
+ */
 #define CLONE_EVENT_DECLARATION(T) virtual T* clone() { return new T(&m_event); }
 
 /**
@@ -48,6 +55,7 @@ public:
     SequencerEvent();
     SequencerEvent(const SequencerEvent& other);
     SequencerEvent(snd_seq_event_t* event);
+    /** Destructor */
     virtual ~SequencerEvent() {}
 
     SequencerEvent& operator=(const SequencerEvent& other);
@@ -56,13 +64,31 @@ public:
     bool isClient() const;
     bool isConnectionChange() const;
     void setSequencerType(const snd_seq_event_type_t eventType);
+    /** Gets the sequencer event type.
+     * @return The sequencer event type.
+     */
     snd_seq_event_type_t getSequencerType() const { return m_event.type; }
     void setDestination(const unsigned char client, const unsigned char port);
     void setSource(const unsigned char port);
+    /** Gets the source client id.
+     * @return The source client id.
+     */
     unsigned char getSourceClient() const { return m_event.source.client; }
+    /** Gets the source port id.
+     * @return The source port id.
+     */
     unsigned char getSourcePort() const { return m_event.source.port; }
+    /** Gets the tick time of the event.
+     * @return The tick time.
+     */
     snd_seq_tick_time_t getTick() const { return m_event.time.tick; }
+    /** Gets the seconds of the event's real time.
+     * @return The seconds of the time.
+     */
     unsigned int getRealTimeSecs() const { return m_event.time.time.tv_sec; }
+    /** Gets the nanoseconds of the event's real time.
+     * @return The nanoseconds of the time.
+     */
     unsigned int getRealTimeNanos() const { return m_event.time.time.tv_nsec; }
     void setSubscribers();
     void setBroadcast();
@@ -70,12 +96,20 @@ public:
     void scheduleTick(const int queue, const int tick, const bool relative);
     void scheduleReal(const int queue, const ulong secs, const ulong nanos, const bool relative);
     void setPriority(const bool high);
+    /**
+     * Gets the tag of the event
+     * @return The tag
+     */
     unsigned char getTag() const { return m_event.tag; }
     void setTag(const unsigned char aTag);
     unsigned int getRaw32(const unsigned int n) const;
     void setRaw32(const unsigned int n, const unsigned int value);
     unsigned char getRaw8(const unsigned int n) const;
     void setRaw8(const unsigned int n, const unsigned char value);
+    /**
+     * Gets the handle of the event
+     * @return the handle of the event
+     */
     snd_seq_event_t* getHandle() { return &m_event; }
     int getEncodedLength();
     CLONE_EVENT_DECLARATION(SequencerEvent);
@@ -94,7 +128,9 @@ protected:
 class ChannelEvent : public SequencerEvent
 {
 public:
+    /** Default constructor */
     ChannelEvent() : SequencerEvent() {}
+    /** Constructor from an ALSA event record */
     ChannelEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
 
     void setChannel(const MidiByte c) { m_event.data.note.channel = (c & 0xf); }
@@ -107,7 +143,9 @@ public:
 class KeyEvent : public ChannelEvent
 {
 public:
+    /** Default constructor */
     KeyEvent() : ChannelEvent() {}
+    /** Constructor from an ALSA event record */
     KeyEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
 
     int getKey() const { return m_event.data.note.note; }
@@ -125,7 +163,9 @@ public:
 class NoteEvent : public KeyEvent
 {
 public:
+    /** Default constructor */
     NoteEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_NOTE; }
+    /** Constructor from an ALSA event record */
     NoteEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     NoteEvent(const int ch, const int key, const int vel, const int dur);
 
@@ -140,7 +180,9 @@ public:
 class NoteOnEvent : public KeyEvent
 {
 public:
+    /** Default constructor */
     NoteOnEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_NOTEON; }
+    /** Constructor from an ALSA event record */
     NoteOnEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     NoteOnEvent(const int ch, const int key, const int vel);
     CLONE_EVENT_DECLARATION(NoteOnEvent)
@@ -152,7 +194,9 @@ public:
 class NoteOffEvent : public KeyEvent
 {
 public:
+    /** Default constructor */
     NoteOffEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_NOTEOFF; }
+    /** Constructor from an ALSA event record */
     NoteOffEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     NoteOffEvent(const int ch, const int key, const int vel);
     CLONE_EVENT_DECLARATION(NoteOffEvent)
@@ -164,7 +208,9 @@ public:
 class KeyPressEvent : public KeyEvent
 {
 public:
+    /** Default constructor */
     KeyPressEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_KEYPRESS; }
+    /** Constructor from an ALSA event record */
     KeyPressEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     KeyPressEvent(const int ch, const int key, const int vel);
     CLONE_EVENT_DECLARATION(KeyPressEvent)
@@ -176,7 +222,9 @@ public:
 class ControllerEvent : public ChannelEvent
 {
 public:
+    /** Default constructor */
     ControllerEvent() : ChannelEvent() {}
+    /** Constructor from an ALSA event record */
     ControllerEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
     ControllerEvent(const int ch, const int cc, const int val);
 
@@ -193,7 +241,9 @@ public:
 class ProgramChangeEvent : public ChannelEvent
 {
 public:
+    /** Default constructor */
     ProgramChangeEvent() : ChannelEvent() { m_event.type = SND_SEQ_EVENT_PGMCHANGE; }
+    /** Constructor from an ALSA event record */
     ProgramChangeEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
     ProgramChangeEvent(const int ch, const int val);
 
@@ -208,7 +258,9 @@ public:
 class PitchBendEvent : public ChannelEvent
 {
 public:
+    /** Default constructor */
     PitchBendEvent() : ChannelEvent() { m_event.type = SND_SEQ_EVENT_PITCHBEND; }
+    /** Constructor from an ALSA event record */
     PitchBendEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
     PitchBendEvent(const int ch, const int val);
 
@@ -223,7 +275,9 @@ public:
 class ChanPressEvent : public ChannelEvent
 {
 public:
+    /** Default constructor */
     ChanPressEvent() : ChannelEvent() { m_event.type = SND_SEQ_EVENT_CHANPRESS; }
+    /** Constructor from an ALSA event record */
     ChanPressEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
     ChanPressEvent( const int ch, const int val);
 
@@ -292,7 +346,9 @@ protected:
 class SystemEvent : public SequencerEvent
 {
 public:
+    /** Default constructor */
     SystemEvent() : SequencerEvent() {}
+    /** Constructor from an ALSA event record */
     SystemEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
     SystemEvent(const int statusByte);
     CLONE_EVENT_DECLARATION(SystemEvent)
@@ -306,7 +362,9 @@ public:
 class QueueControlEvent : public SequencerEvent
 {
 public:
+    /** Default constructor */
     QueueControlEvent() : SequencerEvent() {}
+    /** Constructor from an ALSA event record */
     QueueControlEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
     QueueControlEvent(const int type, const int queue, const int value);
     int getQueue() const { return m_event.data.queue.queue; }
@@ -330,7 +388,9 @@ public:
 class ValueEvent : public SequencerEvent
 {
 public:
+    /** Default constructor */
     ValueEvent() : SequencerEvent() {}
+    /** Constructor from an ALSA event record */
     ValueEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
     ValueEvent(const int statusByte, const int val);
 
@@ -345,7 +405,9 @@ public:
 class TempoEvent : public QueueControlEvent
 {
 public:
+    /** Default constructor */
     TempoEvent() : QueueControlEvent() {}
+    /** Constructor from an ALSA event record */
     TempoEvent(snd_seq_event_t* event) : QueueControlEvent(event) {}
     TempoEvent(const int queue, const int tempo);
     CLONE_EVENT_DECLARATION(TempoEvent)
@@ -357,7 +419,9 @@ public:
 class SubscriptionEvent : public SequencerEvent
 {
 public:
+    /** Default constructor */
     SubscriptionEvent() : SequencerEvent() {}
+    /** Constructor from an ALSA event record */
     SubscriptionEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
 
     bool subscribed() const { return (m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED); }
@@ -375,7 +439,9 @@ public:
 class ClientEvent : public SequencerEvent
 {
 public:
+    /** Default constructor */
     ClientEvent() : SequencerEvent() {}
+    /** Constructor from an ALSA event record */
     ClientEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
     int getClient() const { return m_event.data.addr.client; }
     CLONE_EVENT_DECLARATION(ClientEvent)
@@ -387,7 +453,9 @@ public:
 class PortEvent : public ClientEvent
 {
 public:
+    /** Default constructor */
     PortEvent() : ClientEvent() {}
+    /** Constructor from an ALSA event record */
     PortEvent(snd_seq_event_t* event) : ClientEvent(event) {}
     int getPort() const { return m_event.data.addr.port; }
     CLONE_EVENT_DECLARATION(PortEvent)
@@ -402,6 +470,7 @@ public:
     friend class MidiClient;
 
 public:
+    /** Default constructor */
     RemoveEvents();
     RemoveEvents(const RemoveEvents& other);
     RemoveEvents(snd_seq_remove_events_t* other);
@@ -456,7 +525,7 @@ private:
     snd_midi_event_t* m_Info;
 };
 
-}
+} /* namespace aseqmm */
 
 /*! @} */
 
