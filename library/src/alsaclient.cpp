@@ -1637,7 +1637,7 @@ MidiClient::SequencerInputThread::run()
 }
 
 /**
- * ClientInfo default constructor
+ * Default constructor
  */
 ClientInfo::ClientInfo()
 {
@@ -1666,7 +1666,7 @@ ClientInfo::ClientInfo(snd_seq_client_info_t* other)
 }
 
 /**
- * Another constructor
+ * Constructor
  * @param seq A MidiClient object
  * @param id A numeric client id
  */
@@ -1686,8 +1686,7 @@ ClientInfo::~ClientInfo()
 }
 
 /**
- * Copy the client info object.
- *
+ * Clone the client info object.
  * @return A pointer to the new object.
  */
 ClientInfo*
@@ -1930,44 +1929,67 @@ ClientInfo::removeFilter(int eventType)
 }
 #endif
 
-/**************
- * SystemInfo *
- **************/
-
+/**
+ * Default constructor
+ */
 SystemInfo::SystemInfo()
 {
     snd_seq_system_info_malloc(&m_Info);
 }
 
+/**
+ * Copy constructor
+ * @param other Another SystemInfo object reference to be copied
+ */
 SystemInfo::SystemInfo(const SystemInfo& other)
 {
     snd_seq_system_info_malloc(&m_Info);
     snd_seq_system_info_copy(m_Info, other.m_Info);
 }
 
+/**
+ * Copy constructor
+ * @param other Another ALSA system info object to be copied
+ */
 SystemInfo::SystemInfo(snd_seq_system_info_t* other)
 {
     snd_seq_system_info_malloc(&m_Info);
     snd_seq_system_info_copy(m_Info, other);
 }
 
+/**
+ * Constructor
+ * @param seq A MidiClient object
+ */
 SystemInfo::SystemInfo(MidiClient* seq)
 {
     snd_seq_system_info_malloc(&m_Info);
     snd_seq_system_info(seq->getHandle(), m_Info);
 }
 
+/**
+ * Destructor
+ */
 SystemInfo::~SystemInfo()
 {
     snd_seq_system_info_free(m_Info);
 }
 
+/**
+ * Clone the system info object
+ * @return A pointer to the new object
+ */
 SystemInfo*
 SystemInfo::clone()
 {
     return new SystemInfo(m_Info);
 }
 
+/**
+ * Assignment operator
+ * @param other Another SystemInfo object
+ * @return This object
+ */
 SystemInfo&
 SystemInfo::operator=(const SystemInfo& other)
 {
@@ -1975,133 +1997,235 @@ SystemInfo::operator=(const SystemInfo& other)
     return *this;
 }
 
+/**
+ * Get the system's maximum number of clients.
+ * @return The maximum number of clients.
+ */
 int SystemInfo::getMaxClients()
 {
     return snd_seq_system_info_get_clients(m_Info);
 }
 
+/**
+ * Get the system's maximum number of ports.
+ * @return The maximum number of ports.
+ */
 int SystemInfo::getMaxPorts()
 {
     return snd_seq_system_info_get_ports(m_Info);
 }
 
+/**
+ * Get the system's maximum number of queues.
+ * @return The system's maximum number of queues.
+ */
 int SystemInfo::getMaxQueues()
 {
     return snd_seq_system_info_get_queues(m_Info);
 }
 
+/**
+ * Get the system's maximum number of channels.
+ * @return The system's maximum number of channels.
+ */
 int SystemInfo::getMaxChannels()
 {
     return snd_seq_system_info_get_channels(m_Info);
 }
 
+/**
+ * Get the system's current number of queues.
+ * @return The system's current number of queues.
+ */
 int SystemInfo::getCurrentQueues()
 {
     return snd_seq_system_info_get_cur_queues(m_Info);
 }
 
+/**
+ * Get the system's current number of clients.
+ * @return The system's current number of clients.
+ */
 int SystemInfo::getCurrentClients()
 {
     return snd_seq_system_info_get_cur_clients(m_Info);
 }
 
+/**
+ * Get the system's info object size.
+ * @return The system's info object size.
+ */
 int SystemInfo::getSizeOfInfo() const
 {
     return snd_seq_system_info_sizeof();
 }
 
-/************
- * PoolInfo *
- ************/
-
+/**
+ * Default constructor
+ */
 PoolInfo::PoolInfo()
 {
     snd_seq_client_pool_malloc(&m_Info);
 }
 
+/**
+ * Copy constructor
+ * @param other Another PoolInfo object reference to be copied
+ */
 PoolInfo::PoolInfo(const PoolInfo& other)
 {
     snd_seq_client_pool_malloc(&m_Info);
     snd_seq_client_pool_copy(m_Info, other.m_Info);
 }
 
+/**
+ * Copy constructor
+ * @param other An ALSA pool info object to be copied
+ */
 PoolInfo::PoolInfo(snd_seq_client_pool_t* other)
 {
     snd_seq_client_pool_malloc(&m_Info);
     snd_seq_client_pool_copy(m_Info, other);
 }
 
+/**
+ * Constructor
+ * @param seq A MidiClient object
+ */
 PoolInfo::PoolInfo(MidiClient* seq)
 {
     snd_seq_client_pool_malloc(&m_Info);
     snd_seq_get_client_pool(seq->getHandle(), m_Info);
 }
 
+/**
+ * Destructor
+ */
 PoolInfo::~PoolInfo()
 {
     snd_seq_client_pool_free(m_Info);
 }
 
-PoolInfo* PoolInfo::clone()
+/**
+ * Clone the pool info obeject
+ * @return A pointer to the new object
+ */
+PoolInfo*
+PoolInfo::clone()
 {
     return new PoolInfo(m_Info);
 }
 
+/**
+ * Assignment operator
+ * @param other Another PoolInfo object reference to be copied
+ * @return This object
+ */
 PoolInfo& PoolInfo::operator=(const PoolInfo& other)
 {
     snd_seq_client_pool_copy(m_Info, other.m_Info);
     return *this;
 }
 
-int PoolInfo::getClientId()
+/**
+ * Gets the client ID for this object.
+ * @return The client ID.
+ */
+int
+PoolInfo::getClientId()
 {
     return snd_seq_client_pool_get_client(m_Info);
 }
 
-int PoolInfo::getInputFree()
+/**
+ * Gets the available size on input pool.
+ * @return The available size on input pool.
+ */
+int
+PoolInfo::getInputFree()
 {
     return snd_seq_client_pool_get_input_free(m_Info);
 }
 
-int PoolInfo::getInputPool()
+/**
+ * Gets the input pool size.
+ * @return The input pool size.
+ */
+int
+PoolInfo::getInputPool()
 {
     return snd_seq_client_pool_get_input_pool(m_Info);
 }
 
-int PoolInfo::getOutputFree()
+/**
+ * Gets the available size on output pool.
+ * @return The available size on output pool.
+ */
+int
+PoolInfo::getOutputFree()
 {
     return snd_seq_client_pool_get_output_free(m_Info);
 }
 
-int PoolInfo::getOutputPool()
+/**
+ * Gets the output pool size.
+ * @return The output pool size.
+ */
+int
+PoolInfo::getOutputPool()
 {
     return snd_seq_client_pool_get_output_pool(m_Info);
 }
 
-int PoolInfo::getOutputRoom()
+/**
+ * Gets the output room size.
+ * The output room is the minimum pool size for select/blocking mode.
+ * @return The output room size.
+ */
+int
+PoolInfo::getOutputRoom()
 {
     return snd_seq_client_pool_get_output_room(m_Info);
 }
 
-void PoolInfo::setInputPool(int size)
+/**
+ * Set the input pool size.
+ * @param size The input pool size.
+ */
+void
+PoolInfo::setInputPool(int size)
 {
     snd_seq_client_pool_set_input_pool(m_Info, size);
 }
 
-void PoolInfo::setOutputPool(int size)
+/**
+ * Sets the output pool size.
+ * @param size The output pool size.
+ */
+void
+PoolInfo::setOutputPool(int size)
 {
     snd_seq_client_pool_set_output_pool(m_Info, size);
 }
 
-void PoolInfo::setOutputRoom(int size)
+/**
+ * Sets the output room size.
+ * The output room is the minimum pool size for select/blocking mode.
+ */
+void
+PoolInfo::setOutputRoom(int size)
 {
     snd_seq_client_pool_set_output_room(m_Info, size);
 }
 
-int PoolInfo::getSizeOfInfo() const
+/**
+ * Gets the size of the client pool object.
+ * @return The size of the client pool object.
+ */
+int
+PoolInfo::getSizeOfInfo() const
 {
     return snd_seq_client_pool_sizeof();
 }
 
 } /* namespace aseqmm */
-
