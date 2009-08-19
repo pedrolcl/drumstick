@@ -291,46 +291,95 @@ int SequencerEvent::getEncodedLength()
     return snd_seq_event_length(&m_event);
 }
 
+/**
+ * Constructor using proper attribute values.
+ * @param ch MIDI Channel.
+ * @param key MIDI note.
+ * @param vel Note velocity.
+ * @param dur Note duration.
+ */
 NoteEvent::NoteEvent(int ch, int key, int vel, int dur) : KeyEvent()
 {
     snd_seq_ev_set_note(&m_event, ch, key, vel, dur);
 }
 
+/**
+ * Constructor using proper attribute values.
+ * @param ch MIDI Channel.
+ * @param key MIDI note.
+ * @param vel Note velocity.
+ */
 NoteOnEvent::NoteOnEvent(int ch, int key, int vel) : KeyEvent()
 {
     snd_seq_ev_set_noteon(&m_event, ch, key, vel);
 }
 
+/**
+ * Constructor using proper attribute values.
+ * @param ch MIDI Channel.
+ * @param key MIDI note.
+ * @param vel Note velocity.
+ */
 NoteOffEvent::NoteOffEvent(int ch, int key, int vel) : KeyEvent()
 {
     snd_seq_ev_set_noteoff(&m_event, ch, key, vel);
 }
 
+/**
+ * Constructor using proper attribute values.
+ * @param ch MIDI Channel.
+ * @param key MIDI note.
+ * @param vel Note velocity.
+ */
 KeyPressEvent::KeyPressEvent(int ch, int key, int vel) : KeyEvent()
 {
     snd_seq_ev_set_keypress(&m_event, ch, key, vel);
 }
 
+/**
+ * Constructor using proper attribute values.
+ * @param ch MIDI Channel.
+ * @param cc MIDI Controller number.
+ * @param val Controller value.
+ */
 ControllerEvent::ControllerEvent(int ch, int cc, int val) : ChannelEvent()
 {
     snd_seq_ev_set_controller(&m_event, ch, cc, val);
 }
 
+/**
+ * Constructor using proper attribute values.
+ * @param ch MIDI Channel.
+ * @param val MIDI Program number.
+ */
 ProgramChangeEvent::ProgramChangeEvent(int ch, int val) : ChannelEvent()
 {
     snd_seq_ev_set_pgmchange(&m_event, ch, val);
 }
 
+/**
+ * Constructor using proper attribute values.
+ * @param ch MIDI Channel.
+ * @param val Pitch Bend value. Zero centered from -8192 to 8191.
+ */
 PitchBendEvent::PitchBendEvent(int ch, int val) : ChannelEvent()
 {
     snd_seq_ev_set_pitchbend(&m_event, ch, val);
 }
 
+/**
+ * Constructor using proper attribute values.
+ * @param ch MDII Channel.
+ * @param val Aftertouch value.
+ */
 ChanPressEvent::ChanPressEvent(int ch, int val) : ChannelEvent()
 {
     snd_seq_ev_set_chanpress(&m_event, ch, val);
 }
 
+/**
+ * Default constructor.
+ */
 VariableEvent::VariableEvent()
     : SequencerEvent()
 {
@@ -338,6 +387,10 @@ VariableEvent::VariableEvent()
     snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );
 }
 
+/**
+ * Constructor from an ALSA event record.
+ * @param event ALSA event record.
+ */
 VariableEvent::VariableEvent(snd_seq_event_t* event)
     : SequencerEvent(event)
 {
@@ -346,6 +399,10 @@ VariableEvent::VariableEvent(snd_seq_event_t* event)
     snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );
 }
 
+/**
+ * Constructor from an arbitrary data array.
+ * @param data A data byte array.
+ */
 VariableEvent::VariableEvent(const QByteArray& data)
     : SequencerEvent()
 {
@@ -353,6 +410,10 @@ VariableEvent::VariableEvent(const QByteArray& data)
     snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );
 }
 
+/**
+ * Copy constructor.
+ * @param other Another VariableEvent instance.
+s */
 VariableEvent::VariableEvent(const VariableEvent& other)
     : SequencerEvent()
 {
@@ -360,6 +421,11 @@ VariableEvent::VariableEvent(const VariableEvent& other)
     snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );
 }
 
+/**
+ * Constructor from a data pointer.
+ * @param datalen Length of the data.
+ * @param dataptr Pointer the data.
+ */
 VariableEvent::VariableEvent(const unsigned int datalen, char* dataptr)
     : SequencerEvent()
 {
@@ -367,6 +433,11 @@ VariableEvent::VariableEvent(const unsigned int datalen, char* dataptr)
     snd_seq_ev_set_variable( &m_event, m_data.size(), m_data.data() );
 }
 
+/**
+ * Assignment operator.
+ * @param other Another VariableEvent object reference
+ * @return Pointer to this object
+ */
 VariableEvent& VariableEvent::operator=(const VariableEvent& other)
 {
     m_event = other.m_event;
@@ -375,54 +446,90 @@ VariableEvent& VariableEvent::operator=(const VariableEvent& other)
     return *this;
 }
 
+/**
+ * Default constructor.
+ */
 SysExEvent::SysExEvent()
     : VariableEvent()
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
 }
 
+/**
+ * Constructor from an ALSA event record.
+ * @param event ALSA event record.
+ */
 SysExEvent::SysExEvent(snd_seq_event_t* event)
     : VariableEvent(event)
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
 }
 
+/**
+ * Constructor from a data array.
+ * @param data A data byte array.
+ */
 SysExEvent::SysExEvent(const QByteArray& data)
     : VariableEvent(data)
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
 }
 
+/**
+ * Copy constructor.
+ * @param other Another SysExEvent object reference.
+ */
 SysExEvent::SysExEvent(const SysExEvent& other)
     : VariableEvent(other)
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
 }
 
+/**
+ * Constructor taking a data pointer and length
+ * @param datalen Data length
+ * @param dataptr Data pointer
+ */
 SysExEvent::SysExEvent(const unsigned int datalen, char* dataptr)
     : VariableEvent( datalen, dataptr )
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
 }
 
+/**
+ * Default constructor
+ */
 TextEvent::TextEvent()
     : VariableEvent(), m_textType(1)
 {
     setSequencerType(SND_SEQ_EVENT_USR_VAR0);
 }
 
+/**
+ * Constructor from an ALSA sequencer record.
+ * @param event ALSA sequencer record.
+ */
 TextEvent::TextEvent(snd_seq_event_t* event)
     : VariableEvent(event), m_textType(1)
 {
     setSequencerType(SND_SEQ_EVENT_USR_VAR0);
 }
 
+/**
+ * Constructor from a given string
+ * @param text The event's text
+ * @param textType The SMF text type
+ */
 TextEvent::TextEvent(const QString& text, const int textType)
     : VariableEvent(text.toAscii()), m_textType(textType)
 {
     setSequencerType(SND_SEQ_EVENT_USR_VAR0);
 }
 
+/**
+ * Copy constructor
+ * @param other An existing TextEvent object reference
+ */
 TextEvent::TextEvent(const TextEvent& other)
     : VariableEvent(other)
 {
@@ -430,34 +537,62 @@ TextEvent::TextEvent(const TextEvent& other)
     m_textType = other.getTextType();
 }
 
+/**
+ * Constructor from a data pointer and length
+ * @param datalen Data length
+ * @param dataptr Data pointer
+ */
 TextEvent::TextEvent(const unsigned int datalen, char* dataptr)
     : VariableEvent(datalen, dataptr), m_textType(1)
 {
     setSequencerType(SND_SEQ_EVENT_USR_VAR0);
 }
 
+/**
+ * Gets the event's text content.
+ * @return The text content.
+ */
 QString TextEvent::getText() const
 {
     return QString::fromAscii(m_data.data(), m_data.size());
 }
 
+/**
+ * Gets the event's SMF text type.
+ * @return The SMF text type.
+ */
 int TextEvent::getTextType() const
 {
     return m_textType;
 }
 
+/**
+ * Constructor
+ * @param statusByte The event's status byte
+ */
 SystemEvent::SystemEvent(int statusByte) : SequencerEvent()
 {
     snd_seq_ev_set_fixed(&m_event);
     setSequencerType(statusByte);
 }
 
+/**
+ * Constructor
+ * @param type Event type
+ * @param queue Queue number
+ * @param value Value
+ */
 QueueControlEvent::QueueControlEvent(int type, int queue, int value)
     : SequencerEvent()
 {
     snd_seq_ev_set_queue_control(&m_event, type, queue, value);
 }
 
+/**
+ * Constructor
+ * @param statusByte The event's status byte
+ * @param val Value
+ */
 ValueEvent::ValueEvent(int statusByte, int val) : SequencerEvent()
 {
     snd_seq_ev_set_fixed(&m_event);
@@ -465,6 +600,11 @@ ValueEvent::ValueEvent(int statusByte, int val) : SequencerEvent()
     setValue(val);
 }
 
+/**
+ * Constructor
+ * @param queue Queue number.
+ * @param tempo Tempo value in microseconds per quarter note.
+ */
 TempoEvent::TempoEvent(int queue, int tempo) : QueueControlEvent()
 {
     snd_seq_ev_set_queue_tempo(&m_event, queue, tempo);
