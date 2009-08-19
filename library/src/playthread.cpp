@@ -18,7 +18,6 @@
 */
 
 #include "alsaclient.h"
-#include "alsaevent.h"
 #include "alsaqueue.h"
 #include "playthread.h"
 
@@ -143,7 +142,7 @@ void SequencerOutputThread::run()
                         sendEchoEvent(last_tick);
                     }
                 }
-                if (!ev->isConnectionChange())
+                if (!isConnectionChange(ev))
                     sendSongEvent(ev);
             }
             if (stopped()) {

@@ -32,7 +32,6 @@
 #include "aseqmmcommon.h"
 #include <QObject>
 #include <QDataStream>
-#include <QString>
 #include <QList>
 
 namespace aseqmm {

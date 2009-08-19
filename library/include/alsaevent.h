@@ -33,13 +33,13 @@
 namespace aseqmm {
 
 /**
- * constant SequencerEventType is the QEvent::type() of any SequencerEvent
+ * Constant SequencerEventType is the QEvent::type() of any SequencerEvent
  * object to be used to check the argument in QObject::customEvent().
  */
 const QEvent::Type SequencerEventType = QEvent::Type(QEvent::User + 4154); // :-)
 
 /**
- * Macro to declare a clone() virtual method on SequencerEvent derived classes.
+ * Macro to declare a virtual clone() method for SequencerEvent and derived classes.
  */
 #define CLONE_EVENT_DECLARATION(T) virtual T* clone() { return new T(&m_event); }
 
@@ -47,7 +47,7 @@ const QEvent::Type SequencerEventType = QEvent::Type(QEvent::User + 4154); // :-
  * Base class for the event's hierarchy
  *
  * All event classes share this base class. It provides several common
- * properties and members.
+ * properties and methods.
  */
 class SequencerEvent : public QEvent
 {
@@ -59,35 +59,43 @@ public:
     virtual ~SequencerEvent() {}
 
     SequencerEvent& operator=(const SequencerEvent& other);
-    bool isSubscription() const;
-    bool isPort() const;
-    bool isClient() const;
-    bool isConnectionChange() const;
     void setSequencerType(const snd_seq_event_type_t eventType);
-    /** Gets the sequencer event type.
+    /**
+     * Gets the sequencer event type.
      * @return The sequencer event type.
+     * @see setSequencerType()
      */
     snd_seq_event_type_t getSequencerType() const { return m_event.type; }
     void setDestination(const unsigned char client, const unsigned char port);
     void setSource(const unsigned char port);
-    /** Gets the source client id.
+    /**
+     * Gets the source client id.
      * @return The source client id.
+     * @see setSource()
      */
     unsigned char getSourceClient() const { return m_event.source.client; }
-    /** Gets the source port id.
+    /**
+     * Gets the source port id.
      * @return The source port id.
+     * @see setSource()
      */
     unsigned char getSourcePort() const { return m_event.source.port; }
-    /** Gets the tick time of the event.
+    /**
+     * Gets the tick time of the event.
      * @return The tick time.
+     * @see scheduleTick()
      */
     snd_seq_tick_time_t getTick() const { return m_event.time.tick; }
-    /** Gets the seconds of the event's real time.
+    /**
+     * Gets the seconds of the event's real time.
      * @return The seconds of the time.
+     * @see scheduleReal(), getRealTimeNanos()
      */
     unsigned int getRealTimeSecs() const { return m_event.time.time.tv_sec; }
-    /** Gets the nanoseconds of the event's real time.
+    /**
+     * Gets the nanoseconds of the event's real time.
      * @return The nanoseconds of the time.
+     * @see scheduleReal(), getRealTimeSecs()
      */
     unsigned int getRealTimeNanos() const { return m_event.time.time.tv_nsec; }
     void setSubscribers();
@@ -98,7 +106,8 @@ public:
     void setPriority(const bool high);
     /**
      * Gets the tag of the event
-     * @return The tag
+     * @return The event's tag
+     * @see setTag()
      */
     unsigned char getTag() const { return m_event.tag; }
     void setTag(const unsigned char aTag);
@@ -108,19 +117,28 @@ public:
     void setRaw8(const unsigned int n, const unsigned char value);
     /**
      * Gets the handle of the event
-     * @return the handle of the event
+     * @return The event's handle
      */
     snd_seq_event_t* getHandle() { return &m_event; }
     int getEncodedLength();
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(SequencerEvent);
 
 private:
     void free() __attribute__((deprecated));
 
 protected:
+    /**
+     * ALSA sequencer event record.
+     * @see http://www.alsa-project.org/alsa-doc/alsa-lib/structsnd__seq__event.html
+     */
     snd_seq_event_t m_event;
 };
 
+bool isSubscription(const SequencerEvent* event);
+bool isPort(const SequencerEvent* event);
+bool isClient(const SequencerEvent* event);
+bool isConnectionChange(const SequencerEvent* event);
 
 /**
  * Base class for the events having a Channel property
@@ -132,8 +150,17 @@ public:
     ChannelEvent() : SequencerEvent() {}
     /** Constructor from an ALSA event record */
     ChannelEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
-
+    /**
+     * Sets the channel of the event
+     * @param c A channel, between 0 and 15.
+     * @see getChannel()
+     */
     void setChannel(const MidiByte c) { m_event.data.note.channel = (c & 0xf); }
+    /**
+     * Gets the event's channel
+     * @return The event's channel
+     * @see setChannel()
+     */
     int getChannel() const { return m_event.data.note.channel; }
 };
 
@@ -147,10 +174,29 @@ public:
     KeyEvent() : ChannelEvent() {}
     /** Constructor from an ALSA event record */
     KeyEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
-
+    /**
+     * Gets the MIDI note of this event.
+     * @return The event's MIDI note.
+     * @see setKey()
+     */
     int getKey() const { return m_event.data.note.note; }
+    /**
+     * Sets the MIDI note of this event.
+     * @param b A MIDI note, between 0 and 127.
+     * @see getKey()
+     */
     void setKey(const MidiByte b) { m_event.data.note.note = b; }
+    /**
+     * Gets the note velocity of this event.
+     * @return The event's note velocity.
+     * @see setVelocity()
+     */
     int getVelocity() const { return m_event.data.note.velocity; }
+    /**
+     * Sets the note velocity of this event.
+     * @param b A velocity value, between 0 and 127.
+     * @see getVelocity()
+     */
     void setVelocity(const MidiByte b) { m_event.data.note.velocity = b; }
 };
 
@@ -168,9 +214,19 @@ public:
     /** Constructor from an ALSA event record */
     NoteEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     NoteEvent(const int ch, const int key, const int vel, const int dur);
-
+    /**
+     * Gets the note's duration
+     * @return The duration of the event
+     * @see setDuration()
+     */
     ulong getDuration() const { return m_event.data.note.duration; }
+    /**
+     * Sets the note's duration
+     * @param d The duration of the event
+     * @see getDuration()
+     */
     void setDuration(const ulong d) { m_event.data.note.duration = d; }
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(NoteEvent)
 };
 
@@ -185,6 +241,7 @@ public:
     /** Constructor from an ALSA event record */
     NoteOnEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     NoteOnEvent(const int ch, const int key, const int vel);
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(NoteOnEvent)
 };
 
@@ -199,6 +256,7 @@ public:
     /** Constructor from an ALSA event record */
     NoteOffEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     NoteOffEvent(const int ch, const int key, const int vel);
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(NoteOffEvent)
 };
 
@@ -213,6 +271,7 @@ public:
     /** Constructor from an ALSA event record */
     KeyPressEvent(snd_seq_event_t* event) : KeyEvent(event) {}
     KeyPressEvent(const int ch, const int key, const int vel);
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(KeyPressEvent)
 };
 
@@ -227,11 +286,31 @@ public:
     /** Constructor from an ALSA event record */
     ControllerEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
     ControllerEvent(const int ch, const int cc, const int val);
-
+    /**
+     * Gets the controller event's parameter.
+     * @return The controller event's parameter.
+     * @see setParam()
+     */
     uint getParam() const { return m_event.data.control.param; }
+    /**
+     * Sets the controller event's parameter.
+     * @param p The controller event's parameter.
+     * @see getParam()
+     */
     void setParam( const uint p ) { m_event.data.control.param = p; }
+    /**
+     * Gets the controller event's value.
+     * @return The controller event's value.
+     * @see setValue()
+     */
     int getValue() const { return m_event.data.control.value; }
+    /**
+     * Sets the controller event's value.
+     * @param v The controller event's value.
+     * @see getValue()
+     */
     void setValue( const int v ) { m_event.data.control.value = v; }
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(ControllerEvent)
 };
 
@@ -249,6 +328,7 @@ public:
 
     int getValue() const { return m_event.data.control.value; }
     void setValue( const int v ) { m_event.data.control.value = v; }
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(ProgramChangeEvent)
 };
 
@@ -266,6 +346,7 @@ public:
 
     int getValue() const { return m_event.data.control.value; }
     void setValue( const int v ) { m_event.data.control.value = v; }
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(PitchBendEvent)
 };
 
@@ -283,6 +364,7 @@ public:
 
     int getValue() const { return m_event.data.control.value; }
     void setValue( const int v ) { m_event.data.control.value = v; }
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(ChanPressEvent)
 };
 
@@ -300,6 +382,7 @@ public:
     VariableEvent& operator=(const VariableEvent& other);
     unsigned int getLength() const { return m_event.data.ext.len; }
     const char* getData() const { return static_cast<const char*>(m_event.data.ext.ptr); }
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(VariableEvent)
 protected:
     QByteArray m_data;
@@ -316,6 +399,7 @@ public:
     SysExEvent(const QByteArray& data);
     SysExEvent(const SysExEvent& other);
     SysExEvent(const unsigned int datalen, char* dataptr);
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(SysExEvent)
 };
 
@@ -335,6 +419,7 @@ public:
     TextEvent(const unsigned int datalen, char* dataptr);
     QString getText() const;
     int getTextType() const;
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(TextEvent)
 protected:
     int m_textType;
@@ -351,6 +436,7 @@ public:
     /** Constructor from an ALSA event record */
     SystemEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
     SystemEvent(const int statusByte);
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(SystemEvent)
 };
 
@@ -379,6 +465,7 @@ public:
     void setSkewBase(const uint base) { m_event.data.queue.param.skew.base = base; }
     uint getSkewValue() const { return m_event.data.queue.param.skew.value;  }
     void setSkewValue(const uint val) {m_event.data.queue.param.skew.value = val; }
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(QueueControlEvent)
 };
 
@@ -396,6 +483,7 @@ public:
 
     int getValue() const { return m_event.data.control.value; }
     void setValue( const int v ) { m_event.data.control.value = v; }
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(ValueEvent)
 };
 
@@ -410,6 +498,7 @@ public:
     /** Constructor from an ALSA event record */
     TempoEvent(snd_seq_event_t* event) : QueueControlEvent(event) {}
     TempoEvent(const int queue, const int tempo);
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(TempoEvent)
 };
 
@@ -430,6 +519,7 @@ public:
     int getSenderPort() const { return m_event.data.connect.sender.port; }
     int getDestClient() const { return m_event.data.connect.dest.client; }
     int getDestPort() const { return m_event.data.connect.dest.port; }
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(SubscriptionEvent)
 };
 
@@ -444,6 +534,7 @@ public:
     /** Constructor from an ALSA event record */
     ClientEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
     int getClient() const { return m_event.data.addr.client; }
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(ClientEvent)
 };
 
@@ -458,6 +549,7 @@ public:
     /** Constructor from an ALSA event record */
     PortEvent(snd_seq_event_t* event) : ClientEvent(event) {}
     int getPort() const { return m_event.data.addr.port; }
+    /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(PortEvent)
 };
 

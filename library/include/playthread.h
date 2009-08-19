@@ -27,7 +27,6 @@
  * @{
  */
 
-#include "aseqmmcommon.h"
 #include "alsaevent.h"
 #include <QThread>
 #include <QReadWriteLock>

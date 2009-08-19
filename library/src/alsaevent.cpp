@@ -27,23 +27,39 @@
 
 namespace aseqmm {
 
+/**
+ * Default constructor.
+ */
 SequencerEvent::SequencerEvent() : QEvent(SequencerEventType)
 {
     snd_seq_ev_clear( &m_event );
 }
 
+/**
+ * Constructor from an ALSA event record
+ * @param event ALSA event record
+ */
 SequencerEvent::SequencerEvent(snd_seq_event_t* event) : QEvent(SequencerEventType)
 {
     snd_seq_ev_clear( &m_event );
     m_event = *event;
 }
 
+/**
+ * Copy constructor
+ * @param other A SequencerEvent object reference
+ */
 SequencerEvent::SequencerEvent(const SequencerEvent& other) : QEvent(SequencerEventType)
 {
     snd_seq_ev_clear( &m_event );
     m_event = other.m_event;
 }
 
+/**
+ * Assignment operator
+ * @param other A SequencerEvent object reference
+ * @return This object
+ */
 SequencerEvent&
 SequencerEvent::operator=(const SequencerEvent& other)
 {
@@ -51,73 +67,135 @@ SequencerEvent::operator=(const SequencerEvent& other)
     return *this;
 }
 
-bool SequencerEvent::isSubscription() const
+/**
+ * Checks if the event's type is a subscription.
+ * @param event A SequencerEvent object pointer
+ * @return True if the event has a subscribe/unsubscribe type.
+ */
+bool isSubscription(const SequencerEvent* event)
 {
-    return (m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED ||
-            m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED );
+    snd_seq_event_type_t te = event->getSequencerType();
+    return ( te == SND_SEQ_EVENT_PORT_SUBSCRIBED ||
+             te == SND_SEQ_EVENT_PORT_UNSUBSCRIBED );
 }
 
-bool SequencerEvent::isPort() const
+/**
+ * Checks if the event's type is of type port.
+ * @param event A SequencerEvent object pointer
+ * @return True if the event has a port start/exit/change type.
+ */
+bool isPort(const SequencerEvent* event)
 {
-    return (m_event.type == SND_SEQ_EVENT_PORT_START ||
-            m_event.type == SND_SEQ_EVENT_PORT_EXIT ||
-            m_event.type == SND_SEQ_EVENT_PORT_CHANGE );
+    snd_seq_event_type_t te = event->getSequencerType();
+    return ( te == SND_SEQ_EVENT_PORT_START ||
+             te == SND_SEQ_EVENT_PORT_EXIT ||
+             te == SND_SEQ_EVENT_PORT_CHANGE );
 }
 
-bool SequencerEvent::isClient() const
+/**
+ * Checks if the event's type is of type client.
+ * @param event A SequencerEvent object pointer
+ * @return True if the event has a client start/exit/change type.
+ */
+bool isClient(const SequencerEvent* event)
 {
-    return (m_event.type == SND_SEQ_EVENT_CLIENT_START ||
-            m_event.type == SND_SEQ_EVENT_CLIENT_EXIT ||
-            m_event.type == SND_SEQ_EVENT_CLIENT_CHANGE );
+    snd_seq_event_type_t te = event->getSequencerType();
+    return ( te == SND_SEQ_EVENT_CLIENT_START ||
+             te == SND_SEQ_EVENT_CLIENT_EXIT ||
+             te == SND_SEQ_EVENT_CLIENT_CHANGE );
 }
 
-bool SequencerEvent::isConnectionChange() const
+/**
+ * Checks if the event's type is of type connection change.
+ * @param event A SequencerEvent object pointer
+ * @return True if the event has a client/port/subscription type.
+ */
+bool isConnectionChange(const SequencerEvent* event)
 {
-    return (m_event.type == SND_SEQ_EVENT_PORT_START ||
-            m_event.type == SND_SEQ_EVENT_PORT_EXIT ||
-            m_event.type == SND_SEQ_EVENT_PORT_CHANGE ||
-            m_event.type == SND_SEQ_EVENT_CLIENT_START ||
-            m_event.type == SND_SEQ_EVENT_CLIENT_EXIT ||
-            m_event.type == SND_SEQ_EVENT_CLIENT_CHANGE ||
-            m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED ||
-            m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED );
+    snd_seq_event_type_t te = event->getSequencerType();
+    return ( te == SND_SEQ_EVENT_PORT_START ||
+             te == SND_SEQ_EVENT_PORT_EXIT ||
+             te == SND_SEQ_EVENT_PORT_CHANGE ||
+             te == SND_SEQ_EVENT_CLIENT_START ||
+             te == SND_SEQ_EVENT_CLIENT_EXIT ||
+             te == SND_SEQ_EVENT_CLIENT_CHANGE ||
+             te == SND_SEQ_EVENT_PORT_SUBSCRIBED ||
+             te == SND_SEQ_EVENT_PORT_UNSUBSCRIBED );
 }
 
+/**
+ * Sets the event's ALSA sequencer type
+ * @param eventType The ALSA sequencer type
+ */
 void SequencerEvent::setSequencerType(const snd_seq_event_type_t eventType)
 {
     m_event.type = eventType;
 }
 
+/**
+ * Sets the client:port destination of the event.
+ * @param client The destination's client ID
+ * @param port The destination port ID
+ * @see setSubscribers()
+ */
 void SequencerEvent::setDestination(const unsigned char client, const unsigned char port)
 {
     snd_seq_ev_set_dest(&m_event, client, port);
 }
 
+/**
+ * Sets the event's source port ID
+ * @param port The source port ID
+ * @see getSourceClient(), getSourcePort()
+ */
 void SequencerEvent::setSource(const unsigned char port)
 {
     snd_seq_ev_set_source(&m_event, port);
 }
 
+/**
+ * Sets the event's destination to be all the subscribers of the source port.
+ */
 void SequencerEvent::setSubscribers()
 {
     snd_seq_ev_set_subs(&m_event);
 }
 
+/**
+ * Sets the event's destination to be all queues/clients/ports/channels.
+ */
 void SequencerEvent::setBroadcast()
 {
     snd_seq_ev_set_broadcast(&m_event);
 }
 
+/**
+ * Sets the event to be immediately delivered, not queued/scheduled.
+ * @see scheduleTick(), scheduleReal()
+ */
 void SequencerEvent::setDirect()
 {
     snd_seq_ev_set_direct(&m_event);
 }
 
+/**
+ * Sets the event to be scheduled in musical time (ticks) units.
+ * @param queue The queue number to be used.
+ * @param tick The time in ticks.
+ * @param relative Use relative (to the current) time instead of absolute time.
+ */
 void SequencerEvent::scheduleTick(int queue, int tick, bool relative)
 {
     snd_seq_ev_schedule_tick(&m_event, queue, relative, tick);
 }
 
+/**
+ * Sets the event to be scheduled in real (clock) time units.
+ * @param queue The queue number to be used.
+ * @param secs The time in whole seconds.
+ * @param nanos The nanoseconds to be added.
+ * @param relative Use relative (to the current) time instead of absolute time.
+ */
 void SequencerEvent::scheduleReal(int queue, ulong secs, ulong nanos, bool relative)
 {
     snd_seq_real_time_t rtime;
@@ -126,11 +204,22 @@ void SequencerEvent::scheduleReal(int queue, ulong secs, ulong nanos, bool relat
     snd_seq_ev_schedule_real(&m_event, queue, relative, &rtime);
 }
 
+/**
+ * Sets the priority of the event. This is used in case of several events share
+ * the same scheduling time.
+ *
+ * @param high Mark the event as a high priority one.
+ */
 void SequencerEvent::setPriority(const bool high)
 {
     snd_seq_ev_set_priority(&m_event, high);
 }
 
+/**
+ * Sets the event's tag. This attribute is any arbitrary number, not used by
+ * the ALSA library. Range limited to 0 thru 255.
+ * @param aTag A tag number.
+ */
 void SequencerEvent::setTag(const unsigned char aTag)
 {
 #if SND_LIB_SUBMINOR > 8
@@ -140,33 +229,63 @@ void SequencerEvent::setTag(const unsigned char aTag)
 #endif
 }
 
+/**
+ * Gets an event's raw 32 bits parameter.
+ * @param n The parameter index, between 0 and 2.
+ * @return The parameter's value.
+ * @see setRaw32()
+ */
 unsigned int SequencerEvent::getRaw32(const unsigned int n) const
 {
     if (n < 3) return m_event.data.raw32.d[n];
     return 0;
 }
 
+/**
+ * Sets an event's raw 32 bits parameter.
+ * @param n The parameter index, between 0 and 2.
+ * @param value The parameter's value.
+ */
 void SequencerEvent::setRaw32(const unsigned int n, const unsigned int value)
 {
     if (n < 3) m_event.data.raw32.d[n] = value;
 }
 
+/**
+ * Gets an event's raw 8 bits parameter.
+ * @param n The parameter index, between 0 and 11.
+ * @return The parameter's value.
+ * @see setRaw8()
+ */
 unsigned char SequencerEvent::getRaw8(const unsigned int n) const
 {
     if (n < 12) return m_event.data.raw8.d[n];
     return 0;
 }
 
+/**
+ * Sets an event's raw 8 bits parameter.
+ * @param n The parameter index, between 0 and 11.
+ * @param value The parameter's value.
+ */
 void SequencerEvent::setRaw8(const unsigned int n, const unsigned char value)
 {
     if (n < 12) m_event.data.raw8.d[n] = value;
 }
 
+/**
+ * Releases the event record (deprecated).
+ * @deprecated
+ */
 void SequencerEvent::free()
 {
     snd_seq_free_event(&m_event);
 }
 
+/**
+ * Gets the encoded length of the event record.
+ * @return The encoded length.
+ */
 int SequencerEvent::getEncodedLength()
 {
     return snd_seq_event_length(&m_event);

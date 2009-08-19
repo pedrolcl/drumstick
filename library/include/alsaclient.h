@@ -28,12 +28,8 @@
  * @{
  */
 
-#include "aseqmmcommon.h"
 #include "alsaport.h"
-
-#include <QObject>
 #include <QPointer>
-#include <QList>
 #include <QThread>
 #include <QReadWriteLock>
 

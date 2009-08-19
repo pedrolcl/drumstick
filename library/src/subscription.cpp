@@ -18,7 +18,6 @@
 */
 
 #include "alsaclient.h"
-#include "subscription.h"
 
 namespace aseqmm {
 

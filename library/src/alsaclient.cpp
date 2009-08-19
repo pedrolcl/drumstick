@@ -20,9 +20,7 @@
 #include "alsaclient.h"
 #include "alsaqueue.h"
 #include "alsaevent.h"
-#include "alsaport.h"
 #include <QThread>
-#include <QApplication>
 
 namespace aseqmm {
 
@@ -39,10 +37,12 @@ To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/
 
 This is the reference documentation for aseqmm. This library is a C++ wrapper
 around the ALSA library sequencer interface, using Qt4 objects, idioms and style.
+ALSA sequencer provides software support for MIDI technology on Linux.
 
 @see http://doc.trolltech.com/index.html
 @see http://www.alsa-project.org/alsa-doc/alsa-lib/seq.html
 @see http://cartan.cas.suffolk.edu/oopdocbook/opensource/index.html
+@see http://www.midi.org/aboutmidi/tutorials.php
 
 @section Disclaimer
 

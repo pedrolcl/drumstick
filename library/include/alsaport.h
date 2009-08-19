@@ -27,10 +27,8 @@
  * @{
  */
 
-#include "aseqmmcommon.h"
 #include "subscription.h"
 #include <QObject>
-#include <QList>
 
 namespace aseqmm {
 
