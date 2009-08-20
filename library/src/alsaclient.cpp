@@ -267,7 +267,7 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * It is necessary to invoke open() later to get the sequencer client handler
  * from the ALSA sequencer subsystem.
  *
- * @param parent The parent object
+ * @param parent The optional parent object
  * @return a MidiClient instance
  */
 MidiClient::MidiClient( QObject* parent ) :

@@ -325,8 +325,9 @@ public:
     /** Constructor from an ALSA event record */
     ProgramChangeEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
     ProgramChangeEvent(const int ch, const int val);
-
+    /** Gets the MIDI program number */
     int getValue() const { return m_event.data.control.value; }
+    /** Sets the MIDI program number */
     void setValue( const int v ) { m_event.data.control.value = v; }
     /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(ProgramChangeEvent)
@@ -343,8 +344,9 @@ public:
     /** Constructor from an ALSA event record */
     PitchBendEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
     PitchBendEvent(const int ch, const int val);
-
+    /** Gets the MIDI pitch bend value, zero centered from -8192 to 8191 */
     int getValue() const { return m_event.data.control.value; }
+    /** Sets the MIDI pitch bend value, zero centered from -8192 to 8191  */
     void setValue( const int v ) { m_event.data.control.value = v; }
     /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(PitchBendEvent)
@@ -361,8 +363,9 @@ public:
     /** Constructor from an ALSA event record */
     ChanPressEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
     ChanPressEvent( const int ch, const int val);
-
+    /** Gets the channel aftertouch value */
     int getValue() const { return m_event.data.control.value; }
+    /** Sets the channel aftertouch value */
     void setValue( const int v ) { m_event.data.control.value = v; }
     /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(ChanPressEvent)
@@ -380,7 +383,9 @@ public:
     VariableEvent(const VariableEvent& other);
     VariableEvent(const unsigned int datalen, char* dataptr);
     VariableEvent& operator=(const VariableEvent& other);
+    /** Gets the data length */
     unsigned int getLength() const { return m_event.data.ext.len; }
+    /** Gets the data pointer */
     const char* getData() const { return static_cast<const char*>(m_event.data.ext.ptr); }
     /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(VariableEvent)
@@ -453,17 +458,29 @@ public:
     /** Constructor from an ALSA event record */
     QueueControlEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
     QueueControlEvent(const int type, const int queue, const int value);
+    /** Gets the queue number */
     int getQueue() const { return m_event.data.queue.queue; }
+    /** Sets the queue number */
     void setQueue(const uchar q) { m_event.data.queue.queue = q; }
+    /** Gets the event's value */
     int getValue() const { return m_event.data.queue.param.value; }
+    /** Sets the event's value */
     void setValue(const int val) { m_event.data.queue.param.value = val; }
+    /** Gets the queue position */
     uint getPosition() const { return m_event.data.queue.param.position; }
+    /** Sets the queue position */
     void setPosition(const uint pos) { m_event.data.queue.param.position = pos; }
+    /** Gets the musical time in ticks */
     snd_seq_tick_time_t getTickTime() const { return m_event.data.queue.param.time.tick; }
+    /** Sets the musical time in ticks */
     void setTickTime(const snd_seq_tick_time_t t) { m_event.data.queue.param.time.tick = t; }
+    /** Gets the skew base */
     uint getSkewBase() const { return m_event.data.queue.param.skew.base;  }
+    /** Sets the skew base, should be 65536 */
     void setSkewBase(const uint base) { m_event.data.queue.param.skew.base = base; }
+    /** Gets the skew value */
     uint getSkewValue() const { return m_event.data.queue.param.skew.value;  }
+    /** Sets the skew value */
     void setSkewValue(const uint val) {m_event.data.queue.param.skew.value = val; }
     /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(QueueControlEvent)
@@ -480,8 +497,9 @@ public:
     /** Constructor from an ALSA event record */
     ValueEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
     ValueEvent(const int statusByte, const int val);
-
+    /** Gets the event's value */
     int getValue() const { return m_event.data.control.value; }
+    /** Sets the event's value */
     void setValue( const int v ) { m_event.data.control.value = v; }
     /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(ValueEvent)
@@ -512,12 +530,17 @@ public:
     SubscriptionEvent() : SequencerEvent() {}
     /** Constructor from an ALSA event record */
     SubscriptionEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
-
+    /** Returns true if the event was a subscribed port */
     bool subscribed() const { return (m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED); }
+    /** Returns true if the event was an unsubscribed port */
     bool unsubscribed() const { return (m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED); }
+    /** Gets the sender client number */
     int getSenderClient() const { return m_event.data.connect.sender.client; }
+    /** Gets the sender port number */
     int getSenderPort() const { return m_event.data.connect.sender.port; }
+    /** Gets the destination client number */
     int getDestClient() const { return m_event.data.connect.dest.client; }
+    /** Gets the destination port number */
     int getDestPort() const { return m_event.data.connect.dest.port; }
     /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(SubscriptionEvent)
@@ -548,6 +571,7 @@ public:
     PortEvent() : ClientEvent() {}
     /** Constructor from an ALSA event record */
     PortEvent(snd_seq_event_t* event) : ClientEvent(event) {}
+    /** Gets the port number */
     int getPort() const { return m_event.data.addr.port; }
     /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(PortEvent)
@@ -555,6 +579,7 @@ public:
 
 /**
  * Auxiliary class to remove events from an ALSA queue
+ * @see MidiClient::removeEvents()
  */
 class RemoveEvents
 {

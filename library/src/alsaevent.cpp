@@ -369,7 +369,7 @@ PitchBendEvent::PitchBendEvent(int ch, int val) : ChannelEvent()
 
 /**
  * Constructor using proper attribute values.
- * @param ch MDII Channel.
+ * @param ch MIDI Channel.
  * @param val Aftertouch value.
  */
 ChanPressEvent::ChanPressEvent(int ch, int val) : ChannelEvent()
@@ -610,38 +610,57 @@ TempoEvent::TempoEvent(int queue, int tempo) : QueueControlEvent()
     snd_seq_ev_set_queue_tempo(&m_event, queue, tempo);
 }
 
-/****************
- * RemoveEvents *
- ****************/
-
+/**
+ * Default constructor.
+ */
 RemoveEvents::RemoveEvents()
 {
     snd_seq_remove_events_malloc(&m_Info);
 }
 
+/**
+ * Copy constructor.
+ * @param other An existing RemoveEvents object reference.
+ */
 RemoveEvents::RemoveEvents(const RemoveEvents& other)
 {
     snd_seq_remove_events_malloc(&m_Info);
     snd_seq_remove_events_copy(m_Info, other.m_Info);
 }
 
+/**
+ * Constructor from an ALSA remove events object pointer.
+ * @param other An ALSA remove events object pointer.
+ */
 RemoveEvents::RemoveEvents(snd_seq_remove_events_t* other)
 {
     snd_seq_remove_events_malloc(&m_Info);
     snd_seq_remove_events_copy(m_Info, other);
 }
 
+/**
+ * Destructor.
+ */
 RemoveEvents::~RemoveEvents()
 {
     snd_seq_remove_events_free(m_Info);
 }
 
+/**
+ * Create a new object copied from this object and return a pointer to the copy.
+ * @return A pointer to the new object.
+ */
 RemoveEvents*
 RemoveEvents::clone()
 {
     return new RemoveEvents(m_Info);
 }
 
+/**
+ * Assignment operator.
+ * @param other An existing RemoveEvents object reference.
+ * @return This object.
+ */
 RemoveEvents&
 RemoveEvents::operator=(const RemoveEvents& other)
 {
@@ -649,116 +668,217 @@ RemoveEvents::operator=(const RemoveEvents& other)
     return *this;
 }
 
+/**
+ * Gets the allocated size of the ALSA remove events object.
+ * @return The size of the ALSA remove events object.
+ */
 int
 RemoveEvents::getSizeOfInfo() const
 {
     return snd_seq_remove_events_sizeof();
 }
 
+/**
+ * Gets the MIDI channel.
+ * @return The MIDI channel.
+ * @see setChannel()
+ */
 int
 RemoveEvents::getChannel()
 {
     return snd_seq_remove_events_get_channel(m_Info);
 }
 
+/**
+ * Gets the condition.
+ * @return The condition.
+ * @see setCondition()
+ */
 unsigned int
 RemoveEvents::getCondition()
 {
     return snd_seq_remove_events_get_condition(m_Info);
 }
 
+/**
+ * Gets the destination.
+ * @return The destination record pointer.
+ * @see setDest()
+ */
 const snd_seq_addr_t*
 RemoveEvents::getDest()
 {
     return snd_seq_remove_events_get_dest(m_Info);
 }
 
+/**
+ * Gets the event type.
+ * @return The event type.
+ * @see setEventType()
+ */
 int
 RemoveEvents::getEventType()
 {
     return snd_seq_remove_events_get_event_type(m_Info);
 }
 
+/**
+ * Gets the queue number.
+ * @return The queue number.
+ * @see setQueue()
+ */
 int
 RemoveEvents::getQueue()
 {
     return snd_seq_remove_events_get_queue(m_Info);
 }
 
+/**
+ * Gets the numeric tag.
+ * @return The numeric tag.
+ * @see setTag()
+ */
 int
 RemoveEvents::getTag()
 {
     return snd_seq_remove_events_get_tag(m_Info);
 }
 
+/**
+ * Gets the timestamp.
+ * @return The timestamp.
+ * @see setTime()
+ */
 const snd_seq_timestamp_t*
 RemoveEvents::getTime()
 {
     return snd_seq_remove_events_get_time(m_Info);
 }
 
+/**
+ * Gets the MIDI channel.
+ * @param chan The MIDI channel.
+ * @see getChannel()
+ */
 void
 RemoveEvents::setChannel(int chan)
 {
     snd_seq_remove_events_set_channel(m_Info, chan);
 }
 
+/**
+ * Sets the flags of the conditional event's removal. This condition is a
+ * bitmap of the combination (OR) the following auto-described flags:
+ * <ul>
+ * <li>SND_SEQ_REMOVE_INPUT</li>
+ * <li>SND_SEQ_REMOVE_OUTPUT</li>
+ * <li>SND_SEQ_REMOVE_DEST</li>
+ * <li>SND_SEQ_REMOVE_DEST_CHANNEL</li>
+ * <li>SND_SEQ_REMOVE_TIME_BEFORE</li>
+ * <li>SND_SEQ_REMOVE_TIME_AFTER</li>
+ * <li>SND_SEQ_REMOVE_TIME_TICK</li>
+ * <li>SND_SEQ_REMOVE_EVENT_TYPE</li>
+ * <li>SND_SEQ_REMOVE_IGNORE_OFF</li>
+ * <li>SND_SEQ_REMOVE_TAG_MATCH</li>
+ * </ul>
+ * @param cond The condition bitmap.
+ * @see getCondition()
+ */
 void
 RemoveEvents::setCondition(unsigned int cond)
 {
     snd_seq_remove_events_set_condition(m_Info, cond);
 }
 
+/**
+ * Set the destination address.
+ * @param dest A pointer to the destination address record.
+ * @see getDest()
+ */
 void
 RemoveEvents::setDest(const snd_seq_addr_t* dest)
 {
     snd_seq_remove_events_set_dest(m_Info, dest);
 }
 
+/**
+ * Sets the event type.
+ * @param type The event type.
+ * @see getEventType()
+ */
 void
 RemoveEvents::setEventType(int type)
 {
     snd_seq_remove_events_set_event_type(m_Info, type);
 }
 
+/**
+ * Sets the queue number.
+ * @param queue The queue number.
+ * @see getQueue()
+ */
 void
 RemoveEvents::setQueue(int queue)
 {
     snd_seq_remove_events_set_queue(m_Info, queue);
 }
 
+/**
+ * Sets the numeric tag.
+ * @param tag The numeric tag.
+ * @see getTag()
+ */
 void
 RemoveEvents::setTag(int tag)
 {
     snd_seq_remove_events_set_tag(m_Info, tag);
 }
 
+/**
+ * Sets the timestamp.
+ * @param time A pointer to the timestamp record.
+ * @see getTime()
+ */
 void
 RemoveEvents::setTime(const snd_seq_timestamp_t* time)
 {
     snd_seq_remove_events_set_time(m_Info, time);
 }
 
-/*************
- * MidiCodec *
- *************/
-
+/**
+ * MidiCodec constructor
+ * @param bufsize The buffer size of the CODEC
+ * @param parent The optional parent object
+ */
 MidiCodec::MidiCodec( int bufsize, QObject* parent ) : QObject(parent)
 {
     CHECK_ERROR(snd_midi_event_new(bufsize, &m_Info));
 }
 
+/**
+ * Destructor
+ */
 MidiCodec::~MidiCodec()
 {
     snd_midi_event_free(m_Info);
 }
 
+/**
+ * CODEC initialization.
+ */
 void
 MidiCodec::init()
 {
     snd_midi_event_init(m_Info);
 }
 
+/**
+ * Decode from event to bytes.
+ * @param buf A buffer to get the results
+ * @param count Available bytes in MIDI byte stream
+ * @param ev The input event
+ * @return The number of written bytes if success.
+ */
 long
 MidiCodec::decode(unsigned char *buf,
                   long count,
@@ -767,6 +887,13 @@ MidiCodec::decode(unsigned char *buf,
     return CHECK_WARNING(snd_midi_event_decode(m_Info, buf, count, ev));
 }
 
+/**
+ * Encode from byte stream.
+ * @param buf MIDI byte stream
+ * @param count Bytes of MIDI byte stream to encode
+ * @param ev Result - sequencer event
+ * @return Number of written bytes if success.
+ */
 long
 MidiCodec::encode(const unsigned char *buf,
                   long count,
@@ -775,6 +902,12 @@ MidiCodec::encode(const unsigned char *buf,
     return CHECK_WARNING(snd_midi_event_encode(m_Info, buf, count, ev));
 }
 
+/**
+ * Read one byte and encode to sequencer event if finished.
+ * @param c A byte of MIDI stream
+ * @param ev Result - sequencer event
+ * @return 1 - sequencer event is completed, 0 - next byte is required for completion, otherwise a negative error code
+ */
 long
 MidiCodec::encode(int c,
                   snd_seq_event_t *ev)
@@ -782,24 +915,38 @@ MidiCodec::encode(int c,
     return CHECK_WARNING(snd_midi_event_encode_byte(m_Info, c, ev));
 }
 
+/**
+ * Enable MIDI running status (command merge)
+ * @param enable True to enable, false to disable.
+ */
 void
 MidiCodec::enableRunningStatus(bool enable)
 {
     snd_midi_event_no_status(m_Info, enable ? 0 : 1);
 }
 
+/**
+ * Reset MIDI decode parser.
+ */
 void
 MidiCodec::resetDecoder()
 {
     snd_midi_event_reset_decode(m_Info);
 }
 
+/**
+ * Reset MIDI encode parser.
+ */
 void
 MidiCodec::resetEncoder()
 {
     snd_midi_event_reset_encode(m_Info);
 }
 
+/**
+ * Resize the CODEC buffer
+ * @param bufsize New buffer size.
+ */
 void
 MidiCodec::resizeBuffer(int bufsize)
 {
