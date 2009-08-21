@@ -35,7 +35,7 @@ namespace aseqmm {
 class MidiClient;
 
 /**
- * Port information
+ * Port information container
  */
 class PortInfo
 {
@@ -56,6 +56,7 @@ public:
 
     int getClient();
     int getPort();
+    /** Gets the client name. @see setClientName() */
     QString getClientName() const { return m_ClientName; }
     const snd_seq_addr_t* getAddr();
     QString getName();
@@ -90,6 +91,7 @@ public:
 protected:
     void readSubscribers(MidiClient* seq);
     void freeSubscribers();
+    /** Sets the client name. @see getClientName() */
     void setClientName(QString name) { m_ClientName = name; }
 
 private:
@@ -106,9 +108,9 @@ private:
 typedef QList<PortInfo> PortInfoList;
 
 /**
- * Port management
+ * Port management.
  *
- * This class represent an ALSA sequencer port
+ * This class represents an ALSA sequencer port.
  */
 class MidiPort : public QObject
 {
@@ -165,9 +167,6 @@ public:
     void setTimestamping(bool value);
     void setTimestampReal(bool value);
     void setTimestampQueue(int queueId);
-
-    //void setAttached(bool state);
-    //void setAutoAttach(bool state);
 
 signals:
     void subscribed(MidiPort* port, Subscription* subs);

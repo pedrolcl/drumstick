@@ -28,6 +28,18 @@
 namespace aseqmm {
 
 /**
+ * @addtogroup ALSAEvent
+ * @{
+ *
+ * MIDI Events are the messages transmitted between MIDI devices or applications.
+ *
+ *
+ *
+ * @}
+ */
+
+
+/**
  * Default constructor.
  */
 SequencerEvent::SequencerEvent() : QEvent(SequencerEventType)
@@ -568,12 +580,12 @@ int TextEvent::getTextType() const
 
 /**
  * Constructor
- * @param statusByte The event's status byte
+ * @param type The event's type
  */
-SystemEvent::SystemEvent(int statusByte) : SequencerEvent()
+SystemEvent::SystemEvent(const snd_seq_event_type_t type) : SequencerEvent()
 {
     snd_seq_ev_set_fixed(&m_event);
-    setSequencerType(statusByte);
+    setSequencerType(type);
 }
 
 /**
@@ -582,7 +594,7 @@ SystemEvent::SystemEvent(int statusByte) : SequencerEvent()
  * @param queue Queue number
  * @param value Value
  */
-QueueControlEvent::QueueControlEvent(int type, int queue, int value)
+QueueControlEvent::QueueControlEvent(snd_seq_event_type_t type, int queue, int value)
     : SequencerEvent()
 {
     snd_seq_ev_set_queue_control(&m_event, type, queue, value);
@@ -590,13 +602,13 @@ QueueControlEvent::QueueControlEvent(int type, int queue, int value)
 
 /**
  * Constructor
- * @param statusByte The event's status byte
+ * @param type The event's type
  * @param val Value
  */
-ValueEvent::ValueEvent(int statusByte, int val) : SequencerEvent()
+ValueEvent::ValueEvent(const snd_seq_event_type_t type, int val) : SequencerEvent()
 {
     snd_seq_ev_set_fixed(&m_event);
-    setSequencerType(statusByte);
+    setSequencerType(type);
     setValue(val);
 }
 

@@ -22,7 +22,8 @@
 
 /**
  * @file alsaevent.h
- * Classes managing ALSA Sequencer events
+ * Classes managing ALSA Sequencer events.
+ *
  * @defgroup ALSAEvent Events
  * @{
  */
@@ -440,7 +441,7 @@ public:
     SystemEvent() : SequencerEvent() {}
     /** Constructor from an ALSA event record */
     SystemEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
-    SystemEvent(const int statusByte);
+    SystemEvent(const snd_seq_event_type_t type);
     /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(SystemEvent)
 };
@@ -457,7 +458,7 @@ public:
     QueueControlEvent() : SequencerEvent() {}
     /** Constructor from an ALSA event record */
     QueueControlEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
-    QueueControlEvent(const int type, const int queue, const int value);
+    QueueControlEvent(const snd_seq_event_type_t type, const int queue, const int value);
     /** Gets the queue number */
     int getQueue() const { return m_event.data.queue.queue; }
     /** Sets the queue number */
@@ -496,7 +497,7 @@ public:
     ValueEvent() : SequencerEvent() {}
     /** Constructor from an ALSA event record */
     ValueEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
-    ValueEvent(const int statusByte, const int val);
+    ValueEvent(const snd_seq_event_type_t type, const int val);
     /** Gets the event's value */
     int getValue() const { return m_event.data.control.value; }
     /** Sets the event's value */
@@ -644,6 +645,6 @@ private:
 
 } /* namespace aseqmm */
 
-/*! @} */
+/** @} */
 
 #endif //INCLUDED_ALSAEVENT_H

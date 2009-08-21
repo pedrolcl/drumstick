@@ -175,6 +175,7 @@ private:
 class SequencerEventHandler
 {
 public:
+    /** Destructor */
     virtual ~SequencerEventHandler() {}
 
     /**
