@@ -28,6 +28,12 @@ namespace aseqmm {
  *
  * Ports are the endpoints of the MIDI connections.
  *
+ * Ports can be readable, writable, or both. They can be private for the owner
+ * application, or can be subscribed by a third application.
+ *
+ * The ALSA sequencer readable ports are equivalent to the MIDI OUT ports in the
+ * real world. Similarly, the writable ports are equivalent to the MIDI IN ones.
+ *
  * Classes:
  *
  * PortInfo is a container to retrieve and change some properties about the ALSA

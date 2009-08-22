@@ -28,6 +28,10 @@ namespace aseqmm {
  * @addtogroup ALSAQueue
  * @{
  *
+ * ALSA events can be delivered to the output ports at scheduled times using the
+ * queues. There is a small amount of queues in the system, so this is a limited
+ * resource. Queues are also used to time-stamp incoming events.
+ *
  * Classes:
  *
  * QueueInfo

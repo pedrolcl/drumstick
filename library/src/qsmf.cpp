@@ -31,9 +31,10 @@ namespace aseqmm {
  * @addtogroup SMF
  * @{
  *
- * Classes:
+ * QSmf provides a mechanism to parse and encode Standard MIDI Files, without
+ * the burden of a policy forcing to use some internal sequence representation.
  *
- * QSmf
+ * This class is not related or based on the ALSA library.
  *
  * @}
  */

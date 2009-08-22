@@ -27,9 +27,9 @@ namespace aseqmm {
  * @addtogroup PlayThread
  * @{
  *
- * Classes:
- *
- * SequencerOutputThread
+ * SequencerOutputThread is an abstract class that must be extended providing
+ * an implementation for the pure virtual methods before using it for MIDI
+ * sequence playback.
  *
  * @}
  */

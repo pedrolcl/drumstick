@@ -25,6 +25,13 @@ namespace aseqmm {
  * @addtogroup ALSASubscription
  * @{
  *
+ * Subscriptions are virtual MIDI cables between readable ports and writable ones.
+ *
+ * The ALSA sequencer readable ports are equivalent to the MIDI OUT ports in the
+ * real world. Similarly, the writable ports are equivalent to the MIDI IN ones.
+ * Subscriptions, like real MIDI cables, always involve a readable port and a
+ * writable one.
+ *
  * Classes:
  *
  * Subscriber
