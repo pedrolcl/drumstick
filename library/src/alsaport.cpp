@@ -28,6 +28,13 @@ namespace aseqmm {
  *
  * Ports are the endpoints of the MIDI connections.
  *
+ * Classes:
+ *
+ * PortInfo is a container to retrieve and change some properties about the ALSA
+ * MIDI ports.
+ *
+ * MidiPort represents an ALSA MIDI port.
+ *
  * @}
  */
 
@@ -294,7 +301,7 @@ PortInfo::setName(QString const& name)
 /**
  * Sets the capability bitmap.
  *
- * Each port has the capability bit-masks to specify the access of
+ * Each port has the capability bitmaps to specify the access of
  * the port from other clients. The capability bit flags are:
  * <ul>
  * <li>SND_SEQ_PORT_CAP_READ Readable from this port</li>
@@ -522,16 +529,22 @@ PortInfo::setTimestampQueue(int queueId)
     snd_seq_port_info_set_timestamp_queue(m_Info, queueId);
 }
 
-/************/
-/* MidiPort */
-/************/
 
+/**
+ * Constructor
+ * @param parent An optional parent object
+ */
 MidiPort::MidiPort( QObject* parent ) :
     QObject( parent ),
     m_MidiClient( NULL ),
     m_Attached( false )
 {}
 
+/**
+ * Destructor.
+ *
+ * All subscriptions are released.
+ */
 MidiPort::~MidiPort()
 {
     unsubscribeAll();
@@ -539,24 +552,38 @@ MidiPort::~MidiPort()
     freeSubscriptions();
 }
 
+/**
+ * Gets the PortInfo object pointer
+ */
 PortInfo*
 MidiPort::getPortInfo()
 {
     return &m_Info;
 }
 
+/**
+ * Gets the list of susbcriptions
+ * @return  The list of susbcriptions
+ */
 SubscriptionsList
 MidiPort::getSubscriptions() const
 {
     return m_Subscriptions;
 }
 
+/**
+ * Releases the lists of subscriptions.
+ */
 void
 MidiPort::freeSubscriptions()
 {
     m_Subscriptions.clear();
 }
 
+/**
+ * Sets the MidiClient
+ * @param seq A MidiClient object pointer
+ */
 void
 MidiPort::setMidiClient( MidiClient* seq )
 {
@@ -568,6 +595,10 @@ MidiPort::setMidiClient( MidiClient* seq )
     }
 }
 
+/**
+ * Subscribe a Subscription object
+ * @param subs A Subscription object pointer
+ */
 void
 MidiPort::subscribe(Subscription* subs)
 {
@@ -576,6 +607,10 @@ MidiPort::subscribe(Subscription* subs)
     emit subscribed(this, subs);
 }
 
+/**
+ * Unsubscribe a Subscription object
+ * @param subs A Subscription object pointer
+ */
 void
 MidiPort::unsubscribe( Subscription* subs )
 {
@@ -600,6 +635,10 @@ MidiPort::unsubscribe( Subscription* subs )
     }
 }
 
+/**
+ * Subscribe to another port destination
+ * @param info A PortInfo object pointer
+ */
 void
 MidiPort::subscribeTo( PortInfo* info )
 {
@@ -609,6 +648,11 @@ MidiPort::subscribeTo( PortInfo* info )
     subscribe(&subs);
 }
 
+/**
+ * Susbcribe to another port destination
+ * @param client ALSA client number
+ * @param port ALSA port number
+ */
 void
 MidiPort::subscribeTo( int client, int port )
 {
@@ -621,6 +665,10 @@ MidiPort::subscribeTo( int client, int port )
     subscribe(&subs);
 }
 
+/**
+ * Subscribe to another port destination
+ * @param name A string representing a client:port pair
+ */
 void
 MidiPort::subscribeTo( QString const& name )
 {
@@ -635,6 +683,10 @@ MidiPort::subscribeTo( QString const& name )
     }
 }
 
+/**
+ * Unsubscribe a destination port
+ * @param name A string representing a client:port pair
+ */
 void
 MidiPort::unsubscribeTo( QString const& name )
 {
@@ -649,6 +701,10 @@ MidiPort::unsubscribeTo( QString const& name )
     }
 }
 
+/**
+ * Unsubscribe a destination port
+ * @param port A PortInfo object pointer
+ */
 void
 MidiPort::unsubscribeTo( PortInfo* port )
 {
@@ -661,6 +717,10 @@ MidiPort::unsubscribeTo( PortInfo* port )
     }
 }
 
+/**
+ * Unsubscribe a destination port
+ * @param addr An ALSA address record pointer
+ */
 void
 MidiPort::unsubscribeTo( const snd_seq_addr_t* addr )
 {
@@ -673,6 +733,10 @@ MidiPort::unsubscribeTo( const snd_seq_addr_t* addr )
     }
 }
 
+/**
+ * Subscribe a source port
+ * @param port A PortInfo object pointer
+ */
 void
 MidiPort::subscribeFrom( PortInfo* port )
 {
@@ -682,6 +746,11 @@ MidiPort::subscribeFrom( PortInfo* port )
     subscribe(&subs);
 }
 
+/**
+ * Subscribe a source port
+ * @param client ALSA client number
+ * @param port ALSA port number
+ */
 void
 MidiPort::subscribeFrom( int client, int port )
 {
@@ -694,6 +763,10 @@ MidiPort::subscribeFrom( int client, int port )
     subscribe(&subs);
 }
 
+/**
+ * Subscribe a source port
+ * @param name A string representing a client:port pair
+ */
 void
 MidiPort::subscribeFrom( QString const& name)
 {
@@ -708,6 +781,10 @@ MidiPort::subscribeFrom( QString const& name)
     }
 }
 
+/**
+ * Unsubscribe a source port
+ * @param name A string representing a client:port pair
+ */
 void
 MidiPort::unsubscribeFrom( QString const& name)
 {
@@ -722,6 +799,10 @@ MidiPort::unsubscribeFrom( QString const& name)
     }
 }
 
+/**
+ * Unsubscribe a source port
+ * @param port A PortInfo object pointer
+ */
 void
 MidiPort::unsubscribeFrom( PortInfo* port )
 {
@@ -734,6 +815,10 @@ MidiPort::unsubscribeFrom( PortInfo* port )
     }
 }
 
+/**
+ * Unsubscribe a source port
+ * @param addr An ALSA address record pointer
+ */
 void
 MidiPort::unsubscribeFrom( const snd_seq_addr_t* addr )
 {
@@ -746,12 +831,18 @@ MidiPort::unsubscribeFrom( const snd_seq_addr_t* addr )
     }
 }
 
+/**
+ * Subscribe from the System:announce port
+ */
 void
 MidiPort::subscribeFromAnnounce()
 {
     subscribeFrom(SND_SEQ_CLIENT_SYSTEM, SND_SEQ_PORT_SYSTEM_ANNOUNCE);
 }
 
+/**
+ * Unsubscribe all subscriptions
+ */
 void
 MidiPort::unsubscribeAll()
 {
@@ -766,6 +857,9 @@ MidiPort::unsubscribeAll()
     m_Subscriptions.clear();
 }
 
+/**
+ * Applies all the the delayed PortInfo changes to the MIDI port object
+ */
 void
 MidiPort::applyPortInfo()
 {
@@ -776,12 +870,20 @@ MidiPort::applyPortInfo()
     }
 }
 
+/**
+ * Gets the port name
+ * @return The port name
+ */
 QString
 MidiPort::getPortName()
 {
     return m_Info.getName();
 }
 
+/**
+ * Sets the port name
+ * @param newName The new port name
+ */
 void
 MidiPort::setPortName( QString const& newName )
 {
@@ -789,18 +891,32 @@ MidiPort::setPortName( QString const& newName )
     applyPortInfo();
 }
 
+/**
+ * Gets the port number
+ * @return The port number
+ */
 int
 MidiPort::getPortId()
 {
     return m_Info.getPort();
 }
 
+/**
+ * Gets the port capabilities
+ * @return The capabilities bitmap
+ * @see PortInfo::getCapability()
+ */
 unsigned int
 MidiPort::getCapability()
 {
     return m_Info.getCapability();
 }
 
+/**
+ * Sets the port capabilities
+ * @param newValue The capabilities bitmap
+ * @see PortInfo::setCapability()
+ */
 void
 MidiPort::setCapability(unsigned int newValue)
 {
@@ -808,12 +924,22 @@ MidiPort::setCapability(unsigned int newValue)
     applyPortInfo();
 }
 
+/**
+ * Gets the port type
+ * @return The port type bitmap
+ * @see PortInfo::getType()
+ */
 unsigned int
 MidiPort::getPortType()
 {
     return m_Info.getType();
 }
 
+/**
+ * Sets the port type bitmap
+ * @param newValue The port type flags bitmap
+ * @see PortInfo::setType()
+ */
 void
 MidiPort::setPortType( unsigned int newValue)
 {
@@ -821,12 +947,20 @@ MidiPort::setPortType( unsigned int newValue)
     applyPortInfo();
 }
 
+/**
+ * Gets the MIDI channels
+ * @return The MIDI channels
+ */
 int
 MidiPort::getMidiChannels()
 {
     return m_Info.getMidiChannels();
 }
 
+/**
+ * Sets the MIDI channels
+ * @param newValue The MIDI channels
+ */
 void
 MidiPort::setMidiChannels(int newValue)
 {
@@ -834,12 +968,20 @@ MidiPort::setMidiChannels(int newValue)
     applyPortInfo();
 }
 
+/**
+ * Gets the MIDI voices
+ * @return The MIDI voices
+ */
 int
 MidiPort::getMidiVoices()
 {
     return m_Info.getMidiVoices();
 }
 
+/**
+ * Sets the MIDI voices
+ * @param newValue The MIDI voices
+ */
 void
 MidiPort::setMidiVoices(int newValue)
 {
@@ -847,12 +989,20 @@ MidiPort::setMidiVoices(int newValue)
     applyPortInfo();
 }
 
+/**
+ * Gets the synth voices
+ * @return The synth voices
+ */
 int
 MidiPort::getSynthVoices()
 {
     return m_Info.getSynthVoices();
 }
 
+/**
+ * Sets the synth voices
+ * @param newValue The synth voices
+ */
 void
 MidiPort::setSynthVoices(int newValue)
 {
@@ -860,24 +1010,40 @@ MidiPort::setSynthVoices(int newValue)
     applyPortInfo();
 }
 
+/**
+ * Gets the timestamping mode
+ * @return The timestamping mode
+ */
 bool
 MidiPort::getTimestamping()
 {
 	return m_Info.getTimestamping();
 }
 
+/**
+ * Gets the timestamp real mode
+ * @return The timestamp real mode
+ */
 bool
 MidiPort::getTimestampReal()
 {
 	return m_Info.getTimestampReal();
 }
 
+/**
+ * Gets the timestamp queue number
+ * @return The timestamp queue number
+ */
 int
 MidiPort::getTimestampQueue()
 {
 	return m_Info.getTimestampQueue();
 }
 
+/**
+ * Sets the timestamping mode
+ * @param value The timestamping mode
+ */
 void
 MidiPort::setTimestamping(bool value)
 {
@@ -885,6 +1051,10 @@ MidiPort::setTimestamping(bool value)
 	applyPortInfo();
 }
 
+/**
+ * Sets the timestamp real mode
+ * @param value The timestamp real mode
+ */
 void
 MidiPort::setTimestampReal(bool value)
 {
@@ -899,6 +1069,10 @@ MidiPort::setTimestampQueue(int queueId)
 	applyPortInfo();
 }
 
+/**
+ * Attach the port to a MidiClient instance
+ * @param seq A MidiClient object pointer
+ */
 void
 MidiPort::attach( MidiClient* seq )
 {
@@ -910,6 +1084,9 @@ MidiPort::attach( MidiClient* seq )
     }
 }
 
+/**
+ * Detach the port from any MidiClient instance previously attached
+ */
 void
 MidiPort::detach()
 {
@@ -920,12 +1097,19 @@ MidiPort::detach()
     }
 }
 
+/**
+ * Update the subscribers list in the PortInfo member
+ */
 void
 MidiPort::updateSubscribers()
 {
     m_Info.readSubscribers(m_MidiClient);
 }
 
+/**
+ * Gets the list of read subscribers
+ * @return The list of read subscribers
+ */
 PortInfoList
 MidiPort::getReadSubscribers()
 {
@@ -947,6 +1131,10 @@ MidiPort::getReadSubscribers()
     return lst;
 }
 
+/**
+ * Gets the list of write subscribers
+ * @return The list of write subscribers
+ */
 PortInfoList
 MidiPort::getWriteSubscribers()
 {
@@ -968,6 +1156,12 @@ MidiPort::getWriteSubscribers()
     return lst;
 }
 
+/**
+ * Checks if the provided address is included in the port list
+ * @param addr ALSA address record pointer
+ * @param lst List of port information containers
+ * @return True if the address is found
+ */
 bool
 MidiPort::containsAddress(const snd_seq_addr_t* addr, const PortInfoList& lst)
 {
@@ -982,6 +1176,10 @@ MidiPort::containsAddress(const snd_seq_addr_t* addr, const PortInfoList& lst)
     return false;
 }
 
+/**
+ * Update the write subscriptions
+ * @param ports List of writable ports to be subscribed
+ */
 void
 MidiPort::updateConnectionsTo(const PortInfoList& ports)
 {
@@ -1001,6 +1199,10 @@ MidiPort::updateConnectionsTo(const PortInfoList& ports)
     }
 }
 
+/**
+ * Update the read susbcriptions
+ * @param ports List of readable ports to be subscribed
+ */
 void
 MidiPort::updateConnectionsFrom(const PortInfoList& ports)
 {
