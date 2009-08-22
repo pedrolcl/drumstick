@@ -24,7 +24,7 @@
  * @file alsaevent.h
  * Classes managing ALSA Sequencer events.
  *
- * @defgroup ALSAEvent Events
+ * @defgroup ALSAEvent ALSA Sequencer Events
  * @{
  */
 
@@ -122,6 +122,12 @@ public:
      */
     snd_seq_event_t* getHandle() { return &m_event; }
     int getEncodedLength();
+
+    static bool isSubscription(const SequencerEvent* event);
+    static bool isPort(const SequencerEvent* event);
+    static bool isClient(const SequencerEvent* event);
+    static bool isConnectionChange(const SequencerEvent* event);
+
     /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(SequencerEvent);
 
@@ -135,11 +141,6 @@ protected:
      */
     snd_seq_event_t m_event;
 };
-
-bool isSubscription(const SequencerEvent* event);
-bool isPort(const SequencerEvent* event);
-bool isClient(const SequencerEvent* event);
-bool isConnectionChange(const SequencerEvent* event);
 
 /**
  * Base class for the events having a Channel property

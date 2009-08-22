@@ -23,6 +23,31 @@
 
 namespace aseqmm {
 
+/**
+ * @addtogroup ALSATimer
+ * @{
+ *
+ * Classes:
+ *
+ * TimerInfo
+ *
+ * TimerId
+ *
+ * TimerGlobalInfo
+ *
+ * TimerQuery
+ *
+ * TimerParams
+ *
+ * TimerStatus
+ *
+ * TimerEventHandler
+ *
+ * Timer
+ *
+ * @}
+ */
+
 TimerInfo::TimerInfo()
 {
     snd_timer_info_malloc(&m_Info);

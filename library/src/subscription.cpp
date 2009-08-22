@@ -21,6 +21,19 @@
 
 namespace aseqmm {
 
+/**
+ * @addtogroup ALSASubscription
+ * @{
+ *
+ * Classes:
+ *
+ * Subscriber
+ *
+ * Subscription
+ *
+ * @}
+ */
+
 /******************/
 /* Subscriber */
 /******************/

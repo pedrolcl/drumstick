@@ -20,13 +20,6 @@
 #ifndef ASEQMMCOMMON_H_
 #define ASEQMMCOMMON_H_
 
-/*!
- * @file aseqmmcommon.h
- * Common functionality
- * @defgroup Common Common functionality
- * @{
- */
-
 #include <qglobal.h>
 #include <QString>
 #include <QApplication>
@@ -38,6 +31,23 @@ extern "C" {
 
 namespace aseqmm {
 
+/*!
+ * @file aseqmmcommon.h
+ * Common functionality
+ * @defgroup Common Common Functionality
+ * @{
+ *
+ * The class SequencerError represents an exception object reported by the
+ * ALSA library.
+ *
+ * Classes:
+ *
+ * SequencerError
+ */
+
+/**
+ * 8-bit unsigned number to be used as a MIDI message parameter
+ */
 typedef quint8 MidiByte;  
 
 /**

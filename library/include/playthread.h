@@ -23,7 +23,7 @@
 /*!
  * @file playthread.h
  * Sequencer output
- * @defgroup PlayThread Sequencer output
+ * @defgroup PlayThread Sequencer Output
  * @{
  */
 

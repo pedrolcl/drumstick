@@ -33,7 +33,53 @@ namespace aseqmm {
  *
  * MIDI Events are the messages transmitted between MIDI devices or applications.
  *
+ * Classes:
  *
+ * SequencerEvent
+ *
+ * ChannelEvent
+ *
+ * KeyEvent
+ *
+ * NoteEvent
+ *
+ * NoteOnEvent
+ *
+ * NoteOffEvent
+ *
+ * KeyPressEvent
+ *
+ * ControllerEvent
+ *
+ * ProgramChangeEvent
+ *
+ * PitchBendEvent
+ *
+ * ChanPressEvent
+ *
+ * VariableEvent
+ *
+ * SysExEvent
+ *
+ * TextEvent
+ *
+ * SystemEvent
+ *
+ * QueueControlEvent
+ *
+ * ValueEvent
+ *
+ * TempoEvent
+ *
+ * SubscriptionEvent
+ *
+ * ClientEvent
+ *
+ * PortEvent
+ *
+ * RemoveEvents
+ *
+ * MidiCodec
  *
  * @}
  */
@@ -84,7 +130,8 @@ SequencerEvent::operator=(const SequencerEvent& other)
  * @param event A SequencerEvent object pointer
  * @return True if the event has a subscribe/unsubscribe type.
  */
-bool isSubscription(const SequencerEvent* event)
+bool
+SequencerEvent::isSubscription(const SequencerEvent* event)
 {
     snd_seq_event_type_t te = event->getSequencerType();
     return ( te == SND_SEQ_EVENT_PORT_SUBSCRIBED ||
@@ -96,7 +143,8 @@ bool isSubscription(const SequencerEvent* event)
  * @param event A SequencerEvent object pointer
  * @return True if the event has a port start/exit/change type.
  */
-bool isPort(const SequencerEvent* event)
+bool
+SequencerEvent::isPort(const SequencerEvent* event)
 {
     snd_seq_event_type_t te = event->getSequencerType();
     return ( te == SND_SEQ_EVENT_PORT_START ||
@@ -109,7 +157,8 @@ bool isPort(const SequencerEvent* event)
  * @param event A SequencerEvent object pointer
  * @return True if the event has a client start/exit/change type.
  */
-bool isClient(const SequencerEvent* event)
+bool
+SequencerEvent::isClient(const SequencerEvent* event)
 {
     snd_seq_event_type_t te = event->getSequencerType();
     return ( te == SND_SEQ_EVENT_CLIENT_START ||
@@ -122,7 +171,8 @@ bool isClient(const SequencerEvent* event)
  * @param event A SequencerEvent object pointer
  * @return True if the event has a client/port/subscription type.
  */
-bool isConnectionChange(const SequencerEvent* event)
+bool
+SequencerEvent::isConnectionChange(const SequencerEvent* event)
 {
     snd_seq_event_type_t te = event->getSequencerType();
     return ( te == SND_SEQ_EVENT_PORT_START ||

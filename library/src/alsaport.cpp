@@ -1062,6 +1062,10 @@ MidiPort::setTimestampReal(bool value)
 	applyPortInfo();
 }
 
+/**
+ * Sets the timestamp queue number
+ * @param queueId The queue number
+ */
 void
 MidiPort::setTimestampQueue(int queueId)
 {

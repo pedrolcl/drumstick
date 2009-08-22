@@ -24,10 +24,28 @@
 
 namespace aseqmm {
 
-/*************/
-/* QueueInfo */
-/*************/
+/**
+ * @addtogroup ALSAQueue
+ * @{
+ *
+ * Classes:
+ *
+ * QueueInfo
+ *
+ * QueueStatus
+ *
+ * QueueTempo
+ *
+ * QueueTimer
+ *
+ * MidiQueue
+ *
+ * @}
+ */
 
+/**
+ * Default constructor
+ */
 QueueInfo::QueueInfo()
 {
     snd_seq_queue_info_malloc(&m_Info);

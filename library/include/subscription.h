@@ -23,8 +23,8 @@
 
 /*!
  * @file subscription.h
- * Classes managing ALSA subscripions
- * @defgroup ALSASubscription Subscriptions
+ * Classes managing ALSA sequencer subscriptions
+ * @defgroup ALSASubscription ALSA Sequencer Subscriptions
  * @{
  */
 

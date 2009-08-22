@@ -27,6 +27,17 @@
 
 namespace aseqmm {
 
+/**
+ * @addtogroup SMF
+ * @{
+ *
+ * Classes:
+ *
+ * QSmf
+ *
+ * @}
+ */
+
 QSmf::QSmf(QObject * parent) :
     QObject(parent)
 {

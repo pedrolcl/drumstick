@@ -23,7 +23,7 @@
 /**
  * @file alsaport.h
  * Classes managing ALSA Sequencer ports.
- * @defgroup ALSAPort Ports
+ * @defgroup ALSAPort ALSA Sequencer Ports
  * @{
  */
 
@@ -145,7 +145,8 @@ public:
     PortInfoList getWriteSubscribers();
     void updateConnectionsTo(const PortInfoList& desired);
     void updateConnectionsFrom(const PortInfoList& desired);
-    bool containsAddress(const snd_seq_addr_t* addr, const PortInfoList& lst);
+
+    static bool containsAddress(const snd_seq_addr_t* addr, const PortInfoList& lst);
 
     void applyPortInfo();
     QString getPortName();

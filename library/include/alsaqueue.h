@@ -23,7 +23,7 @@
 /**
  * @file alsaqueue.h
  * Classes managing ALSA Sequencer queues
- * @defgroup ALSAQueue Queues
+ * @defgroup ALSAQueue ALSA Sequencer Queues
  * @{
  */
 

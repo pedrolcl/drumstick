@@ -23,6 +23,17 @@
 
 namespace aseqmm {
 
+/**
+ * @addtogroup PlayThread
+ * @{
+ *
+ * Classes:
+ *
+ * SequencerOutputThread
+ *
+ * @}
+ */
+
 const int TIMEOUT = 100;
 
 SequencerOutputThread::SequencerOutputThread(MidiClient *seq, int portId)
@@ -142,7 +153,7 @@ void SequencerOutputThread::run()
                         sendEchoEvent(last_tick);
                     }
                 }
-                if (!isConnectionChange(ev))
+                if (!SequencerEvent::isConnectionChange(ev))
                     sendSongEvent(ev);
             }
             if (stopped()) {

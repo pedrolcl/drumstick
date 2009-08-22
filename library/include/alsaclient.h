@@ -24,7 +24,7 @@
  * @file alsaclient.h
  * Classes managing ALSA Sequencer clients
  *
- * @defgroup ALSAClient Clients
+ * @defgroup ALSAClient ALSA Sequencer Clients
  * @{
  */
 
