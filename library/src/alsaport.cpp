@@ -41,6 +41,7 @@ namespace aseqmm {
  *
  * MidiPort represents an ALSA MIDI port.
  *
+ * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_port.html
  * @}
  */
 

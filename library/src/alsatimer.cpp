@@ -45,6 +45,7 @@ namespace aseqmm {
  *
  * Timer
  *
+ * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___timer.html
  * @}
  */
 

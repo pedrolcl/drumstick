@@ -38,6 +38,7 @@ namespace aseqmm {
  *
  * Subscription
  *
+ * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_subscribe.html
  * @}
  */
 

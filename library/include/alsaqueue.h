@@ -31,12 +31,18 @@
 
 namespace aseqmm {
 
-#define SKEW_BASE 0x10000 // Should be fixed in ALSA kernel
+/**
+ * This is the value for the base skew used in ALSA. It is not possible
+ * to assign an arbitrary value (ALSA version <= 1.0.20).
+ */
+#define SKEW_BASE 0x10000
 
 class MidiClient;
 
 /**
- * Queue information
+ * Queue information container.
+ *
+ * This class is used to hold some properties about an ALSA queue object.
  */
 class QueueInfo
 {
@@ -67,7 +73,9 @@ private:
 };
 
 /**
- * Queue status
+ * Queue status container.
+ *
+ * This class is used to retrieve some status information from an ALSA queue.
  */
 class QueueStatus
 {
@@ -95,7 +103,16 @@ private:
 };
 
 /**
- * Queue tempo
+ * Queue tempo container.
+ *
+ * This class is used to hold some tempo properties of an ALSA queue object.
+ * The queue's resolution defines the meaning of the musical time, in ticks. It
+ * is expressed in PPQ (parts per quarter), or ticks in a quarter note (crotchet).
+ * The nominal tempo is usually expressed in BPM (beats per minute), or Maelzel
+ * metronome units. It can be also given in microseconds per beat. The tempo skew
+ * factor is given as two integer numbers: skew value and skew base, being the
+ * factor the quotient of both quantities = value / base. Currently (ALSA <= 1.0.20)
+ * you can only use the base constant 0x10000 (decimal 65536).
  */
 class QueueTempo
 {
@@ -132,7 +149,10 @@ private:
 };
 
 /**
- * Queue timer
+ * Queue timer container.
+ *
+ * This class is used to hold some properties about the Timer used with an ALSA
+ * queue object.
  */
 class QueueTimer
 {
@@ -160,16 +180,16 @@ private:
 };
 
 /**
- * Queue management
+ * Queue management.
  *
- * This class represents an ALSA sequencer queue
+ * This class represents an ALSA sequencer queue object.
  */
 class MidiQueue : public QObject
 {
     Q_OBJECT
 public:
     MidiQueue(MidiClient* seq, QObject* parent = 0);
-    MidiQueue(MidiClient* seq, const QueueInfo info, QObject* parent = 0);
+    MidiQueue(MidiClient* seq, const QueueInfo& info, QObject* parent = 0);
     MidiQueue(MidiClient* seq, const QString name, QObject* parent = 0);
     MidiQueue(MidiClient* seq, const int queue_id, QObject* parent = 0);
     virtual ~MidiQueue();
@@ -201,7 +221,7 @@ private:
     QueueStatus m_Status;
 };
 
-}
+} /* namespace aseqmm */
 
 /*! @} */
 

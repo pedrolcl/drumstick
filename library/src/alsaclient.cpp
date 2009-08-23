@@ -104,6 +104,15 @@ you can also see applications using this library, as kmetronome and kmidimon.
 @see http://kmetronome.sourceforge.net/
 @see http://kmetronome.sourceforge.net/kmidimon/
 
+@section Acknowledgments
+Parts of this documentation are copied from the ALSA library documentation,
+whose authors are:
+<ul>
+<li>Jaroslav Kysela &lt;perex AT perex.cz&gt;</li>
+<li>Abramo Bagnara &lt;abramo AT alsa-project.org&gt;</li>
+<li>Takashi Iwai &lt;tiwai AT suse.de&gt;</li>
+<li>Frank van de Pol &lt;fvdpol AT coil.demon.nl&gt;</li>
+</ul>
 @section Advanced Advanced features, not yet documented
 
 A lot. Almost all.
@@ -252,6 +261,8 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * can be controlled using the methods MidiClient::getOutputBufferSize() and
  * MidiClient::setOutputBufferSize() as well as MidiClient::getInputBufferSize()
  * and MidiClient::setInputBufferSize().
+ *
+ * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_client.html
  * @}
  */
 

@@ -81,6 +81,10 @@ namespace aseqmm {
  *
  * MidiCodec
  *
+ * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_event.html
+ * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_events.html
+ * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_ev_type.html
+ * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___m_i_d_i___event.html
  * @}
  */
 
