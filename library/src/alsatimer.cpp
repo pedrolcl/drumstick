@@ -27,23 +27,49 @@ namespace aseqmm {
  * @addtogroup ALSATimer
  * @{
  *
+ * Timers provide periodic time events to applications, and also to the ALSA
+ * sequencer.
+ *
+ * There are two mechanisms to deliver the timer events. To use the callback
+ * mechanism, a class must be derived from TimerEventHandler, and a instance
+ * of the derived class must be assigned to the Timer instance using
+ * Timer::setHandler(). If the handler is not assigned, then the Timer instance
+ * will generate the signal Timer::timerExpired().
+ *
  * Classes:
  *
- * TimerInfo
+ * TimerInfo: ALSA Timer information container.
  *
- * TimerId
+ * This class is used to hold properties about ALSA Timers.
  *
- * TimerGlobalInfo
+ * TimerId: ALSA Timer identifier container.
  *
- * TimerQuery
+ * This class provides an unique identifier for a Timer.
  *
- * TimerParams
+ * TimerGlobalInfo: Global timer information container.
  *
- * TimerStatus
+ * This class provides global timer parameters.
  *
- * TimerEventHandler
+ * TimerQuery: ALSA Timer inquiry helper.
  *
- * Timer
+ * This class provides a mechanism to enumerate the available system timers.
+ *
+ * TimerParams: ALSA Timer parameters container.
+ *
+ * This class provides several parameters about a Timer.
+ *
+ * TimerStatus: ALSA Timer status container.
+ *
+ * This class provides some status information about a Timer.
+ *
+ * TimerEventHandler: ALSA Timer events handler.
+ *
+ * This abstract class is used to define an interface that other class can
+ * implement to receive timer events.
+ *
+ * Timer: ALSA Timer management.
+ *
+ * This class represents an ALSA timer object.
  *
  * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___timer.html
  * @}

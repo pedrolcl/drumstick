@@ -40,7 +40,9 @@ class TimerId;
 class TimerGlobalInfo;
 
 /**
- * ALSA Timer information
+ * ALSA Timer information container.
+ *
+ * This class is used to hold properties about ALSA Timers.
  */
 class TimerInfo
 {
@@ -70,7 +72,9 @@ private:
 };
 
 /**
- * ALSA Timer identifier
+ * ALSA Timer identifier container.
+ *
+ * This class provides an unique identifier for a Timer.
  */
 class TimerId
 {
@@ -108,7 +112,9 @@ private:
 typedef QList<TimerId> TimerIdList;
 
 /**
- * Global timer information
+ * Global timer information container.
+ *
+ * This class provides global timer parameters.
  */
 class TimerGlobalInfo
 {
@@ -140,7 +146,9 @@ private:
 };
 
 /**
- * ALSA Timer inquiry helper
+ * ALSA Timer inquiry helper.
+ *
+ * This class provides a mechanism to enumerate the available system timers.
  */
 class TimerQuery
 {
@@ -166,7 +174,9 @@ private:
 };
 
 /**
- * ALSA Timer parameters
+ * ALSA Timer parameters container.
+ *
+ * This class provides several parameters about a Timer.
  */
 class TimerParams
 {
@@ -199,7 +209,9 @@ private:
 };
 
 /**
- * ALSA Timer status
+ * ALSA Timer status container.
+ *
+ * This class provides some status information about a Timer.
  */
 class TimerStatus
 {
@@ -225,20 +237,28 @@ private:
 };
 
 /**
- * ALSA Timer events handler
+ * ALSA Timer events handler.
  *
- * This class is used to define an interface that other class can implement
- * to receive timer events.
+ * This abstract class is used to define an interface that other class can
+ * implement to receive timer events.
  */
 class TimerEventHandler
 {
 public:
+    /** Destructor */
     virtual ~TimerEventHandler() {}
+    /**
+     * Timer event handler. This method is called when the timer expires.
+     * @param ticks The time in ticks.
+     * @param msecs The time in milliseconds.
+     */
     virtual void handleTimerEvent(int ticks, int msecs) = 0;
 };
 
 /**
- * ALSA Timer management
+ * ALSA Timer management.
+ *
+ * This class represents an ALSA timer object.
  */
 class Timer : public QObject
 {
@@ -251,11 +271,13 @@ private:
     class TimerInputThread : public QThread
     {
     public: 
+       /** Constructor */
        TimerInputThread(Timer* t, int timeout)
            : QThread(),
            m_timer(t),
            m_Wait(timeout),
            m_Stopped(false) {}
+       /** Destructor */
        virtual ~TimerInputThread() {}
        virtual void run();
        bool stopped();
@@ -275,7 +297,10 @@ public:
     virtual ~Timer();
     
     static Timer* bestGlobalTimer(int openMode, QObject* parent = 0);
-    
+    /**
+     * Gets the ALSA timer object.
+     * @return ALSA timer object pointer.
+     */
     snd_timer_t* getHandle() { return m_Info; }
     TimerInfo& getTimerInfo();
     TimerStatus& getTimerStatus();
@@ -291,6 +316,10 @@ public:
     void pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds, unsigned short *revents);
     ssize_t read(void *buffer, size_t size);
     snd_timer_t* getTimerHandle();
+    /**
+     * Sets an event handler providing a method to be called when a timer expires.
+     * @param h A TimerEventHandler instance.
+     */
     void setHandler(TimerEventHandler* h) { m_handler = h; }
     void startEvents();
     void stopEvents();
@@ -299,6 +328,13 @@ protected:
     void doEvents();
 
 signals:    
+    /**
+     * This signal is emitted when the timer has expired, if there is not an
+     * event hander installed.
+     *
+     * @param ticks The time in ticks.
+     * @param msecs The time in milliseconds.
+     */
     void timerExpired(int ticks, int msecs);
 
 private:
@@ -312,7 +348,7 @@ private:
     snd_htimestamp_t m_last_time;
 };
 
-}
+} /* namespace aseqmm */
 
 /*! @} */
 
