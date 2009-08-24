@@ -340,7 +340,7 @@ void SequencerEvent::setRaw8(const unsigned int n, const unsigned char value)
 }
 
 /**
- * Releases the event record (deprecated).
+ * Releases the event record.
  * @deprecated
  */
 void SequencerEvent::free()

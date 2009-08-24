@@ -78,21 +78,20 @@ int main(int argc, char **argv) {
     aseqmm::MidiPort *port = client->createPort();
     port->setPortName( "MyPort" );
     port->setCapability( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ );
-    port->setPortType( SND_SEQ_PORT_TYPE_APPLICATION | SND_SEQ_PORT_TYPE_MIDI_GENERIC );
+    port->setPortType( SND_SEQ_PORT_TYPE_MIDI_GENERIC );
     // subscribe the port to some other client:port
     port->subscribeTo( "20:0" ); // or "name:port", like in "KMidimon:0"
 
     // create an event object on the stack, to send a note on message
     aseqmm::NoteOnEvent ev( 0, 66, 100 ); // (channel, note number, velocity)
     ev.setSource( port->getPortId() );
-    ev.setSubscribers();
-    ev.setDirect(); // not scheduled
+    ev.setSubscribers();   // deliver to all the connected ports
+    ev.setDirect();        // not scheduled, deliver immediately
     client->output( &ev ); // or outputDirect() if you prefer not buffered
-    client->drainOutput();
+    client->drainOutput(); // flush the buffer
 
-    // close and clean the created instances
+    // close and clean
     client->close();
-    delete port;
     delete client;
     return 0;
 }
@@ -1772,6 +1771,7 @@ ClientInfo::getErrorBounce()
 /**
  * Gets the client's event filter.
  * @return The client's event filter.
+ * @deprecated
  */
 const unsigned char*
 ClientInfo::getEventFilter()
@@ -1842,6 +1842,7 @@ ClientInfo::setErrorBounce(bool val)
 /**
  * Sets the event filter.
  * @param filter The event filter.
+ * @deprecated
  */
 void
 ClientInfo::setEventFilter(unsigned char *filter)

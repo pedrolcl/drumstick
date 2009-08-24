@@ -131,10 +131,9 @@ public:
     /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(SequencerEvent);
 
-private:
+protected:
     void free() __attribute__((deprecated));
 
-protected:
     /**
      * ALSA sequencer event record.
      * @see http://www.alsa-project.org/alsa-doc/alsa-lib/structsnd__seq__event.html

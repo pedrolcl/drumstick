@@ -22,7 +22,6 @@
 #include "qsmf.h"
 
 #include <limits>
-#include <QObject>
 #include <QFile>
 
 namespace aseqmm {

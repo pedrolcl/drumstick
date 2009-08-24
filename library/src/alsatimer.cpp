@@ -75,34 +75,56 @@ namespace aseqmm {
  * @}
  */
 
+/**
+ * Constructor
+ */
 TimerInfo::TimerInfo()
 {
     snd_timer_info_malloc(&m_Info);
 }
 
+/**
+ * Cosntructor
+ * @param other ALSA timer info object pointer
+ */
 TimerInfo::TimerInfo(const snd_timer_info_t *other)
 {
     snd_timer_info_malloc(&m_Info);
     snd_timer_info_copy(m_Info, other);
 }
 
+/**
+ * Copy constructor
+ * @param other Existing TimerInfo object reference
+ */
 TimerInfo::TimerInfo(const TimerInfo& other)
 {
     snd_timer_info_malloc(&m_Info);
     snd_timer_info_copy(m_Info, other.m_Info);
 }
 
+/**
+ * Destructor
+ */
 TimerInfo::~TimerInfo()
 {
     snd_timer_info_free(m_Info);
 }
 
+/**
+ * Copy the current object
+ * @return Pointer to the new object
+ */
 TimerInfo*
 TimerInfo::clone()
 {
     return new TimerInfo(m_Info);
 }
 
+/**
+ * Assignment operator
+ * @param other Existing TimerInfo object reference
+ */
 TimerInfo&
 TimerInfo::operator=(const TimerInfo& other)
 {
@@ -110,36 +132,60 @@ TimerInfo::operator=(const TimerInfo& other)
     return *this;
 }
 
+/**
+ * Check if the timer is slave (depends on another device)
+ * @return True if the timer is slave
+ */
 bool
 TimerInfo::isSlave()
 {
     return (snd_timer_info_is_slave(m_Info) != 0);
 }
 
+/**
+ * Gets the card number
+ * @return Card number
+ */
 int
 TimerInfo::getCard()
 {
     return snd_timer_info_get_card(m_Info);
 }
 
+/**
+ * Gets the string identifier
+ * @return String identifier
+ */
 QString
 TimerInfo::getId()
 {
     return QString(snd_timer_info_get_id(m_Info));
 }
 
+/**
+ * Gets the timer name
+ * @return Timer name
+ */
 QString
 TimerInfo::getName()
 {
     return QString(snd_timer_info_get_name(m_Info));
 }
 
+/**
+ * Gets the timer resolution (timer period in nanoseconds)
+ * @return Timer resolution in nanos
+ */
 long
 TimerInfo::getResolution()
 {
     return snd_timer_info_get_resolution(m_Info);
 }
 
+/**
+ * Gets the timer frequency in Hz
+ * @return Timer frequency in Hz
+ */
 long
 TimerInfo::getFrequency()
 {
@@ -151,27 +197,39 @@ TimerInfo::getFrequency()
     return 0;
 }
 
+/**
+ * Gets the size of the ALSA timer info object
+ * @return Size of the ALSA object
+ */
 int
 TimerInfo::getSizeOfInfo() const
 {
     return snd_timer_info_sizeof();
 }
 
+/**
+ * Gets the maximum timer ticks
+ * @deprecated
+ * @return Maximum timer ticks
+ */
 long
 TimerInfo::getTicks()
 {
     return snd_timer_info_get_ticks(m_Info);
 }
 
-/***********
- * TimerId *
- ***********/
-
+/**
+ * Constructor
+ */
 TimerId::TimerId()
 {
     snd_timer_id_malloc(&m_Info);
 }
 
+/**
+ * Constructor
+ * @param other ALSA timer ID object pointer
+ */
 TimerId::TimerId(const snd_timer_id_t *other)
 {
     snd_timer_id_malloc(&m_Info);
@@ -184,6 +242,10 @@ TimerId::TimerId(const snd_timer_id_t *other)
         setSubdevice(0);
 }
 
+/**
+ * Copy constructor
+ * @param other Existing TimerId object reference
+ */
 TimerId::TimerId(const TimerId& other)
 {
     snd_timer_id_malloc(&m_Info);
@@ -196,6 +258,14 @@ TimerId::TimerId(const TimerId& other)
         setSubdevice(0);
 }
 
+/**
+ * Constructor
+ * @param cls  Class
+ * @param scls Subclass
+ * @param card Card
+ * @param dev  Device
+ * @param sdev Subdevice
+ */
 TimerId::TimerId(int cls, int scls, int card, int dev, int sdev)
 {
     snd_timer_id_malloc(&m_Info);
@@ -206,17 +276,29 @@ TimerId::TimerId(int cls, int scls, int card, int dev, int sdev)
     setSubdevice(sdev);
 }
 
+/**
+ * Destructor
+ */
 TimerId::~TimerId()
 {
     snd_timer_id_free(m_Info);
 }
 
+/**
+ * Copy the object
+ * @return Pointer to the new object
+ */
 TimerId*
 TimerId::clone()
 {
     return new TimerId(m_Info);
 }
 
+/**
+ * Assignment operator
+ * @param other Existing TimerId object reference
+ * @return This object
+ */
 TimerId&
 TimerId::operator=(const TimerId& other)
 {
@@ -230,66 +312,117 @@ TimerId::operator=(const TimerId& other)
     return *this;
 }
 
+/**
+ * Set the class identifier. Existing classes:
+ * <ul>
+ * <li> SND_TIMER_CLASS_SLAVE: slave timer</li>
+ * <li> SND_TIMER_CLASS_GLOBAL: global timer</li>
+ * <li> SND_TIMER_CLASS_CARD: card timer</li>
+ * <li> SND_TIMER_CLASS_PCM: PCM timer</li>
+ * </ul>
+ * @param devclass Class identifier.
+ */
 void
 TimerId::setClass(int devclass)
 {
     snd_timer_id_set_class(m_Info, devclass);
 }
 
+/**
+ * Gets the class identifier.
+ * @return Class identifier
+ * @see setClass()
+ */
 int
 TimerId::getClass()
 {
     return snd_timer_id_get_class(m_Info);
 }
 
+/**
+ * Sets the Slave class
+ * @param devsclass Slave class
+ */
 void
 TimerId::setSlaveClass(int devsclass)
 {
     snd_timer_id_set_sclass(m_Info, devsclass);
 }
 
+/**
+ * Gets the slave class
+ * @return Slave class
+ */
 int
 TimerId::getSlaveClass()
 {
     return snd_timer_id_get_sclass(m_Info);
 }
 
+/**
+ * Sets the card number
+ * @param card Card number
+ */
 void
 TimerId::setCard(int card)
 {
     snd_timer_id_set_card(m_Info, card);
 }
 
+/**
+ * Gets the card number
+ * @return Card number
+ */
 int
 TimerId::getCard()
 {
     return snd_timer_id_get_card(m_Info);
 }
 
+/**
+ * Sets the device number
+ * @param device Device number
+ */
 void
 TimerId::setDevice(int device)
 {
     snd_timer_id_set_device(m_Info, device);
 }
 
+/**
+ * Gets the device number
+ * @return Device number
+ */
 int
 TimerId::getDevice()
 {
     return snd_timer_id_get_device(m_Info);
 }
 
+/**
+ * Sets the subdevice number
+ * @param subdevice Subdevice number
+ */
 void
 TimerId::setSubdevice(int subdevice)
 {
     snd_timer_id_set_subdevice (m_Info, subdevice);
 }
 
+/**
+ * Gets the subdevice number
+ * @return Subdevice number
+ */
 int
 TimerId::getSubdevice()
 {
     return snd_timer_id_get_subdevice(m_Info);
 }
 
+/**
+ * Gets the size of the ALSA timer ID object
+ * @return Size of the ALSA object
+ */
 int
 TimerId::getSizeOfInfo() const
 {
@@ -961,4 +1094,4 @@ Timer::TimerInputThread::stop()
     m_mutex.unlock();
 }
 
-}
+} /* namespace aseqmm */
