@@ -156,7 +156,10 @@ public:
     TimerQuery(const QString& deviceName, int openMode);
     TimerQuery(const QString& deviceName, int openMode, snd_config_t* conf);
     virtual ~TimerQuery();
-
+    /**
+     * Gets the list of available timers
+     * @return List of TimerId objects
+     */
     TimerIdList getTimers() const { return m_timers; }
     TimerGlobalInfo& getGlobalInfo();
     void setGlobalParams(snd_timer_gparams_t* params);

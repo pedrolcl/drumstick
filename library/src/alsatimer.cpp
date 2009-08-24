@@ -429,10 +429,11 @@ TimerId::getSizeOfInfo() const
     return snd_timer_id_sizeof();
 }
 
-/**************
- * TimerQuery *
- **************/
-
+/**
+ * Constructor
+ * @param deviceName Device name, usually "hw"
+ * @param openMode Open mode (unknown values)
+ */
 TimerQuery::TimerQuery(const QString& deviceName, int openMode)
 {
     CHECK_WARNING( snd_timer_query_open( &m_Info,
@@ -441,6 +442,12 @@ TimerQuery::TimerQuery(const QString& deviceName, int openMode)
     readTimers();
 }
 
+/**
+ * Constructor
+ * @param deviceName Device name, usually "hw"
+ * @param openMode Open mode (unknown values)
+ * @param conf ALSA configuration object pointer
+ */
 TimerQuery::TimerQuery( const QString& deviceName, int openMode,
                         snd_config_t* conf )
 {
@@ -450,12 +457,18 @@ TimerQuery::TimerQuery( const QString& deviceName, int openMode,
     readTimers();
 }
 
+/**
+ * Destructor
+ */
 TimerQuery::~TimerQuery()
 {
     freeTimers();
     snd_timer_query_close(m_Info);
 }
 
+/**
+ * Enumerate the available timers storing the results into an internal list
+ */
 void
 TimerQuery::readTimers()
 {
@@ -471,12 +484,19 @@ TimerQuery::readTimers()
     }
 }
 
+/**
+ * Release the internal list of timers
+ */
 void
 TimerQuery::freeTimers()
 {
     m_timers.clear();
 }
 
+/**
+ * Get a TimerGlobalInfo object
+ * @return TimerGlobalInfo object reference
+ */
 TimerGlobalInfo&
 TimerQuery::getGlobalInfo()
 {
@@ -484,56 +504,87 @@ TimerQuery::getGlobalInfo()
     return m_GlobalInfo;
 }
 
+/**
+ * Sets the global parameters
+ * @param params Pointer to an ALSA timer global parameters object
+ */
 void
 TimerQuery::setGlobalParams(snd_timer_gparams_t* params)
 {
     snd_timer_query_params(m_Info, params);
 }
 
+/**
+ * Gets the global timer parameters
+ * @param params Pointer to an ALSA timer global parameters object
+ */
 void
 TimerQuery::getGlobalParams(snd_timer_gparams_t* params)
 {
     snd_timer_query_params(m_Info, params);
 }
 
+/**
+ * Gets the global timer status
+ * @param status Pointer to an ALSA timer global status object
+ */
 void
 TimerQuery::getGlobalStatus(snd_timer_gstatus_t *status)
 {
     snd_timer_query_status(m_Info, status);
 }
 
-/*******************
- * TimerGlobalInfo *
- *******************/
-
+/**
+ * Default constructor
+ */
 TimerGlobalInfo::TimerGlobalInfo()
 {
     snd_timer_ginfo_malloc(&m_Info);
 }
 
+/**
+ * Constructor
+ * @param other ALSA global info object pointer
+ */
 TimerGlobalInfo::TimerGlobalInfo(const snd_timer_ginfo_t* other)
 {
     snd_timer_ginfo_malloc(&m_Info);
     snd_timer_ginfo_copy(m_Info, other);
 }
 
+/**
+ * Copy constructor
+ * @param other Existing TimerGlobalInfo object reference
+ */
 TimerGlobalInfo::TimerGlobalInfo(const TimerGlobalInfo& other)
 {
     snd_timer_ginfo_malloc(&m_Info);
     snd_timer_ginfo_copy(m_Info, other.m_Info);
 }
 
+/**
+ * Destructor
+ */
 TimerGlobalInfo::~TimerGlobalInfo()
 {
     snd_timer_ginfo_free(m_Info);
 }
 
+/**
+ * Copy the current object
+ * @return Pointer to the new object
+ */
 TimerGlobalInfo*
 TimerGlobalInfo::clone()
 {
     return new TimerGlobalInfo(m_Info);
 }
 
+/**
+ * Assignment operator
+ * @param other Existing TimerGlobalInfo object reference
+ * @return This object
+ */
 TimerGlobalInfo&
 TimerGlobalInfo::operator=(const TimerGlobalInfo& other)
 {
@@ -541,6 +592,10 @@ TimerGlobalInfo::operator=(const TimerGlobalInfo& other)
     return *this;
 }
 
+/**
+ * Sets the timer identifier
+ * @param tid TimerId object reference
+ */
 void
 TimerGlobalInfo::setTimerId(const TimerId& tid)
 {
@@ -548,6 +603,10 @@ TimerGlobalInfo::setTimerId(const TimerId& tid)
     snd_timer_ginfo_set_tid (m_Info, m_Id.m_Info);
 }
 
+/**
+ * Gets the timer identifier
+ * @return TimerId object reference
+ */
 TimerId&
 TimerGlobalInfo::getTimerId()
 {
@@ -555,92 +614,148 @@ TimerGlobalInfo::getTimerId()
     return m_Id;
 }
 
+/**
+ * Gets the flags
+ * @return Undocumented flags
+ */
 unsigned int
 TimerGlobalInfo::getFlags()
 {
     return snd_timer_ginfo_get_flags (m_Info);
 }
 
+/**
+ * Gets the card number
+ * @return Card number
+ */
 int
 TimerGlobalInfo::getCard()
 {
     return snd_timer_ginfo_get_card (m_Info);
 }
 
+/**
+ * Gets the timer ID string
+ * @return Timer ID string
+ */
 QString
 TimerGlobalInfo::getId()
 {
     return QString(snd_timer_ginfo_get_id (m_Info));
 }
 
+/**
+ * Gets the timer name
+ * @return Timer name
+ */
 QString
 TimerGlobalInfo::getName()
 {
     return QString(snd_timer_ginfo_get_name (m_Info));
 }
 
+/**
+ * Gets the timer resolution in ns
+ * @return Timer resolution in ns
+ */
 unsigned long
 TimerGlobalInfo::getResolution()
 {
     return snd_timer_ginfo_get_resolution (m_Info);
 }
 
+/**
+ * Gets timer minimal resolution in ns
+ * @return Minimal resolution in ns
+ */
 unsigned long
 TimerGlobalInfo::getMinResolution()
 {
     return snd_timer_ginfo_get_resolution_min (m_Info);
 }
 
+/**
+ * Gets timer maximal resolution in ns
+ * @return Maximal resolution in ns
+ */
 unsigned long
 TimerGlobalInfo::getMaxResolution()
 {
     return snd_timer_ginfo_get_resolution_max(m_Info);
 }
 
+/**
+ * Gets current timer clients
+ * @return Current clients
+ */
 unsigned int
 TimerGlobalInfo::getClients()
 {
     return snd_timer_ginfo_get_clients(m_Info);
 }
 
+/**
+ * Gets the size of the ALSA timer global info object
+ * @return Size of the ALSA object
+ */
 int
 TimerGlobalInfo::getSizeOfInfo() const
 {
     return snd_timer_ginfo_sizeof();
 }
 
-/***************
- * TimerParams *
- ***************/
-
+/**
+ * Default constructor
+ */
 TimerParams::TimerParams()
 {
     snd_timer_params_malloc (&m_Info);
 }
 
+/**
+ * Constructor
+ * @param other Pointer to an ALSA timer parameters object
+ */
 TimerParams::TimerParams(const snd_timer_params_t *other)
 {
     snd_timer_params_malloc (&m_Info);
     snd_timer_params_copy (m_Info, other);
 }
 
+/**
+ * Copy constructor
+ * @param other Existing TimerParams object reference
+ */
 TimerParams::TimerParams(const TimerParams& other)
 {
     snd_timer_params_malloc (&m_Info);
     snd_timer_params_copy (m_Info, other.m_Info);
 }
 
+/**
+ * Destructor
+ * @return
+ */
 TimerParams::~TimerParams()
 {
     snd_timer_params_free (m_Info);
 }
 
+/**
+ * Copy the current object
+ * @return Pointer to the new object
+ */
 TimerParams*
 TimerParams::clone()
 {
     return new TimerParams(m_Info);
 }
 
+/**
+ * Assignment operator
+ * @param other Existing TimerParams object reference
+ * @return This object
+ */
 TimerParams&
 TimerParams::operator=(const TimerParams& other)
 {
@@ -648,116 +763,187 @@ TimerParams::operator=(const TimerParams& other)
     return *this;
 }
 
+/**
+ * Sets the automatic start flag
+ * @param auto_start Value for the automatic start flag
+ */
 void
 TimerParams::setAutoStart(bool auto_start)
 {
     snd_timer_params_set_auto_start (m_Info, auto_start ? 1 : 0);
 }
 
+/**
+ * Gets the automatic start flag
+ * @return True if the timer starts automatically
+ */
 bool
 TimerParams::getAutoStart()
 {
     return (snd_timer_params_get_auto_start (m_Info) != 0);
 }
 
+/**
+ * Sets the exclusive flag
+ * @param exclusive True if the timer has the exclusive flag
+ */
 void
 TimerParams::setExclusive(bool exclusive)
 {
     snd_timer_params_set_exclusive (m_Info, exclusive ? 1 : 0);
 }
 
+/**
+ * Gets the timer's exclusive flag
+ * @return True if the timer has the exclusive flag
+ */
 bool
 TimerParams::getExclusive()
 {
     return (snd_timer_params_get_exclusive (m_Info) != 0);
 }
 
+/**
+ * Sets the timer early event
+ * @param early_event Timer early event
+ */
 void
 TimerParams::setEarlyEvent(bool early_event)
 {
     snd_timer_params_set_early_event (m_Info, early_event ? 1 : 0);
 }
 
+/**
+ * Gets the timer early event
+ * @return Timer early event
+ */
 bool
 TimerParams::getEarlyEvent()
 {
     return (snd_timer_params_get_early_event (m_Info) != 0);
 }
 
+/**
+ * Sets the timer ticks
+ * @param ticks Timer ticks
+ */
 void
 TimerParams::setTicks(long ticks)
 {
     snd_timer_params_set_ticks (m_Info, ticks);
 }
 
+/**
+ * Gets the timer ticks
+ * @return Timer ticks
+ */
 long
 TimerParams::getTicks()
 {
     return snd_timer_params_get_ticks (m_Info);
 }
 
+/**
+ * Sets the queue size (32-1024)
+ * @param queue_size Queue size
+ */
 void
 TimerParams::setQueueSize(long queue_size)
 {
     snd_timer_params_set_queue_size (m_Info, queue_size);
 }
 
+/**
+ * Gets the queue size
+ * @return Queue size
+ */
 long
 TimerParams::getQueueSize()
 {
     return snd_timer_params_get_queue_size (m_Info);
 }
 
+/**
+ * Sets the event filter
+ * @param filter Event filter
+ */
 void
 TimerParams::setFilter(unsigned int filter)
 {
     snd_timer_params_set_filter (m_Info, filter);
 }
 
+/**
+ * Gets the event filter
+ * @return Event filter
+ */
 unsigned int
 TimerParams::getFilter()
 {
     return snd_timer_params_get_filter (m_Info);
 }
 
+/**
+ * Gets the size of the ALSA timer parameters object
+ * @return Size of the ALSA object
+ */
 int
 TimerParams::getSizeOfInfo() const
 {
     return snd_timer_params_sizeof();
 }
 
-/***************
- * TimerStatus *
- ***************/
-
+/**
+ * Default constructor
+ */
 TimerStatus::TimerStatus()
 {
     snd_timer_status_malloc (&m_Info);
 }
 
+/**
+ * Constructor
+ * @param other Pointer to an existing ALSA timer status object
+ */
 TimerStatus::TimerStatus(const snd_timer_status_t *other)
 {
     snd_timer_status_malloc (&m_Info);
     snd_timer_status_copy (m_Info, other);
 }
 
+/**
+ * Copy constructor
+ * @param other Existing TimerStatus object reference
+ */
 TimerStatus::TimerStatus(const TimerStatus& other)
 {
     snd_timer_status_malloc (&m_Info);
     snd_timer_status_copy (m_Info, other.m_Info);
 }
 
+/**
+ * Destructor
+ */
 TimerStatus::~TimerStatus()
 {
     snd_timer_status_free (m_Info);
 }
 
+/**
+ * Copy the current object
+ * @return Pointer to the new object
+ */
 TimerStatus*
 TimerStatus::clone()
 {
     return new TimerStatus(m_Info);
 }
 
+/**
+ * Assignment operator
+ * @param other Existing TimerStatus object reference
+ * @return This object
+ */
 TimerStatus&
 TimerStatus::operator=(const TimerStatus& other)
 {
@@ -765,46 +951,77 @@ TimerStatus::operator=(const TimerStatus& other)
     return *this;
 }
 
+/**
+ * Gets the high resolution time-stamp
+ * @return High resolution time-stamp
+ */
 snd_htimestamp_t
 TimerStatus::getTimestamp()
 {
     return snd_timer_status_get_timestamp (m_Info);
 }
 
+/**
+ * Gets the resolution in us
+ * @return Resolution in us
+ */
 long
 TimerStatus::getResolution()
 {
     return snd_timer_status_get_resolution (m_Info);
 }
 
+/**
+ * Gets the master tick lost count
+ * @return Master tick lost count
+ */
 long
 TimerStatus::getLost()
 {
     return snd_timer_status_get_lost (m_Info);
 }
 
+/**
+ * Gets the overrun count
+ * @return Overrun count
+ */
 long
 TimerStatus::getOverrun()
 {
     return snd_timer_status_get_overrun (m_Info);
 }
 
+/**
+ * Gets the count of used queue elements
+ * @return Count of used queue elements
+ */
 long
 TimerStatus::getQueue()
 {
     return snd_timer_status_get_queue (m_Info);
 }
 
+/**
+ * Gets the size of the ALSA timer status object
+ * @return Size of the ALSA object
+ */
 int
 TimerStatus::getSizeOfInfo() const
 {
     return snd_timer_status_sizeof();
 }
 
-/*********
- * Timer *
- *********/
-
+/**
+ * Constructor.
+ * Open flags can be a combination of the following constants:
+ * <ul>
+ * <li>SND_TIMER_OPEN_NONBLOCK: non-blocking behavior</li>
+ * <li>SND_TIMER_OPEN_TREAD: enhanced read, use time-stamps and event notification</li>
+ * </ul>
+ * @param deviceName Name of the device
+ * @param openMode Open mode flags bitmap
+ * @param parent Optional parent object
+ */
 Timer::Timer( const QString& deviceName, int openMode, QObject* parent )
     : QObject(parent),
     m_asyncHandler(NULL),
@@ -816,6 +1033,18 @@ Timer::Timer( const QString& deviceName, int openMode, QObject* parent )
                                  openMode ));
 }
 
+/**
+ * Constructor.
+ * Open flags can be a combination of the following constants:
+ * <ul>
+ * <li>SND_TIMER_OPEN_NONBLOCK: non-blocking behavior</li>
+ * <li>SND_TIMER_OPEN_TREAD: enhanced read, use time-stamps and event notification</li>
+ * </ul>
+ * @param deviceName Name of the device
+ * @param openMode Open mode flags bitmap
+ * @param conf ALSA configuration object pointer
+ * @param parent Optional parent object
+ */
 Timer::Timer( const QString& deviceName, int openMode, snd_config_t* conf,
               QObject* parent )
     : QObject(parent),
@@ -829,6 +1058,17 @@ Timer::Timer( const QString& deviceName, int openMode, snd_config_t* conf,
                                        openMode, conf ));
 }
 
+/**
+ * Constructor
+ * Open flags can be a combination of the following constants:
+ * <ul>
+ * <li>SND_TIMER_OPEN_NONBLOCK: non-blocking behavior</li>
+ * <li>SND_TIMER_OPEN_TREAD: enhanced read, use time-stamps and event notification</li>
+ * </ul>
+ * @param id TimerId object reference
+ * @param openMode Open mode flags bitmap
+ * @param parent Optional parent object
+ */
 Timer::Timer( TimerId& id, int openMode, QObject* parent )
     : QObject(parent),
     m_asyncHandler(NULL),
@@ -846,6 +1086,21 @@ Timer::Timer( TimerId& id, int openMode, QObject* parent )
                                  openMode ));
 }
 
+/**
+ * Constructor.
+ * Open flags can be a combination of the following constants:
+ * <ul>
+ * <li>SND_TIMER_OPEN_NONBLOCK: non-blocking behavior</li>
+ * <li>SND_TIMER_OPEN_TREAD: enhanced read, use time-stamps and event notification</li>
+ * </ul>
+ * @param cls Class
+ * @param scls Subclass
+ * @param card Card
+ * @param dev Device
+ * @param sdev Subdevice
+ * @param openMode Open mode flags bitmap
+ * @param parent Optional parent object
+ */
 Timer::Timer( int cls, int scls, int card, int dev, int sdev,
               int openMode, QObject* parent )
     : QObject(parent),
@@ -864,6 +1119,9 @@ Timer::Timer( int cls, int scls, int card, int dev, int sdev,
                                  openMode ));
 }
 
+/**
+ * Destructor.
+ */
 Timer::~Timer()
 {
     stopEvents();
@@ -872,36 +1130,64 @@ Timer::~Timer()
     CHECK_WARNING(snd_timer_close(m_Info));
 }
 
+/**
+ * Adds an asynchronous timer handler function.
+ * @param callback Function handler
+ * @param private_data Any data that will be passed to the callback
+ */
 void
 Timer::addAsyncTimerHandler(snd_async_callback_t callback, void *private_data)
 {
     CHECK_WARNING(snd_async_add_timer_handler(&m_asyncHandler, m_Info, callback, private_data));
 }
 
+/**
+ * Gets the ALSA timer handle
+ * @return ALSA timer handle
+ */
 snd_timer_t*
 Timer::getTimerHandle()
 {
     return snd_async_handler_get_timer(m_asyncHandler);
 }
 
+/**
+ * Gets the count of poll descriptors
+ * @return Count of poll descriptors
+ */
 int
 Timer::getPollDescriptorsCount()
 {
     return snd_timer_poll_descriptors_count(m_Info);
 }
 
+/**
+ * Gets poll descriptors
+ * @param pfds  Pointer to a pollfd array
+ * @param space Number of pollfd elements available
+ */
 void
 Timer::pollDescriptors(struct pollfd *pfds, unsigned int space)
 {
     CHECK_WARNING(snd_timer_poll_descriptors(m_Info, pfds, space));
 }
 
+/**
+ * Gets returned events from poll descriptors
+ * @param pfds Pointer to a pollfd array
+ * @param nfds Number of pollfd elements available
+ * @param revents Returned events
+ */
 void
 Timer::pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds, unsigned short *revents)
 {
     CHECK_WARNING(snd_timer_poll_descriptors_revents(m_Info, pfds, nfds, revents));
 }
 
+/**
+ * Gets the timer info object
+ * @return TimerInfo object reference
+ */
 TimerInfo&
 Timer::getTimerInfo()
 {
@@ -909,12 +1195,20 @@ Timer::getTimerInfo()
     return m_TimerInfo;
 }
 
+/**
+ * Sets the timer parameters
+ * @param params TimerParams object reference
+ */
 void
 Timer::setTimerParams(const TimerParams& params)
 {
     CHECK_WARNING( snd_timer_params(m_Info, params.m_Info) );
 }
 
+/**
+ * Gets the timer status
+ * @return TimerStatus object reference
+ */
 TimerStatus&
 Timer::getTimerStatus()
 {
@@ -922,30 +1216,53 @@ Timer::getTimerStatus()
     return m_TimerStatus;
 }
 
+/**
+ * Start rolling the timer
+ */
 void
 Timer::start()
 {
     CHECK_WARNING(snd_timer_start(m_Info));
 }
 
+/**
+ * Stop rolling the timer
+ */
 void
 Timer::stop()
 {
     CHECK_WARNING(snd_timer_stop(m_Info));
 }
 
+/**
+ * Continue rolling the timer
+ */
 void
 Timer::continueRunning()
 {
     CHECK_WARNING(snd_timer_continue(m_Info));
 }
 
+/**
+ * Read bytes from the timer handle
+ * @param buffer Buffer to store the input bytes
+ * @param size  Input buffer size in bytes
+ * @return Bytes read from the timer
+ */
 ssize_t
 Timer::read(void *buffer, size_t size)
 {
     return snd_timer_read(m_Info, buffer, size);
 }
 
+/**
+ * Internal function to deliver the timer events using one of the two available
+ * methods:
+ * <ul>
+ * <li>TimerEventHandler instance pointer provided in Timer::setHandler()</li>
+ * <li>A signal Timer::timerExpired() is emitted, otherwise</li>
+ * </ul>
+ */
 void
 Timer::doEvents()
 {
@@ -961,6 +1278,9 @@ Timer::doEvents()
     }
 }
 
+/**
+ * Starts the events dispatching thread
+ */
 void Timer::startEvents()
 {
     m_last_time = getTimerStatus().getTimestamp();
@@ -970,6 +1290,9 @@ void Timer::startEvents()
     }
 }
 
+/**
+ * Stops the events dispatching thread
+ */
 void Timer::stopEvents()
 {
     int counter = 0;
@@ -985,6 +1308,13 @@ void Timer::stopEvents()
     }
 }
 
+/**
+ * Check and return the best available global Timer in the system, meaning
+ * the timer higher frequency (or lesser period, resolution).
+ * @param openMode Open mode flags
+ * @param parent Optional parent object
+ * @return A new Timer instance pointer
+ */
 Timer*
 Timer::bestGlobalTimer(int openMode, QObject* parent)
 {
@@ -1038,10 +1368,9 @@ Timer::bestGlobalTimer(int openMode, QObject* parent)
     return new Timer(id, openMode, parent);
 }
 
-/* *********************** *
- * Timer::TimerInputThread *
- * *********************** */
-
+/**
+ * Loop reading and dispatching timer events.
+ */
 void
 Timer::TimerInputThread::run()
 {
@@ -1077,6 +1406,10 @@ Timer::TimerInputThread::run()
     free(fds);
 }
 
+/**
+ * Returns the rolling state of the timer thread
+ * @return The stopped state
+ */
 bool
 Timer::TimerInputThread::stopped()
 {
@@ -1086,6 +1419,9 @@ Timer::TimerInputThread::stopped()
     return  bTmp;
 }
 
+/**
+ * Stop the thread
+ */
 void
 Timer::TimerInputThread::stop()
 {
