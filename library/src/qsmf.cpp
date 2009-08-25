@@ -24,6 +24,11 @@
 #include <limits>
 #include <QFile>
 
+/**
+ * @file qsmf.cpp
+ * Standard MIDI Files Input/Output Implementation
+ */
+
 namespace aseqmm {
 
 /**
@@ -38,6 +43,10 @@ namespace aseqmm {
  * @}
  */
 
+/**
+ * Constructor
+ * @param parent Optional parent object
+ */
 QSmf::QSmf(QObject * parent) :
     QObject(parent)
 {
@@ -55,16 +64,27 @@ QSmf::QSmf(QObject * parent) :
     m_TempoChangeTime = 0;
 }
 
+/**
+ * Destructor
+ */
 QSmf::~QSmf()
 {
     m_TempoList.clear();
 }
 
+/**
+ * Check if the SMF stream is positioned at the end.
+ * @return True if the SMF stream is at the end
+ */
 bool QSmf::endOfSmf()
 {
     return m_IOStream->atEnd();
 }
 
+/**
+ * Gets a single byte from the SMF stream
+ * @return A Single byte
+ */
 quint8 QSmf::getByte()
 {
     quint8 b = 0;
@@ -76,12 +96,21 @@ quint8 QSmf::getByte()
     return b;
 }
 
+/**
+ * Puts a single byte to the SMF stream
+ * @param value A Single byte
+ */
 void QSmf::putByte(quint8 value)
 {
     *m_IOStream << value;
     m_NumBytesWritten++;
 }
 
+/**
+ * Adds a tempo change to the internal tempo list
+ * @param tempo Tempo in microseconds per quarter
+ * @param time Location in ticks
+ */
 void QSmf::addTempo(quint64 tempo, quint64 time)
 {
     QSmfRecTempo tempoRec;
@@ -90,6 +119,9 @@ void QSmf::addTempo(quint64 tempo, quint64 time)
     m_TempoList.append(tempoRec);
 }
 
+/**
+ * Reads a SMF header
+ */
 void QSmf::readHeader()
 {
     m_CurrTime = 0;
@@ -121,7 +153,9 @@ void QSmf::readHeader()
     }
 }
 
-/* read a track chunk */
+/**
+ * Reads a track chunk
+ */
 void QSmf::readTrack()
 {
     /* This array is indexed by the high half of a status byte.  It's
@@ -309,6 +343,9 @@ void QSmf::readTrack()
     emit signalSMFTrackEnd();
 }
 
+/**
+ * Reads a SMF stream.
+ */
 void QSmf::SMFRead()
 {
     int i;
@@ -320,8 +357,10 @@ void QSmf::SMFRead()
 }
 
 /**
- * Every MIDI file starts with a header
- * In format 1 files, the first track is a tempo map
+ * Writes a SMF stream.
+ *
+ * Every MIDI file starts with a header.
+ * In format 1 files, the first track is a tempo map.
  * The rest of the file is a series of tracks
  */
 void QSmf::SMFWrite()
@@ -340,12 +379,20 @@ void QSmf::SMFWrite()
     }
 }
 
+/**
+ * Reads a SMF stream.
+ * @param stream Pointer to an existing and opened stream
+ */
 void QSmf::readFromStream(QDataStream *stream)
 {
     m_IOStream = stream;
     SMFRead();
 }
 
+/**
+ * Reads a SMF stream from a disk file.
+ * @param fileName Name of an existing file.
+ */
 void QSmf::readFromFile(const QString& fileName)
 {
     QFile file(fileName);
@@ -355,12 +402,20 @@ void QSmf::readFromFile(const QString& fileName)
     file.close();
 }
 
+/**
+ * Writes a SMF stream
+ * @param stream Pointer to an existing and opened stream
+ */
 void QSmf::writeToStream(QDataStream *stream)
 {
     m_IOStream = stream;
     SMFWrite();
 }
 
+/**
+ * Writes a SMF stream to a disk file
+ * @param fileName File name
+ */
 void QSmf::writeToFile(const QString& fileName)
 {
     QFile file(fileName);
@@ -370,6 +425,12 @@ void QSmf::writeToFile(const QString& fileName)
     file.close();
 }
 
+/**
+ * Writes a SMF header chuck
+ * @param format SMF Format (0/1/2)
+ * @param ntracks Number of tracks
+ * @param division Resolution in ticks per quarter note
+ */
 void QSmf::writeHeaderChunk(int format, int ntracks, int division)
 {
     write32bit(MThd);
@@ -379,6 +440,10 @@ void QSmf::writeHeaderChunk(int format, int ntracks, int division)
     write16bit(division);
 }
 
+/**
+ * Writes a track chuck
+ * @param track Number of the track
+ */
 void QSmf::writeTrackChunk(int track)
 {
     quint32 trkhdr;
@@ -404,6 +469,12 @@ void QSmf::writeTrackChunk(int track)
     m_IOStream->device()->seek(place_marker);
 }
 
+/**
+ * Writes a variable length Meta Event
+ * @param deltaTime Time offset in ticks
+ * @param type Meta event type
+ * @param data Message data
+ */
 void QSmf::writeMetaEvent(long deltaTime, int type, const QByteArray& data)
 {
     int i;
@@ -418,6 +489,12 @@ void QSmf::writeMetaEvent(long deltaTime, int type, const QByteArray& data)
     }
 }
 
+/**
+ * Writes a Text Meta Event
+ * @param deltaTime Time offset in ticks
+ * @param type Meta event type
+ * @param data Message text
+ */
 void QSmf::writeMetaEvent(long deltaTime, int type, const QString& data)
 {
     int i;
@@ -432,6 +509,11 @@ void QSmf::writeMetaEvent(long deltaTime, int type, const QString& data)
     }
 }
 
+/**
+ * Writes a simple Meta event
+ * @param deltaTime Time offset in ticks
+ * @param type Meta event type
+ */
 void QSmf::writeMetaEvent(long deltaTime, int type)
 {
     writeVarLen(deltaTime);
@@ -440,6 +522,13 @@ void QSmf::writeMetaEvent(long deltaTime, int type)
     putByte(0);
 }
 
+/**
+ * Writes a variable length MIDI message
+ * @param deltaTime Time offset in ticks
+ * @param type MIDI event type
+ * @param chan MIDI Channel
+ * @param data Message data
+ */
 void QSmf::writeMidiEvent(long deltaTime, int type, int chan,
                           const QByteArray& data)
 {
@@ -478,6 +567,13 @@ void QSmf::writeMidiEvent(long deltaTime, int type, int chan,
     }
 }
 
+/**
+ * Writes a MIDI message with a single parameter
+ * @param deltaTime Time offset in ticks
+ * @param type MIDI event type
+ * @param chan MIDI Channel
+ * @param b1 Message parameter
+ */
 void QSmf::writeMidiEvent(long deltaTime, int type, int chan, int b1)
 {
     quint8 c;
@@ -499,6 +595,14 @@ void QSmf::writeMidiEvent(long deltaTime, int type, int chan, int b1)
     putByte(b1);
 }
 
+/**
+ * Writes a MIDI message with two parameters
+ * @param deltaTime Time offset in ticks
+ * @param type MIDI event type
+ * @param chan MIDI Channel
+ * @param b1 Message parameter 1
+ * @param b2 Message parameter 2
+ */
 void QSmf::writeMidiEvent(long deltaTime, int type, int chan, int b1, int b2)
 {
     quint8 c;
@@ -521,6 +625,13 @@ void QSmf::writeMidiEvent(long deltaTime, int type, int chan, int b1, int b2)
     putByte(b2);
 }
 
+/**
+ * Writes a variable length MIDI message
+ * @param deltaTime Time offset in ticks
+ * @param type MIDI event type
+ * @param len  Message length
+ * @param data Message data
+ */
 void QSmf::writeMidiEvent(long deltaTime, int type, long len, char* data)
 {
     unsigned int i, j, size;
@@ -545,6 +656,11 @@ void QSmf::writeMidiEvent(long deltaTime, int type, long len, char* data)
     }
 }
 
+/**
+ * Writes a MIDI Sequence number
+ * @param deltaTime Time offset in ticks
+ * @param seqnum Sequence number
+ */
 void QSmf::writeSequenceNumber(long deltaTime, int seqnum)
 {
     writeVarLen(deltaTime);
@@ -556,7 +672,11 @@ void QSmf::writeSequenceNumber(long deltaTime, int seqnum)
     putByte(seqnum & 0xff);
 }
 
-/* tempo expressed in microseconds per quarter note */
+/**
+ * Writes a Tempo change message
+ * @param deltaTime Time offset in ticks
+ * @param tempo Tempo in microseconds per quarter note
+ */
 void QSmf::writeTempo(long deltaTime, long tempo)
 {
     writeVarLen(deltaTime);
@@ -568,19 +688,25 @@ void QSmf::writeTempo(long deltaTime, long tempo)
     putByte(tempo & 0xff);
 }
 
-/* tempo expressed in quarter notes per minute */
+/**
+ * Writes a Tempo change message
+ * @param deltaTime Time offset in ticks
+ * @param tempo Tempo  expressed in quarter notes per minute
+ */
 void QSmf::writeBpmTempo(long deltaTime, int tempo)
 {
     long us_tempo = 60000000l / tempo;
-    writeVarLen(deltaTime);
-    putByte(m_LastStatus = meta_event);
-    putByte(set_tempo);
-    putByte(3);
-    putByte((us_tempo >> 16) & 0xff);
-    putByte((us_tempo >> 8) & 0xff);
-    putByte(us_tempo & 0xff);
+    writeTempo(deltaTime, us_tempo);
 }
 
+/**
+ * Writes a Time Signature message
+ * @param deltaTime Time offset in ticks
+ * @param num Numerator
+ * @param den Denominator (exponent for a power of two)
+ * @param cc Number of MIDI clocks in a metronome click
+ * @param bb Number of notated 32nd notes in 24 MIDI clocks
+ */
 void QSmf::writeTimeSignature(long deltaTime, int num, int den, int cc, int bb)
 {
     writeVarLen(deltaTime);
@@ -593,6 +719,12 @@ void QSmf::writeTimeSignature(long deltaTime, int num, int den, int cc, int bb)
     putByte(bb & 0xff);
 }
 
+/**
+ * Writes a key Signature message
+ * @param deltaTime Time offset in ticks
+ * @param tone Number of alterations (positive=sharps, negative=flats)
+ * @param mode Scale mode (0=major, 1=minor)
+ */
 void QSmf::writeKeySignature(long deltaTime, int tone, int mode)
 {
     writeVarLen(deltaTime);
@@ -603,7 +735,10 @@ void QSmf::writeKeySignature(long deltaTime, int tone, int mode)
     putByte(mode & 0x01);
 }
 
-/* Write multi-length bytes to MIDI format files */
+/**
+ * Writes multi-length bytes
+ * @param value Integer value
+ */
 void QSmf::writeVarLen(quint64 value)
 {
     quint64 buffer;
@@ -913,51 +1048,91 @@ void QSmf::msgAdd(quint8 b)
 
 /* public properties (accessors) */
 
+/**
+ * Gets the current time in ticks
+ * @return Time in ticks
+ */
 long QSmf::getCurrentTime()
 {
     return m_CurrTime;
 }
 
+/**
+ * Gets the current tempo
+ * @return Tempo in us per quarter
+ */
 long QSmf::getCurrentTempo()
 {
     return m_CurrTempo;
 }
 
+/**
+ * Gets the real time in seconds
+ * @return Time in seconds
+ */
 long QSmf::getRealTime()
 {
     return m_RealTime;
 }
 
+/**
+ * Gets the resolution
+ * @return Resolution in ticks per quarter note
+ */
 int QSmf::getDivision()
 {
     return m_Division;
 }
 
+/**
+ * Sets the resolution
+ * @param division Resolution in ticks per quarter note
+ */
 void QSmf::setDivision(int division)
 {
     m_Division = division;
 }
 
+/**
+ * Gets the number of tracks
+ * @return Number of tracks
+ */
 int QSmf::getTracks()
 {
     return m_Tracks;
 }
 
+/**
+ * Sets the number of tracks
+ * @param tracks Number of tracks
+ */
 void QSmf::setTracks(int tracks)
 {
     m_Tracks = tracks;
 }
 
+/**
+ * Gets the SMF file format
+ * @return File format (0, 1, or 2)
+ */
 int QSmf::getFileFormat()
 {
     return m_fileFormat;
 }
 
+/**
+ * Sets the SMF file format
+ * @param fileFormat File format (0, 1, or 2)
+ */
 void QSmf::setFileFormat(int fileFormat)
 {
     m_fileFormat = fileFormat;
 }
 
+/**
+ * Gets the position in the SMF stream
+ * @return Position offset in the stream
+ */
 long QSmf::getFilePos()
 {
     return (long) m_IOStream->device()->pos();
