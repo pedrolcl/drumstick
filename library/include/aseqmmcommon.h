@@ -29,21 +29,15 @@ extern "C" {
 #include <alsa/asoundlib.h>
 }
 
-namespace aseqmm {
-
 /*!
  * @file aseqmmcommon.h
  * Common functionality
  * @defgroup Common Common Functionality
  * @{
- *
- * The class SequencerError represents an exception object reported by the
- * ALSA library.
- *
- * Classes:
- *
- * SequencerError
+ * aseqmm::SequencerError is a common exception object, encapsulating ALSA error codes.
  */
+
+namespace aseqmm {
 
 /**
  * 8-bit unsigned number to be used as a MIDI message parameter
@@ -51,26 +45,49 @@ namespace aseqmm {
 typedef quint8 MidiByte;  
 
 /**
- * Class used to report errors from the ALSA sequencer
+ * Class used to report errors from the ALSA sequencer.
+ *
+ * The class SequencerError represents an exception object reported when the
+ * ALSA library returns an error code. It is only used for severe errors.
  */
 class SequencerError
 {
 public:
+    /**
+     * Constructor
+     * @param s  Error location
+     * @param rc Numeric error code
+     */
     SequencerError(QString const& s, int rc) :
         m_location(s), m_errCode(rc) {}
-    
+
+    /**
+     * Destructor
+     */
     virtual ~SequencerError() {}
-    
+
+    /**
+     * Gets the human readable error message from the error code
+     * @return Error message
+     */
     const QString qstrError() const 
     {
         return QString(snd_strerror(m_errCode));
     }
 
+    /**
+     * Gets the numeric error code
+     * @return Error code
+     */
     int code() const 
     { 
         return m_errCode; 
     }
     
+    /**
+     * Gets the location of the error code as provided in the constructor
+     * @return Error location
+     */
     const QString& location() const 
     { 
         return m_location; 
@@ -81,6 +98,14 @@ private:
     int     m_errCode;
 };
 
+/**
+ * Checks the error code for severe errors.
+ * If the provided error code is less than zero an exception is thrown,
+ * containing both the error code and the location.
+ * @param rc Error code
+ * @param where Location
+ * @return Error code
+ */
 inline int checkErrorAndThrow(int rc, const char *where)
 {
     if (rc < 0) {
@@ -91,6 +116,13 @@ inline int checkErrorAndThrow(int rc, const char *where)
     return rc;
 }
 
+/**
+ * Check the error code for warning errors.
+ * This method doesn't throw an exception.
+ * @param rc Error code
+ * @param where Location
+ * @return Error code
+ */
 inline int checkWarning(int rc, const char *where)
 {
     if (rc < 0) {
@@ -100,12 +132,24 @@ inline int checkWarning(int rc, const char *where)
     return rc;
 }
 
+/**
+ * This macro calls the check error function.
+ * @param x Error code
+ */
 #define CHECK_ERROR(x)   (checkErrorAndThrow((x),__PRETTY_FUNCTION__))
+
+/**
+ * This macro calls the check warning function.
+ * @param x Error code
+ */
 #define CHECK_WARNING(x) (checkWarning((x),__PRETTY_FUNCTION__))
 
+/**
+ * ALSA library version as a constant string
+ */
 const QString LIBRARY_VERSION(SND_LIB_VERSION_STR);
 
-}
+} /* namespace aseqmm */
 
 /*! @} */
 

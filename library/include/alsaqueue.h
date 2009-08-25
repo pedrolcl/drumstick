@@ -20,14 +20,14 @@
 #ifndef INCLUDED_ALSAQUEUE_H
 #define INCLUDED_ALSAQUEUE_H
 
+#include "aseqmmcommon.h"
+
 /**
  * @file alsaqueue.h
  * Classes managing ALSA Sequencer queues
  * @defgroup ALSAQueue ALSA Sequencer Queues
  * @{
  */
-
-#include "aseqmmcommon.h"
 
 namespace aseqmm {
 

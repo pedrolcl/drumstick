@@ -112,36 +112,42 @@ whose authors are:
 <li>Takashi Iwai &lt;tiwai AT suse.de&gt;</li>
 <li>Frank van de Pol &lt;fvdpol AT coil.demon.nl&gt;</li>
 </ul>
-@section Advanced Advanced features, not yet documented
-
-A lot. Almost all.
 
 @example dumpmid.cpp
 Print received sequencer events
+@include dumpmid.h
 
 @example playsmf.cpp
 SMF playback, command line interface program
+@include playsmf.h
 
 @example smfplayer.cpp
 SMF playback, graphic user interface program
+@include smfplayer.h
 
 @example buildsmf.cpp
 SMF output from scratch
+@include buildsmf.h
 
 @example dumpsmf.cpp
 SMF read and print
+@include dumpsmf.h
 
 @example sysinfo.cpp
 Prints information about the ALSA sequencer subsystem
 
 @example testevents.cpp
 SequencerEvents test
+@include testevents.h
 
 @example timertest.cpp
 ALSA Timers test
+@include timertest.h
 
 @example vpiano.cpp
 A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
+@include vpiano.h
+
 */
 
 /**
@@ -1898,7 +1904,7 @@ ClientInfo::getSizeOfInfo() const
     return snd_seq_client_info_sizeof();
 }
 
-#if SND_LIB_SUBMINOR > 16
+#if SND_LIB_VERSION > 0x010010
 /**
  * Adds an event type to the client's filter.
  *

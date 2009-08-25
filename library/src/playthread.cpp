@@ -27,15 +27,32 @@ namespace aseqmm {
  * @addtogroup PlayThread
  * @{
  *
- * SequencerOutputThread is an abstract class that must be extended providing
- * an implementation for the pure virtual methods before using it for MIDI
- * sequence playback.
+ * SequencerOutputThread provides MIDI sequence playback.
  *
+ * This is an abstract class that must be extended providing
+ * an implementation for the pure virtual methods:
+ * SequencerOutputThread::hasNext() and SequencerOutputThread::nextEvent()
+ * before using it for MIDI sequence playback. You can use any structure or
+ * class you prefer to store the SequencerEvent objects, but they must be
+ * provided ordered by time. A simplistic Song definition may be:
+ *
+ * @code
+ * typedef QList<SequencerEvent> Song;
+ * @endcode
+ *
+ * Using this class is optional. You may prefer another mechanism to
+ * manage playback actions. This class uses a thread to manage the
+ * sequence playback as a background task.
  * @}
  */
 
 const int TIMEOUT = 100;
 
+/**
+ * Constructor
+ * @param seq Existing MidiClient object pointer
+ * @param portId Numeric input/output port identifier
+ */
 SequencerOutputThread::SequencerOutputThread(MidiClient *seq, int portId)
     : QThread(),
     m_MidiClient(seq),
@@ -52,6 +69,10 @@ SequencerOutputThread::SequencerOutputThread(MidiClient *seq, int portId)
     }
 }
 
+/**
+ * Checks if the playback task is stopped
+ * @return True if the task is stopped
+ */
 bool
 SequencerOutputThread::stopped()
 {
@@ -61,6 +82,9 @@ SequencerOutputThread::stopped()
     return  bTmp;
 }
 
+/**
+ * Stops the playback task
+ */
 void
 SequencerOutputThread::stop()
 {
@@ -69,6 +93,10 @@ SequencerOutputThread::stop()
     m_mutex.unlock();
 }
 
+/**
+ * Sends an echo event, with the same PortId as sender and destination.
+ * @param tick Event schedule time in ticks.
+ */
 void
 SequencerOutputThread::sendEchoEvent(int tick)
 {
@@ -81,6 +109,10 @@ SequencerOutputThread::sendEchoEvent(int tick)
     }
 }
 
+/**
+ * Sends a SequencerEvent
+ * @param ev SequencerEvent object pointer
+ */
 void
 SequencerOutputThread::sendSongEvent(SequencerEvent* ev)
 {
@@ -91,6 +123,9 @@ SequencerOutputThread::sendSongEvent(SequencerEvent* ev)
     }
 }
 
+/**
+ * Flush the ALSA output buffer.
+ */
 void
 SequencerOutputThread::drainOutput()
 {
@@ -101,6 +136,9 @@ SequencerOutputThread::drainOutput()
     }
 }
 
+/**
+ * Waits until the ALSA output queue is empty (all the events have been played.)
+ */
 void
 SequencerOutputThread::syncOutput()
 {
@@ -113,6 +151,9 @@ SequencerOutputThread::syncOutput()
     }
 }
 
+/**
+ * Sends an All Sounds Off MIDI controller event
+ */
 void
 SequencerOutputThread::shutupSound()
 {
@@ -129,6 +170,9 @@ SequencerOutputThread::shutupSound()
     }
 }
 
+/**
+ * Thread process loop
+ */
 void SequencerOutputThread::run()
 {
     unsigned int last_tick;
@@ -176,4 +220,5 @@ void SequencerOutputThread::run()
     }
 }
 
-}
+} /* namespace aseqmm */
+

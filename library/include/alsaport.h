@@ -20,15 +20,15 @@
 #ifndef INCLUDED_ALSAPORT_H
 #define INCLUDED_ALSAPORT_H
 
+#include "subscription.h"
+#include <QObject>
+
 /**
  * @file alsaport.h
  * Classes managing ALSA Sequencer ports.
  * @defgroup ALSAPort ALSA Sequencer Ports
  * @{
  */
-
-#include "subscription.h"
-#include <QObject>
 
 namespace aseqmm {
 

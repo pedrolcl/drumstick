@@ -20,6 +20,9 @@
 #ifndef INCLUDED_ALSAEVENT_H
 #define INCLUDED_ALSAEVENT_H
 
+#include "aseqmmcommon.h"
+#include <QEvent>
+
 /**
  * @file alsaevent.h
  * Classes managing ALSA Sequencer events.
@@ -27,9 +30,6 @@
  * @defgroup ALSAEvent ALSA Sequencer Events
  * @{
  */
-
-#include "aseqmmcommon.h"
-#include <QEvent>
 
 namespace aseqmm {
 
@@ -432,7 +432,7 @@ protected:
 };
 
 /**
- * Generic MIDI event
+ * Generic event
  */
 class SystemEvent : public SequencerEvent
 {

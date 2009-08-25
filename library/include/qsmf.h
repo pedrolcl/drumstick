@@ -22,17 +22,17 @@
 #ifndef INCLUDED_SMF_H
 #define INCLUDED_SMF_H
 
+#include "aseqmmcommon.h"
+#include <QObject>
+#include <QDataStream>
+#include <QList>
+
 /*!
  * @file qsmf.h
  * Standard MIDI Files Input/Output
  * @defgroup SMF Standard MIDI Files management (I/O)
  * @{
  */
-
-#include "aseqmmcommon.h"
-#include <QObject>
-#include <QDataStream>
-#include <QList>
 
 namespace aseqmm {
 
@@ -162,12 +162,12 @@ private:
     QList<QSmfRecTempo> m_TempoList;
     quint64 m_ToBeRead;
     quint64 m_NumBytesWritten;
-    bool m_Interactive;     // file and track headers are not required
-    quint64 m_CurrTime;     // current time in delta-time units
-    quint64 m_RealTime;     // current time in 1/16 centisecond-time units
-    double m_DblRealTime;   // as above, floating
-    int m_Division;         // ticks per beat. Default = 96
-    quint64 m_CurrTempo;    // microseconds per quarter note
+    bool m_Interactive;     /**< file and track headers are not required */
+    quint64 m_CurrTime;     /**< current time in delta-time units */
+    quint64 m_RealTime;     /**< current time in 1/16 centisecond-time units */
+    double m_DblRealTime;   /**< as above, floating */
+    int m_Division;         /**< ticks per beat. Default = 96 */
+    quint64 m_CurrTempo;    /**< microseconds per quarter note */
     quint64 m_OldCurrTempo;
     quint64 m_OldRealTime;
     double m_DblOldRealtime;

@@ -31,55 +31,55 @@ namespace aseqmm {
  * @addtogroup ALSAEvent
  * @{
  *
- * MIDI Events are the messages transmitted between MIDI devices or applications.
+ * MIDI Events are messages transmitted between MIDI devices or applications.
  *
  * Classes:
  *
- * SequencerEvent
+ * SequencerEvent: Base class for the event's hierarchy.
  *
- * ChannelEvent
+ * ChannelEvent: Base class for the events having a Channel property.
  *
- * KeyEvent
+ * KeyEvent: Base class for the events having Key and Velocity properties.
  *
- * NoteEvent
+ * NoteEvent: Class representing a note event with duration.
  *
- * NoteOnEvent
+ * NoteOnEvent: Event representing a note-on MIDI event.
  *
- * NoteOffEvent
+ * NoteOffEvent: Event representing a note-off MIDI event.
  *
- * KeyPressEvent
+ * KeyPressEvent: Event representing a MIDI key pressure, or polyphonic after-touch event.
  *
- * ControllerEvent
+ * ControllerEvent: Event representing a MIDI control change event.
  *
- * ProgramChangeEvent
+ * ProgramChangeEvent: Event representing a MIDI program change event.
  *
- * PitchBendEvent
+ * PitchBendEvent: Event representing a MIDI bender, or pitch wheel event.
  *
- * ChanPressEvent
+ * ChanPressEvent: Event representing a MIDI channel pressure or after-touch event.
  *
- * VariableEvent
+ * VariableEvent: Base class for variable length events.
  *
- * SysExEvent
+ * SysExEvent: Event representing a MIDI system exclusive event.
  *
- * TextEvent
+ * TextEvent: Event representing a SMF text event.
  *
- * SystemEvent
+ * SystemEvent: Generic event.
  *
- * QueueControlEvent
+ * QueueControlEvent: ALSA Event representing a queue control command.
  *
- * ValueEvent
+ * ValueEvent: Generic event having a value property.
  *
- * TempoEvent
+ * TempoEvent: ALSA Event representing a tempo change for an ALSA queue.
  *
- * SubscriptionEvent
+ * SubscriptionEvent: ALSA Event representing a subscription between two ALSA clients and ports.
  *
- * ClientEvent
+ * ClientEvent: ALSA Event representing a change on some ALSA sequencer client.
  *
- * PortEvent
+ * PortEvent: ALSA Event representing a change on some ALSA sequencer port.
  *
- * RemoveEvents
+ * RemoveEvents: Auxiliary class to remove events from an ALSA queue.
  *
- * MidiCodec
+ * MidiCodec: Auxiliary class to translate between raw MIDI streams and ALSA events.
  *
  * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_event.html
  * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_events.html
@@ -288,7 +288,7 @@ void SequencerEvent::setPriority(const bool high)
  */
 void SequencerEvent::setTag(const unsigned char aTag)
 {
-#if SND_LIB_SUBMINOR > 8
+#if SND_LIB_VERSION > 0x010008
     snd_seq_ev_set_tag(&m_event, aTag);
 #else
     m_event.tag = aTag;

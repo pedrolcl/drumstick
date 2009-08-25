@@ -20,16 +20,16 @@
 #ifndef INCLUDED_PLAYTHREAD_H
 #define INCLUDED_PLAYTHREAD_H
 
+#include "alsaevent.h"
+#include <QThread>
+#include <QReadWriteLock>
+
 /*!
  * @file playthread.h
  * Sequencer output
  * @defgroup PlayThread Sequencer Output
  * @{
  */
-
-#include "alsaevent.h"
-#include <QThread>
-#include <QReadWriteLock>
 
 namespace aseqmm {
 
@@ -41,6 +41,8 @@ class MidiQueue;
  *
  * This class is used to implement an asynchronous sequence player using
  * ALSA sequencer scheduling
+ *
+ * Examples: smfplayer.cpp and playsmf.cpp
  */
 class SequencerOutputThread : public QThread
 {
@@ -49,14 +51,39 @@ class SequencerOutputThread : public QThread
 public:
     SequencerOutputThread(MidiClient *seq, int portId);
     virtual void run();
+    /**
+     * Gets the initial position in ticks of the sequence
+     * @return Initial position (ticks)
+     */
     virtual unsigned int getInitialPosition() { return 0; }
+    /**
+     * Gets the echo event resolution in ticks. This is the time
+     * between echo events interleaved with the MIDI sequence. The default
+     * value zero means that not echo events are sent at all.
+     * @return Echo resolution (ticks)
+     */
     virtual unsigned int getEchoResolution() { return 0; }
-    virtual bool hasNext() = 0; /* to be reimplemented */
-    virtual SequencerEvent* nextEvent() = 0; /* to be reimplemented */
+    /**
+     * Check if there is one more event in the sequence.
+     * This is a pure virtual method that must be overridden in the derived
+     * class.
+     * @return True if the sequence has another event.
+     */
+    virtual bool hasNext() = 0;
+    /**
+     * Gets the next event in the sequence.
+     * This is a pure virtual function that must be overridden in the derived
+     * class.
+     * @return Pointer to the next SequencerEvent to be played.
+     */
+    virtual SequencerEvent* nextEvent() = 0;
     virtual bool stopped();
     virtual void stop();
 
 signals:
+    /**
+     * Signal emitted when the sequence playback has finished.
+     */
     void finished();
 
 protected:
@@ -66,17 +93,17 @@ protected:
     virtual void drainOutput();
     virtual void syncOutput();
 
-    MidiClient *m_MidiClient;
-    MidiQueue *m_Queue;
-    int m_PortId;
-    bool m_Stopped;
-    int m_QueueId;
-    int m_npfds;
-    pollfd* m_pfds;
-    QReadWriteLock m_mutex;
+    MidiClient *m_MidiClient;   /**< MidiClient instance pointer */
+    MidiQueue *m_Queue;         /**< MidiQueue instance pointer */
+    int m_PortId;               /**< MidiPort numeric identifier */
+    bool m_Stopped;             /**< Stopped status */
+    int m_QueueId;              /**< MidiQueue numeric identifier */
+    int m_npfds;                /**< Number of pollfd pointers */
+    pollfd* m_pfds;             /**< Array of pollfd pointers */
+    QReadWriteLock m_mutex;     /**< Mutex object used for synchronization */
 };
 
-}
+} /* namespace aseqmm */
 
 /*! @} */
 

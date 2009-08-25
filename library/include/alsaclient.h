@@ -20,6 +20,11 @@
 #ifndef INCLUDED_ALSACLIENT_H
 #define INCLUDED_ALSACLIENT_H
 
+#include "alsaport.h"
+#include <QPointer>
+#include <QThread>
+#include <QReadWriteLock>
+
 /**
  * @file alsaclient.h
  * Classes managing ALSA Sequencer clients
@@ -27,11 +32,6 @@
  * @defgroup ALSAClient ALSA Sequencer Clients
  * @{
  */
-
-#include "alsaport.h"
-#include <QPointer>
-#include <QThread>
-#include <QReadWriteLock>
 
 namespace aseqmm {
 
@@ -74,7 +74,7 @@ public:
     void setErrorBounce(bool val);
     PortInfoList getPorts() const;
 
-#if SND_LIB_SUBMINOR > 16
+#if SND_LIB_VERSION > 0x010010
     void addFilter(int eventType);
     bool isFiltered(int eventType);
     void clearFilter();

@@ -21,15 +21,15 @@
 #ifndef INCLUDED_SUBSCRIPTION_H
 #define INCLUDED_SUBSCRIPTION_H
 
+#include "aseqmmcommon.h"
+#include <QList>
+
 /*!
  * @file subscription.h
  * Classes managing ALSA sequencer subscriptions
  * @defgroup ALSASubscription ALSA Sequencer Subscriptions
  * @{
  */
-
-#include "aseqmmcommon.h"
-#include <QList>
 
 namespace aseqmm {
 
