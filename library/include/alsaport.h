@@ -212,6 +212,6 @@ typedef QList<MidiPort*> MidiPortList;
 
 }
 
-/*! @} */
+/** @} */
 
 #endif //INCLUDED_ALSAPORT_H

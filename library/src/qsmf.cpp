@@ -20,7 +20,6 @@
 */
 
 #include "qsmf.h"
-
 #include <limits>
 #include <QFile>
 

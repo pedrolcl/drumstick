@@ -24,7 +24,7 @@
 #include "aseqmmcommon.h"
 #include <QList>
 
-/*!
+/**
  * @file subscription.h
  * Classes managing ALSA sequencer subscriptions
  * @defgroup ALSASubscription ALSA Sequencer Subscriptions
@@ -36,7 +36,9 @@ namespace aseqmm {
 class MidiClient;
 
 /**
- * Subscriber management
+ * Subscriber container class.
+ *
+ * This class is used to enumerate the subscribers of a given (root) port.
  */
 class Subscriber
 {
@@ -75,6 +77,8 @@ private:
 
 /**
  * Subscription management
+ *
+ * This class represents a connection between two ports.
  */
 class Subscription
 {
@@ -122,6 +126,6 @@ typedef QList<Subscriber> SubscribersList;
 
 }
 
-/*! @} */
+/** @} */
 
 #endif //INCLUDED_SUBSCRIPTION_H

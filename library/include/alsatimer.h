@@ -353,6 +353,6 @@ private:
 
 } /* namespace aseqmm */
 
-/*! @} */
+/** @} */
 
 #endif /*INCLUDED_TIMER_H*/

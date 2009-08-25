@@ -19,24 +19,29 @@
 
 #include "alsaclient.h"
 
+/**
+ * @file subscription.cpp
+ * Implementation of classes managing ALSA sequencer subscriptions
+ */
+
 namespace aseqmm {
 
 /**
  * @addtogroup ALSASubscription
  * @{
  *
- * Subscriptions are virtual MIDI cables between readable ports and writable ones.
+ * Subscriptions are virtual MIDI cables between readable and writable ports.
  *
  * The ALSA sequencer readable ports are equivalent to the MIDI OUT ports in the
  * real world. Similarly, the writable ports are equivalent to the MIDI IN ones.
- * Subscriptions, like real MIDI cables, always involve a readable port and a
- * writable one.
+ * Subscriptions, like real MIDI cables, always involve a readable port (source)
+ * and a writable port (destination).
  *
  * Classes:
  *
- * Subscriber
+ * Subscriber: This class is used to enumerate the subscribers of a given (root) port.
  *
- * Subscription
+ * Subscription: This class represents a connection between two ports.
  *
  * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_subscribe.html
  * @}

@@ -336,6 +336,6 @@ private:
 
 } /* namespace aseqmm */
 
-/*! @} */
+/** @} */
 
 #endif

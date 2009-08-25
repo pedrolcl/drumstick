@@ -21,6 +21,11 @@
 #include "alsaqueue.h"
 #include "playthread.h"
 
+/**
+ * @file playthread.cpp
+ * Implementation of a sequencer output thread
+ */
+
 namespace aseqmm {
 
 /**

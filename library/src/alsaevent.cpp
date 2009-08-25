@@ -20,6 +20,11 @@
 #include "alsaevent.h"
 
 /**
+ * @file alsaevent.cpp
+ * Implementation of classes managing ALSA Sequencer events.
+ */
+
+/**
  * @class QEvent
  * The QEvent class is the base class of all event classes.
  * @see http://doc.trolltech.com/qevent.html

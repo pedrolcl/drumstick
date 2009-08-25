@@ -22,6 +22,11 @@
 #include "alsaevent.h"
 #include <cmath>
 
+/**
+ * @file alsaqueue.cpp
+ * Implementation of classes managing ALSA Sequencer queues
+ */
+
 namespace aseqmm {
 
 /**

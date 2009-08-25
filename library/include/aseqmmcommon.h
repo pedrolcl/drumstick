@@ -29,7 +29,7 @@ extern "C" {
 #include <alsa/asoundlib.h>
 }
 
-/*!
+/**
  * @file aseqmmcommon.h
  * Common functionality
  * @defgroup Common Common Functionality
@@ -151,6 +151,6 @@ const QString LIBRARY_VERSION(SND_LIB_VERSION_STR);
 
 } /* namespace aseqmm */
 
-/*! @} */
+/** @} */
 
 #endif /*ASEQMMCOMMON_H_*/

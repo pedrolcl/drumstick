@@ -365,6 +365,6 @@ private:
 
 } /* namespace aseqmm */
 
-/*! @} */
+/** @} */
 
 #endif //INCLUDED_ALSACLIENT_H

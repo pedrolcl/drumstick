@@ -20,6 +20,11 @@
 #include "alsaqueue.h"
 #include "alsaclient.h"
 
+/**
+ * @file alsaport.cpp
+ * Implementation of classes managing ALSA Sequencer ports.
+ */
+
 namespace aseqmm {
 
 /**

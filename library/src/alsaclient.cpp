@@ -22,6 +22,23 @@
 #include "alsaevent.h"
 #include <QThread>
 
+/**
+ * @file alsaclient.cpp
+ * Implementation of classes managing ALSA Sequencer clients
+ */
+
+/**
+ * @class QObject
+ * The QObject class is the base class of all Qt objects.
+ * @see   http://doc.trolltech.com/qobject.html
+ */
+
+/**
+ * @class QThread
+ * The QThread class provides platform-independent threads.
+ * @see   http://doc.trolltech.com/qthread.html
+ */
+
 namespace aseqmm {
 
 /**
@@ -149,18 +166,6 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
 @include vpiano.h
 
 */
-
-/**
- * @class QObject
- * The QObject class is the base class of all Qt objects.
- * @see   http://doc.trolltech.com/qobject.html
- */
-
-/**
- * @class QThread
- * The QThread class provides platform-independent threads.
- * @see   http://doc.trolltech.com/qthread.html
- */
 
 /**
  * @addtogroup ALSAClient

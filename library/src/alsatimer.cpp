@@ -21,6 +21,11 @@
 #include <cmath>
 #include <cstdio>
 
+/**
+ * @file alsatimer.cpp
+ * Implementation of classes managing ALSA Timers
+ */
+
 namespace aseqmm {
 
 /**

@@ -223,6 +223,6 @@ private:
 
 } /* namespace aseqmm */
 
-/*! @} */
+/** @} */
 
 #endif //INCLUDED_ALSAQUEUE_H

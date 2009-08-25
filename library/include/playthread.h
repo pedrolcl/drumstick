@@ -24,9 +24,9 @@
 #include <QThread>
 #include <QReadWriteLock>
 
-/*!
+/**
  * @file playthread.h
- * Sequencer output
+ * Sequencer output thread
  * @defgroup PlayThread Sequencer Output
  * @{
  */
@@ -105,6 +105,6 @@ protected:
 
 } /* namespace aseqmm */
 
-/*! @} */
+/** @} */
 
 #endif /*INCLUDED_PLAYTHREAD_H*/
