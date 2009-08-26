@@ -25,7 +25,7 @@
 
 /**
  * @file qsmf.cpp
- * Standard MIDI Files Input/Output Implementation
+ * Implementation of a class managing Standard MIDI Files input/output
  */
 
 namespace aseqmm {

@@ -76,7 +76,7 @@ private:
 };
 
 /**
- * Subscription management
+ * Subscription management.
  *
  * This class represents a connection between two ports.
  */
