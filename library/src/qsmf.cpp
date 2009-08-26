@@ -501,8 +501,9 @@ void QSmf::writeMetaEvent(long deltaTime, int type, const QString& data)
     putByte(m_LastStatus = meta_event);
     putByte(type);
     writeVarLen(data.length());
-    const char *asciichars = data.toLocal8Bit().data();
-    for (i = 0; i < data.length(); ++i)
+    QByteArray lcldata = data.toLocal8Bit();
+    const char *asciichars = lcldata.data();
+    for (i = 0; i < lcldata.length(); ++i)
     {
         putByte(asciichars[i]);
     }

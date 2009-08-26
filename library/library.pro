@@ -2,9 +2,8 @@ TEMPLATE = lib
 TARGET = aseqmm
 DEPENDPATH += . include src
 INCLUDEPATH += . include
-VERSION=0.0.2
+VERSION=0.1.0
 CONFIG += qt staticlib debug
-
 # Input
 HEADERS += include/alsaclient.h \
            include/alsaevent.h \
