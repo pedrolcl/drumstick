@@ -12,7 +12,7 @@
 
 Name:           libaseqmm0
 Version:        @VERSION@
-Release:        0
+Release:        1
 License:        GPL v2 or later
 Summary:        MIDI Sequencer C++ Library Bindings
 Group:          System/Libraries
@@ -94,10 +94,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 %dir %{_includedir}/aseqmm
 %{_libdir}/libaseqmm.so
+%{_libdir}/libaseqmm.la
 %{_includedir}/aseqmm.h
 %{_includedir}/aseqmm/*.h
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
-* Sun Nov 9 2008 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.0.2pre
-- first public (pre)release
+* Thu Aug 27 2009 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.1.0
+- first public release

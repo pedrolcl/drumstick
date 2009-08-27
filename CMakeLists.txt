@@ -58,7 +58,7 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_admin")
 SET (VERSION_MAJOR "0")
 SET (VERSION_MINOR "1")
 SET (VERSION_PATCH "0")
-SET (VERSION_SUFFIX "cvs")
+SET (VERSION_SUFFIX "")
 SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 ADD_DEFINITIONS(-D'VERSION="${VERSION}"')
 
@@ -181,7 +181,8 @@ ADD_CUSTOM_TARGET ( tarball
     COMMAND cp -r cmake_admin aseqmm-${VERSION}
     COMMAND cp -r library aseqmm-${VERSION}
     COMMAND cp -r tests aseqmm-${VERSION}
-    COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO aseqmm.spec.in aseqmm.pc.in aseqmm.pro aseqmm-${VERSION}
+    COMMAND cp -r doc aseqmm-${VERSION}
+    COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO aseqmm.spec.in aseqmm.pc.in aseqmm.pro configure* Doxyfile link-aseqmm chkcoverage aseqmm-${VERSION}
     COMMAND tar -cj --exclude CVS --exclude .cvsignore -f aseqmm-${VERSION}.tar.bz2 aseqmm-${VERSION}
     COMMAND tar -cz --exclude CVS --exclude .cvsignore -f aseqmm-${VERSION}.tar.gz aseqmm-${VERSION}
     COMMAND rm -rf aseqmm-${VERSION}

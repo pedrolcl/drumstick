@@ -44,8 +44,8 @@ namespace aseqmm {
 /**
 @mainpage aseqmm Documentation
 @author Copyright &copy; 2009 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
-@version 0.0.3
-@date 2009-08-12
+@date 2009-08-27
+@version 0.1.0
 
 This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/

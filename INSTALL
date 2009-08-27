@@ -21,7 +21,7 @@ Requirements
 
 Minimum supported versions:
 
-* CMake 2.4
+* CMake 2.6
 * ALSA 1.0
 * Qt4 4.3
 
@@ -38,10 +38,10 @@ Optional CMake parameters
     Build tests using precompiled headers (faster compilation)
 
     -DCMAKE_BUILD_TYPE=Debug 
-    Compile with debug flag enabled
+    Compile with debug flags enabled
 
     -DCMAKE_BUILD_TYPE=Release
-    Compile without debug flag, and optimization enabled
+    Compile without debug flags, and optimization enabled
 
     -DCMAKE_CXX_FLAGS="-W -Wall"
     Specify custom compilation flags    
