@@ -21,7 +21,12 @@
 
 #include "qsmf.h"
 #include <limits>
+#include <QList>
 #include <QFile>
+#include <QDataStream>
+#include <QTextCodec>
+#include <QTextDecoder>
+#include <QTextEncoder>
 
 /**
  * @file qsmf.cpp
@@ -42,33 +47,75 @@ namespace aseqmm {
  * @}
  */
 
+class QSmf::QSmfPrivate {
+public:
+    QSmfPrivate():
+        m_Interactive(false),
+        m_CurrTime(0),
+        m_RealTime(0),
+        m_DblRealTime(0),
+        m_DblOldRealtime(0),
+        m_Division(96),
+        m_CurrTempo(500000),
+        m_OldCurrTempo(500000),
+        m_OldRealTime(0),
+        m_OldCurrTime(0),
+        m_RevisedTime(0),
+        m_TempoChangeTime(0),
+        m_ToBeRead(0),
+        m_NumBytesWritten(0),
+        m_Tracks(0),
+        m_fileFormat(0),
+        m_LastStatus(0),
+        m_codec(0),
+        m_encoder(0),
+        m_decoder(0),
+        m_IOStream(0)
+    { }
+
+    bool m_Interactive;     /**< file and track headers are not required */
+    quint64 m_CurrTime;     /**< current time in delta-time units */
+    quint64 m_RealTime;     /**< current time in 1/16 centisecond-time units */
+    double m_DblRealTime;   /**< as above, floating */
+    double m_DblOldRealtime;
+    int m_Division;         /**< ticks per beat. Default = 96 */
+    quint64 m_CurrTempo;    /**< microseconds per quarter note */
+    quint64 m_OldCurrTempo;
+    quint64 m_OldRealTime;
+    quint64 m_OldCurrTime;
+    quint64 m_RevisedTime;
+    quint64 m_TempoChangeTime;
+    quint64 m_ToBeRead;
+    quint64 m_NumBytesWritten;
+    int m_Tracks;
+    int m_fileFormat;
+    int m_LastStatus;
+    QTextCodec *m_codec;
+    QTextEncoder* m_encoder;
+    QTextDecoder* m_decoder;
+    QDataStream *m_IOStream;
+    QByteArray m_MsgBuff;
+    QList<QSmfRecTempo> m_TempoList;
+};
+
 /**
  * Constructor
  * @param parent Optional parent object
  */
 QSmf::QSmf(QObject * parent) :
-    QObject(parent)
-{
-    m_Interactive = false;
-    m_CurrTime = 0;
-    m_RealTime = 0;
-    m_DblRealTime = 0;
-    m_DblOldRealtime = 0;
-    m_Division = 96;
-    m_CurrTempo = 500000;
-    m_OldCurrTempo = 500000;
-    m_OldRealTime = 0;
-    m_OldCurrTime = 0;
-    m_RevisedTime = 0;
-    m_TempoChangeTime = 0;
-}
+    QObject(parent),
+    d(new QSmfPrivate)
+{ }
 
 /**
  * Destructor
  */
 QSmf::~QSmf()
 {
-    m_TempoList.clear();
+    d->m_TempoList.clear();
+    delete d->m_encoder;
+    delete d->m_decoder;
+    delete d;
 }
 
 /**
@@ -77,7 +124,7 @@ QSmf::~QSmf()
  */
 bool QSmf::endOfSmf()
 {
-    return m_IOStream->atEnd();
+    return d->m_IOStream->atEnd();
 }
 
 /**
@@ -87,10 +134,10 @@ bool QSmf::endOfSmf()
 quint8 QSmf::getByte()
 {
     quint8 b = 0;
-    if (!m_IOStream->atEnd())
+    if (!d->m_IOStream->atEnd())
     {
-        *m_IOStream >> b;
-        m_ToBeRead--;
+        *d->m_IOStream >> b;
+        d->m_ToBeRead--;
     }
     return b;
 }
@@ -101,8 +148,8 @@ quint8 QSmf::getByte()
  */
 void QSmf::putByte(quint8 value)
 {
-    *m_IOStream << value;
-    m_NumBytesWritten++;
+    *d->m_IOStream << value;
+    d->m_NumBytesWritten++;
 }
 
 /**
@@ -115,7 +162,7 @@ void QSmf::addTempo(quint64 tempo, quint64 time)
     QSmfRecTempo tempoRec;
     tempoRec.tempo = tempo;
     tempoRec.time = time;
-    m_TempoList.append(tempoRec);
+    d->m_TempoList.append(tempoRec);
 }
 
 /**
@@ -123,30 +170,30 @@ void QSmf::addTempo(quint64 tempo, quint64 time)
  */
 void QSmf::readHeader()
 {
-    m_CurrTime = 0;
-    m_RealTime = 0;
-    m_Division = 96;
-    m_CurrTempo = 500000;
-    m_OldCurrTempo = 500000;
-    addTempo(m_CurrTempo, 0);
-    if (m_Interactive)
+    d->m_CurrTime = 0;
+    d->m_RealTime = 0;
+    d->m_Division = 96;
+    d->m_CurrTempo = 500000;
+    d->m_OldCurrTempo = 500000;
+    addTempo(d->m_CurrTempo, 0);
+    if (d->m_Interactive)
     {
-        m_fileFormat= 0;
-        m_Tracks = 1;
-        m_Division = 96;
+        d->m_fileFormat= 0;
+        d->m_Tracks = 1;
+        d->m_Division = 96;
     }
     else
     {
         readExpected("MThd");
-        m_ToBeRead = read32bit();
-        m_fileFormat = read16bit();
-        m_Tracks = read16bit();
-        m_Division = read16bit();
+        d->m_ToBeRead = read32bit();
+        d->m_fileFormat = read16bit();
+        d->m_Tracks = read16bit();
+        d->m_Division = read16bit();
     }
-    emit signalSMFHeader(m_fileFormat, m_Tracks, m_Division);
+    emit signalSMFHeader(d->m_fileFormat, d->m_Tracks, d->m_Division);
 
     /* flush any extra stuff, in case the length of header is not */
-    while ((m_ToBeRead > 0) && !endOfSmf())
+    while ((d->m_ToBeRead > 0) && !endOfSmf())
     {
         getByte();
     }
@@ -174,66 +221,66 @@ void QSmf::readTrack()
 
     sysexcontinue = false;
     status = 0;
-    if (m_Interactive)
+    if (d->m_Interactive)
     {
-        m_ToBeRead = std::numeric_limits<unsigned long long>::max();
+        d->m_ToBeRead = std::numeric_limits<unsigned long long>::max();
     }
     else
     {
         readExpected("MTrk");
-        m_ToBeRead = read32bit();
+        d->m_ToBeRead = read32bit();
     }
-    m_CurrTime = 0;
-    m_RealTime = 0;
-    m_DblRealTime = 0;
-    m_DblOldRealtime = 0;
-    m_OldCurrTime = 0;
-    m_OldRealTime = 0;
-    m_CurrTempo = findTempo();
+    d->m_CurrTime = 0;
+    d->m_RealTime = 0;
+    d->m_DblRealTime = 0;
+    d->m_DblOldRealtime = 0;
+    d->m_OldCurrTime = 0;
+    d->m_OldRealTime = 0;
+    d->m_CurrTempo = findTempo();
 
     emit signalSMFTrackStart();
 
-    while (!endOfSmf() && (m_Interactive || m_ToBeRead > 0))
+    while (!endOfSmf() && (d->m_Interactive || d->m_ToBeRead > 0))
     {
-        if (m_Interactive)
+        if (d->m_Interactive)
         {
-            m_CurrTime++;
+            d->m_CurrTime++;
         }
         else
         {
             delta_ticks = readVarLen();
-            m_RevisedTime = m_CurrTime;
-            m_CurrTime += delta_ticks;
-            while (m_RevisedTime < m_CurrTime)
+            d->m_RevisedTime = d->m_CurrTime;
+            d->m_CurrTime += delta_ticks;
+            while (d->m_RevisedTime < d->m_CurrTime)
             {
-                save_time = m_RevisedTime;
-                save_tempo = m_CurrTempo;
-                m_CurrTempo = findTempo();
-                if (m_CurrTempo != m_OldCurrTempo)
+                save_time = d->m_RevisedTime;
+                save_tempo = d->m_CurrTempo;
+                d->m_CurrTempo = findTempo();
+                if (d->m_CurrTempo != d->m_OldCurrTempo)
                 {
-                    m_OldCurrTempo = m_CurrTempo;
-                    m_OldRealTime = m_RealTime;
-                    if (m_RevisedTime != m_TempoChangeTime)
+                    d->m_OldCurrTempo = d->m_CurrTempo;
+                    d->m_OldRealTime = d->m_RealTime;
+                    if (d->m_RevisedTime != d->m_TempoChangeTime)
                     {
-                        m_DblOldRealtime = m_DblRealTime;
-                        m_OldCurrTime = save_time;
+                        d->m_DblOldRealtime = d->m_DblRealTime;
+                        d->m_OldCurrTime = save_time;
                     }
-                    delta_secs = ticksToSecs(m_RevisedTime - m_OldCurrTime,
-                                             m_Division, save_tempo);
-                    m_DblRealTime = m_DblOldRealtime + delta_secs * 1600.0;
-                    m_RealTime = static_cast<quint64>(0.5 + m_DblRealTime);
-                    if (m_RevisedTime == m_TempoChangeTime)
+                    delta_secs = ticksToSecs(d->m_RevisedTime - d->m_OldCurrTime,
+                            d->m_Division, save_tempo);
+                    d->m_DblRealTime = d->m_DblOldRealtime + delta_secs * 1600.0;
+                    d->m_RealTime = static_cast<quint64>(0.5 + d->m_DblRealTime);
+                    if (d->m_RevisedTime == d->m_TempoChangeTime)
                     {
-                        m_OldCurrTime = m_RevisedTime;
-                        m_DblOldRealtime = m_DblRealTime;
+                        d->m_OldCurrTime = d->m_RevisedTime;
+                        d->m_DblOldRealtime = d->m_DblRealTime;
                     }
                 }
                 else
                 {
-                    delta_secs = ticksToSecs(m_RevisedTime - m_OldCurrTime,
-                                             m_Division, m_CurrTempo);
-                    m_DblRealTime = m_DblOldRealtime + delta_secs * 1600.0;
-                    m_RealTime = static_cast<quint64>(0.5 + m_DblRealTime);
+                    delta_secs = ticksToSecs(d->m_RevisedTime - d->m_OldCurrTime,
+                            d->m_Division, d->m_CurrTempo);
+                    d->m_DblRealTime = d->m_DblOldRealtime + delta_secs * 1600.0;
+                    d->m_RealTime = static_cast<quint64>(0.5 + d->m_DblRealTime);
                 }
             }
         }
@@ -286,9 +333,9 @@ void QSmf::readTrack()
         case meta_event:
             type = getByte();
             lookfor = readVarLen();
-            lookfor = m_ToBeRead - lookfor;
+            lookfor = d->m_ToBeRead - lookfor;
             msgInit();
-            while (m_ToBeRead > lookfor)
+            while (d->m_ToBeRead > lookfor)
             {
                 msgAdd(getByte());
             }
@@ -296,10 +343,10 @@ void QSmf::readTrack()
             break;
         case system_exclusive:
             lookfor = readVarLen();
-            lookfor = m_ToBeRead - lookfor;
+            lookfor = d->m_ToBeRead - lookfor;
             msgInit();
             msgAdd(system_exclusive);
-            while (m_ToBeRead > lookfor)
+            while (d->m_ToBeRead > lookfor)
             {
                 c = getByte();
                 msgAdd(c);
@@ -315,12 +362,12 @@ void QSmf::readTrack()
             break;
         case end_of_sysex:
             lookfor = readVarLen();
-            lookfor = m_ToBeRead - lookfor;
+            lookfor = d->m_ToBeRead - lookfor;
             if (!sysexcontinue)
             {
                 msgInit();
             }
-            while (m_ToBeRead > lookfor)
+            while (d->m_ToBeRead > lookfor)
             {
                 c = getByte();
                 msgAdd(c);
@@ -335,7 +382,7 @@ void QSmf::readTrack()
             }
             break;
         default:
-            badByte(c, m_IOStream->device()->pos() - 1);
+            badByte(c, d->m_IOStream->device()->pos() - 1);
             break;
         }
     }
@@ -349,7 +396,7 @@ void QSmf::SMFRead()
 {
     int i;
     readHeader();
-    for ( i = m_Tracks; (i > 0) && !endOfSmf(); i--)
+    for ( i = d->m_Tracks; (i > 0) && !endOfSmf(); i--)
     {
         readTrack();
     }
@@ -365,14 +412,14 @@ void QSmf::SMFRead()
 void QSmf::SMFWrite()
 {
     int i;
-    m_LastStatus = 0;
-    writeHeaderChunk(m_fileFormat, m_Tracks, m_Division);
-    m_LastStatus = 0;
-    if (m_fileFormat == 1)
+    d->m_LastStatus = 0;
+    writeHeaderChunk(d->m_fileFormat, d->m_Tracks, d->m_Division);
+    d->m_LastStatus = 0;
+    if (d->m_fileFormat == 1)
     {
         emit signalSMFWriteTempoTrack();
     }
-    for (i = 0; i < m_Tracks; ++i)
+    for (i = 0; i < d->m_Tracks; ++i)
     {
         writeTrackChunk(i);
     }
@@ -384,7 +431,7 @@ void QSmf::SMFWrite()
  */
 void QSmf::readFromStream(QDataStream *stream)
 {
-    m_IOStream = stream;
+    d->m_IOStream = stream;
     SMFRead();
 }
 
@@ -407,7 +454,7 @@ void QSmf::readFromFile(const QString& fileName)
  */
 void QSmf::writeToStream(QDataStream *stream)
 {
-    m_IOStream = stream;
+    d->m_IOStream = stream;
     SMFWrite();
 }
 
@@ -450,22 +497,22 @@ void QSmf::writeTrackChunk(int track)
     qint64 offset;
     qint64 place_marker;
 
-    m_LastStatus = 0;
+    d->m_LastStatus = 0;
     trkhdr = MTrk;
     trklength = 0;
-    offset = m_IOStream->device()->pos();
+    offset = d->m_IOStream->device()->pos();
     write32bit(trkhdr);
     write32bit(trklength);
-    m_NumBytesWritten = 0;
+    d->m_NumBytesWritten = 0;
 
     emit signalSMFWriteTrack(track);
 
-    place_marker = m_IOStream->device()->pos();
-    m_IOStream->device()->seek(offset);
-    trklength = m_NumBytesWritten;
+    place_marker = d->m_IOStream->device()->pos();
+    d->m_IOStream->device()->seek(offset);
+    trklength = d->m_NumBytesWritten;
     write32bit(trkhdr);
     write32bit(trklength);
-    m_IOStream->device()->seek(place_marker);
+    d->m_IOStream->device()->seek(place_marker);
 }
 
 /**
@@ -478,8 +525,8 @@ void QSmf::writeMetaEvent(long deltaTime, int type, const QByteArray& data)
 {
     int i;
     writeVarLen(deltaTime);
-    m_LastStatus = meta_event;
-    putByte(m_LastStatus);
+    d->m_LastStatus = meta_event;
+    putByte(d->m_LastStatus);
     putByte(type);
     writeVarLen(data.size());
     for (i = 0; i < data.size(); ++i)
@@ -498,10 +545,14 @@ void QSmf::writeMetaEvent(long deltaTime, int type, const QString& data)
 {
     int i;
     writeVarLen(deltaTime);
-    putByte(m_LastStatus = meta_event);
+    putByte(d->m_LastStatus = meta_event);
     putByte(type);
     writeVarLen(data.length());
-    QByteArray lcldata = data.toLocal8Bit();
+    QByteArray lcldata;
+    if (d->m_encoder == NULL)
+        lcldata = data.toLatin1();
+    else
+        lcldata = d->m_encoder->fromUnicode(data);
     const char *asciichars = lcldata.data();
     for (i = 0; i < lcldata.length(); ++i)
     {
@@ -517,7 +568,7 @@ void QSmf::writeMetaEvent(long deltaTime, int type, const QString& data)
 void QSmf::writeMetaEvent(long deltaTime, int type)
 {
     writeVarLen(deltaTime);
-    putByte(m_LastStatus = meta_event);
+    putByte(d->m_LastStatus = meta_event);
     putByte(type);
     putByte(0);
 }
@@ -538,7 +589,7 @@ void QSmf::writeMidiEvent(long deltaTime, int type, int chan,
     if ((type == system_exclusive) || (type == end_of_sysex))
     {
         c = type;
-        m_LastStatus = 0;
+        d->m_LastStatus = 0;
     }
     else
     {
@@ -548,9 +599,9 @@ void QSmf::writeMidiEvent(long deltaTime, int type, int chan,
         }
         c = type | chan;
     }
-    if (m_LastStatus != c)
+    if (d->m_LastStatus != c)
     {
-        m_LastStatus = c;
+        d->m_LastStatus = c;
         putByte(c);
     }
     if (type == system_exclusive || type == end_of_sysex)
@@ -587,9 +638,9 @@ void QSmf::writeMidiEvent(long deltaTime, int type, int chan, int b1)
         SMFError("error: MIDI channel greater than 16");
     }
     c = type | chan;
-    if (m_LastStatus != c)
+    if (d->m_LastStatus != c)
     {
-        m_LastStatus = c;
+        d->m_LastStatus = c;
         putByte(c);
     }
     putByte(b1);
@@ -616,9 +667,9 @@ void QSmf::writeMidiEvent(long deltaTime, int type, int chan, int b1, int b2)
         SMFError("error: MIDI channel greater than 16");
     }
     c = type | chan;
-    if (m_LastStatus != c)
+    if (d->m_LastStatus != c)
     {
-        m_LastStatus = c;
+        d->m_LastStatus = c;
         putByte(c);
     }
     putByte(b1);
@@ -641,7 +692,7 @@ void QSmf::writeMidiEvent(long deltaTime, int type, long len, char* data)
     {
         SMFError("error: type should be system exclusive");
     }
-    m_LastStatus = 0;
+    d->m_LastStatus = 0;
     c = type;
     putByte(c);
     size = len;
@@ -664,8 +715,8 @@ void QSmf::writeMidiEvent(long deltaTime, int type, long len, char* data)
 void QSmf::writeSequenceNumber(long deltaTime, int seqnum)
 {
     writeVarLen(deltaTime);
-    m_LastStatus = meta_event;
-    putByte(m_LastStatus);
+    d->m_LastStatus = meta_event;
+    putByte(d->m_LastStatus);
     putByte(sequence_number);
     putByte(2);
     putByte((seqnum >> 8) & 0xff);
@@ -680,7 +731,7 @@ void QSmf::writeSequenceNumber(long deltaTime, int seqnum)
 void QSmf::writeTempo(long deltaTime, long tempo)
 {
     writeVarLen(deltaTime);
-    putByte(m_LastStatus = meta_event);
+    putByte(d->m_LastStatus = meta_event);
     putByte(set_tempo);
     putByte(3);
     putByte((tempo >> 16) & 0xff);
@@ -710,7 +761,7 @@ void QSmf::writeBpmTempo(long deltaTime, int tempo)
 void QSmf::writeTimeSignature(long deltaTime, int num, int den, int cc, int bb)
 {
     writeVarLen(deltaTime);
-    putByte(m_LastStatus = meta_event);
+    putByte(d->m_LastStatus = meta_event);
     putByte(time_signature);
     putByte(4);
     putByte(num & 0xff);
@@ -728,7 +779,7 @@ void QSmf::writeTimeSignature(long deltaTime, int num, int den, int cc, int bb)
 void QSmf::writeKeySignature(long deltaTime, int tone, int mode)
 {
     writeVarLen(deltaTime);
-    putByte(m_LastStatus = meta_event);
+    putByte(d->m_LastStatus = meta_event);
     putByte(key_signature);
     putByte(2);
     putByte((char)tone);
@@ -840,7 +891,7 @@ void QSmf::readExpected(const QString& s)
         b = getByte();
         if (QChar(b) != s[j])
         {
-            SMFError(QString("Invalid (%1) SMF format at %2").arg(b, 0, 16).arg(m_IOStream->device()->pos()));
+            SMFError(QString("Invalid (%1) SMF format at %2").arg(b, 0, 16).arg(d->m_IOStream->device()->pos()));
             break;
         }
     }
@@ -849,32 +900,32 @@ void QSmf::readExpected(const QString& s)
 quint64 QSmf::findTempo()
 {
     quint64 result, old_tempo, new_tempo;
-    QSmfRecTempo rec = m_TempoList.last();
-    old_tempo = m_CurrTempo;
-    new_tempo = m_CurrTempo;
+    QSmfRecTempo rec = d->m_TempoList.last();
+    old_tempo = d->m_CurrTempo;
+    new_tempo = d->m_CurrTempo;
     QList<QSmfRecTempo>::Iterator it;
-    for( it = m_TempoList.begin(); it != m_TempoList.end(); ++it )
+    for( it = d->m_TempoList.begin(); it != d->m_TempoList.end(); ++it )
     {
         rec = (*it);
-        if (rec.time <= m_CurrTime)
+        if (rec.time <= d->m_CurrTime)
         {
             old_tempo = rec.tempo;
         }
         new_tempo = rec.tempo;
-        if (rec.time > m_RevisedTime)
+        if (rec.time > d->m_RevisedTime)
         {
             break;
         }
     }
-    if ((rec.time <= m_RevisedTime) || (rec.time > m_CurrTime))
+    if ((rec.time <= d->m_RevisedTime) || (rec.time > d->m_CurrTime))
     {
-        m_RevisedTime = m_CurrTime;
+        d->m_RevisedTime = d->m_CurrTime;
         result = old_tempo;
     }
     else
     {
-        m_RevisedTime = rec.time;
-        m_TempoChangeTime = m_RevisedTime;
+        d->m_RevisedTime = rec.time;
+        d->m_TempoChangeTime = d->m_RevisedTime;
         result = new_tempo;
     }
     return result;
@@ -956,7 +1007,7 @@ void QSmf::channelMessage(quint8 status, quint8 c1, quint8 c2)
 void QSmf::metaEvent(quint8 b)
 {
     QSmfRecTempo rec;
-    QByteArray m(m_MsgBuff);
+    QByteArray m(d->m_MsgBuff);
 
     switch (b)
     {
@@ -969,8 +1020,14 @@ void QSmf::metaEvent(quint8 b)
     case instrument_name:
     case lyric:
     case marker:
-    case cue_point:
-        emit signalSMFText(b, QString(m));
+    case cue_point: {
+            QString s;
+            if (d->m_decoder == NULL)
+                s = QString(m);
+            else
+                s = d->m_decoder->toUnicode(m);
+            emit signalSMFText(b, s);
+        }
         break;
     case forced_channel:
         emit signalSMFforcedChannel(m[0]);
@@ -982,18 +1039,18 @@ void QSmf::metaEvent(quint8 b)
         emit signalSMFendOfTrack();
         break;
     case set_tempo:
-        m_CurrTempo = to32bit(0, m[0], m[1], m[2]);
-        emit signalSMFTempo(m_CurrTempo);
-        rec = m_TempoList.last();
-        if (rec.tempo == m_CurrTempo)
+        d->m_CurrTempo = to32bit(0, m[0], m[1], m[2]);
+        emit signalSMFTempo(d->m_CurrTempo);
+        rec = d->m_TempoList.last();
+        if (rec.tempo == d->m_CurrTempo)
         {
             return;
         }
-        if (rec.time > m_CurrTime)
+        if (rec.time > d->m_CurrTime)
         {
             return;
         }
-        addTempo(m_CurrTempo, m_CurrTime);
+        addTempo(d->m_CurrTempo, d->m_CurrTime);
         break;
     case smpte_offset:
         emit signalSMFSmpte(m[0], m[1], m[2], m[3], m[4]);
@@ -1008,14 +1065,14 @@ void QSmf::metaEvent(quint8 b)
         emit signalSMFSeqSpecific(m);
         break;
     default:
-        emit signalSMFMetaMisc(b, m);
         break;
     }
+    emit signalSMFMetaMisc(b, m);
 }
 
 void QSmf::sysEx()
 {
-    QByteArray varr(m_MsgBuff);
+    QByteArray varr(d->m_MsgBuff);
     emit signalSMFSysex(varr);
 }
 
@@ -1036,14 +1093,14 @@ quint8 QSmf::upperByte(quint16 x)
 
 void QSmf::msgInit()
 {
-    m_MsgBuff.truncate(0);
+    d->m_MsgBuff.truncate(0);
 }
 
 void QSmf::msgAdd(quint8 b)
 {
-    int s = m_MsgBuff.size();
-    m_MsgBuff.resize(s + 1);
-    m_MsgBuff[s] = b;
+    int s = d->m_MsgBuff.size();
+    d->m_MsgBuff.resize(s + 1);
+    d->m_MsgBuff[s] = b;
 }
 
 /* public properties (accessors) */
@@ -1054,7 +1111,7 @@ void QSmf::msgAdd(quint8 b)
  */
 long QSmf::getCurrentTime()
 {
-    return m_CurrTime;
+    return d->m_CurrTime;
 }
 
 /**
@@ -1063,7 +1120,7 @@ long QSmf::getCurrentTime()
  */
 long QSmf::getCurrentTempo()
 {
-    return m_CurrTempo;
+    return d->m_CurrTempo;
 }
 
 /**
@@ -1072,7 +1129,7 @@ long QSmf::getCurrentTempo()
  */
 long QSmf::getRealTime()
 {
-    return m_RealTime;
+    return d->m_RealTime;
 }
 
 /**
@@ -1081,7 +1138,7 @@ long QSmf::getRealTime()
  */
 int QSmf::getDivision()
 {
-    return m_Division;
+    return d->m_Division;
 }
 
 /**
@@ -1090,7 +1147,7 @@ int QSmf::getDivision()
  */
 void QSmf::setDivision(int division)
 {
-    m_Division = division;
+    d->m_Division = division;
 }
 
 /**
@@ -1099,7 +1156,7 @@ void QSmf::setDivision(int division)
  */
 int QSmf::getTracks()
 {
-    return m_Tracks;
+    return d->m_Tracks;
 }
 
 /**
@@ -1108,7 +1165,7 @@ int QSmf::getTracks()
  */
 void QSmf::setTracks(int tracks)
 {
-    m_Tracks = tracks;
+    d->m_Tracks = tracks;
 }
 
 /**
@@ -1117,7 +1174,7 @@ void QSmf::setTracks(int tracks)
  */
 int QSmf::getFileFormat()
 {
-    return m_fileFormat;
+    return d->m_fileFormat;
 }
 
 /**
@@ -1126,7 +1183,7 @@ int QSmf::getFileFormat()
  */
 void QSmf::setFileFormat(int fileFormat)
 {
-    m_fileFormat = fileFormat;
+    d->m_fileFormat = fileFormat;
 }
 
 /**
@@ -1135,7 +1192,35 @@ void QSmf::setFileFormat(int fileFormat)
  */
 long QSmf::getFilePos()
 {
-    return (long) m_IOStream->device()->pos();
+    return (long) d->m_IOStream->device()->pos();
+}
+
+/**
+ * Gets the text codec used for text meta-events I/O
+ * @return QTextCodec pointer
+ */
+QTextCodec* QSmf::getTextCodec()
+{
+    return d->m_codec;
+}
+
+/**
+ * Sets the text codec for text meta-events.
+ * The engine doesn't take ownership of the codec instance.
+ *
+ * @param codec QTextCodec pointer
+ */
+void QSmf::setTextCodec(QTextCodec *codec)
+{
+    d->m_codec = codec;
+    delete d->m_encoder;
+    delete d->m_decoder;
+    d->m_encoder = 0;
+    d->m_decoder = 0;
+    if (codec != NULL) {
+        d->m_encoder = codec->makeEncoder();
+        d->m_decoder = codec->makeDecoder();
+    }
 }
 
 }

@@ -24,8 +24,8 @@
 
 #include "aseqmmcommon.h"
 #include <QObject>
-#include <QDataStream>
-#include <QList>
+
+class QDataStream;
 
 /**
  * @file qsmf.h
@@ -118,6 +118,8 @@ public:
     void setTracks(int tracks);
     int  getFileFormat();
     void setFileFormat(int fileFormat);
+    QTextCodec* getTextCodec();
+    void setTextCodec(QTextCodec *codec);
 
 signals:
     /**
@@ -281,26 +283,8 @@ private:
         quint64 time;
     };
 
-    QDataStream *m_IOStream;
-    QByteArray m_MsgBuff;
-    QList<QSmfRecTempo> m_TempoList;
-    quint64 m_ToBeRead;
-    quint64 m_NumBytesWritten;
-    bool m_Interactive;     /**< file and track headers are not required */
-    quint64 m_CurrTime;     /**< current time in delta-time units */
-    quint64 m_RealTime;     /**< current time in 1/16 centisecond-time units */
-    double m_DblRealTime;   /**< as above, floating */
-    int m_Division;         /**< ticks per beat. Default = 96 */
-    quint64 m_CurrTempo;    /**< microseconds per quarter note */
-    quint64 m_OldCurrTempo;
-    quint64 m_OldRealTime;
-    double m_DblOldRealtime;
-    quint64 m_OldCurrTime;
-    quint64 m_RevisedTime;
-    quint64 m_TempoChangeTime;
-    int m_Tracks;
-    int m_fileFormat;
-    int m_LastStatus;
+    class QSmfPrivate;
+    QSmfPrivate *d;
 
     void SMFRead();
     void SMFWrite();
