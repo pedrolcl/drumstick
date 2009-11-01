@@ -1,10 +1,10 @@
 /*
-    Virtual Piano Widget for Qt4
+    Virtual Piano Widget for Qt4 
     Copyright (C) 2008-2009, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 3 of the License, or
+    the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -12,7 +12,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along
+    You should have received a copy of the GNU General Public License along 
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -20,28 +20,29 @@
 #define PIANOSCENE_H_
 
 #include "pianokey.h"
+#include "keylabel.h"
+#include "keyboardmap.h"
 #include <QGraphicsScene>
 #include <QHash>
-
-#define KeyboardMap QHash<int, int>
 
 class PianoHandler
 {
 public:
+    virtual ~PianoHandler() {}
     virtual void noteOn( const int note ) = 0;
     virtual void noteOff( const int note ) = 0;
 };
 
-class PianoScene : public QGraphicsScene
+class VPIANO_EXPORT PianoScene : public QGraphicsScene
 {
     Q_OBJECT
-
+    
 public:
-    PianoScene ( const int baseOctave,
+    PianoScene ( const int baseOctave, 
                  const int numOctaves,
                  const QColor& keyPressedColor = QColor(),
                  QObject * parent = 0 );
-
+    
     QSize sizeHint() const;
     void setKeyboardMap( KeyboardMap* map ) { m_keybdMap = map; }
     KeyboardMap* getKeyboardMap() const { return m_keybdMap; }
@@ -49,10 +50,16 @@ public:
     void setPianoHandler(PianoHandler* handler) { m_handler = handler; }
     QColor getKeyPressedColor() const { return m_keyPressedColor; }
     void setKeyPressedColor(const QColor& color);
-    int getMinNote() const { return m_minNote; }
+    int getMinNote() const { return m_minNote; } 
     void setMinNote(const int note);
     int getMaxNote() const { return m_maxNote; }
     void setMaxNote(const int note);
+    int getTranspose() const { return m_transpose; }
+    void setTranspose(const int transpose);
+    bool showLabels() const { return m_showLabels; }
+    void setShowLabels(const bool show);
+    bool useFlats() const { return m_useFlats; }
+    void setUseFlats(const bool use);
 
     void showNoteOn( const int note );
     void showNoteOff( const int note );
@@ -60,6 +67,10 @@ public:
     void setBaseOctave( const int base );
     int numOctaves() const { return m_numOctaves; }
     void allKeysOff();
+    void keyOn( const int note );
+    void keyOff( const int note );
+    bool getRawKeyboardMode() const { return m_rawkbd; }
+    void setRawKeyboardMode(const bool b);
 
 signals:
     void noteOn(int n);
@@ -72,6 +83,7 @@ protected:
     void keyOff( PianoKey* key );
     PianoKey* getKeyForPos( const QPointF& p ) const;
     PianoKey* getPianoKey( const int key ) const;
+    QString noteName(const int note);
 
     void mouseMoveEvent ( QGraphicsSceneMouseEvent * mouseEvent );
     void mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent );
@@ -81,16 +93,22 @@ protected:
 
 private:
     void hideOrShowKeys();
-
+    void refreshLabels();
+    
     int m_baseOctave;
     int m_numOctaves;
     int m_minNote;
     int m_maxNote;
+    int m_transpose;
+    bool m_showLabels;
+    bool m_useFlats;
+    bool m_rawkbd;
     QColor m_keyPressedColor;
     bool m_mousePressed;
     PianoHandler* m_handler;
     KeyboardMap* m_keybdMap;
     QList<PianoKey*> m_keys;
+    QList<KeyLabel*> m_labels;
 };
 
 #endif /*PIANOSCENE_H_*/

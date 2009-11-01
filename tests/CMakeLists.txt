@@ -286,6 +286,10 @@ SET(vpiano_SRCS
     vpiano/pianoscene.h
     vpiano/pianokeybd.cpp
     vpiano/pianokeybd.h
+    vpiano/keylabel.cpp
+    vpiano/keylabel.h
+    vpiano/rawkeybdapp.cpp
+    vpiano/rawkeybdapp.h
     vpiano/about.cpp
     vpiano/about.h
     vpiano/connectionitem.h
@@ -308,6 +312,8 @@ SET(vpiano_qtobject_SRCS
 )
 
 QT4_WRAP_CPP(vpiano_moc_SRCS ${vpiano_qtobject_SRCS})
+
+QT4_ADD_RESOURCES(vpiano_SRCS vpiano/pianokeybd.qrc)
 
 ADD_EXECUTABLE(aseqmm-vpiano
     ${vpiano_ui_SRCS}

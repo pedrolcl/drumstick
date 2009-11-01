@@ -28,6 +28,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
 {
     ui.setupUi(this);
     ui.statusBar->hide();
+    ui.pianokeybd->setRawKeyboardMode(true);
 
     m_Client = new MidiClient(this);
     m_Client->open();
