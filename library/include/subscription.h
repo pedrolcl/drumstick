@@ -18,8 +18,8 @@
 */
 
  
-#ifndef INCLUDED_SUBSCRIPTION_H
-#define INCLUDED_SUBSCRIPTION_H
+#ifndef ASEQMM_SUBSCRIPTION_H
+#define ASEQMM_SUBSCRIPTION_H
 
 #include "aseqmmcommon.h"
 #include <QList>
@@ -68,7 +68,6 @@ public:
     void setType(snd_seq_query_subs_type_t type);
     void setIndex(int index);
     Subscriber& operator=(const Subscriber& other);
-    bool operator==(Subscriber& other);
 
 private:
     snd_seq_query_subscribe_t* m_Info;
@@ -128,4 +127,4 @@ typedef QList<Subscriber> SubscribersList;
 
 /** @} */
 
-#endif //INCLUDED_SUBSCRIPTION_H
+#endif //ASEQMM_SUBSCRIPTION_H

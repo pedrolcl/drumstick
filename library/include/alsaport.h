@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef INCLUDED_ALSAPORT_H
-#define INCLUDED_ALSAPORT_H
+#ifndef ASEQMM_ALSAPORT_H
+#define ASEQMM_ALSAPORT_H
 
 #include "subscription.h"
 #include <QObject>
@@ -214,4 +214,4 @@ typedef QList<MidiPort*> MidiPortList;
 
 /** @} */
 
-#endif //INCLUDED_ALSAPORT_H
+#endif //ASEQMM_ALSAPORT_H

@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#ifndef INCLUDED_TIMER_H
-#define INCLUDED_TIMER_H
+#ifndef ASEQMM_ALSATIMER_H
+#define ASEQMM_ALSATIMER_H
 
 #include "aseqmmcommon.h"
 #include <QList>
@@ -355,4 +355,4 @@ private:
 
 /** @} */
 
-#endif /*INCLUDED_TIMER_H*/
+#endif /* ASEQMM_ALSATIMER_H */

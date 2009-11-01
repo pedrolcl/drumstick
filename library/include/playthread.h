@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef INCLUDED_PLAYTHREAD_H
-#define INCLUDED_PLAYTHREAD_H
+#ifndef ASEQMM_PLAYTHREAD_H
+#define ASEQMM_PLAYTHREAD_H
 
 #include "alsaevent.h"
 #include <QThread>
@@ -107,4 +107,4 @@ protected:
 
 /** @} */
 
-#endif /*INCLUDED_PLAYTHREAD_H*/
+#endif /*ASEQMM_PLAYTHREAD_H*/

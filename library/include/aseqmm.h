@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#ifndef ASEQMM_H_
-#define ASEQMM_H_
+#ifndef ASEQMM_H
+#define ASEQMM_H
 
 /**
  * @file aseqmm.h
@@ -35,4 +35,4 @@
 #include <aseqmm/qsmf.h>
 #include <aseqmm/subscription.h>
 
-#endif /*ASEQMM_H_*/
+#endif /*ASEQMM_H*/

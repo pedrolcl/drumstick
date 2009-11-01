@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef INCLUDED_ALSAEVENT_H
-#define INCLUDED_ALSAEVENT_H
+#ifndef ASEQMM_ALSAEVENT_H
+#define ASEQMM_ALSAEVENT_H
 
 #include "aseqmmcommon.h"
 #include <QEvent>
@@ -420,7 +420,7 @@ class TextEvent : public VariableEvent
 public:
     TextEvent();
     TextEvent(snd_seq_event_t* event);
-    TextEvent(const QString& text, const int textType = 1);
+    explicit TextEvent(const QString& text, const int textType = 1);
     TextEvent(const TextEvent& other);
     TextEvent(const unsigned int datalen, char* dataptr);
     QString getText() const;
@@ -623,7 +623,7 @@ class MidiCodec : public QObject
 {
     Q_OBJECT
 public:
-    MidiCodec(int bufsize, QObject* parent = 0);
+    explicit MidiCodec(int bufsize, QObject* parent = 0);
     ~MidiCodec();
 
     void init();
@@ -647,4 +647,4 @@ private:
 
 /** @} */
 
-#endif //INCLUDED_ALSAEVENT_H
+#endif //ASEQMM_ALSAEVENT_H

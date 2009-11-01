@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef INCLUDED_ALSACLIENT_H
-#define INCLUDED_ALSACLIENT_H
+#ifndef ASEQMM_ALSACLIENT_H
+#define ASEQMM_ALSACLIENT_H
 
 #include "alsaport.h"
 #include <QPointer>
@@ -215,6 +215,7 @@ private:
         virtual void run();
         bool stopped();
         void stop();
+        void start( Priority priority = InheritPriority );
     private:
         MidiClient *m_MidiClient;
         int m_Wait;
@@ -367,4 +368,4 @@ private:
 
 /** @} */
 
-#endif //INCLUDED_ALSACLIENT_H
+#endif // ASEQMM_ALSACLIENT_H

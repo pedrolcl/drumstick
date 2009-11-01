@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
  
-#ifndef INCLUDED_ALSAQUEUE_H
-#define INCLUDED_ALSAQUEUE_H
+#ifndef ASEQMM_ALSAQUEUE_H
+#define ASEQMM_ALSAQUEUE_H
 
 #include "aseqmmcommon.h"
 
@@ -188,7 +188,7 @@ class MidiQueue : public QObject
 {
     Q_OBJECT
 public:
-    MidiQueue(MidiClient* seq, QObject* parent = 0);
+    explicit MidiQueue(MidiClient* seq, QObject* parent = 0);
     MidiQueue(MidiClient* seq, const QueueInfo& info, QObject* parent = 0);
     MidiQueue(MidiClient* seq, const QString name, QObject* parent = 0);
     MidiQueue(MidiClient* seq, const int queue_id, QObject* parent = 0);
@@ -225,4 +225,4 @@ private:
 
 /** @} */
 
-#endif //INCLUDED_ALSAQUEUE_H
+#endif //ASEQMM_ALSAQUEUE_H

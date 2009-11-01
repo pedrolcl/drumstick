@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#ifndef ASEQMMCOMMON_H_
-#define ASEQMMCOMMON_H_
+#ifndef ASEQMM_ASEQMMCOMMON_H
+#define ASEQMM_ASEQMMCOMMON_H
 
 #include <qglobal.h>
 #include <QString>
@@ -153,4 +153,4 @@ const QString LIBRARY_VERSION(SND_LIB_VERSION_STR);
 
 /** @} */
 
-#endif /*ASEQMMCOMMON_H_*/
+#endif /*ASEQMM_ASEQMMCOMMON_H*/

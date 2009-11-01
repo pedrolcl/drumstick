@@ -652,7 +652,7 @@ MidiClient::startSequencerInput()
 {
     if (m_Thread == NULL) {
         m_Thread = new SequencerInputThread(this, 500);
-        m_Thread->start();
+        m_Thread->start(QThread::TimeCriticalPriority);
     }
 }
 
@@ -1624,6 +1624,25 @@ MidiClient::SequencerInputThread::stop()
     m_mutex.lockForWrite();
     m_Stopped = true;
     m_mutex.unlock();
+}
+
+void
+MidiClient::SequencerInputThread::start( Priority priority )
+{
+    int rc;
+    struct sched_param p;
+
+    QThread::start(priority);
+
+    if ( priority == TimeCriticalPriority ) {
+        ::memset(&p, 0, sizeof(p));
+        p.sched_priority = 6;
+        rc = ::pthread_setschedparam(pthread_self(), SCHED_FIFO, &p);
+        if (rc != 0) {
+            qWarning() << "pthread_setschedparam to SCHED_FIFO failed, rc="
+                       << rc << ::strerror(rc);
+        }
+    }
 }
 
 /**

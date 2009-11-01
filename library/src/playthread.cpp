@@ -17,9 +17,9 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+#include "playthread.h"
 #include "alsaclient.h"
 #include "alsaqueue.h"
-#include "playthread.h"
 
 /**
  * @file playthread.cpp
