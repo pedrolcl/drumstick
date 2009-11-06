@@ -195,6 +195,25 @@ SequencerEvent::isConnectionChange(const SequencerEvent* event)
 }
 
 /**
+ * Checks if the event's type is a Channel Voice message.
+ * @param event A SequencerEvent object pointer
+ * @return True if the event is a channel voice message.
+ */
+bool
+SequencerEvent::isChannel(const SequencerEvent* event)
+{
+    snd_seq_event_type_t te = event->getSequencerType();
+    return ( te == SND_SEQ_EVENT_NOTEOFF ||
+             te == SND_SEQ_EVENT_NOTEON ||
+             te == SND_SEQ_EVENT_KEYPRESS ||
+             te == SND_SEQ_EVENT_CONTROLLER ||
+             te == SND_SEQ_EVENT_CONTROL14 ||
+             te == SND_SEQ_EVENT_PGMCHANGE ||
+             te == SND_SEQ_EVENT_CHANPRESS ||
+             te == SND_SEQ_EVENT_PITCHBEND );
+}
+
+/**
  * Sets the event's ALSA sequencer type
  * @param eventType The ALSA sequencer type
  */

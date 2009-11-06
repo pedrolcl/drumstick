@@ -127,6 +127,7 @@ public:
     static bool isPort(const SequencerEvent* event);
     static bool isClient(const SequencerEvent* event);
     static bool isConnectionChange(const SequencerEvent* event);
+    static bool isChannel(const SequencerEvent* event);
 
     /** Clone this object returning a pointer to the new object */
     CLONE_EVENT_DECLARATION(SequencerEvent);

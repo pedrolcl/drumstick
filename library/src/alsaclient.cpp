@@ -21,6 +21,7 @@
 #include "alsaqueue.h"
 #include "alsaevent.h"
 #include <QThread>
+#include <pthread.h>
 
 /**
  * @file alsaclient.cpp
