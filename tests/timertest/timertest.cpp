@@ -53,7 +53,7 @@ void TimerTest::showInfo()
 void TimerTest::queryTimers()
 {
     TimerQuery* query = new TimerQuery("hw", 0);
-    cout << endl << "type__ Name________________ c/s/C/D/S Freq." << endl;
+    cout << endl << "type___ Name________________ c/s/C/D/S Freq." << endl;
     TimerIdList lst = query->getTimers();
     TimerIdList::ConstIterator it;
     for( it = lst.begin(); it != lst.end(); ++it )
@@ -61,7 +61,7 @@ void TimerTest::queryTimers()
         TimerId id = *it;
         Timer* timer = new Timer(id, SND_TIMER_OPEN_NONBLOCK);
         TimerInfo info = timer->getTimerInfo();
-        cout << qSetFieldWidth(7) << left << info.getId();
+        cout << qSetFieldWidth(8) << left << info.getId();
         cout << qSetFieldWidth(20) << left << info.getName();
         cout << qSetFieldWidth(0) << " ";
         cout << id.getClass() << "/" << id.getSlaveClass() << "/";
@@ -69,8 +69,7 @@ void TimerTest::queryTimers()
         if( info.isSlave() ) {
             cout << "SLAVE";
         } else {
-            long freq = info.getFrequency();
-            cout << freq << " Hz";
+            cout << info.getFrequency() << " Hz";
         }
         cout << endl;
         delete timer;
@@ -80,43 +79,46 @@ void TimerTest::queryTimers()
 
 void TimerTest::runTest()
 {
+    QPointer<Timer> test_timer;
     cout << "Looking for the best global ALSA timer ..." << endl;
-    m_timer = Timer::bestGlobalTimer( SND_TIMER_OPEN_NONBLOCK | 
-                                      SND_TIMER_OPEN_TREAD );
-    m_info = m_timer->getTimerInfo();
-    showInfo();
-    cout << endl << "Here is a listing of all your available ALSA timers ..." << endl;
-    queryTimers();
-    cout << endl << "Testing the best available timer ..." << endl;
-    try {
-        m_params.setAutoStart(true);
-        if (!m_info.isSlave()) {
-            /* 50 Hz */
-            m_params.setTicks( 1000000000L / m_info.getResolution() / 50); 
-            if (m_params.getTicks() < 1) {
+    test_timer = Timer::bestGlobalTimer( SND_TIMER_OPEN_NONBLOCK | 
+                                         SND_TIMER_OPEN_TREAD );
+    if (test_timer != NULL) {
+        m_info = test_timer->getTimerInfo();
+        showInfo();
+        cout << endl << "Here is a listing of all your available ALSA timers ..." << endl;
+        queryTimers();
+        cout << endl << "Testing the best available timer ..." << endl;
+        try {
+            m_params.setAutoStart(true);
+            if (!m_info.isSlave()) {
+                /* 50 Hz */
+                m_params.setTicks( 1000000000L / m_info.getResolution() / 50);
+                if (m_params.getTicks() < 1) {
+                    m_params.setTicks(1);
+                }
+                cout << "Using " << m_params.getTicks() << " tick(s)" << endl;
+            } else {
                 m_params.setTicks(1);
             }
-            cout << "Using " << m_params.getTicks() << " tick(s)" << endl;
-        } else {
-            m_params.setTicks(1);            
+            m_params.setFilter(1 << SND_TIMER_EVENT_TICK);
+            test_timer->setTimerParams(m_params);
+            m_status = test_timer->getTimerStatus();
+            showStatus();
+            test_timer->setHandler(this);
+            cout << endl << "Testing timer callback method:" << endl;
+            test_timer->start();
+            test_timer->startEvents();
+            sleep(1);
+            test_timer->stopEvents();
+            test_timer->stop();
+            m_status = test_timer->getTimerStatus();
+            showStatus();
+            cout << endl << "Success!" << endl;
+        } catch (...) {
+            cout << endl << "Test failed" << endl;
         }
-        m_params.setFilter(1 << SND_TIMER_EVENT_TICK);
-        m_timer->setTimerParams(m_params);
-        m_status = m_timer->getTimerStatus();
-        showStatus();
-        m_timer->setHandler(this);
-        cout << endl << "Testing timer callback method:" << endl;
-        m_timer->start();
-        m_timer->startEvents();
-        sleep(1);
-        m_timer->stopEvents();
-        m_timer->stop();
-        m_status = m_timer->getTimerStatus();
-        showStatus();
-        cout << endl << "Success!" << endl;
-        delete m_timer;
-    } catch (...) {
-        cout << endl << "Test failed" << endl;
+        delete test_timer;
     }
 }
 

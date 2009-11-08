@@ -1315,7 +1315,7 @@ void Timer::stopEvents()
 
 /**
  * Check and return the best available global Timer in the system, meaning
- * the timer higher frequency (or lesser period, resolution).
+ * the timer with higher frequency (or lesser period, resolution).
  * @param openMode Open mode flags
  * @param parent Optional parent object
  * @return A new Timer instance pointer
@@ -1333,6 +1333,9 @@ Timer::bestGlobalTimer(int openMode, QObject* parent)
         , SND_TIMER_GLOBAL_RTC
 #ifdef SND_TIMER_GLOBAL_HPET
         , SND_TIMER_GLOBAL_HPET
+#endif
+#ifdef SND_TIMER_GLOBAL_HRTIMER
+        , SND_TIMER_GLOBAL_HRTIMER
 #endif
     };
     int max_global_timers = sizeof(test_devs)/sizeof(int);

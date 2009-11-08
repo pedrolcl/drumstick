@@ -46,7 +46,6 @@ private:
     TimerInfo   m_info;
     TimerStatus m_status;
     TimerParams m_params;
-    QPointer<Timer> m_timer;
 };
 
 #endif /*TIMERTEST_H_*/
