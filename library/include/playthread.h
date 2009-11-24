@@ -86,6 +86,9 @@ signals:
      */
     void finished();
 
+public slots:
+    void start( Priority priority = InheritPriority );
+
 protected:
     virtual void shutupSound();
     virtual void sendEchoEvent(int tick);

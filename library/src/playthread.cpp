@@ -96,6 +96,8 @@ SequencerOutputThread::stop()
     m_mutex.lockForWrite();
     m_Stopped = true;
     m_mutex.unlock();
+    while (isRunning())
+        wait(TIMEOUT);
 }
 
 /**
@@ -193,16 +195,15 @@ void SequencerOutputThread::run()
                 m_Queue->setTickPosition(last_tick);
                 m_Queue->continueRunning();
             }
-            m_Stopped = false;
             while (!stopped() && hasNext()) {
                 SequencerEvent* ev = nextEvent();
                 if (getEchoResolution() > 0) {
-                    while (last_tick < ev->getTick()) {
+                    while (!stopped() && (last_tick < ev->getTick())) {
                         last_tick += getEchoResolution();
                         sendEchoEvent(last_tick);
                     }
                 }
-                if (!SequencerEvent::isConnectionChange(ev))
+                if (!stopped() && !SequencerEvent::isConnectionChange(ev))
                     sendSongEvent(ev);
             }
             if (stopped()) {
@@ -223,6 +224,14 @@ void SequencerOutputThread::run()
         m_npfds = 0;
         m_pfds = 0;
     }
+}
+
+void SequencerOutputThread::start( Priority priority )
+{
+    m_mutex.lockForWrite();
+    m_Stopped = false;
+    m_mutex.unlock();
+    QThread::start( priority );
 }
 
 } /* namespace aseqmm */
