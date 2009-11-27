@@ -107,7 +107,7 @@ SequencerOutputThread::stop()
 void
 SequencerOutputThread::sendEchoEvent(int tick)
 {
-    if (m_MidiClient != NULL) {
+    if (!stopped() && m_MidiClient != NULL) {
         SystemEvent ev(SND_SEQ_EVENT_ECHO);
         ev.setSource(m_PortId);
         ev.setDestination(m_MidiClient->getClientId(), m_PortId);
@@ -124,8 +124,8 @@ void
 SequencerOutputThread::sendSongEvent(SequencerEvent* ev)
 {
     if (m_MidiClient != NULL) {
-        while ((snd_seq_event_output_direct(m_MidiClient->getHandle(), ev->getHandle()) < 0)
-                && !stopped())
+        while (!stopped() &&
+               (snd_seq_event_output_direct(m_MidiClient->getHandle(), ev->getHandle()) < 0))
             poll(m_pfds, m_npfds, TIMEOUT);
     }
 }
@@ -137,8 +137,8 @@ void
 SequencerOutputThread::drainOutput()
 {
     if (m_MidiClient != NULL) {
-        while ((snd_seq_drain_output(m_MidiClient->getHandle()) < 0)
-                && !stopped())
+        while (!stopped() &&
+               (snd_seq_drain_output(m_MidiClient->getHandle()) < 0))
             poll(m_pfds, m_npfds, TIMEOUT);
     }
 }
@@ -149,9 +149,9 @@ SequencerOutputThread::drainOutput()
 void
 SequencerOutputThread::syncOutput()
 {
-    if (m_MidiClient != NULL) {
+    if (!stopped() && m_MidiClient != NULL) {
         QueueStatus status = m_Queue->getStatus();
-        while ((status.getEvents() > 0) && !stopped()) {
+        while (!stopped() && (status.getEvents() > 0)) {
            usleep(TIMEOUT*1000);
            status = m_Queue->getStatus();
         }
@@ -165,8 +165,8 @@ void
 SequencerOutputThread::shutupSound()
 {
     int channel;
-    if (m_MidiClient != NULL) {
-        for (channel = 0; channel < 16; ++channel) {
+    if (!stopped() && m_MidiClient != NULL) {
+        for (channel = 0; !stopped() && channel < 16; ++channel) {
             ControllerEvent ev(channel, MIDI_CTL_ALL_SOUNDS_OFF, 0);
             ev.setSource(m_PortId);
             ev.setSubscribers();
@@ -230,8 +230,8 @@ void SequencerOutputThread::start( Priority priority )
 {
     m_mutex.lockForWrite();
     m_Stopped = false;
-    m_mutex.unlock();
     QThread::start( priority );
+    m_mutex.unlock();
 }
 
 } /* namespace aseqmm */

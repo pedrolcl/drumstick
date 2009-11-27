@@ -77,7 +77,7 @@ public:
      * @return Pointer to the next SequencerEvent to be played.
      */
     virtual SequencerEvent* nextEvent() = 0;
-    virtual bool stopped();
+
     virtual void stop();
 
 signals:
@@ -95,6 +95,7 @@ protected:
     virtual void sendSongEvent(SequencerEvent* ev);
     virtual void drainOutput();
     virtual void syncOutput();
+    virtual bool stopped();
 
     MidiClient *m_MidiClient;   /**< MidiClient instance pointer */
     MidiQueue *m_Queue;         /**< MidiQueue instance pointer */
