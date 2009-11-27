@@ -73,6 +73,7 @@ public slots:
     void quit();
 
     void songFinished();
+    void playerStopped();
     void sequencerEvent(SequencerEvent* ev);
     void headerEvent(int format, int ntrks, int division);
     void noteOnEvent(int chan, int pitch, int vol);

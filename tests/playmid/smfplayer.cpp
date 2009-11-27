@@ -90,6 +90,7 @@ SMFPlayer::SMFPlayer(QWidget *parent)
 
     m_player = new Player(m_Client, m_portId);
     connect(m_player, SIGNAL(finished()), SLOT(songFinished()));
+    connect(m_player, SIGNAL(stopped()), SLOT(playerStopped()));
 
     m_Client->startSequencerInput();
 }
@@ -238,6 +239,24 @@ void SMFPlayer::songFinished()
 {
     m_player->resetPosition();
     ui.btnStop->setChecked(true);
+}
+
+void SMFPlayer::playerStopped()
+{
+    int portId = m_Port->getPortId();
+    for (int channel = 0; channel < 16; ++channel) {
+        ControllerEvent ev1(channel, MIDI_CTL_ALL_NOTES_OFF, 0);
+        ev1.setSource(portId);
+        ev1.setSubscribers();
+        ev1.setDirect();
+        m_Client->outputDirect(&ev1);
+        ControllerEvent ev2(channel, MIDI_CTL_ALL_SOUNDS_OFF, 0);
+        ev2.setSource(portId);
+        ev2.setSubscribers();
+        ev2.setDirect();
+        m_Client->outputDirect(&ev2);
+    }
+    m_Client->drainOutput();
 }
 
 void SMFPlayer::updateTempoLabel(float ftempo)

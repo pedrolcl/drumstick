@@ -75,11 +75,11 @@ SequencerOutputThread::SequencerOutputThread(MidiClient *seq, int portId)
 }
 
 /**
- * Checks if the playback task is stopped
- * @return True if the task is stopped
+ * Checks if the playback task is stopRequested
+ * @return True if the task is stopRequested
  */
 bool
-SequencerOutputThread::stopped()
+SequencerOutputThread::stopRequested()
 {
     m_mutex.lockForRead();
     bool bTmp = m_Stopped;
@@ -107,7 +107,7 @@ SequencerOutputThread::stop()
 void
 SequencerOutputThread::sendEchoEvent(int tick)
 {
-    if (!stopped() && m_MidiClient != NULL) {
+    if (!stopRequested() && m_MidiClient != NULL) {
         SystemEvent ev(SND_SEQ_EVENT_ECHO);
         ev.setSource(m_PortId);
         ev.setDestination(m_MidiClient->getClientId(), m_PortId);
@@ -124,7 +124,7 @@ void
 SequencerOutputThread::sendSongEvent(SequencerEvent* ev)
 {
     if (m_MidiClient != NULL) {
-        while (!stopped() &&
+        while (!stopRequested() &&
                (snd_seq_event_output_direct(m_MidiClient->getHandle(), ev->getHandle()) < 0))
             poll(m_pfds, m_npfds, TIMEOUT);
     }
@@ -137,7 +137,7 @@ void
 SequencerOutputThread::drainOutput()
 {
     if (m_MidiClient != NULL) {
-        while (!stopped() &&
+        while (!stopRequested() &&
                (snd_seq_drain_output(m_MidiClient->getHandle()) < 0))
             poll(m_pfds, m_npfds, TIMEOUT);
     }
@@ -149,31 +149,12 @@ SequencerOutputThread::drainOutput()
 void
 SequencerOutputThread::syncOutput()
 {
-    if (!stopped() && m_MidiClient != NULL) {
+    if (!stopRequested() && m_MidiClient != NULL) {
         QueueStatus status = m_Queue->getStatus();
-        while (!stopped() && (status.getEvents() > 0)) {
+        while (!stopRequested() && (status.getEvents() > 0)) {
            usleep(TIMEOUT*1000);
            status = m_Queue->getStatus();
         }
-    }
-}
-
-/**
- * Sends an All Sounds Off MIDI controller event
- */
-void
-SequencerOutputThread::shutupSound()
-{
-    int channel;
-    if (!stopped() && m_MidiClient != NULL) {
-        for (channel = 0; !stopped() && channel < 16; ++channel) {
-            ControllerEvent ev(channel, MIDI_CTL_ALL_SOUNDS_OFF, 0);
-            ev.setSource(m_PortId);
-            ev.setSubscribers();
-            ev.setDirect();
-            sendSongEvent(&ev);
-        }
-        drainOutput();
     }
 }
 
@@ -195,25 +176,25 @@ void SequencerOutputThread::run()
                 m_Queue->setTickPosition(last_tick);
                 m_Queue->continueRunning();
             }
-            while (!stopped() && hasNext()) {
+            while (!stopRequested() && hasNext()) {
                 SequencerEvent* ev = nextEvent();
                 if (getEchoResolution() > 0) {
-                    while (!stopped() && (last_tick < ev->getTick())) {
+                    while (!stopRequested() && (last_tick < ev->getTick())) {
                         last_tick += getEchoResolution();
                         sendEchoEvent(last_tick);
                     }
                 }
-                if (!stopped() && !SequencerEvent::isConnectionChange(ev))
+                if (!stopRequested() && !SequencerEvent::isConnectionChange(ev))
                     sendSongEvent(ev);
             }
-            if (stopped()) {
+            if (stopRequested()) {
                 m_Queue->clear();
-                shutupSound();
+                emit stopped();
             } else {
                 drainOutput();
                 syncOutput();
-                if (stopped())
-                    shutupSound();
+                if (stopRequested())
+                    emit stopped();
                 else
                     emit finished();
             }

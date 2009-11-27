@@ -78,24 +78,31 @@ public:
      */
     virtual SequencerEvent* nextEvent() = 0;
 
+    /**
+     * Stops playing the current sequence.
+     */
     virtual void stop();
 
 signals:
     /**
-     * Signal emitted when the sequence playback has finished.
+     * Signal emitted when the sequence play-back has finished.
      */
     void finished();
+
+    /**
+     * Signal emitted when the play-back has stopped.
+     */
+    void stopped();
 
 public slots:
     void start( Priority priority = InheritPriority );
 
 protected:
-    virtual void shutupSound();
     virtual void sendEchoEvent(int tick);
     virtual void sendSongEvent(SequencerEvent* ev);
     virtual void drainOutput();
     virtual void syncOutput();
-    virtual bool stopped();
+    virtual bool stopRequested();
 
     MidiClient *m_MidiClient;   /**< MidiClient instance pointer */
     MidiQueue *m_Queue;         /**< MidiQueue instance pointer */
