@@ -611,7 +611,7 @@ TextEvent::TextEvent(snd_seq_event_t* event)
  * @param textType The SMF text type
  */
 TextEvent::TextEvent(const QString& text, const int textType)
-    : VariableEvent(text.toAscii()), m_textType(textType)
+    : VariableEvent(text.toUtf8()), m_textType(textType)
 {
     setSequencerType(SND_SEQ_EVENT_USR_VAR0);
 }
@@ -644,7 +644,7 @@ TextEvent::TextEvent(const unsigned int datalen, char* dataptr)
  */
 QString TextEvent::getText() const
 {
-    return QString::fromAscii(m_data.data(), m_data.size());
+    return QString::fromUtf8(m_data.data(), m_data.size());
 }
 
 /**

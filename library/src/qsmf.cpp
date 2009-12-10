@@ -25,8 +25,6 @@
 #include <QFile>
 #include <QDataStream>
 #include <QTextCodec>
-#include <QTextDecoder>
-#include <QTextEncoder>
 
 /**
  * @file qsmf.cpp
@@ -68,8 +66,6 @@ public:
         m_fileFormat(0),
         m_LastStatus(0),
         m_codec(0),
-        m_encoder(0),
-        m_decoder(0),
         m_IOStream(0)
     { }
 
@@ -91,8 +87,6 @@ public:
     int m_fileFormat;
     int m_LastStatus;
     QTextCodec *m_codec;
-    QTextEncoder* m_encoder;
-    QTextDecoder* m_decoder;
     QDataStream *m_IOStream;
     QByteArray m_MsgBuff;
     QList<QSmfRecTempo> m_TempoList;
@@ -113,8 +107,6 @@ QSmf::QSmf(QObject * parent) :
 QSmf::~QSmf()
 {
     d->m_TempoList.clear();
-    delete d->m_encoder;
-    delete d->m_decoder;
     delete d;
 }
 
@@ -549,10 +541,10 @@ void QSmf::writeMetaEvent(long deltaTime, int type, const QString& data)
     putByte(type);
     writeVarLen(data.length());
     QByteArray lcldata;
-    if (d->m_encoder == NULL)
+    if (d->m_codec == NULL)
         lcldata = data.toLatin1();
     else
-        lcldata = d->m_encoder->fromUnicode(data);
+        lcldata = d->m_codec->fromUnicode(data);
     const char *asciichars = lcldata.data();
     for (i = 0; i < lcldata.length(); ++i)
     {
@@ -1022,10 +1014,10 @@ void QSmf::metaEvent(quint8 b)
     case marker:
     case cue_point: {
             QString s;
-            if (d->m_decoder == NULL)
+            if (d->m_codec == NULL)
                 s = QString(m);
             else
-                s = d->m_decoder->toUnicode(m);
+                s = d->m_codec->toUnicode(m);
             emit signalSMFText(b, s);
         }
         break;
@@ -1213,14 +1205,6 @@ QTextCodec* QSmf::getTextCodec()
 void QSmf::setTextCodec(QTextCodec *codec)
 {
     d->m_codec = codec;
-    delete d->m_encoder;
-    delete d->m_decoder;
-    d->m_encoder = 0;
-    d->m_decoder = 0;
-    if (codec != NULL) {
-        d->m_encoder = codec->makeEncoder();
-        d->m_decoder = codec->makeDecoder();
-    }
 }
 
 }
