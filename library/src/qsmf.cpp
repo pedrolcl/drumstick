@@ -535,21 +535,17 @@ void QSmf::writeMetaEvent(long deltaTime, int type, const QByteArray& data)
  */
 void QSmf::writeMetaEvent(long deltaTime, int type, const QString& data)
 {
-    int i;
     writeVarLen(deltaTime);
     putByte(d->m_LastStatus = meta_event);
     putByte(type);
-    writeVarLen(data.length());
     QByteArray lcldata;
     if (d->m_codec == NULL)
         lcldata = data.toLatin1();
     else
         lcldata = d->m_codec->fromUnicode(data);
-    const char *asciichars = lcldata.data();
-    for (i = 0; i < lcldata.length(); ++i)
-    {
-        putByte(asciichars[i]);
-    }
+    writeVarLen(lcldata.length());
+    foreach(char byte, lcldata)
+        putByte(byte);
 }
 
 /**

@@ -19,13 +19,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include "qsmf.h"
 #include "dumpsmf.h"
+#include "qsmf.h"
 #include <cstdlib>
 #include <QObject>
 #include <QString>
 #include <QApplication>
 #include <QTextStream>
+#include <QTextCodec>
 
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 
@@ -33,6 +34,7 @@ QSpySMF::QSpySMF():
     m_currentTrack(0)
 {
     m_engine = new QSmf(this);
+    m_engine->setTextCodec(QTextCodec::codecForName("UTF-8"));
     connect(m_engine, SIGNAL(signalSMFHeader(int,int,int)), this, SLOT(headerEvent(int,int,int)));
     connect(m_engine, SIGNAL(signalSMFTrackStart()), this, SLOT(trackStartEvent()));
     connect(m_engine, SIGNAL(signalSMFTrackEnd()), this, SLOT(trackEndEvent()));

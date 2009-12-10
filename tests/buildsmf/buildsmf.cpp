@@ -17,14 +17,16 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
+#include "buildsmf.h"
+#include "qsmf.h"
 #include <QApplication>
 #include <QDebug>
-#include "qsmf.h"
-#include "buildsmf.h"
+#include <QTextCodec>
 
 QSMFBuilder::QSMFBuilder() : QObject()
 {
     m_engine = new QSmf(this);
+    m_engine->setTextCodec(QTextCodec::codecForName("UTF-8"));
     connect(m_engine, SIGNAL(signalSMFError(const QString&)), 
             this, SLOT(errorHandler(const QString&)));
     connect(m_engine, SIGNAL(signalSMFWriteTrack(int)), 
@@ -33,7 +35,7 @@ QSMFBuilder::QSMFBuilder() : QObject()
 
 void QSMFBuilder::errorHandler(const QString& errorStr)
 {
-    qDebug() << errorStr;
+    qWarning() << errorStr;
     exit(1);
 }
 
@@ -43,7 +45,7 @@ void QSMFBuilder::trackHandler(int )
 
     // Text event
     m_engine->writeMetaEvent(0, copyright_notice, 
-                             QString("Copyright (C) 2006-2009 Pedro Lopez-Cabanillas")); 
+        QString::fromUtf8("Copyright (C) 2006-2009 Pedro López-Cabanillas"));
 
     m_engine->writeBpmTempo(0, 100);                
     m_engine->writeTimeSignature(0, 3, 2, 36, 8);  // ts = 3/4
