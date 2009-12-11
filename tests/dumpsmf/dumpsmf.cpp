@@ -46,8 +46,9 @@ QSpySMF::QSpySMF():
     connect(m_engine, SIGNAL(signalSMFProgram(int,int)), this, SLOT(programEvent(int,int)));
     connect(m_engine, SIGNAL(signalSMFChanPress(int,int)), this, SLOT(chanPressEvent(int,int)));
     connect(m_engine, SIGNAL(signalSMFSysex(const QByteArray&)), this, SLOT(sysexEvent(const QByteArray&)));
-    connect(m_engine, SIGNAL(signalSMFMetaMisc(int, const QByteArray&)), this, SLOT(metaMiscEvent(int, const QByteArray&)));
-    connect(m_engine, SIGNAL(signalSMFVariable(const QByteArray&)), this, SLOT(variableEvent(const QByteArray&)));
+    connect(m_engine, SIGNAL(signalSMFSeqSpecific(const QByteArray&)), this, SLOT(seqSpecificEvent(const QByteArray&)));
+    connect(m_engine, SIGNAL(signalSMFMetaUnregistered(int, const QByteArray&)), this, SLOT(metaMiscEvent(int, const QByteArray&)));
+    //connect(m_engine, SIGNAL(signalSMFVariable(const QByteArray&)), this, SLOT(variableEvent(const QByteArray&)));
     connect(m_engine, SIGNAL(signalSMFSequenceNum(int)), this, SLOT(seqNum(int)));
     connect(m_engine, SIGNAL(signalSMFforcedChannel(int)), this, SLOT(forcedChannel(int)));
     connect(m_engine, SIGNAL(signalSMFforcedPort(int)), this, SLOT(forcedPort(int)));
@@ -149,13 +150,22 @@ void QSpySMF::sysexEvent(const QByteArray& data)
     dumpStr("SysEx", s);
 }
 
-void QSpySMF::variableEvent(const QByteArray& data)
+/*void QSpySMF::variableEvent(const QByteArray& data)
 {
     int j;
     QString s;
     for (j = 0; j < data.count(); ++j)
         s.append(QString("%1 ").arg(data[j] & 0xff, 2, 16));
     dumpStr("Variable event", s);
+}*/
+
+void QSpySMF::seqSpecificEvent(const QByteArray& data)
+{
+    int j;
+    QString s;
+    for (j = 0; j < data.count(); ++j)
+        s.append(QString("%1 ").arg(data[j] & 0xff, 2, 16));
+    dumpStr("Seq. specific", s);
 }
 
 void QSpySMF::metaMiscEvent(int typ, const QByteArray& data)
@@ -164,7 +174,7 @@ void QSpySMF::metaMiscEvent(int typ, const QByteArray& data)
     QString s = QString("type=%1 ").arg(typ);
     for (j = 0; j < data.count(); ++j)
         s.append(QString("%1 ").arg(data[j] & 0xff, 2, 16));
-    dumpStr("Meta", s);
+    dumpStr("Meta (unreg.)", s);
 }
 
 void QSpySMF::seqNum(int seq)

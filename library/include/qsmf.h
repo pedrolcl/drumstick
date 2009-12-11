@@ -186,17 +186,18 @@ signals:
      */
     void signalSMFSysex(const QByteArray& data);
     /**
-     * Emitted after reading a variable message
-     * @param data Variable data
-     */
-    void signalSMFVariable(const QByteArray& data);
-    /**
      * Emitted after reading a Sequencer specific message
      * @param data Message data
      */
     void signalSMFSeqSpecific(const QByteArray& data);
     /**
-     * Emitted after reading a SMF Meta message
+     * Emitted after reading an unregistered SMF Meta message
+     * @param typ Message type
+     * @param data Message data
+     */
+    void signalSMFMetaUnregistered(int typ, const QByteArray& data);
+    /**
+     * Emitted after reading any SMF Meta message
      * @param typ Message type
      * @param data Message data
      */

@@ -1053,6 +1053,7 @@ void QSmf::metaEvent(quint8 b)
         emit signalSMFSeqSpecific(m);
         break;
     default:
+        emit signalSMFMetaUnregistered(b, m);
         break;
     }
     emit signalSMFMetaMisc(b, m);
