@@ -515,16 +515,13 @@ void QSmf::writeTrackChunk(int track)
  */
 void QSmf::writeMetaEvent(long deltaTime, int type, const QByteArray& data)
 {
-    int i;
     writeVarLen(deltaTime);
     d->m_LastStatus = meta_event;
     putByte(d->m_LastStatus);
     putByte(type);
     writeVarLen(data.size());
-    for (i = 0; i < data.size(); ++i)
-    {
-        putByte(data[i]);
-    }
+    foreach(char byte, data)
+        putByte(byte);
 }
 
 /**
@@ -546,6 +543,21 @@ void QSmf::writeMetaEvent(long deltaTime, int type, const QString& data)
     writeVarLen(lcldata.length());
     foreach(char byte, lcldata)
         putByte(byte);
+}
+
+/**
+ * Writes a simple Meta event
+ * @param deltaTime Time offset in ticks
+ * @param type Meta event type
+ * @param data Meta event data
+ */
+void QSmf::writeMetaEvent(long deltaTime, int type, int data)
+{
+    writeVarLen(deltaTime);
+    putByte(d->m_LastStatus = meta_event);
+    putByte(type);
+    putByte(1);
+    putByte(data);
 }
 
 /**

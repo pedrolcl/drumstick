@@ -95,6 +95,7 @@ public:
 
     void writeMetaEvent(long deltaTime, int type, const QByteArray& data);
     void writeMetaEvent(long deltaTime, int type, const QString& data);
+    void writeMetaEvent(long deltaTime, int type, int data);
     void writeMetaEvent(long deltaTime, int type);
 
     void writeMidiEvent(long deltaTime, int type, int chan, int b1);
