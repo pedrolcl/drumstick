@@ -152,7 +152,7 @@ SequencerOutputThread::syncOutput()
     if (!stopRequested() && m_MidiClient != NULL) {
         QueueStatus status = m_Queue->getStatus();
         while (!stopRequested() && (status.getEvents() > 0)) {
-           usleep(TIMEOUT*1000);
+           usleep(TIMEOUT);
            status = m_Queue->getStatus();
         }
     }
