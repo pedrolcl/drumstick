@@ -137,6 +137,18 @@ ENDIF(ENABLE_PCH)
 
 SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed")
 
+FIND_PACKAGE(Doxygen)
+IF(DOXYGEN_FOUND)
+    CONFIGURE_FILE(
+        "${CMAKE_SOURCE_DIR}/Doxyfile.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
+        IMMEDIATE @ONLY)
+    ADD_CUSTOM_TARGET ( docs ALL
+        ${DOXYGEN} Doxyfile
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+ENDIF(DOXYGEN_FOUND)
+
 ADD_SUBDIRECTORY(library)
 ADD_SUBDIRECTORY(tests)
 
@@ -159,7 +171,7 @@ ADD_CUSTOM_TARGET ( tarball
     COMMAND cp -r library aseqmm-${VERSION}
     COMMAND cp -r tests aseqmm-${VERSION}
     COMMAND cp -r doc aseqmm-${VERSION}
-    COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO aseqmm.spec.in aseqmm.pc.in aseqmm.pro configure* Doxyfile link-aseqmm chkcoverage aseqmm-${VERSION}
+    COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO aseqmm.*.in aseqmm.pro configure* Doxyfile.in link-aseqmm chkcoverage aseqmm-${VERSION}
     COMMAND tar -cj --exclude CVS --exclude .cvsignore -f aseqmm-${VERSION}.tar.bz2 aseqmm-${VERSION}
     COMMAND tar -cz --exclude CVS --exclude .cvsignore -f aseqmm-${VERSION}.tar.gz aseqmm-${VERSION}
     COMMAND rm -rf aseqmm-${VERSION}

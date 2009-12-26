@@ -10,20 +10,36 @@
 
 # norootforbuild
 
-Name:           libaseqmm0
+Name:           aseqmm
 Version:        @VERSION@
 Release:        1
 License:        GPL v2 or later
 Summary:        MIDI Sequencer C++ Library Bindings
-Group:          System/Libraries
+Group:          Productivity/Multimedia/Sound/Midi
 URL:            http://kmetronome.sourceforge.net/aseqmm
-Source:         aseqmm-%{version}.tar.bz2
+Source:         %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  cmake
 BuildRequires:  alsa-devel
 BuildRequires:  libqt4-devel
+BuildRequires:  doxygen
+BuildRequires:  graphviz
 
 %description
+This package includes the example programs for libaseqmm.
+
+
+
+Authors:
+--------
+    Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+
+
+%package -n libaseqmm0
+Summary:        MIDI Sequencer C++ Library
+Group:          System/Libraries
+
+%description -n libaseqmm0
 MIDI Sequencer C++ Library Bindings for Qt4 and ALSA
 
 
@@ -32,13 +48,12 @@ Authors:
 --------
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
-%package devel
-License:        GPL v2 or later
+%package -n libaseqmm-devel
 Summary:        Development package for the libaseqmm library
 Group:          Development/Libraries/C and C++
-Requires:       %{name} = %{version} glibc-devel libstdc++-devel libqt4-devel
+Requires:       libaseqmm0 = %{version} glibc-devel libstdc++-devel libqt4-devel
 
-%description devel
+%description -n libaseqmm-devel
 This package contains the files needed to compile programs that use the
 libaseqmm library.
 
@@ -48,12 +63,13 @@ Authors:
 --------
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
-%package progs
-Summary:        Example Programs for libaseqmm
-Group:          System/Libraries
+%package -n libaseqmm-devel-doc
+Summary:        Development documentation package for the libaseqmm library
+Group:          Documentation/Other
+Requires:       libaseqmm-devel = %{version}
 
-%description progs
-This package includes the example programs for libaseqmm.
+%description -n libaseqmm-devel-doc
+This package contains the developer's documentation of the libaseqmm library.
 
 
 
@@ -61,13 +77,12 @@ Authors:
 --------
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
-%debug_package
 %prep
-%setup -q -n aseqmm-%{version}
+%setup -q
 
 %build
 CXXFLAGS="$RPM_OPT_FLAGS -g -fexceptions" \
-    cmake . -DWANT_STATIC=no \
+    cmake . -DWANT_STATIC=0 \
             -DCMAKE_INSTALL_PREFIX=%{_prefix} \
             -DLIB=%{_lib}
 make %{?jobs:-j %jobs} VERBOSE=1
@@ -83,14 +98,15 @@ make install DESTDIR=$RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%defattr(-, root, root)
+%doc AUTHORS COPYING NEWS README TODO
+%{_bindir}/*
+
+%files -n libaseqmm0
 %defattr(-,root,root)
 %{_libdir}/libaseqmm.so.*
 
-%files progs
-%defattr(-, root, root)
-%{_bindir}/*
-
-%files devel
+%files -n libaseqmm-devel
 %defattr(-, root, root)
 %dir %{_includedir}/aseqmm
 %{_libdir}/libaseqmm.so
@@ -99,6 +115,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/aseqmm/*.h
 %{_libdir}/pkgconfig/*.pc
 
+%files -n libaseqmm-devel-doc
+%defattr(-, root, root)
+%doc doc/html/*
+
 %changelog
+* Thu Dec 17 2009 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.1.0-2
+- tweaks
+
 * Thu Aug 27 2009 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.1.0
 - first public release
