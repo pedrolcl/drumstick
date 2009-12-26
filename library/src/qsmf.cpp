@@ -550,6 +550,7 @@ void QSmf::writeMetaEvent(long deltaTime, int type, const QString& data)
  * @param deltaTime Time offset in ticks
  * @param type Meta event type
  * @param data Meta event data
+ * @since 0.2.0
  */
 void QSmf::writeMetaEvent(long deltaTime, int type, int data)
 {
@@ -1199,6 +1200,7 @@ long QSmf::getFilePos()
 /**
  * Gets the text codec used for text meta-events I/O
  * @return QTextCodec pointer
+ * @since 0.2.0
  */
 QTextCodec* QSmf::getTextCodec()
 {
@@ -1210,6 +1212,7 @@ QTextCodec* QSmf::getTextCodec()
  * The engine doesn't take ownership of the codec instance.
  *
  * @param codec QTextCodec pointer
+ * @since 0.2.0
  */
 void QSmf::setTextCodec(QTextCodec *codec)
 {

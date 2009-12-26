@@ -75,8 +75,9 @@ SequencerOutputThread::SequencerOutputThread(MidiClient *seq, int portId)
 }
 
 /**
- * Checks if the playback task is stopRequested
- * @return True if the task is stopRequested
+ * Checks if stop has been requested
+ * @return True if stop has been requested
+ * @since 0.2.0
  */
 bool
 SequencerOutputThread::stopRequested()
@@ -207,6 +208,10 @@ void SequencerOutputThread::run()
     }
 }
 
+/**
+ * Starts the playback thread
+ * @param priority Thread priority, default is InheritPriority
+ */
 void SequencerOutputThread::start( Priority priority )
 {
     m_mutex.lockForWrite();

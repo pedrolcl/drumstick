@@ -195,6 +195,7 @@ signals:
      * Emitted after reading an unregistered SMF Meta message
      * @param typ Message type
      * @param data Message data
+     * @since 0.2.0
      */
     void signalSMFMetaUnregistered(int typ, const QByteArray& data);
     /**

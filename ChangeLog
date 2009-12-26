@@ -1,5 +1,19 @@
 2009-12-27
     * Release 0.2.0
+    * API changes:
+      SequencerInputThread::start() added a priority parameter
+      SequencerEvent::isChannel() new static method
+      SequencerOutputThread::stopped() method removed, converted into a signal
+      SequencerOutputThread::start() added a priority parameter
+      SequencerOutputThread::shutupSound() method removed
+      SequencerOutputThread::stopRequested() method added
+      QSmfPrivate class added
+      QSmf::writeMetaEvent() new method overload
+      QSmf::getTextCodec() new method
+      QSmf::setTextCodec() new method
+      QSmf::signalSMFVariable() signal dropped
+      QSmf::signalSMFMetaUnregistered() signal added
+      Subscriber::operator==() removed unimplemented operator prototype
 
 2009-08-27
     * Public release 0.1.0

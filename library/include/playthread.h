@@ -91,6 +91,7 @@ signals:
 
     /**
      * Signal emitted when the play-back has stopped.
+     * @since 0.2.0
      */
     void stopped();
 

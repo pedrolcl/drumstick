@@ -1627,6 +1627,11 @@ MidiClient::SequencerInputThread::stop()
     m_mutex.unlock();
 }
 
+/**
+ * Starts the input thread.
+ * @param priority the thread priority, default is InheritPriority
+ * @since 0.2.0
+ */
 void
 MidiClient::SequencerInputThread::start( Priority priority )
 {

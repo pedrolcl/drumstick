@@ -198,6 +198,7 @@ SequencerEvent::isConnectionChange(const SequencerEvent* event)
  * Checks if the event's type is a Channel Voice message.
  * @param event A SequencerEvent object pointer
  * @return True if the event is a channel voice message.
+ * @since 0.2.0
  */
 bool
 SequencerEvent::isChannel(const SequencerEvent* event)
