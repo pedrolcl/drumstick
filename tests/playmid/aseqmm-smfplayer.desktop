@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=MIDI Player
+Exec=aseqmm-smfplayer
+Icon=aseqmm
+Terminal=false
+Type=Application
+Categories=AudioVideo;Audio;Midi;Education;Music;
+MimeType=audio/midi;audio/x-midi;
+Comment=MIDI Player
+Comment[es]=Reproductor MIDI 

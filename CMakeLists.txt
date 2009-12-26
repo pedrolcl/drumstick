@@ -143,7 +143,7 @@ IF(DOXYGEN_FOUND)
         "${CMAKE_SOURCE_DIR}/Doxyfile.in"
         "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
         IMMEDIATE @ONLY)
-    ADD_CUSTOM_TARGET ( docs ALL
+    ADD_CUSTOM_TARGET ( doxygen
         ${DOXYGEN} Doxyfile
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
@@ -151,6 +151,7 @@ ENDIF(DOXYGEN_FOUND)
 
 ADD_SUBDIRECTORY(library)
 ADD_SUBDIRECTORY(tests)
+ADD_SUBDIRECTORY(icons)
 
 CONFIGURE_FILE(aseqmm.pc.in aseqmm.pc IMMEDIATE @ONLY)
 CONFIGURE_FILE(aseqmm.spec.in aseqmm.spec IMMEDIATE @ONLY)
@@ -171,6 +172,7 @@ ADD_CUSTOM_TARGET ( tarball
     COMMAND cp -r library aseqmm-${VERSION}
     COMMAND cp -r tests aseqmm-${VERSION}
     COMMAND cp -r doc aseqmm-${VERSION}
+    COMMAND cp -r icons aseqmm-${VERSION}
     COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO aseqmm.*.in aseqmm.pro configure* Doxyfile.in link-aseqmm chkcoverage aseqmm-${VERSION}
     COMMAND tar -cj --exclude CVS --exclude .cvsignore -f aseqmm-${VERSION}.tar.bz2 aseqmm-${VERSION}
     COMMAND tar -cz --exclude CVS --exclude .cvsignore -f aseqmm-${VERSION}.tar.gz aseqmm-${VERSION}
@@ -178,5 +180,5 @@ ADD_CUSTOM_TARGET ( tarball
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
-INSTALL(FILES aseqmm.pc
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/aseqmm.pc
         DESTINATION ${LIB}/pkgconfig)

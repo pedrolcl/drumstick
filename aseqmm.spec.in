@@ -86,6 +86,7 @@ CXXFLAGS="$RPM_OPT_FLAGS -g -fexceptions" \
             -DCMAKE_INSTALL_PREFIX=%{_prefix} \
             -DLIB=%{_lib}
 make %{?jobs:-j %jobs} VERBOSE=1
+make doxygen
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
@@ -99,7 +100,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, root)
-%doc AUTHORS COPYING NEWS README TODO
+%doc AUTHORS COPYING NEWS README TODO ChangeLog
+%dir %{_datadir}/icons/hicolor
+%dir %{_datadir}/icons/hicolor/16x16
+%dir %{_datadir}/icons/hicolor/32x32
+%dir %{_datadir}/icons/hicolor/48x48
+%dir %{_datadir}/icons/hicolor/64x64
+%dir %{_datadir}/icons/hicolor/scalable
+%dir %{_datadir}/icons/hicolor/16x16/apps
+%dir %{_datadir}/icons/hicolor/32x32/apps
+%dir %{_datadir}/icons/hicolor/48x48/apps
+%dir %{_datadir}/icons/hicolor/64x64/apps
+%dir %{_datadir}/icons/hicolor/scalable/apps
+%{_datadir}/icons/hicolor/*/*/*
+%{_datadir}/applications/*
 %{_bindir}/*
 
 %files -n libaseqmm0
