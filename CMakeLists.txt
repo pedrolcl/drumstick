@@ -30,12 +30,6 @@ ENDIF(COMMAND CMAKE_POLICY)
 #SET(CMAKE_INSTALL_PREFIX "/usr" CACHE PATH
 #	"Install path prefix, prepended onto install directories." FORCE)
 
-#SET(EXECUTABLE_OUTPUT_PATH "bin" CACHE PATH
-#    "Single output directory for building all executables." FORCE)
-
-#SET(LIBRARY_OUTPUT_PATH "lib" CACHE PATH
-#	"Single output directory for building all libraries." FORCE)
-
 IF(CMAKE_SIZEOF_VOID_P MATCHES "8")
     SET(LIB "lib64" CACHE STRING "library install directory: lib, lib32, lib64")
 ELSE(CMAKE_SIZEOF_VOID_P MATCHES "8")
@@ -56,8 +50,8 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_admin")
 
 # ASEQMM version string
 SET (VERSION_MAJOR "0")
-SET (VERSION_MINOR "1")
-SET (VERSION_PATCH "99")
+SET (VERSION_MINOR "2")
+SET (VERSION_PATCH "0")
 SET (VERSION_SUFFIX "cvs")
 SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 ADD_DEFINITIONS(-D'VERSION="${VERSION}"')
@@ -65,19 +59,19 @@ ADD_DEFINITIONS(-D'VERSION="${VERSION}"')
 MESSAGE(STATUS "aseqmm ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
 
 # User options
-OPTION(WANT_STATIC "Build a static library (.a) instead of dynamic (.so)" OFF)
-OPTION(WANT_PCH "Build using precompiled headers" OFF)
+OPTION(STATIC_ASEQMM "Build a static library (.a) instead of dynamic (.so)" OFF)
+OPTION(ENABLE_PCH "Build using precompiled headers" OFF)
 
 MESSAGE(STATUS "Build configuration: ${CMAKE_BUILD_TYPE}")
 
 # LIBRARY BUILD TYPE
-IF(WANT_STATIC)
+IF(STATIC_ASEQMM)
     SET(BUILD_SHARED_LIBS OFF)
     MESSAGE(STATUS "Building static libraries")
-ELSE(WANT_STATIC)
+ELSE(STATIC_ASEQMM)
     SET(BUILD_SHARED_LIBS ON)
     MESSAGE(STATUS "Building dynamic libraries")
-ENDIF(WANT_STATIC)
+ENDIF(STATIC_ASEQMM)
 
 # Check for Qt
 SET(QT_MIN_VERSION "4.4.0")
@@ -132,19 +126,19 @@ INCLUDE_DIRECTORIES(
 
 # Check GCC for PCH support
 SET(USE_PCH FALSE)
-IF(WANT_PCH)
+IF(ENABLE_PCH)
     FIND_PACKAGE(PCHSupport)
     IF(PCHSupport_FOUND)
         SET(USE_PCH TRUE)
         ADD_DEFINITIONS(-DUSE_PCH)
         MESSAGE(STATUS "Enabling precompiled headers for GCC ${gcc_compiler_version}") 
     ENDIF(PCHSupport_FOUND)
-ENDIF(WANT_PCH)
+ENDIF(ENABLE_PCH)
 
 SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed")
 
-ADD_SUBDIRECTORY(library build/library)
-ADD_SUBDIRECTORY(tests build/tests)
+ADD_SUBDIRECTORY(library)
+ADD_SUBDIRECTORY(tests)
 
 CONFIGURE_FILE(aseqmm.pc.in aseqmm.pc IMMEDIATE @ONLY)
 CONFIGURE_FILE(aseqmm.spec.in aseqmm.spec IMMEDIATE @ONLY)
@@ -157,25 +151,6 @@ CONFIGURE_FILE(
 
 ADD_CUSTOM_TARGET ( uninstall
     "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
-
-# Custom target trying to clean the CMake generated files
-ADD_CUSTOM_TARGET ( distclean
-    COMMAND rm -f  aseqmm.pc aseqmm.spec
-    COMMAND rm -f  {,library/,tests/}CMakeCache.txt
-    COMMAND rm -f  {,library/,tests/}cmake_install.cmake
-    COMMAND rm -f  {,library/,tests/}cmake_uninstall.cmake
-    COMMAND rm -f  {,library/,tests/}CPackConfig.cmake
-    COMMAND rm -f  {,library/,tests/}CPackSourceConfig.cmake
-    COMMAND rm -f  {,library/,tests/}install_manifest.txt
-    COMMAND rm -f  {,library/,tests/}progress.make
-    COMMAND rm -rf {,library/,tests/}Makefile
-    COMMAND rm -rf {,library/,tests/}CMakeFiles
-    COMMAND rm -rf {,library/,tests/}_CPack_Packages
-    COMMAND rm -rf build/{library/,tests/}
-    COMMAND rm -rf doc/html/
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
-ADD_DEPENDENCIES(distclean clean)
 
 # tarball target
 ADD_CUSTOM_TARGET ( tarball
@@ -190,17 +165,6 @@ ADD_CUSTOM_TARGET ( tarball
     COMMAND rm -rf aseqmm-${VERSION}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
-
-#INSTALL(FILES 
-#	    AUTHORS
-#	    COPYING
-#	    ChangeLog
-#	    NEWS
-#	    README
-#	    TODO
-#	DESTINATION 
-#	    share/doc/packages/aseqmm	
-#)
 
 INSTALL(FILES aseqmm.pc
         DESTINATION ${LIB}/pkgconfig)

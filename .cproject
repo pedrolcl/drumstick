@@ -80,26 +80,18 @@
 </storageModule>
 <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
 <buildTargets>
-<target name="distclean" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<target name="all" path="build" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>make</buildCommand>
 <buildArguments>VERBOSE=1</buildArguments>
-<buildTarget>distclean</buildTarget>
-<stopOnError>false</stopOnError>
-<useDefaultCommand>true</useDefaultCommand>
-<runAllBuilders>true</runAllBuilders>
-</target>
-<target name="cmake" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
-<buildCommand>cmake</buildCommand>
-<buildArguments>VERBOSE=1</buildArguments>
-<buildTarget>. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-W -Wall' -DWANT_PCH=0 -DWANT_STATIC=1</buildTarget>
+<buildTarget>all</buildTarget>
 <stopOnError>false</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 <runAllBuilders>true</runAllBuilders>
 </target>
-<target name="all" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
-<buildCommand>make</buildCommand>
+<target name="cmake" path="build" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>cmake</buildCommand>
 <buildArguments>VERBOSE=1</buildArguments>
-<buildTarget>all</buildTarget>
+<buildTarget>.. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-W -Wall' -DWANT_PCH=0 -DWANT_STATIC=0 -DCMAKE_INSTALL_PREFIX=/usr</buildTarget>
 <stopOnError>false</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 <runAllBuilders>true</runAllBuilders>

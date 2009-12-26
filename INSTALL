@@ -2,10 +2,11 @@ Basic build commands
 --------------------
 
 $ cd aseqmm-x.x.x
-
-$ cmake .
-    (or ccmake .)
-    (or cmake . -options, see below...)
+$ mkdir -p build
+$ cd build
+$ cmake ..
+    (or ccmake ..)
+    (or cmake .. -options, see below...)
     (for simple development scenarios you can also use qmake)
 
 $ make
@@ -28,13 +29,13 @@ Minimum supported versions:
 Optional CMake parameters
 -------------------------
 
-    -DWANT_STATIC=YES|ON|1 
+    -DSTATIC_ASEQMM=YES|ON|1 
     Build a static library instead of a shared object
 
-    -DWANT_STATIC=NO|OFF|0
+    -DSTATIC_ASEQMM=NO|OFF|0
     Build a dynamic library (default)
 
-    -DWANT_PCH=YES|ON|NO|OFF|1|0
+    -DENABLE_PCH=YES|ON|NO|OFF|1|0
     Build tests using precompiled headers (faster compilation)
 
     -DCMAKE_BUILD_TYPE=Debug 
