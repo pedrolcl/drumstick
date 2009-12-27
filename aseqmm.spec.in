@@ -24,6 +24,7 @@ BuildRequires:  alsa-devel
 BuildRequires:  libqt4-devel
 BuildRequires:  doxygen
 BuildRequires:  graphviz
+BuildRequires:  update-desktop-files
 
 %description
 This package includes the example programs for libaseqmm.
@@ -63,12 +64,11 @@ Authors:
 --------
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
-%package -n libaseqmm-devel-doc
+%package -n libaseqmm-doc
 Summary:        Development documentation package for the libaseqmm library
 Group:          Documentation/Other
-Requires:       libaseqmm-devel = %{version}
 
-%description -n libaseqmm-devel-doc
+%description -n libaseqmm-doc
 This package contains the developer's documentation of the libaseqmm library.
 
 
@@ -90,10 +90,12 @@ make doxygen
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
+%suse_update_desktop_file -n aseqmm-smfplayer Midi
+%suse_update_desktop_file -n aseqmm-vpiano Midi
 
-%post -p /sbin/ldconfig
+%post -n libaseqmm0 -p /sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun -n libaseqmm0 -p /sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -129,11 +131,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/aseqmm/*.h
 %{_libdir}/pkgconfig/*.pc
 
-%files -n libaseqmm-devel-doc
+%files -n libaseqmm-doc
 %defattr(-, root, root)
 %doc doc/html/*
 
 %changelog
+* Sun Dec 27 2009 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.2.0
+- New version
+
 * Thu Dec 17 2009 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.1.0-2
 - tweaks
 
