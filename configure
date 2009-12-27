@@ -5,5 +5,5 @@ cd build
 cmake .. -DCMAKE_CXX_FLAGS="-W -Wall" \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_INSTALL_PREFIX=/usr/local \
-	-DWANT_STATIC=NO \
-	-DWANT_PCH=NO $*
+	-DSTATIC_ASEQMM=NO \
+	-DENABLE_PCH=NO $*

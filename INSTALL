@@ -15,7 +15,7 @@ $ make
 $ sudo make install
 
 $ sudo ldconfig
-    (not needed if you only WANT_STATIC)
+    (not needed if you only want STATIC_ASEQMM)
 
 Requirements
 ------------

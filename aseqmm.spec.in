@@ -82,7 +82,7 @@ Authors:
 
 %build
 CXXFLAGS="$RPM_OPT_FLAGS -g -fexceptions" \
-    cmake . -DWANT_STATIC=0 \
+    cmake . -DSTATIC_ASEQMM=0 \
             -DCMAKE_INSTALL_PREFIX=%{_prefix} \
             -DLIB=%{_lib}
 make %{?jobs:-j %jobs} VERBOSE=1
