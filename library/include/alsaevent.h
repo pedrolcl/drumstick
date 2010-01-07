@@ -17,10 +17,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef ASEQMM_ALSAEVENT_H
-#define ASEQMM_ALSAEVENT_H
+#ifndef DRUMSTICK_ALSAEVENT_H
+#define DRUMSTICK_ALSAEVENT_H
 
-#include "aseqmmcommon.h"
+#include "drumstickcommon.h"
 #include <QEvent>
 
 /**
@@ -31,7 +31,7 @@
  * @{
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 /**
  * Constant SequencerEventType is the QEvent::type() of any SequencerEvent
@@ -644,8 +644,8 @@ private:
     snd_midi_event_t* m_Info;
 };
 
-} /* namespace aseqmm */
+} /* namespace drumstick */
 
 /** @} */
 
-#endif //ASEQMM_ALSAEVENT_H
+#endif //DRUMSTICK_ALSAEVENT_H

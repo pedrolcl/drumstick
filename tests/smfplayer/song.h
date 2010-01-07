@@ -24,7 +24,7 @@
 
 #include "alsaevent.h"
 
-using namespace aseqmm;
+using namespace drumstick;
 
 class Song : public QList<SequencerEvent*>
 {

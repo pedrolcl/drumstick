@@ -1,8 +1,8 @@
 TEMPLATE = app
-TARGET = aseqmm-smfplayer
+TARGET = drumstick-smfplayer
 INCLUDEPATH += . ../../library/include
 DEPENDPATH += . ../../library ../../library/include
-LIBS = -L../../library -laseqmm  -lasound
+LIBS = -L../../library -ldrumstick  -lasound
 # Input
 HEADERS += player.h smfplayer.h song.h
 FORMS += smfplayer.ui

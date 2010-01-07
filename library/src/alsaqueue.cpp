@@ -27,7 +27,7 @@
  * Implementation of classes managing ALSA Sequencer queues
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 /**
  * @addtogroup ALSAQueue
@@ -893,4 +893,4 @@ void MidiQueue::setRealTimePosition(snd_seq_real_time_t* pos)
     m_MidiClient->outputDirect(&event);
 }
 
-} /* namespace aseqmm */
+} /* namespace drumstick */

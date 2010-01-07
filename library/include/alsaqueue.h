@@ -17,10 +17,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
  
-#ifndef ASEQMM_ALSAQUEUE_H
-#define ASEQMM_ALSAQUEUE_H
+#ifndef DRUMSTICK_ALSAQUEUE_H
+#define DRUMSTICK_ALSAQUEUE_H
 
-#include "aseqmmcommon.h"
+#include "drumstickcommon.h"
 
 /**
  * @file alsaqueue.h
@@ -29,7 +29,7 @@
  * @{
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 /**
  * This is the value for the base skew used in ALSA. It is not possible
@@ -221,8 +221,8 @@ private:
     QueueStatus m_Status;
 };
 
-} /* namespace aseqmm */
+} /* namespace drumstick */
 
 /** @} */
 
-#endif //ASEQMM_ALSAQUEUE_H
+#endif //DRUMSTICK_ALSAQUEUE_H

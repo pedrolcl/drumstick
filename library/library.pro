@@ -1,8 +1,8 @@
 TEMPLATE = lib
-TARGET = aseqmm
+TARGET = drumstick
 DEPENDPATH += . include src
 INCLUDEPATH += . include
-VERSION=0.1.99cvs
+VERSION=0.2.99svn
 CONFIG += qt staticlib debug
 # Input
 HEADERS += include/alsaclient.h \
@@ -10,8 +10,8 @@ HEADERS += include/alsaclient.h \
            include/alsaport.h \
            include/alsaqueue.h \
            include/alsatimer.h \
-           include/aseqmm.h \
-           include/aseqmmcommon.h \
+           include/drumstick.h \
+           include/drumstickcommon.h \
            include/playthread.h \
            include/qsmf.h \
            include/subscription.h

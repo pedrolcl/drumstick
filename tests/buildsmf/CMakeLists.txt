@@ -9,20 +9,20 @@ SET(buildsmf_qtobject_SRCS
 
 QT4_WRAP_CPP(buildsmf_moc_SRCS ${buildsmf_qtobject_SRCS})
 
-ADD_EXECUTABLE(aseqmm-buildsmf 
+ADD_EXECUTABLE(drumstick-buildsmf 
     ${buildsmf_moc_SRCS}
     ${buildsmf_SRCS}
 )
 
 IF(USE_PCH)
-    ADD_DEPENDENCIES(aseqmm-buildsmf precompiled_headers)
+    ADD_DEPENDENCIES(drumstick-buildsmf precompiled_headers)
 ENDIF(USE_PCH)
 
-TARGET_LINK_LIBRARIES(aseqmm-buildsmf
+TARGET_LINK_LIBRARIES(drumstick-buildsmf
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
-    aseqmm
+    drumstick
 )
 
-INSTALL(TARGETS aseqmm-buildsmf 
+INSTALL(TARGETS drumstick-buildsmf 
         RUNTIME DESTINATION bin)

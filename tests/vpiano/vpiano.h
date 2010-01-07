@@ -31,7 +31,7 @@
 #include "alsaport.h"
 #include "alsaqueue.h"
 
-using namespace aseqmm;
+using namespace drumstick;
 
 /* MidiClient can deliver SequencerEvents with only
  * signals or posting QEvents to the QApplication loop */

@@ -18,10 +18,10 @@
 */
 
  
-#ifndef ASEQMM_SUBSCRIPTION_H
-#define ASEQMM_SUBSCRIPTION_H
+#ifndef DRUMSTICK_SUBSCRIPTION_H
+#define DRUMSTICK_SUBSCRIPTION_H
 
-#include "aseqmmcommon.h"
+#include "drumstickcommon.h"
 #include <QList>
 
 /**
@@ -31,7 +31,7 @@
  * @{
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 class MidiClient;
 
@@ -127,4 +127,4 @@ typedef QList<Subscriber> SubscribersList;
 
 /** @} */
 
-#endif //ASEQMM_SUBSCRIPTION_H
+#endif //DRUMSTICK_SUBSCRIPTION_H

@@ -21,7 +21,7 @@
 
 #include "qsmf.h"
 
-using namespace aseqmm;
+using namespace drumstick;
 
   class QSpySMF : public QObject
   {

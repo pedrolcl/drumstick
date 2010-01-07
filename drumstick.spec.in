@@ -1,5 +1,5 @@
 #
-# spec file for package aseqmm (Version @VERSION@)
+# spec file for package drumstick (Version @VERSION@)
 #
 # MIDI Sequencer C++ Library Bindings for Qt4 and ALSA
 # Copyright (C) 2005-2009 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
@@ -10,13 +10,13 @@
 
 # norootforbuild
 
-Name:           aseqmm
+Name:           drumstick
 Version:        @VERSION@
 Release:        1
 License:        GPL v2 or later
 Summary:        MIDI Sequencer C++ Library Bindings
 Group:          Productivity/Multimedia/Sound/Midi
-URL:            http://kmetronome.sourceforge.net/aseqmm
+URL:            http://kmetronome.sourceforge.net/drumstick
 Source:         %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  cmake
@@ -27,7 +27,7 @@ BuildRequires:  graphviz
 BuildRequires:  update-desktop-files
 
 %description
-This package includes the example programs for libaseqmm.
+This package includes the example programs for libdrumstick.
 
 
 
@@ -36,11 +36,11 @@ Authors:
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
 
-%package -n libaseqmm0
+%package -n libdrumstick0
 Summary:        MIDI Sequencer C++ Library
 Group:          System/Libraries
 
-%description -n libaseqmm0
+%description -n libdrumstick0
 MIDI Sequencer C++ Library Bindings for Qt4 and ALSA
 
 
@@ -49,14 +49,14 @@ Authors:
 --------
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
-%package -n libaseqmm-devel
-Summary:        Development package for the libaseqmm library
+%package -n libdrumstick-devel
+Summary:        Development package for the libdrumstick library
 Group:          Development/Libraries/C and C++
-Requires:       libaseqmm0 = %{version} glibc-devel libstdc++-devel libqt4-devel
+Requires:       libdrumstick0 = %{version} glibc-devel libstdc++-devel libqt4-devel
 
-%description -n libaseqmm-devel
+%description -n libdrumstick-devel
 This package contains the files needed to compile programs that use the
-libaseqmm library.
+libdrumstick library.
 
 
 
@@ -64,12 +64,12 @@ Authors:
 --------
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
-%package -n libaseqmm-doc
-Summary:        Development documentation package for the libaseqmm library
+%package -n libdrumstick-doc
+Summary:        Development documentation package for the libdrumstick library
 Group:          Documentation/Other
 
-%description -n libaseqmm-doc
-This package contains the developer's documentation of the libaseqmm library.
+%description -n libdrumstick-doc
+This package contains the developer's documentation of the libdrumstick library.
 
 
 
@@ -82,7 +82,7 @@ Authors:
 
 %build
 CXXFLAGS="$RPM_OPT_FLAGS -g -fexceptions" \
-    cmake . -DSTATIC_ASEQMM=0 \
+    cmake . -DSTATIC_DRUMSTICK=0 \
             -DCMAKE_INSTALL_PREFIX=%{_prefix} \
             -DLIB=%{_lib}
 make %{?jobs:-j %jobs} VERBOSE=1
@@ -90,12 +90,12 @@ make doxygen
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
-%suse_update_desktop_file -n aseqmm-smfplayer Midi
-%suse_update_desktop_file -n aseqmm-vpiano Midi
+%suse_update_desktop_file -n drumstick-smfplayer Midi
+%suse_update_desktop_file -n drumstick-vpiano Midi
 
-%post -n libaseqmm0 -p /sbin/ldconfig
+%post -n libdrumstick0 -p /sbin/ldconfig
 
-%postun -n libaseqmm0 -p /sbin/ldconfig
+%postun -n libdrumstick0 -p /sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -118,20 +118,20 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/applications/*
 %{_bindir}/*
 
-%files -n libaseqmm0
+%files -n libdrumstick0
 %defattr(-,root,root)
-%{_libdir}/libaseqmm.so.*
+%{_libdir}/libdrumstick.so.*
 
-%files -n libaseqmm-devel
+%files -n libdrumstick-devel
 %defattr(-, root, root)
-%dir %{_includedir}/aseqmm
-%{_libdir}/libaseqmm.so
-%{_libdir}/libaseqmm.la
-%{_includedir}/aseqmm.h
-%{_includedir}/aseqmm/*.h
+%dir %{_includedir}/drumstick
+%{_libdir}/libdrumstick.so
+%{_libdir}/libdrumstick.la
+%{_includedir}/drumstick.h
+%{_includedir}/drumstick/*.h
 %{_libdir}/pkgconfig/*.pc
 
-%files -n libaseqmm-doc
+%files -n libdrumstick-doc
 %defattr(-, root, root)
 %doc doc/html/*
 

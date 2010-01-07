@@ -43,24 +43,24 @@ QT4_WRAP_CPP(vpiano_moc_SRCS ${vpiano_qtobject_SRCS})
 
 QT4_ADD_RESOURCES(vpiano_SRCS pianokeybd.qrc)
 
-ADD_EXECUTABLE(aseqmm-vpiano
+ADD_EXECUTABLE(drumstick-vpiano
     ${vpiano_ui_SRCS}
     ${vpiano_moc_SRCS}
     ${vpiano_SRCS}
 )
 
 IF(USE_PCH)
-    ADD_DEPENDENCIES(aseqmm-vpiano precompiled_headers)
+    ADD_DEPENDENCIES(drumstick-vpiano precompiled_headers)
 ENDIF(USE_PCH)
 
-TARGET_LINK_LIBRARIES(aseqmm-vpiano
+TARGET_LINK_LIBRARIES(drumstick-vpiano
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
-    aseqmm
+    drumstick
 )
 
-INSTALL(TARGETS aseqmm-vpiano
+INSTALL(TARGETS drumstick-vpiano
         RUNTIME DESTINATION bin)
 
-INSTALL(FILES aseqmm-vpiano.desktop
+INSTALL(FILES drumstick-vpiano.desktop
         DESTINATION share/applications)

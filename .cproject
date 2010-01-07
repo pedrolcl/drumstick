@@ -78,6 +78,7 @@
 <pathentry kind="out" path="build"/>
 <pathentry kind="con" path="org.eclipse.cdt.make.core.DISCOVERED_SCANNER_INFO"/>
 </storageModule>
+<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
 <buildTargets>
 <target name="all" path="build" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
@@ -91,7 +92,7 @@
 <target name="cmake" path="build" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>cmake</buildCommand>
 <buildArguments>VERBOSE=1</buildArguments>
-<buildTarget>.. -DCMAKE_BUILD_TYPE=debug -DCMAKE_CXX_FLAGS='-W -Wall' -DENABLE_PCH=0 -DSTATIC_ASEQMM=0 -DCMAKE_INSTALL_PREFIX=/usr/local</buildTarget>
+<buildTarget>.. -DCMAKE_BUILD_TYPE=debug -DCMAKE_CXX_FLAGS='-W -Wall' -DENABLE_PCH=0 -DSTATIC_DRUMSTICK=1 -DCMAKE_INSTALL_PREFIX=/usr/local</buildTarget>
 <stopOnError>false</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 <runAllBuilders>true</runAllBuilders>

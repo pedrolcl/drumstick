@@ -28,7 +28,7 @@
 
 static QTextStream cout(stdout, QIODevice::WriteOnly); 
 
-using namespace aseqmm;
+using namespace drumstick;
 
 void queryTimers()
 {

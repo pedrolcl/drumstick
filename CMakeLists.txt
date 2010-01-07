@@ -16,10 +16,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-# The name of our project is "ASEQMM". CMakeLists files in this project can
-# refer to the root source directory of the project as ${ASEQMM_SOURCE_DIR} 
-# and to the root binary directory of the project as ${ASEQMM_BINARY_DIR}
-PROJECT(ASEQMM)
+# The name of our project is "DRUMSTICK". CMakeLists files in this project can
+# refer to the root source directory of the project as ${DRUMSTICK_SOURCE_DIR} 
+# and to the root binary directory of the project as ${DRUMSTICK_BINARY_DIR}
+PROJECT(DRUMSTICK)
 
 # CMake minimum version
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
@@ -48,30 +48,30 @@ SET(CMAKE_SKIP_RULE_DEPENDENCY FALSE)
 # Additional CMake modules for 3rd party library checks reside here
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_admin")
 
-# ASEQMM version string
+# DRUMSTICK version string
 SET (VERSION_MAJOR "0")
 SET (VERSION_MINOR "2")
-SET (VERSION_PATCH "0")
-SET (VERSION_SUFFIX "")
+SET (VERSION_PATCH "99")
+SET (VERSION_SUFFIX "svn")
 SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 ADD_DEFINITIONS(-D'VERSION="${VERSION}"')
 
-MESSAGE(STATUS "aseqmm ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
+MESSAGE(STATUS "drumstick ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
 
 # User options
-OPTION(STATIC_ASEQMM "Build a static library (.a) instead of dynamic (.so)" OFF)
+OPTION(STATIC_DRUMSTICK "Build a static library (.a) instead of dynamic (.so)" OFF)
 OPTION(ENABLE_PCH "Build using precompiled headers" OFF)
 
 MESSAGE(STATUS "Build configuration: ${CMAKE_BUILD_TYPE}")
 
 # LIBRARY BUILD TYPE
-IF(STATIC_ASEQMM)
+IF(STATIC_DRUMSTICK)
     SET(BUILD_SHARED_LIBS OFF)
     MESSAGE(STATUS "Building static libraries")
-ELSE(STATIC_ASEQMM)
+ELSE(STATIC_DRUMSTICK)
     SET(BUILD_SHARED_LIBS ON)
     MESSAGE(STATUS "Building dynamic libraries")
-ENDIF(STATIC_ASEQMM)
+ENDIF(STATIC_DRUMSTICK)
 
 # Check for Qt
 SET(QT_MIN_VERSION "4.4.0")
@@ -115,13 +115,13 @@ ENDIF(ALSA_FOUND)
 LINK_DIRECTORIES(
     ${QT_LIBRARY_DIR}
     ${ALSA_LIB_DIR}
-    ${ASEQMM_BINARY_DIR}
+    ${DRUMSTICK_BINARY_DIR}
 )
 
 INCLUDE_DIRECTORIES( 
     ${QT_INCLUDES} 
     ${ALSA_INC_DIR}
-    ${ASEQMM_SOURCE_DIR}/library/include
+    ${DRUMSTICK_SOURCE_DIR}/library/include
 )
 
 # Check GCC for PCH support
@@ -153,8 +153,8 @@ ADD_SUBDIRECTORY(library)
 ADD_SUBDIRECTORY(tests)
 ADD_SUBDIRECTORY(icons)
 
-CONFIGURE_FILE(aseqmm.pc.in aseqmm.pc IMMEDIATE @ONLY)
-CONFIGURE_FILE(aseqmm.spec.in aseqmm.spec IMMEDIATE @ONLY)
+CONFIGURE_FILE(drumstick.pc.in drumstick.pc IMMEDIATE @ONLY)
+CONFIGURE_FILE(drumstick.spec.in drumstick.spec IMMEDIATE @ONLY)
 
 # uninstall custom target
 CONFIGURE_FILE(
@@ -167,18 +167,18 @@ ADD_CUSTOM_TARGET ( uninstall
 
 # tarball target
 ADD_CUSTOM_TARGET ( tarball
-    COMMAND mkdir -p aseqmm-${VERSION}
-    COMMAND cp -r cmake_admin aseqmm-${VERSION}
-    COMMAND cp -r library aseqmm-${VERSION}
-    COMMAND cp -r tests aseqmm-${VERSION}
-    COMMAND cp -r doc aseqmm-${VERSION}
-    COMMAND cp -r icons aseqmm-${VERSION}
-    COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO aseqmm.*.in aseqmm.pro configure* Doxyfile.in link-aseqmm chkcoverage aseqmm-${VERSION}
-    COMMAND tar -cj --exclude CVS --exclude .cvsignore -f aseqmm-${VERSION}.tar.bz2 aseqmm-${VERSION}
-    COMMAND tar -cz --exclude CVS --exclude .cvsignore -f aseqmm-${VERSION}.tar.gz aseqmm-${VERSION}
-    COMMAND rm -rf aseqmm-${VERSION}
+    COMMAND mkdir -p drumstick-${VERSION}
+    COMMAND cp -r cmake_admin drumstick-${VERSION}
+    COMMAND cp -r library drumstick-${VERSION}
+    COMMAND cp -r tests drumstick-${VERSION}
+    COMMAND cp -r doc drumstick-${VERSION}
+    COMMAND cp -r icons drumstick-${VERSION}
+    COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO drumstick.*.in drumstick.pro configure* Doxyfile.in link-drumstick chkcoverage drumstick-${VERSION}
+    COMMAND tar -cj --exclude CVS --exclude .cvsignore -f drumstick-${VERSION}.tar.bz2 drumstick-${VERSION}
+    COMMAND tar -cz --exclude CVS --exclude .cvsignore -f drumstick-${VERSION}.tar.gz drumstick-${VERSION}
+    COMMAND rm -rf drumstick-${VERSION}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
-INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/aseqmm.pc
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/drumstick.pc
         DESTINATION ${LIB}/pkgconfig)

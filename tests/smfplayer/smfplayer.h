@@ -37,7 +37,7 @@
 #include "song.h"
 #include "player.h"
 
-using namespace aseqmm;
+using namespace drumstick;
 
 const QString QSTR_DOMAIN("kmetronome.sourceforge.net");
 const QString QSTR_APPNAME("SMFPlayer");

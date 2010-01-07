@@ -24,7 +24,7 @@
 #include <QPointer>
 #include "alsatimer.h"
 
-using namespace aseqmm;
+using namespace drumstick;
 
 class TimerTest : public QObject, public TimerEventHandler
 {

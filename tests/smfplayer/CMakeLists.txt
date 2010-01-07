@@ -23,7 +23,7 @@ QT4_WRAP_CPP(playmid_moc_SRCS ${playmid_qtobject_SRCS})
 
 QT4_ADD_RESOURCES(playmid_resources smfplayer.qrc)
 
-ADD_EXECUTABLE(aseqmm-smfplayer
+ADD_EXECUTABLE(drumstick-smfplayer
     ${playmid_resources}
     ${playmid_ui_SRCS}
     ${playmid_moc_SRCS}
@@ -31,17 +31,17 @@ ADD_EXECUTABLE(aseqmm-smfplayer
 )
 
 IF(USE_PCH)
-    ADD_DEPENDENCIES(aseqmm-smfplayer precompiled_headers)
+    ADD_DEPENDENCIES(drumstick-smfplayer precompiled_headers)
 ENDIF(USE_PCH)
 
-TARGET_LINK_LIBRARIES(aseqmm-smfplayer
+TARGET_LINK_LIBRARIES(drumstick-smfplayer
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
-    aseqmm
+    drumstick
 )
 
-INSTALL(TARGETS aseqmm-smfplayer
+INSTALL(TARGETS drumstick-smfplayer
         RUNTIME DESTINATION bin)
 
-INSTALL(FILES aseqmm-smfplayer.desktop
+INSTALL(FILES drumstick-smfplayer.desktop
         DESTINATION share/applications)

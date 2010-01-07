@@ -17,22 +17,22 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#ifndef ASEQMM_H
-#define ASEQMM_H
+#ifndef DRUMSTICK_H
+#define DRUMSTICK_H
 
 /**
- * @file aseqmm.h
- * The main header that a program can include to use all the aseqmm features.
+ * @file drumstick.h
+ * The main header that a program can include to use all the drumstick features.
  */
 
-#include <aseqmm/alsaclient.h>
-#include <aseqmm/alsaevent.h>
-#include <aseqmm/alsaport.h>
-#include <aseqmm/alsaqueue.h>
-#include <aseqmm/alsatimer.h>
-#include <aseqmm/aseqmmcommon.h>
-#include <aseqmm/playthread.h>
-#include <aseqmm/qsmf.h>
-#include <aseqmm/subscription.h>
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaevent.h>
+#include <drumstick/alsaport.h>
+#include <drumstick/alsaqueue.h>
+#include <drumstick/alsatimer.h>
+#include <drumstick/drumstickcommon.h>
+#include <drumstick/playthread.h>
+#include <drumstick/qsmf.h>
+#include <drumstick/subscription.h>
 
-#endif /*ASEQMM_H*/
+#endif /*DRUMSTICK_H*/

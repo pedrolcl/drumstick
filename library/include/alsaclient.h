@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef ASEQMM_ALSACLIENT_H
-#define ASEQMM_ALSACLIENT_H
+#ifndef DRUMSTICK_ALSACLIENT_H
+#define DRUMSTICK_ALSACLIENT_H
 
 #include "alsaport.h"
 #include <QPointer>
@@ -33,7 +33,7 @@
  * @{
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 class MidiQueue;
 class MidiClient;
@@ -364,8 +364,8 @@ private:
     PoolInfo m_poolInfo;
 };
 
-} /* namespace aseqmm */
+} /* namespace drumstick */
 
 /** @} */
 
-#endif // ASEQMM_ALSACLIENT_H
+#endif // DRUMSTICK_ALSACLIENT_H

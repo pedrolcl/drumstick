@@ -1,8 +1,8 @@
 TEMPLATE = app
-TARGET = aseqmm-playsmf
+TARGET = drumstick-playsmf
 INCLUDEPATH += . ../../library/include
 DEPENDPATH += . ../../library ../../library/include
-LIBS = -L../../library -laseqmm  -lasound
+LIBS = -L../../library -ldrumstick  -lasound
 # Input
 HEADERS += playsmf.h
 SOURCES += playsmf.cpp

@@ -1,4 +1,4 @@
-#Sun May 11 15:36:21 CEST 2008
+#Thu Jan 07 11:54:21 CET 2010
 eclipse.preferences.version=1
 indexer/filesToParseUpFront=
 indexer/indexAllFiles=true
@@ -6,4 +6,3 @@ indexer/indexerId=org.eclipse.cdt.core.fastIndexer
 indexer/skipReferences=false
 indexer/skipTypeReferences=false
 indexerId=org.eclipse.cdt.core.fastIndexer
-instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true

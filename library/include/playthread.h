@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef ASEQMM_PLAYTHREAD_H
-#define ASEQMM_PLAYTHREAD_H
+#ifndef DRUMSTICK_PLAYTHREAD_H
+#define DRUMSTICK_PLAYTHREAD_H
 
 #include "alsaevent.h"
 #include <QThread>
@@ -31,7 +31,7 @@
  * @{
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 class MidiClient;
 class MidiQueue;
@@ -115,8 +115,8 @@ protected:
     QReadWriteLock m_mutex;     /**< Mutex object used for synchronization */
 };
 
-} /* namespace aseqmm */
+} /* namespace drumstick */
 
 /** @} */
 
-#endif /*ASEQMM_PLAYTHREAD_H*/
+#endif /*DRUMSTICK_PLAYTHREAD_H*/

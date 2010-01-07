@@ -31,7 +31,7 @@
 #include "alsaqueue.h"
 #include "alsaport.h"
 
-using namespace aseqmm;
+using namespace drumstick;
 
 class Song : public QList<SequencerEvent*>
 {

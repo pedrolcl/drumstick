@@ -24,7 +24,7 @@
  * Implementation of classes managing ALSA sequencer subscriptions
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 /**
  * @addtogroup ALSASubscription
@@ -540,5 +540,5 @@ Subscription::getSizeOfInfo() const
     return snd_seq_port_subscribe_sizeof();
 }
 
-} /* namespace aseqmm */
+} /* namespace drumstick */
 

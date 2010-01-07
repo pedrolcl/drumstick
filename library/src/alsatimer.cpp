@@ -26,7 +26,7 @@
  * Implementation of classes managing ALSA Timers
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 /**
  * @addtogroup ALSATimer
@@ -1438,4 +1438,4 @@ Timer::TimerInputThread::stop()
     m_mutex.unlock();
 }
 
-} /* namespace aseqmm */
+} /* namespace drumstick */

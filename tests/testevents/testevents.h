@@ -23,7 +23,7 @@
 #include "alsaevent.h"
 #include <QObject>
 
-using namespace aseqmm;
+using namespace drumstick;
 
 class QTestEvents : public QObject
 {

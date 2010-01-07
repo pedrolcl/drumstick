@@ -26,7 +26,7 @@
  * Implementation of a sequencer output thread
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 /**
  * @addtogroup PlayThread
@@ -220,5 +220,5 @@ void SequencerOutputThread::start( Priority priority )
     m_mutex.unlock();
 }
 
-} /* namespace aseqmm */
+} /* namespace drumstick */
 

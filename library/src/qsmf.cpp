@@ -31,7 +31,7 @@
  * Implementation of a class managing Standard MIDI Files input/output
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 /**
  * @addtogroup SMF

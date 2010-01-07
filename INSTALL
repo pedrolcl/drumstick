@@ -1,7 +1,7 @@
 Basic build commands
 --------------------
 
-$ cd aseqmm-x.x.x
+$ cd drumstick-x.x.x
 $ mkdir -p build
 $ cd build
 $ cmake ..
@@ -15,7 +15,7 @@ $ make
 $ sudo make install
 
 $ sudo ldconfig
-    (not needed if you only want STATIC_ASEQMM)
+    (not needed if you only want STATIC_DRUMSTICK)
 
 Requirements
 ------------
@@ -29,10 +29,10 @@ Minimum supported versions:
 Optional CMake parameters
 -------------------------
 
-    -DSTATIC_ASEQMM=YES|ON|1 
+    -DSTATIC_DRUMSTICK=YES|ON|1 
     Build a static library instead of a shared object
 
-    -DSTATIC_ASEQMM=NO|OFF|0
+    -DSTATIC_DRUMSTICK=NO|OFF|0
     Build a dynamic library (default)
 
     -DENABLE_PCH=YES|ON|NO|OFF|1|0

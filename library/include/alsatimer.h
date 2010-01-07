@@ -17,10 +17,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#ifndef ASEQMM_ALSATIMER_H
-#define ASEQMM_ALSATIMER_H
+#ifndef DRUMSTICK_ALSATIMER_H
+#define DRUMSTICK_ALSATIMER_H
 
-#include "aseqmmcommon.h"
+#include "drumstickcommon.h"
 #include <QList>
 #include <QThread>
 #include <QReadWriteLock>
@@ -33,7 +33,7 @@
  * @{
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 class TimerQuery;
 class TimerId;
@@ -351,8 +351,8 @@ private:
     snd_htimestamp_t m_last_time;
 };
 
-} /* namespace aseqmm */
+} /* namespace drumstick */
 
 /** @} */
 
-#endif /* ASEQMM_ALSATIMER_H */
+#endif /* DRUMSTICK_ALSATIMER_H */

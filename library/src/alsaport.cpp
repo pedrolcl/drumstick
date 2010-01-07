@@ -25,7 +25,7 @@
  * Implementation of classes managing ALSA Sequencer ports.
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 /**
  * @addtogroup ALSAPort
@@ -1238,4 +1238,4 @@ MidiPort::updateConnectionsFrom(const PortInfoList& ports)
     }
 }
 
-} /* namespace aseqmm; */
+} /* namespace drumstick; */

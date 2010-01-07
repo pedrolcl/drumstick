@@ -30,7 +30,7 @@
  * @see http://doc.trolltech.com/qevent.html
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 /**
  * @addtogroup ALSAEvent
@@ -1044,4 +1044,4 @@ MidiCodec::resizeBuffer(int bufsize)
     CHECK_WARNING(snd_midi_event_resize_buffer(m_Info, bufsize));
 }
 
-} /* namespace aseqmm */
+} /* namespace drumstick */

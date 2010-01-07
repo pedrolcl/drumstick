@@ -19,10 +19,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef ASEQMM_QSMF_H
-#define ASEQMM_QSMF_H
+#ifndef DRUMSTICK_QSMF_H
+#define DRUMSTICK_QSMF_H
 
-#include "aseqmmcommon.h"
+#include "drumstickcommon.h"
 #include <QObject>
 
 class QDataStream;
@@ -34,7 +34,7 @@ class QDataStream;
  * @{
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 #define MThd 0x4d546864 /**< SMF Header prefix */
 #define MTrk 0x4d54726b /**< SMF Track prefix */
@@ -321,8 +321,8 @@ private:
     void writeTrackChunk(int track);
 };
 
-} /* namespace aseqmm */
+} /* namespace drumstick */
 
 /** @} */
 
-#endif /* ASEQMM_QSMF_H */
+#endif /* DRUMSTICK_QSMF_H */

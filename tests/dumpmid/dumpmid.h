@@ -38,7 +38,7 @@
 #include "alsaqueue.h"
 #include "subscription.h"
 
-using namespace aseqmm;
+using namespace drumstick;
 
 class QDumpMIDI : public QObject
 {

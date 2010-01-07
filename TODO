@@ -7,7 +7,7 @@ Planned:
     * More test cases
 
 Functions from ALSA library reported by chkcoverage.
-The following functions won't be used in aseqmm.  
+The following functions won't be used in drumstick.  
 
 MISC (event filter)
 

@@ -25,7 +25,7 @@
 #include "ui_connections.h"
 #include "connectionitem.h"
 
-using namespace aseqmm;
+using namespace drumstick;
 
 class Connections : public QDialog
 {

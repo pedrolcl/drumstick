@@ -23,7 +23,7 @@
 #include "playthread.h" 
 #include "song.h"
 
-using namespace aseqmm;
+using namespace drumstick;
 
 class Player : public SequencerOutputThread
 {

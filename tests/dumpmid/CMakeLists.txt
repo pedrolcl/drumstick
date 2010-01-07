@@ -9,21 +9,21 @@ SET(dumpmid_qtobject_SRCS
 
 QT4_WRAP_CPP(dumpmid_moc_SRCS ${dumpmid_qtobject_SRCS})
 
-ADD_EXECUTABLE(aseqmm-dumpmid
+ADD_EXECUTABLE(drumstick-dumpmid
     ${dumpmid_moc_SRCS}
     ${dumpmid_SRCS}
 )
 
 IF(USE_PCH)
-    ADD_DEPENDENCIES(aseqmm-dumpmid precompiled_headers)
+    ADD_DEPENDENCIES(drumstick-dumpmid precompiled_headers)
 ENDIF(USE_PCH)
 
-TARGET_LINK_LIBRARIES(aseqmm-dumpmid
+TARGET_LINK_LIBRARIES(drumstick-dumpmid
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
-    aseqmm
+    drumstick
 )
 
 # we should install some files...
-INSTALL(TARGETS aseqmm-dumpmid 
+INSTALL(TARGETS drumstick-dumpmid 
         RUNTIME DESTINATION bin)

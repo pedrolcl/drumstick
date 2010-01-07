@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>aseqmm</name>
+	<name>drumstick</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -27,7 +27,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.build.location</key>
-					<value></value>
+					<value>${workspace_loc:/drumstick}/build</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.build.target.auto</key>

@@ -6,7 +6,7 @@
 
 const int ConnectionItemType(QListWidgetItem::UserType + 1);
 
-using namespace aseqmm;
+using namespace drumstick;
 
 class ConnectionItem : public QListWidgetItem
 {

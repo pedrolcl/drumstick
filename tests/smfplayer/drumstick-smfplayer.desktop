@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=MIDI Player
-Exec=aseqmm-smfplayer
-Icon=aseqmm
+Exec=drumstick-smfplayer
+Icon=drumstick
 Terminal=false
 Type=Application
 Categories=AudioVideo;Audio;Midi;Education;Music;

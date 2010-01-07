@@ -22,7 +22,7 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-SET(aseqmm_qtobject_SRCS
+SET(drumstick_qtobject_SRCS
     include/alsaclient.h
     include/alsaevent.h
     include/alsaport.h
@@ -32,19 +32,19 @@ SET(aseqmm_qtobject_SRCS
     include/qsmf.h
 )
 
-SET(aseqmm_HEADERS
+SET(drumstick_HEADERS
     include/alsaclient.h
     include/alsaevent.h
     include/alsaport.h
     include/alsaqueue.h
     include/alsatimer.h
-    include/aseqmmcommon.h
+    include/drumstickcommon.h
     include/playthread.h
     include/qsmf.h
     include/subscription.h
 )
 
-SET(aseqmm_SRCS
+SET(drumstick_SRCS
     src/alsaclient.cpp
     src/alsaevent.cpp
     src/alsaport.cpp
@@ -55,49 +55,49 @@ SET(aseqmm_SRCS
     src/subscription.cpp
 )
 
-QT4_WRAP_CPP(aseqmm_moc_SRCS ${aseqmm_qtobject_SRCS})
+QT4_WRAP_CPP(drumstick_moc_SRCS ${drumstick_qtobject_SRCS})
 
-ADD_LIBRARY(aseqmm 
-    ${aseqmm_moc_SRCS}
-    ${aseqmm_SRCS} 
-    ${aseqmm_HEADERS} 
+ADD_LIBRARY(drumstick 
+    ${drumstick_moc_SRCS}
+    ${drumstick_SRCS} 
+    ${drumstick_HEADERS} 
 )
 
-TARGET_LINK_LIBRARIES(aseqmm
+TARGET_LINK_LIBRARIES(drumstick
     ${QT_LIBRARIES}
     ${ALSA_LIBS}
 )
 
-IF(STATIC_ASEQMM)
-    SET_TARGET_PROPERTIES(aseqmm PROPERTIES
-         STATIC_LIB "libaseqmm.a"
+IF(STATIC_DRUMSTICK)
+    SET_TARGET_PROPERTIES(drumstick PROPERTIES
+         STATIC_LIB "libdrumstick.a"
          COMPILE_FLAGS -fPIC
     )
-ELSE(STATIC_ASEQMM)
-    SET_TARGET_PROPERTIES(aseqmm PROPERTIES
+ELSE(STATIC_drumstick)
+    SET_TARGET_PROPERTIES(drumstick PROPERTIES
         VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
         SOVERSION ${VERSION_MAJOR}
     )
-ENDIF(STATIC_ASEQMM)
+ENDIF(STATIC_DRUMSTICK)
 
-SET_TARGET_PROPERTIES(aseqmm PROPERTIES
+SET_TARGET_PROPERTIES(drumstick PROPERTIES
     LT_DEPENDENCY_LIBS "-lasound -lQtCore"
     LT_VERSION_CURRENT ${VERSION_MAJOR}
     LT_VERSION_AGE ${VERSION_MINOR}
     LT_VERSION_REVISION ${VERSION_PATCH}
 )
 
-CREATE_LIBTOOL_FILE(aseqmm ${LIB})
+CREATE_LIBTOOL_FILE(drumstick ${LIB})
 
 # we should install some files...
 
-INSTALL(TARGETS aseqmm
+INSTALL(TARGETS drumstick
 	RUNTIME DESTINATION bin
 	ARCHIVE DESTINATION ${LIB}
 	LIBRARY DESTINATION ${LIB})
 
-INSTALL(FILES ${aseqmm_HEADERS}
-        DESTINATION include/aseqmm)
+INSTALL(FILES ${drumstick_HEADERS}
+        DESTINATION include/drumstick)
 
-INSTALL(FILES include/aseqmm.h
+INSTALL(FILES include/drumstick.h
         DESTINATION include)

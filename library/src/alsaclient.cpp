@@ -40,10 +40,10 @@
  * @see   http://doc.trolltech.com/qthread.html
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 /**
-@mainpage aseqmm Documentation
+@mainpage drumstick Documentation
 @author Copyright &copy; 2009 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
 @date 2009-12-27
 @version 0.2.0
@@ -53,7 +53,7 @@ To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/
 
 @section Abstract
 
-This is the reference documentation for aseqmm. This library is a C++ wrapper
+This is the reference documentation for drumstick. This library is a C++ wrapper
 around the ALSA library sequencer interface, using Qt4 objects, idioms and style.
 ALSA sequencer provides software support for MIDI technology on Linux.
 
@@ -65,9 +65,9 @@ ALSA sequencer provides software support for MIDI technology on Linux.
 @section Disclaimer
 
 This document is a work in progress, in a very early state. It will be always in
-development. Please visit the aseqmm web site to read the latest version.
+development. Please visit the drumstick web site to read the latest version.
 
-@see http://kmetronome.sourceforge.net/aseqmm/
+@see http://kmetronome.sourceforge.net/drumstick/
 
 @section Introduction
 
@@ -77,23 +77,23 @@ Ezust. It is available published on dead trees, and also
 <a href="http://cartan.cas.suffolk.edu/oopdocbook/opensource/index.html">
 online</a>.
 
-Here is how a simple program playing a note-on MIDI message using aseqmm
+Here is how a simple program playing a note-on MIDI message using drumstick
 looks like:
 
 @code
 #include <QApplication>
-#include <aseqmm.h>
+#include <drumstick.h>
 
 int main(int argc, char **argv) {
     QApplication app(argc, argv, false);
 
     // create a client object on the heap
-    aseqmm::MidiClient *client = new aseqmm::MidiClient;
+    drumstick::MidiClient *client = new drumstick::MidiClient;
     client->open();
     client->setClientName( "MyClient" );
 
     // create the port
-    aseqmm::MidiPort *port = client->createPort();
+    drumstick::MidiPort *port = client->createPort();
     port->setPortName( "MyPort" );
     port->setCapability( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ );
     port->setPortType( SND_SEQ_PORT_TYPE_MIDI_GENERIC );
@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
     port->subscribeTo( "20:0" ); // or "name:port", like in "KMidimon:0"
 
     // create an event object on the stack, to send a note on message
-    aseqmm::NoteOnEvent ev( 0, 66, 100 ); // (channel, note number, velocity)
+    drumstick::NoteOnEvent ev( 0, 66, 100 ); // (channel, note number, velocity)
     ev.setSource( port->getPortId() );
     ev.setSubscribers();   // deliver to all the connected ports
     ev.setDirect();        // not scheduled, deliver immediately
@@ -2276,4 +2276,4 @@ PoolInfo::getSizeOfInfo() const
     return snd_seq_client_pool_sizeof();
 }
 
-} /* namespace aseqmm */
+} /* namespace drumstick */

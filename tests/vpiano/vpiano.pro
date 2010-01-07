@@ -1,8 +1,8 @@
 TEMPLATE = app
-TARGET = aseqmm-vpiano
+TARGET = drumstick-vpiano
 INCLUDEPATH += . ../../library/include
 DEPENDPATH += . ../../library ../../library/include
-LIBS = -L../../library -laseqmm -lasound
+LIBS = -L../../library -ldrumstick -lasound
 QT += svg
 # Input
 FORMS += vpiano.ui connections.ui about.ui preferences.ui

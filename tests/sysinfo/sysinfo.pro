@@ -1,7 +1,7 @@
 TEMPLATE = app
-TARGET = aseqmm-sysinfo
+TARGET = drumstick-sysinfo
 INCLUDEPATH += . ../../library/include
 DEPENDPATH += . ../../library ../../library/include
-LIBS = -L../../library -laseqmm  -lasound
+LIBS = -L../../library -ldrumstick  -lasound
 # Input
 SOURCES += sysinfo.cpp

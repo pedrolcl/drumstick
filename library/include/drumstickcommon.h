@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#ifndef ASEQMM_ASEQMMCOMMON_H
-#define ASEQMM_ASEQMMCOMMON_H
+#ifndef DRUMSTICK_DRUMSTICKCOMMON_H
+#define DRUMSTICK_DRUMSTICKCOMMON_H
 
 #include <qglobal.h>
 #include <QString>
@@ -30,14 +30,14 @@ extern "C" {
 }
 
 /**
- * @file aseqmmcommon.h
+ * @file drumstickcommon.h
  * Common functionality
  * @defgroup Common Common Functionality
  * @{
- * aseqmm::SequencerError is a common exception object, encapsulating ALSA error codes.
+ * drumstick::SequencerError is a common exception object, encapsulating ALSA error codes.
  */
 
-namespace aseqmm {
+namespace drumstick {
 
 /**
  * 8-bit unsigned number to be used as a MIDI message parameter
@@ -149,8 +149,8 @@ inline int checkWarning(int rc, const char *where)
  */
 const QString LIBRARY_VERSION(SND_LIB_VERSION_STR);
 
-} /* namespace aseqmm */
+} /* namespace drumstick */
 
 /** @} */
 
-#endif /*ASEQMM_ASEQMMCOMMON_H*/
+#endif /*DRUMSTICK_DRUMSTICKCOMMON_H*/
