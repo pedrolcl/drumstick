@@ -2,8 +2,8 @@ TEMPLATE = subdirs
 SUBDIRS += buildsmf \
            dumpmid \
            dumpsmf \
-           playmid \
            playsmf \
+           smfplayer \
            sysinfo \
            testevents \
            timertest \
