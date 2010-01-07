@@ -44,9 +44,9 @@ namespace drumstick {
 
 /**
 @mainpage drumstick Documentation
-@author Copyright &copy; 2009 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
-@date 2009-12-27
-@version 0.2.0
+@author Copyright &copy; 2009-2010 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
+@date 2010-01-07
+@version 0.2.99svn
 
 This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/
@@ -67,7 +67,7 @@ ALSA sequencer provides software support for MIDI technology on Linux.
 This document is a work in progress, in a very early state. It will be always in
 development. Please visit the drumstick web site to read the latest version.
 
-@see http://kmetronome.sourceforge.net/drumstick/
+@see http://drumstick.sourceforge.net
 
 @section Introduction
 
@@ -118,8 +118,8 @@ int main(int argc, char **argv) {
 There are more examples in the source tree, under the tests/ directory, and
 you can also see applications using this library, as kmetronome and kmidimon.
 
-@see http://kmetronome.sourceforge.net/
-@see http://kmetronome.sourceforge.net/kmidimon/
+@see http://kmetronome.sourceforge.net/kmetronome.shtml
+@see http://kmetronome.sourceforge.net/kmidimon.shtml
 
 @section Acknowledgments
 Parts of this documentation are copied from the ALSA library documentation,
@@ -360,7 +360,7 @@ MidiClient::open( const QString deviceName,
  *
  * This method is like open() except that a configuration is explicitly
  * provided. After a successful open, an event with SND_SEQ_EVENT_CLIENT_START
- * is broadcast to the announce port.
+ * type is broadcasted from the announce port.
  *
  * @param conf a configuration object pointer.
  * @param deviceName the sequencer device name, default value = &quot;default&quot;.
