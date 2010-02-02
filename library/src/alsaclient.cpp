@@ -235,6 +235,12 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * enqueued using the application's event loop, and it is safe to call any GUI
  * methods in this case.</li>
  * </ul>
+ * Whichever method you select, it excludes the other methods for the same
+ * program. A callback takes precedence over the others. If it is not set, then
+ * the events are sent if MidiClient::setEventsEnabled() is called.
+ * If neither a callback handler is set nor events are enabled, then the signal
+ * is emitted. In any case, the event pointer must be deleted by the receiver
+ * method.
  *
  * @see http://doc.trolltech.com/4.5/threads.html#qobject-reentrancy
  *
@@ -627,18 +633,21 @@ MidiClient::doEvents()
                 break;
             }
             // first, process the callback (if any)
-            if (m_handler != NULL)
+            if (m_handler != NULL) {
                 m_handler->handleSequencerEvent(event->clone());
-            // second, process the event listeners
-            if (m_eventsEnabled) {
-               QObjectList::Iterator it;
-                for(it=m_listeners.begin(); it!=m_listeners.end(); ++it) {
-                    QObject* sub = (*it);
-                    QApplication::postEvent(sub, event->clone());
+            } else {
+                // second, process the event listeners
+                if (m_eventsEnabled) {
+                   QObjectList::Iterator it;
+                    for(it=m_listeners.begin(); it!=m_listeners.end(); ++it) {
+                        QObject* sub = (*it);
+                        QApplication::postEvent(sub, event->clone());
+                    }
+                } else {
+                    // finally, process signals
+                    emit  eventReceived(event->clone());
                 }
             }
-            // finally, process signals
-            emit eventReceived(event->clone());
             delete event;
         }
     }
