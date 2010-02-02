@@ -2308,14 +2308,15 @@ getRuntimeALSALibraryNumber()
     QRegExp rx("(\\d+)");
     QString str = getRuntimeALSALibraryVersion();
     bool ok;
-    int pos = 0, result = 0;
-    while ((pos = rx.indexIn(str, pos)) != -1) {
+    int pos = 0, result = 0, j = 0;
+    while ((pos = rx.indexIn(str, pos)) != -1 && j < 3) {
         int v = rx.cap(1).toInt(&ok);
         if (ok) {
             result <<= 8;
             result += v;
         }
         pos += rx.matchedLength();
+        j++;
     }
     return result;
 }
@@ -2349,14 +2350,15 @@ getRuntimeALSADriverNumber()
     QRegExp rx("(\\d+)");
     QString str = getRuntimeALSADriverVersion();
     bool ok;
-    int pos = 0, result = 0;
-    while ((pos = rx.indexIn(str, pos)) != -1) {
+    int pos = 0, result = 0, j = 0;
+    while ((pos = rx.indexIn(str, pos)) != -1 && j < 3) {
         int v = rx.cap(1).toInt(&ok);
         if (ok) {
             result <<= 8;
             result += v;
         }
         pos += rx.matchedLength();
+        j++;
     }
     return result;
 }
