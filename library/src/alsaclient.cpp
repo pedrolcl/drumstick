@@ -20,6 +20,8 @@
 #include "alsaclient.h"
 #include "alsaqueue.h"
 #include "alsaevent.h"
+#include <QFile>
+#include <QRegExp>
 #include <QThread>
 #include <pthread.h>
 
@@ -2283,6 +2285,80 @@ int
 PoolInfo::getSizeOfInfo() const
 {
     return snd_seq_client_pool_sizeof();
+}
+
+#if SND_LIB_VERSION > 0x010004
+/**
+ * Gets the runtime ALSA library version string
+ * @return string representing the runtime ALSA library version
+ */
+QString
+getRuntimeALSALibraryVersion()
+{
+    return QString(snd_asoundlib_version());
+}
+
+/**
+ * Gets the runtime ALSA library version number
+ * @return integer representing the runtime ALSA library version
+ */
+int
+getRuntimeALSALibraryNumber()
+{
+    QRegExp rx("(\\d+)");
+    QString str = getRuntimeALSALibraryVersion();
+    bool ok;
+    int pos = 0, result = 0;
+    while ((pos = rx.indexIn(str, pos)) != -1) {
+        int v = rx.cap(1).toInt(&ok);
+        if (ok) {
+            result <<= 8;
+            result += v;
+        }
+        pos += rx.matchedLength();
+    }
+    return result;
+}
+#endif
+
+/**
+ * Gets the runtime ALSA drivers version string
+ * @return string representing the runtime ALSA drivers version
+ */
+QString
+getRuntimeALSADriverVersion()
+{
+    QRegExp rx(".*Driver Version ([\\d\\.]+).*");
+    QString s;
+    QFile f("/proc/asound/version");
+    if (f.open(QFile::ReadOnly)) {
+        QTextStream str(&f);
+        if (rx.exactMatch(str.readLine().trimmed()))
+            s = rx.cap(1);
+    }
+    return s;
+}
+
+/**
+ * Gets the runtime ALSA drivers version number
+ * @return integer representing the runtime ALSA drivers version
+ */
+int
+getRuntimeALSADriverNumber()
+{
+    QRegExp rx("(\\d+)");
+    QString str = getRuntimeALSADriverVersion();
+    bool ok;
+    int pos = 0, result = 0;
+    while ((pos = rx.indexIn(str, pos)) != -1) {
+        int v = rx.cap(1).toInt(&ok);
+        if (ok) {
+            result <<= 8;
+            result += v;
+        }
+        pos += rx.matchedLength();
+    }
+    return result;
 }
 
 } /* namespace drumstick */

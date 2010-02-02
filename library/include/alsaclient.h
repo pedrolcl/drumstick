@@ -364,6 +364,13 @@ private:
     PoolInfo m_poolInfo;
 };
 
+#if SND_LIB_VERSION > 0x010004
+QString getRuntimeALSALibraryVersion();
+int getRuntimeALSALibraryNumber();
+#endif
+QString getRuntimeALSADriverVersion();
+int getRuntimeALSADriverNumber();
+
 } /* namespace drumstick */
 
 /** @} */

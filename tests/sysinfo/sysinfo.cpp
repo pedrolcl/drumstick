@@ -184,7 +184,18 @@ void systemInfo()
     client->setClientName(pgmi.baseName());
     SystemInfo info = client->getSystemInfo();
     cout << "ALSA Sequencer System Info" << endl;
-    cout << "Max Clients: " << info.getMaxClients() << endl;
+    cout << "Compiled ALSA library: " << LIBRARY_VERSION << endl;
+    cout << "Runtime ALSA library: "
+         << getRuntimeALSALibraryVersion() << endl;
+    cout << "Runtime ALSA drivers: "
+         << getRuntimeALSADriverVersion() << endl;
+    cout << "Numeric ALSA compiled library: "
+         << hex << SND_LIB_VERSION << endl;
+    cout << "Numeric ALSA runtime library: "
+         << getRuntimeALSALibraryNumber() << endl;
+    cout << "Numeric ALSA runtime driver: "
+         << getRuntimeALSADriverNumber() << endl;
+    cout << "Max Clients: " << dec << info.getMaxClients() << endl;
     cout << "Max Ports: " << info.getMaxPorts() << endl;
     cout << "Max Queues: " << info.getMaxQueues() << endl;
     cout << "Max Channels: " << info.getMaxChannels() << endl;

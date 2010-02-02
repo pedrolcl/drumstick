@@ -145,7 +145,11 @@ inline int checkWarning(int rc, const char *where)
 #define CHECK_WARNING(x) (checkWarning((x),__PRETTY_FUNCTION__))
 
 /**
- * ALSA library version as a constant string
+ * ALSA library version as a constant string.
+ *
+ * This string corresponds to the compilation library, which may be
+ * different to the runtime library.
+ * @see getRuntimeALSALibraryVersion
  */
 const QString LIBRARY_VERSION(SND_LIB_VERSION_STR);
 
