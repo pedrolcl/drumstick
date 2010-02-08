@@ -846,8 +846,10 @@ void MidiQueue::start()
  */
 void MidiQueue::stop()
 {
-    CHECK_WARNING(snd_seq_stop_queue(m_MidiClient->getHandle(), m_Id, NULL));
-    CHECK_WARNING(snd_seq_drain_output(m_MidiClient->getHandle()));
+    if (m_MidiClient != NULL && m_MidiClient->getHandle() != NULL) {
+        CHECK_WARNING(snd_seq_stop_queue(m_MidiClient->getHandle(), m_Id, NULL));
+        CHECK_WARNING(snd_seq_drain_output(m_MidiClient->getHandle()));
+    }
 }
 
 /**
@@ -866,7 +868,8 @@ void MidiQueue::continueRunning()
  */
 void MidiQueue::clear()
 {
-    snd_seq_drop_output(m_MidiClient->getHandle());
+    if (m_MidiClient != NULL && m_MidiClient->getHandle() != NULL)
+        snd_seq_drop_output(m_MidiClient->getHandle());
 }
 
 /**
