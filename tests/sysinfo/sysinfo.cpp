@@ -37,7 +37,7 @@ void queryTimers()
     cout << "type__ Name________________ c/s/C/D/S Freq." << endl;
     TimerIdList lst = query->getTimers();
     TimerIdList::ConstIterator it;
-    for( it = lst.begin(); it != lst.end(); ++it )
+    for( it = lst.constBegin(); it != lst.constEnd(); ++it )
     {
         TimerId id = *it;
         Timer* timer = new Timer(id, SND_TIMER_OPEN_NONBLOCK);

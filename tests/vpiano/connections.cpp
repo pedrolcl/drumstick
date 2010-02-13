@@ -34,7 +34,7 @@ ConnectionItem* Connections::createConnectionItem(PortInfo& pi, PortInfoList& su
     itm->setCheckState(Qt::Unchecked);
     itm->setPortInfo(pi);
     PortInfoList::ConstIterator it;
-    for( it = subs.begin(); it != subs.end(); ++it ) {
+    for( it = subs.constBegin(); it != subs.constEnd(); ++it ) {
         PortInfo s = *it;
         if ((s.getClient() == pi.getClient()) &&
             (s.getPort() == pi.getPort())) {

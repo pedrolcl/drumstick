@@ -1201,13 +1201,13 @@ MidiPort::updateConnectionsTo(const PortInfoList& ports)
 {
     PortInfoList subs(getReadSubscribers());
     PortInfoList::ConstIterator i;
-    for (i = subs.begin(); i != subs.end(); ++i) {
+    for (i = subs.constBegin(); i != subs.constEnd(); ++i) {
         PortInfo s = *i;
         if (!containsAddress(s.getAddr(), ports)) {
             unsubscribeTo(s.getAddr());
         }
     }
-    for (i = ports.begin(); i != ports.end(); ++i) {
+    for (i = ports.constBegin(); i != ports.constEnd(); ++i) {
         PortInfo p = *i;
         if (!containsAddress(p.getAddr(), subs)) {
             subscribeTo(&p);
@@ -1224,13 +1224,13 @@ MidiPort::updateConnectionsFrom(const PortInfoList& ports)
 {
     PortInfoList subs(getWriteSubscribers());
     PortInfoList::ConstIterator i;
-    for (i = subs.begin(); i != subs.end(); ++i) {
+    for (i = subs.constBegin(); i != subs.constEnd(); ++i) {
         PortInfo s = *i;
         if (!containsAddress(s.getAddr(), ports)) {
             unsubscribeFrom(s.getAddr());
         }
     }
-    for (i = ports.begin(); i != ports.end(); ++i) {
+    for (i = ports.constBegin(); i != ports.constEnd(); ++i) {
         PortInfo p = *i;
         if (!containsAddress(p.getAddr(), subs)) {
             subscribeFrom(&p);

@@ -1181,13 +1181,13 @@ MidiClient::filterPorts(unsigned int filter)
     if (m_NeedRefreshClientList)
         readClients();
 
-    for (itc = m_ClientList.begin(); itc != m_ClientList.end(); ++itc) {
+    for (itc = m_ClientList.constBegin(); itc != m_ClientList.constEnd(); ++itc) {
         ClientInfo ci = (*itc);
         if ((ci.getClientId() == SND_SEQ_CLIENT_SYSTEM) ||
             (ci.getClientId() == m_Info.getClientId()))
             continue;
         PortInfoList lstPorts = ci.getPorts();
-        for(itp = lstPorts.begin(); itp != lstPorts.end(); ++itp) {
+        for(itp = lstPorts.constBegin(); itp != lstPorts.constEnd(); ++itp) {
             PortInfo pi = (*itp);
             unsigned int cap = pi.getCapability();
             if ( ((filter & cap) != 0) &&

@@ -208,8 +208,8 @@ void PianoScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 PianoKey* PianoScene::getPianoKey( const int key ) const
 {
     if (m_keybdMap != NULL) {
-        KeyboardMap::ConstIterator it = m_keybdMap->find(key);
-        if ((it != m_keybdMap->end()) && (it.key() == key)) {
+        KeyboardMap::ConstIterator it = m_keybdMap->constFind(key);
+        if ((it != m_keybdMap->constEnd()) && (it.key() == key)) {
             int note = it.value();
             if (note < m_keys.size())
                 return m_keys[note];
@@ -243,7 +243,7 @@ void PianoScene::keyReleaseEvent ( QKeyEvent * keyEvent )
 void PianoScene::allKeysOff()
 {
     QList<PianoKey*>::ConstIterator it; 
-    for(it = m_keys.begin(); it != m_keys.end(); ++it) {
+    for(it = m_keys.constBegin(); it != m_keys.constEnd(); ++it) {
         (*it)->setPressed(false);
     }
 }
