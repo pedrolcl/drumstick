@@ -102,6 +102,8 @@ public:
     void setSubdevice(int subdevice);
     int getSubdevice();
 
+    const snd_timer_id_t *getId() const { return m_Info; }
+
 private:
     snd_timer_id_t *m_Info;
 };
@@ -299,6 +301,7 @@ public:
     Timer(TimerId& id, int openMode, QObject* parent = 0);
     virtual ~Timer();
     
+    static TimerId bestGlobalTimerId();
     static Timer* bestGlobalTimer(int openMode, QObject* parent = 0);
     /**
      * Gets the ALSA timer object.

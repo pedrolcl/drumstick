@@ -20,6 +20,7 @@
 #include "alsaqueue.h"
 #include "alsaclient.h"
 #include "alsaevent.h"
+#include "alsatimer.h"
 #include <cmath>
 
 /**
@@ -649,6 +650,15 @@ void QueueTimer::setType(snd_seq_queue_timer_type_t value)
 void QueueTimer::setId(snd_timer_id_t* value)
 {
     snd_seq_queue_timer_set_id(m_Info, value);
+}
+
+/**
+ * Sets the timer identifier record
+ * @param id Timer identifier instance
+ */
+void QueueTimer::setId(const TimerId& id)
+{
+    setId(id.getId());
 }
 
 /**

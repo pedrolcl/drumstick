@@ -1314,14 +1314,12 @@ void Timer::stopEvents()
 }
 
 /**
- * Check and return the best available global Timer in the system, meaning
+ * Check and return the best available global TimerId in the system, meaning
  * the timer with higher frequency (or lesser period, resolution).
- * @param openMode Open mode flags
- * @param parent Optional parent object
- * @return A new Timer instance pointer
+ * @return A TimerId object
  */
-Timer*
-Timer::bestGlobalTimer(int openMode, QObject* parent)
+TimerId
+Timer::bestGlobalTimerId()
 {
     TimerId id;
     snd_timer_t* timer;
@@ -1373,6 +1371,20 @@ Timer::bestGlobalTimer(int openMode, QObject* parent)
         }
         snd_timer_close(timer);
     }
+    return id;
+}
+
+/**
+ * Check and return the best available global Timer in the system, meaning
+ * the timer with higher frequency (or lesser period, resolution).
+ * @param openMode Open mode flags
+ * @param parent Optional parent object
+ * @return A new Timer instance pointer
+ */
+Timer*
+Timer::bestGlobalTimer(int openMode, QObject* parent)
+{
+    TimerId id = bestGlobalTimerId();
     return new Timer(id, openMode, parent);
 }
 

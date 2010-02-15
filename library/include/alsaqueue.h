@@ -21,7 +21,6 @@
 #define DRUMSTICK_ALSAQUEUE_H
 
 #include "drumstickcommon.h"
-
 /**
  * @file alsaqueue.h
  * Classes managing ALSA Sequencer queues
@@ -38,6 +37,7 @@ namespace drumstick {
 #define SKEW_BASE 0x10000
 
 class MidiClient;
+class TimerId;
 
 /**
  * Queue information container.
@@ -173,6 +173,7 @@ public:
     unsigned int getResolution();
     void setType(snd_seq_queue_timer_type_t value);
     void setId(snd_timer_id_t* value);
+    void setId(const TimerId& id);
     void setResolution(unsigned int value);
 
 private:
