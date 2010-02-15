@@ -7,4 +7,5 @@ SUBDIRS += buildsmf \
            sysinfo \
            testevents \
            timertest \
-           vpiano
+           vpiano \
+           metronome
