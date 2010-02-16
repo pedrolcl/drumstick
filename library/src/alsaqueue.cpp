@@ -654,11 +654,11 @@ void QueueTimer::setId(snd_timer_id_t* value)
 
 /**
  * Sets the timer identifier record
- * @param id Timer identifier instance
+ * @param id Timer identifier object
  */
 void QueueTimer::setId(const TimerId& id)
 {
-    setId(id.getId());
+    setId(id.m_Info);
 }
 
 /**

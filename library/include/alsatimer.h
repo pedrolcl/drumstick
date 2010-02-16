@@ -80,6 +80,7 @@ class TimerId
 {
     friend class TimerQuery;
     friend class TimerGlobalInfo;
+    friend class QueueTimer;
 
 public:
     TimerId();
@@ -101,8 +102,6 @@ public:
     int getDevice();
     void setSubdevice(int subdevice);
     int getSubdevice();
-
-    const snd_timer_id_t *getId() const { return m_Info; }
 
 private:
     snd_timer_id_t *m_Info;

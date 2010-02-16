@@ -18,6 +18,8 @@
 */
 
 #include "metronome.h"
+#include "alsatimer.h"
+
 #include <signal.h>
 #include <QApplication>
 #include <QTextStream>
@@ -54,20 +56,26 @@ Metronome::Metronome(QObject *parent) : QObject(parent),
     m_Client->open();
     m_Client->setClientName(name);
     m_Client->setHandler(this);
-
     m_Port = new MidiPort(this);
     m_Port->attach( m_Client );
     m_Port->setPortName(name);
-    m_Port->setCapability( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ |
+    m_Port->setCapability( SND_SEQ_PORT_CAP_READ |
+                           SND_SEQ_PORT_CAP_SUBS_READ |
                            SND_SEQ_PORT_CAP_WRITE );
-    m_Port->setPortType(SND_SEQ_PORT_TYPE_APPLICATION);
-
+    m_Port->setPortType( SND_SEQ_PORT_TYPE_MIDI_GENERIC |
+                         SND_SEQ_PORT_TYPE_APPLICATION );
     m_Queue = m_Client->createQueue(name);
     m_clientId = m_Client->getClientId();
     m_queueId = m_Queue->getId();
     m_portId = m_Port->getPortId();
     m_Port->setTimestamping(true);
     m_Port->setTimestampQueue(m_queueId);
+    // Get and apply the best available timer
+    TimerId best = Timer::bestGlobalTimerId();
+    QueueTimer qtimer;
+    qtimer.setId(best);
+    m_Queue->setTimer(qtimer);
+    // Start sequencer input
     m_Client->startSequencerInput();
 }
 
