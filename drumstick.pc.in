@@ -3,10 +3,18 @@ exec_prefix=${prefix}
 libdir=${prefix}/@LIB@
 includedir=${prefix}/include/drumstick
 
-Name: drumstick
+Name: drumstick-file
+Version: @VERSION@
+Description: MIDI Sequencer C++ Library Bindings for Qt4
+URL: http://sourceforge.net/projects/drumstick
+Requires: QtCore >= 4.4.0, QtGui >= 4.4.0 
+Libs: -L${libdir} -ldrumstick-file -lQtCore
+Cflags: -I${includedir}
+
+Name: drumstick-alsa
 Version: @VERSION@
 Description: MIDI Sequencer C++ Library Bindings for ALSA and Qt4
-URL: http://sourceforge.net/projects/kmetronome
+URL: http://sourceforge.net/projects/drumstick
 Requires: alsa >= 1.0.0, QtCore >= 4.4.0, QtGui >= 4.4.0 
-Libs: -L${libdir} -ldrumstick -lQtCore
+Libs: -L${libdir} -ldrumstick-alsa -lQtCore
 Cflags: -I${includedir}

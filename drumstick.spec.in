@@ -27,7 +27,7 @@ BuildRequires:  graphviz
 BuildRequires:  update-desktop-files
 
 %description
-This package includes the example programs for libdrumstick.
+This package includes test and example programs for drumstick libraries.
 
 
 
@@ -36,11 +36,24 @@ Authors:
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
 
-%package -n libdrumstick0
+%package -n libdrumstick-file0
 Summary:        MIDI Sequencer C++ Library
 Group:          System/Libraries
 
-%description -n libdrumstick0
+%description -n libdrumstick-file0
+MIDI Sequencer C++ Library Bindings for Qt4 and ALSA
+
+
+
+Authors:
+--------
+    Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+
+%package -n libdrumstick-alsa0
+Summary:        MIDI Sequencer C++ Library
+Group:          System/Libraries
+
+%description -n libdrumstick-alsa0
 MIDI Sequencer C++ Library Bindings for Qt4 and ALSA
 
 
@@ -52,11 +65,13 @@ Authors:
 %package -n libdrumstick-devel
 Summary:        Development package for the libdrumstick library
 Group:          Development/Libraries/C and C++
-Requires:       libdrumstick0 = %{version} glibc-devel libstdc++-devel libqt4-devel
+Requires:       libdrumstick-file0 = %{version}
+Requires:       libdrumstick-alsa0 = %{version}
+Requires:       glibc-devel libstdc++-devel alsa-devel libqt4-devel
 
 %description -n libdrumstick-devel
 This package contains the files needed to compile programs that use the
-libdrumstick library.
+libdrumstick libraries.
 
 
 
@@ -65,11 +80,11 @@ Authors:
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
 %package -n libdrumstick-doc
-Summary:        Development documentation package for the libdrumstick library
+Summary:        Development documentation package for the drumstick libraries
 Group:          Documentation/Other
 
 %description -n libdrumstick-doc
-This package contains the developer's documentation of the libdrumstick library.
+This package contains the developer's documentation of the drumstick libraries.
 
 
 
@@ -93,9 +108,13 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %suse_update_desktop_file -n drumstick-smfplayer Midi
 %suse_update_desktop_file -n drumstick-vpiano Midi
 
-%post -n libdrumstick0 -p /sbin/ldconfig
+%post -n libdrumstick-file0 -p /sbin/ldconfig
 
-%postun -n libdrumstick0 -p /sbin/ldconfig
+%postun -n libdrumstick-file0 -p /sbin/ldconfig
+
+%post -n libdrumstick-alsa0 -p /sbin/ldconfig
+
+%postun -n libdrumstick-alsa0 -p /sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -118,15 +137,19 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/applications/*
 %{_bindir}/*
 
-%files -n libdrumstick0
+%files -n libdrumstick-file0
 %defattr(-,root,root)
-%{_libdir}/libdrumstick.so.*
+%{_libdir}/libdrumstick-file.so.*
+
+%files -n libdrumstick-alsa0
+%defattr(-,root,root)
+%{_libdir}/libdrumstick-alsa.so.*
 
 %files -n libdrumstick-devel
 %defattr(-, root, root)
 %dir %{_includedir}/drumstick
-%{_libdir}/libdrumstick.so
-%{_libdir}/libdrumstick.la
+%{_libdir}/libdrumstick-file.so
+%{_libdir}/libdrumstick-alsa.so
 %{_includedir}/drumstick.h
 %{_includedir}/drumstick/*.h
 %{_libdir}/pkgconfig/*.pc
@@ -136,6 +159,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/html/*
 
 %changelog
+* Sun Feb 21 2010 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.3.0
+- New version
+
 * Sun Dec 27 2009 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.2.0
 - New version
 

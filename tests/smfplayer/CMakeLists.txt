@@ -37,7 +37,8 @@ ENDIF(USE_PCH)
 TARGET_LINK_LIBRARIES(drumstick-smfplayer
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
-    drumstick
+    drumstick-file
+    drumstick-alsa
 )
 
 INSTALL(TARGETS drumstick-smfplayer

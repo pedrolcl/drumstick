@@ -21,7 +21,7 @@ ENDIF(USE_PCH)
 TARGET_LINK_LIBRARIES(drumstick-dumpsmf
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
-    drumstick
+    drumstick-file
 )
 
 # we should install some files...

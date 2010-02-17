@@ -2,7 +2,7 @@ TEMPLATE = app
 TARGET = drumstick-smfplayer
 INCLUDEPATH += . ../../library/include
 DEPENDPATH += . ../../library ../../library/include
-LIBS = -L../../library -ldrumstick  -lasound
+LIBS = -L../../library -ldrumstick-file -ldrumstick-alsa -lasound
 # Input
 HEADERS += player.h smfplayer.h song.h
 FORMS += smfplayer.ui

@@ -2,7 +2,7 @@ TEMPLATE = app
 TARGET = drumstick-vpiano
 INCLUDEPATH += . ../../library/include
 DEPENDPATH += . ../../library ../../library/include
-LIBS = -L../../library -ldrumstick -lasound
+LIBS = -L../../library -ldrumstick-alsa -lasound
 QT += svg
 # Input
 FORMS += vpiano.ui connections.ui about.ui preferences.ui

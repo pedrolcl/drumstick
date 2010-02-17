@@ -16,23 +16,63 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-INCLUDE(CreateLibtoolFile)
+#deprecated libtool
+#INCLUDE(CreateLibtoolFile)
 
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-SET(drumstick_qtobject_SRCS
+# drumstick-file library
+
+SET(drumstick-file_QTOBJ_SRCS
+    include/qsmf.h
+)
+
+SET(drumstick-file_HEADERS
+    include/qsmf.h
+)
+
+SET(drumstick-file_SRCS
+    src/qsmf.cpp
+)
+
+QT4_WRAP_CPP(drumstick-file_MOC_SRCS ${drumstick-file_QTOBJ_SRCS})
+
+ADD_LIBRARY(drumstick-file
+    ${drumstick-file_MOC_SRCS}
+    ${drumstick-file_SRCS} 
+    ${drumstick-file_HEADERS} 
+)
+
+TARGET_LINK_LIBRARIES(drumstick-file
+    ${QT_LIBRARIES}
+)
+
+IF(STATIC_DRUMSTICK)
+    SET_TARGET_PROPERTIES(drumstick-file PROPERTIES
+        STATIC_LIB "libdrumstick-file.a"
+        COMPILE_FLAGS -fPIC
+    )
+ELSE(STATIC_DRUMSTICK)
+    SET_TARGET_PROPERTIES(drumstick-file PROPERTIES
+        VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
+        SOVERSION ${VERSION_MAJOR}
+    )
+ENDIF(STATIC_DRUMSTICK)
+
+# drumstick-alsa library
+
+SET(drumstick-alsa_QTOBJ_SRCS
     include/alsaclient.h
     include/alsaevent.h
     include/alsaport.h
     include/alsaqueue.h
     include/alsatimer.h
     include/playthread.h
-    include/qsmf.h
 )
 
-SET(drumstick_HEADERS
+SET(drumstick-alsa_HEADERS
     include/alsaclient.h
     include/alsaevent.h
     include/alsaport.h
@@ -40,64 +80,72 @@ SET(drumstick_HEADERS
     include/alsatimer.h
     include/drumstickcommon.h
     include/playthread.h
-    include/qsmf.h
     include/subscription.h
 )
 
-SET(drumstick_SRCS
+SET(drumstick-alsa_SRCS
     src/alsaclient.cpp
     src/alsaevent.cpp
     src/alsaport.cpp
     src/alsaqueue.cpp
     src/alsatimer.cpp
     src/playthread.cpp
-    src/qsmf.cpp
     src/subscription.cpp
 )
 
-QT4_WRAP_CPP(drumstick_moc_SRCS ${drumstick_qtobject_SRCS})
-
-ADD_LIBRARY(drumstick 
-    ${drumstick_moc_SRCS}
-    ${drumstick_SRCS} 
-    ${drumstick_HEADERS} 
-)
-
-TARGET_LINK_LIBRARIES(drumstick
-    ${QT_LIBRARIES}
-    ${ALSA_LIBS}
-)
-
-IF(STATIC_DRUMSTICK)
-    SET_TARGET_PROPERTIES(drumstick PROPERTIES
-         STATIC_LIB "libdrumstick.a"
-         COMPILE_FLAGS -fPIC
+IF(ALSA_FOUND)
+    QT4_WRAP_CPP(drumstick-alsa_MOC_SRCS ${drumstick-alsa_QTOBJ_SRCS})
+   
+    ADD_LIBRARY(drumstick-alsa 
+        ${drumstick-alsa_MOC_SRCS}
+        ${drumstick-alsa_SRCS} 
+        ${drumstick-alsa_HEADERS} 
     )
-ELSE(STATIC_drumstick)
-    SET_TARGET_PROPERTIES(drumstick PROPERTIES
-        VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
-        SOVERSION ${VERSION_MAJOR}
+    
+    TARGET_LINK_LIBRARIES(drumstick-alsa
+        ${QT_LIBRARIES}
+        ${ALSA_LIBS}
     )
-ENDIF(STATIC_DRUMSTICK)
+    
+    IF(STATIC_DRUMSTICK)
+        SET_TARGET_PROPERTIES(drumstick-alsa PROPERTIES
+             STATIC_LIB "libdrumstick-alsa.a"
+             COMPILE_FLAGS -fPIC
+        )
+    ELSE(STATIC_DRUMSTICK)
+        SET_TARGET_PROPERTIES(drumstick-alsa PROPERTIES
+            VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
+            SOVERSION ${VERSION_MAJOR}
+        )
+    ENDIF(STATIC_DRUMSTICK)
+ENDIF(ALSA_FOUND)
 
-SET_TARGET_PROPERTIES(drumstick PROPERTIES
-    LT_DEPENDENCY_LIBS "-lasound -lQtCore"
-    LT_VERSION_CURRENT ${VERSION_MAJOR}
-    LT_VERSION_AGE ${VERSION_MINOR}
-    LT_VERSION_REVISION ${VERSION_PATCH}
-)
-
-CREATE_LIBTOOL_FILE(drumstick ${LIB})
+#deprecated libtool 
+#SET_TARGET_PROPERTIES(drumstick-alsa PROPERTIES
+#    LT_DEPENDENCY_LIBS "-lasound -lQtCore"
+#    LT_VERSION_CURRENT ${VERSION_MAJOR}
+#    LT_VERSION_AGE ${VERSION_MINOR}
+#    LT_VERSION_REVISION ${VERSION_PATCH}
+#)
+#CREATE_LIBTOOL_FILE(drumstick-alsa ${LIB})
 
 # we should install some files...
 
-INSTALL(TARGETS drumstick
+IF(ALSA_FOUND)
+    INSTALL(TARGETS drumstick-alsa 
+        RUNTIME DESTINATION bin
+        ARCHIVE DESTINATION ${LIB}
+        LIBRARY DESTINATION ${LIB})
+    INSTALL(FILES ${drumstick-alsa_HEADERS}
+            DESTINATION include/drumstick)
+    INSTALL(FILES include/drumstick.h
+            DESTINATION include)
+ENDIF(ALSA_FOUND)
+
+INSTALL(TARGETS drumstick-file
 	RUNTIME DESTINATION bin
 	ARCHIVE DESTINATION ${LIB}
 	LIBRARY DESTINATION ${LIB})
 
-INSTALL(FILES ${drumstick_HEADERS}
+INSTALL(FILES ${drumstick-file_HEADERS}
         DESTINATION include/drumstick)
-
-INSTALL(FILES include/drumstick.h
-        DESTINATION include)

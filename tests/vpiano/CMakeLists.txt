@@ -56,7 +56,7 @@ ENDIF(USE_PCH)
 TARGET_LINK_LIBRARIES(drumstick-vpiano
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
-    drumstick
+    drumstick-alsa
 )
 
 INSTALL(TARGETS drumstick-vpiano
