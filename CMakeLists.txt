@@ -151,7 +151,8 @@ ADD_SUBDIRECTORY(library)
 ADD_SUBDIRECTORY(tests)
 ADD_SUBDIRECTORY(icons)
 
-CONFIGURE_FILE(drumstick.pc.in drumstick.pc IMMEDIATE @ONLY)
+CONFIGURE_FILE(drumstick-alsa.pc.in drumstick-alsa.pc IMMEDIATE @ONLY)
+CONFIGURE_FILE(drumstick-file.pc.in drumstick-file.pc IMMEDIATE @ONLY)
 CONFIGURE_FILE(drumstick.spec.in drumstick.spec IMMEDIATE @ONLY)
 
 # uninstall custom target
@@ -171,12 +172,14 @@ ADD_CUSTOM_TARGET ( tarball
     COMMAND cp -r tests drumstick-${VERSION}
     COMMAND cp -r doc drumstick-${VERSION}
     COMMAND cp -r icons drumstick-${VERSION}
-    COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO drumstick.*.in drumstick.pro configure* Doxyfile.in link-drumstick chkcoverage drumstick-${VERSION}
+    COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO drumstick*.in drumstick.pro configure* Doxyfile.in link-drumstick chkcoverage drumstick-${VERSION}
     COMMAND tar -cj --exclude CVS --exclude .cvsignore -f drumstick-${VERSION}.tar.bz2 drumstick-${VERSION}
     COMMAND tar -cz --exclude CVS --exclude .cvsignore -f drumstick-${VERSION}.tar.gz drumstick-${VERSION}
     COMMAND rm -rf drumstick-${VERSION}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
-INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/drumstick.pc
-        DESTINATION ${LIB}/pkgconfig)
+INSTALL( FILES 
+         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-file.pc
+         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
+         DESTINATION ${LIB}/pkgconfig )
