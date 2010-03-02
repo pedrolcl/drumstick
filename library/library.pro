@@ -2,7 +2,7 @@ TEMPLATE = lib
 TARGET = drumstick
 DEPENDPATH += . include src
 INCLUDEPATH += . include
-VERSION=0.2.99svn
+VERSION=0.3.0svn
 CONFIG += qt staticlib debug
 # Input
 HEADERS += include/alsaclient.h \

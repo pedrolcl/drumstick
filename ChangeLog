@@ -1,3 +1,6 @@
+2010-03-02
+    * New class QWrk, for reading Cakewalk files
+
 2010-02-17
     * Split: drumstick-file and drumstick-alsa 
 

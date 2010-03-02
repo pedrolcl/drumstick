@@ -8,4 +8,5 @@ SUBDIRS += buildsmf \
            testevents \
            timertest \
            vpiano \
-           metronome
+           metronome \
+           dumpwrk
