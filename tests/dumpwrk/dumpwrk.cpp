@@ -38,48 +38,77 @@ QSpyWrk::QSpyWrk():
 {
     m_engine = new QWrk(this);
     m_engine->setTextCodec(QTextCodec::codecForName("WIN1252"));
-    connect(m_engine, SIGNAL(signalWRKError(const QString&)), SLOT(errorHandler(const QString&)));
-    connect(m_engine, SIGNAL(signalWRKUnknownChunk(int,const QByteArray&)), SLOT(unknownChunk(int,const QByteArray&)));
-    connect(m_engine, SIGNAL(signalWRKHeader(int,int)), SLOT(fileHeader(int,int)));
-    connect(m_engine, SIGNAL(signalWRKGlobalVars()), SLOT(globalVars()));
+
+    connect(m_engine, SIGNAL(signalWRKError(const QString&)),
+                      SLOT(errorHandler(const QString&)));
+    connect(m_engine, SIGNAL(signalWRKUnknownChunk(int,const QByteArray&)),
+                      SLOT(unknownChunk(int,const QByteArray&)));
+    connect(m_engine, SIGNAL(signalWRKHeader(int,int)),
+                      SLOT(fileHeader(int,int)));
+    connect(m_engine, SIGNAL(signalWRKGlobalVars()),
+                      SLOT(globalVars()));
     connect(m_engine, SIGNAL(signalWRKTrack(const QString&, const QString&, int,int,int,int,int,bool,bool,bool)),
                       SLOT(trackHeader(const QString&, const QString&, int,int,int,int,int,bool,bool,bool)));
-    connect(m_engine, SIGNAL(signalWRKTimeBase(int)), SLOT(timeBase(int)));
-    connect(m_engine, SIGNAL(signalWRKNote(int,int,int,int,int,int)), SLOT(noteEvent(int,int,int,int,int,int)));
-    connect(m_engine, SIGNAL(signalWRKKeyPress(int,int,int,int,int)), SLOT(keyPressEvent(int,int,int,int,int)));
-    connect(m_engine, SIGNAL(signalWRKCtlChange(int,int,int,int,int)), SLOT(ctlChangeEvent(int,int,int,int,int)));
-    connect(m_engine, SIGNAL(signalWRKPitchBend(int,int,int,int)), SLOT(pitchBendEvent(int,int,int,int)));
-    connect(m_engine, SIGNAL(signalWRKProgram(int,int,int,int)), SLOT(programEvent(int,int,int,int)));
-    connect(m_engine, SIGNAL(signalWRKChanPress(int,int,int,int)), SLOT(chanPressEvent(int,int,int,int)));
-    connect(m_engine, SIGNAL(signalWRKSysexEvent(int,int,int)), SLOT(sysexEvent(int,int,int)));
+    connect(m_engine, SIGNAL(signalWRKTimeBase(int)),
+                      SLOT(timeBase(int)));
+    connect(m_engine, SIGNAL(signalWRKNote(int,int,int,int,int,int)),
+                      SLOT(noteEvent(int,int,int,int,int,int)));
+    connect(m_engine, SIGNAL(signalWRKKeyPress(int,int,int,int,int)),
+                      SLOT(keyPressEvent(int,int,int,int,int)));
+    connect(m_engine, SIGNAL(signalWRKCtlChange(int,int,int,int,int)),
+                      SLOT(ctlChangeEvent(int,int,int,int,int)));
+    connect(m_engine, SIGNAL(signalWRKPitchBend(int,int,int,int)),
+                      SLOT(pitchBendEvent(int,int,int,int)));
+    connect(m_engine, SIGNAL(signalWRKProgram(int,int,int,int)),
+                      SLOT(programEvent(int,int,int,int)));
+    connect(m_engine, SIGNAL(signalWRKChanPress(int,int,int,int)),
+                      SLOT(chanPressEvent(int,int,int,int)));
+    connect(m_engine, SIGNAL(signalWRKSysexEvent(int,int,int)),
+                      SLOT(sysexEvent(int,int,int)));
     connect(m_engine, SIGNAL(signalWRKSysex(int,const QString&,bool,int,const QByteArray&)),
                       SLOT(sysexEventBank(int,const QString&,bool,int,const QByteArray&)));
-    connect(m_engine, SIGNAL(signalWRKText(int,int,int,const QString&)), SLOT(textEvent(int,int,int,const QString&)));
-    connect(m_engine, SIGNAL(signalWRKTimeSig(int,int,int)), SLOT(timeSigEvent(int,int,int)));
-    connect(m_engine, SIGNAL(signalWRKKeySig(int,int)), SLOT(keySigEvent(int,int)));
-    connect(m_engine, SIGNAL(signalWRKTempo(int,int)), SLOT(tempoEvent(int,int)));
-    connect(m_engine, SIGNAL(signalWRKThru(int,int,int,int,int,int)), SLOT(thruMode(int,int,int,int,int,int)));
-    connect(m_engine, SIGNAL(signalWRKTrackOffset(int,int)), SLOT(trackOffset(int,int)));
-    connect(m_engine, SIGNAL(signalWRKTrackReps(int,int)), SLOT(trackReps(int,int)));
-    connect(m_engine, SIGNAL(signalWRKTrackPatch(int,int)), SLOT(trackPatch(int,int)));
-    connect(m_engine, SIGNAL(signalWRKTimeFormat(int,int)), SLOT(timeFormat(int,int)));
-    connect(m_engine, SIGNAL(signalWRKComments(const QString&)), SLOT(comments(const QString&)));
+    connect(m_engine, SIGNAL(signalWRKText(int,int,int,const QString&)),
+                      SLOT(textEvent(int,int,int,const QString&)));
+    connect(m_engine, SIGNAL(signalWRKTimeSig(int,int,int)),
+                      SLOT(timeSigEvent(int,int,int)));
+    connect(m_engine, SIGNAL(signalWRKKeySig(int,int)),
+                      SLOT(keySigEvent(int,int)));
+    connect(m_engine, SIGNAL(signalWRKTempo(int,int)),
+                      SLOT(tempoEvent(int,int)));
+    connect(m_engine, SIGNAL(signalWRKThru(int,int,int,int,int,int)),
+                      SLOT(thruMode(int,int,int,int,int,int)));
+    connect(m_engine, SIGNAL(signalWRKTrackOffset(int,int)),
+                      SLOT(trackOffset(int,int)));
+    connect(m_engine, SIGNAL(signalWRKTrackReps(int,int)),
+                      SLOT(trackReps(int,int)));
+    connect(m_engine, SIGNAL(signalWRKTrackPatch(int,int)),
+                      SLOT(trackPatch(int,int)));
+    connect(m_engine, SIGNAL(signalWRKTimeFormat(int,int)),
+                      SLOT(timeFormat(int,int)));
+    connect(m_engine, SIGNAL(signalWRKComments(const QString&)),
+                      SLOT(comments(const QString&)));
     connect(m_engine, SIGNAL(signalWRKVariableRecord(const QString&,const QByteArray&)),
                       SLOT(variableRecord(const QString&,const QByteArray&)));
     connect(m_engine, SIGNAL(signalWRKNewTrack(const QString&,int,int,int,int,int,bool,bool,bool)),
                       SLOT(newTrackHeader(const QString&,int,int,int,int,int,bool,bool,bool)));
-    connect(m_engine, SIGNAL(signalWRKSoftVer(const QString&)), SLOT(softVersion(const QString&)));
-    connect(m_engine, SIGNAL(signalWRKTrackName(int,const QString&)), SLOT(trackName(int,const QString&)));
-    connect(m_engine, SIGNAL(signalWRKStringTable(const QStringList&)), SLOT(stringTable(const QStringList&)));
-    connect(m_engine, SIGNAL(signalWRKTrackVol(int,int)), SLOT(trackVol(int,int)));
-    connect(m_engine, SIGNAL(signalWRKTrackBank(int,int)), SLOT(trackBank(int,int)));
+    connect(m_engine, SIGNAL(signalWRKSoftVer(const QString&)),
+                      SLOT(softVersion(const QString&)));
+    connect(m_engine, SIGNAL(signalWRKTrackName(int,const QString&)),
+                      SLOT(trackName(int,const QString&)));
+    connect(m_engine, SIGNAL(signalWRKStringTable(const QStringList&)),
+                      SLOT(stringTable(const QStringList&)));
+    connect(m_engine, SIGNAL(signalWRKTrackVol(int,int)),
+                      SLOT(trackVol(int,int)));
+    connect(m_engine, SIGNAL(signalWRKTrackBank(int,int)),
+                      SLOT(trackBank(int,int)));
     connect(m_engine, SIGNAL(signalWRKSegment(int,int,const QString&)),
                       SLOT(segment(int,int,const QString&)));
     connect(m_engine, SIGNAL(signalWRKChord(int,int,const QString&,const QByteArray&)),
                       SLOT(chord(int,int,const QString&,const QByteArray&)));
     connect(m_engine, SIGNAL(signalWRKExpression(int,int,int,const QString&)),
                       SLOT(expression(int,int,int,const QString&)));
-    connect(m_engine, SIGNAL(signalWRKHairpin(int,int,int,int)),SLOT(hairpin(int,int,int,int)));
+    connect(m_engine, SIGNAL(signalWRKHairpin(int,int,int,int)),
+                      SLOT(hairpin(int,int,int,int)));
 
     cout.setRealNumberNotation(QTextStream::FixedNotation);
     cout.setRealNumberPrecision(4);
@@ -260,7 +289,7 @@ void QSpyWrk::tempoEvent(int time, int tempo)
 
 void QSpyWrk::thruMode(int mode, int port, int channel, int keyPlus, int velPlus, int localPort)
 {
-    dumpStr(0, "Thru Mode", QString("mode=%1 port=%2 chan=%3 key+=%4 vel+=%5 lclPort=%6").arg(mode).arg(port).arg(channel).arg(keyPlus).arg(velPlus).arg(localPort));
+    dumpStr(0, "Thru Mode", QString("mode=%1 port=%2 chan=%3 key+=%4 vel+=%5 port=%6").arg(mode).arg(port).arg(channel).arg(keyPlus).arg(velPlus).arg(localPort));
 }
 
 void QSpyWrk::trackOffset(int track, int ofs)
@@ -291,8 +320,10 @@ void QSpyWrk::comments(const QString& cmt)
 void QSpyWrk::variableRecord(const QString& name, const QByteArray& data)
 {
     QString s = name;
-    if ( name == "Title" || name == "Author" || name == "Copyright" ||
-         name == "Subtitle" || name == "Instructions" || name == "Keywords" ) {
+    bool isReadable = ( name == "Title" || name == "Author" ||
+                       name == "Copyright" || name == "Subtitle" ||
+                       name == "Instructions" || name == "Keywords" );
+    if (isReadable) {
         s += ": ";
         if (m_engine->getTextCodec() == 0)
             s += QString(data);
@@ -300,6 +331,8 @@ void QSpyWrk::variableRecord(const QString& name, const QByteArray& data)
             s += m_engine->getTextCodec()->toUnicode(data);
     }
     dumpStr(0, "Variable Record", s.trimmed());
+    if (!isReadable)
+        dumpHex(data);
 }
 
 void QSpyWrk::newTrackHeader( const QString& name,
@@ -365,8 +398,8 @@ void QSpyWrk::hairpin(int track, int time, int code, int dur)
 
 void QSpyWrk::unknownChunk(int type, const QByteArray& data)
 {
-    QString name = QString("Unknown Chunk %1=0x%2").arg(type).arg(type, 2, 16, QChar('0'));
-    dumpStr(0, name, QString("len=%2").arg(data.length()));
+    QString name = QString("Unknown Chunk %1 (0x%2)").arg(type).arg(type, 2, 16, QChar('0'));
+    dumpStr(0, name, QString("size=%2").arg(data.length()));
     dumpHex(data);
 }
 

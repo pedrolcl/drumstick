@@ -120,8 +120,9 @@ int main(int argc, char **argv) {
 There are more examples in the source tree, under the tests/ directory, and
 you can also see applications using this library, as kmetronome and kmidimon.
 
-@see http://kmetronome.sourceforge.net/kmetronome.shtml
-@see http://kmetronome.sourceforge.net/kmidimon.shtml
+@see http://kmetronome.sourceforge.net
+@see http://kmidimon.sourceforge.net
+@see http://kmid2.sourceforge.net
 
 @section Acknowledgments
 Parts of this documentation are copied from the ALSA library documentation,
@@ -152,6 +153,14 @@ SMF output from scratch
 @example dumpsmf.cpp
 SMF read and print
 @include dumpsmf.h
+
+@example dumpwrk.cpp
+Cakewalk WRK file parse and print
+@include dumpwrk.h
+
+@example metronome.cpp
+Simple command line MIDI metronome
+@include metronome.h
 
 @example sysinfo.cpp
 Prints information about the ALSA sequencer subsystem

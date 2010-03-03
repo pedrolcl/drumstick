@@ -25,6 +25,7 @@
  * The main header that a program can include to use all the drumstick features.
  */
 
+// ALSA library interface
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaevent.h>
 #include <drumstick/alsaport.h>
@@ -32,7 +33,10 @@
 #include <drumstick/alsatimer.h>
 #include <drumstick/drumstickcommon.h>
 #include <drumstick/playthread.h>
-#include <drumstick/qsmf.h>
 #include <drumstick/subscription.h>
+
+// File formats
+#include <drumstick/qsmf.h>
+#include <drumstick/qwrk.h>
 
 #endif /*DRUMSTICK_H*/

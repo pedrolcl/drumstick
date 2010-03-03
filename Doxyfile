@@ -31,7 +31,7 @@ PROJECT_NAME = drumstick
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER = 0.2.99svn
+PROJECT_NUMBER = 0.3.0svn
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) 
 # base path where the generated documentation will be put. 
@@ -564,7 +564,7 @@ WARN_LOGFILE =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT = library
+INPUT = /home/pedro/Programacion/workspace-galileo/drumstick/library
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 
@@ -621,7 +621,17 @@ EXCLUDE_SYMBOLS =
 # directories that contain example code fragments that are included (see 
 # the \include command).
 
-EXAMPLE_PATH = tests
+EXAMPLE_PATH =  /home/pedro/Programacion/workspace-galileo/drumstick/tests/buildsmf \
+                /home/pedro/Programacion/workspace-galileo/drumstick/tests/dumpmid \ 
+                /home/pedro/Programacion/workspace-galileo/drumstick/tests/dumpwrk \   
+                /home/pedro/Programacion/workspace-galileo/drumstick/tests/playsmf \   
+                /home/pedro/Programacion/workspace-galileo/drumstick/tests/testevents \  
+                /home/pedro/Programacion/workspace-galileo/drumstick/tests/timertest \
+                /home/pedro/Programacion/workspace-galileo/drumstick/tests/dumpsmf \ 
+                /home/pedro/Programacion/workspace-galileo/drumstick/tests/metronome \ 
+                /home/pedro/Programacion/workspace-galileo/drumstick/tests/smfplayer \ 
+                /home/pedro/Programacion/workspace-galileo/drumstick/tests/sysinfo  \ 
+                /home/pedro/Programacion/workspace-galileo/drumstick/tests/vpiano
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the 
 # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
@@ -795,7 +805,7 @@ HTML_FOOTER =
 # the style sheet file to the HTML output directory, so don't put your own 
 # stylesheet in the HTML output directory as well, or it will be erased!
 
-HTML_STYLESHEET = doc/doxygen.css
+HTML_STYLESHEET = /home/pedro/Programacion/workspace-galileo/drumstick/doc/doxygen.css
 
 # If the HTML_ALIGN_MEMBERS tag is set to YES, the members of classes, 
 # files or namespaces will be aligned in HTML using tables. If set to 
@@ -979,7 +989,7 @@ FORMULA_FONTSIZE = 10
 # If the GENERATE_LATEX tag is set to YES (the default) Doxygen will 
 # generate Latex output.
 
-GENERATE_LATEX = YES
+GENERATE_LATEX = NO
 
 # The LATEX_OUTPUT tag is used to specify where the LaTeX docs will be put. 
 # If a relative path is entered the value of OUTPUT_DIRECTORY will be 

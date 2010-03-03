@@ -26,36 +26,53 @@
 #include <QTextCodec>
 #include <QStringList>
 
+/**
+ * @file qwrk.cpp
+ * Implementation of a class managing Cakewalk WRK Files input
+ */
+
 namespace drumstick {
+
+/**
+ * @addtogroup WRK
+ * @{
+ *
+ * QWrk provides a mechanism to parse Cakewalk WRK Files, without
+ * the burden of a policy forcing to use some internal sequence representation.
+ *
+ * This class is not related or based on the ALSA library.
+ *
+ * @}
+ */
 
 class QWrk::QWrkPrivate {
 public:
     QWrkPrivate():
     m_Now(0),
     m_From(0),
-    m_Thru(0),
+    m_Thru(11930),
     m_KeySig(0),
     m_Clock(0),
     m_AutoSave(0),
     m_PlayDelay(0),
     m_ZeroCtrls(false),
-    m_SendSPP(false),
-    m_SendCont(false),
+    m_SendSPP(true),
+    m_SendCont(true),
     m_PatchSearch(false),
     m_AutoStop(false),
-    m_StopTime(0),
+    m_StopTime(4294967295U),
     m_AutoRewind(false),
     m_RewindTime(0),
     m_MetroPlay(false),
-    m_MetroRecord(false),
+    m_MetroRecord(true),
     m_MetroAccent(false),
-    m_CountIn(0),
-    m_ThruOn(false),
+    m_CountIn(1),
+    m_ThruOn(true),
     m_AutoRestart(false),
-    m_CurTempoOfs(0),
-    m_TempoOfs1(0),
-    m_TempoOfs2(0),
-    m_TempoOfs3(0),
+    m_CurTempoOfs(1),
+    m_TempoOfs1(32),
+    m_TempoOfs2(64),
+    m_TempoOfs3(128),
     m_PunchEnabled(false),
     m_PunchInTime(0),
     m_PunchOutTime(0),
@@ -64,35 +81,35 @@ public:
     m_IOStream(0)
     { }
 
-    quint32 m_Now;		//Now marker time
-    quint32 m_From;		//From marker time
-    quint32 m_Thru;		//Thru marker time
-    quint8 m_KeySig;		//Key signature (0=C, 1=C#, ... 11=B)
-    quint8 m_Clock;		//Clock Source (0=Int, 1=MIDI, 2=FSK, 3=SMPTE)
-    quint8 m_AutoSave;		//Auto save (0=disabled, 1..256=minutes)
-    quint8 m_PlayDelay;		//Play Delay
-    bool m_ZeroCtrls;		//Zero continuous controllers?
-    bool m_SendSPP;		//Send Song Position Pointer?
-    bool m_SendCont;		//Send MIDI Continue?
-    bool m_PatchSearch;         //Patch/controller search-back?
-    bool m_AutoStop;		//Auto-stop?
-    quint32 m_StopTime;		//Auto-stop time
-    bool m_AutoRewind;          //Auto-rewind?
-    quint32 m_RewindTime;	//Auto-rewind time
-    bool m_MetroPlay;		//Metronome on during playback?
-    bool m_MetroRecord;         //Metronome on during recording?
-    bool m_MetroAccent;         //Metronome accents primary beats?
-    quint8 m_CountIn;		//Measures of count-in (0=no count-in)
-    bool m_ThruOn;		//MIDI Thru enabled? (only used if no THRU rec)
-    bool m_AutoRestart;         //Auto-restart?
-    quint8 m_CurTempoOfs;	//Which of the 3 tempo offsets is used: 0..2
-    quint8 m_TempoOfs1;		//Fixed-point ratio value of offset 1
-    quint8 m_TempoOfs2;         //  "     "     "     "   "    "    2
-    quint8 m_TempoOfs3;         //  "     "     "     "   "    "    3
-    bool m_PunchEnabled;	//Auto-Punch enabled?
-    quint32 m_PunchInTime;	//Punch-in time
-    quint32 m_PunchOutTime;	//Punch-out time
-    quint32 m_EndAllTime;	//Time of latest event (incl. all tracks)
+    quint32 m_Now;          ///< Now marker time
+    quint32 m_From;         ///< From marker time
+    quint32 m_Thru;         ///< Thru marker time
+    quint8 m_KeySig;        ///< Key signature (0=C, 1=C#, ... 11=B)
+    quint8 m_Clock;         ///< Clock Source (0=Int, 1=MIDI, 2=FSK, 3=SMPTE)
+    quint8 m_AutoSave;      ///< Auto save (0=disabled, 1..256=minutes)
+    quint8 m_PlayDelay;     ///< Play Delay
+    bool m_ZeroCtrls;       ///< Zero continuous controllers?
+    bool m_SendSPP;         ///< Send Song Position Pointer?
+    bool m_SendCont;        ///< Send MIDI Continue?
+    bool m_PatchSearch;     ///< Patch/controller search-back?
+    bool m_AutoStop;        ///< Auto-stop?
+    quint32 m_StopTime;     ///< Auto-stop time
+    bool m_AutoRewind;      ///< Auto-rewind?
+    quint32 m_RewindTime;   ///< Auto-rewind time
+    bool m_MetroPlay;       ///< Metronome on during playback?
+    bool m_MetroRecord;     ///< Metronome on during recording?
+    bool m_MetroAccent;     ///< Metronome accents primary beats?
+    quint8 m_CountIn;       ///< Measures of count-in (0=no count-in)
+    bool m_ThruOn;          ///< MIDI Thru enabled? (only used if no THRU rec)
+    bool m_AutoRestart;     ///< Auto-restart?
+    quint8 m_CurTempoOfs;   ///< Which of the 3 tempo offsets is used: 0..2
+    quint8 m_TempoOfs1;     ///< Fixed-point ratio value of offset 1
+    quint8 m_TempoOfs2;     ///< Fixed-point ratio value of offset 2
+    quint8 m_TempoOfs3;     ///< Fixed-point ratio value of offset 3
+    bool m_PunchEnabled;    ///< Auto-Punch enabled?
+    quint32 m_PunchInTime;  ///< Punch-in time
+    quint32 m_PunchOutTime;	///< Punch-out time
+    quint32 m_EndAllTime;   ///< Time of latest event (incl. all tracks)
 
     QTextCodec *m_codec;
     QDataStream *m_IOStream;
@@ -128,146 +145,292 @@ void QWrk::setTextCodec(QTextCodec *codec)
     d->m_codec = codec;
 }
 
+/**
+ * Now marker time
+ * @return Now marker time
+ */
 int QWrk::getNow() const
 {
     return d->m_Now;
 }
 
+/**
+ * From marker time
+ * @return From marker time
+ */
 int QWrk::getFrom() const
 {
     return d->m_From;
 }
 
+/**
+ * Thru marker time
+ * @return Thru marker time
+ */
 int QWrk::getThru() const
 {
     return d->m_Thru;
 }
 
+/**
+ * Key signature (0=C, 1=C#, ... 11=B)
+ * @return Key signature
+ */
 int QWrk::getKeySig() const
 {
     return d->m_KeySig;
 }
 
+/**
+ * Clock Source (0=Int, 1=MIDI, 2=FSK, 3=SMPTE)
+ * @return Clock Source
+ */
 int QWrk::getClock() const
 {
     return d->m_Clock;
 }
 
+/**
+ * Auto save (0=disabled, 1..256=minutes)
+ * @return Auto save
+ */
 int QWrk::getAutoSave() const
 {
     return d->m_AutoSave;
 }
 
+/**
+ * Play Delay
+ * @return Play Delay
+ */
 int QWrk::getPlayDelay() const
 {
     return d->m_PlayDelay;
 }
 
+/**
+ * Zero continuous controllers?
+ * @return Zero continuous controllers
+ */
 bool QWrk::getZeroCtrls() const
 {
     return d->m_ZeroCtrls;
 }
 
+/**
+ * Send Song Position Pointer?
+ * @return Send Song Position Pointer
+ */
 bool QWrk::getSendSPP() const
 {
     return d->m_SendSPP;
 }
 
+/**
+ * Send MIDI Continue?
+ * @return Send MIDI Continue
+ */
 bool QWrk::getSendCont() const
 {
     return d->m_SendCont;
 }
 
+/**
+ * Patch/controller search-back?
+ * @return Patch/controller search-back
+ */
 bool QWrk::getPatchSearch() const
 {
     return d->m_PatchSearch;
 }
 
+/**
+ * Auto-stop?
+ * @return Auto-stop
+ */
 bool QWrk::getAutoStop() const
 {
     return d->m_AutoStop;
 }
 
+/**
+ * Auto-stop time
+ * @return Auto-stop time
+ */
 int QWrk::getStopTime() const
 {
     return d->m_StopTime;
 }
 
+/**
+ * Auto-rewind?
+ * @return Auto-rewind
+ */
 bool QWrk::getAutoRewind() const
 {
     return d->m_AutoRewind;
 }
 
+/**
+ * Auto-rewind time
+ * @return Auto-rewind time
+ */
 int QWrk::getRewindTime() const
 {
     return d->m_RewindTime;
 }
 
+/**
+ * Metronome on during playback?
+ * @return Metronome on during playback
+ */
 bool QWrk::getMetroPlay() const
 {
     return d->m_MetroPlay;
 }
 
+/**
+ * Metronome on during recording?
+ * @return Metronome on during recording
+ */
 bool QWrk::getMetroRecord() const
 {
     return d->m_MetroRecord;
 }
 
+/**
+ * Metronome accents primary beats?
+ * @return Metronome accents primary beats
+ */
 bool QWrk::getMetroAccent() const
 {
     return d->m_MetroAccent;
 }
 
+/**
+ * Measures of count-in (0=no count-in)
+ * @return Measures of count-in
+ */
 int QWrk::getCountIn() const
 {
     return d->m_CountIn;
 }
 
+/**
+ * MIDI Thru enabled? (only used if no THRU rec)
+ * @return MIDI Thru enabled
+ */
 bool QWrk::getThruOn() const
 {
     return d->m_ThruOn;
 }
 
+/**
+ * Auto-restart?
+ * @return Auto-restart
+ */
 bool QWrk::getAutoRestart() const
 {
     return d->m_AutoRestart;
 }
 
+/**
+ * Which of the 3 tempo offsets is used: 0..2
+ * @return tempo offset index
+ */
 int QWrk::getCurTempoOfs() const
 {
     return d->m_CurTempoOfs;
 }
 
+/**
+ * Fixed-point ratio value of tempo offset 1
+ *
+ * NOTE: The offset ratios are expressed as a numerator in the expression
+ * n/64.  To get a ratio from this number, divide the number by 64.  To get
+ * this number from a ratio, multiply the ratio by 64.
+ * Examples:
+ *   32 ==>  32/64 = 0.5
+ *   63 ==>  63/64 = 0.9
+ *   64 ==>  64/64 = 1.0
+ *  128 ==> 128/64 = 2.0
+ *
+ * @return tempo offset 1
+ */
 int QWrk::getTempoOfs1() const
 {
     return d->m_TempoOfs1;
 }
 
+/**
+ * Fixed-point ratio value of tempo offset 2
+ *
+ * NOTE: The offset ratios are expressed as a numerator in the expression
+ * n/64.  To get a ratio from this number, divide the number by 64.  To get
+ * this number from a ratio, multiply the ratio by 64.
+ * Examples:
+ *   32 ==>  32/64 = 0.5
+ *   63 ==>  63/64 = 0.9
+ *   64 ==>  64/64 = 1.0
+ *  128 ==> 128/64 = 2.0
+ *
+ * @return tempo offset 2
+ */
 int QWrk::getTempoOfs2() const
 {
     return d->m_TempoOfs2;
 }
 
+/**
+ * Fixed-point ratio value of tempo offset 3
+ *
+ * NOTE: The offset ratios are expressed as a numerator in the expression
+ * n/64.  To get a ratio from this number, divide the number by 64.  To get
+ * this number from a ratio, multiply the ratio by 64.
+ * Examples:
+ *   32 ==>  32/64 = 0.5
+ *   63 ==>  63/64 = 0.9
+ *   64 ==>  64/64 = 1.0
+ *  128 ==> 128/64 = 2.0
+ *
+ * @return tempo offset 3
+ */
 int QWrk::getTempoOfs3() const
 {
     return d->m_TempoOfs3;
 }
 
+/**
+ * Auto-Punch enabled?
+ * @return Auto-Punch enabled
+ */
 bool QWrk::getPunchEnabled() const
 {
     return d->m_PunchEnabled;
 }
 
+/**
+ * Punch-in time
+ * @return punch-in time
+ */
 int QWrk::getPunchInTime() const
 {
     return d->m_PunchInTime;
 }
 
+/**
+ * Punch-out time
+ * @return Punch-out time
+ */
 int QWrk::getPunchOutTime() const
 {
     return d->m_PunchOutTime;
 }
 
+/**
+ * Time of latest event (incl. all tracks)
+ * @return Time of latest event
+ */
 int QWrk::getEndAllTime() const
 {
     return d->m_EndAllTime;
@@ -285,6 +448,12 @@ quint8 QWrk::readByte()
     return b;
 }
 
+/**
+ * Converts two bytes into a single 16-bit value
+ * @param c1 first byte
+ * @param c2 second byte
+ * @return 16-bit value
+ */
 quint16 QWrk::to16bit(quint8 c1, quint8 c2)
 {
     quint16 value = (c1 << 8);
@@ -292,6 +461,14 @@ quint16 QWrk::to16bit(quint8 c1, quint8 c2)
     return value;
 }
 
+/**
+ * Converts four bytes into a single 32-bit value
+ * @param c1 1st byte
+ * @param c2 2nd byte
+ * @param c3 3rd byte
+ * @param c4 4th byte
+ * @return 32-bit value
+ */
 quint32 QWrk::to32bit(quint8 c1, quint8 c2, quint8 c3, quint8 c4)
 {
     quint32 value = (c1 << 24);
@@ -301,6 +478,10 @@ quint32 QWrk::to32bit(quint8 c1, quint8 c2, quint8 c3, quint8 c4)
     return value;
 }
 
+/**
+ * Reads a 16-bit value
+ * @return 16-bit value
+ */
 quint16 QWrk::read16bit()
 {
     quint8 c1, c2;
@@ -309,6 +490,10 @@ quint16 QWrk::read16bit()
     return to16bit(c2, c1);
 }
 
+/**
+ * Reads a 24-bit value
+ * @return 32-bit value
+ */
 quint32 QWrk::read24bit()
 {
     quint8 c1, c2, c3;
@@ -318,6 +503,10 @@ quint32 QWrk::read24bit()
     return to32bit(0, c3, c2, c1);
 }
 
+/**
+ * Reads a 32-bit value
+ * @return 32-bit value
+ */
 quint32 QWrk::read32bit()
 {
     quint8 c1, c2, c3, c4;
@@ -328,6 +517,10 @@ quint32 QWrk::read32bit()
     return to32bit(c4, c3, c2, c1);
 }
 
+/**
+ * Reads a string
+ * @return a string
+ */
 QString QWrk::readString(int len)
 {
     QString s;
@@ -343,6 +536,10 @@ QString QWrk::readString(int len)
     return s;
 }
 
+/**
+ * Reads a variable length string (C-style)
+ * @return a string
+ */
 QString QWrk::readVarString()
 {
     QString s;
@@ -360,21 +557,37 @@ QString QWrk::readVarString()
     return s;
 }
 
+/**
+ * Current position in the data stream
+ * @return current position
+ */
 qint64 QWrk::currentPos()
 {
     return d->m_IOStream->device()->pos();
 }
 
+/**
+ * Seeks to a new position in the data stream
+ * @param pos new position
+ */
 void QWrk::seek(qint64 pos)
 {
     d->m_IOStream->device()->seek(pos);
 }
 
+/**
+ * Checks if the data stream pointer has reached the end position
+ * @return true if the read pointer is at end
+ */
 bool QWrk::atEnd()
 {
     return d->m_IOStream->atEnd();
 }
 
+/**
+ * Jumps the given size in the data stream
+ * @param size the gap size
+ */
 void QWrk::readGap(int size)
 {
     if ( size > 0)
@@ -431,9 +644,9 @@ void QWrk::processTrackChunk()
     muted = (flags & 2 != 0);
     loop = (flags & 4 != 0);
     Q_EMIT signalWRKTrack( name[0], name[1],
-                         trackno, channel, pitch,
-                         velocity, port, selected,
-                         muted, loop );
+                           trackno, channel, pitch,
+                           velocity, port, selected,
+                           muted, loop );
 }
 
 void QWrk::processVarsChunk()
@@ -857,10 +1070,11 @@ void QWrk::processNewStream()
 
 int QWrk::readChunk()
 {
-    int ck_len, new_pos, ck = readByte();
+    int ck_len, start_pos, final_pos, ck = readByte();
     if (ck != END_CHUNK) {
         ck_len = read32bit();
-        new_pos = currentPos() + ck_len;
+        start_pos = currentPos();
+        final_pos = start_pos + ck_len;
         switch (ck) {
         case TRACK_CHUNK:
             processTrackChunk();
@@ -946,7 +1160,7 @@ int QWrk::readChunk()
         default:
             processUnknown(ck, ck_len);
         }
-        seek(new_pos);
+        seek(final_pos);
     }
     return ck;
 }
@@ -958,7 +1172,7 @@ void QWrk::wrkRead()
     QByteArray hdr(HEADER.length(), ' ');
     d->m_IOStream->device()->read(hdr.data(), HEADER.length());
     if (hdr == HEADER) {
-        readByte();
+        readGap(1);
         vme = readByte();
         vma = readByte();
         Q_EMIT signalWRKHeader(vma, vme);
