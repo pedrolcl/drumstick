@@ -47,8 +47,8 @@ namespace drumstick {
 /**
 @mainpage drumstick Documentation
 @author Copyright &copy; 2009-2010 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
-@date 2010-01-07
-@version 0.2.99svn
+@date 2010-03-03
+@version 0.3.0svn
 
 This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/

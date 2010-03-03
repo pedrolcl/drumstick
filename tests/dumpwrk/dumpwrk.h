@@ -33,6 +33,11 @@ using namespace drumstick;
     void dump(const int time, const int track, const QString& chan, const QString& event, const QString& data);
     void dumpStr(const int time, const QString& event, const QString& data);
     void dumpHex(const QByteArray& data);
+    void dumpVar(const QString& name, bool value);
+    void dumpVar(const QString& name, int value);
+    void dumpVar(const QString& name, unsigned int value);
+    void setVerbosity(bool enable);
+    bool verbosityEnabled() const;
 
   public slots:
     void unknownChunk(int type, const QByteArray& data);
@@ -80,6 +85,6 @@ using namespace drumstick;
     void hairpin(int track, int time, int code, int dur);
 
   private:
-    int m_currentTrack;
+    bool m_verbosity;
     QWrk *m_engine;
   };

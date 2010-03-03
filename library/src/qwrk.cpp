@@ -113,6 +113,7 @@ public:
 
     QTextCodec *m_codec;
     QDataStream *m_IOStream;
+    QByteArray m_lastChunkData;
 };
 
 QWrk::QWrk(QObject * parent) :
@@ -143,6 +144,24 @@ QTextCodec* QWrk::getTextCodec()
 void QWrk::setTextCodec(QTextCodec *codec)
 {
     d->m_codec = codec;
+}
+
+/**
+ * Gets the last chunk raw data (undecoded)
+ *
+ * @return last chunk raw data
+ */
+QByteArray QWrk::getLastChunkRawData() const
+{
+    return d->m_lastChunkData;
+}
+
+/**
+ * Read the chunk raw data (undecoded)
+ */
+void QWrk::readRawData(int size)
+{
+    d->m_lastChunkData = d->m_IOStream->device()->read(size);
 }
 
 /**
@@ -257,7 +276,7 @@ bool QWrk::getAutoStop() const
  * Auto-stop time
  * @return Auto-stop time
  */
-int QWrk::getStopTime() const
+unsigned int QWrk::getStopTime() const
 {
     return d->m_StopTime;
 }
@@ -973,17 +992,35 @@ void QWrk::processUnknown(int id, int max)
 
 void QWrk::processNewTrack()
 {
-    int channel = 0;
-    int pitch = 0;
-    int velocity = 0;
-    int port = 0;
+    qint16 bank = -1;
+    qint16 patch = -1;
+    qint16 vol = -1;
+    qint16 pan = -1;
+    qint8 key = -1;
+    qint8 vel = 0;
+    quint8 port = 0;
+    qint8 channel = 0;
     bool selected = false;
     bool muted = false;
     bool loop = false;
-    int trackno = read16bit();
-    int namelen = readByte();
-    QString name = readString(namelen);
-    Q_EMIT signalWRKNewTrack(name, trackno, channel, pitch, velocity, port, selected, muted, loop);
+    quint16 track = read16bit();
+    quint8 len = readByte();
+    QString name = readString(len);
+    bank = read16bit();
+    patch = read16bit();
+    vol = read16bit();
+    pan = read16bit();
+    key = readByte();
+    vel = readByte();
+    readGap(7);
+    port = readByte();
+    channel = readByte();
+    muted = (readByte() != 0);
+    Q_EMIT signalWRKNewTrack(name, track, channel, key, vel, port, selected, muted, loop);
+    if (bank > -1)
+        Q_EMIT signalWRKTrackBank(track, bank);
+    if (patch > -1)
+        Q_EMIT signalWRKTrackPatch(track, patch);
 }
 
 void QWrk::processSoftVer()
@@ -1075,6 +1112,8 @@ int QWrk::readChunk()
         ck_len = read32bit();
         start_pos = currentPos();
         final_pos = start_pos + ck_len;
+        readRawData(ck_len);
+        seek(start_pos);
         switch (ck) {
         case TRACK_CHUNK:
             processTrackChunk();

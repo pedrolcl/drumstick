@@ -100,7 +100,7 @@ public:
     bool getSendCont() const;
     bool getPatchSearch() const;
     bool getAutoStop() const;
-    int getStopTime() const;
+    unsigned int getStopTime() const;
     bool getAutoRewind() const;
     int getRewindTime() const;
     bool getMetroPlay() const;
@@ -117,6 +117,8 @@ public:
     int getPunchInTime() const;
     int getPunchOutTime() const;
     int getEndAllTime() const;
+
+    QByteArray getLastChunkRawData() const;
 
 Q_SIGNALS:
 
@@ -467,10 +469,12 @@ private:
     quint32 read32bit();
     QString readString(int len);
     QString readVarString();
+    void readRawData(int size);
     void readGap(int size);
     bool atEnd();
     qint64 currentPos();
     void seek(qint64 pos);
+
     int readChunk();
     void processTrackChunk();
     void processVarsChunk();

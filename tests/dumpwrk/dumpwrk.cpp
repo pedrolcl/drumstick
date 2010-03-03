@@ -28,13 +28,16 @@
 #include <QTextStream>
 #include <QTextCodec>
 #include <QStringList>
+#include <QFileInfo>
+#include <QVariant>
 
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 
 const QString NO_CHANNEL("--");
 
 QSpyWrk::QSpyWrk():
-    m_currentTrack(0)
+    m_verbosity(false),
+    m_engine(0)
 {
     m_engine = new QWrk(this);
     m_engine->setTextCodec(QTextCodec::codecForName("WIN1252"));
@@ -139,15 +142,48 @@ void QSpyWrk::dumpHex(const QByteArray& data)
 {
     int i = 0, j = 0;
     QString s;
-    while ( i < data.count() ) {
-        s.clear();
-        for (j = 0; j < 16 && i < data.count(); ++j) {
-            quint8 c = data[i++];
-            s += QString(" %1").arg(c & 0xff, 2, 16, QChar('0'));
+    if (m_verbosity) {
+        while ( i < data.count() ) {
+            s.clear();
+            for (j = 0; j < 16 && i < data.count(); ++j) {
+                quint8 c = data[i++];
+                s += QString(" %1").arg(c & 0xff, 2, 16, QChar('0'));
+            }
+            cout << qSetFieldWidth(42) << ' '
+                 << qSetFieldWidth(0)  << s << endl;
         }
-        cout << qSetFieldWidth(42) << ' '
-             << qSetFieldWidth(0)  << s << endl;
     }
+}
+
+void QSpyWrk::dumpVar(const QString& name, int value)
+{
+    cout << qSetFieldWidth(43) << ' '
+         << qSetFieldWidth(0) << name << " = "
+         << value << endl;
+}
+
+void QSpyWrk::dumpVar(const QString& name, unsigned int value)
+{
+    cout << qSetFieldWidth(43) << ' '
+         << qSetFieldWidth(0) << name << " = "
+         << value << endl;
+}
+
+void QSpyWrk::dumpVar(const QString& name, bool value)
+{
+    cout << qSetFieldWidth(43) << ' '
+         << qSetFieldWidth(0) << name << " = "
+         << (value ? "true" : "false" ) << endl;
+}
+
+void QSpyWrk::setVerbosity(bool enabled)
+{
+    m_verbosity = enabled;
+}
+
+bool QSpyWrk::verbosityEnabled() const
+{
+    return m_verbosity;
 }
 
 void QSpyWrk::errorHandler(const QString& errorStr)
@@ -163,37 +199,37 @@ void QSpyWrk::fileHeader(int verh, int verl)
 void QSpyWrk::globalVars()
 {
     dumpStr(0, "Global Vars", QString());
-    /*
-    cout << qSetFieldWidth(42) << ' ' << qSetFieldWidth(0) << " Now=" << m_engine->getNow() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " From=" << m_engine->getFrom() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " Thru=" << m_engine->getThru() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " KeySig=" << m_engine->getKeySig() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " Clock=" << m_engine->getClock()  << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " AutoSave=" << m_engine->getAutoSave() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " PlayDelay=" << m_engine->getPlayDelay() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " ZeroCtrls=" << m_engine->getZeroCtrls() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " SendSPP=" << m_engine->getSendSPP() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " SendCont=" << m_engine->getSendCont() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " PatchSearch=" << m_engine->getPatchSearch() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " AutoStop=" << m_engine->getAutoStop() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " StopTime=" <<  m_engine->getStopTime() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " AutoRewind=" << m_engine->getAutoRewind() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " RewindTime=" << m_engine->getRewindTime() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " MetroPlay=" << m_engine->getMetroPlay() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " MetroRecord=" << m_engine->getMetroRecord() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " MetroAccent=" << m_engine->getMetroAccent() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " CountIn=" << m_engine->getCountIn() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " ThruOn=" << m_engine->getThruOn() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " AutoRestart=" << m_engine->getAutoRestart() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " CurTempoOfs=" << m_engine->getCurTempoOfs() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " TempoOfs1=" << m_engine->getTempoOfs1() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " TempoOfs2=" << m_engine->getTempoOfs2() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " TempoOfs3=" << m_engine->getTempoOfs3() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " PunchEnabled=" << m_engine->getPunchEnabled() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " PunchInTime=" << m_engine->getPunchInTime() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " PunchOutTime=" << m_engine->getPunchOutTime() << endl;
-    cout << qSetFieldWidth(42)  << ' ' << qSetFieldWidth(0) << " EndAllTime=" << m_engine->getEndAllTime() << endl;
-    */
+    if (m_verbosity) {
+        dumpVar("Now", m_engine->getNow());
+        dumpVar("From", m_engine->getFrom());
+        dumpVar("Thru", m_engine->getThru());
+        dumpVar("KeySig", m_engine->getKeySig());
+        dumpVar("Clock", m_engine->getClock());
+        dumpVar("AutoSave", m_engine->getAutoSave());
+        dumpVar("PlayDelay", m_engine->getPlayDelay());
+        dumpVar("ZeroCtrls", m_engine->getZeroCtrls());
+        dumpVar("SendSPP", m_engine->getSendSPP());
+        dumpVar("SendCont", m_engine->getSendCont());
+        dumpVar("PatchSearch", m_engine->getPatchSearch());
+        dumpVar("AutoStop", m_engine->getAutoStop());
+        dumpVar("StopTime",  m_engine->getStopTime());
+        dumpVar("AutoRewind", m_engine->getAutoRewind());
+        dumpVar("RewindTime", m_engine->getRewindTime());
+        dumpVar("MetroPlay", m_engine->getMetroPlay());
+        dumpVar("MetroRecord", m_engine->getMetroRecord());
+        dumpVar("MetroAccent", m_engine->getMetroAccent());
+        dumpVar("CountIn", m_engine->getCountIn());
+        dumpVar("ThruOn", m_engine->getThruOn());
+        dumpVar("AutoRestart", m_engine->getAutoRestart());
+        dumpVar("CurTempoOfs", m_engine->getCurTempoOfs());
+        dumpVar("TempoOfs1", m_engine->getTempoOfs1());
+        dumpVar("TempoOfs2", m_engine->getTempoOfs2());
+        dumpVar("TempoOfs3", m_engine->getTempoOfs3());
+        dumpVar("PunchEnabled", m_engine->getPunchEnabled());
+        dumpVar("PunchInTime", m_engine->getPunchInTime());
+        dumpVar("PunchOutTime", m_engine->getPunchOutTime());
+        dumpVar("EndAllTime", m_engine->getEndAllTime());
+    }
 }
 
 void QSpyWrk::trackHeader( const QString& name1, const QString& name2,
@@ -201,14 +237,15 @@ void QSpyWrk::trackHeader( const QString& name1, const QString& name2,
                            int velocity, int port,
                            bool selected, bool muted, bool loop )
 {
-    Q_UNUSED(pitch)
-    Q_UNUSED(velocity)
-    Q_UNUSED(port)
-    Q_UNUSED(selected)
-    Q_UNUSED(muted)
-    Q_UNUSED(loop)
-    m_currentTrack = trackno;
     dump(0, trackno, QString::number(channel), "Track", QString("name1='%2' name2='%3'").arg(name1).arg(name2));
+    if (m_verbosity) {
+        dumpVar("pitch", pitch);
+        dumpVar("velocity",velocity);
+        dumpVar("port", port);
+        dumpVar("selected", selected);
+        dumpVar("muted", muted);
+        dumpVar("loop", loop);
+    }
 }
 
 void QSpyWrk::timeBase(int timebase)
@@ -340,14 +377,15 @@ void QSpyWrk::newTrackHeader( const QString& name,
                               int velocity, int port,
                               bool selected, bool muted, bool loop )
 {
-    Q_UNUSED(pitch)
-    Q_UNUSED(velocity)
-    Q_UNUSED(port)
-    Q_UNUSED(selected)
-    Q_UNUSED(muted)
-    Q_UNUSED(loop)
-    m_currentTrack = trackno;
     dump(0, trackno, QString::number(channel), "Track", name);
+    if (m_verbosity) {
+        dumpVar("pitch", pitch);
+        dumpVar("velocity",velocity);
+        dumpVar("port", port);
+        dumpVar("selected", selected);
+        dumpVar("muted", muted);
+        dumpVar("loop", loop);
+    }
 }
 
 void QSpyWrk::softVersion(const QString& version)
@@ -412,8 +450,23 @@ void QSpyWrk::run(QString fileName)
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
+    QStringList args = app.arguments();
+    QStringList fileNames;
     QSpyWrk spy;
-    if (app.argc() > 1)
-        spy.run(app.arguments().at(1));
+
+    foreach(const QString& a, args) {
+        if (a.compare("-v", Qt::CaseInsensitive) == 0)
+            spy.setVerbosity(true);
+        else {
+            QFileInfo f(a);
+            if (f.exists())
+                fileNames += f.canonicalFilePath();
+        }
+    }
+
+    foreach(const QString& file, fileNames) {
+        spy.run(file);
+    }
+
     return 0;
 }
