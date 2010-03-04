@@ -20,7 +20,6 @@ ENDIF(USE_PCH)
 
 TARGET_LINK_LIBRARIES(drumstick-buildsmf
     ${QT_LIBRARIES} 
-    ${ALSA_LIBS} 
     drumstick-file
 )
 
