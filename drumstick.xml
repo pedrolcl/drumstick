@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="audio/cakewalk">
+    <sub-class-of type="application/octet-stream"/>
+    <generic-icon name="audio-midi"/>
+    <comment>Cakewalk project file</comment>
+    <comment xml:lang="en_GB">Cakewalk project file</comment>
+    <comment xml:lang="es">Archivo de proyecto Cakewalk</comment>
+    <magic priority="80">
+      <match value="CAKEWALK\x1a\x00" type="string" offset="0"/>
+    </magic>
+  </mime-type>
+</mime-info>

@@ -25,6 +25,7 @@ BuildRequires:  libqt4-devel
 BuildRequires:  doxygen
 BuildRequires:  graphviz
 BuildRequires:  update-desktop-files
+PreReq:         shared-mime-info
 
 %description
 This package includes test and example programs for drumstick libraries.
@@ -108,6 +109,12 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %suse_update_desktop_file -n drumstick-smfplayer Midi
 %suse_update_desktop_file -n drumstick-vpiano Midi
 
+%post 
+%{_bindir}/update-mime-database %{_datadir}/mime
+
+%postun
+%{_bindir}/update-mime-database %{_datadir}/mime
+
 %post -n libdrumstick-file0 -p /sbin/ldconfig
 
 %postun -n libdrumstick-file0 -p /sbin/ldconfig
@@ -135,6 +142,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/icons/hicolor/scalable/apps
 %{_datadir}/icons/hicolor/*/*/*
 %{_datadir}/applications/*
+%{_datadir}/mime/packages/*
 %{_bindir}/*
 
 %files -n libdrumstick-file0
