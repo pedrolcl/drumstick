@@ -858,7 +858,7 @@ void QWrk::processMeterKeyChunk()
     }
 }
 
-void QWrk::processTempoChunk()
+void QWrk::processTempoChunk(int factor)
 {
     int count = read16bit();
     for (int i = 0; i < count; ++i) {
@@ -866,7 +866,7 @@ void QWrk::processTempoChunk()
         readGap(4);
         long tempo = read16bit();
         readGap(8);
-        Q_EMIT signalWRKTempo(time, tempo);
+        Q_EMIT signalWRKTempo(time, tempo * factor);
     }
 }
 
@@ -982,12 +982,9 @@ void QWrk::processVariableRecord(int max)
     Q_EMIT signalWRKVariableRecord(name, data);
 }
 
-void QWrk::processUnknown(int id, int max)
+void QWrk::processUnknown(int id)
 {
-    QByteArray data;
-    for ( int i = 0; i < max; ++i )
-        data += readByte();
-    Q_EMIT signalWRKUnknownChunk(id, data);
+    Q_EMIT signalWRKUnknownChunk(id, d->m_lastChunkData);
 }
 
 void QWrk::processNewTrack()
@@ -1131,6 +1128,9 @@ int QWrk::readChunk()
             processMeterChunk();
             break;
         case TEMPO_CHUNK:
+            processTempoChunk(100);
+            break;
+        case NTEMPO_CHUNK:
             processTempoChunk();
             break;
         case SYSEX_CHUNK:
@@ -1197,7 +1197,7 @@ int QWrk::readChunk()
             processNewStream();
             break;
         default:
-            processUnknown(ck, ck_len);
+            processUnknown(ck);
         }
         seek(final_pos);
     }

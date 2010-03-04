@@ -321,7 +321,8 @@ void QSpyWrk::keySigEvent(int bar, int alt)
 
 void QSpyWrk::tempoEvent(int time, int tempo)
 {
-    dumpStr(time, "Tempo", QString::number(tempo));
+    double bpm = tempo / 100.0;
+    dumpStr(time, "Tempo", QString::number(bpm, 'f', 2));
 }
 
 void QSpyWrk::thruMode(int mode, int port, int channel, int keyPlus, int velPlus, int localPort)

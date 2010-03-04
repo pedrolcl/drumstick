@@ -50,6 +50,7 @@ enum WrkChunkType {
     TIMEFMT_CHUNK = 11,  ///< SMPTE time format
     TRKREPS_CHUNK = 12,  ///< Track repetitions
     TRKPATCH_CHUNK = 14, ///< Track patch
+    NTEMPO_CHUNK = 15,   ///< New Tempo map
     THRU_CHUNK = 16,     ///< Extended thru parameters
     LYRICS_CHUNK = 18,   ///< Events stream with lyrics
     TRKVOL_CHUNK = 19,   ///< Track volume
@@ -257,10 +258,13 @@ Q_SIGNALS:
     void signalWRKKeySig(int bar, int alt);
 
     /**
-     * Emitted after reading a Tempo Change message
+     * Emitted after reading a Tempo Change message.
+     *
+     * Tempo units are given in beats * 100 per minute, so to obtain BPM
+     * it is necessary to divide by 100 the tempo.
      *
      * @param time musical time
-     * @param tempo Microseconds per quarter note
+     * @param tempo beats per minute multiplied by 100
      */
     void signalWRKTempo(int time, int tempo);
 
@@ -482,7 +486,7 @@ private:
     void processNoteArray(int track, int events);
     void processStreamChunk();
     void processMeterChunk();
-    void processTempoChunk();
+    void processTempoChunk(int factor = 1);
     void processSysexChunk();
     void processSysex2Chunk();
     void processNewSysexChunk();
@@ -504,7 +508,7 @@ private:
     void processMeterKeyChunk();
     void processSegmentChunk();
     void processNewStream();
-    void processUnknown(int id, int max);
+    void processUnknown(int id);
     void wrkRead();
 
     class QWrkPrivate;
