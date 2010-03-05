@@ -72,7 +72,7 @@ enum WrkChunkType {
 const QByteArray HEADER("CAKEWALK"); ///< Cakewalk WRK File header id
 
 /**
- * Cakewalk WRK Files input/output
+ * Cakewalk WRK file format (input only)
  *
  * This class is used to parse Cakewalk WRK Files
  */
@@ -88,6 +88,7 @@ public:
     void readFromFile(const QString& fileName);
     QTextCodec* getTextCodec();
     void setTextCodec(QTextCodec *codec);
+    long getFilePos();
 
     int getNow() const;
     int getFrom() const;
@@ -476,7 +477,6 @@ private:
     void readRawData(int size);
     void readGap(int size);
     bool atEnd();
-    qint64 currentPos();
     void seek(qint64 pos);
 
     int readChunk();

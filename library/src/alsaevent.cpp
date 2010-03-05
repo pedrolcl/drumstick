@@ -206,6 +206,7 @@ SequencerEvent::isChannel(const SequencerEvent* event)
     snd_seq_event_type_t te = event->getSequencerType();
     return ( te == SND_SEQ_EVENT_NOTEOFF ||
              te == SND_SEQ_EVENT_NOTEON ||
+             te == SND_SEQ_EVENT_NOTE ||
              te == SND_SEQ_EVENT_KEYPRESS ||
              te == SND_SEQ_EVENT_CONTROLLER ||
              te == SND_SEQ_EVENT_CONTROL14 ||

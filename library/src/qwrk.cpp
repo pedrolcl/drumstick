@@ -580,7 +580,7 @@ QString QWrk::readVarString()
  * Current position in the data stream
  * @return current position
  */
-qint64 QWrk::currentPos()
+long QWrk::getFilePos()
 {
     return d->m_IOStream->device()->pos();
 }
@@ -610,7 +610,7 @@ bool QWrk::atEnd()
 void QWrk::readGap(int size)
 {
     if ( size > 0)
-        seek( currentPos() + size );
+        seek( getFilePos() + size );
 }
 
 /**
@@ -1017,7 +1017,10 @@ void QWrk::processNewTrack()
     if (bank > -1)
         Q_EMIT signalWRKTrackBank(track, bank);
     if (patch > -1)
-        Q_EMIT signalWRKTrackPatch(track, patch);
+        if (channel > -1)
+            Q_EMIT signalWRKProgram(track, 0, channel, patch);
+        else
+            Q_EMIT signalWRKTrackPatch(track, patch);
 }
 
 void QWrk::processSoftVer()
@@ -1104,10 +1107,11 @@ void QWrk::processNewStream()
 
 int QWrk::readChunk()
 {
-    int ck_len, start_pos, final_pos, ck = readByte();
+    long start_pos, final_pos;
+    int ck_len, ck = readByte();
     if (ck != END_CHUNK) {
         ck_len = read32bit();
-        start_pos = currentPos();
+        start_pos = getFilePos();
         final_pos = start_pos + ck_len;
         readRawData(ck_len);
         seek(start_pos);
