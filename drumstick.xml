@@ -6,8 +6,10 @@
     <comment>Cakewalk project file</comment>
     <comment xml:lang="en_GB">Cakewalk project file</comment>
     <comment xml:lang="es">Archivo de proyecto Cakewalk</comment>
-    <magic priority="80">
-      <match value="CAKEWALK\x1a\x00" type="string" offset="0"/>
+    <magic priority="50">
+      <match value="CAKEWALK\x1a" type="string" offset="0"/>
     </magic>
+    <glob pattern="*.wrk"/>
+    <glob pattern="*.tpl"/>
   </mime-type>
 </mime-info>
