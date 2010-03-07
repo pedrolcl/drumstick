@@ -1111,8 +1111,7 @@ void QWrk::processLyricsStream()
 void QWrk::processTrackVol()
 {
     quint16 track = read16bit();
-    readGap(1);
-    int vol = readByte();
+    int vol = read16bit();
     Q_EMIT signalWRKTrackVol(track, vol);
 }
 
