@@ -121,6 +121,7 @@ public:
     int getEndAllTime() const;
 
     QByteArray getLastChunkRawData() const;
+    double getRealTime(long ticks) const;
 
 Q_SIGNALS:
 
@@ -148,6 +149,16 @@ Q_SIGNALS:
     void signalWRKHeader(int verh, int verl);
 
     /**
+     * Emitted after reading the last chunk of a WRK file
+     */
+    void signalWRKEnd();
+
+    /**
+     * Emitted after reading the last event of a event stream
+     */
+    void signalWRKStreamEnd(long time);
+
+    /**
      * Emitted after reading a Note message
      *
      * @param track track number
@@ -157,7 +168,7 @@ Q_SIGNALS:
      * @param vol Velocity
      * @param dur Duration
      */
-    void signalWRKNote(int track, int time, int chan, int pitch, int vol, int dur);
+    void signalWRKNote(int track, long time, int chan, int pitch, int vol, int dur);
 
     /**
      * Emitted after reading a Polyphonic Aftertouch message
@@ -168,7 +179,7 @@ Q_SIGNALS:
      * @param pitch MIDI Note
      * @param press Pressure amount
      */
-    void signalWRKKeyPress(int track, int time, int chan, int pitch, int press);
+    void signalWRKKeyPress(int track, long time, int chan, int pitch, int press);
 
     /**
      * Emitted after reading a Control Change message
@@ -179,7 +190,7 @@ Q_SIGNALS:
      * @param ctl MIDI Controller
      * @param value Control value
      */
-    void signalWRKCtlChange(int track, int time, int chan, int ctl, int value);
+    void signalWRKCtlChange(int track, long time, int chan, int ctl, int value);
 
     /**
      * Emitted after reading a Bender message
@@ -189,7 +200,7 @@ Q_SIGNALS:
      * @param chan MIDI Channel
      * @param value Bender value
      */
-    void signalWRKPitchBend(int track, int time, int chan, int value);
+    void signalWRKPitchBend(int track, long time, int chan, int value);
 
     /**
      * Emitted after reading a Program change message
@@ -199,7 +210,7 @@ Q_SIGNALS:
      * @param chan MIDI Channel
      * @param patch Program number
      */
-    void signalWRKProgram(int track, int time, int chan, int patch);
+    void signalWRKProgram(int track, long time, int chan, int patch);
 
     /**
      * Emitted after reading a Channel Aftertouch message
@@ -209,7 +220,7 @@ Q_SIGNALS:
      * @param chan MIDI Channel
      * @param press Pressure amount
      */
-    void signalWRKChanPress(int track, int time, int chan, int press);
+    void signalWRKChanPress(int track, long time, int chan, int press);
 
     /**
      * Emitted after reading a System Exclusive event
@@ -218,7 +229,7 @@ Q_SIGNALS:
      * @param time musical time
      * @param bank Sysex Bank number
      */
-    void signalWRKSysexEvent(int track, int time, int bank);
+    void signalWRKSysexEvent(int track, long time, int bank);
 
     /**
      * Emitted after reading a System Exclusive Bank
@@ -239,7 +250,7 @@ Q_SIGNALS:
      * @param type Text type
      * @param data Text data
      */
-    void signalWRKText(int track, int time, int type, const QString& data);
+    void signalWRKText(int track, long time, int type, const QString& data);
 
     /**
      * Emitted after reading a WRK Time signature
@@ -267,7 +278,7 @@ Q_SIGNALS:
      * @param time musical time
      * @param tempo beats per minute multiplied by 100
      */
-    void signalWRKTempo(int time, int tempo);
+    void signalWRKTempo(long time, int tempo);
 
     /**
      * Emitted after reading a track prefix chunk
@@ -433,7 +444,7 @@ Q_SIGNALS:
      * @param time segment time offset
      * @param name segment name
      */
-    void signalWRKSegment(int track, int time, const QString& name);
+    void signalWRKSegment(int track, long time, const QString& name);
 
     /**
      * Emitted after reading a chord diagram chunk.
@@ -443,7 +454,7 @@ Q_SIGNALS:
      * @param name chord name
      * @param data chord data definition (not decoded)
      */
-    void signalWRKChord(int track, int time, const QString& name, const QByteArray& data);
+    void signalWRKChord(int track, long time, const QString& name, const QByteArray& data);
 
     /**
      * Emitted after reading an expression indication (notation) chunk.
@@ -453,7 +464,7 @@ Q_SIGNALS:
      * @param code expression event code
      * @param text expression text
      */
-    void signalWRKExpression(int track, int time, int code, const QString& text);
+    void signalWRKExpression(int track, long time, int code, const QString& text);
 
     /**
      * Emitted after reading a hairpin symbol (notation) chunk.
@@ -463,7 +474,7 @@ Q_SIGNALS:
      * @param code hairpin code
      * @param dur duration
      */
-    void signalWRKHairpin(int track, int time, int code, int dur);
+    void signalWRKHairpin(int track, long time, int code, int dur);
 
 private:
     quint8 readByte();
@@ -509,7 +520,14 @@ private:
     void processSegmentChunk();
     void processNewStream();
     void processUnknown(int id);
+    void processEndChunk();
     void wrkRead();
+
+    struct RecTempo {
+        long time;
+        double tempo;
+        double seconds;
+    };
 
     class QWrkPrivate;
     QWrkPrivate *d;

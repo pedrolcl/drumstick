@@ -77,6 +77,7 @@ public:
     m_PunchInTime(0),
     m_PunchOutTime(0),
     m_EndAllTime(0),
+    m_division(120),
     m_codec(0),
     m_IOStream(0)
     { }
@@ -111,9 +112,11 @@ public:
     quint32 m_PunchOutTime;	///< Punch-out time
     quint32 m_EndAllTime;   ///< Time of latest event (incl. all tracks)
 
+    int m_division;
     QTextCodec *m_codec;
     QDataStream *m_IOStream;
     QByteArray m_lastChunkData;
+    QList<RecTempo> m_tempos;
 };
 
 QWrk::QWrk(QObject * parent) :
@@ -544,9 +547,13 @@ QString QWrk::readString(int len)
 {
     QString s;
     if ( len > 0 ) {
+        quint8 c = 0xff;
         QByteArray data;
-        for ( int i = 0; i < len; ++i )
-            data += readByte();
+        for ( int i = 0; i < len && c != 0; ++i ) {
+            c = readByte();
+            if ( c != 0)
+                data += c;
+        }
         if (d->m_codec == NULL)
             s = QString(data);
         else
@@ -710,6 +717,7 @@ void QWrk::processVarsChunk()
 void QWrk::processTimebaseChunk()
 {
     quint16 timebase = read16bit();
+    d->m_division = timebase;
     Q_EMIT signalWRKTimeBase(timebase);
 }
 
@@ -724,6 +732,7 @@ void QWrk::processNoteArray(int track, int events)
     for ( int i = 0; i < events; ++i ) {
         time = read24bit();
         status = readByte();
+        dur = 0;
         if (status >= 0x90) {
             type = status & 0xf0;
             channel = status & 0x0f;
@@ -789,11 +798,13 @@ void QWrk::processNoteArray(int track, int events)
             Q_EMIT signalWRKText(track, time, status, text);
         }
     }
+    Q_EMIT signalWRKStreamEnd(time + dur);
 }
 
 void QWrk::processStreamChunk()
 {
-    int time, dur, value, type, channel;
+    long time;
+    int dur, value, type, channel;
     quint8 status, data1, data2;
     quint16 track = read16bit();
     int events = read16bit();
@@ -830,6 +841,7 @@ void QWrk::processStreamChunk()
                 break;
         }
     }
+    Q_EMIT signalWRKStreamEnd(time + dur);
 }
 
 void QWrk::processMeterChunk()
@@ -858,15 +870,53 @@ void QWrk::processMeterKeyChunk()
     }
 }
 
+double QWrk::getRealTime(long ticks) const
+{
+    double division = 1.0 * d->m_division;
+    RecTempo last;
+    last.time = 0;
+    last.tempo = 100.0;
+    last.seconds = 0.0;
+    if (!d->m_tempos.isEmpty()) {
+        foreach(const RecTempo& rec, d->m_tempos) {
+            if (rec.time >= ticks)
+                break;
+            last = rec;
+        }
+    }
+    return last.seconds + (((ticks - last.time) / division) * (60.0 / last.tempo));
+}
+
 void QWrk::processTempoChunk(int factor)
 {
+    double division = 1.0 * d->m_division;
     int count = read16bit();
+    RecTempo last, next;
     for (int i = 0; i < count; ++i) {
+
         long time = read32bit();
         readGap(4);
-        long tempo = read16bit();
+        long tempo = read16bit() * factor;
         readGap(8);
-        Q_EMIT signalWRKTempo(time, tempo * factor);
+
+        next.time = time;
+        next.tempo = tempo / 100.0;
+        next.seconds = 0.0;
+        last.time = 0;
+        last.tempo = next.tempo;
+        last.seconds = 0.0;
+        if (! d->m_tempos.isEmpty()) {
+            foreach(const RecTempo& rec, d->m_tempos) {
+                if (rec.time >= time)
+                    break;
+                last = rec;
+            }
+            next.seconds = last.seconds +
+                (((time - last.time) / division) * (60.0 / last.tempo));
+        }
+        d->m_tempos.append(next);
+
+        Q_EMIT signalWRKTempo(time, tempo);
     }
 }
 
@@ -1105,6 +1155,11 @@ void QWrk::processNewStream()
     processNoteArray(track, events);
 }
 
+void QWrk::processEndChunk()
+{
+    emit signalWRKEnd();
+}
+
 int QWrk::readChunk()
 {
     long start_pos, final_pos;
@@ -1213,6 +1268,7 @@ void QWrk::wrkRead()
     int vma, vme;
     int ck_id;
     QByteArray hdr(HEADER.length(), ' ');
+    d->m_tempos.clear();
     d->m_IOStream->device()->read(hdr.data(), HEADER.length());
     if (hdr == HEADER) {
         readGap(1);
@@ -1224,6 +1280,8 @@ void QWrk::wrkRead()
         }  while (ck_id != END_CHUNK);
         if (!atEnd())
             Q_EMIT signalWRKError("Corrupted file");
+        else
+            processEndChunk();
     } else
         Q_EMIT signalWRKError("Invalid file format");
 }
