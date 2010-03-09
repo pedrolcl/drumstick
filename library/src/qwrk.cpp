@@ -723,10 +723,10 @@ void QWrk::processTimebaseChunk()
 
 void QWrk::processNoteArray(int track, int events)
 {
-    quint32 time;
-    quint8  status, data1, data2;
-    quint16 dur;
-    int value, type, channel, len;
+    quint32 time = 0;
+    quint8  status = 0, data1 = 0, data2 = 0;
+    quint16 dur = 0;
+    int value = 0, type = 0, channel = 0, len = 0;
     QString text;
     QByteArray data;
     for ( int i = 0; i < events; ++i ) {
@@ -803,9 +803,9 @@ void QWrk::processNoteArray(int track, int events)
 
 void QWrk::processStreamChunk()
 {
-    long time;
-    int dur, value, type, channel;
-    quint8 status, data1, data2;
+    long time = 0;
+    int dur = 0, value = 0, type = 0, channel = 0;
+    quint8 status = 0, data1 = 0, data2 = 0;
     quint16 track = read16bit();
     int events = read16bit();
     for ( int i = 0; i < events; ++i ) {
