@@ -24,7 +24,7 @@ Minimum supported versions:
 
 * CMake 2.6
 * ALSA 1.0
-* Qt4 4.3
+* Qt4 4.4
 
 Optional CMake parameters
 -------------------------

@@ -10,6 +10,5 @@
       <match value="CAKEWALK\x1a" type="string" offset="0"/>
     </magic>
     <glob pattern="*.wrk"/>
-    <glob pattern="*.tpl"/>
   </mime-type>
 </mime-info>

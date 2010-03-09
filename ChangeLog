@@ -1,3 +1,14 @@
+2010-03-09
+    * Release 0.3.0
+    * API changes:
+      SequencerEvent::isChannel() returns true for SND_SEQ_EVENT_NOTE 
+      QueueTimer::setId(const TimerId& id) new method overload
+      Timer::bestGlobalTimerId() new static function
+      getRuntimeALSALibraryVersion() new global function
+      getRuntimeALSALibraryNumber() new global function
+      getRuntimeALSADriverVersion() new global function
+      getRuntimeALSADriverNumber() new global function
+    
 2010-03-02
     * New class QWrk, for reading Cakewalk files
 
