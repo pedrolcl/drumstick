@@ -167,7 +167,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/html/*
 
 %changelog
-* Tue mar 9 2010 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.3.0
+* Tue Mar 9 2010 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.3.0
 - New version
 
 * Sun Dec 27 2009 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.2.0
