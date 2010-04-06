@@ -51,8 +51,8 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_admin")
 # DRUMSTICK version string
 SET (VERSION_MAJOR "0")
 SET (VERSION_MINOR "3")
-SET (VERSION_PATCH "0")
-SET (VERSION_SUFFIX "")
+SET (VERSION_PATCH "1")
+SET (VERSION_SUFFIX "svn")
 SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 ADD_DEFINITIONS(-D'VERSION="${VERSION}"')
 
@@ -173,8 +173,8 @@ ADD_CUSTOM_TARGET ( tarball
     COMMAND cp -r doc drumstick-${VERSION}
     COMMAND cp -r icons drumstick-${VERSION}
     COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO drumstick*.in drumstick.pro drumstick.xml configure* Doxyfile.in link-drumstick chkcoverage drumstick-${VERSION}
-    COMMAND tar -cj --exclude CVS --exclude .cvsignore -f drumstick-${VERSION}.tar.bz2 drumstick-${VERSION}
-    COMMAND tar -cz --exclude CVS --exclude .cvsignore -f drumstick-${VERSION}.tar.gz drumstick-${VERSION}
+    COMMAND tar -cj --exclude .svn -f drumstick-${VERSION}.tar.bz2 drumstick-${VERSION}
+    COMMAND tar -cz --exclude .svn -f drumstick-${VERSION}.tar.gz drumstick-${VERSION}
     COMMAND rm -rf drumstick-${VERSION}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )

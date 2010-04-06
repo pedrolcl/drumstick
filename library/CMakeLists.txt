@@ -65,38 +65,38 @@ ELSE(STATIC_DRUMSTICK)
 ENDIF(STATIC_DRUMSTICK)
 
 # drumstick-alsa library
-
-SET(drumstick-alsa_QTOBJ_SRCS
-    include/alsaclient.h
-    include/alsaevent.h
-    include/alsaport.h
-    include/alsaqueue.h
-    include/alsatimer.h
-    include/playthread.h
-)
-
-SET(drumstick-alsa_HEADERS
-    include/alsaclient.h
-    include/alsaevent.h
-    include/alsaport.h
-    include/alsaqueue.h
-    include/alsatimer.h
-    include/drumstickcommon.h
-    include/playthread.h
-    include/subscription.h
-)
-
-SET(drumstick-alsa_SRCS
-    src/alsaclient.cpp
-    src/alsaevent.cpp
-    src/alsaport.cpp
-    src/alsaqueue.cpp
-    src/alsatimer.cpp
-    src/playthread.cpp
-    src/subscription.cpp
-)
-
 IF(ALSA_FOUND)
+
+    SET(drumstick-alsa_QTOBJ_SRCS
+        include/alsaclient.h
+        include/alsaevent.h
+        include/alsaport.h
+        include/alsaqueue.h
+        include/alsatimer.h
+        include/playthread.h
+    )
+    
+    SET(drumstick-alsa_HEADERS
+        include/alsaclient.h
+        include/alsaevent.h
+        include/alsaport.h
+        include/alsaqueue.h
+        include/alsatimer.h
+        include/drumstickcommon.h
+        include/playthread.h
+        include/subscription.h
+    )
+    
+    SET(drumstick-alsa_SRCS
+        src/alsaclient.cpp
+        src/alsaevent.cpp
+        src/alsaport.cpp
+        src/alsaqueue.cpp
+        src/alsatimer.cpp
+        src/playthread.cpp
+        src/subscription.cpp
+    )
+
     QT4_WRAP_CPP(drumstick-alsa_MOC_SRCS ${drumstick-alsa_QTOBJ_SRCS})
    
     ADD_LIBRARY(drumstick-alsa 
@@ -121,7 +121,6 @@ IF(ALSA_FOUND)
             SOVERSION ${VERSION_MAJOR}
         )
     ENDIF(STATIC_DRUMSTICK)
-ENDIF(ALSA_FOUND)
 
 #deprecated libtool 
 #SET_TARGET_PROPERTIES(drumstick-alsa PROPERTIES
@@ -132,9 +131,6 @@ ENDIF(ALSA_FOUND)
 #)
 #CREATE_LIBTOOL_FILE(drumstick-alsa ${LIB})
 
-# we should install some files...
-
-IF(ALSA_FOUND)
     INSTALL(TARGETS drumstick-alsa 
         RUNTIME DESTINATION bin
         ARCHIVE DESTINATION ${LIB}

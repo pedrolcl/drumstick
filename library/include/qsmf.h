@@ -22,7 +22,6 @@
 #ifndef DRUMSTICK_QSMF_H
 #define DRUMSTICK_QSMF_H
 
-#include "drumstickcommon.h"
 #include <QObject>
 
 class QDataStream;
