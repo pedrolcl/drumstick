@@ -47,8 +47,8 @@ namespace drumstick {
 /**
 @mainpage drumstick Documentation
 @author Copyright &copy; 2009-2010 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
-@date 2010-03-09
-@version 0.3.0
+@date 2010-04-18
+@version 0.3.1
 
 This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/
@@ -253,7 +253,7 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * is emitted. In any case, the event pointer must be deleted by the receiver
  * method.
  *
- * @see http://doc.trolltech.com/4.5/threads.html#qobject-reentrancy
+ * @see http://doc.trolltech.com/threads.html#qobject-reentrancy
  *
  * @section EventOutput Output
  *
@@ -656,7 +656,7 @@ MidiClient::doEvents()
                     }
                 } else {
                     // finally, process signals
-                    emit  eventReceived(event->clone());
+                    emit eventReceived(event->clone());
                 }
             }
             delete event;
@@ -789,7 +789,8 @@ QString
 MidiClient::getClientName(const int clientId)
 {
     ClientInfoList::Iterator it;
-    if (m_NeedRefreshClientList) readClients();
+    if (m_NeedRefreshClientList)
+        readClients();
     for (it = m_ClientList.begin(); it != m_ClientList.end(); ++it) {
         if ((*it).getClientId() == clientId) {
             return (*it).getName();
@@ -1229,9 +1230,8 @@ MidiClient::updateAvailablePorts()
 PortInfoList
 MidiClient::getAvailableInputs()
 {
-    if (m_NeedRefreshClientList || m_InputsAvail.empty()) {
-        updateAvailablePorts();
-    }
+    m_NeedRefreshClientList = true;
+    updateAvailablePorts();
     return m_InputsAvail;
 }
 
@@ -1242,9 +1242,8 @@ MidiClient::getAvailableInputs()
 PortInfoList
 MidiClient::getAvailableOutputs()
 {
-    if (m_NeedRefreshClientList || m_OutputsAvail.empty()) {
-        updateAvailablePorts();
-    }
+    m_NeedRefreshClientList = true;
+    updateAvailablePorts();
     return m_OutputsAvail;
 }
 
@@ -1621,6 +1620,49 @@ void
 MidiClient::disconnectTo(int myport, int client, int port)
 {
     CHECK_WARNING( snd_seq_disconnect_to(m_SeqHandle, myport, client, port ));
+}
+
+/**
+ * Parse a text address representation, returning an ALSA address record.
+ *
+ * This function can be used as a replacement of the standard ALSA function
+ * snd_seq_parse_address().
+ *
+ * @param straddr source text address representation
+ * @param addr returned ALSA address record
+ * @return true if the text address was successfully parsed
+ */
+bool
+MidiClient::parseAddress( const QString& straddr, snd_seq_addr& addr )
+{
+    bool ok(false);
+    QString testClient, testPort;
+    ClientInfoList::ConstIterator cit;
+    int pos = straddr.indexOf(':');
+    if (pos > -1) {
+        testClient = straddr.left(pos);
+        testPort = straddr.mid(pos+1);
+    } else {
+        testClient = straddr;
+        testPort = '0';
+    }
+    addr.client = testClient.toInt(&ok);
+    if (ok)
+        addr.port = testPort.toInt(&ok);
+    if (!ok) {
+        if (m_NeedRefreshClientList)
+            readClients();
+        for ( cit = m_ClientList.constBegin();
+              cit != m_ClientList.constEnd(); ++cit ) {
+            ClientInfo ci = *cit;
+            if (testClient.compare(ci.getName(), Qt::CaseInsensitive) == 0) {
+                addr.client = ci.getClientId();
+                addr.port = testPort.toInt(&ok);
+                return ok;
+            }
+        }
+    }
+    return ok;
 }
 
 /**

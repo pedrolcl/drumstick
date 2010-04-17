@@ -689,9 +689,10 @@ MidiPort::subscribeTo( QString const& name )
     if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
     {
         subs.setSender(m_Info.getAddr());
-        snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.toLocal8Bit().data());
-        subs.setDest(&addr);
-        subscribe(&subs);
+        if (m_MidiClient->parseAddress(name, addr)) {
+            subs.setDest(&addr);
+            subscribe(&subs);
+        }
     }
 }
 
@@ -707,9 +708,10 @@ MidiPort::unsubscribeTo( QString const& name )
     if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
     {
         subs.setSender(m_Info.getAddr());
-        snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.toLocal8Bit().data());
-        subs.setDest(&addr);
-        unsubscribe(&subs);
+        if (m_MidiClient->parseAddress(name, addr)) {
+            subs.setDest(&addr);
+            unsubscribe(&subs);
+        }
     }
 }
 
@@ -780,16 +782,17 @@ MidiPort::subscribeFrom( int client, int port )
  * @param name A string representing a client:port pair
  */
 void
-MidiPort::subscribeFrom( QString const& name)
+MidiPort::subscribeFrom( QString const& name )
 {
     Subscription subs;
     snd_seq_addr addr;
     if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
     {
-        snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.toLocal8Bit().data());
-        subs.setSender(&addr);
-        subs.setDest(m_Info.getAddr());
-        subscribe(&subs);
+        if (m_MidiClient->parseAddress(name, addr)) {
+            subs.setSender(&addr);
+            subs.setDest(m_Info.getAddr());
+            subscribe(&subs);
+        }
     }
 }
 
@@ -798,16 +801,17 @@ MidiPort::subscribeFrom( QString const& name)
  * @param name A string representing a client:port pair
  */
 void
-MidiPort::unsubscribeFrom( QString const& name)
+MidiPort::unsubscribeFrom( QString const& name )
 {
     Subscription subs;
     snd_seq_addr addr;
     if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
     {
-        snd_seq_parse_address(m_MidiClient->getHandle(), &addr, name.toLocal8Bit().data());
-        subs.setSender(&addr);
-        subs.setDest(m_Info.getAddr());
-        unsubscribe(&subs);
+        if (m_MidiClient->parseAddress(name, addr)) {
+            subs.setSender(&addr);
+            subs.setDest(m_Info.getAddr());
+            unsubscribe(&subs);
+        }
     }
 }
 

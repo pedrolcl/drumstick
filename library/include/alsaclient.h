@@ -313,6 +313,7 @@ public:
     bool getEventsEnabled() const { return m_eventsEnabled; }
     /** Sets a sequencer event handler enabling the callback delivery mode */
     void setHandler(SequencerEventHandler* handler)  { m_handler = handler; }
+    bool parseAddress( const QString& straddr, snd_seq_addr& result );
 
 signals:
     /** Signal emitted when an event is received */
