@@ -55,8 +55,12 @@ TARGET_LINK_LIBRARIES(drumstick-file
 IF(STATIC_DRUMSTICK)
     SET_TARGET_PROPERTIES(drumstick-file PROPERTIES
         STATIC_LIB "libdrumstick-file.a"
+    )
+    IF(NOT WIN32)
+        SET_TARGET_PROPERTIES(drumstick-file PROPERTIES
         COMPILE_FLAGS -fPIC
     )
+    ENDIF(NOT WIN32)
 ELSE(STATIC_DRUMSTICK)
     SET_TARGET_PROPERTIES(drumstick-file PROPERTIES
         VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
@@ -113,8 +117,12 @@ IF(ALSA_FOUND)
     IF(STATIC_DRUMSTICK)
         SET_TARGET_PROPERTIES(drumstick-alsa PROPERTIES
              STATIC_LIB "libdrumstick-alsa.a"
-             COMPILE_FLAGS -fPIC
         )
+        IF(NOT WIN32)
+            SET_TARGET_PROPERTIES(drumstick-file PROPERTIES
+            COMPILE_FLAGS -fPIC
+        )
+        ENDIF(NOT WIN32)
     ELSE(STATIC_DRUMSTICK)
         SET_TARGET_PROPERTIES(drumstick-alsa PROPERTIES
             VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}

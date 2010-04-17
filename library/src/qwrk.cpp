@@ -666,9 +666,9 @@ void QWrk::processTrackChunk()
     velocity = readByte();
     port = readByte();
     quint8 flags = readByte();
-    selected = (flags & 1 != 0);
-    muted = (flags & 2 != 0);
-    loop = (flags & 4 != 0);
+    selected = ((flags & 1) != 0);
+    muted = ((flags & 2) != 0);
+    loop = ((flags & 4) != 0);
     Q_EMIT signalWRKTrack( name[0], name[1],
                            trackno, channel, pitch,
                            velocity, port, selected,
