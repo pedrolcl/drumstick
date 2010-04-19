@@ -1,3 +1,11 @@
+2010-04-19
+    * Release 0.3.1
+    * Allow to build drumstick-file library under Windows
+    * New method MidiClient::parseAddress() replacing the ALSA function 
+      snd_seq_parse_address() in MidiPort::subscribeTo() and similar methods.
+    * Fixed MidiClient::getAvailableInputs() and getAvailableOutputs() forcing 
+      to always retrieve the clients list.
+
 2010-03-09
     * Release 0.3.0
     * API changes:
