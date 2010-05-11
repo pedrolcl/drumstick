@@ -9,4 +9,5 @@ SUBDIRS += buildsmf \
            timertest \
            vpiano \
            metronome \
-           dumpwrk
+           dumpwrk \
+           drumgrid

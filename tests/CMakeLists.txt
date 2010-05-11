@@ -33,7 +33,6 @@ IF(USE_PCH)
     ADD_PRECOMPILED_HEADER(precompiled_headers stableheaders.h)
 ENDIF(USE_PCH)
 
-
 ADD_SUBDIRECTORY(buildsmf)
 ADD_SUBDIRECTORY(dumpsmf)
 ADD_SUBDIRECTORY(dumpwrk)
@@ -47,4 +46,5 @@ IF(ALSA_FOUND)
     ADD_SUBDIRECTORY(timertest)
     ADD_SUBDIRECTORY(vpiano)
     ADD_SUBDIRECTORY(metronome)
+    ADD_SUBDIRECTORY(drumgrid)
 ENDIF(ALSA_FOUND)

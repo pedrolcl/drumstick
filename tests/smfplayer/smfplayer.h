@@ -39,7 +39,7 @@
 
 using namespace drumstick;
 
-const QString QSTR_DOMAIN("kmetronome.sourceforge.net");
+const QString QSTR_DOMAIN("drumstick.sourceforge.net");
 const QString QSTR_APPNAME("SMFPlayer");
 
 class SMFPlayer : public QWidget
