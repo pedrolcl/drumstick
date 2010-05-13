@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.docbook.org/xml/4.5/docbookx.dtd" [
+<!ENTITY product "drumstick-metronome">
+]>
+
+<refentry lang="en" id="drumstick-metronome">
+
+    <refentryinfo>
+        <productname>&product;</productname>
+        <authorgroup>
+            <author>
+                <contrib></contrib>
+                <firstname>Pedro</firstname>
+                <surname>Lopez-Cabanillas</surname>
+                <email>plcl@users.sf.net</email>
+            </author>
+        </authorgroup>
+        <copyright>
+            <year>2010</year>
+            <holder>Pedro Lopez-Cabanillas</holder>
+        </copyright>
+        <date>May 13, 2010</date>
+    </refentryinfo>
+
+    <refmeta>
+        <refentrytitle>&product;</refentrytitle>
+        <manvolnum>1</manvolnum>
+        <refmiscinfo class="version">@VERSION@</refmiscinfo>
+        <refmiscinfo class="source">drumstick</refmiscinfo>
+        <refmiscinfo class="manual">Drumstick</refmiscinfo>
+    </refmeta>
+
+    <refnamediv>
+        <refname>&product;</refname>
+        <refpurpose>A Drumstick command line utility for playing a metronome 
+        pattern.</refpurpose>
+    </refnamediv>
+
+    <refsynopsisdiv id="drumstick-metronome.synopsis">
+        <title>Synopsis</title>
+        <cmdsynopsis><command>&product;</command>
+            <arg choice="req">PORT</arg>
+            <arg choice="opt">BPM</arg>
+        </cmdsynopsis>
+    </refsynopsisdiv>
+
+    <refsect1 id="drumstick-metronome.description">
+        <title>Description</title>
+        <para>
+        This program is a Drumstick example and test program. You can use it
+        to play a MIDI metronome pattern.
+        </para>
+    </refsect1>
+
+    <refsect1 id="drumstick-metronome.options">
+        <title>Arguments</title>
+        <para>The following argument is required:</para>
+        <variablelist>
+            <varlistentry>
+                <term><option>PORT</option></term>
+                <listitem>
+                <para>An ALSA client:port specification that will be subscribed 
+                in order to send MIDI events to it. The client portion can be
+                a number or a name, like in "20:0" or "KMidimon:0".</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+
+        <para>The following argument is optional:</para>
+        <variablelist>
+            <varlistentry>
+                <term><option>BPM</option></term>
+                <listitem>
+                <para>Tempo in beats per minute.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+
+    </refsect1>
+
+    <refsect1>
+        <title>License</title>
+        <para>
+            Permission is granted to copy, distribute and/or modify this document
+            under the terms of the <acronym>GNU</acronym> General Public
+            License, Version 2 or any later version published by
+            the Free Software Foundation, considering as source code any files 
+            used for the production of this manpage.
+        </para>
+    </refsect1>
+
+    <refsect1 id="drumstick-metronome.seealso">
+        <title>See also</title>
+        <para>
+           <citerefentry>
+               <refentrytitle>drumstick-dumpmid</refentrytitle>
+               <manvolnum>1</manvolnum>
+           </citerefentry>, <citerefentry>
+               <refentrytitle>drumstick-playsmf</refentrytitle>
+               <manvolnum>1</manvolnum>
+           </citerefentry>
+        </para>
+    </refsect1>
+
+</refentry>

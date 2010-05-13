@@ -151,6 +151,7 @@ ENDIF(DOXYGEN_FOUND)
 ADD_SUBDIRECTORY(library)
 ADD_SUBDIRECTORY(tests)
 ADD_SUBDIRECTORY(icons)
+ADD_SUBDIRECTORY(doc)
 
 CONFIGURE_FILE(drumstick-alsa.pc.in drumstick-alsa.pc IMMEDIATE @ONLY)
 CONFIGURE_FILE(drumstick-file.pc.in drumstick-file.pc IMMEDIATE @ONLY)

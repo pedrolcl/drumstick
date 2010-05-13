@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.docbook.org/xml/4.5/docbookx.dtd" [
+<!ENTITY product "drumstick-xxxx">
+]>
+
+<refentry lang="en" id="drumstick-xxxx">
+
+    <refentryinfo>
+        <productname>&product;</productname>
+        <authorgroup>
+            <author>
+                <contrib></contrib>
+                <firstname>Pedro</firstname>
+                <surname>Lopez-Cabanillas</surname>
+                <email>plcl@users.sf.net</email>
+            </author>
+        </authorgroup>
+        <copyright>
+            <year>2010</year>
+            <holder>Pedro Lopez-Cabanillas</holder>
+        </copyright>
+        <date>May 13, 2010</date>
+    </refentryinfo>
+
+    <refmeta>
+        <refentrytitle>&product;</refentrytitle>
+        <manvolnum>1</manvolnum>
+        <refmiscinfo class="version">@VERSION@</refmiscinfo>
+        <refmiscinfo class="source">drumstick</refmiscinfo>
+        <refmiscinfo class="manual">Drumstick</refmiscinfo>
+    </refmeta>
+
+    <refnamediv>
+        <refname>&product;</refname>
+        <refpurpose>A Drumstick utility for xxxx.</refpurpose>
+    </refnamediv>
+
+    <refsynopsisdiv id="drumstick-xxxx.synopsis">
+        <title>Synopsis</title>
+        <cmdsynopsis><command>&product;</command>
+            <arg choice="req">FILE</arg>
+            <arg choice="opt">options...</arg>
+        </cmdsynopsis>
+    </refsynopsisdiv>
+
+    <refsect1 id="drumstick-xxxx.description">
+        <title>Description</title>
+        <para>
+        This program is a Drumstick example and test program. You can use it
+        to xxxx.
+        </para>
+    </refsect1>
+
+    <refsect1 id="drumstick-xxxx.options">
+        <title>Arguments</title>
+        <para>The following arguments are required:</para>
+        <variablelist>
+            <varlistentry>
+                <term><option>FILE</option></term>
+                <listitem>
+                <para>The name of the xxxx file.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+
+        <para>The following arguments are optional:</para>
+        <variablelist>
+            <varlistentry>
+                <term>
+                    <option>-style=</option>
+                    style
+                </term>
+                <listitem>
+                    <para>
+                        sets the application GUI style. Possible
+                        values are motif, windows, and platinum. If you compiled Qt
+                        with additional styles or have additional styles as plugins
+                        these will be available to the
+                        <command>-style</command>
+                        command line option
+                    </para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-stylesheet=</option>
+                    stylesheet
+                </term>
+                <listitem>
+                    <para>sets the application styleSheet. The value
+                        must be a path to a file that contains the Style Sheet. Note:
+                        Relative URLs in the Style Sheet file are relative to the
+                        Style Sheet file&apos;s path.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-session=</option>
+                    session
+                </term>
+                <listitem>
+                    <para>restores the application from an earlier
+                        session.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-widgetcount</option>
+                </term>
+                <listitem>
+                    <para>prints debug message at the end about number
+                        of widgets left undestroyed and maximum number of widgets
+                        existed at the same time</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-reverse</option>
+                </term>
+                <listitem>
+                    <para>sets
+                        the application&apos;s layout direction
+                        to
+                        <command>Qt::RightToLeft</command>
+                    </para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-graphicssystem</option>
+                </term>
+                <listitem>
+                    <para>sets the backend to be used for on-screen
+                        widgets and QPixmaps. Available options are raster and
+                        opengl.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-display</option>
+                    display
+                </term>
+                <listitem>
+                    <para>sets the X display (default is
+                        $DISPLAY).</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-geometry</option>
+                    geometry
+                </term>
+                <listitem>
+                    <para>sets the client geometry of the first window
+                        that is shown.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-fn|-font</option>
+                    font
+                </term>
+                <listitem>
+                    <para>defines the application font. The font should
+                        be specified using an X logical font
+                        description.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-bg|-background</option>
+                    color
+                </term>
+                <listitem>
+                    <para>sets the default background color and an
+                        application palette (light and dark shades are
+                        calculated).</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-fg|-foreground</option>
+                    color
+                </term>
+                <listitem>
+                    <para>sets the default foreground
+                        color.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-btn|-button</option>
+                    color
+                </term>
+                <listitem>
+                    <para>sets the default button
+                        color.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-name</option>
+                    name
+                </term>
+                <listitem>
+                    <para>sets the application name.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-title</option>
+                    title
+                </term>
+                <listitem>
+                    <para>sets the application title.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-visual TrueColor</option>
+                </term>
+                <listitem>
+                    <para>forces the application to use a TrueColor
+                        visual on an 8-bit display.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-ncols</option>
+                    count
+                </term>
+                <listitem>
+                    <para>limits the number of colors allocated in the
+                        color cube on an 8-bit display, if the application is using
+                        the QApplication::ManyColor color specification. If count is
+                        216 then a 6x6x6 color cube is used (i.e. 6 levels of red, 6
+                        of green, and 6 of blue); for other values, a cube
+                        approximately proportional to a 2x3x1 cube is
+                        used.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-cmap</option>
+                </term>
+                <listitem>
+                    <para>causes the application to install a private
+                        color map on an 8-bit display.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-im</option>
+                </term>
+                <listitem>
+                    <para>sets the input method server (equivalent to
+                        setting the XMODIFIERS environment variable)</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-inputstyle</option>
+                </term>
+                <listitem>
+                    <para>defines how the input is inserted into the
+                        given widget, e.g., onTheSpot makes the input appear directly
+                        in the widget, while overTheSpot makes the input appear in a
+                        box floating over the widget and is not inserted until the
+                        editing is done.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+
+    </refsect1>
+
+    <refsect1>
+        <title>License</title>
+        <para>
+            Permission is granted to copy, distribute and/or modify this document
+            under the terms of the <acronym>GNU</acronym> General Public
+            License, Version 2 or any later version published by
+            the Free Software Foundation, considering as source code any files 
+            used for the production of this manpage.
+        </para>
+    </refsect1>
+
+    <refsect1 id="drumstick-xxxx.seealso">
+        <title>See also</title>
+        <para>
+           <citerefentry>
+               <refentrytitle>drumstick-yyyy</refentrytitle>
+               <manvolnum>1</manvolnum>
+           </citerefentry>, <citerefentry>
+               <refentrytitle>drumstick-zzzz</refentrytitle>
+               <manvolnum>1</manvolnum>
+           </citerefentry>
+        </para>
+    </refsect1>
+
+</refentry>
