@@ -851,7 +851,7 @@ void QWrk::processMeterChunk()
         readGap(4);
         int measure = read16bit();
         int  num = readByte();
-        int  den = powl(2, readByte());
+        int  den = pow(2, readByte());
         readGap(4);
         Q_EMIT signalWRKTimeSig(measure, num, den);
     }
@@ -863,7 +863,7 @@ void QWrk::processMeterKeyChunk()
     for (int i = 0; i < count; ++i) {
         int measure = read16bit();
         int  num = readByte();
-        int  den = powl(2, readByte());
+        int  den = pow(2, readByte());
         qint8 alt = readByte();
         Q_EMIT signalWRKTimeSig(measure, num, den);
         Q_EMIT signalWRKKeySig(measure, alt);
