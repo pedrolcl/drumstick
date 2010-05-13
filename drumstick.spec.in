@@ -31,7 +31,6 @@ PreReq:         shared-mime-info
 This package includes test and example programs for drumstick libraries.
 
 
-
 Authors:
 --------
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
@@ -42,8 +41,11 @@ Summary:        MIDI Sequencer C++ Library
 Group:          System/Libraries
 
 %description -n libdrumstick-file0
-MIDI Sequencer C++ Library Bindings for Qt4 and ALSA
-
+MIDI Sequencer C++ Library Bindings for Qt4 and ALSA.
+This library includes classes providing file input and output in formats 
+commonly used by MIDI programs. Currently, SMF (standard MIDI file) 
+read/write and WRK (Cakewalk) file read are supported. This library does not 
+depend on ALSA.
 
 
 Authors:
@@ -55,8 +57,9 @@ Summary:        MIDI Sequencer C++ Library
 Group:          System/Libraries
 
 %description -n libdrumstick-alsa0
-MIDI Sequencer C++ Library Bindings for Qt4 and ALSA
-
+MIDI Sequencer C++ Library Bindings for Qt4 and ALSA.
+This library includes the ALSA Sequencer library classes, providing MIDI 
+recording and playback functionality to C++/Qt4 programs.
 
 
 Authors:
@@ -75,7 +78,6 @@ This package contains the files needed to compile programs that use the
 libdrumstick libraries.
 
 
-
 Authors:
 --------
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
@@ -86,7 +88,6 @@ Group:          Documentation/Other
 
 %description -n libdrumstick-doc
 This package contains the developer's documentation of the drumstick libraries.
-
 
 
 Authors:
@@ -143,6 +144,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/icons/hicolor/*/*/*
 %{_datadir}/applications/*
 %{_datadir}/mime/packages/*
+%{_datadir}/man/man1/*
 %{_bindir}/*
 
 %files -n libdrumstick-file0
