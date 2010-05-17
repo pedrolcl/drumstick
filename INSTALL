@@ -26,6 +26,15 @@ Minimum supported versions:
 * Qt4 4.4
 * For Linux: ALSA 1.0
 
+If you want to generate and install the man pages, the build system can do it 
+if you have installed in your system the following packages:
+* xsltproc program.
+* docbook XSLT stylesheets.
+
+The package names depend on the Linux distribution. For Debian they are:
+xsltproc, docbook-xsl and docbook-xml. For openSUSE: libxslt, docbook_4, and 
+docbook-xsl-stylesheets.
+
 Optional CMake parameters
 -------------------------
 

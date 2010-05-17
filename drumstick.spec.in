@@ -25,6 +25,9 @@ BuildRequires:  libqt4-devel
 BuildRequires:  doxygen
 BuildRequires:  graphviz
 BuildRequires:  update-desktop-files
+BuildRequires:  libxslt 
+BuildRequires:  docbook_4
+BuildRequires:  docbook-xsl-stylesheets
 PreReq:         shared-mime-info
 
 %description
