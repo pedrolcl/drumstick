@@ -17,18 +17,30 @@
 FIND_PROGRAM(XSLTPROC_EXECUTABLE xsltproc)
 IF(XSLTPROC_EXECUTABLE)
     MESSAGE(STATUS "XSLTPROC Found: ${XSLTPROC_EXECUTABLE}")
-    CONFIGURE_FILE(drumstick-buildsmf.xml.in doc/drumstick-buildsmf.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-drumgrid.xml.in doc/drumstick-drumgrid.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-dumpmid.xml.in doc/drumstick-dumpmid.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-dumpsmf.xml.in doc/drumstick-dumpsmf.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-dumpwrk.xml.in doc/drumstick-dumpwrk.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-metronome.xml.in doc/drumstick-metronome.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-playsmf.xml.in doc/drumstick-playsmf.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-smfplayer.xml.in doc/drumstick-smfplayer.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-sysinfo.xml.in doc/drumstick-sysinfo.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-testevents.xml.in doc/drumstick-testevents.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-timertest.xml.in doc/drumstick-timertest.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-vpiano.xml.in doc/drumstick-vpiano.xml IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick-buildsmf.xml.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-buildsmf.xml IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick-drumgrid.xml.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-drumgrid.xml IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick-dumpmid.xml.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpmid.xml IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick-dumpsmf.xml.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpsmf.xml IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick-dumpwrk.xml.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpwrk.xml IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick-metronome.xml.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-metronome.xml IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick-playsmf.xml.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-playsmf.xml IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick-smfplayer.xml.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-smfplayer.xml IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick-sysinfo.xml.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-sysinfo.xml IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick-testevents.xml.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-testevents.xml IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick-timertest.xml.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-timertest.xml IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick-vpiano.xml.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-vpiano.xml IMMEDIATE @ONLY)
     INCLUDE(CreateManpages)
     CREATE_MANPAGES ( 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-buildsmf.xml
