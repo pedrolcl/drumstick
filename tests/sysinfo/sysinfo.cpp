@@ -40,22 +40,26 @@ void queryTimers()
     for( it = lst.constBegin(); it != lst.constEnd(); ++it )
     {
         TimerId id = *it;
-        Timer* timer = new Timer(id, SND_TIMER_OPEN_NONBLOCK);
-        TimerInfo info = timer->getTimerInfo();
-        cout << qSetFieldWidth(7) << left << info.getId() 
-             << qSetFieldWidth(20) << left << info.getName().left(20)
-             << qSetFieldWidth(0) << " " 
-             << id.getClass() << "/" << id.getSlaveClass() << "/"
-             << id.getCard() << "/" << id.getDevice() << "/" 
-             << id.getSubdevice() << " ";
-        if( info.isSlave() ) {
-            cout << "SLAVE";
-        } else {
-            long freq = info.getFrequency();
-            cout << freq << " Hz";
+        try {
+			Timer* timer = new Timer(id, SND_TIMER_OPEN_NONBLOCK);
+			TimerInfo info = timer->getTimerInfo();
+			cout << qSetFieldWidth(7) << left << info.getId()
+				 << qSetFieldWidth(20) << left << info.getName().left(20)
+				 << qSetFieldWidth(0) << " "
+				 << id.getClass() << "/" << id.getSlaveClass() << "/"
+				 << id.getCard() << "/" << id.getDevice() << "/"
+				 << id.getSubdevice() << " ";
+			if( info.isSlave() ) {
+				cout << "SLAVE";
+			} else {
+				long freq = info.getFrequency();
+				cout << freq << " Hz";
+			}
+			cout << endl;
+			delete timer;
+        } catch (SequencerError& err) {
+        	cout << "Error opening timer:"  << err.qstrError();
         }
-        cout << endl;
-        delete timer;
     }
     delete query;
 }
@@ -74,22 +78,28 @@ void queryQueues(MidiClient* c)
             QueueTempo qtmp = queue->getTempo();
             QueueTimer qtmr = queue->getTimer();
             TimerId tid(qtmr.getId());
-            Timer* timer = new Timer(tid, SND_TIMER_OPEN_NONBLOCK);
-            TimerInfo tinfo = timer->getTimerInfo();
-            cout << qSetFieldWidth(3)  << left << qinfo.getId()
-                 << qSetFieldWidth(20) << qinfo.getName().left(20)
-                 << qSetFieldWidth(0)  << " "
-                 << qSetFieldWidth(20) << tinfo.getName().left(20)
-                 << qSetFieldWidth(6)  << right << qinfo.getOwner()
-                 << qSetFieldWidth(7)  << (qinfo.isLocked() ? "locked" : "free")
-                 << qSetFieldWidth(8)  << (qsts.isRunning() ? "running" : "stopped")
-                 << qSetFieldWidth(4)  << qtmp.getPPQ()
-                 << qSetFieldWidth(7)  << qtmp.getRealBPM()
-                 << qSetFieldWidth(4)  << qtmp.getNominalBPM()
-                 << qSetFieldWidth(8)  << qsts.getTickTime()
-                 << qSetFieldWidth(0)  << " " << qsts.getClockTime()
-                 << endl;
-            delete timer;
+            QString tname;
+            try {
+				Timer* timer = new Timer(tid, SND_TIMER_OPEN_NONBLOCK);
+				TimerInfo tinfo = timer->getTimerInfo();
+				tname = tinfo.getName();
+				delete timer;
+            } catch (SequencerError& err) {
+            	tname = "inaccessible";
+            }
+			cout << qSetFieldWidth(3)  << left << qinfo.getId()
+				 << qSetFieldWidth(20) << qinfo.getName().left(20)
+				 << qSetFieldWidth(0)  << " "
+				 << qSetFieldWidth(20) << tname.left(20)
+				 << qSetFieldWidth(6)  << right << qinfo.getOwner()
+				 << qSetFieldWidth(7)  << (qinfo.isLocked() ? "locked" : "free")
+				 << qSetFieldWidth(8)  << (qsts.isRunning() ? "running" : "stopped")
+				 << qSetFieldWidth(4)  << qtmp.getPPQ()
+				 << qSetFieldWidth(7)  << qtmp.getRealBPM()
+				 << qSetFieldWidth(4)  << qtmp.getNominalBPM()
+				 << qSetFieldWidth(8)  << qsts.getTickTime()
+				 << qSetFieldWidth(0)  << " " << qsts.getClockTime()
+				 << endl;
             delete queue;
         }
     }
