@@ -55,7 +55,7 @@
 
     <refsect1 id="drumstick-metronome.options">
         <title>Arguments</title>
-        <para>The following argument is required:</para>
+        <para>The following arguments are required:</para>
         <variablelist>
             <varlistentry>
                 <term><option>PORT</option></term>
@@ -65,10 +65,6 @@
                 a number or a name, like in "20:0" or "KMidimon:0".</para>
                 </listitem>
             </varlistentry>
-        </variablelist>
-
-        <para>The following argument is optional:</para>
-        <variablelist>
             <varlistentry>
                 <term><option>BPM</option></term>
                 <listitem>

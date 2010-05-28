@@ -1,3 +1,6 @@
+2010-05-28
+    * fix a crash in drumstick-sysinfo when a timer module is not loaded. 
+    
 2010-05-13
     * Man pages for the utilities/test programs.
 
