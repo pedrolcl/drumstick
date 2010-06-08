@@ -1,6 +1,8 @@
 SET(dumpwrk_SRCS
     dumpwrk.cpp
     dumpwrk.h
+    ../common/cmdlineargs.cpp
+    ../common/cmdlineargs.h
 )
 
 SET(dumpwrk_qtobject_SRCS

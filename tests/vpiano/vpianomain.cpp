@@ -19,6 +19,7 @@
 
 #include "vpiano.h"
 #include "rawkeybdapp.h"
+#include "cmdlineargs.h"
 
 #include <QtGui>
 #include <QApplication>
@@ -26,6 +27,10 @@
 int main(int argc, char *argv[])
 {
     RawKeybdApp a(argc, argv);
+    CmdLineArgs args;
+    args.setStdQtArgs(true);
+    args.setUsage("[options]");
+    args.parse(a.argc(), a.argv());
     VPiano w;
     w.show();
     return a.exec();

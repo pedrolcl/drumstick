@@ -1,6 +1,8 @@
 SET(buildsmf_SRCS
     buildsmf.cpp
     buildsmf.h
+    ../common/cmdlineargs.cpp
+    ../common/cmdlineargs.h
 )
 
 SET(buildsmf_qtobject_SRCS

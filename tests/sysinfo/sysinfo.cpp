@@ -17,14 +17,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#include <QTextStream>
-#include <QStringList>
-#include <QFileInfo>
-
 #include "alsatimer.h"
 #include "alsaqueue.h"
 #include "alsaclient.h"
 #include "subscription.h"
+#include "cmdlineargs.h"
+#include <QTextStream>
+#include <QStringList>
+#include <QFileInfo>
 
 static QTextStream cout(stdout, QIODevice::WriteOnly); 
 
@@ -221,7 +221,9 @@ void systemInfo()
 
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv, false);
+    QApplication a(argc, argv, false);
+    CmdLineArgs args;
+    args.parse(a.argc(), a.argv());
     systemInfo();
     return 0;
 }

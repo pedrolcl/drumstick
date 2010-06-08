@@ -1,6 +1,8 @@
 SET(timertest_SRCS
     timertest.cpp
     timertest.h
+    ../common/cmdlineargs.h
+    ../common/cmdlineargs.cpp
 )
 
 SET(timertest_qtobject_SRCS

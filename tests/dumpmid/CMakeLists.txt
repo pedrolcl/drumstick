@@ -1,6 +1,8 @@
 SET(dumpmid_SRCS
     dumpmid.cpp
     dumpmid.h
+    ../common/cmdlineargs.cpp
+    ../common/cmdlineargs.h
 )
 
 SET(dumpmid_qtobject_SRCS

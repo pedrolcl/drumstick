@@ -18,6 +18,7 @@
 */
 
 #include "smfplayer.h"
+#include "cmdlineargs.h"
 
 #include <QtGui>
 #include <QApplication>
@@ -28,6 +29,11 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain(QSTR_DOMAIN);
     QCoreApplication::setApplicationName(QSTR_APPNAME);    
     QApplication a(argc, argv);
+    CmdLineArgs args;
+    args.setStdQtArgs(true);
+    args.setUsage("[options] [file]");
+    args.addOptionalArgument("file", "Input SMF");
+    args.parse(a.argc(), a.argv());
     SMFPlayer w;
     w.setAttribute(Qt::WA_QuitOnClose);
     w.show();

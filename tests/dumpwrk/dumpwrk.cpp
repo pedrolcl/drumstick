@@ -21,6 +21,8 @@
 
 #include "dumpwrk.h"
 #include "qwrk.h"
+#include "cmdlineargs.h"
+
 #include <cstdlib>
 #include <QObject>
 #include <QString>
@@ -450,19 +452,25 @@ void QSpyWrk::run(QString fileName)
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication app(argc, argv);
-    QStringList args = app.arguments();
-    QStringList fileNames;
     QSpyWrk spy;
+    CmdLineArgs args;
+    args.setUsage("[options] file");
+    args.addOption('v', "verbose", "Verbose output");
+    args.addRequiredArgument("file", "Input WRK file name");
+    args.parse(argc, argv);
 
-    foreach(const QString& a, args) {
-        if (a.compare("-v", Qt::CaseInsensitive) == 0)
-            spy.setVerbosity(true);
-        else {
-            QFileInfo f(a);
-            if (f.exists())
-                fileNames += f.canonicalFilePath();
-        }
+    QVariant verbose = args.getOption("verbose");
+    if (!verbose.isNull())
+        spy.setVerbosity(true);
+
+    QVariantList files = args.getArguments("file");
+    QStringList fileNames;
+    foreach(const QVariant& a, files) {
+        QFileInfo f(a.toString());
+        if (f.exists())
+            fileNames += f.canonicalFilePath();
+        else
+            cout << "File not found: " << a.toString() << endl;
     }
 
     foreach(const QString& file, fileNames) {

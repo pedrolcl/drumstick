@@ -1,6 +1,8 @@
 SET(dumpsmf_SRCS
     dumpsmf.cpp
     dumpsmf.h
+    ../common/cmdlineargs.cpp
+    ../common/cmdlineargs.h
 )
 
 SET(dumpsmf_qtobject_SRCS

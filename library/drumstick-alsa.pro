@@ -1,5 +1,8 @@
 TEMPLATE = lib
 TARGET = drumstick-alsa
+DESTDIR = ../build/lib
+OBJECTS_DIR = ../build/obj
+MOC_DIR = ../build/moc
 DEPENDPATH += . include src
 INCLUDEPATH += . include
 VERSION=0.3.2svn
@@ -14,7 +17,6 @@ HEADERS += include/alsaclient.h \
            include/drumstickcommon.h \
            include/playthread.h \
            include/subscription.h
-	   
 SOURCES += src/alsaclient.cpp \
            src/alsaevent.cpp \
            src/alsaport.cpp \

@@ -1,5 +1,7 @@
 SET(sysinfo_SRCS
     sysinfo.cpp
+    ../common/cmdlineargs.h
+    ../common/cmdlineargs.cpp
 )
 
 ADD_EXECUTABLE(drumstick-sysinfo

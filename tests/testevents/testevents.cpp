@@ -18,6 +18,7 @@
 */
 
 #include "testevents.h"
+#include "cmdlineargs.h"
 #include <QObject>
 #include <QString>
 #include <QApplication>
@@ -270,8 +271,9 @@ void QTestEvents::run()
 
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv, false);
     QTestEvents test;
+    CmdLineArgs args;
+    args.parse(argc, argv);
     test.run();
     return 0;
 }

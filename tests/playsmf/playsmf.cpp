@@ -18,10 +18,13 @@
 */
 
 #include "playsmf.h"
+#include "cmdlineargs.h"
+
 #include <signal.h>
 #include <QApplication>
 #include <QTextStream>
 #include <QtAlgorithms>
+#include <QFileInfo>
 
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 
@@ -307,6 +310,7 @@ void PlaySMF::play(QString fileName)
     }
 }
 
+/*
 void PlaySMF::usage()
 {
     cout << "Error: wrong parameters" << endl;
@@ -325,6 +329,7 @@ void PlaySMF::info()
     cout << "\tCurrent Queues: " << info.getCurrentQueues() << endl;
     cout << "\tCurrent Clients: " << info.getCurrentClients() << endl;
 }
+*/
 
 PlaySMF player;
 
@@ -339,16 +344,25 @@ void signalHandler(int sig)
 
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv, false);
+    CmdLineArgs args;
     signal(SIGINT, signalHandler);
     signal(SIGTERM, signalHandler);
-    //player.info();
-    if (app.argc() == 3) {
-        QString portName(app.argv()[1]);
-        player.subscribe(portName);
-        QString fileName(app.argv()[2]);
-        player.play(fileName);
-    } else {
-        player.usage();
+
+    args.setUsage("[options] port file...");
+    args.addRequiredArgument("port", "Destination, MIDI port");
+    args.addMultipleArgument("file", "Input SMF(s)");
+    args.parse(argc, argv);
+
+    QVariant port = args.getArgument("port");
+    if (!port.isNull())
+        player.subscribe(port.toString());
+
+    QVariantList files = args.getArguments("file");
+    foreach(const QVariant& f, files) {
+        QFileInfo file(f.toString());
+        if (file.exists())
+            player.play(file.canonicalFilePath());
     }
+
+    //player.info();
 }

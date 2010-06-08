@@ -19,6 +19,7 @@
 
 #include "buildsmf.h"
 #include "qsmf.h"
+#include "cmdlineargs.h"
 #include <QApplication>
 #include <QDebug>
 #include <QTextCodec>
@@ -78,10 +79,14 @@ void QSMFBuilder::run(QString fileName)
 
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv, false);
     QSMFBuilder builder;
-    if (app.argc() > 1)
-        builder.run(app.argv()[1]);
+    CmdLineArgs args;
+    args.setUsage("file");
+    args.addRequiredArgument("file", "Output SMF name");
+    args.parse(argc, argv);
+    QVariant file = args.getArgument("file");
+    if (!file.isNull())
+        builder.run(file.toString());
     return 0;
 }
 

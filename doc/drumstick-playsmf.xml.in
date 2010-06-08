@@ -28,7 +28,7 @@
         <manvolnum>1</manvolnum>
         <refmiscinfo class="version">@VERSION@</refmiscinfo>
         <refmiscinfo class="source">drumstick</refmiscinfo>
-        <refmiscinfo class="manual">Drumstick</refmiscinfo>
+        <refmiscinfo class="manual">User Commands</refmiscinfo>
     </refmeta>
 
     <refnamediv>
@@ -40,6 +40,7 @@
     <refsynopsisdiv id="drumstick-playsmf.synopsis">
         <title>Synopsis</title>
         <cmdsynopsis><command>&product;</command>
+            <arg choice="opt">options</arg>
             <arg choice="req">PORT</arg>
             <arg choice="req">FILE</arg>
         </cmdsynopsis>
@@ -70,6 +71,27 @@
                 <term><option>FILE</option></term>
                 <listitem>
                 <para>The name of the input SMF.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+
+        <para>The following arguments are optional:</para>
+        <variablelist>
+            <varlistentry>
+                <term>
+                    <option>-h|--help</option>
+                </term>
+                <listitem>
+                    <para>Prints a summary of the command-line options and exit.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>
+                    <option>-V|--version</option>
+                </term>
+                <listitem>
+                    <para>Prints the program version number and exit.</para>
                 </listitem>
             </varlistentry>
         </variablelist>

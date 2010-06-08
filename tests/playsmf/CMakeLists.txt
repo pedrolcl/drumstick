@@ -1,6 +1,8 @@
 SET(playsmf_SRCS
     playsmf.cpp
     playsmf.h
+    ../common/cmdlineargs.cpp
+    ../common/cmdlineargs.h
 )
 
 SET(playsmf_qtobject_SRCS

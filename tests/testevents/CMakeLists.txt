@@ -1,6 +1,8 @@
 SET(testevents_SRCS
     testevents.cpp
     testevents.h
+    ../common/cmdlineargs.h
+    ../common/cmdlineargs.cpp
 )
 
 SET(testevents_qtobject_SRCS

@@ -17,8 +17,9 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include <QtGui/QApplication>
 #include "drumgrid.h"
+#include "cmdlineargs.h"
+#include <QtGui/QApplication>
 
 const QString QSTR_APPNAME("DrumGrid");
 const QString QSTR_DOMAIN("drumstick.sourceforge.net");
@@ -29,6 +30,10 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain(QSTR_DOMAIN);
     QCoreApplication::setApplicationName(QSTR_APPNAME);
     QApplication a(argc, argv);
+    CmdLineArgs args;
+    args.setStdQtArgs(true);
+    args.setUsage("[options]");
+    args.parse(a.argc(), a.argv());
     DrumGrid w;
     w.show();
     return a.exec();

@@ -21,6 +21,8 @@
 
 #include "dumpsmf.h"
 #include "qsmf.h"
+#include "cmdlineargs.h"
+
 #include <cstdlib>
 #include <QObject>
 #include <QString>
@@ -232,9 +234,13 @@ void QSpySMF::run(QString fileName)
 
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv, false);
     QSpySMF spy;
-    if (app.argc() > 1)
-        spy.run(app.argv()[1]);
+    CmdLineArgs args;
+    args.setUsage("file");
+    args.addRequiredArgument("file", "Input SMF name");
+    args.parse(argc, argv);
+    QVariant file = args.getArgument("file");
+    if (!file.isNull())
+        spy.run(file.toString());
 }
 

@@ -10,6 +10,8 @@ SET(playmid_SRCS
     song.cpp
     song.h
     main.cpp
+    ../common/cmdlineargs.h
+    ../common/cmdlineargs.cpp
 )
 
 SET(playmid_qtobject_SRCS

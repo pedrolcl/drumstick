@@ -7,7 +7,9 @@ SET(drumgrid_SRCS
     drumgrid.h
     drumgridmodel.cpp
     drumgridmodel.h
-    main.cpp
+    drumgridmain.cpp
+    ../common/cmdlineargs.h
+    ../common/cmdlineargs.cpp
 )
 
 SET(drumgrid_qtobject_SRCS

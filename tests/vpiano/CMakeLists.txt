@@ -27,7 +27,9 @@ SET(vpiano_SRCS
     preferences.h
     vpiano.cpp
     vpiano.h
-    main.cpp
+    vpianomain.cpp
+    ../common/cmdlineargs.h
+    ../common/cmdlineargs.cpp
 )
 
 SET(vpiano_qtobject_SRCS
@@ -56,6 +58,7 @@ ENDIF(USE_PCH)
 TARGET_LINK_LIBRARIES(drumstick-vpiano
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
+    ${QT_X11_X11_LIBRARY}
     drumstick-alsa
 )
 

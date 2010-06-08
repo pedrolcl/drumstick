@@ -1,6 +1,8 @@
 SET(metronome_SRCS
     metronome.cpp
     metronome.h
+    ../common/cmdlineargs.cpp
+    ../common/cmdlineargs.h
 )
 
 SET(metronome_qtobject_SRCS

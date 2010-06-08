@@ -22,12 +22,17 @@
 
 INCLUDE_DIRECTORIES ( 
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/common
+    ${CMAKE_CURRENT_BINARY_DIR}/common
 )
 
 LINK_DIRECTORIES (
     ${QT_LIB_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+FILE(WRITE ${CMAKE_CURRENT_BINARY_DIR}/common/cmdversion.h
+     "const QString PGM_VERSION(\"${VERSION}\");\n")
 
 IF(USE_PCH)
     ADD_PRECOMPILED_HEADER(precompiled_headers stableheaders.h)

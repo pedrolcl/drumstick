@@ -56,8 +56,8 @@ public:
     void dump(const QString& chan, const QString& event, const QString& data);
     void dumpStr(const QString& event, const QString& data);
     void shutupSound();
-    void usage();
-    void info();
+    //void usage();
+    //void info();
 
 public slots:
     void headerEvent(int format, int ntrks, int division);

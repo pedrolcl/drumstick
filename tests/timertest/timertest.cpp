@@ -17,9 +17,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#include <QTextStream>
-#include "alsatimer.h"
 #include "timertest.h"
+#include "alsatimer.h"
+#include "cmdlineargs.h"
+#include <QTextStream>
 
 static QTextStream cout(stdout, QIODevice::WriteOnly); 
 
@@ -124,8 +125,9 @@ void TimerTest::runTest()
 
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv, false);
     TimerTest test;
+    CmdLineArgs args;
+    args.parse(argc, argv);
     test.runTest();
     return 0;
 }

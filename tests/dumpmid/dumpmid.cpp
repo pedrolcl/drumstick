@@ -18,6 +18,8 @@
 */
 
 #include "dumpmid.h"
+#include "cmdlineargs.h"
+
 #include <signal.h>
 #include <QObject>
 #include <QString>
@@ -445,14 +447,16 @@ void signalHandler(int sig)
 
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv, false);
+    CmdLineArgs args;
+    args.setUsage("[port]");
+    args.addOptionalArgument("port", "Source MIDI port");
+    args.parse(argc, argv);
     test = new QDumpMIDI();
     signal(SIGINT, signalHandler);
     signal(SIGTERM, signalHandler);
-    if (argc > 1) {
-        QString portName(argv[1]);
-        test->subscribe(portName);
-    }
+    QVariant portName = args.getArgument("port");
+    if (!portName.isNull())
+        test->subscribe(portName.toString());
     test->run();
     delete test;
     return 0;

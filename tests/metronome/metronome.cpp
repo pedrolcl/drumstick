@@ -19,6 +19,7 @@
 
 #include "metronome.h"
 #include "alsatimer.h"
+#include "cmdlineargs.h"
 
 #include <signal.h>
 #include <QApplication>
@@ -219,6 +220,7 @@ void Metronome::play(QString tempo)
     }
 }
 
+/*
 void Metronome::usage()
 {
     cout << "Error: wrong parameters" << endl;
@@ -237,6 +239,7 @@ void Metronome::info()
     cout << "Current Queues: " << info.getCurrentQueues() << endl;
     cout << "Current Clients: " << info.getCurrentClients() << endl;
 }
+*/
 
 Metronome metronome;
 
@@ -252,17 +255,22 @@ void signalHandler(int sig)
 
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv, false);
+    CmdLineArgs args;
     signal(SIGINT, signalHandler);
     signal(SIGTERM, signalHandler);
+
+    args.setUsage("[options] port [bpm]");
+    args.addRequiredArgument("port", "Destination, MIDI port identifier");
+    args.addOptionalArgument("bpm", "Tempo, in beats per minute (default=120)");
+    args.parse(argc, argv);
+
+    QVariant port = args.getArgument("port");
+    if (!port.isNull())
+        metronome.subscribe(port.toString());
+
+    QVariant bpm = args.getArgument("bpm");
+    metronome.play(bpm.toString());
+
     //metronome.info();
-    if (app.argc() == 3) {
-        QStringList arguments = app.arguments();
-        QString portName(arguments[1]);
-        metronome.subscribe(portName);
-        QString tempo(arguments[2]);
-        metronome.play(tempo);
-    } else
-        metronome.usage();
     return 0;
 }
