@@ -54,7 +54,7 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_admin")
 SET (VERSION_MAJOR "0")
 SET (VERSION_MINOR "3")
 SET (VERSION_PATCH "2")
-SET (VERSION_SUFFIX "svn")
+SET (VERSION_SUFFIX "")
 SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 
 MESSAGE(STATUS "drumstick ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
@@ -151,7 +151,9 @@ ENDIF(DOXYGEN_FOUND)
 ADD_SUBDIRECTORY(library)
 ADD_SUBDIRECTORY(tests)
 ADD_SUBDIRECTORY(icons)
-ADD_SUBDIRECTORY(doc)
+IF(${CMAKE_SYSTEM} MATCHES "Linux")
+    ADD_SUBDIRECTORY(doc)
+ENDIF(${CMAKE_SYSTEM} MATCHES "Linux")
 
 CONFIGURE_FILE(drumstick-alsa.pc.in drumstick-alsa.pc IMMEDIATE @ONLY)
 CONFIGURE_FILE(drumstick-file.pc.in drumstick-file.pc IMMEDIATE @ONLY)
@@ -166,24 +168,26 @@ CONFIGURE_FILE(
 ADD_CUSTOM_TARGET ( uninstall
     "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
 
-# tarball target
-ADD_CUSTOM_TARGET ( tarball
-    COMMAND mkdir -p drumstick-${VERSION}
-    COMMAND cp -r cmake_admin drumstick-${VERSION}
-    COMMAND cp -r library drumstick-${VERSION}
-    COMMAND cp -r tests drumstick-${VERSION}
-    COMMAND cp -r doc drumstick-${VERSION}
-    COMMAND cp -r icons drumstick-${VERSION}
-    COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO drumstick*.in drumstick.pro drumstick.xml configure* Doxyfile.in link-drumstick chkcoverage drumstick-${VERSION}
-    COMMAND tar -cj --exclude .svn -f drumstick-${VERSION}.tar.bz2 drumstick-${VERSION}
-    COMMAND tar -cz --exclude .svn -f drumstick-${VERSION}.tar.gz drumstick-${VERSION}
-    COMMAND rm -rf drumstick-${VERSION}
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
-
-INSTALL( FILES drumstick.xml DESTINATION share/mime/packages ) 
-
-INSTALL( FILES 
-         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-file.pc
-         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
-         DESTINATION ${LIB}/pkgconfig )
+IF(${CMAKE_SYSTEM} MATCHES "Linux")
+    # tarball target
+    ADD_CUSTOM_TARGET ( tarball
+        COMMAND mkdir -p drumstick-${VERSION}
+        COMMAND cp -r cmake_admin drumstick-${VERSION}
+        COMMAND cp -r library drumstick-${VERSION}
+        COMMAND cp -r tests drumstick-${VERSION}
+        COMMAND cp -r doc drumstick-${VERSION}
+        COMMAND cp -r icons drumstick-${VERSION}
+        COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO drumstick*.in drumstick.pro drumstick.xml configure* Doxyfile.in link-drumstick chkcoverage drumstick-${VERSION}
+        COMMAND tar -cj --exclude=.[a-z]* -f drumstick-${VERSION}.tar.bz2 drumstick-${VERSION}
+        COMMAND tar -cz --exclude=.[a-z]* -f drumstick-${VERSION}.tar.gz  drumstick-${VERSION}
+        COMMAND rm -rf drumstick-${VERSION}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
+    
+    INSTALL( FILES drumstick.xml DESTINATION share/mime/packages ) 
+    
+    INSTALL( FILES 
+             ${CMAKE_CURRENT_BINARY_DIR}/drumstick-file.pc
+             ${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
+             DESTINATION ${LIB}/pkgconfig )
+ENDIF(${CMAKE_SYSTEM} MATCHES "Linux")
