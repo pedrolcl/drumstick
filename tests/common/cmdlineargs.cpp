@@ -98,13 +98,14 @@ void CmdLineArgs::parse(const QStringList& args)
                 } else {
                     if (opt.m_def.isValid()) {
                         QString arg = s.mid(j+1).trimmed();
-                        if (arg.isNull())
+                        if (arg.isNull()) {
                             if ( i<args.count()-1) {
                                 i++;
                                 arg = args.at(i);
                             } else {
                                 errs += s;
                             }
+                        }
                         m_arguments.insertMulti(opt.m_id, arg);
                         break;
                     } else {
