@@ -9,7 +9,7 @@ SET(playmid_SRCS
     player.h
     song.cpp
     song.h
-    main.cpp
+    playermain.cpp
     ../common/cmdlineargs.h
     ../common/cmdlineargs.cpp
 )

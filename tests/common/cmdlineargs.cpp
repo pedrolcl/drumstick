@@ -138,6 +138,7 @@ void CmdLineArgs::parse(const QStringList& args)
             helpneeded = true;
         }
     if (helpneeded) {
+        cerr << m_progName << " version: " << PGM_VERSION << endl;
         cerr << helpText() << endl;
         cerr.flush();
         exit(0);
@@ -277,4 +278,9 @@ QVariantList CmdLineArgs::getArguments(const QString & id)
     if (m_arguments.contains(id))
         return m_arguments.values(id);
     return QVariantList();
+}
+
+QString CmdLineArgs::programVersion() const
+{
+    return PGM_VERSION;
 }

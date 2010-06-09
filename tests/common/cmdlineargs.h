@@ -80,6 +80,8 @@ public:
     void parse(int argc, char* argv[]);
 
     QString helpText(const QString& id = QString());
+    QString programName() const { return m_progName; }
+    QString programVersion() const;
     void clear();
 
     void addOption(const QChar& shrt, const QString& id, const QString& desc, const QVariant& def=QVariant());

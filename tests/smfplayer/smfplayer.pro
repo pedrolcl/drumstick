@@ -10,5 +10,9 @@ LIBS = -L../../build/lib -ldrumstick-file -ldrumstick-alsa -lasound
 # Input
 HEADERS += player.h smfplayer.h song.h
 FORMS += smfplayer.ui
-SOURCES += main.cpp player.cpp smfplayer.cpp song.cpp ../common/cmdlineargs.cpp
+SOURCES += playermain.cpp \
+    player.cpp \
+    smfplayer.cpp \
+    song.cpp \
+    ../common/cmdlineargs.cpp
 RESOURCES += smfplayer.qrc

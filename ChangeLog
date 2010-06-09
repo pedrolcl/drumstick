@@ -1,3 +1,6 @@
+2010-06-09
+    * Command line arguments for all the utilities/test programs.
+
 2010-05-28
     * fix a crash in drumstick-sysinfo when a timer module is not loaded. 
     

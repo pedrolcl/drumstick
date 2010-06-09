@@ -24,7 +24,6 @@
 #include "cmdlineargs.h"
 #include <QTextStream>
 #include <QStringList>
-#include <QFileInfo>
 
 static QTextStream cout(stdout, QIODevice::WriteOnly); 
 
@@ -34,7 +33,7 @@ void queryTimers()
 {
     cout << endl << "ALSA Timers" << endl;
     TimerQuery* query = new TimerQuery("hw", 0);
-    cout << "type__ Name________________ c/s/C/D/S Freq." << endl;
+    cout << "type___ Name________________ c/s/C/D/S Freq." << endl;
     TimerIdList lst = query->getTimers();
     TimerIdList::ConstIterator it;
     for( it = lst.constBegin(); it != lst.constEnd(); ++it )
@@ -43,7 +42,7 @@ void queryTimers()
         try {
 			Timer* timer = new Timer(id, SND_TIMER_OPEN_NONBLOCK);
 			TimerInfo info = timer->getTimerInfo();
-			cout << qSetFieldWidth(7) << left << info.getId()
+			cout << qSetFieldWidth(8) << left << info.getId()
 				 << qSetFieldWidth(20) << left << info.getName().left(20)
 				 << qSetFieldWidth(0) << " "
 				 << id.getClass() << "/" << id.getSlaveClass() << "/"
@@ -167,14 +166,14 @@ void queryClients(MidiClient* c)
     ClientInfoList clients = c->getAvailableClients();
     foreach( ClientInfo cinfo, clients ) {
         PortInfoList plist = cinfo.getPorts();
-        cout << "Client" << qSetFieldWidth(4) << cinfo.getClientId()
+        cout << "Client " << qSetFieldWidth(4) << left << cinfo.getClientId()
              << qSetFieldWidth(0) << " : \"" << cinfo.getName() << "\" ["
              << clientTypeName(cinfo.getClientType())
              << "]" << endl;
         foreach( PortInfo pinfo, plist ) {
             SubscribersList to = pinfo.getReadSubscribers();
             SubscribersList from = pinfo.getWriteSubscribers();
-            cout << "  Port" << qSetFieldWidth(4) << pinfo.getPort()
+            cout << "  Port " << qSetFieldWidth(4) << right << pinfo.getPort()
                  << qSetFieldWidth(0) << " : \"" << pinfo.getName() << "\""
                  << (pinfo.getType() != 0 ? portTypeNames(pinfo.getType()) : "")
                  << endl;
@@ -186,14 +185,14 @@ void queryClients(MidiClient* c)
     }
 }
 
-void systemInfo()
+void systemInfo(CmdLineArgs* args)
 {
     MidiClient* client = new MidiClient();
-    QFileInfo pgmi(qApp->arguments().at(0));
     client->open();
-    client->setClientName(pgmi.baseName());
+    client->setClientName(args->programName());
     SystemInfo info = client->getSystemInfo();
-    cout << "ALSA Sequencer System Info" << endl;
+    cout << "ALSA Sequencer System Info, version: "
+         << args->programVersion() << endl;
     cout << "Compiled ALSA library: " << LIBRARY_VERSION << endl;
     cout << "Runtime ALSA library: "
          << getRuntimeALSALibraryVersion() << endl;
@@ -221,9 +220,8 @@ void systemInfo()
 
 int main(int argc, char **argv)
 {
-    QApplication a(argc, argv, false);
     CmdLineArgs args;
-    args.parse(a.argc(), a.argv());
-    systemInfo();
+    args.parse(argc, argv);
+    systemInfo(&args);
     return 0;
 }
