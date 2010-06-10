@@ -26,7 +26,10 @@
 #include <QtCore/QSignalMapper>
 #include <QtCore/QSettings>
 #include <qmath.h>
-#include <drumstick.h>
+#include "alsaclient.h"
+#include "alsaport.h"
+#include "alsaqueue.h"
+#include "alsaevent.h"
 
 DrumGrid::DrumGrid(QWidget *parent)
     : QMainWindow(parent),

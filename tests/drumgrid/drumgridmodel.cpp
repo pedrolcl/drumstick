@@ -19,7 +19,6 @@
 
 #include "drumgridmodel.h"
 #include <QtGui>
-#include <drumstick.h>
 
 const QString DEFVAL("f");
 
