@@ -25,7 +25,7 @@ BuildRequires:  libqt4-devel
 BuildRequires:  doxygen
 BuildRequires:  graphviz
 BuildRequires:  update-desktop-files
-BuildRequires:  libxslt 
+BuildRequires:  libxslt
 BuildRequires:  docbook_4
 BuildRequires:  docbook-xsl-stylesheets
 PreReq:         shared-mime-info
@@ -133,6 +133,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root)
 %doc AUTHORS COPYING NEWS README TODO ChangeLog
+%doc %{_mandir}/*
 %dir %{_datadir}/icons/hicolor
 %dir %{_datadir}/icons/hicolor/16x16
 %dir %{_datadir}/icons/hicolor/32x32
@@ -146,13 +147,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/icons/hicolor/scalable/apps
 %{_datadir}/icons/hicolor/*/*/*
 %{_datadir}/applications/*
-%{_datadir}/mime/packages/*
-%{_datadir}/man/man1/*
 %{_bindir}/*
 
 %files -n libdrumstick-file0
 %defattr(-,root,root)
 %{_libdir}/libdrumstick-file.so.*
+%{_datadir}/mime/packages/*
 
 %files -n libdrumstick-alsa0
 %defattr(-,root,root)
@@ -172,6 +172,12 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/html/*
 
 %changelog
+* Thu Jun 10 2010 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.3.2
+- New version
+
+* Mon Apr 19 2010 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.3.1
+- New version  
+
 * Tue Mar 9 2010 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.3.0
 - New version
 
