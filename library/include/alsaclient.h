@@ -47,7 +47,7 @@ class RemoveEvents;
  * This class is used to retrieve, hold and set some data from
  * sequencer clients, like the name or id.
  */
-class ClientInfo
+class DRUMSTICK_EXPORT ClientInfo
 {
     friend class MidiClient;
 
@@ -104,7 +104,7 @@ typedef QList<ClientInfo> ClientInfoList;
  * This class is used to retrieve and hold some data about the
  * whole sequencer subsystem.
  */
-class SystemInfo
+class DRUMSTICK_EXPORT SystemInfo
 {
     friend class MidiClient;
 
@@ -135,7 +135,7 @@ private:
  * This class is used to get and set the size of the input and output pool
  * buffers for a sequencer client.
  */
-class PoolInfo
+class DRUMSTICK_EXPORT PoolInfo
 {
     friend class MidiClient;
 
@@ -172,7 +172,7 @@ private:
  *
  * @see ALSAClient
  */
-class SequencerEventHandler
+class DRUMSTICK_EXPORT SequencerEventHandler
 {
 public:
     /** Destructor */
@@ -195,7 +195,7 @@ public:
  *
  * This class represents an ALSA sequencer client
  */
-class MidiClient : public QObject
+class DRUMSTICK_EXPORT MidiClient : public QObject
 {
     Q_OBJECT
 

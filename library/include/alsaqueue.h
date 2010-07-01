@@ -44,7 +44,7 @@ class TimerId;
  *
  * This class is used to hold some properties about an ALSA queue object.
  */
-class QueueInfo
+class DRUMSTICK_EXPORT QueueInfo
 {
     friend class MidiQueue;
 
@@ -77,7 +77,7 @@ private:
  *
  * This class is used to retrieve some status information from an ALSA queue.
  */
-class QueueStatus
+class DRUMSTICK_EXPORT QueueStatus
 {
     friend class MidiQueue;
 
@@ -114,7 +114,7 @@ private:
  * factor the quotient of both quantities = value / base. Currently (ALSA <= 1.0.20)
  * you can only use the base constant 0x10000 (decimal 65536).
  */
-class QueueTempo
+class DRUMSTICK_EXPORT QueueTempo
 {
     friend class MidiQueue;
 
@@ -154,7 +154,7 @@ private:
  * This class is used to hold some properties about the Timer used with an ALSA
  * queue object.
  */
-class QueueTimer
+class DRUMSTICK_EXPORT QueueTimer
 {
     friend class MidiQueue;
 
@@ -185,7 +185,7 @@ private:
  *
  * This class represents an ALSA sequencer queue object.
  */
-class MidiQueue : public QObject
+class DRUMSTICK_EXPORT MidiQueue : public QObject
 {
     Q_OBJECT
 public:

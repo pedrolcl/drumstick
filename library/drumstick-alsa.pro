@@ -7,6 +7,7 @@ DEPENDPATH += . include src
 INCLUDEPATH += . include
 include (../global.pri)
 CONFIG += qt staticlib debug
+DEFINES += drumstick_alsa_EXPORTS
 # Input
 HEADERS += include/alsaclient.h \
            include/alsaevent.h \

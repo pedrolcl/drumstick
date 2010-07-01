@@ -31,6 +31,7 @@ SET(drumstick-file_QTOBJ_SRCS
 )
 
 SET(drumstick-file_HEADERS
+    include/macros.h
     include/qsmf.h
     include/qwrk.h
 )

@@ -37,7 +37,7 @@ class MidiClient;
 /**
  * Port information container
  */
-class PortInfo
+class DRUMSTICK_EXPORT PortInfo
 {
     friend class MidiPort;
     friend class ClientInfo;
@@ -112,7 +112,7 @@ typedef QList<PortInfo> PortInfoList;
  *
  * This class represents an ALSA sequencer port.
  */
-class MidiPort : public QObject
+class DRUMSTICK_EXPORT MidiPort : public QObject
 {
     Q_OBJECT
     friend class MidiClient;

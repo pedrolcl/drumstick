@@ -44,7 +44,7 @@ class TimerGlobalInfo;
  *
  * This class is used to hold properties about ALSA Timers.
  */
-class TimerInfo
+class DRUMSTICK_EXPORT TimerInfo
 {
     friend class Timer;
 
@@ -76,7 +76,7 @@ private:
  *
  * This class provides an unique identifier for a Timer.
  */
-class TimerId
+class DRUMSTICK_EXPORT TimerId
 {
     friend class TimerQuery;
     friend class TimerGlobalInfo;
@@ -117,7 +117,7 @@ typedef QList<TimerId> TimerIdList;
  *
  * This class provides global timer parameters.
  */
-class TimerGlobalInfo
+class DRUMSTICK_EXPORT TimerGlobalInfo
 {
     friend class TimerQuery;
 
@@ -151,7 +151,7 @@ private:
  *
  * This class provides a mechanism to enumerate the available system timers.
  */
-class TimerQuery
+class DRUMSTICK_EXPORT TimerQuery
 {
 public:
     TimerQuery(const QString& deviceName, int openMode);
@@ -182,7 +182,7 @@ private:
  *
  * This class provides several parameters about a Timer.
  */
-class TimerParams
+class DRUMSTICK_EXPORT TimerParams
 {
     friend class Timer;
 
@@ -217,7 +217,7 @@ private:
  *
  * This class provides some status information about a Timer.
  */
-class TimerStatus
+class DRUMSTICK_EXPORT TimerStatus
 {
     friend class Timer;
 
@@ -246,7 +246,7 @@ private:
  * This abstract class is used to define an interface that other class can
  * implement to receive timer events.
  */
-class TimerEventHandler
+class DRUMSTICK_EXPORT TimerEventHandler
 {
 public:
     /** Destructor */
@@ -264,7 +264,7 @@ public:
  *
  * This class represents an ALSA timer object.
  */
-class Timer : public QObject
+class DRUMSTICK_EXPORT Timer : public QObject
 {
     Q_OBJECT
     

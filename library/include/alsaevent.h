@@ -50,7 +50,7 @@ const QEvent::Type SequencerEventType = QEvent::Type(QEvent::User + 4154); // :-
  * All event classes share this base class. It provides several common
  * properties and methods.
  */
-class SequencerEvent : public QEvent
+class DRUMSTICK_EXPORT SequencerEvent : public QEvent
 {
 public:
     SequencerEvent();
@@ -145,7 +145,7 @@ protected:
 /**
  * Base class for the events having a Channel property
  */
-class ChannelEvent : public SequencerEvent
+class DRUMSTICK_EXPORT ChannelEvent : public SequencerEvent
 {
 public:
     /** Default constructor */
@@ -169,7 +169,7 @@ public:
 /**
  * Base class for the events having Key and Velocity properties.
  */
-class KeyEvent : public ChannelEvent
+class DRUMSTICK_EXPORT KeyEvent : public ChannelEvent
 {
 public:
     /** Default constructor */
@@ -208,7 +208,7 @@ public:
  * Note events are converted into two MIDI events, a note-on and a note-off
  * over the wire.
  */
-class NoteEvent : public KeyEvent
+class DRUMSTICK_EXPORT NoteEvent : public KeyEvent
 {
 public:
     /** Default constructor */
@@ -235,7 +235,7 @@ public:
 /**
  * Event representing a note-on MIDI event
  */
-class NoteOnEvent : public KeyEvent
+class DRUMSTICK_EXPORT NoteOnEvent : public KeyEvent
 {
 public:
     /** Default constructor */
@@ -250,7 +250,7 @@ public:
 /**
  * Event representing a note-off MIDI event
  */
-class NoteOffEvent : public KeyEvent
+class DRUMSTICK_EXPORT NoteOffEvent : public KeyEvent
 {
 public:
     /** Default constructor */
@@ -265,7 +265,7 @@ public:
 /**
  * Event representing a MIDI key pressure, or polyphonic after-touch event
  */
-class KeyPressEvent : public KeyEvent
+class DRUMSTICK_EXPORT KeyPressEvent : public KeyEvent
 {
 public:
     /** Default constructor */
@@ -280,7 +280,7 @@ public:
 /**
  * Event representing a MIDI control change event
  */
-class ControllerEvent : public ChannelEvent
+class DRUMSTICK_EXPORT ControllerEvent : public ChannelEvent
 {
 public:
     /** Default constructor */
@@ -319,7 +319,7 @@ public:
 /**
  * Event representing a MIDI program change event
  */
-class ProgramChangeEvent : public ChannelEvent
+class DRUMSTICK_EXPORT ProgramChangeEvent : public ChannelEvent
 {
 public:
     /** Default constructor */
@@ -338,7 +338,7 @@ public:
 /**
  * Event representing a MIDI bender, or pitch wheel event
  */
-class PitchBendEvent : public ChannelEvent
+class DRUMSTICK_EXPORT PitchBendEvent : public ChannelEvent
 {
 public:
     /** Default constructor */
@@ -357,7 +357,7 @@ public:
 /**
  * Event representing a MIDI channel pressure or after-touch event
  */
-class ChanPressEvent : public ChannelEvent
+class DRUMSTICK_EXPORT ChanPressEvent : public ChannelEvent
 {
 public:
     /** Default constructor */
@@ -376,7 +376,7 @@ public:
 /**
  * Base class for variable length events
  */
-class VariableEvent : public SequencerEvent
+class DRUMSTICK_EXPORT VariableEvent : public SequencerEvent
 {
 public:
     VariableEvent();
@@ -398,7 +398,7 @@ protected:
 /**
  * Event representing a MIDI system exclusive event
  */
-class SysExEvent : public VariableEvent
+class DRUMSTICK_EXPORT SysExEvent : public VariableEvent
 {
 public:
     SysExEvent();
@@ -416,7 +416,7 @@ public:
  * This event type is not intended to be transmitted over the wire to an
  * external device, but it is useful for sequencer programs or MIDI applications
  */
-class TextEvent : public VariableEvent
+class DRUMSTICK_EXPORT TextEvent : public VariableEvent
 {
 public:
     TextEvent();
@@ -435,7 +435,7 @@ protected:
 /**
  * Generic event
  */
-class SystemEvent : public SequencerEvent
+class DRUMSTICK_EXPORT SystemEvent : public SequencerEvent
 {
 public:
     /** Default constructor */
@@ -452,7 +452,7 @@ public:
  *
  * This event is used to schedule changes to the ALSA queues
  */
-class QueueControlEvent : public SequencerEvent
+class DRUMSTICK_EXPORT QueueControlEvent : public SequencerEvent
 {
 public:
     /** Default constructor */
@@ -491,7 +491,7 @@ public:
 /**
  * Generic event having a value property
  */
-class ValueEvent : public SequencerEvent
+class DRUMSTICK_EXPORT ValueEvent : public SequencerEvent
 {
 public:
     /** Default constructor */
@@ -510,7 +510,7 @@ public:
 /**
  * ALSA Event representing a tempo change for an ALSA queue
  */
-class TempoEvent : public QueueControlEvent
+class DRUMSTICK_EXPORT TempoEvent : public QueueControlEvent
 {
 public:
     /** Default constructor */
@@ -525,7 +525,7 @@ public:
 /**
  * ALSA Event representing a subscription between two ALSA clients and ports
  */
-class SubscriptionEvent : public SequencerEvent
+class DRUMSTICK_EXPORT SubscriptionEvent : public SequencerEvent
 {
 public:
     /** Default constructor */
@@ -551,7 +551,7 @@ public:
 /**
  * ALSA Event representing a change on some ALSA sequencer client on the system
  */
-class ClientEvent : public SequencerEvent
+class DRUMSTICK_EXPORT ClientEvent : public SequencerEvent
 {
 public:
     /** Default constructor */
@@ -566,7 +566,7 @@ public:
 /**
  * ALSA Event representing a change on some ALSA sequencer port on the system
  */
-class PortEvent : public ClientEvent
+class DRUMSTICK_EXPORT PortEvent : public ClientEvent
 {
 public:
     /** Default constructor */
@@ -583,7 +583,7 @@ public:
  * Auxiliary class to remove events from an ALSA queue
  * @see MidiClient::removeEvents()
  */
-class RemoveEvents
+class DRUMSTICK_EXPORT RemoveEvents
 {
 public:
     friend class MidiClient;
@@ -620,7 +620,7 @@ private:
 /**
  * Auxiliary class to translate between raw MIDI streams and ALSA events
  */
-class MidiCodec : public QObject
+class DRUMSTICK_EXPORT MidiCodec : public QObject
 {
     Q_OBJECT
 public:

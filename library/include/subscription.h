@@ -40,7 +40,7 @@ class MidiClient;
  *
  * This class is used to enumerate the subscribers of a given (root) port.
  */
-class Subscriber
+class DRUMSTICK_EXPORT Subscriber
 {
     friend class PortInfo;
 public:
@@ -79,7 +79,7 @@ private:
  *
  * This class represents a connection between two ports.
  */
-class Subscription
+class DRUMSTICK_EXPORT Subscription
 {
 public:
     Subscription();

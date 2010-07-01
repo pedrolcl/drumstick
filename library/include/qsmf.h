@@ -22,6 +22,7 @@
 #ifndef DRUMSTICK_QSMF_H
 #define DRUMSTICK_QSMF_H
 
+#include "macros.h"
 #include <QObject>
 
 class QDataStream;
@@ -79,7 +80,7 @@ namespace drumstick {
  *
  * This class is used to parse and encode Standard MIDI Files (SMF)
  */
-class QSmf : public QObject
+class DRUMSTICK_EXPORT QSmf : public QObject
 {
     Q_OBJECT
 

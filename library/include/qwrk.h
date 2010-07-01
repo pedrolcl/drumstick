@@ -20,6 +20,7 @@
 #ifndef DRUMSTICK_QWRK_H
 #define DRUMSTICK_QWRK_H
 
+#include "macros.h"
 #include <QObject>
 
 class QDataStream;
@@ -76,7 +77,7 @@ const QByteArray HEADER("CAKEWALK"); ///< Cakewalk WRK File header id
  *
  * This class is used to parse Cakewalk WRK Files
  */
-class QWrk : public QObject
+class DRUMSTICK_EXPORT QWrk : public QObject
 {
     Q_OBJECT
 

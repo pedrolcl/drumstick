@@ -44,7 +44,7 @@ class MidiQueue;
  *
  * Examples: smfplayer.cpp and playsmf.cpp
  */
-class SequencerOutputThread : public QThread
+class DRUMSTICK_EXPORT  SequencerOutputThread : public QThread
 {
     Q_OBJECT
 

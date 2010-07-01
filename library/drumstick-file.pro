@@ -7,6 +7,7 @@ DEPENDPATH += . include src
 INCLUDEPATH += . include
 include (../global.pri)
 CONFIG += qt staticlib debug
+DEFINES += drumstick_file_EXPORTS
 # Input
 HEADERS += include/qsmf.h \
            include/qwrk.h

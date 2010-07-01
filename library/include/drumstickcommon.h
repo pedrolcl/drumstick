@@ -20,6 +20,7 @@
 #ifndef DRUMSTICK_DRUMSTICKCOMMON_H
 #define DRUMSTICK_DRUMSTICKCOMMON_H
 
+#include "macros.h"
 #include <qglobal.h>
 #include <QString>
 #include <QApplication>
@@ -50,7 +51,7 @@ typedef quint8 MidiByte;
  * The class SequencerError represents an exception object reported when the
  * ALSA library returns an error code. It is only used for severe errors.
  */
-class SequencerError
+class DRUMSTICK_EXPORT SequencerError
 {
 public:
     /**
