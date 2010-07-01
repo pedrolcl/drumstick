@@ -6,8 +6,11 @@ $ mkdir -p build
 $ cd build
 $ cmake ..
     (or ccmake ..)
+    (or cmake-gui ..)
     (or cmake .. -options, see below...)
-    (for simple development scenarios you can also use qmake)
+
+For simple test/development scenarios you can also use Qmake, but the Qmake-  
+based build system provides only minimal functionality.
 
 $ make
     (or make VERBOSE=1)
@@ -25,6 +28,17 @@ Minimum supported versions:
 * CMake 2.6
 * Qt4 4.4
 * For Linux: ALSA 1.0
+
+* shared-mime-info 0.30
+See http://freedesktop.org/wiki/Software/shared-mime-info
+The utility "update-mime-database" must be executed after installing the library
+"drumstick-file" and the "drumstick.xml" file. This is automatically done by 
+the cmake build system unless you defined DESTDIR. In this case, your package 
+manager should perform it as a post-install step. 
+
+* Doxygen 1.5
+See http://www.doxygen.org
+If you want to generate the documentation for the libraries  
 
 If you want to generate and install the man pages, the build system can do it 
 if you have installed in your system the following packages:

@@ -16,7 +16,7 @@ Release:        1
 License:        GPL v2 or later
 Summary:        MIDI Sequencer C++ Library Bindings
 Group:          Productivity/Multimedia/Sound/Midi
-URL:            http://kmetronome.sourceforge.net/drumstick
+URL:            http://drumstick.sourceforge.net
 Source:         %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  cmake

@@ -27,14 +27,12 @@ IF(COMMAND CMAKE_POLICY)
     CMAKE_POLICY(SET CMP0003 NEW)
 ENDIF(COMMAND CMAKE_POLICY)
 
-#SET(CMAKE_INSTALL_PREFIX "/usr" CACHE PATH
-#	"Install path prefix, prepended onto install directories." FORCE)
-
 IF(CMAKE_SIZEOF_VOID_P MATCHES "8")
-    SET(LIB "lib64" CACHE STRING "library install directory: lib, lib32, lib64")
+    SET(_INIT_LIB_SUFFIX "64")
 ELSE(CMAKE_SIZEOF_VOID_P MATCHES "8")
-    SET(LIB "lib" CACHE STRING "library install directory: lib, lib32, lib64")
+    SET(_INIT_LIB_SUFFIX "")
 ENDIF(CMAKE_SIZEOF_VOID_P MATCHES "8")
+SET(LIB_SUFFIX ${_INIT_LIB_SUFFIX} CACHE STRING "optional library install directory suffix: 32, 64, none")
 
 # Seems that relative paths break the link scripts. Don't set it ON
 SET(CMAKE_USE_RELATIVE_PATHS OFF)
@@ -53,8 +51,8 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_admin")
 # DRUMSTICK version string
 SET (VERSION_MAJOR "0")
 SET (VERSION_MINOR "3")
-SET (VERSION_PATCH "2")
-SET (VERSION_SUFFIX "a")
+SET (VERSION_PATCH "3")
+SET (VERSION_SUFFIX "svn")
 SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 
 MESSAGE(STATUS "drumstick ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
@@ -158,6 +156,17 @@ ENDIF(${CMAKE_SYSTEM} MATCHES "Linux")
 CONFIGURE_FILE(drumstick-alsa.pc.in drumstick-alsa.pc IMMEDIATE @ONLY)
 CONFIGURE_FILE(drumstick-file.pc.in drumstick-file.pc IMMEDIATE @ONLY)
 CONFIGURE_FILE(drumstick.spec.in drumstick.spec IMMEDIATE @ONLY)
+INSTALL( FILES 
+    ${CMAKE_CURRENT_BINARY_DIR}/drumstick-file.pc
+    ${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
+    DESTINATION lib${LIB_SUFFIX}/pkgconfig )
+
+# XML mime types
+set( SHARED_MIME_INFO_MINIMUM_VERSION "0.30" )
+set( XDG_MIME_INSTALL_DIR "share/mime/packages" ) 
+find_package( SharedMimeInfo )
+install( FILES drumstick.xml DESTINATION ${XDG_MIME_INSTALL_DIR} ) 
+update_xdg_mimetypes( ${XDG_MIME_INSTALL_DIR} )     
 
 # uninstall custom target
 CONFIGURE_FILE(
@@ -183,11 +192,4 @@ IF(${CMAKE_SYSTEM} MATCHES "Linux")
         COMMAND rm -rf drumstick-${VERSION}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
-    
-    INSTALL( FILES drumstick.xml DESTINATION share/mime/packages ) 
-    
-    INSTALL( FILES 
-             ${CMAKE_CURRENT_BINARY_DIR}/drumstick-file.pc
-             ${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
-             DESTINATION ${LIB}/pkgconfig )
 ENDIF(${CMAKE_SYSTEM} MATCHES "Linux")
