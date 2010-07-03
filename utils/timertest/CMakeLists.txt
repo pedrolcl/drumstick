@@ -1,8 +1,6 @@
 SET(timertest_SRCS
     timertest.cpp
     timertest.h
-    ../common/cmdlineargs.h
-    ../common/cmdlineargs.cpp
 )
 
 SET(timertest_qtobject_SRCS
@@ -23,6 +21,7 @@ ENDIF(USE_PCH)
 TARGET_LINK_LIBRARIES(drumstick-timertest
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
+    drumstick-common
     drumstick-alsa
 )
 

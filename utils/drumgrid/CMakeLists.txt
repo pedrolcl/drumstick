@@ -8,8 +8,6 @@ SET(drumgrid_SRCS
     drumgridmodel.cpp
     drumgridmodel.h
     drumgridmain.cpp
-    ../common/cmdlineargs.h
-    ../common/cmdlineargs.cpp
 )
 
 SET(drumgrid_qtobject_SRCS
@@ -34,6 +32,7 @@ ENDIF(USE_PCH)
 TARGET_LINK_LIBRARIES(drumstick-drumgrid
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
+    drumstick-common
     drumstick-alsa
 )
 

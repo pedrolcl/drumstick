@@ -10,8 +10,6 @@ SET(guiplayer_SRCS
     song.cpp
     song.h
     playermain.cpp
-    ../common/cmdlineargs.h
-    ../common/cmdlineargs.cpp
 )
 
 SET(guiplayer_qtobject_SRCS
@@ -39,6 +37,7 @@ ENDIF(USE_PCH)
 TARGET_LINK_LIBRARIES(drumstick-guiplayer
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
+    drumstick-common
     drumstick-file
     drumstick-alsa
 )

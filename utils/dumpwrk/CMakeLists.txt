@@ -1,8 +1,6 @@
 SET(dumpwrk_SRCS
     dumpwrk.cpp
     dumpwrk.h
-    ../common/cmdlineargs.cpp
-    ../common/cmdlineargs.h
 )
 
 SET(dumpwrk_qtobject_SRCS
@@ -22,6 +20,7 @@ ENDIF(USE_PCH)
 
 TARGET_LINK_LIBRARIES(drumstick-dumpwrk
     ${QT_LIBRARIES} 
+    drumstick-common
     drumstick-file
 )
 

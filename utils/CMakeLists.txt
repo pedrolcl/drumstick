@@ -16,8 +16,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-# test suite 
-
 # common settings
 
 INCLUDE_DIRECTORIES ( 
@@ -38,6 +36,7 @@ IF(USE_PCH)
     ADD_PRECOMPILED_HEADER(precompiled_headers stableheaders.h)
 ENDIF(USE_PCH)
 
+ADD_SUBDIRECTORY(common)
 ADD_SUBDIRECTORY(buildsmf)
 ADD_SUBDIRECTORY(dumpsmf)
 ADD_SUBDIRECTORY(dumpwrk)

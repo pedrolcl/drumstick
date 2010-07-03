@@ -5,13 +5,15 @@ VERSIONH = $$sprintf(const QString PGM_VERSION(\"%1\");,$$VERSION)
 system($$QMAKE_MKDIR $$DESTDIR)
 win32 { 
     system(echo $$VERSIONH > ../build/common/cmdversion.h)
-    SUBDIRS += buildsmf \
+    SUBDIRS += common \ 
+           buildsmf \
            dumpsmf \
            dumpwrk
 }
 linux* { 
     system(echo \'$$VERSIONH\' > ../build/common/cmdversion.h)
-    SUBDIRS += buildsmf \
+    SUBDIRS += common \ 
+           buildsmf \
            dumpmid \
            dumpsmf \
            playsmf \

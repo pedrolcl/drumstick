@@ -1,8 +1,6 @@
 SET(metronome_SRCS
     metronome.cpp
     metronome.h
-    ../common/cmdlineargs.cpp
-    ../common/cmdlineargs.h
 )
 
 SET(metronome_qtobject_SRCS
@@ -23,6 +21,7 @@ ENDIF(USE_PCH)
 TARGET_LINK_LIBRARIES(drumstick-metronome
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
+    drumstick-common
     drumstick-alsa
 )
 

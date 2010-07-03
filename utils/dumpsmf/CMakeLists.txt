@@ -1,8 +1,6 @@
 SET(dumpsmf_SRCS
     dumpsmf.cpp
     dumpsmf.h
-    ../common/cmdlineargs.cpp
-    ../common/cmdlineargs.h
 )
 
 SET(dumpsmf_qtobject_SRCS
@@ -22,6 +20,7 @@ ENDIF(USE_PCH)
 
 TARGET_LINK_LIBRARIES(drumstick-dumpsmf
     ${QT_LIBRARIES} 
+    drumstick-common
     drumstick-file
 )
 

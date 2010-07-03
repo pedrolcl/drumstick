@@ -1,8 +1,6 @@
 SET(testevents_SRCS
     testevents.cpp
     testevents.h
-    ../common/cmdlineargs.h
-    ../common/cmdlineargs.cpp
 )
 
 SET(testevents_qtobject_SRCS
@@ -23,6 +21,7 @@ ENDIF(USE_PCH)
 TARGET_LINK_LIBRARIES(drumstick-testevents
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
+    drumstick-common
     drumstick-alsa
 )
 

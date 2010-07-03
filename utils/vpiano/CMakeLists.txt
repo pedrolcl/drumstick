@@ -28,8 +28,6 @@ SET(vpiano_SRCS
     vpiano.cpp
     vpiano.h
     vpianomain.cpp
-    ../common/cmdlineargs.h
-    ../common/cmdlineargs.cpp
 )
 
 SET(vpiano_qtobject_SRCS
@@ -59,6 +57,7 @@ TARGET_LINK_LIBRARIES(drumstick-vpiano
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     ${QT_X11_X11_LIBRARY}
+    drumstick-common
     drumstick-alsa
 )
 

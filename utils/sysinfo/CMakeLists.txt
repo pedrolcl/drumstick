@@ -1,7 +1,5 @@
 SET(sysinfo_SRCS
     sysinfo.cpp
-    ../common/cmdlineargs.h
-    ../common/cmdlineargs.cpp
 )
 
 ADD_EXECUTABLE(drumstick-sysinfo
@@ -15,6 +13,7 @@ ENDIF(USE_PCH)
 TARGET_LINK_LIBRARIES(drumstick-sysinfo
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
+    drumstick-common
     drumstick-alsa
 )
 

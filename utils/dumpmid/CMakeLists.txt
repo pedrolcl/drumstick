@@ -1,8 +1,6 @@
 SET(dumpmid_SRCS
     dumpmid.cpp
     dumpmid.h
-    ../common/cmdlineargs.cpp
-    ../common/cmdlineargs.h
 )
 
 SET(dumpmid_qtobject_SRCS
@@ -23,6 +21,7 @@ ENDIF(USE_PCH)
 TARGET_LINK_LIBRARIES(drumstick-dumpmid
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
+    drumstick-common
     drumstick-alsa
 )
 

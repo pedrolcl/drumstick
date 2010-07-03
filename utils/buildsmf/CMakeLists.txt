@@ -1,8 +1,6 @@
 SET(buildsmf_SRCS
     buildsmf.cpp
     buildsmf.h
-    ../common/cmdlineargs.cpp
-    ../common/cmdlineargs.h
 )
 
 SET(buildsmf_qtobject_SRCS
@@ -22,6 +20,7 @@ ENDIF(USE_PCH)
 
 TARGET_LINK_LIBRARIES(drumstick-buildsmf
     ${QT_LIBRARIES} 
+    drumstick-common
     drumstick-file
 )
 

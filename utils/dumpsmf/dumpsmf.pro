@@ -4,7 +4,7 @@ DESTDIR = ../../build/bin
 OBJECTS_DIR = ../../build/obj
 MOC_DIR = ../../build/moc
 INCLUDEPATH += . ../../library/include ../common ../../build/common
-LIBS = -L../../build/lib -ldrumstick-file
+LIBS = -L../../build/lib -ldrumstick-common -ldrumstick-file
 # Input
 HEADERS += dumpsmf.h
-SOURCES += dumpsmf.cpp ../common/cmdlineargs.cpp
+SOURCES += dumpsmf.cpp
