@@ -25,7 +25,11 @@
 #if defined(drumstick_alsa_EXPORTS) || defined(drumstick_file_EXPORTS)
 #define DRUMSTICK_EXPORT Q_DECL_EXPORT
 #else
+#if defined(Q_WS_WIN)
 #define DRUMSTICK_EXPORT Q_DECL_IMPORT
+#else
+#define DRUMSTICK_EXPORT Q_DECL_EXPORT
+#endif
 #endif
 
 #endif /* DRUMSTICK_MACROS_H */
