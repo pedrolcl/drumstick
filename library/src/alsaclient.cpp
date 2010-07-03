@@ -117,7 +117,7 @@ int main(int argc, char **argv) {
 }
 @endcode
 
-There are more examples in the source tree, under the tests/ directory, and
+There are more examples in the source tree, under the utils/ directory, and
 you can also see applications using this library, as kmetronome and kmidimon.
 
 @see http://kmetronome.sourceforge.net
