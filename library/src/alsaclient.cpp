@@ -142,9 +142,9 @@ Print received sequencer events
 SMF playback, command line interface program
 @include playsmf.h
 
-@example smfplayer.cpp
+@example guiplayer.cpp
 SMF playback, graphic user interface program
-@include smfplayer.h
+@include guiplayer.h
 
 @example buildsmf.cpp
 SMF output from scratch

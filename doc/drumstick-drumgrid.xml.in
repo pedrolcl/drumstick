@@ -313,7 +313,7 @@
         <title>See also</title>
         <para>
            <citerefentry>
-               <refentrytitle>drumstick-smfplayer</refentrytitle>
+               <refentrytitle>drumstick-guiplayer</refentrytitle>
                <manvolnum>1</manvolnum>
            </citerefentry>, <citerefentry>
                <refentrytitle>drumstick-vpiano</refentrytitle>

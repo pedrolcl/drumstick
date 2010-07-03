@@ -31,8 +31,8 @@ IF(XSLTPROC_EXECUTABLE)
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-metronome.xml IMMEDIATE @ONLY)
     CONFIGURE_FILE(drumstick-playsmf.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-playsmf.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-smfplayer.xml.in 
-        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-smfplayer.xml IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick-guiplayer.xml.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-guiplayer.xml IMMEDIATE @ONLY)
     CONFIGURE_FILE(drumstick-sysinfo.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-sysinfo.xml IMMEDIATE @ONLY)
     CONFIGURE_FILE(drumstick-testevents.xml.in 
@@ -50,7 +50,7 @@ IF(XSLTPROC_EXECUTABLE)
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpwrk.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-metronome.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-playsmf.xml
-        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-smfplayer.xml
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-guiplayer.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-sysinfo.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-testevents.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-timertest.xml

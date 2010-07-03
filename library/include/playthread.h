@@ -42,7 +42,7 @@ class MidiQueue;
  * This class is used to implement an asynchronous sequence player using
  * ALSA sequencer scheduling
  *
- * Examples: smfplayer.cpp and playsmf.cpp
+ * Examples: guiplayer.cpp and playsmf.cpp
  */
 class DRUMSTICK_EXPORT  SequencerOutputThread : public QThread
 {

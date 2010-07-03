@@ -630,7 +630,7 @@ EXAMPLE_PATH =  @CMAKE_SOURCE_DIR@/utils/buildsmf \
                 @CMAKE_SOURCE_DIR@/utils/timertest \
                 @CMAKE_SOURCE_DIR@/utils/dumpsmf \ 
                 @CMAKE_SOURCE_DIR@/utils/metronome \ 
-                @CMAKE_SOURCE_DIR@/utils/smfplayer \ 
+                @CMAKE_SOURCE_DIR@/utils/guiplayer \ 
                 @CMAKE_SOURCE_DIR@/utils/sysinfo  \ 
                 @CMAKE_SOURCE_DIR@/utils/vpiano
 

@@ -15,7 +15,7 @@ linux* {
            dumpmid \
            dumpsmf \
            playsmf \
-           smfplayer \
+           guiplayer \
            sysinfo \
            testevents \
            timertest \

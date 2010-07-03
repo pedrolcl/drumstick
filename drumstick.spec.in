@@ -110,7 +110,7 @@ make doxygen
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
-%suse_update_desktop_file -n drumstick-smfplayer Midi
+%suse_update_desktop_file -n drumstick-guiplayer Midi
 %suse_update_desktop_file -n drumstick-vpiano Midi
 
 %post 
