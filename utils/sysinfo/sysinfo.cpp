@@ -26,6 +26,7 @@
 #include <QStringList>
 
 static QTextStream cout(stdout, QIODevice::WriteOnly); 
+static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
 using namespace drumstick;
 
@@ -56,8 +57,8 @@ void queryTimers()
 			}
 			cout << endl;
 			delete timer;
-        } catch (SequencerError& err) {
-        	cout << "Error opening timer:"  << err.qstrError();
+        } catch (const SequencerError& err) {
+        	cerr << "Error opening timer:"  << err.qstrError();
         }
     }
     delete query;
@@ -83,7 +84,7 @@ void queryQueues(MidiClient* c)
 				TimerInfo tinfo = timer->getTimerInfo();
 				tname = tinfo.getName();
 				delete timer;
-            } catch (SequencerError& err) {
+            } catch (...) {
             	tname = "inaccessible";
             }
 			cout << qSetFieldWidth(3)  << left << qinfo.getId()
@@ -220,8 +221,19 @@ void systemInfo(CmdLineArgs* args)
 
 int main(int argc, char **argv)
 {
+    const QString errorstr = "Fatal error from the ALSA sequencer. "
+        "This usually happens when the kernel doesn't have ALSA support, "
+        "or the device node (/dev/snd/seq) doesn't exists, "
+        "or the kernel module (snd_seq) is not loaded. "
+        "Please check your ALSA/MIDI configuration.";
     CmdLineArgs args;
     args.parse(argc, argv);
-    systemInfo(&args);
+    try {
+        systemInfo(&args);
+    } catch (const SequencerError& ex) {
+        cerr << errorstr + " Returned error was: " + ex.qstrError() << endl;
+    } catch (...) {
+        cerr << errorstr << endl;
+    }
     return 0;
 }

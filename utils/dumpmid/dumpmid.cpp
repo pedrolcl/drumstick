@@ -98,9 +98,9 @@ void QDumpMIDI::subscribe(const QString& portName)
     try {
         qDebug() << "Trying to subscribe" << portName.toLocal8Bit().data();
         m_Port->subscribeFrom(portName);
-    } catch (SequencerError& err) {
+    } catch (const SequencerError& err) {
         cerr << "SequencerError exception. Error code: " << err.code()
-        << " (" << err.qstrError() << ")" << endl;
+             << " (" << err.qstrError() << ")" << endl;
         cerr << "Location: " << err.location() << endl;
         throw err;
     }
@@ -133,9 +133,9 @@ void QDumpMIDI::run()
         m_Queue->stop();
 #endif
         m_Client->stopSequencerInput();
-    } catch (SequencerError& err) {
+    } catch (const SequencerError& err) {
         cerr << "SequencerError exception. Error code: " << err.code()
-        << " (" << err.qstrError() << ")" << endl;
+             << " (" << err.qstrError() << ")" << endl;
         cerr << "Location: " << err.location() << endl;
         throw err;
     }
@@ -447,17 +447,29 @@ void signalHandler(int sig)
 
 int main(int argc, char **argv)
 {
+    const QString errorstr = "Fatal error from the ALSA sequencer. "
+        "This usually happens when the kernel doesn't have ALSA support, "
+        "or the device node (/dev/snd/seq) doesn't exists, "
+        "or the kernel module (snd_seq) is not loaded. "
+        "Please check your ALSA/MIDI configuration.";
+
     CmdLineArgs args;
     args.setUsage("[port]");
     args.addOptionalArgument("port", "Source MIDI port");
     args.parse(argc, argv);
-    test = new QDumpMIDI();
-    signal(SIGINT, signalHandler);
-    signal(SIGTERM, signalHandler);
-    QVariant portName = args.getArgument("port");
-    if (!portName.isNull())
-        test->subscribe(portName.toString());
-    test->run();
+    try {
+        test = new QDumpMIDI();
+        signal(SIGINT, signalHandler);
+        signal(SIGTERM, signalHandler);
+        QVariant portName = args.getArgument("port");
+        if (!portName.isNull())
+            test->subscribe(portName.toString());
+        test->run();
+    } catch (const SequencerError& ex) {
+        cerr << errorstr + " Returned error was: " + ex.qstrError() << endl;
+    } catch (...) {
+        cerr << errorstr << endl;
+    }
     delete test;
     return 0;
 }

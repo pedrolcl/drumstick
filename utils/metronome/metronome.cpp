@@ -28,6 +28,7 @@
 #include <QStringList>
 
 static QTextStream cout(stdout, QIODevice::WriteOnly);
+static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
 /* *************** *
  * Metronome class *
@@ -213,10 +214,10 @@ void Metronome::play(QString tempo)
         metronome_pattern(m_patternDuration);
         while (!stopped())
             sleep(1);
-    } catch (SequencerError& err) {
-        cout << "SequencerError exception. Error code: " << err.code()
+    } catch (const SequencerError& err) {
+        cerr << "SequencerError exception. Error code: " << err.code()
              << " (" << err.qstrError() << ")" << endl;
-        cout << "Location: " << err.location() << endl;
+        cerr << "Location: " << err.location() << endl;
     }
 }
 
@@ -241,7 +242,7 @@ void Metronome::info()
 }
 */
 
-Metronome metronome;
+Metronome* metronome = 0;
 
 void signalHandler(int sig)
 {
@@ -249,12 +250,20 @@ void signalHandler(int sig)
         qDebug() << "Caught a SIGINT. Exiting";
     else if (sig == SIGTERM)
         qDebug() << "Caught a SIGTERM. Exiting";
-    metronome.stop();
-    metronome.shutupSound();
+    if (metronome != 0) {
+        metronome->stop();
+        metronome->shutupSound();
+    }
 }
 
 int main(int argc, char **argv)
 {
+    const QString errorstr = "Fatal error from the ALSA sequencer. "
+        "This usually happens when the kernel doesn't have ALSA support, "
+        "or the device node (/dev/snd/seq) doesn't exists, "
+        "or the kernel module (snd_seq) is not loaded. "
+        "Please check your ALSA/MIDI configuration.";
+
     CmdLineArgs args;
     signal(SIGINT, signalHandler);
     signal(SIGTERM, signalHandler);
@@ -264,13 +273,18 @@ int main(int argc, char **argv)
     args.addOptionalArgument("bpm", "Tempo, in beats per minute (default=120)");
     args.parse(argc, argv);
 
-    QVariant port = args.getArgument("port");
-    if (!port.isNull())
-        metronome.subscribe(port.toString());
-
-    QVariant bpm = args.getArgument("bpm");
-    metronome.play(bpm.toString());
-
-    //metronome.info();
+    try {
+        metronome = new Metronome();
+        QVariant port = args.getArgument("port");
+        if (!port.isNull())
+            metronome->subscribe(port.toString());
+        QVariant bpm = args.getArgument("bpm");
+        metronome->play(bpm.toString());
+    } catch (const SequencerError& ex) {
+        cerr << errorstr + " Returned error was: " + ex.qstrError() << endl;
+    } catch (...) {
+        cerr << errorstr << endl;
+    }
+    delete metronome;
     return 0;
 }

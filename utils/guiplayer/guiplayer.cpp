@@ -111,10 +111,10 @@ void GUIPlayer::subscribe(const QString& portName)
         }
         m_subscription = portName;
         m_Port->subscribeTo(m_subscription);
-    } catch (SequencerError& err) {
-        qDebug() << "SequencerError exception. Error code: " << err.code()
-                 << " (" << err.qstrError() << ")";
-        qDebug() << "Location: " << err.location();
+    } catch (const SequencerError& err) {
+        qWarning() << "SequencerError exception. Error code: " << err.code()
+                   << " (" << err.qstrError() << ")";
+        qWarning() << "Location: " << err.location();
     }
 }
 

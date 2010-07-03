@@ -121,9 +121,9 @@ void VPiano::displayEvent(SequencerEvent *ev)
             break;
         }
     } catch (SequencerError& err) {
-        qDebug() << "SequencerError exception. Error code: " << err.code()
-        << " (" << err.qstrError() << ")";
-        qDebug() << "Location: " << err.location();
+        qWarning() << "SequencerError exception. Error code: " << err.code()
+                   << " (" << err.qstrError() << ")";
+        qWarning() << "Location: " << err.location();
         throw err;
     }
 }

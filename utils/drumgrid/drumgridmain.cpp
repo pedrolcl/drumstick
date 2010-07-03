@@ -19,10 +19,17 @@
 
 #include "drumgrid.h"
 #include "cmdlineargs.h"
+#include "drumstickcommon.h"
 #include <QtGui/QApplication>
+#include <QtGui/QMessageBox>
 
 const QString QSTR_APPNAME("DrumGrid");
 const QString QSTR_DOMAIN("drumstick.sourceforge.net");
+const QString errorstr = "Fatal error from the ALSA sequencer. "
+    "This usually happens when the kernel doesn't have ALSA support, "
+    "or the device node (/dev/snd/seq) doesn't exists, "
+    "or the kernel module (snd_seq) is not loaded. "
+    "Please check your ALSA/MIDI configuration.";
 
 int main(int argc, char *argv[])
 {
@@ -34,7 +41,15 @@ int main(int argc, char *argv[])
     args.setStdQtArgs(true);
     args.setUsage("[options]");
     args.parse(a.argc(), a.argv());
-    DrumGrid w;
-    w.show();
-    return a.exec();
+    try {
+        DrumGrid w;
+        w.show();
+        return a.exec();
+    } catch (const SequencerError& ex) {
+        QMessageBox::critical(0, "Error",
+            errorstr + " Returned error was: " + ex.qstrError() );
+    } catch (...) {
+        qWarning() << errorstr;
+    }
+    return 0;
 }

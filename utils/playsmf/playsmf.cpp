@@ -27,6 +27,7 @@
 #include <QFileInfo>
 
 static QTextStream cout(stdout, QIODevice::WriteOnly);
+static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
 /* ********** *
  * Song class
@@ -116,10 +117,10 @@ void PlaySMF::subscribe(const QString& portName)
     try {
         qDebug() << "Trying to subscribe to " << portName.toLocal8Bit().data();
         m_Port->subscribeTo(portName);
-    } catch (SequencerError& err) {
-        cout << "SequencerError exception. Error code: " << err.code()
-        << " (" << err.qstrError() << ")" << endl;
-        cout << "Location: " << err.location() << endl;
+    } catch (const SequencerError& err) {
+        cerr << "SequencerError exception. Error code: " << err.code()
+             << " (" << err.qstrError() << ")" << endl;
+        cerr << "Location: " << err.location() << endl;
         throw err;
     }
 }
@@ -302,10 +303,10 @@ void PlaySMF::play(QString fileName)
             m_Client->synchronizeOutput();
         }
         m_Queue->stop();
-    } catch (SequencerError& err) {
-        cout << "SequencerError exception. Error code: " << err.code()
-        << " (" << err.qstrError() << ")" << endl;
-        cout << "Location: " << err.location() << endl;
+    } catch (const SequencerError& err) {
+        cerr << "SequencerError exception. Error code: " << err.code()
+             << " (" << err.qstrError() << ")" << endl;
+        cerr << "Location: " << err.location() << endl;
         throw err;
     }
 }
@@ -331,7 +332,7 @@ void PlaySMF::info()
 }
 */
 
-PlaySMF player;
+PlaySMF* player = 0;
 
 void signalHandler(int sig)
 {
@@ -339,11 +340,18 @@ void signalHandler(int sig)
         qDebug() << "Caught a SIGINT. Exiting";
     else if (sig == SIGTERM)
         qDebug() << "Caught a SIGTERM. Exiting";
-    player.stop();
+    if (player != 0)
+        player->stop();
 }
 
 int main(int argc, char **argv)
 {
+    const QString errorstr = "Fatal error from the ALSA sequencer. "
+        "This usually happens when the kernel doesn't have ALSA support, "
+        "or the device node (/dev/snd/seq) doesn't exists, "
+        "or the kernel module (snd_seq) is not loaded. "
+        "Please check your ALSA/MIDI configuration.";
+
     CmdLineArgs args;
     signal(SIGINT, signalHandler);
     signal(SIGTERM, signalHandler);
@@ -353,16 +361,24 @@ int main(int argc, char **argv)
     args.addMultipleArgument("file", "Input SMF(s)");
     args.parse(argc, argv);
 
-    QVariant port = args.getArgument("port");
-    if (!port.isNull())
-        player.subscribe(port.toString());
+    try {
+        player = new PlaySMF();
+        QVariant port = args.getArgument("port");
+        if (!port.isNull())
+            player->subscribe(port.toString());
 
-    QVariantList files = args.getArguments("file");
-    foreach(const QVariant& f, files) {
-        QFileInfo file(f.toString());
-        if (file.exists())
-            player.play(file.canonicalFilePath());
+        QVariantList files = args.getArguments("file");
+        foreach(const QVariant& f, files) {
+            QFileInfo file(f.toString());
+            if (file.exists())
+                player->play(file.canonicalFilePath());
+        }
+        //player->info();
+    } catch (const SequencerError& ex) {
+        cerr << errorstr + " Returned error was: " + ex.qstrError() << endl;
+    } catch (...) {
+        cerr << errorstr << endl;
     }
-
-    //player.info();
+    delete player;
+    return 0;
 }
