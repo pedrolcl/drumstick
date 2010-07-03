@@ -147,7 +147,7 @@ IF(DOXYGEN_FOUND)
 ENDIF(DOXYGEN_FOUND)
 
 ADD_SUBDIRECTORY(library)
-ADD_SUBDIRECTORY(tests)
+ADD_SUBDIRECTORY(utils)
 ADD_SUBDIRECTORY(icons)
 IF(${CMAKE_SYSTEM} MATCHES "Linux")
     ADD_SUBDIRECTORY(doc)
@@ -183,7 +183,7 @@ IF(${CMAKE_SYSTEM} MATCHES "Linux")
         COMMAND mkdir -p drumstick-${VERSION}
         COMMAND cp -r cmake_admin drumstick-${VERSION}
         COMMAND cp -r library drumstick-${VERSION}
-        COMMAND cp -r tests drumstick-${VERSION}
+        COMMAND cp -r utils drumstick-${VERSION}
         COMMAND cp -r doc drumstick-${VERSION}
         COMMAND cp -r icons drumstick-${VERSION}
         COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO drumstick*.in drumstick.pro drumstick.xml configure* Doxyfile.in link-drumstick chkcoverage drumstick-${VERSION}

@@ -1,3 +1,7 @@
+2010-07-03
+    * subdirectory "tests" renamed as "utils".
+    * visibility attribute for public classes.
+    
 2010-06-10
     * Compile fix for 0.3.2
     * release 0.3.2a

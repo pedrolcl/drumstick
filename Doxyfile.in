@@ -621,17 +621,18 @@ EXCLUDE_SYMBOLS =
 # directories that contain example code fragments that are included (see 
 # the \include command).
 
-EXAMPLE_PATH =  @CMAKE_SOURCE_DIR@/tests/buildsmf \
-                @CMAKE_SOURCE_DIR@/tests/dumpmid \ 
-                @CMAKE_SOURCE_DIR@/tests/dumpwrk \   
-                @CMAKE_SOURCE_DIR@/tests/playsmf \   
-                @CMAKE_SOURCE_DIR@/tests/testevents \  
-                @CMAKE_SOURCE_DIR@/tests/timertest \
-                @CMAKE_SOURCE_DIR@/tests/dumpsmf \ 
-                @CMAKE_SOURCE_DIR@/tests/metronome \ 
-                @CMAKE_SOURCE_DIR@/tests/smfplayer \ 
-                @CMAKE_SOURCE_DIR@/tests/sysinfo  \ 
-                @CMAKE_SOURCE_DIR@/tests/vpiano
+EXAMPLE_PATH =  @CMAKE_SOURCE_DIR@/utils/buildsmf \
+                @CMAKE_SOURCE_DIR@/utils/drumgrid \ 
+                @CMAKE_SOURCE_DIR@/utils/dumpmid \ 
+                @CMAKE_SOURCE_DIR@/utils/dumpwrk \   
+                @CMAKE_SOURCE_DIR@/utils/playsmf \   
+                @CMAKE_SOURCE_DIR@/utils/testevents \  
+                @CMAKE_SOURCE_DIR@/utils/timertest \
+                @CMAKE_SOURCE_DIR@/utils/dumpsmf \ 
+                @CMAKE_SOURCE_DIR@/utils/metronome \ 
+                @CMAKE_SOURCE_DIR@/utils/smfplayer \ 
+                @CMAKE_SOURCE_DIR@/utils/sysinfo  \ 
+                @CMAKE_SOURCE_DIR@/utils/vpiano
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the 
 # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 

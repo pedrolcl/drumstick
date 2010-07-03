@@ -59,7 +59,7 @@ Optional CMake parameters
     Build a dynamic library (default)
 
     -DENABLE_PCH=YES|ON|NO|OFF|1|0
-    Build tests using precompiled headers (faster compilation)
+    Build utils using precompiled headers (faster compilation)
 
     -DCMAKE_BUILD_TYPE=Debug 
     Compile with debug flags enabled
