@@ -1,10 +1,10 @@
 SET(playmid_forms_SRCS
-    smfplayer.ui
+    guiplayer.ui
 )
 
 SET(playmid_SRCS
-    smfplayer.cpp
-    smfplayer.h
+    guiplayer.cpp
+    guiplayer.h
     player.cpp
     player.h
     song.cpp
@@ -16,16 +16,16 @@ SET(playmid_SRCS
 
 SET(playmid_qtobject_SRCS
     player.h
-    smfplayer.h
+    guiplayer.h
 )
 
 QT4_WRAP_UI(playmid_ui_SRCS ${playmid_forms_SRCS})
 
 QT4_WRAP_CPP(playmid_moc_SRCS ${playmid_qtobject_SRCS})
 
-QT4_ADD_RESOURCES(playmid_resources smfplayer.qrc)
+QT4_ADD_RESOURCES(playmid_resources guiplayer.qrc)
 
-ADD_EXECUTABLE(drumstick-smfplayer
+ADD_EXECUTABLE(drumstick-guiplayer
     ${playmid_resources}
     ${playmid_ui_SRCS}
     ${playmid_moc_SRCS}
@@ -33,18 +33,18 @@ ADD_EXECUTABLE(drumstick-smfplayer
 )
 
 IF(USE_PCH)
-    ADD_DEPENDENCIES(drumstick-smfplayer precompiled_headers)
+    ADD_DEPENDENCIES(drumstick-guiplayer precompiled_headers)
 ENDIF(USE_PCH)
 
-TARGET_LINK_LIBRARIES(drumstick-smfplayer
+TARGET_LINK_LIBRARIES(drumstick-guiplayer
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     drumstick-file
     drumstick-alsa
 )
 
-INSTALL(TARGETS drumstick-smfplayer
+INSTALL(TARGETS drumstick-guiplayer
         RUNTIME DESTINATION bin)
 
-INSTALL(FILES drumstick-smfplayer.desktop
+INSTALL(FILES drumstick-guiplayer.desktop
         DESTINATION share/applications)

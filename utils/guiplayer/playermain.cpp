@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#include "smfplayer.h"
+#include "guiplayer.h"
 #include "cmdlineargs.h"
 
 #include <QtGui>

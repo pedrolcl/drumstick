@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=MIDI Player
-Exec=drumstick-smfplayer
+Exec=drumstick-guiplayer
 Icon=drumstick
 Terminal=false
 Type=Application

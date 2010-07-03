@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 "http://www.docbook.org/xml/4.5/docbookx.dtd" [
-<!ENTITY product "drumstick-smfplayer">
+<!ENTITY product "drumstick-guiplayer">
 ]>
 
-<refentry lang="en" id="drumstick-smfplayer">
+<refentry lang="en" id="drumstick-guiplayer">
 
     <refentryinfo>
         <productname>&product;</productname>
@@ -36,7 +36,7 @@
         <refpurpose>A Drumstick GUI utility for playing standard MIDI files.</refpurpose>
     </refnamediv>
 
-    <refsynopsisdiv id="drumstick-smfplayer.synopsis">
+    <refsynopsisdiv id="drumstick-guiplayer.synopsis">
         <title>Synopsis</title>
         <cmdsynopsis><command>&product;</command>
             <arg choice="opt">FILE</arg>
@@ -44,7 +44,7 @@
         </cmdsynopsis>
     </refsynopsisdiv>
 
-    <refsect1 id="drumstick-smfplayer.description">
+    <refsect1 id="drumstick-guiplayer.description">
         <title>Description</title>
         <para>
         This program is a Drumstick example and test program. You can use it
@@ -52,7 +52,7 @@
         </para>
     </refsect1>
 
-    <refsect1 id="drumstick-smfplayer.options">
+    <refsect1 id="drumstick-guiplayer.options">
         <title>Arguments</title>
 
         <para>The following arguments are optional:</para>
@@ -319,7 +319,7 @@
         </para>
     </refsect1>
 
-    <refsect1 id="drumstick-smfplayer.seealso">
+    <refsect1 id="drumstick-guiplayer.seealso">
         <title>See also</title>
         <para>
            <citerefentry>
