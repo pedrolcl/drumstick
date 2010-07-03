@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     args.setUsage("[options] [file]");
     args.addOptionalArgument("file", "Input SMF");
     args.parse(a.argc(), a.argv());
-    SMFPlayer w;
+    GUIPlayer w;
     w.setAttribute(Qt::WA_QuitOnClose);
     w.show();
     return a.exec();

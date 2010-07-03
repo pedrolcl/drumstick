@@ -32,7 +32,7 @@
 
 #include "guiplayer.h"
 
-SMFPlayer::SMFPlayer(QWidget *parent)
+GUIPlayer::GUIPlayer(QWidget *parent)
     : QWidget(parent),
     m_portId(-1),
     m_queueId(-1),
@@ -95,7 +95,7 @@ SMFPlayer::SMFPlayer(QWidget *parent)
     m_Client->startSequencerInput();
 }
 
-SMFPlayer::~SMFPlayer()
+GUIPlayer::~GUIPlayer()
 {
     m_Client->stopSequencerInput();
     m_Port->detach();
@@ -103,7 +103,7 @@ SMFPlayer::~SMFPlayer()
     delete m_player;
 }
 
-void SMFPlayer::subscribe(const QString& portName)
+void GUIPlayer::subscribe(const QString& portName)
 {
     try {
         if (!m_subscription.isEmpty()) {
@@ -118,7 +118,7 @@ void SMFPlayer::subscribe(const QString& portName)
     }
 }
 
-void SMFPlayer::updateTimeLabel(int mins, int secs, int cnts)
+void GUIPlayer::updateTimeLabel(int mins, int secs, int cnts)
 {
     static QChar fill('0');
     QString stime = QString("%1:%2.%3").arg(mins,2,10,fill)
@@ -127,7 +127,7 @@ void SMFPlayer::updateTimeLabel(int mins, int secs, int cnts)
     ui.lblTime->setText(stime);
 }
 
-void SMFPlayer::play()
+void GUIPlayer::play()
 {
     if (!m_song.isEmpty()) {
         if (m_player->getInitialPosition() == 0) {
@@ -145,7 +145,7 @@ void SMFPlayer::play()
     }
 }
 
-void SMFPlayer::pause()
+void GUIPlayer::pause()
 {
     if (m_player->isRunning()) {
         m_player->stop();
@@ -153,7 +153,7 @@ void SMFPlayer::pause()
     }
 }
 
-void SMFPlayer::stop()
+void GUIPlayer::stop()
 {
     if (m_player->isRunning() && (m_initialTempo != 0)) {
         m_player->stop();
@@ -161,7 +161,7 @@ void SMFPlayer::stop()
     }
 }
 
-void SMFPlayer::openFile(const QString& fileName)
+void GUIPlayer::openFile(const QString& fileName)
 {
     QFileInfo finfo(fileName);
     if (finfo.exists()) {
@@ -205,7 +205,7 @@ void SMFPlayer::openFile(const QString& fileName)
     }
 }
 
-void SMFPlayer::open()
+void GUIPlayer::open()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
           "Open MIDI File", m_lastDirectory,
@@ -216,7 +216,7 @@ void SMFPlayer::open()
     }
 }
 
-void SMFPlayer::setup()
+void GUIPlayer::setup()
 {
     bool ok;
     int current;
@@ -235,13 +235,13 @@ void SMFPlayer::setup()
     }
 }
 
-void SMFPlayer::songFinished()
+void GUIPlayer::songFinished()
 {
     m_player->resetPosition();
     ui.btnStop->setChecked(true);
 }
 
-void SMFPlayer::playerStopped()
+void GUIPlayer::playerStopped()
 {
     int portId = m_Port->getPortId();
     for (int channel = 0; channel < 16; ++channel) {
@@ -259,13 +259,13 @@ void SMFPlayer::playerStopped()
     m_Client->drainOutput();
 }
 
-void SMFPlayer::updateTempoLabel(float ftempo)
+void GUIPlayer::updateTempoLabel(float ftempo)
 {
     QString stempo = QString("%1 bpm").arg(ftempo, 0, 'f', 2);
     ui.lblOther->setText(stempo);
 }
 
-void SMFPlayer::sequencerEvent(SequencerEvent *ev)
+void GUIPlayer::sequencerEvent(SequencerEvent *ev)
 {
     if ((ev->getSequencerType() == SND_SEQ_EVENT_ECHO) && (m_tick != 0)){
         int pos = 100 * ev->getTick() / m_tick;
@@ -280,7 +280,7 @@ void SMFPlayer::sequencerEvent(SequencerEvent *ev)
     delete ev;
 }
 
-void SMFPlayer::appendEvent(SequencerEvent* ev)
+void GUIPlayer::appendEvent(SequencerEvent* ev)
 {
     unsigned long tick = m_engine->getCurrentTime();
     ev->setSource(m_portId);
@@ -293,67 +293,67 @@ void SMFPlayer::appendEvent(SequencerEvent* ev)
     updateLoadProgress();
 }
 
-void SMFPlayer::headerEvent(int format, int ntrks, int division)
+void GUIPlayer::headerEvent(int format, int ntrks, int division)
 {
     m_song.setHeader(format, ntrks, division);
     updateLoadProgress();
 }
 
-void SMFPlayer::noteOnEvent(int chan, int pitch, int vol)
+void GUIPlayer::noteOnEvent(int chan, int pitch, int vol)
 {
     SequencerEvent* ev = new NoteOnEvent (chan, pitch, vol);
     appendEvent(ev);
 }
 
-void SMFPlayer::noteOffEvent(int chan, int pitch, int vol)
+void GUIPlayer::noteOffEvent(int chan, int pitch, int vol)
 {
     SequencerEvent* ev = new NoteOffEvent (chan, pitch, vol);
     appendEvent(ev);
 }
 
-void SMFPlayer::keyPressEvent(int chan, int pitch, int press)
+void GUIPlayer::keyPressEvent(int chan, int pitch, int press)
 {
     SequencerEvent* ev = new KeyPressEvent (chan, pitch, press);
     appendEvent(ev);
 }
 
-void SMFPlayer::ctlChangeEvent(int chan, int ctl, int value)
+void GUIPlayer::ctlChangeEvent(int chan, int ctl, int value)
 {
     SequencerEvent* ev = new ControllerEvent (chan, ctl, value);
     appendEvent(ev);
 }
 
-void SMFPlayer::pitchBendEvent(int chan, int value)
+void GUIPlayer::pitchBendEvent(int chan, int value)
 {
     SequencerEvent* ev = new PitchBendEvent (chan, value);
     appendEvent(ev);
 }
 
-void SMFPlayer::programEvent(int chan, int patch)
+void GUIPlayer::programEvent(int chan, int patch)
 {
     SequencerEvent* ev = new ProgramChangeEvent (chan, patch);
     appendEvent(ev);
 }
 
-void SMFPlayer::chanPressEvent(int chan, int press)
+void GUIPlayer::chanPressEvent(int chan, int press)
 {
     SequencerEvent* ev = new ChanPressEvent (chan, press);
     appendEvent(ev);
 }
 
-void SMFPlayer::sysexEvent(const QByteArray& data)
+void GUIPlayer::sysexEvent(const QByteArray& data)
 {
     SequencerEvent* ev = new SysExEvent (data);
     appendEvent(ev);
 }
 
-void SMFPlayer::textEvent(int type, const QString& data)
+void GUIPlayer::textEvent(int type, const QString& data)
 {
     m_song.addText(type, data);
     updateLoadProgress();
 }
 
-void SMFPlayer::tempoEvent(int tempo)
+void GUIPlayer::tempoEvent(int tempo)
 {
     if ( m_initialTempo == 0 )
     {
@@ -363,21 +363,21 @@ void SMFPlayer::tempoEvent(int tempo)
     appendEvent(ev);
 }
 
-void SMFPlayer::errorHandler(const QString& errorStr)
+void GUIPlayer::errorHandler(const QString& errorStr)
 {
     if (m_loadingMessages.length() < 1024)
         m_loadingMessages.append(QString("%1 at file offset %2<br>")
             .arg(errorStr).arg(m_engine->getFilePos()));
 }
 
-void SMFPlayer::tempoReset()
+void GUIPlayer::tempoReset()
 {
     ui.sliderTempo->setValue(100);
     ui.sliderTempo->setToolTip("100%");
     m_tempoFactor = 1.0;
 }
 
-void SMFPlayer::tempoSlider(int value)
+void GUIPlayer::tempoSlider(int value)
 {
     m_tempoFactor = (value*value + 100.0*value + 20000.0) / 40000.0;
     QueueTempo qtempo = m_Queue->getTempo();
@@ -393,21 +393,21 @@ void SMFPlayer::tempoSlider(int value)
     QToolTip::showText(QCursor::pos(), tip, this);
 }
 
-void SMFPlayer::quit()
+void GUIPlayer::quit()
 {
     stop();
     m_player->wait();
     close();
 }
 
-void SMFPlayer::dragEnterEvent( QDragEnterEvent * event )
+void GUIPlayer::dragEnterEvent( QDragEnterEvent * event )
 {
     if (event->mimeData()->hasFormat("text/uri-list")) {
         event->acceptProposedAction();
     }
 }
 
-void SMFPlayer::dropEvent( QDropEvent * event )
+void GUIPlayer::dropEvent( QDropEvent * event )
 {
     QString data = event->mimeData()->text();
     QString fileName = QUrl(data).path().trimmed();
@@ -423,7 +423,7 @@ void SMFPlayer::dropEvent( QDropEvent * event )
     }
 }
 
-bool SMFPlayer::event( QEvent * event )
+bool GUIPlayer::event( QEvent * event )
 {
     if(event->type() == QEvent::Polish) {
         readSettings();
@@ -439,7 +439,7 @@ bool SMFPlayer::event( QEvent * event )
     return QWidget::event(event);
 }
 
-void SMFPlayer::readSettings()
+void GUIPlayer::readSettings()
 {
     QSettings settings;
 
@@ -457,7 +457,7 @@ void SMFPlayer::readSettings()
     }
 }
 
-void SMFPlayer::writeSettings()
+void GUIPlayer::writeSettings()
 {
     QSettings settings;
 
@@ -471,13 +471,13 @@ void SMFPlayer::writeSettings()
     settings.endGroup();
 }
 
-void SMFPlayer::closeEvent( QCloseEvent *event )
+void GUIPlayer::closeEvent( QCloseEvent *event )
 {
     writeSettings();
     event->accept();
 }
 
-void SMFPlayer::updateLoadProgress()
+void GUIPlayer::updateLoadProgress()
 {
     if (m_pd != NULL) {
         m_pd->setValue(m_engine->getFilePos());

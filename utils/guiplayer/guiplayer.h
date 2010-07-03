@@ -42,13 +42,13 @@ using namespace drumstick;
 const QString QSTR_DOMAIN("drumstick.sourceforge.net");
 const QString QSTR_APPNAME("SMFPlayer");
 
-class SMFPlayer : public QWidget
+class GUIPlayer : public QWidget
 {
     Q_OBJECT
 
 public:
-    SMFPlayer(QWidget *parent = 0);
-    ~SMFPlayer();
+    GUIPlayer(QWidget *parent = 0);
+    ~GUIPlayer();
 
     void appendEvent(SequencerEvent* ev);
     void subscribe(const QString& portName);
