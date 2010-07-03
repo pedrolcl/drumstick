@@ -30,7 +30,7 @@
 #include <QMessageBox>
 #include <cmath>
 
-#include "smfplayer.h"
+#include "guiplayer.h"
 
 SMFPlayer::SMFPlayer(QWidget *parent)
     : QWidget(parent),

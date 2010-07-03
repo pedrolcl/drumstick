@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>SMFPlayerClass</class>
- <widget class="QWidget" name="SMFPlayerClass" >
+ <class>guiplayerClass</class>
+ <widget class="QWidget" name="guiplayerClass" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -13,10 +13,10 @@
    <bool>true</bool>
   </property>
   <property name="windowTitle" >
-   <string>SMFPlayer</string>
+   <string>guiplayer</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="smfplayer.qrc" >
+   <iconset resource="guiplayer.qrc" >
     <normaloff>:/resources/setup.png</normaloff>:/resources/setup.png</iconset>
   </property>
   <layout class="QGridLayout" >
@@ -193,7 +193,7 @@
         <string>play</string>
        </property>
        <property name="icon" >
-        <iconset resource="smfplayer.qrc" >
+        <iconset resource="guiplayer.qrc" >
          <normaloff>:/resources/play.png</normaloff>:/resources/play.png</iconset>
        </property>
        <property name="checkable" >
@@ -216,7 +216,7 @@
         <string>pause</string>
        </property>
        <property name="icon" >
-        <iconset resource="smfplayer.qrc" >
+        <iconset resource="guiplayer.qrc" >
          <normaloff>:/resources/pause.png</normaloff>:/resources/pause.png</iconset>
        </property>
        <property name="checkable" >
@@ -233,7 +233,7 @@
         <string>stop</string>
        </property>
        <property name="icon" >
-        <iconset resource="smfplayer.qrc" >
+        <iconset resource="guiplayer.qrc" >
          <normaloff>:/resources/stop.png</normaloff>:/resources/stop.png</iconset>
        </property>
        <property name="checkable" >
@@ -266,7 +266,7 @@
         <string>open</string>
        </property>
        <property name="icon" >
-        <iconset resource="smfplayer.qrc" >
+        <iconset resource="guiplayer.qrc" >
          <normaloff>:/resources/open.png</normaloff>:/resources/open.png</iconset>
        </property>
       </widget>
@@ -277,7 +277,7 @@
         <string>setup</string>
        </property>
        <property name="icon" >
-        <iconset resource="smfplayer.qrc" >
+        <iconset resource="guiplayer.qrc" >
          <normaloff>:/resources/setup.png</normaloff>:/resources/setup.png</iconset>
        </property>
       </widget>
@@ -288,7 +288,7 @@
         <string>exit</string>
        </property>
        <property name="icon" >
-        <iconset resource="smfplayer.qrc" >
+        <iconset resource="guiplayer.qrc" >
          <normaloff>:/resources/quit.png</normaloff>:/resources/quit.png</iconset>
        </property>
       </widget>
@@ -299,7 +299,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <resources>
-  <include location="smfplayer.qrc" />
+  <include location="guiplayer.qrc" />
  </resources>
  <connections/>
 </ui>

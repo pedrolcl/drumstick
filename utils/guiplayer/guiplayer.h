@@ -33,7 +33,7 @@
 #include "alsaqueue.h"
 #include "alsaport.h"
 
-#include "ui_smfplayer.h"
+#include "ui_guiplayer.h"
 #include "song.h"
 #include "player.h"
 
