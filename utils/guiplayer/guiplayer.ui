@@ -1,7 +1,8 @@
-<ui version="4.0" >
- <class>guiplayerClass</class>
- <widget class="QWidget" name="guiplayerClass" >
-  <property name="geometry" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GUIPlayerClass</class>
+ <widget class="QWidget" name="GUIPlayerClass">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,91 +10,91 @@
     <height>152</height>
    </rect>
   </property>
-  <property name="acceptDrops" >
+  <property name="acceptDrops">
    <bool>true</bool>
   </property>
-  <property name="windowTitle" >
-   <string>guiplayer</string>
+  <property name="windowTitle">
+   <string>GUIPlayer</string>
   </property>
-  <property name="windowIcon" >
-   <iconset resource="guiplayer.qrc" >
+  <property name="windowIcon">
+   <iconset resource="guiplayer.qrc">
     <normaloff>:/resources/setup.png</normaloff>:/resources/setup.png</iconset>
   </property>
-  <layout class="QGridLayout" >
-   <item rowspan="2" row="0" column="0" >
-    <widget class="QLabel" name="lblTime" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+  <layout class="QGridLayout">
+   <item row="0" column="0" rowspan="2">
+    <widget class="QLabel" name="lblTime">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize" >
+     <property name="minimumSize">
       <size>
        <width>210</width>
        <height>62</height>
       </size>
      </property>
-     <property name="maximumSize" >
+     <property name="maximumSize">
       <size>
        <width>210</width>
        <height>62</height>
       </size>
      </property>
-     <property name="baseSize" >
+     <property name="baseSize">
       <size>
        <width>210</width>
        <height>62</height>
       </size>
      </property>
-     <property name="font" >
+     <property name="font">
       <font>
        <pointsize>34</pointsize>
       </font>
      </property>
-     <property name="text" >
+     <property name="text">
       <string>00:00:00</string>
      </property>
     </widget>
    </item>
-   <item rowspan="2" row="0" column="1" >
-    <layout class="QGridLayout" >
-     <item row="0" column="0" colspan="2" >
-      <widget class="QLabel" name="lbl1" >
-       <property name="text" >
+   <item row="0" column="1" rowspan="2">
+    <layout class="QGridLayout">
+     <item row="0" column="0" colspan="2">
+      <widget class="QLabel" name="lbl1">
+       <property name="text">
         <string>File Name:</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="2" colspan="2" >
-      <widget class="QLabel" name="lblName" />
+     <item row="0" column="2" colspan="2">
+      <widget class="QLabel" name="lblName"/>
      </item>
-     <item row="1" column="0" colspan="2" >
-      <widget class="QLabel" name="lbl2" >
-       <property name="text" >
+     <item row="1" column="0" colspan="2">
+      <widget class="QLabel" name="lbl2">
+       <property name="text">
         <string>Copyright:</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="2" colspan="2" >
-      <widget class="QLabel" name="lblCopyright" />
+     <item row="1" column="2" colspan="2">
+      <widget class="QLabel" name="lblCopyright"/>
      </item>
-     <item row="2" column="0" >
-      <widget class="QLabel" name="lbl3" >
-       <property name="text" >
+     <item row="2" column="0">
+      <widget class="QLabel" name="lbl3">
+       <property name="text">
         <string>Tempo:</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1" colspan="2" >
-      <widget class="QLabel" name="lblOther" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
+     <item row="2" column="1" colspan="2">
+      <widget class="QLabel" name="lblOther">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="minimumSize" >
+       <property name="minimumSize">
         <size>
          <width>100</width>
          <height>0</height>
@@ -101,48 +102,48 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="3" >
-      <widget class="QSlider" name="sliderTempo" >
-       <property name="minimumSize" >
+     <item row="2" column="3">
+      <widget class="QSlider" name="sliderTempo">
+       <property name="minimumSize">
         <size>
          <width>200</width>
          <height>0</height>
         </size>
        </property>
-       <property name="minimum" >
+       <property name="minimum">
         <number>0</number>
        </property>
-       <property name="maximum" >
+       <property name="maximum">
         <number>200</number>
        </property>
-       <property name="singleStep" >
+       <property name="singleStep">
         <number>1</number>
        </property>
-       <property name="pageStep" >
+       <property name="pageStep">
         <number>10</number>
        </property>
-       <property name="value" >
+       <property name="value">
         <number>100</number>
        </property>
-       <property name="orientation" >
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="tickPosition" >
+       <property name="tickPosition">
         <enum>QSlider::TicksAbove</enum>
        </property>
-       <property name="tickInterval" >
+       <property name="tickInterval">
         <number>5</number>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="0" column="2" >
+   <item row="0" column="2">
     <spacer>
-     <property name="orientation" >
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>16</width>
        <height>32</height>
@@ -150,109 +151,109 @@
      </property>
     </spacer>
    </item>
-   <item row="1" column="2" >
-    <widget class="QPushButton" name="btnReset" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+   <item row="1" column="2">
+    <widget class="QPushButton" name="btnReset">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="maximumSize" >
+     <property name="maximumSize">
       <size>
        <width>50</width>
        <height>16777215</height>
       </size>
      </property>
-     <property name="text" >
+     <property name="text">
       <string>100%</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="3" >
-    <widget class="QProgressBar" name="progressBar" >
-     <property name="value" >
+   <item row="2" column="0" colspan="3">
+    <widget class="QProgressBar" name="progressBar">
+     <property name="value">
       <number>0</number>
      </property>
-     <property name="alignment" >
+     <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
-     <property name="textVisible" >
+     <property name="textVisible">
       <bool>true</bool>
      </property>
-     <property name="textDirection" >
+     <property name="textDirection">
       <enum>QProgressBar::TopToBottom</enum>
      </property>
     </widget>
    </item>
-   <item row="3" column="0" colspan="3" >
-    <layout class="QHBoxLayout" >
+   <item row="3" column="0" colspan="3">
+    <layout class="QHBoxLayout">
      <item>
-      <widget class="QPushButton" name="btnPlay" >
-       <property name="text" >
+      <widget class="QPushButton" name="btnPlay">
+       <property name="text">
         <string>play</string>
        </property>
-       <property name="icon" >
-        <iconset resource="guiplayer.qrc" >
+       <property name="icon">
+        <iconset resource="guiplayer.qrc">
          <normaloff>:/resources/play.png</normaloff>:/resources/play.png</iconset>
        </property>
-       <property name="checkable" >
+       <property name="checkable">
         <bool>true</bool>
        </property>
-       <property name="autoExclusive" >
+       <property name="autoExclusive">
         <bool>true</bool>
        </property>
-       <property name="default" >
+       <property name="default">
         <bool>true</bool>
        </property>
-       <property name="flat" >
+       <property name="flat">
         <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnPause" >
-       <property name="text" >
+      <widget class="QPushButton" name="btnPause">
+       <property name="text">
         <string>pause</string>
        </property>
-       <property name="icon" >
-        <iconset resource="guiplayer.qrc" >
+       <property name="icon">
+        <iconset resource="guiplayer.qrc">
          <normaloff>:/resources/pause.png</normaloff>:/resources/pause.png</iconset>
        </property>
-       <property name="checkable" >
+       <property name="checkable">
         <bool>true</bool>
        </property>
-       <property name="autoExclusive" >
+       <property name="autoExclusive">
         <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnStop" >
-       <property name="text" >
+      <widget class="QPushButton" name="btnStop">
+       <property name="text">
         <string>stop</string>
        </property>
-       <property name="icon" >
-        <iconset resource="guiplayer.qrc" >
+       <property name="icon">
+        <iconset resource="guiplayer.qrc">
          <normaloff>:/resources/stop.png</normaloff>:/resources/stop.png</iconset>
        </property>
-       <property name="checkable" >
+       <property name="checkable">
         <bool>true</bool>
        </property>
-       <property name="checked" >
+       <property name="checked">
         <bool>true</bool>
        </property>
-       <property name="autoExclusive" >
+       <property name="autoExclusive">
         <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
       <spacer>
-       <property name="orientation" >
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" stdset="0" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
          <height>20</height>
@@ -261,34 +262,34 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btnOpen" >
-       <property name="text" >
+      <widget class="QPushButton" name="btnOpen">
+       <property name="text">
         <string>open</string>
        </property>
-       <property name="icon" >
-        <iconset resource="guiplayer.qrc" >
+       <property name="icon">
+        <iconset resource="guiplayer.qrc">
          <normaloff>:/resources/open.png</normaloff>:/resources/open.png</iconset>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnSetup" >
-       <property name="text" >
+      <widget class="QPushButton" name="btnSetup">
+       <property name="text">
         <string>setup</string>
        </property>
-       <property name="icon" >
-        <iconset resource="guiplayer.qrc" >
+       <property name="icon">
+        <iconset resource="guiplayer.qrc">
          <normaloff>:/resources/setup.png</normaloff>:/resources/setup.png</iconset>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnExit" >
-       <property name="text" >
+      <widget class="QPushButton" name="btnExit">
+       <property name="text">
         <string>exit</string>
        </property>
-       <property name="icon" >
-        <iconset resource="guiplayer.qrc" >
+       <property name="icon">
+        <iconset resource="guiplayer.qrc">
          <normaloff>:/resources/quit.png</normaloff>:/resources/quit.png</iconset>
        </property>
       </widget>
@@ -297,9 +298,9 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="guiplayer.qrc" />
+  <include location="guiplayer.qrc"/>
  </resources>
  <connections/>
 </ui>

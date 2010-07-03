@@ -1,8 +1,8 @@
-SET(playmid_forms_SRCS
+SET(guiplayer_forms_SRCS
     guiplayer.ui
 )
 
-SET(playmid_SRCS
+SET(guiplayer_SRCS
     guiplayer.cpp
     guiplayer.h
     player.cpp
@@ -14,22 +14,22 @@ SET(playmid_SRCS
     ../common/cmdlineargs.cpp
 )
 
-SET(playmid_qtobject_SRCS
+SET(guiplayer_qtobject_SRCS
     player.h
     guiplayer.h
 )
 
-QT4_WRAP_UI(playmid_ui_SRCS ${playmid_forms_SRCS})
+QT4_WRAP_UI(guiplayer_ui_SRCS ${guiplayer_forms_SRCS})
 
-QT4_WRAP_CPP(playmid_moc_SRCS ${playmid_qtobject_SRCS})
+QT4_WRAP_CPP(guiplayer_moc_SRCS ${guiplayer_qtobject_SRCS})
 
-QT4_ADD_RESOURCES(playmid_resources guiplayer.qrc)
+QT4_ADD_RESOURCES(guiplayer_resources guiplayer.qrc)
 
 ADD_EXECUTABLE(drumstick-guiplayer
-    ${playmid_resources}
-    ${playmid_ui_SRCS}
-    ${playmid_moc_SRCS}
-    ${playmid_SRCS}
+    ${guiplayer_resources}
+    ${guiplayer_ui_SRCS}
+    ${guiplayer_moc_SRCS}
+    ${guiplayer_SRCS}
 )
 
 IF(USE_PCH)

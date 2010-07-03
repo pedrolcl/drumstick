@@ -106,7 +106,7 @@ private:
     QString m_lastDirectory;
     QString m_loadingMessages;
     Song m_song;
-    Ui::SMFPlayerClass ui;
+    Ui::GUIPlayerClass ui;
     QPointer<QProgressDialog> m_pd;
 };
 
