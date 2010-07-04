@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>433</width>
-    <height>234</height>
+    <width>425</width>
+    <height>244</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -439,6 +439,9 @@
        <property name="autoExclusive">
         <bool>true</bool>
        </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextUnderIcon</enum>
+       </property>
       </widget>
      </item>
      <item>
@@ -458,6 +461,9 @@
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextUnderIcon</enum>
        </property>
       </widget>
      </item>
@@ -481,6 +487,9 @@
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextUnderIcon</enum>
        </property>
       </widget>
      </item>
@@ -509,6 +518,9 @@
         <iconset resource="guiplayer.qrc">
          <normaloff>:/resources/open.png</normaloff>:/resources/open.png</iconset>
        </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextUnderIcon</enum>
+       </property>
       </widget>
      </item>
      <item>
@@ -523,6 +535,9 @@
         <iconset resource="guiplayer.qrc">
          <normaloff>:/resources/setup.png</normaloff>:/resources/setup.png</iconset>
        </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextUnderIcon</enum>
+       </property>
       </widget>
      </item>
      <item>
@@ -536,6 +551,9 @@
        <property name="icon">
         <iconset resource="guiplayer.qrc">
          <normaloff>:/resources/quit.png</normaloff>:/resources/quit.png</iconset>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextUnderIcon</enum>
        </property>
       </widget>
      </item>

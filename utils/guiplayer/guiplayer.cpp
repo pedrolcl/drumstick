@@ -512,7 +512,8 @@ void GUIPlayer::dropEvent( QDropEvent * event )
     while (fileName.endsWith(QChar::Null)) fileName.chop(1);
     if ( fileName.endsWith(".mid", Qt::CaseInsensitive) ||
          fileName.endsWith(".midi", Qt::CaseInsensitive) ||
-         fileName.endsWith(".kar", Qt::CaseInsensitive) ) {
+         fileName.endsWith(".kar", Qt::CaseInsensitive) ||
+         fileName.endsWith(".wrk", Qt::CaseInsensitive) ) {
         stop();
         openFile(fileName);
         event->accept();
