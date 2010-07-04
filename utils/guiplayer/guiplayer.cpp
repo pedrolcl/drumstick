@@ -272,7 +272,7 @@ void GUIPlayer::openFile(const QString& fileName)
             } else {
                 m_song.sort();
                 m_player->setSong(&m_song);
-                ui.lblName->setText(fileName);
+                ui.lblName->setText(finfo.fileName());
                 ui.lblCopyright->setText(m_song.getCopyright());
                 m_lastDirectory = finfo.absolutePath();
             }
