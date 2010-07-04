@@ -5,6 +5,6 @@ Icon=drumstick
 Terminal=false
 Type=Application
 Categories=AudioVideo;Audio;Midi;Education;Music;
-MimeType=audio/midi;audio/x-midi;
+MimeType=audio/midi;audio/x-midi;audio/cakewalk;
 Comment=MIDI Player
 Comment[es]=Reproductor MIDI 

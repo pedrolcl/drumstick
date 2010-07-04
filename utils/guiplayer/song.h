@@ -20,9 +20,11 @@
 #ifndef INCLUDED_SONG_H
 #define INCLUDED_SONG_H
 
-#include <QStringList>
+#include <QtCore/QStringList>
 
-#include "alsaevent.h"
+namespace drumstick {
+    class SequencerEvent;
+}
 
 using namespace drumstick;
 
@@ -44,6 +46,7 @@ public:
     void clear();
     void sort();
     void setHeader(int format, int ntrks, int division);
+    void setDivision(int division);
     void setFileName(const QString& fileName);
     void addText(const int type, const QString& text);
     

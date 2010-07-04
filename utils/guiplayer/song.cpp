@@ -18,6 +18,7 @@
 */
 
 #include "song.h"
+#include "alsaevent.h"
 
 static inline bool eventLessThan(const SequencerEvent* s1, const SequencerEvent* s2)
 {
@@ -49,6 +50,11 @@ void Song::setHeader(int format, int ntrks, int division)
 {
     m_format = format;
     m_ntrks = ntrks;
+    m_division = division;
+}
+
+void Song::setDivision(int division)
+{
     m_division = division;
 }
 

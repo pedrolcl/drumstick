@@ -19,7 +19,6 @@
 
 #include "guiplayer.h"
 #include "cmdlineargs.h"
-
 #include "drumstickcommon.h"
 #include <QtGui/QApplication>
 #include <QtGui/QMessageBox>
