@@ -36,15 +36,26 @@ public:
     virtual SequencerEvent* nextEvent();
     virtual unsigned int getInitialPosition() { return m_songPosition; }
     virtual unsigned int getEchoResolution() { return m_echoResolution; }
+    unsigned int getPitchShift() { return m_pitchShift; }
+    unsigned int getVolumeFactor() { return m_volumeFactor; }
     void setSong(Song* s);
     void resetPosition();
     void setPosition(unsigned int pos);
+    void setPitchShift(unsigned int pitch);
+    void setVolumeFactor(unsigned int vol);
+    void sendController(int chan, int control, int value);
+    void allNotesOff();
+    void sendVolumeEvents();
 
 private:
     Song* m_song;
     SongIterator* m_songIterator;
+    SequencerEvent* m_lastEvent;
     unsigned int m_songPosition;
     unsigned int m_echoResolution;
+    unsigned int m_pitchShift;
+    unsigned int m_volumeFactor;
+    int m_volume[MIDI_CHANNELS];
 };
 
 #endif /*INCLUDED_PLAYER_H*/

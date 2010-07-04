@@ -59,10 +59,12 @@ GUIPlayer::GUIPlayer(QWidget *parent)
     connect(ui.btnReset, SIGNAL(clicked()), SLOT(tempoReset()));
     connect(ui.sliderTempo, SIGNAL(valueChanged(int)), SLOT(tempoSlider(int)));
 	connect(ui.btnExit, SIGNAL(clicked()), SLOT(quit()));
+	connect(ui.volumeSlider, SIGNAL(valueChanged(int)), SLOT(volumeSlider(int)));
+	connect(ui.spinPitch, SIGNAL(valueChanged(int)), SLOT(pitchShift(int)));
 
     m_Client = new MidiClient(this);
     m_Client->open();
-    m_Client->setPoolOutput(100);
+    m_Client->setPoolOutput(20); // tiny size, for near real-time pitchShift
     m_Client->setClientName("MIDI Player");
     connect(m_Client, SIGNAL(eventReceived(SequencerEvent*)),
                       SLOT(sequencerEvent(SequencerEvent*)));
@@ -226,6 +228,7 @@ void GUIPlayer::play()
             firstTempo.setTempoFactor(m_tempoFactor);
             m_Queue->setTempo(firstTempo);
             m_Client->drainOutput();
+            m_player->sendVolumeEvents();
         }
         m_player->start();
     }
@@ -371,6 +374,21 @@ void GUIPlayer::sequencerEvent(SequencerEvent *ev)
         ui.progressBar->setValue(pos);
     }
     delete ev;
+}
+
+
+void GUIPlayer::volumeSlider(int value)
+{
+    QString tip = QString::number(value)+'%';
+    ui.lblVolume->setText(tip);
+    ui.volumeSlider->setToolTip(tip);
+    m_player->setVolumeFactor(value);
+    QToolTip::showText(QCursor::pos(), tip, this);
+}
+
+void GUIPlayer::pitchShift(int value)
+{
+    m_player->setPitchShift(value);
 }
 
 void GUIPlayer::headerEvent(int format, int ntrks, int division)

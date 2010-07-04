@@ -241,7 +241,7 @@
        </widget>
       </item>
       <item row="2" column="2">
-       <widget class="QSpinBox" name="spinBox">
+       <widget class="QSpinBox" name="spinPitch">
         <property name="maximumSize">
          <size>
           <width>50</width>
@@ -282,7 +282,7 @@
     </widget>
    </item>
    <item row="1" column="2" rowspan="4">
-    <widget class="QSlider" name="verticalSlider">
+    <widget class="QSlider" name="volumeSlider">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>

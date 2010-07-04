@@ -78,6 +78,8 @@ public slots:
     void tempoReset();
     void tempoSlider(int value);
     void quit();
+    void volumeSlider(int value);
+    void pitchShift(int value);
 
     void songFinished();
     void playerStopped();
