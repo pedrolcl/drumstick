@@ -139,7 +139,6 @@ void Player::setVolumeFactor(unsigned int vol)
         if (value < 0) value = 0;
         if (value > 127) value = 127;
         sendController(chan, MIDI_CTL_MSB_MAIN_VOLUME, value);
-        qDebug() << "volume[" << chan << "]=" << value;
     }
 }
 
@@ -163,6 +162,10 @@ void Player::allNotesOff()
 void Player::sendVolumeEvents()
 {
     for(int chan = 0; chan < MIDI_CHANNELS; ++chan) {
-        sendController(chan, MIDI_CTL_MSB_MAIN_VOLUME, m_volume[chan]);
+        int value = m_volume[chan] = 100;
+        value = floor(value * m_volumeFactor / 100.0);
+        if (value < 0) value = 0;
+        if (value > 127) value = 127;
+        sendController(chan, MIDI_CTL_MSB_MAIN_VOLUME, value);
     }
 }

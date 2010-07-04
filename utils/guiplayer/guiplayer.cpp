@@ -947,6 +947,8 @@ void GUIPlayer::endOfWrk()
 {
     if (m_initialTempo < 0)
         m_initialTempo = 120;
+    SequencerEvent* ev = new SystemEvent(SND_SEQ_EVENT_ECHO);
+    appendWRKEvent(m_tick, 0, ev);
 }
 
 void GUIPlayer::unknownChunk(int /*type*/, const QByteArray& /*data*/)
