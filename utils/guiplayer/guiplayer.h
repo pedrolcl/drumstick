@@ -20,11 +20,10 @@
 #ifndef INCLUDED_GUIPLAYER_H
 #define INCLUDED_GUIPLAYER_H
 
-#include "ui_guiplayer.h"
 #include "song.h"
 #include "playerabout.h"
 
-#include <QtGui/QWidget>
+#include <QtGui/QMainWindow>
 #include <QtGui/QProgressDialog>
 #include <QtCore/QObject>
 #include <QtCore/QString>
@@ -41,6 +40,10 @@ namespace drumstick {
     class MidiQueue;
 }
 
+namespace Ui {
+    class GUIPlayerClass;
+}
+
 class Player;
 
 using namespace drumstick;
@@ -48,12 +51,12 @@ using namespace drumstick;
 const QString QSTR_DOMAIN("drumstick.sourceforge.net");
 const QString QSTR_APPNAME("GUIPlayer");
 
-class GUIPlayer : public QWidget
+class GUIPlayer : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    GUIPlayer(QWidget *parent = 0);
+    GUIPlayer(QWidget *parent = 0, Qt::WindowFlags flags = 0);
     ~GUIPlayer();
 
     void appendSMFEvent(SequencerEvent* ev);
@@ -72,17 +75,18 @@ public:
 
 public slots:
     void about();
+    void aboutQt();
     void play();
     void pause();
     void stop();
     void open();
     void setup();
     void tempoReset();
+    void volumeReset();
     void tempoSlider(int value);
     void quit();
     void volumeSlider(int value);
     void pitchShift(int value);
-
     void songFinished();
     void playerStopped();
     void sequencerEvent(SequencerEvent* ev);
@@ -154,12 +158,12 @@ private:
     MidiPort* m_Port;
     MidiQueue* m_Queue;
     Player* m_player;
+    Ui::GUIPlayerClass* m_ui;
 
     QString m_subscription;
     QString m_lastDirectory;
     QString m_loadingMessages;
     Song m_song;
-    Ui::GUIPlayerClass ui;
     QPointer<QProgressDialog> m_pd;
     About aboutDlg;
 

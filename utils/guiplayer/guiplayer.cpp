@@ -19,6 +19,7 @@
 
 #include "guiplayer.h"
 #include "player.h"
+#include "ui_guiplayer.h"
 
 #include "qsmf.h"
 #include "qwrk.h"
@@ -35,33 +36,38 @@
 #include <QtGui/QCloseEvent>
 #include <QtGui/QToolTip>
 #include <QtGui/QMessageBox>
+#include <QtGui/QStatusBar>
 #include <QtCore/QSettings>
 #include <QtCore/QUrl>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextCodec>
 #include <cmath>
 
-GUIPlayer::GUIPlayer(QWidget *parent)
-    : QWidget(parent),
+GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
+    : QMainWindow(parent, flags),
     m_portId(-1),
     m_queueId(-1),
     m_initialTempo(0),
     m_tempoFactor(1.0),
-    m_tick(0)
+    m_tick(0),
+    m_ui(new Ui::GUIPlayerClass)
 {
-	ui.setupUi(this);
-    tempoReset();
-    connect(ui.btnAbout, SIGNAL(clicked()), SLOT(about()));
-    connect(ui.btnPlay, SIGNAL(clicked()), SLOT(play()));
-    connect(ui.btnPause, SIGNAL(clicked()), SLOT(pause()));
-    connect(ui.btnStop, SIGNAL(clicked()), SLOT(stop()));
-    connect(ui.btnOpen, SIGNAL(clicked()), SLOT(open()));
-    connect(ui.btnSetup, SIGNAL(clicked()), SLOT(setup()));
-    connect(ui.btnReset, SIGNAL(clicked()), SLOT(tempoReset()));
-    connect(ui.sliderTempo, SIGNAL(valueChanged(int)), SLOT(tempoSlider(int)));
-	connect(ui.btnExit, SIGNAL(clicked()), SLOT(quit()));
-	connect(ui.volumeSlider, SIGNAL(valueChanged(int)), SLOT(volumeSlider(int)));
-	connect(ui.spinPitch, SIGNAL(valueChanged(int)), SLOT(pitchShift(int)));
+	m_ui->setupUi(this);
+    connect(m_ui->actionAbout, SIGNAL(triggered()), SLOT(about()));
+    connect(m_ui->actionAboutQt, SIGNAL(triggered()), SLOT(aboutQt()));
+    connect(m_ui->actionPlay, SIGNAL(triggered()), SLOT(play()));
+    connect(m_ui->actionPause, SIGNAL(triggered()), SLOT(pause()));
+    connect(m_ui->actionStop, SIGNAL(triggered()), SLOT(stop()));
+    connect(m_ui->actionOpen, SIGNAL(triggered()), SLOT(open()));
+    connect(m_ui->actionMIDISetup, SIGNAL(triggered()), SLOT(setup()));
+    connect(m_ui->actionQuit, SIGNAL(triggered()), SLOT(quit()));
+    connect(m_ui->btnTempo, SIGNAL(clicked()), SLOT(tempoReset()));
+    connect(m_ui->btnVolume, SIGNAL(clicked()), SLOT(volumeReset()));
+    connect(m_ui->sliderTempo, SIGNAL(valueChanged(int)), SLOT(tempoSlider(int)));
+	connect(m_ui->volumeSlider, SIGNAL(valueChanged(int)), SLOT(volumeSlider(int)));
+	connect(m_ui->spinPitch, SIGNAL(valueChanged(int)), SLOT(pitchShift(int)));
+    connect(m_ui->toolBar->toggleViewAction(), SIGNAL(toggled(bool)),
+            m_ui->actionShowToolbar, SLOT(setChecked(bool)));
 
     m_Client = new MidiClient(this);
     m_Client->open();
@@ -182,6 +188,8 @@ GUIPlayer::GUIPlayer(QWidget *parent)
     connect(m_player, SIGNAL(stopped()), SLOT(playerStopped()));
 
     m_Client->startSequencerInput();
+    tempoReset();
+    volumeReset();
 }
 
 GUIPlayer::~GUIPlayer()
@@ -213,12 +221,7 @@ void GUIPlayer::updateTimeLabel(int mins, int secs, int cnts)
     QString stime = QString("%1:%2.%3").arg(mins,2,10,fill)
                                        .arg(secs,2,10,fill)
                                        .arg(cnts,2,10,fill);
-    ui.lblTime->setText(stime);
-}
-
-void GUIPlayer::about()
-{
-    aboutDlg.exec();
+    m_ui->lblTime->setText(stime);
 }
 
 void GUIPlayer::play()
@@ -237,6 +240,10 @@ void GUIPlayer::play()
             m_player->sendVolumeEvents();
         }
         m_player->start();
+        m_ui->actionPause->setEnabled(true);
+        m_ui->actionPause->setChecked(false);
+        m_ui->actionStop->setEnabled(true);
+        m_ui->actionStop->setChecked(false);
     }
 }
 
@@ -245,7 +252,13 @@ void GUIPlayer::pause()
     if (m_player->isRunning()) {
         m_player->stop();
         m_player->setPosition(m_Queue->getStatus().getTickTime());
+    } else {
+        m_player->start();
     }
+    m_ui->actionPlay->setEnabled(false);
+    m_ui->actionPlay->setChecked(false);
+    m_ui->actionStop->setEnabled(true);
+    m_ui->actionStop->setChecked(false);
 }
 
 void GUIPlayer::stop()
@@ -253,6 +266,10 @@ void GUIPlayer::stop()
     if (m_player->isRunning() && (m_initialTempo != 0)) {
         m_player->stop();
         songFinished();
+        m_ui->actionPlay->setEnabled(true);
+        m_ui->actionPlay->setChecked(false);
+        m_ui->actionPause->setEnabled(false);
+        m_ui->actionPause->setChecked(false);
     }
 }
 
@@ -276,19 +293,19 @@ void GUIPlayer::openFile(const QString& fileName)
                 m_smf->readFromFile(fileName);
             m_pd->setValue(finfo.size());
             if (m_song.isEmpty()) {
-                ui.lblName->clear();
-                ui.lblCopyright->clear();
+                m_ui->lblName->clear();
+                m_ui->lblCopyright->clear();
             } else {
                 m_song.sort();
                 m_player->setSong(&m_song);
-                ui.lblName->setText(finfo.fileName());
-                ui.lblCopyright->setText(m_song.getCopyright());
+                m_ui->lblName->setText(finfo.fileName());
+                m_ui->lblCopyright->setText(m_song.getCopyright());
                 m_lastDirectory = finfo.absolutePath();
             }
         } catch (...) {
             m_song.clear();
-            ui.lblName->clear();
-            ui.lblCopyright->clear();
+            m_ui->lblName->clear();
+            m_ui->lblCopyright->clear();
         }
         delete m_pd;
         if (m_initialTempo == 0) {
@@ -296,7 +313,7 @@ void GUIPlayer::openFile(const QString& fileName)
         }
         updateTimeLabel(0,0,0);
         updateTempoLabel(6.0e7f / m_initialTempo);
-        ui.progressBar->setValue(0);
+        m_ui->progressBar->setValue(0);
         if (!m_loadingMessages.isEmpty()) {
             m_loadingMessages.insert(0, "Warning, this file may be non-standard or damaged<br>");
             QMessageBox::warning(this, QSTR_APPNAME, m_loadingMessages);
@@ -340,7 +357,7 @@ void GUIPlayer::setup()
 void GUIPlayer::songFinished()
 {
     m_player->resetPosition();
-    ui.btnStop->setChecked(true);
+    //m_ui->btnStop->setChecked(true);
 }
 
 void GUIPlayer::playerStopped()
@@ -364,7 +381,7 @@ void GUIPlayer::playerStopped()
 void GUIPlayer::updateTempoLabel(float ftempo)
 {
     QString stempo = QString("%1 bpm").arg(ftempo, 0, 'f', 2);
-    ui.lblOther->setText(stempo);
+    m_ui->lblOther->setText(stempo);
 }
 
 void GUIPlayer::sequencerEvent(SequencerEvent *ev)
@@ -377,19 +394,9 @@ void GUIPlayer::sequencerEvent(SequencerEvent *ev)
         int cnts = floor( rt->tv_nsec / 1.0e7 );
         updateTempoLabel(m_Queue->getTempo().getRealBPM());
         updateTimeLabel(mins, secs, cnts);
-        ui.progressBar->setValue(pos);
+        m_ui->progressBar->setValue(pos);
     }
     delete ev;
-}
-
-
-void GUIPlayer::volumeSlider(int value)
-{
-    QString tip = QString::number(value)+'%';
-    ui.lblVolume->setText(tip);
-    ui.volumeSlider->setToolTip(tip);
-    m_player->setVolumeFactor(value);
-    QToolTip::showText(QCursor::pos(), tip, this);
 }
 
 void GUIPlayer::pitchShift(int value)
@@ -476,9 +483,14 @@ void GUIPlayer::errorHandler(const QString& errorStr)
 
 void GUIPlayer::tempoReset()
 {
-    ui.sliderTempo->setValue(100);
-    ui.sliderTempo->setToolTip("100%");
-    m_tempoFactor = 1.0;
+    m_ui->sliderTempo->setValue(100);
+    tempoSlider(100);
+}
+
+void GUIPlayer::volumeReset()
+{
+    m_ui->volumeSlider->setValue(100);
+    volumeSlider(100);
 }
 
 void GUIPlayer::tempoSlider(int value)
@@ -493,7 +505,16 @@ void GUIPlayer::tempoSlider(int value)
     }
     // Slider tooltip
     QString tip = QString("%1\%").arg(m_tempoFactor*100.0, 0, 'f', 0);
-    ui.sliderTempo->setToolTip(tip);
+    m_ui->sliderTempo->setToolTip(tip);
+    QToolTip::showText(QCursor::pos(), tip, this);
+}
+
+void GUIPlayer::volumeSlider(int value)
+{
+    QString tip = QString::number(value)+'%';
+    m_ui->lblVolume->setText(tip);
+    m_ui->volumeSlider->setToolTip(tip);
+    m_player->setVolumeFactor(value);
     QToolTip::showText(QCursor::pos(), tip, this);
 }
 
@@ -541,7 +562,7 @@ bool GUIPlayer::event( QEvent * event )
         }
         event->accept();
     }
-    return QWidget::event(event);
+    return QMainWindow::event(event);
 }
 
 void GUIPlayer::readSettings()
@@ -580,6 +601,16 @@ void GUIPlayer::closeEvent( QCloseEvent *event )
 {
     writeSettings();
     event->accept();
+}
+
+void GUIPlayer::about()
+{
+    aboutDlg.exec();
+}
+
+void GUIPlayer::aboutQt()
+{
+    qApp->aboutQt();
 }
 
 void GUIPlayer::updateSMFLoadProgress()
