@@ -1,5 +1,6 @@
 SET(guiplayer_forms_SRCS
     guiplayer.ui
+    playerabout.ui
 )
 
 SET(guiplayer_SRCS
@@ -9,11 +10,14 @@ SET(guiplayer_SRCS
     player.h
     song.cpp
     song.h
+    playerabout.cpp
+    playerabout.h
     playermain.cpp
 )
 
 SET(guiplayer_qtobject_SRCS
     player.h
+    playerabout.h
     guiplayer.h
 )
 

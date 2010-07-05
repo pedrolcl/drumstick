@@ -22,6 +22,7 @@
 
 #include "ui_guiplayer.h"
 #include "song.h"
+#include "playerabout.h"
 
 #include <QtGui/QWidget>
 #include <QtGui/QProgressDialog>
@@ -70,6 +71,7 @@ public:
     void writeSettings();
 
 public slots:
+    void about();
     void play();
     void pause();
     void stop();
@@ -159,6 +161,7 @@ private:
     Song m_song;
     Ui::GUIPlayerClass ui;
     QPointer<QProgressDialog> m_pd;
+    About aboutDlg;
 
     struct SysexEventRec {
         int track;

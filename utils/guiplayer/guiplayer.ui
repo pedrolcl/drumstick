@@ -18,7 +18,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="guiplayer.qrc">
-    <normaloff>:/resources/setup.png</normaloff>:/resources/setup.png</iconset>
+    <normaloff>:/resources/drumstick.png</normaloff>:/resources/drumstick.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <property name="margin">
@@ -273,11 +273,14 @@
        <height>20</height>
       </size>
      </property>
-     <property name="text">
-      <string>Vol.</string>
+     <property name="pixmap">
+      <pixmap resource="guiplayer.qrc">:/resources/vol.png</pixmap>
      </property>
      <property name="alignment">
-      <set>Qt::AlignHCenter|Qt::AlignTop</set>
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="buddy">
+      <cstring>volumeSlider</cstring>
      </property>
     </widget>
    </item>
@@ -541,6 +544,20 @@
       </widget>
      </item>
      <item>
+      <widget class="QToolButton" name="btnAbout">
+       <property name="text">
+        <string>about</string>
+       </property>
+       <property name="icon">
+        <iconset resource="guiplayer.qrc">
+         <normaloff>:/resources/about.png</normaloff>:/resources/about.png</iconset>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextUnderIcon</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QToolButton" name="btnExit">
        <property name="toolTip">
         <string>Quit</string>
@@ -562,6 +579,19 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>btnPlay</tabstop>
+  <tabstop>btnPause</tabstop>
+  <tabstop>btnStop</tabstop>
+  <tabstop>btnOpen</tabstop>
+  <tabstop>btnSetup</tabstop>
+  <tabstop>btnAbout</tabstop>
+  <tabstop>btnExit</tabstop>
+  <tabstop>spinPitch</tabstop>
+  <tabstop>sliderTempo</tabstop>
+  <tabstop>btnReset</tabstop>
+  <tabstop>volumeSlider</tabstop>
+ </tabstops>
  <resources>
   <include location="guiplayer.qrc"/>
  </resources>

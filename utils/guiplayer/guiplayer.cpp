@@ -51,6 +51,7 @@ GUIPlayer::GUIPlayer(QWidget *parent)
 {
 	ui.setupUi(this);
     tempoReset();
+    connect(ui.btnAbout, SIGNAL(clicked()), SLOT(about()));
     connect(ui.btnPlay, SIGNAL(clicked()), SLOT(play()));
     connect(ui.btnPause, SIGNAL(clicked()), SLOT(pause()));
     connect(ui.btnStop, SIGNAL(clicked()), SLOT(stop()));
@@ -213,6 +214,11 @@ void GUIPlayer::updateTimeLabel(int mins, int secs, int cnts)
                                        .arg(secs,2,10,fill)
                                        .arg(cnts,2,10,fill);
     ui.lblTime->setText(stime);
+}
+
+void GUIPlayer::about()
+{
+    aboutDlg.exec();
 }
 
 void GUIPlayer::play()
