@@ -49,7 +49,7 @@
     <refsect1 id="drumstick-playsmf.description">
         <title>Description</title>
         <para>
-        This program is a Drumstick example and test program. You can use it
+        This program is a Drumstick example and utility program. You can use it
         to play standard MIDI files without GUI controls.
         </para>
     </refsect1>

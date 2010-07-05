@@ -33,22 +33,22 @@
 
     <refnamediv>
         <refname>&product;</refname>
-        <refpurpose>A Drumstick GUI utility for playing standard MIDI files.</refpurpose>
+        <refpurpose>A Drumstick GUI utility for playing MIDI files.</refpurpose>
     </refnamediv>
 
     <refsynopsisdiv id="drumstick-guiplayer.synopsis">
         <title>Synopsis</title>
         <cmdsynopsis><command>&product;</command>
-            <arg choice="opt">FILE</arg>
             <arg choice="opt">options...</arg>
+            <arg choice="opt">FILE</arg>
         </cmdsynopsis>
     </refsynopsisdiv>
 
     <refsect1 id="drumstick-guiplayer.description">
         <title>Description</title>
         <para>
-        This program is a Drumstick example and test program. You can use it
-        to play Standard MIDI files with GUI controls.
+        This program is a Drumstick example and utility program. You can use it
+        to play Standard MIDI Files and Cakewalk WRK files with GUI controls.
         </para>
     </refsect1>
 
@@ -57,6 +57,13 @@
 
         <para>The following arguments are optional:</para>
         <variablelist>
+            <varlistentry>
+                <term><option>FILE</option></term>
+                <listitem>
+                <para>The name of the input SMF (mid/kar) or Cakewalk (wrk) file.</para>
+                </listitem>
+            </varlistentry>
+
             <varlistentry>
                 <term>
                     <option>-h|--help</option>
@@ -72,13 +79,6 @@
                 </term>
                 <listitem>
                     <para>Prints the program version number and exit.</para>
-                </listitem>
-            </varlistentry>
-
-            <varlistentry>
-                <term><option>FILE</option></term>
-                <listitem>
-                <para>The name of the input SMF.</para>
                 </listitem>
             </varlistentry>
 

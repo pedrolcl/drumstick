@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     CmdLineArgs args;
     args.setStdQtArgs(true);
     args.setUsage("[options] [file]");
-    args.addOptionalArgument("file", "Input SMF");
+    args.addOptionalArgument("file", "Input SMF (mid/kar) or Cakewalk (wrk) file");
     args.parse(a.argc(), a.argv());
     try {
         GUIPlayer w;

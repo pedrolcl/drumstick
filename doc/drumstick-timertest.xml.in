@@ -46,7 +46,7 @@
     <refsect1 id="drumstick-timertest.description">
         <title>Description</title>
         <para>
-        This program is a Drumstick example and test program. You can use it
+        This program is a Drumstick example and utility program. You can use it
         to report and test the available ALSA timers.
         </para>
     </refsect1>

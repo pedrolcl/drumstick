@@ -46,7 +46,7 @@
     <refsect1 id="drumstick-testevents.description">
         <title>Description</title>
         <para>
-        This program is a Drumstick example and test program. You can use it
+        This program is a Drumstick example and utility program. You can use it
         to test ALSA sequencer events.
         </para>
     </refsect1>

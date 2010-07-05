@@ -48,7 +48,7 @@
     <refsect1 id="drumstick-dumpsmf.description">
         <title>Description</title>
         <para>
-        This program is a Drumstick example and test program. You can use it
+        This program is a Drumstick example and utility program. You can use it
         to decode a standard MIDI file as text.
         </para>
     </refsect1>

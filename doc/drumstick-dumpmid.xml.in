@@ -48,7 +48,7 @@
     <refsect1 id="drumstick-dumpmid.description">
         <title>Description</title>
         <para>
-        This program is a Drumstick example and test program. You can use it
+        This program is a Drumstick example and utility program. You can use it
         to decode standard MIDI events as text.
         </para>
     </refsect1>

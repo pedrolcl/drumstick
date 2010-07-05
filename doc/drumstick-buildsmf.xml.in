@@ -49,7 +49,7 @@
     <refsect1 id="drumstick-buildsmf.description">
         <title>Description</title>
         <para>
-        This program is a Drumstick example and test program. You can use it
+        This program is a Drumstick example and utility program. You can use it
         to build a SMF containing a simple C Major scale, that could be used
         as input for other Drumstick utilities.
         </para>
