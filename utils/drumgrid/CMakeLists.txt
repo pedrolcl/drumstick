@@ -1,8 +1,11 @@
 SET(drumgrid_forms_SRCS
+    drumgridabout.ui
     drumgrid.ui
 )
 
 SET(drumgrid_SRCS
+    drumgridabout.cpp
+    drumgridabout.h
     drumgrid.cpp
     drumgrid.h
     drumgridmodel.cpp
@@ -11,6 +14,7 @@ SET(drumgrid_SRCS
 )
 
 SET(drumgrid_qtobject_SRCS
+    drumgridabout.h
     drumgridmodel.h
     drumgrid.h
 )

@@ -20,6 +20,8 @@
 #include "drumgrid.h"
 #include "drumgridmodel.h"
 #include "ui_drumgrid.h"
+#include "drumgridabout.h"
+
 #include <QtGui/QInputDialog>
 #include <QtGui/QShortcut>
 #include <QtGui/QToolTip>
@@ -57,6 +59,9 @@ DrumGrid::DrumGrid(QWidget *parent)
     m_ui->tempoSlider->setMaximum(TEMPO_MAX);
     m_ui->tempoSlider->setMinimum(TEMPO_MIN);
     m_ui->tempoSlider->setValue(m_bpm);
+
+    connect( m_ui->actionAbout, SIGNAL(triggered()), SLOT(slotAbout()));
+    connect( m_ui->actionAbout_Qt, SIGNAL(triggered()), SLOT(slotAboutQt()));
     connect( m_ui->actionQuit, SIGNAL(triggered()), SLOT(close()));
     connect( m_ui->actionConnect, SIGNAL(triggered()), SLOT(connectMidi()));
     connect( m_ui->startButton, SIGNAL(clicked()), SLOT(play()));
@@ -400,4 +405,14 @@ void DrumGrid::metronome_stop()
 void DrumGrid::updateDisplay(int /*bar*/, int beat)
 {
     m_ui->tableView->selectColumn(beat);
+}
+
+void DrumGrid::slotAbout()
+{
+    dlgAbout.exec();
+}
+
+void DrumGrid::slotAboutQt()
+{
+    qApp->aboutQt();
 }

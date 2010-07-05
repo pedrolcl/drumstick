@@ -17,11 +17,15 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
 
-#include "about.h"
+#include "vpianoabout.h"
+#include "cmdversion.h"
 
 About::About(QWidget *parent)
     : QDialog(parent)
 {
     ui.setupUi(this);
+    QString aboutText = ui.AboutTextView->toHtml();
+    aboutText.replace("%VERSION%", PGM_VERSION);
+    ui.AboutTextView->setHtml(aboutText);
 }
 

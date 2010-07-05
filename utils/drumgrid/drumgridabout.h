@@ -1,5 +1,5 @@
 /*
-    Virtual Piano test using the MIDI Sequencer C++ library 
+    Drumgrid test using the MIDI Sequencer C++ library
     Copyright (C) 2006-2010, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 #define ABOUT_H
 
 #include <QtGui/QDialog>
-#include "ui_about.h"
+#include "ui_drumgridabout.h"
 
 class About : public QDialog
 {

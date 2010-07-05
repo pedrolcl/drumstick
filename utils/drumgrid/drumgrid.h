@@ -20,6 +20,8 @@
 #ifndef DRUMGRID_H
 #define DRUMGRID_H
 
+#include "drumgridabout.h"
+
 #include <QtGui/QMainWindow>
 #include <QtGui/QShortcut>
 #include <QtGui/QCloseEvent>
@@ -94,6 +96,8 @@ public:
     int decodeVelocity(const QString drumVel);
 
 public slots:
+    void slotAbout();
+    void slotAboutQt();
     void updateView();
     void sequencerEvent(SequencerEvent *ev);
     void connectMidi();
@@ -120,6 +124,7 @@ private:
     QString m_subscription;
     QSignalMapper* m_mapper;
     QVector<QShortcut*> m_shortcuts;
+    About dlgAbout;
 
     int m_bar;
     int m_beat;

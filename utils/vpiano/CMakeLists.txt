@@ -1,5 +1,5 @@
 SET(vpiano_forms_SRCS
-    about.ui
+    vpianoabout.ui
     connections.ui
     preferences.ui
     vpiano.ui
@@ -18,8 +18,8 @@ SET(vpiano_SRCS
     keylabel.h
     rawkeybdapp.cpp
     rawkeybdapp.h
-    about.cpp
-    about.h
+    vpianoabout.cpp
+    vpianoabout.h
     connectionitem.h
     connections.cpp
     connections.h
@@ -33,7 +33,7 @@ SET(vpiano_SRCS
 SET(vpiano_qtobject_SRCS
     pianoscene.h
     pianokeybd.h
-    about.h
+    vpianoabout.h
     connections.h
     preferences.h
     vpiano.h

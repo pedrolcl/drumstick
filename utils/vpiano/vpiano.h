@@ -22,7 +22,7 @@
 
 #include <QMainWindow>
 #include "ui_vpiano.h"
-#include "about.h"
+#include "vpianoabout.h"
 #include "connections.h"
 #include "preferences.h"
 
