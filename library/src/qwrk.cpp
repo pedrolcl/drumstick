@@ -1066,11 +1066,12 @@ void QWrk::processNewTrack()
     Q_EMIT signalWRKNewTrack(name, track, channel, key, vel, port, selected, muted, loop);
     if (bank > -1)
         Q_EMIT signalWRKTrackBank(track, bank);
-    if (patch > -1)
+    if (patch > -1) {
         if (channel > -1)
             Q_EMIT signalWRKProgram(track, 0, channel, patch);
         else
             Q_EMIT signalWRKTrackPatch(track, patch);
+    }
 }
 
 void QWrk::processSoftVer()
