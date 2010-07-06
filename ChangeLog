@@ -1,3 +1,8 @@
+2010-07-07
+    * smfplayer renamed as guiplayer, with a new windows layout and
+      supporting Cakewalk WRK files playback
+    * release 0.4.0
+    
 2010-07-03
     * subdirectory "tests" renamed as "utils".
     * visibility attribute for public classes.

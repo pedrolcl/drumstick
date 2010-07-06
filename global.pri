@@ -1,1 +1,1 @@
-VERSION = 0.3.3svn
+VERSION = 0.4.0

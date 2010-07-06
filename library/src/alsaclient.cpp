@@ -47,8 +47,8 @@ namespace drumstick {
 /**
 @mainpage drumstick Documentation
 @author Copyright &copy; 2009-2010 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
-@date 2010-04-18
-@version 0.3.1
+@date 2010-07-07
+@version 0.4.0
 
 This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/
@@ -133,6 +133,10 @@ whose authors are:
 <li>Takashi Iwai &lt;tiwai AT suse.de&gt;</li>
 <li>Frank van de Pol &lt;fvdpol AT coil.demon.nl&gt;</li>
 </ul>
+
+@example drumgrid.cpp
+Simple drum patterns
+@include drumgrid.h
 
 @example dumpmid.cpp
 Print received sequencer events

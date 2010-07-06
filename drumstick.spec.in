@@ -110,6 +110,7 @@ make doxygen
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
+%suse_update_desktop_file -n drumstick-drumgrid Midi
 %suse_update_desktop_file -n drumstick-guiplayer Midi
 %suse_update_desktop_file -n drumstick-vpiano Midi
 
@@ -172,6 +173,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/html/*
 
 %changelog
+* Wed Jul 7 2010 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.4.0
+- New version
+
 * Thu Jun 10 2010 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.3.2
 - New version
 

@@ -22,6 +22,13 @@
 
 #include <qglobal.h>
 
+/**
+ * @file macros.h
+ * Drumstick visibility macros
+ * @defgroup Common Common Functionality
+ * @{
+ */
+
 #if defined(drumstick_alsa_EXPORTS) || defined(drumstick_file_EXPORTS)
 #define DRUMSTICK_EXPORT Q_DECL_EXPORT
 #else
@@ -31,5 +38,7 @@
 #define DRUMSTICK_EXPORT Q_DECL_EXPORT
 #endif
 #endif
+
+/** @} */
 
 #endif /* DRUMSTICK_MACROS_H */
