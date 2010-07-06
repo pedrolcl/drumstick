@@ -617,6 +617,7 @@ void GUIPlayer::readSettings()
 
     settings.beginGroup("Window");
     restoreGeometry(settings.value("Geometry").toByteArray());
+    restoreState(settings.value("State").toByteArray());
     settings.endGroup();
 
     settings.beginGroup("Preferences");
@@ -635,6 +636,7 @@ void GUIPlayer::writeSettings()
 
     settings.beginGroup("Window");
     settings.setValue("Geometry", saveGeometry());
+    settings.setValue("State", saveState());
     settings.endGroup();
 
     settings.beginGroup("Preferences");
