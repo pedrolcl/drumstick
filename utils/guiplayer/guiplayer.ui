@@ -155,6 +155,9 @@
         </disabled>
        </palette>
       </property>
+      <property name="statusTip">
+       <string>Playback time and current levels</string>
+      </property>
       <property name="autoFillBackground">
        <bool>true</bool>
       </property>
@@ -254,7 +257,7 @@
           <string>Pitch Control</string>
          </property>
          <property name="statusTip">
-          <string>Transpose pitch between -12 and +12 semitones</string>
+          <string>Pitch transpose between -12 and +12 semitones</string>
          </property>
          <property name="minimum">
           <number>-12</number>
@@ -355,7 +358,7 @@
          </sizepolicy>
         </property>
         <property name="statusTip">
-         <string>Currently loaded MIDI file</string>
+         <string>Currently loaded MIDI file name</string>
         </property>
         <property name="openExternalLinks">
          <bool>true</bool>
@@ -374,7 +377,7 @@
          </sizepolicy>
         </property>
         <property name="statusTip">
-         <string>Author or credits of the current MIDI file</string>
+         <string>Author and/or credits of the current MIDI file</string>
         </property>
         <property name="openExternalLinks">
          <bool>true</bool>
@@ -541,9 +544,6 @@
    </property>
   </action>
   <action name="actionPlay">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="icon">
     <iconset resource="guiplayer.qrc">
      <normaloff>:/resources/play.png</normaloff>:/resources/play.png</iconset>
@@ -563,7 +563,7 @@
     <bool>true</bool>
    </property>
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="guiplayer.qrc">
@@ -580,12 +580,6 @@
    </property>
   </action>
   <action name="actionStop">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
    <property name="icon">
     <iconset resource="guiplayer.qrc">
      <normaloff>:/resources/stop.png</normaloff>:/resources/stop.png</iconset>

@@ -20,9 +20,6 @@
 #ifndef INCLUDED_GUIPLAYER_H
 #define INCLUDED_GUIPLAYER_H
 
-#include "song.h"
-#include "playerabout.h"
-
 #include <QtGui/QMainWindow>
 #include <QtGui/QProgressDialog>
 #include <QtCore/QObject>
@@ -38,6 +35,7 @@ namespace drumstick {
     class MidiClient;
     class MidiPort;
     class MidiQueue;
+    class SequencerEvent;
 }
 
 namespace Ui {
@@ -45,11 +43,21 @@ namespace Ui {
 }
 
 class Player;
+class About;
+class Song;
 
 using namespace drumstick;
 
 const QString QSTR_DOMAIN("drumstick.sourceforge.net");
 const QString QSTR_APPNAME("GUIPlayer");
+
+enum PlayerState {
+    InvalidState,
+    EmptyState,
+    PlayingState,
+    PausedState,
+    StoppedState
+};
 
 class GUIPlayer : public QMainWindow
 {
@@ -72,6 +80,7 @@ public:
     void openFile(const QString& fileName);
     void readSettings();
     void writeSettings();
+    void updateState(PlayerState newState);
 
 public slots:
     void about();
@@ -151,6 +160,7 @@ private:
     int m_initialTempo;
     float m_tempoFactor;
     unsigned long m_tick;
+    PlayerState m_state;
 
     QSmf* m_smf;
     QWrk* m_wrk;
@@ -159,13 +169,13 @@ private:
     MidiQueue* m_Queue;
     Player* m_player;
     Ui::GUIPlayerClass* m_ui;
+    QPointer<QProgressDialog> m_pd;
+    QPointer<About> m_aboutDlg;
+    Song* m_song;
 
     QString m_subscription;
     QString m_lastDirectory;
     QString m_loadingMessages;
-    Song m_song;
-    QPointer<QProgressDialog> m_pd;
-    About aboutDlg;
 
     struct SysexEventRec {
         int track;

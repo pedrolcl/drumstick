@@ -18,8 +18,10 @@
 */
 
 #include "guiplayer.h"
-#include "player.h"
 #include "ui_guiplayer.h"
+#include "playerabout.h"
+#include "player.h"
+#include "song.h"
 
 #include "qsmf.h"
 #include "qwrk.h"
@@ -50,7 +52,17 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     m_initialTempo(0),
     m_tempoFactor(1.0),
     m_tick(0),
-    m_ui(new Ui::GUIPlayerClass)
+    m_state(InvalidState),
+    m_smf(0),
+    m_wrk(0),
+    m_Client(0),
+    m_Port(0),
+    m_Queue(0),
+    m_player(0),
+    m_ui(new Ui::GUIPlayerClass),
+    m_pd(0),
+    m_aboutDlg(0),
+    m_song(new Song)
 {
 	m_ui->setupUi(this);
     connect(m_ui->actionAbout, SIGNAL(triggered()), SLOT(about()));
@@ -190,6 +202,7 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     m_Client->startSequencerInput();
     tempoReset();
     volumeReset();
+    updateState(EmptyState);
 }
 
 GUIPlayer::~GUIPlayer()
@@ -224,15 +237,51 @@ void GUIPlayer::updateTimeLabel(int mins, int secs, int cnts)
     m_ui->lblTime->setText(stime);
 }
 
+void GUIPlayer::updateState(PlayerState newState)
+{
+    if (m_state == newState)
+        return;
+    switch (newState) {
+    case EmptyState:
+        m_ui->actionPlay->setEnabled(false);
+        m_ui->actionPause->setEnabled(false);
+        m_ui->actionStop->setEnabled(false);
+        statusBar()->showMessage("Please, load a song");
+        break;
+    case PlayingState:
+        m_ui->actionPlay->setEnabled(false);
+        m_ui->actionPause->setEnabled(true);
+        m_ui->actionStop->setEnabled(true);
+        statusBar()->showMessage("Playing");
+        break;
+    case PausedState:
+        m_ui->actionPlay->setEnabled(false);
+        m_ui->actionStop->setEnabled(true);
+        statusBar()->showMessage("Paused");
+        break;
+    case StoppedState:
+        m_ui->actionPause->setChecked(false);
+        m_ui->actionPause->setEnabled(false);
+        m_ui->actionStop->setEnabled(false);
+        m_ui->actionPlay->setEnabled(true);
+        statusBar()->showMessage("Stopped");
+        break;
+    default:
+        statusBar()->showMessage("Not initialized");
+        break;
+    }
+    m_state = newState;
+}
+
 void GUIPlayer::play()
 {
-    if (!m_song.isEmpty()) {
+    if (!m_song->isEmpty()) {
         if (m_player->getInitialPosition() == 0) {
             if (m_initialTempo == 0) {
                 return;
             }
             QueueTempo firstTempo = m_Queue->getTempo();
-            firstTempo.setPPQ(m_song.getDivision());
+            firstTempo.setPPQ(m_song->getDivision());
             firstTempo.setTempo(m_initialTempo);
             firstTempo.setTempoFactor(m_tempoFactor);
             m_Queue->setTempo(firstTempo);
@@ -240,10 +289,7 @@ void GUIPlayer::play()
             m_player->sendVolumeEvents();
         }
         m_player->start();
-        m_ui->actionPause->setEnabled(true);
-        m_ui->actionPause->setChecked(false);
-        m_ui->actionStop->setEnabled(true);
-        m_ui->actionStop->setChecked(false);
+        updateState(PlayingState);
     }
 }
 
@@ -252,32 +298,28 @@ void GUIPlayer::pause()
     if (m_player->isRunning()) {
         m_player->stop();
         m_player->setPosition(m_Queue->getStatus().getTickTime());
-    } else {
+        updateState(PausedState);
+    } else if (!m_song->isEmpty()) {
         m_player->start();
+        updateState(PlayingState);
     }
-    m_ui->actionPlay->setEnabled(false);
-    m_ui->actionPlay->setChecked(false);
-    m_ui->actionStop->setEnabled(true);
-    m_ui->actionStop->setChecked(false);
 }
 
 void GUIPlayer::stop()
 {
-    if (m_player->isRunning() && (m_initialTempo != 0)) {
+    if (m_player->isRunning())
         m_player->stop();
+    if (m_initialTempo != 0)
         songFinished();
-        m_ui->actionPlay->setEnabled(true);
-        m_ui->actionPlay->setChecked(false);
-        m_ui->actionPause->setEnabled(false);
-        m_ui->actionPause->setChecked(false);
-    }
+    else
+        updateState(StoppedState);
 }
 
 void GUIPlayer::openFile(const QString& fileName)
 {
     QFileInfo finfo(fileName);
     if (finfo.exists()) {
-        m_song.clear();
+        m_song->clear();
         m_loadingMessages.clear();
         m_tick = 0;
         m_initialTempo = 0;
@@ -292,18 +334,18 @@ void GUIPlayer::openFile(const QString& fileName)
             else if (ext == "mid" || ext == "kar")
                 m_smf->readFromFile(fileName);
             m_pd->setValue(finfo.size());
-            if (m_song.isEmpty()) {
+            if (m_song->isEmpty()) {
                 m_ui->lblName->clear();
                 m_ui->lblCopyright->clear();
             } else {
-                m_song.sort();
-                m_player->setSong(&m_song);
+                m_song->sort();
+                m_player->setSong(m_song);
                 m_ui->lblName->setText(finfo.fileName());
-                m_ui->lblCopyright->setText(m_song.getCopyright());
+                m_ui->lblCopyright->setText(m_song->getCopyright());
                 m_lastDirectory = finfo.absolutePath();
             }
         } catch (...) {
-            m_song.clear();
+            m_song->clear();
             m_ui->lblName->clear();
             m_ui->lblCopyright->clear();
         }
@@ -318,6 +360,10 @@ void GUIPlayer::openFile(const QString& fileName)
             m_loadingMessages.insert(0, "Warning, this file may be non-standard or damaged<br>");
             QMessageBox::warning(this, QSTR_APPNAME, m_loadingMessages);
         }
+        if (m_song->isEmpty())
+            updateState(EmptyState);
+        else
+            updateState(StoppedState);
     }
 }
 
@@ -357,7 +403,7 @@ void GUIPlayer::setup()
 void GUIPlayer::songFinished()
 {
     m_player->resetPosition();
-    //m_ui->btnStop->setChecked(true);
+    updateState(StoppedState);
 }
 
 void GUIPlayer::playerStopped()
@@ -406,7 +452,7 @@ void GUIPlayer::pitchShift(int value)
 
 void GUIPlayer::headerEvent(int format, int ntrks, int division)
 {
-    m_song.setHeader(format, ntrks, division);
+    m_song->setHeader(format, ntrks, division);
     updateSMFLoadProgress();
 }
 
@@ -460,7 +506,7 @@ void GUIPlayer::sysexEvent(const QByteArray& data)
 
 void GUIPlayer::textEvent(int type, const QString& data)
 {
-    m_song.addText(type, data);
+    m_song->addText(type, data);
     updateSMFLoadProgress();
 }
 
@@ -605,7 +651,9 @@ void GUIPlayer::closeEvent( QCloseEvent *event )
 
 void GUIPlayer::about()
 {
-    aboutDlg.exec();
+    if (m_aboutDlg == 0)
+        m_aboutDlg = new About(this);
+    m_aboutDlg->exec();
 }
 
 void GUIPlayer::aboutQt()
@@ -615,7 +663,7 @@ void GUIPlayer::aboutQt()
 
 void GUIPlayer::updateSMFLoadProgress()
 {
-    if (m_pd != NULL) {
+    if (m_pd != 0) {
         m_pd->setValue(m_smf->getFilePos());
     }
 }
@@ -628,7 +676,7 @@ void GUIPlayer::appendSMFEvent(SequencerEvent* ev)
         ev->setSubscribers();
     }
     ev->scheduleTick(m_queueId, tick, false);
-    m_song.append(ev);
+    m_song->append(ev);
     if (tick > m_tick)
         m_tick = tick;
     updateSMFLoadProgress();
@@ -640,7 +688,7 @@ void GUIPlayer::appendSMFEvent(SequencerEvent* ev)
 
 void GUIPlayer::updateWRKLoadProgress()
 {
-    if (m_pd != NULL) {
+    if (m_pd != 0) {
         m_pd->setValue(m_wrk->getFilePos());
     }
 }
@@ -653,7 +701,7 @@ GUIPlayer::appendWRKEvent(unsigned long ticks, int /*trck*/, SequencerEvent* ev)
         ev->setSubscribers();
     }
     ev->scheduleTick(m_queueId, ticks, false);
-    m_song.append(ev);
+    m_song->append(ev);
     if (ticks > m_tick)
         m_tick = ticks;
     updateWRKLoadProgress();
@@ -669,12 +717,12 @@ void GUIPlayer::errorHandlerWRK(const QString& errorStr)
 void GUIPlayer::fileHeader(int /*verh*/, int /*verl*/)
 {
     //fileFormat = QString("WRK file version %1.%2").arg(verh).arg(verl);
-    m_song.setHeader(1, 0, 120);
+    m_song->setHeader(1, 0, 120);
 }
 
 void GUIPlayer::timeBase(int timebase)
 {
-    m_song.setDivision(timebase);
+    m_song->setDivision(timebase);
 }
 
 void GUIPlayer::globalVars()
@@ -834,7 +882,7 @@ void GUIPlayer::timeSigEvent(int bar, int num, int den)
         if (!found) {
             TimeSigRec& lasts = m_bars.last();
             newts.time = lasts.time + ( lasts.num * 4 / lasts.den
-                * m_song.getDivision() * (bar - lasts.bar) );
+                * m_song->getDivision() * (bar - lasts.bar) );
             m_bars.append(newts);
         }
     }
