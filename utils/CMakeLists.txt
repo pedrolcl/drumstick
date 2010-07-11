@@ -24,11 +24,6 @@ INCLUDE_DIRECTORIES (
     ${CMAKE_CURRENT_BINARY_DIR}/common
 )
 
-LINK_DIRECTORIES (
-    ${QT_LIB_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 FILE(WRITE ${CMAKE_CURRENT_BINARY_DIR}/common/cmdversion.h
      "const QString PGM_VERSION(\"${VERSION}\");\n")
 
