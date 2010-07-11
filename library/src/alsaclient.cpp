@@ -1701,20 +1701,7 @@ MidiClient::SequencerInputThread::stop()
 void
 MidiClient::SequencerInputThread::start( Priority priority )
 {
-    int rc;
-    struct sched_param p;
-
     QThread::start(priority);
-
-    if ( priority == TimeCriticalPriority ) {
-        ::memset(&p, 0, sizeof(p));
-        p.sched_priority = 6;
-        rc = ::pthread_setschedparam(pthread_self(), SCHED_FIFO, &p);
-        if (rc != 0) {
-            qWarning() << "pthread_setschedparam to SCHED_FIFO failed, rc="
-                       << rc << ::strerror(rc);
-        }
-    }
 }
 
 /**
@@ -1726,6 +1713,18 @@ MidiClient::SequencerInputThread::run()
     unsigned long npfd;
     pollfd* pfd;
     int rt;
+    struct sched_param p;
+    Priority prio = priority();
+
+    if ( prio == TimeCriticalPriority ) {
+        ::memset(&p, 0, sizeof(p));
+        p.sched_priority = 6;
+        rt = ::pthread_setschedparam(::pthread_self(), SCHED_FIFO, &p);
+        if (rt != 0) {
+            qWarning() << "pthread_setschedparam(SCHED_FIFO) failed, err="
+                       << rt << ::strerror(rt);
+        }
+    }
 
     if (m_MidiClient != NULL) {
         npfd = snd_seq_poll_descriptors_count(m_MidiClient->getHandle(), POLLIN);

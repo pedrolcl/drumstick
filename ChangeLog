@@ -1,3 +1,10 @@
+2010-07-11
+    * Fixed bug in class SequencerInputThread: realtime priority must be applied 
+      in run() instead of start() to avoid changing the scheduling policy of the
+      parent. This is a problem when running FluidSynth in systems affected by a  
+      glib-2.22 bug that has not yet been fixed.
+      Reference: https://bugzilla.gnome.org/show_bug.cgi?id=599079  
+
 2010-07-07
     * smfplayer renamed as guiplayer, with a new windows layout and
       supporting Cakewalk WRK files playback
