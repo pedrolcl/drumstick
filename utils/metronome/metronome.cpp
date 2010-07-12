@@ -26,6 +26,8 @@
 #include <QTextStream>
 #include <QtAlgorithms>
 #include <QStringList>
+#include <QReadLocker>
+#include <QWriteLocker>
 
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 static QTextStream cerr(stderr, QIODevice::WriteOnly);
@@ -178,18 +180,15 @@ void Metronome::subscribe(const QString& portName)
 
 bool Metronome::stopped()
 {
-    m_mutex.lockForRead();
-    bool bTmp = m_Stopped;
-    m_mutex.unlock();
-    return bTmp;
+	QReadLocker locker(&m_mutex);
+    return m_Stopped;
 }
 
 void Metronome::stop()
 {
-    m_mutex.lockForWrite();
+	QWriteLocker locker(&m_mutex);
     m_Stopped = true;
     m_Client->dropOutput();
-    m_mutex.unlock();
 }
 
 void Metronome::shutupSound()

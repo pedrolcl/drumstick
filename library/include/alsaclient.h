@@ -215,8 +215,7 @@ private:
         virtual void run();
         bool stopped();
         void stop();
-        void start( Priority priority = InheritPriority );
-    private:
+
         MidiClient *m_MidiClient;
         int m_Wait;
         bool m_Stopped;

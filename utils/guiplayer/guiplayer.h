@@ -26,7 +26,6 @@
 #include <QtCore/QString>
 #include <QtCore/QList>
 #include <QtCore/QHash>
-#include <QtCore/QMutex>
 #include <QtCore/QPointer>
 
 namespace drumstick {

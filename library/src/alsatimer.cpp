@@ -18,6 +18,8 @@
 */
 
 #include "alsatimer.h"
+#include <QReadLocker>
+#include <QWriteLocker>
 #include <cmath>
 #include <cstdio>
 
@@ -1433,10 +1435,8 @@ Timer::TimerInputThread::run()
 bool
 Timer::TimerInputThread::stopped()
 {
-    m_mutex.lockForRead();
-    bool bTmp = m_Stopped;
-    m_mutex.unlock();
-    return  bTmp;
+	QReadLocker locker(&m_mutex);
+    return m_Stopped;
 }
 
 /**
@@ -1445,9 +1445,8 @@ Timer::TimerInputThread::stopped()
 void
 Timer::TimerInputThread::stop()
 {
-    m_mutex.lockForWrite();
+	QWriteLocker locker(&m_mutex);
     m_Stopped = true;
-    m_mutex.unlock();
 }
 
 } /* namespace drumstick */

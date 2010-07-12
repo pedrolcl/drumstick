@@ -26,6 +26,8 @@
 #include <QApplication>
 #include <QTextStream>
 #include <QtDebug>
+#include <QReadLocker>
+#include <QWriteLocker>
 
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 static QTextStream cerr(stderr, QIODevice::WriteOnly);
@@ -71,18 +73,15 @@ QDumpMIDI::~QDumpMIDI()
 bool
 QDumpMIDI::stopped()
 {
-    m_mutex.lockForRead();
-    bool bTmp = m_Stopped;
-    m_mutex.unlock();
-    return bTmp;
+	QReadLocker locker(&m_mutex);
+    return m_Stopped;
 }
 
 void
 QDumpMIDI::stop()
 {
-    m_mutex.lockForWrite();
-    m_Stopped = true;
-    m_mutex.unlock();
+	QWriteLocker locker(&m_mutex);
+	m_Stopped = true;
 }
 
 void

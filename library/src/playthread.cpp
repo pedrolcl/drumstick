@@ -20,6 +20,8 @@
 #include "playthread.h"
 #include "alsaclient.h"
 #include "alsaqueue.h"
+#include <QReadLocker>
+#include <QWriteLocker>
 
 /**
  * @file playthread.cpp
@@ -82,10 +84,8 @@ SequencerOutputThread::SequencerOutputThread(MidiClient *seq, int portId)
 bool
 SequencerOutputThread::stopRequested()
 {
-    m_mutex.lockForRead();
-    bool bTmp = m_Stopped;
-    m_mutex.unlock();
-    return  bTmp;
+	QReadLocker locker(&m_mutex);
+    return m_Stopped;
 }
 
 /**
@@ -94,9 +94,9 @@ SequencerOutputThread::stopRequested()
 void
 SequencerOutputThread::stop()
 {
-    m_mutex.lockForWrite();
+	QWriteLocker locker(&m_mutex);
     m_Stopped = true;
-    m_mutex.unlock();
+    locker.unlock();
     while (isRunning())
         wait(TIMEOUT);
 }
@@ -214,10 +214,9 @@ void SequencerOutputThread::run()
  */
 void SequencerOutputThread::start( Priority priority )
 {
-    m_mutex.lockForWrite();
+	QWriteLocker locker(&m_mutex);
     m_Stopped = false;
     QThread::start( priority );
-    m_mutex.unlock();
 }
 
 } /* namespace drumstick */

@@ -23,6 +23,8 @@
 #include <QFile>
 #include <QRegExp>
 #include <QThread>
+#include <QReadLocker>
+#include <QWriteLocker>
 #include <pthread.h>
 
 /**
@@ -1676,10 +1678,8 @@ MidiClient::parseAddress( const QString& straddr, snd_seq_addr& addr )
 bool
 MidiClient::SequencerInputThread::stopped()
 {
-    m_mutex.lockForRead();
-    bool bTmp = m_Stopped;
-    m_mutex.unlock();
-    return  bTmp;
+	QReadLocker locker(&m_mutex);
+    return m_Stopped;
 }
 
 /**
@@ -1688,20 +1688,8 @@ MidiClient::SequencerInputThread::stopped()
 void
 MidiClient::SequencerInputThread::stop()
 {
-    m_mutex.lockForWrite();
+	QWriteLocker locker(&m_mutex);
     m_Stopped = true;
-    m_mutex.unlock();
-}
-
-/**
- * Starts the input thread.
- * @param priority the thread priority, default is InheritPriority
- * @since 0.2.0
- */
-void
-MidiClient::SequencerInputThread::start( Priority priority )
-{
-    QThread::start(priority);
 }
 
 /**
