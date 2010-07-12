@@ -81,6 +81,9 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     connect(m_ui->toolBar->toggleViewAction(), SIGNAL(toggled(bool)),
             m_ui->actionShowToolbar, SLOT(setChecked(bool)));
 
+    m_ui->actionPlay->setShortcut( Qt::Key_MediaPlay );
+    m_ui->actionStop->setShortcut( Qt::Key_MediaStop );
+
     m_Client = new MidiClient(this);
     m_Client->open();
     m_Client->setPoolOutput(20); // tiny size, for near real-time pitchShift

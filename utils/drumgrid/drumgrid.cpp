@@ -55,7 +55,9 @@ DrumGrid::DrumGrid(QWidget *parent)
 {
     m_ui->setupUi(this);
     m_ui->startButton->setIcon(style()->standardIcon(QStyle::StandardPixmap(QStyle::SP_MediaPlay)));
+    m_ui->startButton->setShortcut(Qt::Key_MediaPlay);
     m_ui->stopButton->setIcon(style()->standardIcon(QStyle::StandardPixmap(QStyle::SP_MediaStop)));
+    m_ui->stopButton->setShortcut(Qt::Key_MediaStop);
     m_ui->tempoSlider->setMaximum(TEMPO_MAX);
     m_ui->tempoSlider->setMinimum(TEMPO_MIN);
     m_ui->tempoSlider->setValue(m_bpm);
