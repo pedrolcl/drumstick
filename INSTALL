@@ -58,9 +58,6 @@ Optional CMake parameters
     -DSTATIC_DRUMSTICK=NO|OFF|0
     Build a dynamic library (default)
 
-    -DENABLE_PCH=YES|ON|NO|OFF|1|0
-    Build utils using precompiled headers (faster compilation)
-
     -DCMAKE_BUILD_TYPE=Debug 
     Compile with debug flags enabled
 

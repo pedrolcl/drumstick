@@ -14,10 +14,6 @@ ADD_EXECUTABLE(drumstick-testevents
     ${testevents_SRCS}
 )
 
-IF(USE_PCH)
-    ADD_DEPENDENCIES(drumstick-testevents precompiled_headers)
-ENDIF(USE_PCH)
-
 TARGET_LINK_LIBRARIES(drumstick-testevents
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 

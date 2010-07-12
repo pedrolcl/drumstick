@@ -34,10 +34,6 @@ ADD_EXECUTABLE(drumstick-guiplayer
     ${guiplayer_SRCS}
 )
 
-IF(USE_PCH)
-    ADD_DEPENDENCIES(drumstick-guiplayer precompiled_headers)
-ENDIF(USE_PCH)
-
 TARGET_LINK_LIBRARIES(drumstick-guiplayer
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 

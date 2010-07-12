@@ -14,10 +14,6 @@ ADD_EXECUTABLE(drumstick-buildsmf
     ${buildsmf_SRCS}
 )
 
-IF(USE_PCH)
-    ADD_DEPENDENCIES(drumstick-buildsmf precompiled_headers)
-ENDIF(USE_PCH)
-
 TARGET_LINK_LIBRARIES(drumstick-buildsmf
     ${QT_LIBRARIES} 
     drumstick-common

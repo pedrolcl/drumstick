@@ -14,10 +14,6 @@ ADD_EXECUTABLE(drumstick-dumpwrk
     ${dumpwrk_SRCS}
 )
 
-IF(USE_PCH)
-    ADD_DEPENDENCIES(drumstick-dumpwrk precompiled_headers)
-ENDIF(USE_PCH)
-
 TARGET_LINK_LIBRARIES(drumstick-dumpwrk
     ${QT_LIBRARIES} 
     drumstick-common

@@ -14,10 +14,6 @@ ADD_EXECUTABLE(drumstick-dumpmid
     ${dumpmid_SRCS}
 )
 
-IF(USE_PCH)
-    ADD_DEPENDENCIES(drumstick-dumpmid precompiled_headers)
-ENDIF(USE_PCH)
-
 TARGET_LINK_LIBRARIES(drumstick-dumpmid
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 

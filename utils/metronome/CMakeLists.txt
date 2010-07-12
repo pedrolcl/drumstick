@@ -14,10 +14,6 @@ ADD_EXECUTABLE(drumstick-metronome
     ${metronome_SRCS}
 )
 
-IF(USE_PCH)
-    ADD_DEPENDENCIES(drumstick-metronome precompiled_headers)
-ENDIF(USE_PCH)
-
 TARGET_LINK_LIBRARIES(drumstick-metronome
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 

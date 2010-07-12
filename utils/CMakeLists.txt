@@ -19,6 +19,7 @@
 # common settings
 
 INCLUDE_DIRECTORIES ( 
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/common
     ${CMAKE_CURRENT_BINARY_DIR}/common
@@ -26,10 +27,6 @@ INCLUDE_DIRECTORIES (
 
 FILE(WRITE ${CMAKE_CURRENT_BINARY_DIR}/common/cmdversion.h
      "const QString PGM_VERSION(\"${VERSION}\");\n")
-
-IF(USE_PCH)
-    ADD_PRECOMPILED_HEADER(precompiled_headers stableheaders.h)
-ENDIF(USE_PCH)
 
 ADD_SUBDIRECTORY(common)
 ADD_SUBDIRECTORY(buildsmf)

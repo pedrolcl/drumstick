@@ -49,10 +49,6 @@ ADD_EXECUTABLE(drumstick-vpiano
     ${vpiano_SRCS}
 )
 
-IF(USE_PCH)
-    ADD_DEPENDENCIES(drumstick-vpiano precompiled_headers)
-ENDIF(USE_PCH)
-
 TARGET_LINK_LIBRARIES(drumstick-vpiano
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 

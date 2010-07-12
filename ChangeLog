@@ -1,3 +1,6 @@
+2010-07-12
+    * removed PCH build option
+    
 2010-07-11
     * Fixed bug in class SequencerInputThread: realtime priority must be applied 
       in run() instead of start() to avoid changing the scheduling policy of the

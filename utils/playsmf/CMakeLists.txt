@@ -14,10 +14,6 @@ ADD_EXECUTABLE(drumstick-playsmf
     ${playsmf_SRCS}
 )
 
-IF(USE_PCH)
-    ADD_DEPENDENCIES(drumstick-playsmf precompiled_headers)
-ENDIF(USE_PCH)
-
 TARGET_LINK_LIBRARIES(drumstick-playsmf
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 

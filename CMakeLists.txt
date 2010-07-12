@@ -52,14 +52,13 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_admin")
 SET (VERSION_MAJOR "0")
 SET (VERSION_MINOR "4")
 SET (VERSION_PATCH "1")
-SET (VERSION_SUFFIX "svn")
+SET (VERSION_SUFFIX "")
 SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 
 MESSAGE(STATUS "drumstick ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
 
 # User options
 OPTION(STATIC_DRUMSTICK "Build a static library (.a) instead of dynamic (.so)" OFF)
-OPTION(ENABLE_PCH "Build using precompiled headers" OFF)
 
 MESSAGE(STATUS "Build configuration: ${CMAKE_BUILD_TYPE}")
 
@@ -120,17 +119,6 @@ INCLUDE_DIRECTORIES ( BEFORE
     ${DRUMSTICK_SOURCE_DIR}/library/include
     ${ALSA_INC_DIR}
 )
-
-# Check GCC for PCH support
-SET(USE_PCH FALSE)
-IF(ENABLE_PCH)
-    FIND_PACKAGE(PCHSupport)
-    IF(PCHSupport_FOUND)
-        SET(USE_PCH TRUE)
-        ADD_DEFINITIONS(-DUSE_PCH)
-        MESSAGE(STATUS "Enabling precompiled headers for GCC ${gcc_compiler_version}") 
-    ENDIF(PCHSupport_FOUND)
-ENDIF(ENABLE_PCH)
 
 SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed")
 

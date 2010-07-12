@@ -14,10 +14,6 @@ ADD_EXECUTABLE(drumstick-timertest
     ${timertest_moc_SRCS}
 )
 
-IF(USE_PCH)
-    ADD_DEPENDENCIES(drumstick-timertest precompiled_headers)
-ENDIF(USE_PCH)
-
 TARGET_LINK_LIBRARIES(drumstick-timertest
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 

@@ -29,10 +29,6 @@ ADD_EXECUTABLE(drumstick-drumgrid
     ${drumgrid_SRCS}
 )
 
-IF(USE_PCH)
-    ADD_DEPENDENCIES(drumstick-drumgrid precompiled_headers)
-ENDIF(USE_PCH)
-
 TARGET_LINK_LIBRARIES(drumstick-drumgrid
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
