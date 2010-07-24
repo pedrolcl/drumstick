@@ -29,14 +29,20 @@
  * @{
  */
 
-#if defined(drumstick_alsa_EXPORTS) || defined(drumstick_file_EXPORTS)
-#define DRUMSTICK_EXPORT Q_DECL_EXPORT
-#else
-#if defined(Q_WS_WIN)
-#define DRUMSTICK_EXPORT Q_DECL_IMPORT
-#else
-#define DRUMSTICK_EXPORT Q_DECL_EXPORT
-#endif
+#if !defined(DRUMSTICK_EXPORT) 
+#  if defined(DRUMSTICK_STATIC)
+#    define DRUMSTICK_EXPORT
+#  else
+#    if defined(drumstick_alsa_EXPORTS) || defined(drumstick_file_EXPORTS)
+#      define DRUMSTICK_EXPORT Q_DECL_EXPORT
+#    else
+#      if defined(Q_WS_WIN)
+#        define DRUMSTICK_EXPORT Q_DECL_IMPORT
+#      else
+#        define DRUMSTICK_EXPORT Q_DECL_EXPORT
+#      endif
+#    endif
+#  endif
 #endif
 
 /** @} */
