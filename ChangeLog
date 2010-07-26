@@ -1,5 +1,9 @@
+2010-07-24
+    * Fixed static build support
+
 2010-07-12
     * removed PCH build option
+    * release 0.4.1
     
 2010-07-11
     * Fixed bug in class SequencerInputThread: realtime priority must be applied 

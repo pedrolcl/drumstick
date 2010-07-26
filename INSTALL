@@ -53,10 +53,10 @@ Optional CMake parameters
 -------------------------
 
     -DSTATIC_DRUMSTICK=YES|ON|1 
-    Build a static library instead of a shared object
+    Build static libraries instead of a shared object
 
     -DSTATIC_DRUMSTICK=NO|OFF|0
-    Build a dynamic library (default)
+    Build dynamic libraries (default)
 
     -DCMAKE_BUILD_TYPE=Debug 
     Compile with debug flags enabled
