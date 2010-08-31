@@ -112,6 +112,9 @@
            </citerefentry>, <citerefentry>
                <refentrytitle>drumstick-dumpwrk</refentrytitle>
                <manvolnum>1</manvolnum>
+           </citerefentry>, <citerefentry>
+               <refentrytitle>drumstick-dumpove</refentrytitle>
+               <manvolnum>1</manvolnum>
            </citerefentry>
         </para>
     </refsect1>

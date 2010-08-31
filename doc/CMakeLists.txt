@@ -23,6 +23,8 @@ IF(XSLTPROC_EXECUTABLE)
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-drumgrid.xml IMMEDIATE @ONLY)
     CONFIGURE_FILE(drumstick-dumpmid.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpmid.xml IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick-dumpove.xml.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpove.xml IMMEDIATE @ONLY)
     CONFIGURE_FILE(drumstick-dumpsmf.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpsmf.xml IMMEDIATE @ONLY)
     CONFIGURE_FILE(drumstick-dumpwrk.xml.in 
@@ -46,6 +48,7 @@ IF(XSLTPROC_EXECUTABLE)
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-buildsmf.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-drumgrid.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpmid.xml
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpove.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpsmf.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpwrk.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-metronome.xml
