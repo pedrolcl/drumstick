@@ -28,17 +28,20 @@ INCLUDE_DIRECTORIES(
 SET(drumstick-file_QTOBJ_SRCS
     include/qsmf.h
     include/qwrk.h
+    include/qove.h
 )
 
 SET(drumstick-file_HEADERS
     include/macros.h
     include/qsmf.h
     include/qwrk.h
+    include/qove.h
 )
 
 SET(drumstick-file_SRCS
     src/qsmf.cpp
     src/qwrk.cpp
+    src/qove.cpp
 )
 
 QT4_WRAP_CPP(drumstick-file_MOC_SRCS ${drumstick-file_QTOBJ_SRCS})

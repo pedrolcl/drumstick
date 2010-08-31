@@ -25,6 +25,7 @@
 
 #include "qsmf.h"
 #include "qwrk.h"
+#include "qove.h"
 #include "alsaevent.h"
 #include "alsaclient.h"
 #include "alsaqueue.h"
@@ -55,6 +56,7 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     m_state(InvalidState),
     m_smf(0),
     m_wrk(0),
+    m_ove(0),
     m_Client(0),
     m_Port(0),
     m_Queue(0),
@@ -198,6 +200,52 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     connect(m_wrk, SIGNAL(signalWRKExpression(int,long,int,const QString&)),
                    SLOT(expression(int,long,int,const QString&)));
 
+    m_ove = new QOve(this);
+    connect(m_ove, SIGNAL(signalOVEError(const QString&)),
+                   SLOT(errorHandlerWRK(const QString&)));
+    connect(m_ove, SIGNAL(signalOVEHeader(int,int)),
+                   SLOT(oveFileHeader(int,int)));
+    connect(m_ove, SIGNAL(signalOVEEnd()),
+                   SLOT(endOfWrk()));
+    connect(m_ove, SIGNAL(signalOVENoteOn(int, long, int, int, int)),
+				   SLOT(oveNoteOnEvent(int, long, int, int, int)));
+    connect(m_ove, SIGNAL(signalOVENoteOff(int, long, int, int, int)),
+    				   SLOT(oveNoteOffEvent(int, long, int, int, int)));
+    connect(m_ove, SIGNAL(signalOVEKeyPress(int,long,int,int,int)),
+                   SLOT(keyPressEvent(int,long,int,int,int)));
+    connect(m_ove, SIGNAL(signalOVECtlChange(int,long,int,int,int)),
+                   SLOT(ctlChangeEvent(int,long,int,int,int)));
+    connect(m_ove, SIGNAL(signalOVEPitchBend(int,long,int,int)),
+                   SLOT(pitchBendEvent(int,long,int,int)));
+    connect(m_ove, SIGNAL(signalOVEProgram(int,long,int,int)),
+                   SLOT(programEvent(int,long,int,int)));
+    connect(m_ove, SIGNAL(signalOVEChanPress(int,long,int,int)),
+                   SLOT(chanPressEvent(int,long,int,int)));
+    connect(m_ove, SIGNAL(signalOVESysexEvent(int,long,int)),
+                   SLOT(sysexEvent(int,long,int)));
+    connect(m_ove, SIGNAL(signalOVESysex(int,const QString&,bool,int,const QByteArray&)),
+                   SLOT(sysexEventBank(int,const QString&,bool,int,const QByteArray&)));
+    connect(m_ove, SIGNAL(signalOVEText(int,long,const QString&)),
+                   SLOT(oveLyricEvent(int,long,const QString&)));
+    connect(m_ove, SIGNAL(signalOVETimeSig(int,long,int,int)),
+                   SLOT(oveTimeSigEvent(int,long,int,int)));
+    connect(m_ove, SIGNAL(signalOVEKeySig(int,long,int)),
+                   SLOT(oveKeySigEvent(int,long,int)));
+    connect(m_ove, SIGNAL(signalOVETempo(long,int)),
+                   SLOT(tempoEvent(long,int)));
+    connect(m_ove, SIGNAL(signalOVETrackPatch(int,int,int)),
+                   SLOT(oveTrackPatch(int,int,int)));
+    connect(m_ove, SIGNAL(signalOVENewTrack(const QString&,int,int,int,int,int,bool,bool,bool)),
+                   SLOT(newTrackHeader(const QString&,int,int,int,int,int,bool,bool,bool)));
+    connect(m_ove, SIGNAL(signalOVETrackVol(int,int,int)),
+                   SLOT(trackVol(int,int)));
+    connect(m_ove, SIGNAL(signalOVETrackBank(int,int,int)),
+                   SLOT(oveTrackBank(int,int,int)));
+    connect(m_ove, SIGNAL(signalOVEChord(int,long,const QString&,const QByteArray&)),
+                   SLOT(chord(int,long,const QString&,const QByteArray&)));
+    connect(m_ove, SIGNAL(signalOVEExpression(int,long,int,const QString&)),
+                   SLOT(expression(int,long,int,const QString&)));
+
     m_player = new Player(m_Client, m_portId);
     connect(m_player, SIGNAL(finished()), SLOT(songFinished()));
     connect(m_player, SIGNAL(stopped()), SLOT(playerStopped()));
@@ -332,10 +380,18 @@ void GUIPlayer::openFile(const QString& fileName)
             m_pd->setMinimumDuration(1000);
             m_pd->setValue(0);
             QString ext = finfo.suffix().toLower();
-            if (ext == "wrk")
+            if (ext == "wrk") {
+            	m_fileType = FileType_WRK;
                 m_wrk->readFromFile(fileName);
-            else if (ext == "mid" || ext == "kar")
+            }
+            else if (ext == "mid" || ext == "midi" || ext == "kar") {
+            	m_fileType = FileType_SMF;
                 m_smf->readFromFile(fileName);
+            }
+            else if (ext == "ove") {
+            	m_fileType = FileType_OVE;
+            	m_ove->readFromFile(fileName);
+            }
             m_pd->setValue(finfo.size());
             if (m_song->isEmpty()) {
                 m_ui->lblName->clear();
@@ -374,6 +430,7 @@ void GUIPlayer::open()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
           "Open MIDI File", m_lastDirectory,
+          "Overture Files (*.ove);;"
           "MIDI Files (*.mid *.midi);;"
           "Karaoke files (*.kar);;"
           "Cakewalk files (*.wrk);;"
@@ -586,7 +643,8 @@ void GUIPlayer::dropEvent( QDropEvent * event )
     QString data = event->mimeData()->text();
     QString fileName = QUrl(data).path().trimmed();
     while (fileName.endsWith(QChar::Null)) fileName.chop(1);
-    if ( fileName.endsWith(".mid", Qt::CaseInsensitive) ||
+    if ( fileName.endsWith(".ove", Qt::CaseInsensitive) ||
+    	 fileName.endsWith(".mid", Qt::CaseInsensitive) ||
          fileName.endsWith(".midi", Qt::CaseInsensitive) ||
          fileName.endsWith(".kar", Qt::CaseInsensitive) ||
          fileName.endsWith(".wrk", Qt::CaseInsensitive) ) {
@@ -694,7 +752,18 @@ void GUIPlayer::appendSMFEvent(SequencerEvent* ev)
 void GUIPlayer::updateWRKLoadProgress()
 {
     if (m_pd != 0) {
-        m_pd->setValue(m_wrk->getFilePos());
+    	switch (m_fileType) {
+    	case FileType_WRK : {
+    		m_pd->setValue(m_wrk->getFilePos());
+    		break;
+    	}
+    	case FileType_OVE : {
+    		//m_pd->setValue(m_wrk->getFilePos());
+    		break;
+    	}
+    	default:
+    		break;
+    	}
     }
 }
 
@@ -1047,4 +1116,131 @@ void GUIPlayer::unknownChunk(int /*type*/, const QByteArray& /*data*/)
     /*qDebug() << "dec:" << type
              << "hex:" << hex << type << dec
              << "size:" << data.length();*/
+}
+
+void GUIPlayer::oveFileHeader(int quarter, int trackCount) {
+	m_song->setHeader(1, trackCount, quarter);
+}
+
+void GUIPlayer::oveNoteOnEvent(int track, long tick, int channel, int pitch, int vol) {
+    SequencerEvent* ev = new NoteOnEvent(channel, pitch, vol);
+    ev->setSource(m_portId);
+    if (ev->getSequencerType() != SND_SEQ_EVENT_TEMPO) {
+        ev->setSubscribers();
+    }
+    ev->scheduleTick(m_queueId, tick, false);
+    m_song->append(ev);
+    if (tick > m_tick)
+        m_tick = tick;
+}
+
+void GUIPlayer::oveNoteOffEvent(int track, long tick, int channel, int pitch, int vol) {
+    SequencerEvent* ev = new NoteOffEvent(channel, pitch, vol);
+    ev->setSource(m_portId);
+    if (ev->getSequencerType() != SND_SEQ_EVENT_TEMPO) {
+        ev->setSubscribers();
+    }
+    ev->scheduleTick(m_queueId, tick, false);
+    m_song->append(ev);
+    if (tick > m_tick)
+        m_tick = tick;
+}
+
+void GUIPlayer::oveTimeSigEvent(int bar, long tick, int num, int den)
+{
+    SequencerEvent* ev = new SequencerEvent();
+    ev->setSequencerType(SND_SEQ_EVENT_TIMESIGN);
+    int div, d = den;
+    for ( div = 0; d > 1; d /= 2 )
+        ++div;
+    ev->setRaw8(0, num);
+    ev->setRaw8(1, div);
+    ev->setRaw8(2, 24 * 4 / den);
+    ev->setRaw8(3, 8);
+
+    TimeSigRec newts;
+    newts.bar = bar;
+    newts.num = num;
+    newts.den = den;
+    newts.time = 0;
+    if (m_bars.isEmpty()) {
+        m_bars.append(newts);
+    } else {
+        bool found = false;
+        foreach(const TimeSigRec& ts, m_bars) {
+            if (ts.bar == bar) {
+                newts.time = ts.time;
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            TimeSigRec& lasts = m_bars.last();
+            newts.time = lasts.time + ( lasts.num * 4 / lasts.den
+                * m_song->getDivision() * (bar - lasts.bar) );
+            m_bars.append(newts);
+        }
+    }
+    appendWRKEvent(newts.time, 0, ev);
+}
+
+void GUIPlayer::oveKeySigEvent(int bar, long tick, int alt)
+{
+    SequencerEvent* ev = new SequencerEvent();
+    ev->setSequencerType(SND_SEQ_EVENT_KEYSIGN);
+    ev->setRaw8(0, alt);
+    long time = 0;
+    foreach(const TimeSigRec& ts, m_bars) {
+        if (ts.bar == bar) {
+            time = ts.time;
+            break;
+        }
+    }
+    appendWRKEvent(time, 0, ev);
+}
+
+void GUIPlayer::oveTrackPatch(int track, int channel, int patch)
+{
+    int ch = 0;
+    TrackMapRec rec = m_trackMap[track];
+    if (rec.channel > -1)
+        ch = rec.channel;
+    programEvent(track, 0, ch, patch);
+}
+
+void GUIPlayer::oveTrackVol(int track, int channel, int vol)
+{
+    int ch = 0;
+    int lsb, msb;
+    TrackMapRec rec = m_trackMap[track];
+    if (rec.channel > -1)
+        ch = rec.channel;
+    if (vol < 128)
+        ctlChangeEvent(track, 0, ch, MIDI_CTL_MSB_MAIN_VOLUME, vol);
+    else {
+        lsb = vol % 0x80;
+        msb = vol / 0x80;
+        ctlChangeEvent(track, 0, ch, MIDI_CTL_LSB_MAIN_VOLUME, lsb);
+        ctlChangeEvent(track, 0, ch, MIDI_CTL_MSB_MAIN_VOLUME, msb);
+    }
+}
+
+void GUIPlayer::oveTrackBank(int track, int channel, int bank)
+{
+    // assume GM/GS bank method
+    int ch = 0;
+    int lsb, msb;
+    TrackMapRec rec = m_trackMap[track];
+    if (rec.channel > -1)
+        ch = rec.channel;
+    lsb = bank % 0x80;
+    msb = bank / 0x80;
+    ctlChangeEvent(track, 0, ch, MIDI_CTL_MSB_BANK, msb);
+    ctlChangeEvent(track, 0, ch, MIDI_CTL_LSB_BANK, lsb);
+}
+
+void GUIPlayer::oveLyricEvent(int track, long tick, const QString& data)
+{
+    SequencerEvent* ev = new TextEvent(data, 9);
+    appendWRKEvent(tick, track, ev);
 }

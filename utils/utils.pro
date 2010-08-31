@@ -7,6 +7,7 @@ win32 {
     system(echo $$VERSIONH > ../build/common/cmdversion.h)
     SUBDIRS += common \ 
            buildsmf \
+           dumpove \
            dumpsmf \
            dumpwrk
 }
@@ -14,15 +15,16 @@ linux* {
     system(echo \'$$VERSIONH\' > ../build/common/cmdversion.h)
     SUBDIRS += common \ 
            buildsmf \
+           drumgrid \
            dumpmid \
+           dumpove \
            dumpsmf \
-           playsmf \
+           dumpwrk \
            guiplayer \
+           metronome \
+           playsmf \
            sysinfo \
            testevents \
            timertest \
-           vpiano \
-           metronome \
-           dumpwrk \
-           drumgrid
+           vpiano
 }

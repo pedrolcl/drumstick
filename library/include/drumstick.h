@@ -38,5 +38,6 @@
 // File formats
 #include <drumstick/qsmf.h>
 #include <drumstick/qwrk.h>
+#include <drumstick/qove.h>
 
 #endif /*DRUMSTICK_H*/

@@ -31,6 +31,7 @@
 namespace drumstick {
     class QSmf;
     class QWrk;
+    class QOve;
     class MidiClient;
     class MidiPort;
     class MidiQueue;
@@ -56,6 +57,12 @@ enum PlayerState {
     PlayingState,
     PausedState,
     StoppedState
+};
+
+enum FileType {
+	FileType_SMF,
+	FileType_WRK,
+	FileType_OVE
 };
 
 class GUIPlayer : public QMainWindow
@@ -153,6 +160,17 @@ public slots:
     void chord(int track, long time, const QString& name, const QByteArray& data);
     void expression(int track, long time, int code, const QString& text);
 
+    /* OVE slots */
+    void oveFileHeader(int quarter, int trackCount);
+    void oveNoteOnEvent(int track, long tick, int channel, int pitch, int vol);
+    void oveNoteOffEvent(int track, long tick, int channel, int pitch, int vol);
+    void oveTimeSigEvent(int bar, long tick, int num, int den);
+    void oveKeySigEvent(int bar, long tick, int alt);
+    void oveTrackPatch(int track, int channel, int patch);
+    void oveTrackVol(int track, int channel, int vol);
+    void oveTrackBank(int track, int channel, int bank);
+    void oveLyricEvent(int track, long tick, const QString& data);
+
 private:
     int m_portId;
     int m_queueId;
@@ -161,8 +179,10 @@ private:
     unsigned long m_tick;
     PlayerState m_state;
 
+    FileType m_fileType;
     QSmf* m_smf;
     QWrk* m_wrk;
+    QOve* m_ove;
     MidiClient* m_Client;
     MidiPort* m_Port;
     MidiQueue* m_Queue;
