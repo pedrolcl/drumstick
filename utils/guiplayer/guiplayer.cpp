@@ -67,6 +67,7 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     m_song(new Song)
 {
 	m_ui->setupUi(this);
+	setAcceptDrops(true);
     connect(m_ui->actionAbout, SIGNAL(triggered()), SLOT(about()));
     connect(m_ui->actionAboutQt, SIGNAL(triggered()), SLOT(aboutQt()));
     connect(m_ui->actionPlay, SIGNAL(triggered()), SLOT(play()));
