@@ -25,7 +25,27 @@
 #include <QThread>
 #include <QReadLocker>
 #include <QWriteLocker>
+#if defined(QT_DBUS_LIB)
+#include <QDBusConnection>
+#include <QDBusInterface>
+#endif
+
 #include <pthread.h>
+#include <sys/types.h>
+#include <sys/syscall.h>
+#include <sys/resource.h>
+
+#ifndef RLIMIT_RTTIME
+#define RLIMIT_RTTIME 15
+#endif
+
+#ifndef SCHED_RESET_ON_FORK
+#define SCHED_RESET_ON_FORK 0x40000000
+#endif
+
+#ifndef DEFAULT_INPUT_TIMEOUT
+#define DEFAULT_INPUT_TIMEOUT 500
+#endif
 
 /**
  * @file alsaclient.cpp
@@ -301,6 +321,31 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  */
 
 /**
+ * This class manages event input from the ALSA sequencer.
+ */
+class MidiClient::SequencerInputThread: public QThread
+{
+public:
+    SequencerInputThread(MidiClient *seq, int timeout)
+        : QThread(),
+        m_MidiClient(seq),
+        m_Wait(timeout),
+        m_Stopped(false),
+        m_RealTime(true) {}
+    virtual ~SequencerInputThread() {}
+    virtual void run();
+    bool stopped();
+    void stop();
+    void setRealtimePriority();
+
+    MidiClient *m_MidiClient;
+    int m_Wait;
+    bool m_Stopped;
+    bool m_RealTime;
+    QReadWriteLock m_mutex;
+};
+
+/**
  * Constructor.
  *
  * This constructor optionally gets a QObject parent. When you create a
@@ -343,6 +388,32 @@ MidiClient::~MidiClient()
     freeClients();
     if (m_Thread != NULL)
         delete m_Thread;
+}
+
+/**
+ * Enables real-time priority for the MIDI input thread. The system needs either
+ * RLIMIT_RTPRIO or RealtimeKit. First RLIMIT_RTPRIO is tried, and if this
+ * method fails, RealtimeKit is used.
+ *
+ * @param enable real-time priority enabled
+ */
+void MidiClient::setRealTimeInput(bool enable)
+{
+    if (m_Thread == 0) {
+        m_Thread = new SequencerInputThread(this, DEFAULT_INPUT_TIMEOUT);
+        m_Thread->m_RealTime = enable;
+    }
+}
+
+/**
+ * Return the real-time priority setting for the MIDI input thread.
+ * @return true if the real-time priority is enabled
+ */
+bool MidiClient::realTimeInputEnabled()
+{
+    if (m_Thread == 0)
+        return true;
+    return m_Thread->m_RealTime;
 }
 
 /**
@@ -677,10 +748,11 @@ MidiClient::doEvents()
 void
 MidiClient::startSequencerInput()
 {
-    if (m_Thread == NULL) {
-        m_Thread = new SequencerInputThread(this, 500);
-        m_Thread->start(QThread::TimeCriticalPriority);
+    if (m_Thread == 0) {
+        m_Thread = new SequencerInputThread(this, DEFAULT_INPUT_TIMEOUT);
     }
+    m_Thread->start( m_Thread->m_RealTime ?
+            QThread::TimeCriticalPriority : QThread::InheritPriority );
 }
 
 /**
@@ -690,13 +762,15 @@ void
 MidiClient::stopSequencerInput()
 {
     int counter = 0;
-    if (m_Thread != NULL) {
-        m_Thread->stop();
-        while (!m_Thread->wait(500) && (counter < 10)) {
-            counter++;
-        }
-        if (!m_Thread->isFinished()) {
-            m_Thread->terminate();
+    if (m_Thread != 0) {
+        if (m_Thread->isRunning()) {
+            m_Thread->stop();
+            while (!m_Thread->wait(500) && (counter < 10)) {
+                counter++;
+            }
+            if (!m_Thread->isFinished()) {
+                m_Thread->terminate();
+            }
         }
         delete m_Thread;
     }
@@ -1692,6 +1766,70 @@ MidiClient::SequencerInputThread::stop()
     m_Stopped = true;
 }
 
+static pid_t _gettid(void) {
+    return (pid_t) ::syscall(SYS_gettid);
+}
+
+void
+MidiClient::SequencerInputThread::setRealtimePriority()
+{
+    bool ok;
+    int rt, policy = SCHED_RR | SCHED_RESET_ON_FORK;
+    quint32 max_prio, priority = 6;
+    quint64 thread;
+    struct sched_param p;
+    struct rlimit old_limit, new_limit;
+    long long max_rttime;
+
+    ::memset(&p, 0, sizeof(p));
+    p.sched_priority = priority;
+    rt = ::pthread_setschedparam(::pthread_self(), policy, &p);
+    if (rt != 0) {
+#if defined(QT_DBUS_LIB)
+        const QString rtkit_service =
+                QLatin1String("org.freedesktop.RealtimeKit1");
+        const QString rtkit_path =
+                QLatin1String("/org/freedesktop/RealtimeKit1");
+        const QString rtkit_iface = rtkit_service;
+        thread = _gettid();
+        QDBusConnection bus = QDBusConnection::systemBus();
+        QDBusInterface realtimeKit(rtkit_service, rtkit_path, rtkit_iface, bus);
+        QVariant maxRTPrio = realtimeKit.property("MaxRealtimePriority");
+        max_prio = maxRTPrio.toUInt(&ok);
+        if (!ok) {
+            qWarning() << "invalid property RealtimeKit.MaxRealtimePriority";
+            return;
+        }
+        if (priority > max_prio)
+            priority = max_prio;
+        QVariant maxRTNSec = realtimeKit.property("RTTimeNSecMax");
+        max_rttime = maxRTNSec.toLongLong(&ok);
+        if (!ok || max_rttime < 0) {
+            qWarning() << "invalid property RealtimeKit.RTTimeNSecMax";
+            return;
+        }
+        new_limit.rlim_cur = new_limit.rlim_max = max_rttime;
+        rt = ::getrlimit(RLIMIT_RTTIME, &old_limit);
+        if (rt < 0) {
+            qWarning() << "getrlimit() failed. err=" << rt << ::strerror(rt);
+            return;
+        }
+        rt = ::setrlimit(RLIMIT_RTTIME, &new_limit);
+        if ( rt < 0) {
+            qWarning() << "setrlimit() failed, err=" << rt << ::strerror(rt);
+            return;
+        }
+        QDBusMessage reply = realtimeKit.call("MakeThreadRealtime", thread, priority);
+        if (reply.type() == QDBusMessage::ErrorMessage )
+            qWarning() << "error returned by RealtimeKit.MakeThreadRealtime:"
+                        << reply.errorMessage();
+#else
+        qWarning() << "pthread_setschedparam() failed, err="
+                   << rt << ::strerror(rt);
+#endif
+    }
+}
+
 /**
  * Main input thread process loop.
  */
@@ -1700,19 +1838,8 @@ MidiClient::SequencerInputThread::run()
 {
     unsigned long npfd;
     pollfd* pfd;
-    int rt;
-    struct sched_param p;
-    Priority prio = priority();
-
-    if ( prio == TimeCriticalPriority ) {
-        ::memset(&p, 0, sizeof(p));
-        p.sched_priority = 6;
-        rt = ::pthread_setschedparam(::pthread_self(), SCHED_FIFO, &p);
-        if (rt != 0) {
-            qWarning() << "pthread_setschedparam(SCHED_FIFO) failed, err="
-                       << rt << ::strerror(rt);
-        }
-    }
+    if ( priority() == TimeCriticalPriority )
+        setRealtimePriority();
 
     if (m_MidiClient != NULL) {
         npfd = snd_seq_poll_descriptors_count(m_MidiClient->getHandle(), POLLIN);
@@ -1722,7 +1849,7 @@ MidiClient::SequencerInputThread::run()
             snd_seq_poll_descriptors(m_MidiClient->getHandle(), pfd, npfd, POLLIN);
             while (!stopped() && (m_MidiClient != NULL))
             {
-                rt = poll(pfd, npfd, m_Wait);
+                int rt = poll(pfd, npfd, m_Wait);
                 if (rt > 0) {
                     m_MidiClient->doEvents();
                 }

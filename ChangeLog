@@ -1,3 +1,6 @@
+2010-09-02 
+    * Use RealtimeKit support for the MIDI input thread. 
+
 2010-08-31
     * OVE file format support, by Rui Fan <vanferry@gmail.com>
 

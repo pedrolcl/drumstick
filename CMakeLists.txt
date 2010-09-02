@@ -58,7 +58,8 @@ SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX}
 MESSAGE(STATUS "drumstick ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
 
 # User options
-OPTION(STATIC_DRUMSTICK "Build a static library (.a) instead of dynamic (.so)" OFF)
+OPTION(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)
+OPTION(USE_DBUS "Include DBus support (required for RealtimeKit)" ON)
 
 MESSAGE(STATUS "Build configuration: ${CMAKE_BUILD_TYPE}")
 
@@ -78,6 +79,9 @@ FIND_PACKAGE(Qt4 REQUIRED)
 IF(QT4_FOUND)
     MESSAGE (STATUS "Found Qt4 ${QT_EDITION} version = ${QTVERSION}")
     SET (QT_USE_QTSVG TRUE)
+    IF (USE_DBUS)
+        SET(QT_USE_QTDBUS TRUE)
+    ENDIF (USE_DBUS)
     INCLUDE (${QT_USE_FILE})
     INCLUDE_DIRECTORIES (${QT_INCLUDES}) 
     LINK_DIRECTORIES (${QT_LIBRARY_DIR})

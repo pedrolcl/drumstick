@@ -198,30 +198,6 @@ public:
 class DRUMSTICK_EXPORT MidiClient : public QObject
 {
     Q_OBJECT
-
-private:
-    /**
-     * This class manages event input from the ALSA sequencer.
-     */
-    class SequencerInputThread: public QThread
-    {
-    public:
-        SequencerInputThread(MidiClient *seq, int timeout)
-            : QThread(),
-            m_MidiClient(seq),
-            m_Wait(timeout),
-            m_Stopped(false) {}
-        virtual ~SequencerInputThread() {}
-        virtual void run();
-        bool stopped();
-        void stop();
-
-        MidiClient *m_MidiClient;
-        int m_Wait;
-        bool m_Stopped;
-        QReadWriteLock m_mutex;
-    };
-
 public:
     MidiClient( QObject* parent = 0 );
     virtual ~MidiClient();
@@ -313,6 +289,8 @@ public:
     /** Sets a sequencer event handler enabling the callback delivery mode */
     void setHandler(SequencerEventHandler* handler)  { m_handler = handler; }
     bool parseAddress( const QString& straddr, snd_seq_addr& result );
+    void setRealTimeInput(bool enabled);
+    bool realTimeInputEnabled();
 
 signals:
     /** Signal emitted when an event is received */
@@ -344,6 +322,7 @@ protected:
     void disconnectTo(int myport, int client, int port);
 
 private:
+    class SequencerInputThread;
     bool m_eventsEnabled;
     bool m_BlockMode;
     bool m_NeedRefreshClientList;
