@@ -1,6 +1,6 @@
 /*
     Overture OVE File component
-    Copyright (C) 2006-2010, Fan Rui <vanferry@gmail.com>
+    Copyright (C) 2006-2010, Rui Fan <vanferry@gmail.com>
 
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -50,7 +50,6 @@ public:
 
     void setTextCodecName(const QString& codec);
 
-    void readFromStream(QDataStream *stream);
     void readFromFile(const QString& fileName);
 
 Q_SIGNALS:

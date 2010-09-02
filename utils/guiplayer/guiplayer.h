@@ -161,6 +161,7 @@ public slots:
     void expression(int track, long time, int code, const QString& text);
 
     /* OVE slots */
+    void oveErrorHandler(const QString& errorStr);
     void oveFileHeader(int quarter, int trackCount);
     void oveNoteOnEvent(int track, long tick, int channel, int pitch, int vol);
     void oveNoteOffEvent(int track, long tick, int channel, int pitch, int vol);

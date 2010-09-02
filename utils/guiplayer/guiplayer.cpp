@@ -203,7 +203,7 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
 
     m_ove = new QOve(this);
     connect(m_ove, SIGNAL(signalOVEError(const QString&)),
-                   SLOT(errorHandlerWRK(const QString&)));
+                   SLOT(oveErrorHandler(const QString&)));
     connect(m_ove, SIGNAL(signalOVEHeader(int,int)),
                    SLOT(oveFileHeader(int,int)));
     connect(m_ove, SIGNAL(signalOVEEnd()),
@@ -1117,6 +1117,10 @@ void GUIPlayer::unknownChunk(int /*type*/, const QByteArray& /*data*/)
     /*qDebug() << "dec:" << type
              << "hex:" << hex << type << dec
              << "size:" << data.length();*/
+}
+
+void GUIPlayer::oveErrorHandler(const QString& errorStr) {
+    qWarning() << "*** Warning! " << errorStr;
 }
 
 void GUIPlayer::oveFileHeader(int quarter, int trackCount) {

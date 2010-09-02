@@ -1,6 +1,6 @@
 /*
     Overture OVE File component
-    Copyright (C) 2006-2010, Fan Rui <vanferry@gmail.com>
+    Copyright (C) 2006-2010, Rui Fan <vanferry@gmail.com>
 
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -11243,10 +11243,6 @@ void QOve::readFromFile(const QString& fileName) {
 	}
 }
 
-void QOve::readFromStream(QDataStream *stream) {
-
-}
-
 void QOve::convertSong() {
 	unsigned int i;
 	int trackNo = 0;
@@ -11296,9 +11292,17 @@ void QOve::convertSignatures() {
 	// tempo
 	QMap<int, int> tempos;
 	for (i = 0; i < d->ove.getPartCount(); ++i) {
+		if(i>0) {
+			break;
+		}
+
 		int partStaffCount = d->ove.getStaffCount(i);
 
 		for (int j = 0; j < partStaffCount; ++j) {
+			if(j>0) {
+				break;
+			}
+
 			for (int k = beginMeasure; k < endMeasure; ++k) {
 				OVE::Measure* measure = d->ove.getMeasure(k);
 				OVE::MeasureData* measureData = d->ove.getMeasureData(i, j, k);
@@ -11306,7 +11310,8 @@ void QOve::convertSignatures() {
 
 				if (k == 0 || (k > 0 && abs(measure->getTypeTempo()	- d->ove.getMeasure(k - 1)->getTypeTempo()) > 0.01)) {
 					int tick = d->mtt.getTick(k, 0);
-					tempos[tick] = (int) measure->getTypeTempo();
+					int tempo = (int) measure->getTypeTempo();
+					tempos[tick] = tempo;
 				}
 
 				for (unsigned int l = 0; l < tempoPtrs.size(); ++l) {
@@ -11400,33 +11405,19 @@ void QOve::convertTrackHeader(OVE::Track* track, int trackNo) {
 	}
 
 	// pan
+	int lastPan = 64;//center
 	for (it = pans.begin(); it != pans.end(); ++it) {
-		if (it.value() != 0) {
-/*
-			Event ev;
-
-			ev.tick_ = 0;
-			ev.event_ = Midi::EventUtility::create_controller_event(10, it.value(), it.key());
-
-			track->add_event(ev);
-*/
-			//Q_EMIT signalOVECtlChange(trackNo, 0, ch, 10, it.value());
+		if (it.value() != 0 && it.value() != lastPan) {
+			Q_EMIT signalOVECtlChange(trackNo, 0, ch, 10, it.value());
 		}
+
+		lastPan = it.value();
 	}
 
 	// volume
 	for (it = volumes.begin(); it != volumes.end(); ++it) {
 		int volume = it.value();
 		if (volume != -1) {
-/*
-			Event ev;
-
-			ev.tick_ = 0;
-			ev.event_ = Midi::EventUtility::create_controller_event(7,
-					it.value(), it.key());
-
-			track->add_event(ev);
-*/
 			Q_EMIT signalOVECtlChange(trackNo, 0, ch, 7, it.value());
 		}
 	}
