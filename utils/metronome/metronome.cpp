@@ -80,6 +80,7 @@ Metronome::Metronome(QObject *parent) : QObject(parent),
     qtimer.setId(best);
     m_Queue->setTimer(qtimer);
     // Start sequencer input
+    m_Client->setRealTimeInput(false);
     m_Client->startSequencerInput();
 }
 

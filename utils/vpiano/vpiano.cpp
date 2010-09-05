@@ -33,11 +33,13 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     m_Client = new MidiClient(this);
     m_Client->open();
     m_Client->setClientName("Virtual Piano");
+
 #ifdef USE_QEVENTS
     m_Client->addListener(this);
     m_Client->setEventsEnabled(true);
 #else // USE_QEVENTS (using signals instead)
-    connect(m_Client, SIGNAL(eventReceived(SequencerEvent*)), SLOT(sequencerEvent(SequencerEvent*)));
+    connect( m_Client, SIGNAL(eventReceived(SequencerEvent*)),
+             SLOT(sequencerEvent(SequencerEvent*)), Qt::QueuedConnection );
 #endif // USE_QEVENTS
 
     m_Port = new MidiPort(this);
@@ -59,6 +61,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     connect(m_Port, SIGNAL(subscribed(MidiPort*,Subscription*)), SLOT(slotSubscription(MidiPort*,Subscription*)));
 
     m_Port->subscribeFromAnnounce();
+    m_Client->setRealTimeInput(false);
     m_Client->startSequencerInput();
 }
 
@@ -97,7 +100,7 @@ void VPiano::displayEvent(SequencerEvent *ev)
     try {
         switch (ev->getSequencerType()) {
         case SND_SEQ_EVENT_NOTEON: {
-            NoteOnEvent* e = dynamic_cast<NoteOnEvent*>(ev);
+            NoteOnEvent* e = static_cast<NoteOnEvent*>(ev);
             if ((e != NULL) && (dlgPreferences.getInChannel() == e->getChannel())) {
                 int note = e->getKey();
                 if (e->getVelocity() == 0)
@@ -109,7 +112,7 @@ void VPiano::displayEvent(SequencerEvent *ev)
             break;
         }
         case SND_SEQ_EVENT_NOTEOFF: {
-            NoteOffEvent* e = dynamic_cast<NoteOffEvent*>(ev);
+            NoteOffEvent* e = static_cast<NoteOffEvent*>(ev);
             if ((e != NULL) && (dlgPreferences.getInChannel() == e->getChannel())) {
                 int note = e->getKey();
                 ui.pianokeybd->showNoteOff(note);
@@ -131,18 +134,16 @@ void VPiano::displayEvent(SequencerEvent *ev)
 #ifdef USE_QEVENTS
 void VPiano::customEvent(QEvent *ev)
 {
-    if (ev->type() != SequencerEventType)
+    if ( (ev == 0) || (ev->type() != SequencerEventType) )
         return;
-    SequencerEvent* sev = dynamic_cast<SequencerEvent*>(ev);
-    if (sev != NULL) {
-        displayEvent( sev );
-    }
+    SequencerEvent* sev = static_cast<SequencerEvent*>(ev);
+    displayEvent (sev);
 }
 #else
 void
 VPiano::sequencerEvent(SequencerEvent *ev)
 {
-    displayEvent( ev );
+    displayEvent (ev);
     delete ev;
 }
 #endif
