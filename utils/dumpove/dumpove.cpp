@@ -281,17 +281,18 @@ void QSpyOve::tempoEvent(long tick, int tempo)
 
 void QSpyOve::trackPatch(int track, int channel, int patch)
 {
-    dump(0, track, NO_CHANNEL, "Track Patch", QString::number(patch));
+    dump(0, track, QString::number(channel), "Track Patch", QString::number(patch));
 }
 
 void QSpyOve::trackVol(int track, int channel, int vol)
 {
-    dump(0, track, NO_CHANNEL, "Track Volume", QString::number(vol));
+    Q_UNUSED(channel)
+    dump(0, track, QString::number(channel), "Track Volume", QString::number(vol));
 }
 
 void QSpyOve::trackBank(int track, int channel, int bank)
 {
-    dump(0, track, NO_CHANNEL, "Track Bank", QString::number(bank));
+    dump(0, track, QString::number(channel), "Track Bank", QString::number(bank));
 }
 
 void QSpyOve::chord(int track, long tick, const QString& name, const QByteArray& data)
