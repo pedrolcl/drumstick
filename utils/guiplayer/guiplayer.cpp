@@ -251,6 +251,7 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     connect(m_player, SIGNAL(finished()), SLOT(songFinished()));
     connect(m_player, SIGNAL(stopped()), SLOT(playerStopped()));
 
+    m_Client->setRealTimeInput(false);
     m_Client->startSequencerInput();
     tempoReset();
     volumeReset();
@@ -431,11 +432,11 @@ void GUIPlayer::open()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
           "Open MIDI File", m_lastDirectory,
-          "Overture Files (*.ove);;"
-          "MIDI Files (*.mid *.midi);;"
+          "All files (*.*);;"
           "Karaoke files (*.kar);;"
-          "Cakewalk files (*.wrk);;"
-          "All files (*.*)");
+          "MIDI Files (*.mid *.midi);;"
+          "Overture Files (*.ove);;"
+          "Cakewalk files (*.wrk)" );
     if (! fileName.isEmpty() ) {
         stop();
         openFile(fileName);
@@ -1127,7 +1128,9 @@ void GUIPlayer::oveFileHeader(int quarter, int trackCount) {
 	m_song->setHeader(1, trackCount, quarter);
 }
 
-void GUIPlayer::oveNoteOnEvent(int track, long tick, int channel, int pitch, int vol) {
+void GUIPlayer::oveNoteOnEvent(int track, long tick, int channel, int pitch, int vol)
+{
+    Q_UNUSED(track)
     SequencerEvent* ev = new NoteOnEvent(channel, pitch, vol);
     ev->setSource(m_portId);
     if (ev->getSequencerType() != SND_SEQ_EVENT_TEMPO) {
@@ -1135,11 +1138,13 @@ void GUIPlayer::oveNoteOnEvent(int track, long tick, int channel, int pitch, int
     }
     ev->scheduleTick(m_queueId, tick, false);
     m_song->append(ev);
-    if (tick > m_tick)
+    if (static_cast<unsigned>(tick) > m_tick)
         m_tick = tick;
 }
 
-void GUIPlayer::oveNoteOffEvent(int track, long tick, int channel, int pitch, int vol) {
+void GUIPlayer::oveNoteOffEvent(int track, long tick, int channel, int pitch, int vol)
+{
+    Q_UNUSED(track)
     SequencerEvent* ev = new NoteOffEvent(channel, pitch, vol);
     ev->setSource(m_portId);
     if (ev->getSequencerType() != SND_SEQ_EVENT_TEMPO) {
@@ -1147,12 +1152,13 @@ void GUIPlayer::oveNoteOffEvent(int track, long tick, int channel, int pitch, in
     }
     ev->scheduleTick(m_queueId, tick, false);
     m_song->append(ev);
-    if (tick > m_tick)
+    if (static_cast<unsigned>(tick) > m_tick)
         m_tick = tick;
 }
 
 void GUIPlayer::oveTimeSigEvent(int bar, long tick, int num, int den)
 {
+    Q_UNUSED(tick)
     SequencerEvent* ev = new SequencerEvent();
     ev->setSequencerType(SND_SEQ_EVENT_TIMESIGN);
     int div, d = den;
@@ -1191,6 +1197,7 @@ void GUIPlayer::oveTimeSigEvent(int bar, long tick, int num, int den)
 
 void GUIPlayer::oveKeySigEvent(int bar, long tick, int alt)
 {
+    Q_UNUSED(tick)
     SequencerEvent* ev = new SequencerEvent();
     ev->setSequencerType(SND_SEQ_EVENT_KEYSIGN);
     ev->setRaw8(0, alt);
@@ -1206,6 +1213,7 @@ void GUIPlayer::oveKeySigEvent(int bar, long tick, int alt)
 
 void GUIPlayer::oveTrackPatch(int track, int channel, int patch)
 {
+    Q_UNUSED(channel)
     int ch = 0;
     TrackMapRec rec = m_trackMap[track];
     if (rec.channel > -1)
@@ -1215,6 +1223,7 @@ void GUIPlayer::oveTrackPatch(int track, int channel, int patch)
 
 void GUIPlayer::oveTrackVol(int track, int channel, int vol)
 {
+    Q_UNUSED(channel)
     int ch = 0;
     int lsb, msb;
     TrackMapRec rec = m_trackMap[track];
@@ -1232,6 +1241,7 @@ void GUIPlayer::oveTrackVol(int track, int channel, int vol)
 
 void GUIPlayer::oveTrackBank(int track, int channel, int bank)
 {
+    Q_UNUSED(channel)
     // assume GM/GS bank method
     int ch = 0;
     int lsb, msb;
