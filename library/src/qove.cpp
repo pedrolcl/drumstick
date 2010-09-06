@@ -3284,7 +3284,7 @@ int OveSong::getPartBarCount() const {
 
 QPair<int, int> OveSong::trackToPartStaff(int track) const {
 	QPair<int, int> partStaff;
-	unsigned int i;
+	int i;
 	int staffCount = 0;
 
 	for( i=0; i<partStaffCounts_.size(); ++i ) {
@@ -3299,7 +3299,7 @@ QPair<int, int> OveSong::trackToPartStaff(int track) const {
 }
 
 int OveSong::partStaffToTrack(int part, int staff) const {
-	unsigned int i;
+	int i;
 	unsigned int staffCount = 0;
 
 	for( i=0; i<partStaffCounts_.size(); ++i ) {
@@ -3331,7 +3331,8 @@ QString OveSong::getCodecString(const QByteArray& text) {
     return s;
 }
 
-void OveSong::clear(void) {
+void OveSong::clear(void)
+{
 	version4_ = true;
 	quarter_ = 480;
 	showPageMargin_ = false;
@@ -3350,19 +3351,19 @@ void OveSong::clear(void) {
 	writers_.clear();
 
 //	deleteVector(tracks_);
-	for(unsigned int i=0; i<tracks_.size(); ++i){
+	for(int i=0; i<tracks_.size(); ++i){
 		delete tracks_[i];
 	}
-	for(unsigned int i=0; i<pages_.size(); ++i){
+	for(int i=0; i<pages_.size(); ++i){
 		delete pages_[i];
 	}
-	for(unsigned int i=0; i<lines_.size(); ++i){
+	for(int i=0; i<lines_.size(); ++i){
 		delete lines_[i];
 	}
-	for(unsigned int i=0; i<measures_.size(); ++i){
+	for(int i=0; i<measures_.size(); ++i){
 		delete measures_[i];
 	}
-	for(unsigned int i=0; i<measureDatas_.size(); ++i){
+	for(int i=0; i<measureDatas_.size(); ++i){
 		delete measureDatas_[i];
 	}
 	tracks_.clear();
@@ -3714,7 +3715,7 @@ void Track::clear(void) {
 
 	part_ = 0;
 
-	for(unsigned int i=0; i<voices_.size(); ++i){
+	for(int i=0; i<voices_.size(); ++i){
 		delete voices_[i];
 	}
 	voices_.clear();
@@ -3855,7 +3856,7 @@ Line::Line() {
 }
 
 Line::~Line() {
-	for(unsigned int i=0; i<staffs_.size(); ++i){
+	for(int i=0; i<staffs_.size(); ++i){
 		delete staffs_[i];
 	}
 	staffs_.clear();
@@ -4410,10 +4411,10 @@ NoteContainer::NoteContainer() {
 }
 
 NoteContainer::~NoteContainer(){
-	for(unsigned int i=0; i<notes_.size(); ++i){
+	for(int i=0; i<notes_.size(); ++i){
 		delete notes_[i];
 	}
-	for(unsigned int i=0; i<articulations_.size(); ++i){
+	for(int i=0; i<articulations_.size(); ++i){
 		delete articulations_[i];
 	}
 	notes_.clear();
@@ -4573,7 +4574,7 @@ int NoteContainer::getOffsetStaff() const {
 
 	int staffMove = 0;
 	QList<OVE::Note*> notes = getNotesRests();
-	for (unsigned int i = 0; i < notes.size(); ++i) {
+	for (int i = 0; i < notes.size(); ++i) {
 		OVE::Note* notePtr = notes[i];
 		staffMove = notePtr->getOffsetStaff();
 	}
@@ -5493,8 +5494,9 @@ void TimeSignature::addBeat(int startUnit, int lengthUnit, int startTick) {
 	beats_.push_back(node);
 }
 
-void TimeSignature::endAddBeat() {
-	unsigned int i;
+void TimeSignature::endAddBeat()
+{
+	int i;
 	barLengthUnits_ = 0;
 
 	for (i = 0; i < beats_.size(); ++i) {
@@ -5663,7 +5665,7 @@ QString NumericEnding::getText() const {
 }
 
 QList<int> NumericEnding::getNumbers() const {
-	unsigned int i;
+	int i;
 	QStringList strs = text_.split(",", QString::SkipEmptyParts);
 	QList<int> endings;
 
@@ -5680,7 +5682,7 @@ int NumericEnding::getJumpCount() const {
 	QList<int> numbers = getNumbers();
 	int count = 0;
 
-	for (unsigned int i = 0; i < numbers.size(); ++i) {
+	for (int i = 0; i < numbers.size(); ++i) {
 		if ((int)i + 1 != numbers[i]) {
 			break;
 		}
@@ -5913,7 +5915,7 @@ MeasureData::MeasureData() {
 }
 
 MeasureData::~MeasureData(){
-	unsigned int i;
+	int i;
 	for(i=0; i<musicDatas_.size(); ++i){
 		delete musicDatas_[i];
 	}
@@ -5960,7 +5962,7 @@ void MeasureData::addMusicData(MusicData* ptr) {
 }
 
 QList<MusicData*> MeasureData::getMusicDatas(MusicDataType type) {
-	unsigned int i;
+	int i;
 	QList<MusicData*> notations;
 
 	for (i = 0; i < musicDatas_.size(); ++i) {
@@ -5977,8 +5979,9 @@ void MeasureData::addCrossMeasureElement(MusicData* ptr, bool start) {
 }
 
 QList<MusicData*> MeasureData::getCrossMeasureElements(
-		MusicDataType type, PairType pairType) {
-	unsigned int i;
+		MusicDataType type, PairType pairType)
+{
+	int i;
 	QList<MusicData*> pairs;
 
 	for (i = 0; i < crossMeasureElements_.size(); ++i) {
@@ -5997,7 +6000,7 @@ void MeasureData::addMidiData(MidiData* ptr) {
 }
 
 QList<MidiData*> MeasureData::getMidiDatas(MidiType type) {
-	unsigned int i;
+	int i;
 	QList<MidiData*> datas;
 
 	for (i = 0; i < midiDatas_.size(); ++i) {
@@ -6217,14 +6220,15 @@ NameBlock::NameBlock() :
  }
  }*/
 
-bool NameBlock::isEqual(const QString& name) const {
-	unsigned int i;
+bool NameBlock::isEqual(const QString& name) const
+{
+	unsigned int i, nsize = static_cast<unsigned>(name.size());
 
-	if (name.size() != size()) {
+	if (nsize != size()) {
 		return false;
 	}
 
-	for (i = 0; i < size() && name.size(); ++i) {
+	for (i = 0; i < size() && nsize; ++i) {
 		if (data()[i] != name[i]) {
 			return false;
 		}
@@ -6477,7 +6481,8 @@ void TrackParse::setTrack(SizeChunk* chunk) {
 	chunk_ = chunk;
 }
 
-bool TrackParse::parse() {
+bool TrackParse::parse()
+{
 	Block* dataBlock = chunk_->getDataBlock();
 	unsigned int blockSize = ove_->getIsVersion4() ? chunk_->getSizeBlock()->toSize() : SizeChunk::version3TrackSize;
 	StreamHandle handle(dataBlock->data(), blockSize);
@@ -6596,7 +6601,7 @@ bool TrackParse::parse() {
 	if( !jump(12) ) { return false; }
 
 	// 8 voices
-	unsigned int i;
+	int i;
 	QList<Voice*> voices;
 	for( i=0; i<8; ++i ) {
 		Voice* voicePtr = new Voice();
@@ -6711,10 +6716,13 @@ void PageGroupParse::addPage(SizeChunk* chunk) {
 	pageChunks_.push_back(chunk);
 }
 
-bool PageGroupParse::parse() {
-	if( pageChunks_.empty() ) { return false; }
+bool PageGroupParse::parse()
+{
+	if( pageChunks_.empty() ) {
+	    return false;
+	}
 
-	unsigned int i;
+	int i;
 	for( i=0; i<pageChunks_.size(); ++i ) {
 		Page* page = new Page();
 		ove_->addPage(page);
@@ -6831,10 +6839,11 @@ void LineGroupParse::addStaff(SizeChunk* chunk) {
 	staffChunks_.push_back(chunk);
 }
 
-bool LineGroupParse::parse() {
+bool LineGroupParse::parse()
+{
 	if( lineChunks_.empty() || staffChunks_.size() % lineChunks_.size() != 0 ) { return false; }
 
-	unsigned int i;
+	int i;
 	unsigned int j;
 	unsigned int lineStaffCount = staffChunks_.size() / lineChunks_.size();
 
@@ -8123,8 +8132,9 @@ int tupletToSpace(int tuplet) {
 	return a;
 }
 
-bool BarsParse::parseBeam(MeasureData* measureData, int length) {
-	unsigned int i;
+bool BarsParse::parseBeam(MeasureData* measureData, int length)
+{
+	int i;
 	Block placeHolder;
 
 	Beam* beam = new Beam();
@@ -8152,7 +8162,7 @@ bool BarsParse::parseBeam(MeasureData* measureData, int length) {
 
 	// beam count
 	if( !readBuffer(placeHolder, 1) ) { return false; }
-	unsigned int beamCount = placeHolder.toUnsignedInt();
+	int beamCount = placeHolder.toUnsignedInt();
 
 	if( !jump(1) ) { return false; }
 
@@ -8169,7 +8179,7 @@ bool BarsParse::parseBeam(MeasureData* measureData, int length) {
 	}
 
 	int currentCursor = ove_->getIsVersion4() ? 23 : 13;
-	unsigned int count = (length - currentCursor)/16;
+	int count = (length - currentCursor)/16;
 
 	if( count != beamCount ) { return false; }
 
@@ -9390,7 +9400,8 @@ void extractOctave(unsigned int Bits, OctaveShiftType& octaveShiftType,	QList<Oc
 	}
 }
 
-bool BarsParse::parseOctaveShift(MeasureData* measureData, int /*length*/) {
+bool BarsParse::parseOctaveShift(MeasureData* measureData, int /*length*/)
+{
 	Block placeHolder;
 
 	OctaveShift* octave = new OctaveShift();
@@ -9427,7 +9438,7 @@ bool BarsParse::parseOctaveShift(MeasureData* measureData, int /*length*/) {
 	octave->setEndTick(placeHolder.toUnsignedInt());
 
 	// start & stop maybe appear in same measure
-	for(unsigned int i=0; i<positions.size(); ++i) {
+	for (int i=0; i<positions.size(); ++i) {
 		OctaveShiftPosition position = positions[i];
 		OctaveShiftEndPoint* octavePoint = new OctaveShiftEndPoint();
 		measureData->addMusicData(octavePoint);
@@ -9830,10 +9841,11 @@ bool isSpace(char c) {
 	return c == ' ' || c == '\n';
 }
 
-void LyricChunkParse::processLyricInfo(const LyricInfo& info) {
-	unsigned int i;
-	unsigned int j;
-	unsigned int index = 0; //words
+void LyricChunkParse::processLyricInfo(const LyricInfo& info)
+{
+	int i;
+	int j;
+	int index = 0; //words
 
 	int measureId = info.measure_-1;
 	bool changeMeasure = true;
@@ -10004,7 +10016,7 @@ void OveOrganizer::organize() {
 void OveOrganizer::organizeAttributes() {
 	int i;
 	int j;
-	unsigned int k;
+	int k;
 
 	// key
 	if(ove_->getLineCount() > 0) {
@@ -10089,7 +10101,7 @@ Staff* getStaff(OveSong* ove, int track) {
 }
 
 void OveOrganizer::organizeTracks() {
-	unsigned int i;
+	int i;
 	//QList<QPair<ClefType, int> > trackChannels;
 	QList<Track*> tracks = ove_->getTracks();
 	QList<bool> comboStaveStarts;
@@ -10169,8 +10181,10 @@ void addToList(QList<int>& list, int number) {
 	list.push_back(number);
 }
 
-void OveOrganizer::organizeContainers(int /*part*/, int /*track*/, Measure* measure, MeasureData* measureData) {
-	unsigned int i;
+void OveOrganizer::organizeContainers(int /*part*/, int /*track*/,
+        Measure* measure, MeasureData* measureData)
+{
+	int i;
 	QList<NoteContainer*> containers = measureData->getNoteContainers();
 	int barUnits = measure->getTime()->getUnits();
 	QList<int> voices;
@@ -10192,7 +10206,8 @@ void OveOrganizer::organizeContainers(int /*part*/, int /*track*/, Measure* meas
 		int voice = voices[i];
 		// voice -> i
 		for(int j=0; j<(int)containers.size(); ++j) {
-			if( (int)containers[j]->getVoice() == voice && containers[j]->getVoice() != i ){
+		    int avoice = containers[j]->getVoice();
+			if ( avoice == voice && avoice != i ) {
 				containers[j]->setVoice(i);
 			}
 		}
@@ -10200,7 +10215,7 @@ void OveOrganizer::organizeContainers(int /*part*/, int /*track*/, Measure* meas
 }
 
 void OveOrganizer::organizeMusicDatas(int /*part*/, int /*track*/, Measure* measure, MeasureData* measureData) {
-	unsigned int i;
+	int i;
 	int barIndex = measure->getBarNumber()->getIndex();
 	QList<MusicData*> datas = measureData->getMusicDatas(MusicData_None);
 
@@ -10209,8 +10224,9 @@ void OveOrganizer::organizeMusicDatas(int /*part*/, int /*track*/, Measure* meas
 	}
 }
 
-void OveOrganizer::organizeCrossMeasureElements(int part, int track, Measure* measure, MeasureData* measureData) {
-	unsigned int i;
+void OveOrganizer::organizeCrossMeasureElements(int part, int track, Measure* measure, MeasureData* measureData)
+{
+	int i;
 	QList<MusicData*> pairs = measureData->getCrossMeasureElements(MusicData_None, MeasureData::PairType_Start);
 
 	for(i=0; i<pairs.size(); ++i) {
@@ -10265,7 +10281,7 @@ void OveOrganizer::organizePairElement(
 		Tuplet* tuplet = static_cast<Tuplet*>(data);
 		const QList<NoteContainer*> containers = measureData->getNoteContainers();
 
-		for(unsigned int i=0; i<containers.size(); ++i){
+		for(int i=0; i<containers.size(); ++i){
 			if(containers[i]->getTick() > tuplet->getTick()){
 				break;
 			}
@@ -10279,7 +10295,7 @@ void OveOrganizer::organizePairElement(
 		if( tuplet->getTick() % tupletTick != 0 ) {
 			int newStartTick = (tuplet->getTick() / tupletTick) * tupletTick;
 
-			for(unsigned int i=0; i<containers.size(); ++i){
+			for(int i=0; i<containers.size(); ++i){
 				if( containers[i]->getTick() == newStartTick &&
 					containers[i]->getTuplet() == tuplet->getTuplet()) {
 					tuplet->setTick(containers[i]->getTick());
@@ -10293,9 +10309,10 @@ void OveOrganizer::organizePairElement(
 void OveOrganizer::organizeOctaveShift(
 						OctaveShift* octave,
 						Measure* measure,
-						MeasureData* measureData) {
+						MeasureData* measureData)
+{
 	// octave shift
-	unsigned int i;
+	int i;
 	const QList<NoteContainer*> containers = measureData->getNoteContainers();
 	int barIndex = measure->getBarNumber()->getIndex();
 
@@ -10316,7 +10333,7 @@ bool getMiddleUnit(
 			Measure* measure1, Measure* measure2, int unit1, int /*unit2*/,
 			Measure* middleMeasure, int& middleUnit) {
 	QList<int> barUnits;
-	unsigned int i;
+	int i;
 	int bar1Index = measure1->getBarNumber()->getIndex();
 	int bar2Index = measure2->getBarNumber()->getIndex();
 	int sumUnit = 0;
@@ -10859,7 +10876,7 @@ bool OveSerialize::readLinesData() {
 		return false;
 
 	unsigned short lineCount = lineGroupChunk.getCountBlock()->toCount();
-	unsigned int i;
+	int i;
 	unsigned int j;
 	QList<SizeChunk*> lineChunks;
 	QList<SizeChunk*> staffChunks;
@@ -11170,7 +11187,7 @@ void MeasureToTick::build(OVE::OveSong* ove, int quarter) {
 }
 
 int MeasureToTick::getTick(int measure, int tickOffset) {
-	unsigned int i;
+	int i;
 	TimeTick tt;
 
 	for (i = 0; i < tts_.size(); ++i) {
@@ -11267,7 +11284,7 @@ void QOve::convertSong() {
 
 			convertTrackHeader(trackPtr, trackNo);
 
-			int beginMeasure = 0;
+			//int beginMeasure = 0;
 			int endMeasure = d->ove.getMeasureCount();
 			int offsetTick = 0;
 
@@ -11319,7 +11336,7 @@ void QOve::convertSignatures() {
 					tempos[tick] = tempo;
 				}
 
-				for (unsigned int l = 0; l < tempoPtrs.size(); ++l) {
+				for (int l = 0; l < tempoPtrs.size(); ++l) {
 					OVE::Tempo* ptr = static_cast<OVE::Tempo*> (tempoPtrs[l]);
 					int tick = d->mtt.getTick(measure->getBarNumber()->getIndex(), ptr->getTick());
 					int tempo = ptr->getQuarterTempo() > 0 ? ptr->getQuarterTempo() : 1;
@@ -11370,7 +11387,7 @@ void QOve::convertSignatures() {
 }
 
 void QOve::convertTrackHeader(OVE::Track* track, int trackNo) {
-	unsigned int i;
+	int i;
 	const QList<OVE::Voice*> voices = track->getVoices();
 	QMap<int, int> patches;	// channel, patch
 	QMap<int, int> pans;	// channel, pan
@@ -11452,9 +11469,10 @@ int getTick(int tick) {
 
 void QOve::convertMeasure(
 		OVE::Track* track, int trackNo, const QList<OVE::Voice*>& voices,
-		OVE::Measure* measure, OVE::MeasureData* measureData, int transpose, int offsetTick) {
-	unsigned int i;
-	unsigned int j;
+		OVE::Measure* measure, OVE::MeasureData* measureData, int transpose, int offsetTick)
+{
+    Q_UNUSED(track)
+	int i;
 	int measureId = measure->getBarNumber()->getIndex();
 	QList<OVE::NoteContainer*> containers = measureData->getNoteContainers();
 
@@ -11582,8 +11600,8 @@ void QOve::convertNotes(int trackNo, int measureTick, OVE::NoteContainer* contai
 		return;
 	}
 
-	unsigned int i;
-	unsigned int j;
+	int i;
+	int j;
 	int k;
 	QList<OVE::Note*> notes = container->getNotesRests();
 	QList<OVE::Articulation*> articulations = container->getArticulations();

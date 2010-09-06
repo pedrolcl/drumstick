@@ -180,7 +180,7 @@ void QSpyOve::fileHeader(int verh, int verl)
 
 void QSpyOve::fileEnd()
 {
-	dumpStr("Ove File End", "");
+	dumpStr(0, "Ove File End", QString());
 }
 
 void QSpyOve::newTrackHeader( const QString& name,
