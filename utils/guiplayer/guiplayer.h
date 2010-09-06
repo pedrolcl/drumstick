@@ -203,7 +203,7 @@ private:
         int bank;
     };
     QList<SysexEventRec> m_savedSysexEvents;
-    QString m_fileFormat;
+    //QString m_fileFormat;
 
     struct TrackMapRec {
         int channel;

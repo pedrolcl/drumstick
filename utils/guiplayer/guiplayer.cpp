@@ -418,7 +418,8 @@ void GUIPlayer::openFile(const QString& fileName)
         updateTempoLabel(6.0e7f / m_initialTempo);
         m_ui->progressBar->setValue(0);
         if (!m_loadingMessages.isEmpty()) {
-            m_loadingMessages.insert(0, "Warning, this file may be non-standard or damaged<br>");
+            m_loadingMessages.insert(0,
+                "Warning, this file may be non-standard or damaged.<br>");
             QMessageBox::warning(this, QSTR_APPNAME, m_loadingMessages);
         }
         if (m_song->isEmpty())
@@ -786,8 +787,9 @@ GUIPlayer::appendWRKEvent(unsigned long ticks, int /*trck*/, SequencerEvent* ev)
 
 void GUIPlayer::errorHandlerWRK(const QString& errorStr)
 {
-    qWarning() << "*** Warning! " << errorStr
-               << " at file offset " << m_wrk->getFilePos();
+    if (m_loadingMessages.length() < 1024)
+        m_loadingMessages.append(QString("%1 at file offset %2<br>")
+            .arg(errorStr).arg(m_wrk->getFilePos()));
 }
 
 void GUIPlayer::fileHeader(int /*verh*/, int /*verl*/)
@@ -1120,8 +1122,10 @@ void GUIPlayer::unknownChunk(int /*type*/, const QByteArray& /*data*/)
              << "size:" << data.length();*/
 }
 
-void GUIPlayer::oveErrorHandler(const QString& errorStr) {
-    qWarning() << "*** Warning! " << errorStr;
+void GUIPlayer::oveErrorHandler(const QString& errorStr)
+{
+    if (m_loadingMessages.length() < 1024)
+        m_loadingMessages.append(errorStr);
 }
 
 void GUIPlayer::oveFileHeader(int quarter, int trackCount) {

@@ -11258,10 +11258,11 @@ void QOve::readFromFile(const QString& fileName) {
 		}
 	}
 
-	if(!success) {
+	if (!success) {
 		Q_EMIT signalOVEError(
-				"Can't read OVE file or not compatible file, \n"
-				"try to load and save with newer version, Overture 4 is recommended.");
+            "Cannot read this OVE file, "
+		    "probably because it has an incompatible format.\n"
+            "Please, convert it using Overture 4 or a newer version.");
 	}
 }
 
