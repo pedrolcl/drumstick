@@ -25,15 +25,14 @@
 #include <QThread>
 #include <QReadLocker>
 #include <QWriteLocker>
-#if defined(QT_DBUS_LIB)
+#if defined(RTKIT_SUPPORT)
 #include <QDBusConnection>
 #include <QDBusInterface>
-#endif
-
-#include <pthread.h>
 #include <sys/types.h>
 #include <sys/syscall.h>
 #include <sys/resource.h>
+#endif
+#include <pthread.h>
 
 #ifndef RLIMIT_RTTIME
 #define RLIMIT_RTTIME 15
@@ -1766,26 +1765,31 @@ MidiClient::SequencerInputThread::stop()
     m_Stopped = true;
 }
 
+#if defined(RTKIT_SUPPORT)
 static pid_t _gettid(void) {
     return (pid_t) ::syscall(SYS_gettid);
 }
+#endif
 
 void
 MidiClient::SequencerInputThread::setRealtimePriority()
 {
-    bool ok;
-    int rt, policy = SCHED_RR | SCHED_RESET_ON_FORK;
-    quint32 max_prio, priority = 6;
-    quint64 thread;
     struct sched_param p;
+    int rt, policy = SCHED_RR | SCHED_RESET_ON_FORK;
+    quint32 priority = 6;
+#if defined(RTKIT_SUPPORT)
+    bool ok;
+    quint32 max_prio;
+    quint64 thread;
     struct rlimit old_limit, new_limit;
     long long max_rttime;
+#endif
 
     ::memset(&p, 0, sizeof(p));
     p.sched_priority = priority;
     rt = ::pthread_setschedparam(::pthread_self(), policy, &p);
     if (rt != 0) {
-#if defined(QT_DBUS_LIB)
+#if defined(RTKIT_SUPPORT)
         const QString rtkit_service =
                 QLatin1String("org.freedesktop.RealtimeKit1");
         const QString rtkit_path =

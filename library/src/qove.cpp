@@ -9863,10 +9863,15 @@ void LyricChunkParse::processLyricInfo(const LyricInfo& info) {
 				if( containers[i]->start()->getOffset() == lyric->start()->getOffset() &&
 					(int)containers[i]->getVoice() == info.voice_ &&
 					lyric->getVerse() == info.verse_ ) {
-					lyric->setLyric(words[index].trimmed());
-					lyric->setVoice(info.voice_);
+						if(index<words.size()) {
+							QString l = words[index].trimmed();
+							if(!l.isEmpty()) {
+								lyric->setLyric(l);
+								lyric->setVoice(info.voice_);
+							}
+						}
 
-					++index;
+						++index;
 				}
 			}
 		}
