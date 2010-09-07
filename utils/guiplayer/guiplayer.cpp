@@ -44,7 +44,7 @@
 #include <QtCore/QUrl>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextCodec>
-#include <cmath>
+#include <qmath.h>
 
 GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags),
@@ -89,7 +89,7 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
 
     m_Client = new MidiClient(this);
     m_Client->open();
-    m_Client->setPoolOutput(20); // tiny size, for near real-time pitchShift
+    m_Client->setPoolOutput(50); // small size, for near real-time pitchShift
     m_Client->setClientName("MIDI Player");
     connect( m_Client, SIGNAL(eventReceived(SequencerEvent*)),
              SLOT(sequencerEvent(SequencerEvent*)), Qt::QueuedConnection );
@@ -109,97 +109,97 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
 
     m_smf = new QSmf(this);
     connect(m_smf, SIGNAL(signalSMFHeader(int,int,int)),
-                   SLOT(headerEvent(int,int,int)));
+                   SLOT(smfHeaderEvent(int,int,int)));
     connect(m_smf, SIGNAL(signalSMFNoteOn(int,int,int)),
-                   SLOT(noteOnEvent(int,int,int)));
+                   SLOT(smfNoteOnEvent(int,int,int)));
     connect(m_smf, SIGNAL(signalSMFNoteOff(int,int,int)),
-                   SLOT(noteOffEvent(int,int,int)));
+                   SLOT(smfNoteOffEvent(int,int,int)));
     connect(m_smf, SIGNAL(signalSMFKeyPress(int,int,int)),
-                   SLOT(keyPressEvent(int,int,int)));
+                   SLOT(smfKeyPressEvent(int,int,int)));
     connect(m_smf, SIGNAL(signalSMFCtlChange(int,int,int)),
-                   SLOT(ctlChangeEvent(int,int,int)));
+                   SLOT(smfCtlChangeEvent(int,int,int)));
     connect(m_smf, SIGNAL(signalSMFPitchBend(int,int)),
-                   SLOT(pitchBendEvent(int,int)));
+                   SLOT(smfPitchBendEvent(int,int)));
     connect(m_smf, SIGNAL(signalSMFProgram(int,int)),
-                   SLOT(programEvent(int,int)));
+                   SLOT(smfProgramEvent(int,int)));
     connect(m_smf, SIGNAL(signalSMFChanPress(int,int)),
-                   SLOT(chanPressEvent(int,int)));
+                   SLOT(smfChanPressEvent(int,int)));
     connect(m_smf, SIGNAL(signalSMFSysex(const QByteArray&)),
-                   SLOT(sysexEvent(const QByteArray&)));
+                   SLOT(smfSysexEvent(const QByteArray&)));
     connect(m_smf, SIGNAL(signalSMFText(int,const QString&)),
-                   SLOT(textEvent(int,const QString&)));
+                   SLOT(smfUpdateLoadProgress()));
     connect(m_smf, SIGNAL(signalSMFTempo(int)),
-                   SLOT(tempoEvent(int)));
+                   SLOT(smfTempoEvent(int)));
     connect(m_smf, SIGNAL(signalSMFTrackStart()),
-                   SLOT(updateSMFLoadProgress()));
+                   SLOT(smfUpdateLoadProgress()));
     connect(m_smf, SIGNAL(signalSMFTrackEnd()),
-                   SLOT(updateSMFLoadProgress()));
+                   SLOT(smfUpdateLoadProgress()));
     connect(m_smf, SIGNAL(signalSMFendOfTrack()),
-                   SLOT(updateSMFLoadProgress()));
+                   SLOT(smfUpdateLoadProgress()));
     connect(m_smf, SIGNAL(signalSMFError(const QString&)),
-                   SLOT(errorHandler(const QString&)));
+                   SLOT(smfErrorHandler(const QString&)));
 
     m_wrk = new QWrk(this);
     connect(m_wrk, SIGNAL(signalWRKError(const QString&)),
-                   SLOT(errorHandlerWRK(const QString&)));
+                   SLOT(wrkErrorHandler(const QString&)));
     connect(m_wrk, SIGNAL(signalWRKUnknownChunk(int,const QByteArray&)),
-                   SLOT(unknownChunk(int,const QByteArray&)));
+                   SLOT(wrkUpdateLoadProgress()));
     connect(m_wrk, SIGNAL(signalWRKHeader(int,int)),
-                   SLOT(fileHeader(int,int)));
+                   SLOT(wrkFileHeader(int,int)));
     connect(m_wrk, SIGNAL(signalWRKEnd()),
-                   SLOT(endOfWrk()));
+                   SLOT(wrkEndOfFile()));
     connect(m_wrk, SIGNAL(signalWRKStreamEnd(long)),
-                   SLOT(streamEndEvent(long)));
+                   SLOT(wrkStreamEndEvent(long)));
     connect(m_wrk, SIGNAL(signalWRKGlobalVars()),
-                   SLOT(globalVars()));
+                   SLOT(wrkUpdateLoadProgress()));
     connect(m_wrk, SIGNAL(signalWRKTrack(const QString&, const QString&, int,int,int,int,int,bool,bool,bool)),
-                   SLOT(trackHeader(const QString&, const QString&, int,int,int,int,int,bool,bool,bool)));
+                   SLOT(wrkTrackHeader(const QString&, const QString&, int,int,int,int,int,bool,bool,bool)));
     connect(m_wrk, SIGNAL(signalWRKTimeBase(int)),
-                   SLOT(timeBase(int)));
+                   SLOT(wrkTimeBase(int)));
     connect(m_wrk, SIGNAL(signalWRKNote(int,long,int,int,int,int)),
-                   SLOT(noteEvent(int,long,int,int,int,int)));
+                   SLOT(wrkNoteEvent(int,long,int,int,int,int)));
     connect(m_wrk, SIGNAL(signalWRKKeyPress(int,long,int,int,int)),
-                   SLOT(keyPressEvent(int,long,int,int,int)));
+                   SLOT(wrkKeyPressEvent(int,long,int,int,int)));
     connect(m_wrk, SIGNAL(signalWRKCtlChange(int,long,int,int,int)),
-                   SLOT(ctlChangeEvent(int,long,int,int,int)));
+                   SLOT(wrkCtlChangeEvent(int,long,int,int,int)));
     connect(m_wrk, SIGNAL(signalWRKPitchBend(int,long,int,int)),
-                   SLOT(pitchBendEvent(int,long,int,int)));
+                   SLOT(wrkPitchBendEvent(int,long,int,int)));
     connect(m_wrk, SIGNAL(signalWRKProgram(int,long,int,int)),
-                   SLOT(programEvent(int,long,int,int)));
+                   SLOT(wrkProgramEvent(int,long,int,int)));
     connect(m_wrk, SIGNAL(signalWRKChanPress(int,long,int,int)),
-                   SLOT(chanPressEvent(int,long,int,int)));
+                   SLOT(wrkChanPressEvent(int,long,int,int)));
     connect(m_wrk, SIGNAL(signalWRKSysexEvent(int,long,int)),
-                   SLOT(sysexEvent(int,long,int)));
+                   SLOT(wrkSysexEvent(int,long,int)));
     connect(m_wrk, SIGNAL(signalWRKSysex(int,const QString&,bool,int,const QByteArray&)),
-                   SLOT(sysexEventBank(int,const QString&,bool,int,const QByteArray&)));
+                   SLOT(wrkSysexEventBank(int,const QString&,bool,int,const QByteArray&)));
     connect(m_wrk, SIGNAL(signalWRKText(int,long,int,const QString&)),
-                   SLOT(textEvent(int,long,int,const QString&)));
+                   SLOT(wrkUpdateLoadProgress()));
     connect(m_wrk, SIGNAL(signalWRKTimeSig(int,int,int)),
-                   SLOT(timeSigEvent(int,int,int)));
+                   SLOT(wrkUpdateLoadProgress()));
     connect(m_wrk, SIGNAL(signalWRKKeySig(int,int)),
-                   SLOT(keySigEventWRK(int,int)));
+                   SLOT(wrkUpdateLoadProgress()));
     connect(m_wrk, SIGNAL(signalWRKTempo(long,int)),
-                   SLOT(tempoEvent(long,int)));
+                   SLOT(wrkTempoEvent(long,int)));
     connect(m_wrk, SIGNAL(signalWRKTrackPatch(int,int)),
-                   SLOT(trackPatch(int,int)));
+                   SLOT(wrkTrackPatch(int,int)));
     connect(m_wrk, SIGNAL(signalWRKComments(const QString&)),
-                   SLOT(comments(const QString&)));
+                   SLOT(wrkUpdateLoadProgress()));
     connect(m_wrk, SIGNAL(signalWRKVariableRecord(const QString&,const QByteArray&)),
-                   SLOT(variableRecord(const QString&,const QByteArray&)));
+                   SLOT(wrkUpdateLoadProgress()));
     connect(m_wrk, SIGNAL(signalWRKNewTrack(const QString&,int,int,int,int,int,bool,bool,bool)),
-                   SLOT(newTrackHeader(const QString&,int,int,int,int,int,bool,bool,bool)));
+                   SLOT(wrkNewTrackHeader(const QString&,int,int,int,int,int,bool,bool,bool)));
     connect(m_wrk, SIGNAL(signalWRKTrackName(int,const QString&)),
-                   SLOT(trackName(int,const QString&)));
+                   SLOT(wrkUpdateLoadProgress()));
     connect(m_wrk, SIGNAL(signalWRKTrackVol(int,int)),
-                   SLOT(trackVol(int,int)));
+                   SLOT(wrkTrackVol(int,int)));
     connect(m_wrk, SIGNAL(signalWRKTrackBank(int,int)),
-                   SLOT(trackBank(int,int)));
+                   SLOT(wrkTrackBank(int,int)));
     connect(m_wrk, SIGNAL(signalWRKSegment(int,long,const QString&)),
-                   SLOT(segment(int,long,const QString&)));
+                   SLOT(wrkUpdateLoadProgress()));
     connect(m_wrk, SIGNAL(signalWRKChord(int,long,const QString&,const QByteArray&)),
-                   SLOT(chord(int,long,const QString&,const QByteArray&)));
+                   SLOT(wrkUpdateLoadProgress()));
     connect(m_wrk, SIGNAL(signalWRKExpression(int,long,int,const QString&)),
-                   SLOT(expression(int,long,int,const QString&)));
+                   SLOT(wrkUpdateLoadProgress()));
 
     m_ove = new QOve(this);
     connect(m_ove, SIGNAL(signalOVEError(const QString&)),
@@ -207,45 +207,35 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     connect(m_ove, SIGNAL(signalOVEHeader(int,int)),
                    SLOT(oveFileHeader(int,int)));
     connect(m_ove, SIGNAL(signalOVEEnd()),
-                   SLOT(endOfWrk()));
+                   SLOT(wrkEndOfFile()));
     connect(m_ove, SIGNAL(signalOVENoteOn(int, long, int, int, int)),
 				   SLOT(oveNoteOnEvent(int, long, int, int, int)));
     connect(m_ove, SIGNAL(signalOVENoteOff(int, long, int, int, int)),
-    				   SLOT(oveNoteOffEvent(int, long, int, int, int)));
+                   SLOT(oveNoteOffEvent(int, long, int, int, int)));
     connect(m_ove, SIGNAL(signalOVEKeyPress(int,long,int,int,int)),
-                   SLOT(keyPressEvent(int,long,int,int,int)));
+                   SLOT(wrkKeyPressEvent(int,long,int,int,int)));
     connect(m_ove, SIGNAL(signalOVECtlChange(int,long,int,int,int)),
-                   SLOT(ctlChangeEvent(int,long,int,int,int)));
+                   SLOT(wrkCtlChangeEvent(int,long,int,int,int)));
     connect(m_ove, SIGNAL(signalOVEPitchBend(int,long,int,int)),
-                   SLOT(pitchBendEvent(int,long,int,int)));
+                   SLOT(wrkPitchBendEvent(int,long,int,int)));
     connect(m_ove, SIGNAL(signalOVEProgram(int,long,int,int)),
-                   SLOT(programEvent(int,long,int,int)));
+                   SLOT(wrkProgramEvent(int,long,int,int)));
     connect(m_ove, SIGNAL(signalOVEChanPress(int,long,int,int)),
-                   SLOT(chanPressEvent(int,long,int,int)));
+                   SLOT(wrkChanPressEvent(int,long,int,int)));
     connect(m_ove, SIGNAL(signalOVESysexEvent(int,long,int)),
-                   SLOT(sysexEvent(int,long,int)));
+                   SLOT(wrkSysexEvent(int,long,int)));
     connect(m_ove, SIGNAL(signalOVESysex(int,const QString&,bool,int,const QByteArray&)),
-                   SLOT(sysexEventBank(int,const QString&,bool,int,const QByteArray&)));
-    connect(m_ove, SIGNAL(signalOVEText(int,long,const QString&)),
-                   SLOT(oveLyricEvent(int,long,const QString&)));
-    connect(m_ove, SIGNAL(signalOVETimeSig(int,long,int,int)),
-                   SLOT(oveTimeSigEvent(int,long,int,int)));
-    connect(m_ove, SIGNAL(signalOVEKeySig(int,long,int)),
-                   SLOT(oveKeySigEvent(int,long,int)));
+                   SLOT(wrkSysexEventBank(int,const QString&,bool,int,const QByteArray&)));
     connect(m_ove, SIGNAL(signalOVETempo(long,int)),
-                   SLOT(tempoEvent(long,int)));
+                   SLOT(wrkTempoEvent(long,int)));
     connect(m_ove, SIGNAL(signalOVETrackPatch(int,int,int)),
                    SLOT(oveTrackPatch(int,int,int)));
     connect(m_ove, SIGNAL(signalOVENewTrack(const QString&,int,int,int,int,int,bool,bool,bool)),
-                   SLOT(newTrackHeader(const QString&,int,int,int,int,int,bool,bool,bool)));
+                   SLOT(wrkNewTrackHeader(const QString&,int,int,int,int,int,bool,bool,bool)));
     connect(m_ove, SIGNAL(signalOVETrackVol(int,int,int)),
-                   SLOT(trackVol(int,int)));
+                   SLOT(wrkTrackVol(int,int)));
     connect(m_ove, SIGNAL(signalOVETrackBank(int,int,int)),
                    SLOT(oveTrackBank(int,int,int)));
-    connect(m_ove, SIGNAL(signalOVEChord(int,long,const QString&,const QByteArray&)),
-                   SLOT(chord(int,long,const QString&,const QByteArray&)));
-    connect(m_ove, SIGNAL(signalOVEExpression(int,long,int,const QString&)),
-                   SLOT(expression(int,long,int,const QString&)));
 
     m_player = new Player(m_Client, m_portId);
     connect(m_player, SIGNAL(finished()), SLOT(songFinished()));
@@ -330,9 +320,8 @@ void GUIPlayer::play()
 {
     if (!m_song->isEmpty()) {
         if (m_player->getInitialPosition() == 0) {
-            if (m_initialTempo == 0) {
+            if (m_initialTempo == 0)
                 return;
-            }
             QueueTempo firstTempo = m_Queue->getTempo();
             firstTempo.setPPQ(m_song->getDivision());
             firstTempo.setTempo(m_initialTempo);
@@ -348,7 +337,7 @@ void GUIPlayer::play()
 
 void GUIPlayer::pause()
 {
-    if (m_player->isRunning()) {
+    if (m_state == PlayingState || m_player->isRunning()) {
         m_player->stop();
         m_player->setPosition(m_Queue->getStatus().getTickTime());
         updateState(PausedState);
@@ -360,12 +349,34 @@ void GUIPlayer::pause()
 
 void GUIPlayer::stop()
 {
-    if (m_player->isRunning())
+    if (m_state == PlayingState || m_state == PausedState ||
+        m_player->isRunning())
         m_player->stop();
     if (m_initialTempo != 0)
         songFinished();
     else
         updateState(StoppedState);
+}
+
+void GUIPlayer::progressDialogInit(const QString& type, int max)
+{
+    m_pd = new QProgressDialog(0, 0, 0, max, this);
+    m_pd->setWindowTitle(QString("Loading %1 file...").arg(type));
+    m_pd->setMinimumDuration(1000);
+    m_pd->setValue(0);
+}
+
+void GUIPlayer::progressDialogUpdate(int pos)
+{
+    if (m_pd != 0) {
+        m_pd->setValue(pos);
+        qApp->processEvents();
+    }
+}
+
+void GUIPlayer::progressDialogClose()
+{
+    delete m_pd; // set to 0 by QPointer<>
 }
 
 void GUIPlayer::openFile(const QString& fileName)
@@ -377,40 +388,32 @@ void GUIPlayer::openFile(const QString& fileName)
         m_tick = 0;
         m_initialTempo = 0;
         try {
-            m_pd = new QProgressDialog(0, 0, 0, finfo.size(), this);
-            m_pd->setWindowTitle("Loading MIDI file...");
-            m_pd->setMinimumDuration(1000);
-            m_pd->setValue(0);
             QString ext = finfo.suffix().toLower();
             if (ext == "wrk") {
-            	m_fileType = FileType_WRK;
+                progressDialogInit("Cakewalk", finfo.size());
                 m_wrk->readFromFile(fileName);
             }
             else if (ext == "mid" || ext == "midi" || ext == "kar") {
-            	m_fileType = FileType_SMF;
+                progressDialogInit("MIDI", finfo.size());
                 m_smf->readFromFile(fileName);
             }
             else if (ext == "ove") {
-            	m_fileType = FileType_OVE;
             	m_ove->readFromFile(fileName);
             }
-            m_pd->setValue(finfo.size());
+            progressDialogUpdate(finfo.size());
             if (m_song->isEmpty()) {
                 m_ui->lblName->clear();
-                m_ui->lblCopyright->clear();
             } else {
                 m_song->sort();
                 m_player->setSong(m_song);
                 m_ui->lblName->setText(finfo.fileName());
-                m_ui->lblCopyright->setText(m_song->getCopyright());
                 m_lastDirectory = finfo.absolutePath();
             }
         } catch (...) {
             m_song->clear();
             m_ui->lblName->clear();
-            m_ui->lblCopyright->clear();
         }
-        delete m_pd;
+        progressDialogClose();
         if (m_initialTempo == 0) {
             m_initialTempo = 500000;
         }
@@ -433,7 +436,7 @@ void GUIPlayer::open()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
           "Open MIDI File", m_lastDirectory,
-          "All files (*.*);;"
+          "All files (*.kar *.mid *.midi *.ove *.wrk);;"
           "Karaoke files (*.kar);;"
           "MIDI Files (*.mid *.midi);;"
           "Overture Files (*.ove);;"
@@ -458,9 +461,8 @@ void GUIPlayer::setup()
     QString item = QInputDialog::getItem(this, "Player subscription",
                                          "Output port:", items,
                                          current, false, &ok);
-    if (ok && !item.isEmpty()) {
+    if (ok && !item.isEmpty())
         subscribe(item);
-    }
 }
 
 void GUIPlayer::songFinished()
@@ -500,7 +502,7 @@ void GUIPlayer::sequencerEvent(SequencerEvent *ev)
         const snd_seq_real_time_t* rt = m_Queue->getStatus().getRealtime();
         int mins = rt->tv_sec / 60;
         int secs =  rt->tv_sec % 60;
-        int cnts = floor( rt->tv_nsec / 1.0e7 );
+        int cnts = qFloor( rt->tv_nsec / 1.0e7 );
         updateTempoLabel(m_Queue->getTempo().getRealBPM());
         updateTimeLabel(mins, secs, cnts);
         m_ui->progressBar->setValue(pos);
@@ -511,83 +513,6 @@ void GUIPlayer::sequencerEvent(SequencerEvent *ev)
 void GUIPlayer::pitchShift(int value)
 {
     m_player->setPitchShift(value);
-}
-
-void GUIPlayer::headerEvent(int format, int ntrks, int division)
-{
-    m_song->setHeader(format, ntrks, division);
-    updateSMFLoadProgress();
-}
-
-void GUIPlayer::noteOnEvent(int chan, int pitch, int vol)
-{
-    SequencerEvent* ev = new NoteOnEvent (chan, pitch, vol);
-    appendSMFEvent(ev);
-}
-
-void GUIPlayer::noteOffEvent(int chan, int pitch, int vol)
-{
-    SequencerEvent* ev = new NoteOffEvent (chan, pitch, vol);
-    appendSMFEvent(ev);
-}
-
-void GUIPlayer::keyPressEvent(int chan, int pitch, int press)
-{
-    SequencerEvent* ev = new KeyPressEvent (chan, pitch, press);
-    appendSMFEvent(ev);
-}
-
-void GUIPlayer::ctlChangeEvent(int chan, int ctl, int value)
-{
-    SequencerEvent* ev = new ControllerEvent (chan, ctl, value);
-    appendSMFEvent(ev);
-}
-
-void GUIPlayer::pitchBendEvent(int chan, int value)
-{
-    SequencerEvent* ev = new PitchBendEvent (chan, value);
-    appendSMFEvent(ev);
-}
-
-void GUIPlayer::programEvent(int chan, int patch)
-{
-    SequencerEvent* ev = new ProgramChangeEvent (chan, patch);
-    appendSMFEvent(ev);
-}
-
-void GUIPlayer::chanPressEvent(int chan, int press)
-{
-    SequencerEvent* ev = new ChanPressEvent (chan, press);
-    appendSMFEvent(ev);
-}
-
-void GUIPlayer::sysexEvent(const QByteArray& data)
-{
-    SequencerEvent* ev = new SysExEvent (data);
-    appendSMFEvent(ev);
-}
-
-void GUIPlayer::textEvent(int type, const QString& data)
-{
-    m_song->addText(type, data);
-    updateSMFLoadProgress();
-}
-
-void GUIPlayer::tempoEvent(int tempo)
-{
-    if ( m_initialTempo == 0 )
-    {
-        m_initialTempo = tempo;
-    }
-    SequencerEvent* ev = new TempoEvent (m_queueId, tempo);
-    appendSMFEvent(ev);
-}
-
-void GUIPlayer::errorHandler(const QString& errorStr)
-{
-    if (m_loadingMessages.length() < 1024)
-        m_loadingMessages.append(QString("%1 at file offset %2<br>")
-            .arg(errorStr).arg(m_smf->getFilePos()));
 }
 
 void GUIPlayer::tempoReset()
@@ -609,9 +534,8 @@ void GUIPlayer::tempoSlider(int value)
     qtempo.setTempoFactor(m_tempoFactor);
     m_Queue->setTempo(qtempo);
     m_Client->drainOutput();
-    if (!m_player->isRunning()) {
+    if (!m_player->isRunning())
         updateTempoLabel(qtempo.getRealBPM());
-    }
     // Slider tooltip
     QString tip = QString("%1\%").arg(m_tempoFactor*100.0, 0, 'f', 0);
     m_ui->sliderTempo->setToolTip(tip);
@@ -627,18 +551,10 @@ void GUIPlayer::volumeSlider(int value)
     QToolTip::showText(QCursor::pos(), tip, this);
 }
 
-void GUIPlayer::quit()
-{
-    stop();
-    m_player->wait();
-    close();
-}
-
 void GUIPlayer::dragEnterEvent( QDragEnterEvent * event )
 {
-    if (event->mimeData()->hasFormat("text/uri-list")) {
+    if (event->mimeData()->hasFormat("text/uri-list"))
         event->acceptProposedAction();
-    }
 }
 
 void GUIPlayer::dropEvent( QDropEvent * event )
@@ -655,7 +571,8 @@ void GUIPlayer::dropEvent( QDropEvent * event )
         openFile(fileName);
         event->accept();
     } else {
-        qDebug() << "Dropped object is not supported:" << fileName;
+        QMessageBox::warning(this, QSTR_APPNAME,
+            QString("Dropped file %1 is not supported").arg(fileName));
     }
 }
 
@@ -689,9 +606,8 @@ void GUIPlayer::readSettings()
     QString midiConn = settings.value("MIDIConnection").toString();
     settings.endGroup();
 
-    if (midiConn.length() > 0) {
+    if (midiConn.length() > 0)
         subscribe(midiConn);
-    }
 }
 
 void GUIPlayer::writeSettings()
@@ -727,11 +643,20 @@ void GUIPlayer::aboutQt()
     qApp->aboutQt();
 }
 
-void GUIPlayer::updateSMFLoadProgress()
+void GUIPlayer::quit()
 {
-    if (m_pd != 0) {
-        m_pd->setValue(m_smf->getFilePos());
-    }
+    stop();
+    m_player->wait();
+    close();
+}
+
+/* **************************************** *
+ * SMF (Standard MIDI file) format handling
+ * **************************************** */
+
+void GUIPlayer::smfUpdateLoadProgress()
+{
+    progressDialogUpdate(m_smf->getFilePos());
 }
 
 void GUIPlayer::appendSMFEvent(SequencerEvent* ev)
@@ -745,33 +670,91 @@ void GUIPlayer::appendSMFEvent(SequencerEvent* ev)
     m_song->append(ev);
     if (tick > m_tick)
         m_tick = tick;
-    updateSMFLoadProgress();
+    smfUpdateLoadProgress();
+}
+
+void GUIPlayer::smfHeaderEvent(int format, int ntrks, int division)
+{
+    m_song->setHeader(format, ntrks, division);
+    smfUpdateLoadProgress();
+}
+
+void GUIPlayer::smfNoteOnEvent(int chan, int pitch, int vol)
+{
+    SequencerEvent* ev = new NoteOnEvent (chan, pitch, vol);
+    appendSMFEvent(ev);
+}
+
+void GUIPlayer::smfNoteOffEvent(int chan, int pitch, int vol)
+{
+    SequencerEvent* ev = new NoteOffEvent (chan, pitch, vol);
+    appendSMFEvent(ev);
+}
+
+void GUIPlayer::smfKeyPressEvent(int chan, int pitch, int press)
+{
+    SequencerEvent* ev = new KeyPressEvent (chan, pitch, press);
+    appendSMFEvent(ev);
+}
+
+void GUIPlayer::smfCtlChangeEvent(int chan, int ctl, int value)
+{
+    SequencerEvent* ev = new ControllerEvent (chan, ctl, value);
+    appendSMFEvent(ev);
+}
+
+void GUIPlayer::smfPitchBendEvent(int chan, int value)
+{
+    SequencerEvent* ev = new PitchBendEvent (chan, value);
+    appendSMFEvent(ev);
+}
+
+void GUIPlayer::smfProgramEvent(int chan, int patch)
+{
+    SequencerEvent* ev = new ProgramChangeEvent (chan, patch);
+    appendSMFEvent(ev);
+}
+
+void GUIPlayer::smfChanPressEvent(int chan, int press)
+{
+    SequencerEvent* ev = new ChanPressEvent (chan, press);
+    appendSMFEvent(ev);
+}
+
+void GUIPlayer::smfSysexEvent(const QByteArray& data)
+{
+    SequencerEvent* ev = new SysExEvent (data);
+    appendSMFEvent(ev);
+}
+
+void GUIPlayer::smfTempoEvent(int tempo)
+{
+    if ( m_initialTempo == 0 ) {
+        m_initialTempo = tempo;
+    }
+    SequencerEvent* ev = new TempoEvent (m_queueId, tempo);
+    appendSMFEvent(ev);
+}
+
+void GUIPlayer::smfErrorHandler(const QString& errorStr)
+{
+    if (m_loadingMessages.length() < 1024)
+        m_loadingMessages.append(QString("%1 at file offset %2<br>")
+            .arg(errorStr).arg(m_smf->getFilePos()));
 }
 
 /* ********************************* *
  * Cakewalk WRK file format handling
  * ********************************* */
 
-void GUIPlayer::updateWRKLoadProgress()
+void GUIPlayer::wrkUpdateLoadProgress()
 {
-    if (m_pd != 0) {
-    	switch (m_fileType) {
-    	case FileType_WRK : {
-    		m_pd->setValue(m_wrk->getFilePos());
-    		break;
-    	}
-    	case FileType_OVE : {
-    		//m_pd->setValue(m_wrk->getFilePos());
-    		break;
-    	}
-    	default:
-    		break;
-    	}
-    }
+    if (m_pd != 0)
+        progressDialogUpdate(m_wrk->getFilePos());
 }
 
 void
-GUIPlayer::appendWRKEvent(unsigned long ticks, int /*trck*/, SequencerEvent* ev)
+GUIPlayer::appendWRKEvent(unsigned long ticks, SequencerEvent* ev)
 {
     ev->setSource(m_portId);
     if (ev->getSequencerType() != SND_SEQ_EVENT_TEMPO) {
@@ -781,42 +764,38 @@ GUIPlayer::appendWRKEvent(unsigned long ticks, int /*trck*/, SequencerEvent* ev)
     m_song->append(ev);
     if (ticks > m_tick)
         m_tick = ticks;
-    updateWRKLoadProgress();
-    qApp->processEvents();
+    wrkUpdateLoadProgress();
 }
 
-void GUIPlayer::errorHandlerWRK(const QString& errorStr)
+void GUIPlayer::wrkErrorHandler(const QString& errorStr)
 {
     if (m_loadingMessages.length() < 1024)
         m_loadingMessages.append(QString("%1 at file offset %2<br>")
             .arg(errorStr).arg(m_wrk->getFilePos()));
 }
 
-void GUIPlayer::fileHeader(int /*verh*/, int /*verl*/)
+void GUIPlayer::wrkFileHeader(int /*verh*/, int /*verl*/)
 {
-    //fileFormat = QString("WRK file version %1.%2").arg(verh).arg(verl);
     m_song->setHeader(1, 0, 120);
+    wrkUpdateLoadProgress();
 }
 
-void GUIPlayer::timeBase(int timebase)
+void GUIPlayer::wrkTimeBase(int timebase)
 {
     m_song->setDivision(timebase);
+    wrkUpdateLoadProgress();
 }
 
-void GUIPlayer::globalVars()
-{
-    keySigEventWRK(0, m_wrk->getKeySig());
-    updateWRKLoadProgress();
-}
-
-void GUIPlayer::streamEndEvent(long time)
+void GUIPlayer::wrkStreamEndEvent(long time)
 {
     unsigned long ticks = time;
     if (ticks > m_tick)
         m_tick = ticks;
+    wrkUpdateLoadProgress();
 }
 
-void GUIPlayer::trackHeader( const QString& name1, const QString& name2,
+void GUIPlayer::wrkTrackHeader( const QString& /*name1*/,
+                           const QString& /*name2*/,
                            int trackno, int channel,
                            int pitch, int velocity, int /*port*/,
                            bool /*selected*/, bool /*muted*/, bool /*loop*/ )
@@ -826,16 +805,10 @@ void GUIPlayer::trackHeader( const QString& name1, const QString& name2,
     rec.pitch = pitch;
     rec.velocity = velocity;
     m_trackMap[trackno] = rec;
-    QString trkName = name1 + ' ' + name2;
-    trkName = trkName.trimmed();
-    if (!trkName.isEmpty()) {
-        SequencerEvent* ev = new TextEvent(trkName, Song::TrackName);
-        appendWRKEvent(0, trackno, ev);
-    }
-    updateWRKLoadProgress();
+    wrkUpdateLoadProgress();
 }
 
-void GUIPlayer::noteEvent(int track, long time, int chan, int pitch, int vol, int dur)
+void GUIPlayer::wrkNoteEvent(int track, long time, int chan, int pitch, int vol, int dur)
 {
     int channel = chan;
     TrackMapRec rec = m_trackMap[track];
@@ -844,10 +817,10 @@ void GUIPlayer::noteEvent(int track, long time, int chan, int pitch, int vol, in
     if (rec.channel > -1)
         channel = rec.channel;
     SequencerEvent* ev = new NoteEvent(channel, key, velocity, dur);
-    appendWRKEvent(time, track, ev);
+    appendWRKEvent(time, ev);
 }
 
-void GUIPlayer::keyPressEvent(int track, long time, int chan, int pitch, int press)
+void GUIPlayer::wrkKeyPressEvent(int track, long time, int chan, int pitch, int press)
 {
     int channel = chan;
     TrackMapRec rec = m_trackMap[track];
@@ -855,183 +828,93 @@ void GUIPlayer::keyPressEvent(int track, long time, int chan, int pitch, int pre
     if (rec.channel > -1)
         channel = rec.channel;
     SequencerEvent* ev = new KeyPressEvent(channel, key, press);
-    appendWRKEvent(time, track, ev);
+    appendWRKEvent(time, ev);
 }
 
-void GUIPlayer::ctlChangeEvent(int track, long time, int chan, int ctl, int value)
+void GUIPlayer::wrkCtlChangeEvent(int track, long time, int chan, int ctl, int value)
 {
     int channel = chan;
     TrackMapRec rec = m_trackMap[track];
     if (rec.channel > -1)
         channel = rec.channel;
     SequencerEvent* ev = new ControllerEvent(channel, ctl, value);
-    appendWRKEvent(time, track, ev);
+    appendWRKEvent(time, ev);
 }
 
-void GUIPlayer::pitchBendEvent(int track, long time, int chan, int value)
+void GUIPlayer::wrkPitchBendEvent(int track, long time, int chan, int value)
 {
     int channel = chan;
     TrackMapRec rec = m_trackMap[track];
     if (rec.channel > -1)
         channel = rec.channel;
     SequencerEvent* ev = new PitchBendEvent(channel, value);
-    appendWRKEvent(time, track, ev);
+    appendWRKEvent(time, ev);
 }
 
-void GUIPlayer::programEvent(int track, long time, int chan, int patch)
+void GUIPlayer::wrkProgramEvent(int track, long time, int chan, int patch)
 {
     int channel = chan;
     TrackMapRec rec = m_trackMap[track];
     if (rec.channel > -1)
         channel = rec.channel;
     SequencerEvent* ev = new ProgramChangeEvent(channel, patch);
-    appendWRKEvent(time, track, ev);
+    appendWRKEvent(time, ev);
 }
 
-void GUIPlayer::chanPressEvent(int track, long time, int chan, int press)
+void GUIPlayer::wrkChanPressEvent(int track, long time, int chan, int press)
 {
     int channel = chan;
     TrackMapRec rec = m_trackMap[track];
     if (rec.channel > -1)
         channel = rec.channel;
     SequencerEvent* ev = new ChanPressEvent(channel, press);
-    appendWRKEvent(time, track, ev);
+    appendWRKEvent(time, ev);
 }
 
-void GUIPlayer::sysexEvent(int track, long time, int bank)
+void GUIPlayer::wrkSysexEvent(int track, long time, int bank)
 {
     SysexEventRec rec;
     rec.track = track;
     rec.time = time;
     rec.bank = bank;
     m_savedSysexEvents.append(rec);
+    wrkUpdateLoadProgress();
 }
 
-void GUIPlayer::sysexEventBank(int bank, const QString& /*name*/, bool autosend, int /*port*/, const QByteArray& data)
+void GUIPlayer::wrkSysexEventBank(int bank, const QString& /*name*/,
+        bool autosend, int /*port*/, const QByteArray& data)
 {
     SysExEvent* ev = new SysExEvent(data);
-
     if (autosend)
-        appendWRKEvent(0, 0, ev->clone());
-
+        appendWRKEvent(0, ev->clone());
     foreach(const SysexEventRec& rec, m_savedSysexEvents) {
         if (rec.bank == bank) {
-            appendWRKEvent(rec.time, rec.track, ev->clone());
+            appendWRKEvent(rec.time, ev->clone());
         }
     }
-
     delete ev;
+    wrkUpdateLoadProgress();
 }
 
-void GUIPlayer::textEvent(int track, long time, int type, const QString& data)
-{
-    SequencerEvent* ev = new TextEvent(data, type);
-    appendWRKEvent(time, track, ev);
-}
-
-void GUIPlayer::timeSigEvent(int bar, int num, int den)
-{
-    SequencerEvent* ev = new SequencerEvent();
-    ev->setSequencerType(SND_SEQ_EVENT_TIMESIGN);
-    int div, d = den;
-    for ( div = 0; d > 1; d /= 2 )
-        ++div;
-    ev->setRaw8(0, num);
-    ev->setRaw8(1, div);
-    ev->setRaw8(2, 24 * 4 / den);
-    ev->setRaw8(3, 8);
-
-    TimeSigRec newts;
-    newts.bar = bar;
-    newts.num = num;
-    newts.den = den;
-    newts.time = 0;
-    if (m_bars.isEmpty()) {
-        m_bars.append(newts);
-    } else {
-        bool found = false;
-        foreach(const TimeSigRec& ts, m_bars) {
-            if (ts.bar == bar) {
-                newts.time = ts.time;
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            TimeSigRec& lasts = m_bars.last();
-            newts.time = lasts.time + ( lasts.num * 4 / lasts.den
-                * m_song->getDivision() * (bar - lasts.bar) );
-            m_bars.append(newts);
-        }
-    }
-    appendWRKEvent(newts.time, 0, ev);
-}
-
-void GUIPlayer::keySigEventWRK(int bar, int alt)
-{
-    SequencerEvent* ev = new SequencerEvent();
-    ev->setSequencerType(SND_SEQ_EVENT_KEYSIGN);
-    ev->setRaw8(0, alt);
-    long time = 0;
-    foreach(const TimeSigRec& ts, m_bars) {
-        if (ts.bar == bar) {
-            time = ts.time;
-            break;
-        }
-    }
-    appendWRKEvent(time, 0, ev);
-}
-
-void GUIPlayer::tempoEvent(long time, int tempo)
+void GUIPlayer::wrkTempoEvent(long time, int tempo)
 {
     double bpm = tempo / 100.0;
     if ( m_initialTempo < 0 )
-    {
-        m_initialTempo = round( bpm );
-    }
-    SequencerEvent* ev = new TempoEvent(m_queueId, round ( 6e7 / bpm ) );
-    appendWRKEvent(time, 0, ev);
+        m_initialTempo = qRound( bpm );
+    SequencerEvent* ev = new TempoEvent(m_queueId, qRound ( 6e7 / bpm ) );
+    appendWRKEvent(time, ev);
 }
 
-void GUIPlayer::trackPatch(int track, int patch)
+void GUIPlayer::wrkTrackPatch(int track, int patch)
 {
     int channel = 0;
     TrackMapRec rec = m_trackMap[track];
     if (rec.channel > -1)
         channel = rec.channel;
-    programEvent(track, 0, channel, patch);
+    wrkProgramEvent(track, 0, channel, patch);
 }
 
-void GUIPlayer::comments(const QString& cmt)
-{
-    SequencerEvent* ev = new TextEvent("Comment: " + cmt, Song::Text);
-    appendWRKEvent(0, 0, ev);
-}
-
-void GUIPlayer::variableRecord(const QString& name, const QByteArray& data)
-{
-    SequencerEvent* ev = NULL;
-    QString s;
-    bool isReadable = ( name == "Title" || name == "Author" ||
-                       name == "Copyright" || name == "Subtitle" ||
-                       name == "Instructions" || name == "Keywords" );
-    if (isReadable) {
-        QByteArray b2 = data.left(qstrlen(data));
-        if (m_wrk->getTextCodec() == 0)
-            s = QString(b2);
-        else
-            s = m_wrk->getTextCodec()->toUnicode(b2);
-        if ( name == "Title" )
-            ev = new TextEvent(s, Song::TrackName);
-        else if ( name == "Copyright" )
-            ev = new TextEvent(s, Song::Copyright);
-        else
-            ev = new TextEvent(name + ": " + s, Song::Text);
-        appendWRKEvent(0, 0, ev);
-    }
-}
-
-void GUIPlayer::newTrackHeader( const QString& name,
+void GUIPlayer::wrkNewTrackHeader( const QString& /*name*/,
                               int trackno, int channel,
                               int pitch, int velocity, int /*port*/,
                               bool /*selected*/, bool /*muted*/, bool /*loop*/ )
@@ -1041,18 +924,10 @@ void GUIPlayer::newTrackHeader( const QString& name,
     rec.pitch = pitch;
     rec.velocity = velocity;
     m_trackMap[trackno] = rec;
-    if (!name.isEmpty())
-        textEvent(trackno, 0, Song::TrackName, name);
-    updateWRKLoadProgress();
+    wrkUpdateLoadProgress();
 }
 
-void GUIPlayer::trackName(int trackno, const QString& name)
-{
-    SequencerEvent* ev = new TextEvent(name, Song::TrackName);
-    appendWRKEvent(0, trackno, ev);
-}
-
-void GUIPlayer::trackVol(int track, int vol)
+void GUIPlayer::wrkTrackVol(int track, int vol)
 {
     int channel = 0;
     int lsb, msb;
@@ -1060,16 +935,16 @@ void GUIPlayer::trackVol(int track, int vol)
     if (rec.channel > -1)
         channel = rec.channel;
     if (vol < 128)
-        ctlChangeEvent(track, 0, channel, MIDI_CTL_MSB_MAIN_VOLUME, vol);
+        wrkCtlChangeEvent(track, 0, channel, MIDI_CTL_MSB_MAIN_VOLUME, vol);
     else {
         lsb = vol % 0x80;
         msb = vol / 0x80;
-        ctlChangeEvent(track, 0, channel, MIDI_CTL_LSB_MAIN_VOLUME, lsb);
-        ctlChangeEvent(track, 0, channel, MIDI_CTL_MSB_MAIN_VOLUME, msb);
+        wrkCtlChangeEvent(track, 0, channel, MIDI_CTL_LSB_MAIN_VOLUME, lsb);
+        wrkCtlChangeEvent(track, 0, channel, MIDI_CTL_MSB_MAIN_VOLUME, msb);
     }
 }
 
-void GUIPlayer::trackBank(int track, int bank)
+void GUIPlayer::wrkTrackBank(int track, int bank)
 {
     // assume GM/GS bank method
     int channel = 0;
@@ -1079,47 +954,32 @@ void GUIPlayer::trackBank(int track, int bank)
         channel = rec.channel;
     lsb = bank % 0x80;
     msb = bank / 0x80;
-    ctlChangeEvent(track, 0, channel, MIDI_CTL_MSB_BANK, msb);
-    ctlChangeEvent(track, 0, channel, MIDI_CTL_LSB_BANK, lsb);
+    wrkCtlChangeEvent(track, 0, channel, MIDI_CTL_MSB_BANK, msb);
+    wrkCtlChangeEvent(track, 0, channel, MIDI_CTL_LSB_BANK, lsb);
 }
 
-void GUIPlayer::segment(int track, long time, const QString& name)
-{
-    if (!name.isEmpty()) {
-        SequencerEvent *ev = new TextEvent("Segment: " + name, Song::Marker);
-        appendWRKEvent(time, track, ev);
-    }
-}
-
-void GUIPlayer::chord(int track, long time, const QString& name, const QByteArray& /*data*/ )
-{
-    if (!name.isEmpty()) {
-        SequencerEvent *ev = new TextEvent("Chord: " + name, Song::Text);
-        appendWRKEvent(time, track, ev);
-    }
-}
-
-void GUIPlayer::expression(int track, long time, int /*code*/, const QString& text)
-{
-    if (!text.isEmpty()) {
-        SequencerEvent *ev = new TextEvent(text, Song::Text);
-        appendWRKEvent(time, track, ev);
-    }
-}
-
-void GUIPlayer::endOfWrk()
+void GUIPlayer::wrkEndOfFile()
 {
     if (m_initialTempo < 0)
         m_initialTempo = 120;
     SequencerEvent* ev = new SystemEvent(SND_SEQ_EVENT_ECHO);
-    appendWRKEvent(m_tick, 0, ev);
+    appendWRKEvent(m_tick, ev);
 }
 
-void GUIPlayer::unknownChunk(int /*type*/, const QByteArray& /*data*/)
+/* ********************************* *
+ * Overture OVE file format handling
+ * ********************************* */
+
+void
+GUIPlayer::appendOVEEvent(unsigned long ticks, SequencerEvent* ev)
 {
-    /*qDebug() << "dec:" << type
-             << "hex:" << hex << type << dec
-             << "size:" << data.length();*/
+    ev->setSource(m_portId);
+    if (ev->getSequencerType() != SND_SEQ_EVENT_TEMPO)
+        ev->setSubscribers();
+    ev->scheduleTick(m_queueId, ticks, false);
+    m_song->append(ev);
+    if (ticks > m_tick)
+        m_tick = ticks;
 }
 
 void GUIPlayer::oveErrorHandler(const QString& errorStr)
@@ -1128,138 +988,59 @@ void GUIPlayer::oveErrorHandler(const QString& errorStr)
         m_loadingMessages.append(errorStr);
 }
 
-void GUIPlayer::oveFileHeader(int quarter, int trackCount) {
+void GUIPlayer::oveFileHeader(int quarter, int trackCount)
+{
 	m_song->setHeader(1, trackCount, quarter);
 }
 
-void GUIPlayer::oveNoteOnEvent(int track, long tick, int channel, int pitch, int vol)
+void GUIPlayer::oveNoteOnEvent(int /*track*/, long tick, int channel, int pitch, int vol)
 {
-    Q_UNUSED(track)
     SequencerEvent* ev = new NoteOnEvent(channel, pitch, vol);
-    ev->setSource(m_portId);
-    if (ev->getSequencerType() != SND_SEQ_EVENT_TEMPO) {
-        ev->setSubscribers();
-    }
-    ev->scheduleTick(m_queueId, tick, false);
-    m_song->append(ev);
-    if (static_cast<unsigned>(tick) > m_tick)
-        m_tick = tick;
+    appendOVEEvent(tick, ev);
 }
 
-void GUIPlayer::oveNoteOffEvent(int track, long tick, int channel, int pitch, int vol)
+void GUIPlayer::oveNoteOffEvent(int /*track*/, long tick, int channel, int pitch, int vol)
 {
-    Q_UNUSED(track)
     SequencerEvent* ev = new NoteOffEvent(channel, pitch, vol);
-    ev->setSource(m_portId);
-    if (ev->getSequencerType() != SND_SEQ_EVENT_TEMPO) {
-        ev->setSubscribers();
-    }
-    ev->scheduleTick(m_queueId, tick, false);
-    m_song->append(ev);
-    if (static_cast<unsigned>(tick) > m_tick)
-        m_tick = tick;
-}
-
-void GUIPlayer::oveTimeSigEvent(int bar, long tick, int num, int den)
-{
-    Q_UNUSED(tick)
-    SequencerEvent* ev = new SequencerEvent();
-    ev->setSequencerType(SND_SEQ_EVENT_TIMESIGN);
-    int div, d = den;
-    for ( div = 0; d > 1; d /= 2 )
-        ++div;
-    ev->setRaw8(0, num);
-    ev->setRaw8(1, div);
-    ev->setRaw8(2, 24 * 4 / den);
-    ev->setRaw8(3, 8);
-
-    TimeSigRec newts;
-    newts.bar = bar;
-    newts.num = num;
-    newts.den = den;
-    newts.time = 0;
-    if (m_bars.isEmpty()) {
-        m_bars.append(newts);
-    } else {
-        bool found = false;
-        foreach(const TimeSigRec& ts, m_bars) {
-            if (ts.bar == bar) {
-                newts.time = ts.time;
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            TimeSigRec& lasts = m_bars.last();
-            newts.time = lasts.time + ( lasts.num * 4 / lasts.den
-                * m_song->getDivision() * (bar - lasts.bar) );
-            m_bars.append(newts);
-        }
-    }
-    appendWRKEvent(newts.time, 0, ev);
-}
-
-void GUIPlayer::oveKeySigEvent(int bar, long tick, int alt)
-{
-    Q_UNUSED(tick)
-    SequencerEvent* ev = new SequencerEvent();
-    ev->setSequencerType(SND_SEQ_EVENT_KEYSIGN);
-    ev->setRaw8(0, alt);
-    long time = 0;
-    foreach(const TimeSigRec& ts, m_bars) {
-        if (ts.bar == bar) {
-            time = ts.time;
-            break;
-        }
-    }
-    appendWRKEvent(time, 0, ev);
+    appendOVEEvent(tick, ev);
 }
 
 void GUIPlayer::oveTrackPatch(int track, int channel, int patch)
 {
-    Q_UNUSED(channel)
-    int ch = 0;
+    int ch = channel;
     TrackMapRec rec = m_trackMap[track];
     if (rec.channel > -1)
         ch = rec.channel;
-    programEvent(track, 0, ch, patch);
+    wrkProgramEvent(track, 0, ch, patch);
 }
 
 void GUIPlayer::oveTrackVol(int track, int channel, int vol)
 {
-    Q_UNUSED(channel)
-    int ch = 0;
+    int ch = channel;
     int lsb, msb;
     TrackMapRec rec = m_trackMap[track];
     if (rec.channel > -1)
         ch = rec.channel;
     if (vol < 128)
-        ctlChangeEvent(track, 0, ch, MIDI_CTL_MSB_MAIN_VOLUME, vol);
+        wrkCtlChangeEvent(track, 0, ch, MIDI_CTL_MSB_MAIN_VOLUME, vol);
     else {
         lsb = vol % 0x80;
         msb = vol / 0x80;
-        ctlChangeEvent(track, 0, ch, MIDI_CTL_LSB_MAIN_VOLUME, lsb);
-        ctlChangeEvent(track, 0, ch, MIDI_CTL_MSB_MAIN_VOLUME, msb);
+        wrkCtlChangeEvent(track, 0, ch, MIDI_CTL_LSB_MAIN_VOLUME, lsb);
+        wrkCtlChangeEvent(track, 0, ch, MIDI_CTL_MSB_MAIN_VOLUME, msb);
     }
 }
 
 void GUIPlayer::oveTrackBank(int track, int channel, int bank)
 {
-    Q_UNUSED(channel)
     // assume GM/GS bank method
-    int ch = 0;
+    int ch = channel;
     int lsb, msb;
     TrackMapRec rec = m_trackMap[track];
     if (rec.channel > -1)
         ch = rec.channel;
     lsb = bank % 0x80;
     msb = bank / 0x80;
-    ctlChangeEvent(track, 0, ch, MIDI_CTL_MSB_BANK, msb);
-    ctlChangeEvent(track, 0, ch, MIDI_CTL_LSB_BANK, lsb);
-}
-
-void GUIPlayer::oveLyricEvent(int track, long tick, const QString& data)
-{
-    SequencerEvent* ev = new TextEvent(data, 9);
-    appendWRKEvent(tick, track, ev);
+    wrkCtlChangeEvent(track, 0, ch, MIDI_CTL_MSB_BANK, msb);
+    wrkCtlChangeEvent(track, 0, ch, MIDI_CTL_LSB_BANK, lsb);
 }

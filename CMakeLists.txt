@@ -159,8 +159,10 @@ INSTALL( FILES
 set( SHARED_MIME_INFO_MINIMUM_VERSION "0.30" )
 set( XDG_MIME_INSTALL_DIR "share/mime/packages" ) 
 find_package( SharedMimeInfo )
-install( FILES drumstick.xml DESTINATION ${XDG_MIME_INSTALL_DIR} ) 
-update_xdg_mimetypes( ${XDG_MIME_INSTALL_DIR} )     
+if( SHARED_MIME_INFO_FOUND )
+    install( FILES drumstick.xml DESTINATION ${XDG_MIME_INSTALL_DIR} ) 
+    update_xdg_mimetypes( ${XDG_MIME_INSTALL_DIR} )     
+endif( SHARED_MIME_INFO_FOUND )
 
 # uninstall custom target
 CONFIGURE_FILE(

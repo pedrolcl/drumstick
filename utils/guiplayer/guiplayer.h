@@ -59,12 +59,6 @@ enum PlayerState {
     StoppedState
 };
 
-enum FileType {
-	FileType_SMF,
-	FileType_WRK,
-	FileType_OVE
-};
-
 class GUIPlayer : public QMainWindow
 {
     Q_OBJECT
@@ -74,7 +68,8 @@ public:
     ~GUIPlayer();
 
     void appendSMFEvent(SequencerEvent* ev);
-    void appendWRKEvent(unsigned long ticks, int track, SequencerEvent* ev);
+    void appendWRKEvent(unsigned long ticks, SequencerEvent* ev);
+    void appendOVEEvent(unsigned long ticks, SequencerEvent* ev);
 
     void subscribe(const QString& portName);
     void updateTimeLabel(int mins, int secs, int cnts);
@@ -87,6 +82,10 @@ public:
     void readSettings();
     void writeSettings();
     void updateState(PlayerState newState);
+
+    void progressDialogInit(const QString& type, int max);
+    void progressDialogUpdate(int pos);
+    void progressDialogClose();
 
 public slots:
     void about();
@@ -107,70 +106,55 @@ public slots:
     void sequencerEvent(SequencerEvent* ev);
 
     /* SMF slots */
-    void headerEvent(int format, int ntrks, int division);
-    void noteOnEvent(int chan, int pitch, int vol);
-    void noteOffEvent(int chan, int pitch, int vol);
-    void keyPressEvent(int chan, int pitch, int press);
-    void ctlChangeEvent(int chan, int ctl, int value);
-    void pitchBendEvent(int chan, int value);
-    void programEvent(int chan, int patch);
-    void chanPressEvent(int chan, int press);
-    void sysexEvent(const QByteArray& data);
-    void textEvent(int type, const QString& data);
-    void tempoEvent(int tempo);
-    void errorHandler(const QString& errorStr);
-    void updateSMFLoadProgress();
+    void smfHeaderEvent(int format, int ntrks, int division);
+    void smfNoteOnEvent(int chan, int pitch, int vol);
+    void smfNoteOffEvent(int chan, int pitch, int vol);
+    void smfKeyPressEvent(int chan, int pitch, int press);
+    void smfCtlChangeEvent(int chan, int ctl, int value);
+    void smfPitchBendEvent(int chan, int value);
+    void smfProgramEvent(int chan, int patch);
+    void smfChanPressEvent(int chan, int press);
+    void smfSysexEvent(const QByteArray& data);
+    void smfTempoEvent(int tempo);
+    void smfErrorHandler(const QString& errorStr);
+    void smfUpdateLoadProgress();
 
     /* WRK slots */
-    void updateWRKLoadProgress();
-    void errorHandlerWRK(const QString& errorStr);
-    void unknownChunk(int type, const QByteArray& data);
-    void fileHeader(int verh, int verl);
-    void endOfWrk();
-    void streamEndEvent(long time);
-    void trackHeader(const QString& name1, const QString& name2,
+    void wrkUpdateLoadProgress();
+    void wrkErrorHandler(const QString& errorStr);
+    void wrkFileHeader(int verh, int verl);
+    void wrkEndOfFile();
+    void wrkStreamEndEvent(long time);
+    void wrkTrackHeader(const QString& name1, const QString& name2,
                      int trackno, int channel, int pitch,
                      int velocity, int port,
                      bool selected, bool muted, bool loop);
-    void timeBase(int timebase);
-    void globalVars();
-    void noteEvent(int track, long time, int chan, int pitch, int vol, int dur);
-    void keyPressEvent(int track, long time, int chan, int pitch, int press);
-    void ctlChangeEvent(int track, long time, int chan, int ctl, int value);
-    void pitchBendEvent(int track, long time, int chan, int value);
-    void programEvent(int track, long time, int chan, int patch);
-    void chanPressEvent(int track, long time, int chan, int press);
-    void sysexEvent(int track, long time, int bank);
-    void sysexEventBank(int bank, const QString& name, bool autosend, int port, const QByteArray& data);
-    void textEvent(int track, long time, int typ, const QString& data);
-    void timeSigEvent(int bar, int num, int den);
-    void keySigEventWRK(int bar, int alt);
-    void tempoEvent(long time, int tempo);
-    void trackPatch(int track, int patch);
-    void comments(const QString& cmt);
-    void variableRecord(const QString& name, const QByteArray& data);
-    void newTrackHeader(const QString& name,
+    void wrkTimeBase(int timebase);
+    void wrkNoteEvent(int track, long time, int chan, int pitch, int vol, int dur);
+    void wrkKeyPressEvent(int track, long time, int chan, int pitch, int press);
+    void wrkCtlChangeEvent(int track, long time, int chan, int ctl, int value);
+    void wrkPitchBendEvent(int track, long time, int chan, int value);
+    void wrkProgramEvent(int track, long time, int chan, int patch);
+    void wrkChanPressEvent(int track, long time, int chan, int press);
+    void wrkSysexEvent(int track, long time, int bank);
+    void wrkSysexEventBank(int bank, const QString& name, bool autosend, int port, const QByteArray& data);
+    void wrkTempoEvent(long time, int tempo);
+    void wrkTrackPatch(int track, int patch);
+    void wrkNewTrackHeader(const QString& name,
                         int trackno, int channel, int pitch,
                         int velocity, int port,
                         bool selected, bool muted, bool loop);
-    void trackName(int trackno, const QString& name);
-    void trackVol(int track, int vol);
-    void trackBank(int track, int bank);
-    void segment(int track, long time, const QString& name);
-    void chord(int track, long time, const QString& name, const QByteArray& data);
-    void expression(int track, long time, int code, const QString& text);
+    void wrkTrackVol(int track, int vol);
+    void wrkTrackBank(int track, int bank);
 
     /* OVE slots */
     void oveErrorHandler(const QString& errorStr);
     void oveFileHeader(int quarter, int trackCount);
     void oveNoteOnEvent(int track, long tick, int channel, int pitch, int vol);
     void oveNoteOffEvent(int track, long tick, int channel, int pitch, int vol);
-    void oveTimeSigEvent(int bar, long tick, int num, int den);
-    void oveKeySigEvent(int bar, long tick, int alt);
     void oveTrackPatch(int track, int channel, int patch);
     void oveTrackVol(int track, int channel, int vol);
     void oveTrackBank(int track, int channel, int bank);
-    void oveLyricEvent(int track, long tick, const QString& data);
 
 private:
     int m_portId;
@@ -180,7 +164,6 @@ private:
     unsigned long m_tick;
     PlayerState m_state;
 
-    FileType m_fileType;
     QSmf* m_smf;
     QWrk* m_wrk;
     QOve* m_ove;
@@ -203,7 +186,6 @@ private:
         int bank;
     };
     QList<SysexEventRec> m_savedSysexEvents;
-    //QString m_fileFormat;
 
     struct TrackMapRec {
         int channel;
@@ -211,15 +193,6 @@ private:
         int velocity;
     };
     QHash<int,TrackMapRec> m_trackMap;
-
-    struct TimeSigRec {
-        int bar;
-        int num;
-        int den;
-        long time;
-    };
-    QList<TimeSigRec> m_bars;
-
 };
 
 #endif // INCLUDED_GUIPLAYER_H

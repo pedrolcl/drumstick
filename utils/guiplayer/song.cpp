@@ -40,7 +40,6 @@ void Song::clear()
     while (!isEmpty())
         delete takeFirst();
     m_fileName.clear();
-    m_text.clear();
     m_format = 0;
     m_ntrks = 0;
     m_division = 0;
@@ -61,22 +60,4 @@ void Song::setDivision(int division)
 void Song::setFileName(const QString& fileName)
 {
     m_fileName = fileName;
-}
-
-void Song::addText(const int type, const QString& text)
-{
-    while (type >= m_text.size()) {
-        m_text.append(QString());
-    }
-    m_text[type] += text;
-}
-
-QString Song::getText(const int type) 
-{
-    return m_text.value(type);
-}
-
-QString Song::getCopyright() 
-{
-    return getText(Copyright);
 }

@@ -31,11 +31,6 @@ using namespace drumstick;
 class Song : public QList<SequencerEvent*>
 {
 public:
-    enum TextType { 
-        Text = 1, Copyright = 2, TrackName = 3,
-        InstrumentName = 4, Lyric = 5, Marker = 6, Cue = 7
-    };
-    
     Song() : QList<SequencerEvent*>(),
         m_format(0),
         m_ntrks(0),
@@ -48,21 +43,17 @@ public:
     void setHeader(int format, int ntrks, int division);
     void setDivision(int division);
     void setFileName(const QString& fileName);
-    void addText(const int type, const QString& text);
     
     int getFormat() const { return m_format; }
     int getTracks() const { return m_ntrks; }
     int getDivision() const { return m_division; }
     QString getFileName() const { return m_fileName; }
-    QString getText(const int type);
-    QString getCopyright();
 
 private:    
     int m_format;
     int m_ntrks;
     int m_division;    
     QString m_fileName;
-    QStringList m_text;
 };
 
 typedef QListIterator<SequencerEvent*> SongIterator;
