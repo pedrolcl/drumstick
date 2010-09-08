@@ -2493,7 +2493,7 @@ getRuntimeALSALibraryNumber()
     }
     return result;
 }
-#endif
+#endif // SND_LIB_VERSION > 0x010004
 
 /**
  * Gets the runtime ALSA drivers version string

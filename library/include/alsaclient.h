@@ -344,11 +344,11 @@ private:
 };
 
 #if SND_LIB_VERSION > 0x010004
-QString getRuntimeALSALibraryVersion();
-int getRuntimeALSALibraryNumber();
+DRUMSTICK_EXPORT QString getRuntimeALSALibraryVersion();
+DRUMSTICK_EXPORT int getRuntimeALSALibraryNumber();
 #endif
-QString getRuntimeALSADriverVersion();
-int getRuntimeALSADriverNumber();
+DRUMSTICK_EXPORT QString getRuntimeALSADriverVersion();
+DRUMSTICK_EXPORT int getRuntimeALSADriverNumber();
 
 } /* namespace drumstick */
 

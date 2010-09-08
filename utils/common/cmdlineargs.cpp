@@ -24,27 +24,32 @@
 #include <QtCore/QIODevice>
 #include <QtCore/QDebug>
 
-CmdLineArgs::CmdLineArgs() :
-    m_stdQtArgs(false)
-{
-    addOption( QLatin1Char('h'), QLatin1String("help"),
-               QLatin1String("Print this help message") );
-    addOption( QLatin1Char('V'), QLatin1String("version"),
-               QLatin1String("Print the program version number") );
-}
+class CmdLineArgs::Private {
+public:
+    Private(): m_stdQtArgs(false) {}
 
-CmdLineArgs::~CmdLineArgs()
-{
-    clear();
-}
+    struct CmdLineOption {
+        QChar m_shrt;
+        QString m_id;
+        QString m_desc;
+        QVariant m_def;
+        bool m_req;
+        bool m_mult;
+    };
 
-QStringList CmdLineArgs::getArgumentIds()
-{
-    return m_arguments.keys();
-}
+    CmdLineOption option(const QString & id);
+    CmdLineOption option(const QChar & shrt);
+    QString helpText(const CmdLineOption& opt);
 
-CmdLineArgs::CmdLineOption
-CmdLineArgs::option(const QString & id)
+    QList<CmdLineOption> m_options;
+    QMultiMap<QString, QVariant> m_arguments;
+    QString m_progName;
+    QString m_usage;
+    bool m_stdQtArgs;
+};
+
+CmdLineArgs::Private::CmdLineOption
+CmdLineArgs::Private::option(const QString & id)
 {
     foreach(const CmdLineOption& opt, m_options) {
         if (opt.m_id == id)
@@ -53,8 +58,8 @@ CmdLineArgs::option(const QString & id)
     return CmdLineOption();
 }
 
-CmdLineArgs::CmdLineOption
-CmdLineArgs::option(const QChar & shrt)
+CmdLineArgs::Private::CmdLineOption
+CmdLineArgs::Private::option(const QChar & shrt)
 {
     foreach(const CmdLineOption& opt, m_options) {
         if (opt.m_shrt == shrt)
@@ -63,157 +68,8 @@ CmdLineArgs::option(const QChar & shrt)
     return CmdLineOption();
 }
 
-void CmdLineArgs::parse(const QStringList& args)
-{
-    bool helpneeded(false);
-    QTextStream cerr(stderr, QIODevice::WriteOnly);
-    QStringList errs;
-    QStringList rems;
-    foreach(const CmdLineOption& opt, m_options) {
-        if (opt.m_shrt.isNull())
-            rems += opt.m_id;
-    }
-    for (int i=0; i<args.count(); ++i) {
-        CmdLineOption opt;
-        QString s = args.at(i);
-        if (s.isNull())
-            continue;
-        if (s.startsWith("--")) {
-            QStringList lst = s.mid(2).split('=');
-            opt = option(lst.first());
-            if (opt.m_id.isNull()) {
-                errs += s;
-            } else {
-                if (lst.count() > 1)
-                    m_arguments.insertMulti(opt.m_id, lst.at(1));
-                else
-                    m_arguments.insertMulti(opt.m_id, QVariant(true));
-            }
-        } else if (s.startsWith('-')) {
-            for(int j=1; j<s.length(); ++j) {
-                opt = option(s[j]);
-                if (opt.m_id.isNull()) {
-                    errs += s;
-                    break;
-                } else {
-                    if (opt.m_def.isValid()) {
-                        QString arg = s.mid(j+1).trimmed();
-                        if (arg.isNull()) {
-                            if ( i<args.count()-1) {
-                                i++;
-                                arg = args.at(i);
-                            } else {
-                                errs += s;
-                            }
-                        }
-                        m_arguments.insertMulti(opt.m_id, arg);
-                        break;
-                    } else {
-                        m_arguments.insertMulti(opt.m_id, QVariant(true));
-                    }
-                }
-            }
-        } else if (!rems.isEmpty()) {
-            QString id = rems.first();
-            opt = option(id);
-            m_arguments.insertMulti(id, s);
-            if (!opt.m_mult)
-                rems.takeFirst();
-        } else {
-            errs += s;
-        }
-        helpneeded |= (opt.m_id == QLatin1String("help"));
-        if (opt.m_id == QLatin1String("version")) {
-            cerr << m_progName << " version: " << PGM_VERSION << endl;
-            cerr.flush();
-            exit(0);
-        }
-    }
-    if (errs.count() > 0) {
-        cerr << "Wrong argument(s): " << errs.join(", ") << endl;
-        helpneeded = true;
-    }
-    foreach(const CmdLineOption& opt, m_options)
-        if (opt.m_req && !m_arguments.contains(opt.m_id)) {
-            cerr << "Required argument: " << opt.m_id << endl;
-            helpneeded = true;
-        }
-    if (helpneeded) {
-        cerr << m_progName << " version: " << PGM_VERSION << endl;
-        cerr << helpText() << endl;
-        cerr.flush();
-        exit(0);
-    }
-}
-
-void CmdLineArgs::parse(int argc, char *argv[])
-{
-    if (argc > 0) {
-        QStringList lst;
-        QFileInfo info(argv[0]);
-        m_progName = info.baseName();
-        for(int i=1; i<argc; ++i)
-            lst.append(QString(argv[i]));
-        parse(lst);
-    }
-}
-
-QVariant CmdLineArgs::getOption(const QString & id)
-{
-    if (m_arguments.contains(id))
-        return m_arguments.values(id).first();
-    else
-        foreach(const CmdLineOption& opt, m_options) {
-            if (opt.m_id == id)
-                return opt.m_def;
-        }
-    return QVariant();
-}
-
-void CmdLineArgs::addOption( const QChar& shrt, const QString & id,
-                             const QString & desc, const QVariant & def )
-{
-    CmdLineOption opt;
-    opt.m_shrt = shrt;
-    opt.m_id = id;
-    opt.m_desc = desc;
-    opt.m_def = def;
-    opt.m_req = false;
-    opt.m_mult = false;
-    m_options.append(opt);
-}
-
-void CmdLineArgs::addRequiredArgument(const QString & id, const QString & desc)
-{
-    CmdLineOption opt;
-    opt.m_id = id;
-    opt.m_desc = desc;
-    opt.m_req = true;
-    opt.m_mult = false;
-    m_options.append(opt);
-}
-
-void CmdLineArgs::addOptionalArgument(const QString & id, const QString & desc)
-{
-    CmdLineOption opt;
-    opt.m_id = id;
-    opt.m_desc = desc;
-    opt.m_req = false;
-    opt.m_mult = false;
-    m_options.append(opt);
-}
-
-void CmdLineArgs::addMultipleArgument(const QString & id, const QString & desc)
-{
-    CmdLineOption opt;
-    opt.m_id = id;
-    opt.m_desc = desc;
-    opt.m_req = false;
-    opt.m_mult = true;
-    m_options.append(opt);
-}
-
-QString CmdLineArgs::helpText(const CmdLineArgs::CmdLineOption& opt)
+QString
+CmdLineArgs::Private::helpText(const CmdLineArgs::Private::CmdLineOption& opt)
 {
     QString out(QLatin1String("  "));
     if (opt.m_shrt.isNull())
@@ -243,45 +99,235 @@ QString CmdLineArgs::helpText(const CmdLineArgs::CmdLineOption& opt)
     return out;
 }
 
-QString CmdLineArgs::helpText(const QString & id)
+CmdLineArgs::CmdLineArgs() :
+    d(new Private)
 {
-    QString out = QString("Usage: %1 %2\noptions:\n")
-                    .arg(m_progName)
-                    .arg(m_usage);
-    foreach(const CmdLineOption& opt, m_options) {
-        if (id.isNull()) {
-            out += helpText(opt);
+    addOption( QLatin1Char('h'), QLatin1String("help"),
+               QLatin1String("Print this help message") );
+    addOption( QLatin1Char('V'), QLatin1String("version"),
+               QLatin1String("Print the program version number") );
+}
+
+CmdLineArgs::~CmdLineArgs()
+{
+    clear();
+}
+
+QStringList CmdLineArgs::getArgumentIds()
+{
+    return d->m_arguments.keys();
+}
+
+void CmdLineArgs::parse(const QStringList& args)
+{
+    bool helpneeded(false);
+    QTextStream cerr(stderr, QIODevice::WriteOnly);
+    QStringList errs;
+    QStringList rems;
+    foreach(const Private::CmdLineOption& opt, d->m_options) {
+        if (opt.m_shrt.isNull())
+            rems += opt.m_id;
+    }
+    for (int i=0; i<args.count(); ++i) {
+        Private::CmdLineOption opt;
+        QString s = args.at(i);
+        if (s.isNull())
+            continue;
+        if (s.startsWith("--")) {
+            QStringList lst = s.mid(2).split('=');
+            opt = d->option(lst.first());
+            if (opt.m_id.isNull()) {
+                errs += s;
+            } else {
+                if (lst.count() > 1)
+                    d->m_arguments.insertMulti(opt.m_id, lst.at(1));
+                else
+                    d->m_arguments.insertMulti(opt.m_id, QVariant(true));
+            }
+        } else if (s.startsWith('-')) {
+            for(int j=1; j<s.length(); ++j) {
+                opt = d->option(s[j]);
+                if (opt.m_id.isNull()) {
+                    errs += s;
+                    break;
+                } else {
+                    if (opt.m_def.isValid()) {
+                        QString arg = s.mid(j+1).trimmed();
+                        if (arg.isNull()) {
+                            if ( i<args.count()-1) {
+                                i++;
+                                arg = args.at(i);
+                            } else {
+                                errs += s;
+                            }
+                        }
+                        d->m_arguments.insertMulti(opt.m_id, arg);
+                        break;
+                    } else {
+                        d->m_arguments.insertMulti(opt.m_id, QVariant(true));
+                    }
+                }
+            }
+        } else if (!rems.isEmpty()) {
+            QString id = rems.first();
+            opt = d->option(id);
+            d->m_arguments.insertMulti(id, s);
+            if (!opt.m_mult)
+                rems.takeFirst();
         } else {
-            if (opt.m_id == id)
-                return helpText(opt);
+            errs += s;
+        }
+        helpneeded |= (opt.m_id == QLatin1String("help"));
+        if (opt.m_id == QLatin1String("version")) {
+            cerr << d->m_progName << " version: " << PGM_VERSION << endl;
+            cerr.flush();
+            exit(0);
         }
     }
-    if (m_stdQtArgs)
-        out += QLatin1String("This program also accepts Qt4 standard options\n");
-    return out;
+    if (errs.count() > 0) {
+        cerr << "Wrong argument(s): " << errs.join(", ") << endl;
+        helpneeded = true;
+    }
+    foreach(const Private::CmdLineOption& opt, d->m_options)
+        if (opt.m_req && !d->m_arguments.contains(opt.m_id)) {
+            cerr << "Required argument: " << opt.m_id << endl;
+            helpneeded = true;
+        }
+    if (helpneeded) {
+        cerr << d->m_progName << " version: " << PGM_VERSION << endl;
+        cerr << helpText() << endl;
+        cerr.flush();
+        exit(0);
+    }
+}
+
+void CmdLineArgs::parse(int argc, char *argv[])
+{
+    if (argc > 0) {
+        QStringList lst;
+        QFileInfo info(argv[0]);
+        d->m_progName = info.baseName();
+        for(int i=1; i<argc; ++i)
+            lst.append(QString(argv[i]));
+        parse(lst);
+    }
+}
+
+QVariant CmdLineArgs::getOption(const QString & id)
+{
+    if (d->m_arguments.contains(id))
+        return d->m_arguments.values(id).first();
+    else
+        foreach(const Private::CmdLineOption& opt, d->m_options) {
+            if (opt.m_id == id)
+                return opt.m_def;
+        }
+    return QVariant();
+}
+
+void CmdLineArgs::addOption( const QChar& shrt, const QString & id,
+                             const QString & desc, const QVariant & def )
+{
+    Private::CmdLineOption opt;
+    opt.m_shrt = shrt;
+    opt.m_id = id;
+    opt.m_desc = desc;
+    opt.m_def = def;
+    opt.m_req = false;
+    opt.m_mult = false;
+    d->m_options.append(opt);
+}
+
+void CmdLineArgs::addRequiredArgument(const QString & id, const QString & desc)
+{
+    Private::CmdLineOption opt;
+    opt.m_id = id;
+    opt.m_desc = desc;
+    opt.m_req = true;
+    opt.m_mult = false;
+    d->m_options.append(opt);
+}
+
+void CmdLineArgs::addOptionalArgument(const QString & id, const QString & desc)
+{
+    Private::CmdLineOption opt;
+    opt.m_id = id;
+    opt.m_desc = desc;
+    opt.m_req = false;
+    opt.m_mult = false;
+    d->m_options.append(opt);
+}
+
+void CmdLineArgs::addMultipleArgument(const QString & id, const QString & desc)
+{
+    Private::CmdLineOption opt;
+    opt.m_id = id;
+    opt.m_desc = desc;
+    opt.m_req = false;
+    opt.m_mult = true;
+    d->m_options.append(opt);
 }
 
 void CmdLineArgs::clear()
 {
-    m_options.clear();
-    m_arguments.clear();
+    d->m_options.clear();
+    d->m_arguments.clear();
 }
 
 QVariant CmdLineArgs::getArgument(const QString & id)
 {
-    if (m_arguments.contains(id))
-        return m_arguments.values(id).first();
+    if (d->m_arguments.contains(id))
+        return d->m_arguments.values(id).first();
     return QVariant();
 }
 
 QVariantList CmdLineArgs::getArguments(const QString & id)
 {
-    if (m_arguments.contains(id))
-        return m_arguments.values(id);
+    if (d->m_arguments.contains(id))
+        return d->m_arguments.values(id);
     return QVariantList();
+}
+
+QString
+CmdLineArgs::helpText(const QString & id)
+{
+    QString out = QString("Usage: %1 %2\noptions:\n")
+                    .arg(d->m_progName)
+                    .arg(d->m_usage);
+    foreach(const Private::CmdLineOption& opt, d->m_options) {
+        if (id.isNull()) {
+            out += d->helpText(opt);
+        } else {
+            if (opt.m_id == id)
+                return d->helpText(opt);
+        }
+    }
+    if (d->m_stdQtArgs)
+        out += QLatin1String("This program also accepts Qt4 standard options\n");
+    return out;
 }
 
 QString CmdLineArgs::programVersion() const
 {
     return PGM_VERSION;
+}
+
+void CmdLineArgs::setProgram(const QString& prog)
+{
+    d->m_progName = prog;
+}
+
+void CmdLineArgs::setUsage(const QString& cmdline)
+{
+    d->m_usage = cmdline;
+}
+
+void CmdLineArgs::setStdQtArgs(bool qtargs)
+{
+    d->m_stdQtArgs = qtargs;
+}
+
+QString CmdLineArgs::programName() const
+{
+    return d->m_progName;
 }

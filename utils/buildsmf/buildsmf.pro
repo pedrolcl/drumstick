@@ -1,5 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-buildsmf
+CONFIG += qt console thread exceptions
 DESTDIR = ../../build/bin
 OBJECTS_DIR = ../../build/obj
 MOC_DIR = ../../build/moc

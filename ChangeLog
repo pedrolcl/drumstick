@@ -1,3 +1,10 @@
+2010-09-08
+    * remaining warnings removed 
+    * guiplayer simplified, and optimizations
+    * compile with -fvisibility=hidden if it is available
+    * compile always with -fexceptions
+    * fixes in both buildsystems, cmake and qmake  
+
 2010-09-02 
     * Use RealtimeKit support for the MIDI input thread. 
 

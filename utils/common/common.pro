@@ -6,7 +6,7 @@ MOC_DIR = ../../build/moc
 DEPENDPATH += . ../include ../src
 INCLUDEPATH += . ../include ../../build/common
 include (../global.pri)
-CONFIG += qt staticlib debug
+CONFIG += qt staticlib
 # Input
 HEADERS += cmdlineargs.h
 SOURCES += cmdlineargs.cpp

@@ -1,5 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-dumpsmf
+CONFIG += qt console
 DESTDIR = ../../build/bin
 OBJECTS_DIR = ../../build/obj
 MOC_DIR = ../../build/moc

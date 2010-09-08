@@ -35,8 +35,9 @@ static QTextStream cout(stdout, QIODevice::WriteOnly);
 QSpySMF::QSpySMF():
     m_currentTrack(0)
 {
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
     m_engine = new QSmf(this);
-    m_engine->setTextCodec(QTextCodec::codecForName("UTF-8"));
+    m_engine->setTextCodec(codec);
     connect(m_engine, SIGNAL(signalSMFHeader(int,int,int)), this, SLOT(headerEvent(int,int,int)));
     connect(m_engine, SIGNAL(signalSMFTrackStart()), this, SLOT(trackStartEvent()));
     connect(m_engine, SIGNAL(signalSMFTrackEnd()), this, SLOT(trackEndEvent()));
@@ -63,6 +64,7 @@ QSpySMF::QSpySMF():
     connect(m_engine, SIGNAL(signalSMFError(const QString&)), this, SLOT(errorHandler(const QString&)));
     cout.setRealNumberNotation(QTextStream::FixedNotation);
     cout.setRealNumberPrecision(4);
+    cout.setCodec(codec);
 }
 
 void QSpySMF::dump(const QString& chan, const QString& event,

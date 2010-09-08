@@ -49,6 +49,8 @@ The package names depend on the Linux distribution. For Debian they are:
 xsltproc, docbook-xsl and docbook-xml. For openSUSE: libxslt, docbook_4, and 
 docbook-xsl-stylesheets.
 
+RealtimeKit actions are called through DBus, so it is not a direct dependency. 
+
 Optional CMake parameters
 -------------------------
 
@@ -69,3 +71,9 @@ Optional CMake parameters
 
     -DCMAKE_INSTALL_PREFIX=/usr/local   
     Specify the desired install prefix
+    
+    -DUSE_DBUS=YES|ON|1
+    Build DBus support, required to use RealtimeKit (default)
+    
+    -DUSE_DBUS=NO|OFF|0
+    Don't include DBus support

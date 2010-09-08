@@ -46,7 +46,7 @@ SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 # Additional CMake modules for 3rd party library checks reside here
-SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_admin")
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_admin")
 
 # DRUMSTICK version string
 SET (VERSION_MAJOR "0")
@@ -126,7 +126,17 @@ INCLUDE_DIRECTORIES ( BEFORE
     ${ALSA_INC_DIR}
 )
 
-SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed")
+if (CMAKE_COMPILER_IS_GNUCXX)
+# exceptions are needed by this library, please don't try to disable them!
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -UQT_NO_EXCEPTIONS")
+  include (CheckCXXCompilerFlag)
+  check_cxx_compiler_flag (-fvisibility=hidden _HAVE_GCC_VISIBILITY)
+  if (_HAVE_GCC_VISIBILITY)
+    set (CMAKE_CXX_FLAGS 
+         "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden")
+  endif (_HAVE_GCC_VISIBILITY)
+  set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
+endif (CMAKE_COMPILER_IS_GNUCXX)
 
 FIND_PACKAGE(Doxygen)
 IF(DOXYGEN_FOUND)

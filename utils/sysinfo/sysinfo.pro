@@ -1,5 +1,7 @@
 TEMPLATE = app
 TARGET = drumstick-sysinfo
+QT += dbus
+CONFIG += qt console thread exceptions
 DESTDIR = ../../build/bin
 OBJECTS_DIR = ../../build/obj
 MOC_DIR = ../../build/moc

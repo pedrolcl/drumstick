@@ -73,18 +73,19 @@ class CmdLineArgs {
 public:
     CmdLineArgs();
     virtual ~CmdLineArgs();
-    void setProgram(const QString& prog) { m_progName = prog; }
-    void setUsage(const QString& cmdline) { m_usage = cmdline; }
-    void setStdQtArgs(bool qtargs) { m_stdQtArgs = qtargs; }
+    void setProgram(const QString& prog);
+    void setUsage(const QString& cmdline);
+    void setStdQtArgs(bool qtargs);
     void parse(const QStringList& args);
     void parse(int argc, char* argv[]);
 
     QString helpText(const QString& id = QString());
-    QString programName() const { return m_progName; }
+    QString programName() const;
     QString programVersion() const;
     void clear();
 
-    void addOption(const QChar& shrt, const QString& id, const QString& desc, const QVariant& def=QVariant());
+    void addOption(const QChar& shrt, const QString& id,
+            const QString& desc, const QVariant& def=QVariant());
     void addRequiredArgument(const QString& id, const QString& desc);
     void addOptionalArgument(const QString& id, const QString& desc);
     void addMultipleArgument(const QString& id, const QString& desc);
@@ -94,24 +95,8 @@ public:
     QStringList getArgumentIds();
 
 private:
-    struct CmdLineOption {
-        QChar m_shrt;
-        QString m_id;
-        QString m_desc;
-        QVariant m_def;
-        bool m_req;
-        bool m_mult;
-    };
-
-    QString helpText(const CmdLineOption& opt);
-    CmdLineOption option(const QString & id);
-    CmdLineOption option(const QChar & shrt);
-
-    QList<CmdLineOption> m_options;
-    QMultiMap<QString, QVariant> m_arguments;
-    QString m_progName;
-    QString m_usage;
-    bool m_stdQtArgs;
+    class Private;
+    Private *d;
 };
 
 #endif /* CMDLINEARGS_H */

@@ -1,5 +1,7 @@
 TEMPLATE = app
 TARGET = drumstick-guiplayer
+QT += dbus
+CONFIG += qt thread exceptions
 DESTDIR = ../../build/bin
 OBJECTS_DIR = ../../build/obj
 MOC_DIR = ../../build/moc
