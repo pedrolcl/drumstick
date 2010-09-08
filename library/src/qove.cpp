@@ -18,10 +18,6 @@
 */
 
 #include "qove.h"
-
-#include <cmath>
-#include <cstdlib>
-
 #include <QFile>
 #include <QIODevice>
 #include <QMap>
@@ -29,12 +25,8 @@
 #include <QTextCodec>
 #include <QString>
 #include <QStringList>
-
-#ifdef WIN32
-#define DLL_EXPORT extern "C" __declspec(dllexport)
-#else
-#define DLL_EXPORT
-#endif
+#include <cmath>
+#include <cstdlib>
 
 /**
  * @file qove.cpp
@@ -591,7 +583,7 @@ public:
 	virtual void release() = 0;
 };
 
-DLL_EXPORT IOVEStreamLoader* createOveStreamLoader();
+IOVEStreamLoader* createOveStreamLoader();
 
 /////////////////////////////////////////////////////////////////////////////
 // basic element

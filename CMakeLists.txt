@@ -129,31 +129,32 @@ INCLUDE_DIRECTORIES ( BEFORE
 if (CMAKE_COMPILER_IS_GNUCXX)
 # exceptions are needed by this library, please don't try to disable them!
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -UQT_NO_EXCEPTIONS")
-  include (CheckCXXCompilerFlag)
-  check_cxx_compiler_flag (-fvisibility=hidden _HAVE_GCC_VISIBILITY)
-  if (_HAVE_GCC_VISIBILITY)
-    set (CMAKE_CXX_FLAGS 
-         "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden")
-  endif (_HAVE_GCC_VISIBILITY)
-  set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
+  if (NOT WIN32)
+    include (CheckCXXCompilerFlag)
+    check_cxx_compiler_flag (-fvisibility=hidden _HAVE_GCC_VISIBILITY)
+    if (_HAVE_GCC_VISIBILITY)
+      set (CMAKE_CXX_FLAGS 
+           "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden")
+    endif (_HAVE_GCC_VISIBILITY)
+    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
+  endif (NOT WIN32)
 endif (CMAKE_COMPILER_IS_GNUCXX)
-
-FIND_PACKAGE(Doxygen)
-IF(DOXYGEN_FOUND)
-    CONFIGURE_FILE(
-        "${CMAKE_SOURCE_DIR}/Doxyfile.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
-        IMMEDIATE @ONLY)
-    ADD_CUSTOM_TARGET ( doxygen
-        ${DOXYGEN} Doxyfile
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    )
-ENDIF(DOXYGEN_FOUND)
 
 ADD_SUBDIRECTORY(library)
 ADD_SUBDIRECTORY(utils)
 ADD_SUBDIRECTORY(icons)
 IF(${CMAKE_SYSTEM} MATCHES "Linux")
+    FIND_PACKAGE(Doxygen)
+    IF(DOXYGEN_FOUND)
+        CONFIGURE_FILE(
+            "${CMAKE_SOURCE_DIR}/Doxyfile.in"
+            "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
+            IMMEDIATE @ONLY)
+        ADD_CUSTOM_TARGET ( doxygen
+            ${DOXYGEN} Doxyfile
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        )
+    ENDIF(DOXYGEN_FOUND)
     ADD_SUBDIRECTORY(doc)
 ENDIF(${CMAKE_SYSTEM} MATCHES "Linux")
 
