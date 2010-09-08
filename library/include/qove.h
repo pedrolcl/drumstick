@@ -24,20 +24,26 @@
 #include <QObject>
 
 namespace OVE {
-class OveSong;
-class Track;
-class Voice;
-class Measure;
-class MeasureData;
-class NoteContainer;
+    class Track;
+    class Voice;
+    class Measure;
+    class MeasureData;
+    class NoteContainer;
 }
+
+/**
+ * @file qove.h
+ * Overture OVE Files Input
+ * @defgroup OVE Overture File Parser (Input)
+ * @{
+ */
 
 namespace drumstick {
 
 class MeasureToTick;
 
 /**
- * Overture Files
+ * Overture OVE Files (input only)
  *
  * This class is used to parse Overture Files
  */
@@ -171,8 +177,8 @@ Q_SIGNALS:
 	 * Emitted after reading a Time signature
 	 *
 	 * @param bar Measure number
+     * @param tick musical time
 	 * @param num Numerator
-	 * @param channel MIDI Channel
 	 * @param den Denominator (exponent in a power of two)
 	 */
 	void signalOVETimeSig(int bar, long tick, int num, int den);
@@ -254,7 +260,7 @@ Q_SIGNALS:
 	 * Emitted after reading an expression indication (notation) chunk.
 	 *
 	 * @param track track number
-	 * @param tick event time in ticks
+	 * @param time event time in ticks
 	 * @param code expression event code
 	 * @param text expression text
 	 */
@@ -279,6 +285,8 @@ private:
 	QOvePrivate* d;
 };
 
-}
+} // namespace drumstick
 
-#endif
+/** @} */
+
+#endif // DRUMSTICK_OVE_H

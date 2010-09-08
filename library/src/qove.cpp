@@ -19,10 +19,8 @@
 
 #include "qove.h"
 
-#include <algorithm>
 #include <cmath>
-#include <string>
-#include <string.h>
+#include <cstdlib>
 
 #include <QFile>
 #include <QIODevice>
@@ -37,6 +35,11 @@
 #else
 #define DLL_EXPORT
 #endif
+
+/**
+ * @file qove.cpp
+ * Implementation of a class managing Overture OVE Files input
+ */
 
 namespace OVE {
 
@@ -11109,6 +11112,20 @@ IOVEStreamLoader* createOveStreamLoader() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 namespace drumstick {
 
+/**
+ * @addtogroup OVE
+ * @{
+ *
+ * QOve provides a mechanism to parse Overture OVE Files, without
+ * the burden of a policy forcing to use some internal sequence representation.
+ *
+ * This class is not related or based on the ALSA library.
+ *
+ * @}
+ */
+
+
+
 class MeasureToTick {
 public:
 	MeasureToTick();
@@ -11217,20 +11234,36 @@ public:
     MeasureToTick mtt;
 };
 
+/**
+ * Constructor
+ */
 QOve::QOve(QObject * parent) :
 	QObject(parent),
 	d(new QOvePrivate)
 {
 }
 
+/**
+ * Destructor
+ */
 QOve::~QOve() {
 	delete d;
 }
 
+/**
+ * Sets the text codec for text meta-events.
+ *
+ * @param codec Name of the text codec
+ */
 void QOve::setTextCodecName(const QString& codec) {
 	d->ove.setTextCodecName(codec);
 }
 
+/**
+ * Reads an Overture file.
+ *
+ * @param fileName Name of an existing file.
+ */
 void QOve::readFromFile(const QString& fileName) {
 	QFile oveFile(fileName);
 	bool success = true;
@@ -11596,7 +11629,8 @@ int noteTypeToTick(OVE::NoteType type, int quarter = 480) {
 	return quarter * 4 * 2 / c;
 }
 
-void QOve::convertNotes(int trackNo, int measureTick, OVE::NoteContainer* container, int channel, int pitchShift) {
+void QOve::convertNotes(int trackNo, int measureTick, OVE::NoteContainer* container, int channel, int pitchShift)
+{
 	if (container->getIsRest()) {
 		return;
 	}
@@ -11737,4 +11771,4 @@ void QOve::convertNotes(int trackNo, int measureTick, OVE::NoteContainer* contai
 	return;
 }
 
-}
+} // namespace drumstick

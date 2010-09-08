@@ -91,7 +91,11 @@ public:
 protected:
     void readSubscribers(MidiClient* seq);
     void freeSubscribers();
-    /** Sets the client name. @see getClientName() */
+
+    /**
+     * Sets the client name. @see getClientName()
+     * @param name Client name
+     */
     void setClientName(QString name) { m_ClientName = name; }
 
 private:

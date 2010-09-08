@@ -119,11 +119,17 @@ public:
     QList<RecTempo> m_tempos;
 };
 
+/**
+ * Constructor
+ */
 QWrk::QWrk(QObject * parent) :
     QObject(parent),
     d(new QWrkPrivate)
 { }
 
+/**
+ * Destructor
+ */
 QWrk::~QWrk()
 {
     delete d;

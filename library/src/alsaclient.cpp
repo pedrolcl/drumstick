@@ -68,8 +68,8 @@ namespace drumstick {
 /**
 @mainpage drumstick Documentation
 @author Copyright &copy; 2009-2010 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
-@date 2010-07-07
-@version 0.4.0
+@date 2010-09-09
+@version 0.5.0
 
 This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/
@@ -182,6 +182,10 @@ SMF read and print
 @example dumpwrk.cpp
 Cakewalk WRK file parse and print
 @include dumpwrk.h
+
+@example dumpove.cpp
+Overture OVE file parse and print
+@include dumpove.h
 
 @example metronome.cpp
 Simple command line MIDI metronome
@@ -2443,6 +2447,8 @@ PoolInfo::setOutputPool(int size)
 /**
  * Sets the output room size.
  * The output room is the minimum pool size for select/blocking mode.
+ *
+ * @param size Output room size
  */
 void
 PoolInfo::setOutputRoom(int size)
