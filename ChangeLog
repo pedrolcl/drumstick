@@ -1,4 +1,8 @@
 2010-09-08
+    * documentation updated
+    * release 0.5.0
+
+2010-09-08
     * remaining warnings removed 
     * guiplayer simplified, and optimizations
     * compile with -fvisibility=hidden if it is available
@@ -10,6 +14,7 @@
 
 2010-08-31
     * OVE file format support, by Rui Fan <vanferry@gmail.com>
+    * guiplayer adds OVE format playback
 
 2010-07-24
     * Fixed static build support

@@ -399,6 +399,7 @@ MidiClient::~MidiClient()
  * method fails, RealtimeKit is used.
  *
  * @param enable real-time priority enabled
+ * @since 0.5.0
  */
 void MidiClient::setRealTimeInput(bool enable)
 {
@@ -411,6 +412,7 @@ void MidiClient::setRealTimeInput(bool enable)
 /**
  * Return the real-time priority setting for the MIDI input thread.
  * @return true if the real-time priority is enabled
+ * @since 0.5.0
  */
 bool MidiClient::realTimeInputEnabled()
 {
@@ -1714,6 +1716,7 @@ MidiClient::disconnectTo(int myport, int client, int port)
  * @param straddr source text address representation
  * @param addr returned ALSA address record
  * @return true if the text address was successfully parsed
+ * @since 0.3.1
  */
 bool
 MidiClient::parseAddress( const QString& straddr, snd_seq_addr& addr )
@@ -2470,6 +2473,7 @@ PoolInfo::getSizeOfInfo() const
 /**
  * Gets the runtime ALSA library version string
  * @return string representing the runtime ALSA library version
+ * @since 0.3.0
  */
 QString
 getRuntimeALSALibraryVersion()
@@ -2480,6 +2484,7 @@ getRuntimeALSALibraryVersion()
 /**
  * Gets the runtime ALSA library version number
  * @return integer representing the runtime ALSA library version
+ * @since 0.3.0
  */
 int
 getRuntimeALSALibraryNumber()
@@ -2504,6 +2509,7 @@ getRuntimeALSALibraryNumber()
 /**
  * Gets the runtime ALSA drivers version string
  * @return string representing the runtime ALSA drivers version
+ * @since 0.3.0
  */
 QString
 getRuntimeALSADriverVersion()
@@ -2522,6 +2528,7 @@ getRuntimeALSADriverVersion()
 /**
  * Gets the runtime ALSA drivers version number
  * @return integer representing the runtime ALSA drivers version
+ * @since 0.3.0
  */
 int
 getRuntimeALSADriverNumber()

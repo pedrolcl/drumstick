@@ -1319,6 +1319,7 @@ void Timer::stopEvents()
  * Check and return the best available global TimerId in the system, meaning
  * the timer with higher frequency (or lesser period, resolution).
  * @return A TimerId object
+ * @since 0.3.0
  */
 TimerId
 Timer::bestGlobalTimerId()

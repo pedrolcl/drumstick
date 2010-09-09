@@ -76,6 +76,7 @@ const QByteArray HEADER("CAKEWALK"); ///< Cakewalk WRK File header id
  * Cakewalk WRK file format (input only)
  *
  * This class is used to parse Cakewalk WRK Files
+ * @since 0.3.0
  */
 class DRUMSTICK_EXPORT QWrk : public QObject
 {

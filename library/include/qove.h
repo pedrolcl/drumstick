@@ -46,6 +46,7 @@ class MeasureToTick;
  * Overture OVE Files (input only)
  *
  * This class is used to parse Overture Files
+ * @since 0.5.0
  */
 class DRUMSTICK_EXPORT QOve : public QObject {
     Q_OBJECT
