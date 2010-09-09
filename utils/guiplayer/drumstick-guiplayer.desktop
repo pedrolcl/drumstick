@@ -1,4 +1,3 @@
-#!/usr/bin/env xdg-open
 [Desktop Entry]
 Name=Drumstick MIDI Player
 Exec=drumstick-guiplayer
