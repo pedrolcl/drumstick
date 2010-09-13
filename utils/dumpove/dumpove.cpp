@@ -173,9 +173,10 @@ void QSpyOve::errorHandler(const QString& errorStr)
     cout << "*** Warning! " << errorStr << endl;
 }
 
-void QSpyOve::fileHeader(int verh, int verl)
+void QSpyOve::fileHeader(int res, int tracks)
 {
-    dumpStr(0, "OVE File Version", QString("%1.%2").arg(verh).arg(verl));
+    dumpStr(0, "OVE File Header",
+            QString("Resolution=%1 Tracks=%2").arg(res).arg(tracks));
 }
 
 void QSpyOve::fileEnd()
