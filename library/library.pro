@@ -1,3 +1,5 @@
 TEMPLATE = subdirs
-SUBDIRS += drumstick-file.pro \
-           drumstick-alsa.pro
+SUBDIRS += drumstick-file.pro
+linux* {
+    SUBDIRS += drumstick-alsa.pro
+}

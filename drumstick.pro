@@ -1,2 +1,5 @@
 TEMPLATE = subdirs
-SUBDIRS += library utils
+SUBDIRS += library
+linux* {
+    SUBDIRS += utils
+}
