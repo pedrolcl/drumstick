@@ -1,5 +1,5 @@
 # MIDI Sequencer C++ Library 
-# Copyright (C) 2008-2011 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+# Copyright (C) 2008-2013 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

@@ -1,5 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-drumgrid
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets gui
 QT += dbus
 CONFIG += qt thread exceptions
 DESTDIR = ../../build/bin

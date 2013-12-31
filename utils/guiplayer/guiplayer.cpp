@@ -1,6 +1,6 @@
 /*
     SMF GUI Player test using the MIDI Sequencer C++ library
-    Copyright (C) 2006-2011, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2013, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,19 +31,20 @@
 #include "alsaqueue.h"
 #include "alsaport.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QFileDialog>
-#include <QtGui/QInputDialog>
-#include <QtGui/QDragEnterEvent>
-#include <QtGui/QDropEvent>
-#include <QtGui/QCloseEvent>
-#include <QtGui/QToolTip>
-#include <QtGui/QMessageBox>
-#include <QtGui/QStatusBar>
-#include <QtCore/QSettings>
-#include <QtCore/QUrl>
-#include <QtCore/QFileInfo>
-#include <QtCore/QTextCodec>
+#include <QApplication>
+#include <QFileDialog>
+#include <QInputDialog>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QCloseEvent>
+#include <QToolTip>
+#include <QMessageBox>
+#include <QStatusBar>
+#include <QSettings>
+#include <QUrl>
+#include <QFileInfo>
+#include <QTextCodec>
+#include <QMimeData>
 #include <qmath.h>
 
 GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)

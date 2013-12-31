@@ -1,6 +1,6 @@
 /*
     MIDI Sequencer C++ library
-    Copyright (C) 2006-2011, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2013, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,8 +20,8 @@
 #include "drumgrid.h"
 #include "cmdlineargs.h"
 #include "drumstickcommon.h"
-#include <QtGui/QApplication>
-#include <QtGui/QMessageBox>
+#include <QApplication>
+#include <QMessageBox>
 
 const QString QSTR_APPNAME("DrumGrid");
 const QString QSTR_DOMAIN("drumstick.sourceforge.net");
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     CmdLineArgs args;
     args.setStdQtArgs(true);
     args.setUsage("[options]");
-    args.parse(a.argc(), a.argv());
+    args.parse(argc, argv);
     try {
         DrumGrid w;
         w.show();

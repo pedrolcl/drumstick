@@ -1,5 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-dumpwrk
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += qt console
 DESTDIR = ../../build/bin
 OBJECTS_DIR = ../../build/obj

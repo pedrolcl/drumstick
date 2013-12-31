@@ -1,6 +1,6 @@
 /*
     MIDI Sequencer C++ library
-    Copyright (C) 2006-2011, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2013, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,10 +22,10 @@
 
 #include "drumgridabout.h"
 
-#include <QtGui/QMainWindow>
-#include <QtGui/QShortcut>
-#include <QtGui/QCloseEvent>
-#include <QtCore/QSignalMapper>
+#include <QMainWindow>
+#include <QShortcut>
+#include <QCloseEvent>
+#include <QSignalMapper>
 
 const QString QSTR_WINDOW("Window");
 const QString QSTR_GEOMETRY("Geometry");

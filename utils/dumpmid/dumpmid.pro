@@ -1,5 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-dumpmid
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 QT += dbus
 CONFIG += qt console thread exceptions
 DESTDIR = ../../build/bin

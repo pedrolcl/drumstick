@@ -1,5 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-buildsmf
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += qt console thread exceptions
 DESTDIR = ../../build/bin
 OBJECTS_DIR = ../../build/obj

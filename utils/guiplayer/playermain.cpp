@@ -1,6 +1,6 @@
 /*
     SMF GUI Player test using the MIDI Sequencer C++ library 
-    Copyright (C) 2006-2011, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2013, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,8 +20,8 @@
 #include "guiplayer.h"
 #include "cmdlineargs.h"
 #include "drumstickcommon.h"
-#include <QtGui/QApplication>
-#include <QtGui/QMessageBox>
+#include <QApplication>
+#include <QMessageBox>
 
 const QString errorstr = "Fatal error from the ALSA sequencer. "
     "This usually happens when the kernel doesn't have ALSA support, "
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     args.setStdQtArgs(true);
     args.setUsage("[options] [file]");
     args.addOptionalArgument("file", "Input SMF (mid/kar) or Cakewalk (wrk) file");
-    args.parse(a.argc(), a.argv());
+    args.parse(argc, argv);
     try {
         GUIPlayer w;
         w.setAttribute(Qt::WA_QuitOnClose);

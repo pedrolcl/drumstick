@@ -1,5 +1,5 @@
 # MIDI Sequencer C++ Library
-# Copyright (C) 2005-2011 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+# Copyright (C) 2005-2013 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -70,7 +70,7 @@ ADD_EXECUTABLE(drumstick-vpiano
 TARGET_LINK_LIBRARIES(drumstick-vpiano
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
-    ${QT_X11_X11_LIBRARY}
+    X11
     drumstick-common
     drumstick-alsa
 )

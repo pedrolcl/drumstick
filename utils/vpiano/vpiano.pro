@@ -1,6 +1,7 @@
 TEMPLATE = app
 TARGET = drumstick-vpiano
 QT += svg dbus
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets gui x11extras
 CONFIG += qt thread exceptions x11
 DESTDIR = ../../build/bin
 OBJECTS_DIR = ../../build/obj

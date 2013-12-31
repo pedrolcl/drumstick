@@ -1,6 +1,6 @@
 /*
     SMF GUI Player test using the MIDI Sequencer C++ library
-    Copyright (C) 2006-2011, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2013, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,13 +20,13 @@
 #ifndef INCLUDED_GUIPLAYER_H
 #define INCLUDED_GUIPLAYER_H
 
-#include <QtGui/QMainWindow>
-#include <QtGui/QProgressDialog>
-#include <QtCore/QObject>
-#include <QtCore/QString>
-#include <QtCore/QList>
-#include <QtCore/QHash>
-#include <QtCore/QPointer>
+#include <QMainWindow>
+#include <QProgressDialog>
+#include <QObject>
+#include <QString>
+#include <QList>
+#include <QHash>
+#include <QPointer>
 
 namespace drumstick {
     class QSmf;

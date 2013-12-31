@@ -1,6 +1,6 @@
 /*
     Virtual Piano Widget for Qt4 
-    Copyright (C) 2008-2011, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2008-2013, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -154,7 +154,7 @@ void PianoScene::keyOff(const int note)
 
 PianoKey* PianoScene::getKeyForPos( const QPointF& p ) const
 {
-    QGraphicsItem *itm = itemAt(p);
+    QGraphicsItem *itm = itemAt(p, QTransform());
     while (itm != NULL && itm->parentItem() != NULL)
         itm = itm->parentItem();
     if (itm != NULL) {

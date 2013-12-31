@@ -7,6 +7,7 @@ DEPENDPATH += . include src
 INCLUDEPATH += . include
 include (../global.pri)
 QT += dbus
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += qt thread 
 DEFINES += drumstick_alsa_EXPORTS RTKIT_SUPPORT
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
