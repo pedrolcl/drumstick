@@ -9,17 +9,26 @@
 #include "rtmidiinput.h"
 #include "rtmidioutput.h"
 
+
+#if defined(ALSA_BACKEND)
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+namespace drumstick {
+namespace rt {
+Q_IMPORT_PLUGIN(drumstick_rt_alsa_in)
+Q_IMPORT_PLUGIN(drumstick_rt_alsa_out)
+}}
+#else
 #if defined(DUMMY_BACKEND)
 Q_IMPORT_PLUGIN(DummyInput)
 Q_IMPORT_PLUGIN(DummyOutput)
 #endif
-
-#if defined(ALSA_BACKEND)
 Q_IMPORT_PLUGIN(ALSAMIDIInput)
 Q_IMPORT_PLUGIN(ALSAMIDIOutput)
 #endif
+#endif
 
 using namespace drumstick::rt;
+
 
 int main(int argc, char **argv)
 {

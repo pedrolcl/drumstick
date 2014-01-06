@@ -58,10 +58,18 @@ void Connections::refresh()
     if (m_midiIn != 0) {
         ui.m_inputs->addItem(QString());
         ui.m_inputs->addItems(m_midiIn->connections(advanced));
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+        ui.m_inputs->setCurrentIndex(ui.m_inputs->findText(m_midiIn->currentConnection()));
+#else
         ui.m_inputs->setCurrentText(m_midiIn->currentConnection());
+#endif
     }
     if (m_midiOut != 0) {
         ui.m_outputs->addItems(m_midiOut->connections(advanced));
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+        ui.m_outputs->setCurrentIndex(ui.m_outputs->findText(m_midiOut->currentConnection()));
+#else
         ui.m_outputs->setCurrentText(m_midiOut->currentConnection());
+#endif
     }
 }

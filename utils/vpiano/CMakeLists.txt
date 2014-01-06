@@ -34,11 +34,8 @@ SET(vpiano_SRCS
     pianokeybd.h
     keylabel.cpp
     keylabel.h
-    rawkeybdapp.cpp
-    rawkeybdapp.h
     vpianoabout.cpp
     vpianoabout.h
-    connectionitem.h
     connections.cpp
     connections.h
     preferences.cpp
@@ -49,6 +46,8 @@ SET(vpiano_SRCS
 )
 
 SET(vpiano_qtobject_SRCS
+    ../../library/include/rtmidiinput.h
+    ../../library/include/rtmidioutput.h
     pianoscene.h
     pianokeybd.h
     vpianoabout.h
@@ -70,9 +69,9 @@ ADD_EXECUTABLE(drumstick-vpiano
 TARGET_LINK_LIBRARIES(drumstick-vpiano
     ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
-    X11
     drumstick-common
     drumstick-alsa
+    drumstick-rt-alsa
 )
 
 INSTALL(TARGETS drumstick-vpiano

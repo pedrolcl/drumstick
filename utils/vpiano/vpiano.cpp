@@ -23,8 +23,16 @@
 #include "vpiano.h"
 
 #if defined(Q_OS_LINUX)
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+namespace drumstick {
+namespace rt {
+Q_IMPORT_PLUGIN(drumstick_rt_alsa_in)
+Q_IMPORT_PLUGIN(drumstick_rt_alsa_out)
+}}
+#else
 Q_IMPORT_PLUGIN(ALSAMIDIInput)
 Q_IMPORT_PLUGIN(ALSAMIDIOutput)
+#endif
 #endif
 
 VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )

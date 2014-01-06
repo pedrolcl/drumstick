@@ -29,7 +29,9 @@ namespace rt {
     class ALSAMIDIOutput : public MIDIOutput
     {
         Q_OBJECT
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput")
+#endif
         Q_INTERFACES(drumstick::rt::MIDIOutput)
 
     public:

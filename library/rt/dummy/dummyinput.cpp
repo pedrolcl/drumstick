@@ -52,6 +52,10 @@ bool DummyInput::isEnabledMIDIThru()
     return false;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+    Q_EXPORT_PLUGIN2(drumstick_rt_dummy_in,DummyInput)
+#endif
+
 }}
 
 

@@ -19,7 +19,6 @@
 #include <QApplication>
 #include <QDebug>
 #include "vpiano.h"
-#include "rawkeybdapp.h"
 #include "cmdlineargs.h"
 
 const QString errorstr = "Fatal error from the ALSA sequencer. "

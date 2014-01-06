@@ -153,6 +153,57 @@ IF(ALSA_FOUND)
             DESTINATION include/drumstick)
     INSTALL(FILES include/drumstick.h
             DESTINATION include)
+            
+#drumstick-rt-alsa plugin library
+
+    add_definitions(-DQT_STATICPLUGIN)
+
+    SET(drumstick-rt_QTOBJ_SRCS
+        include/rtmidiinput.h
+        include/rtmidioutput.h
+    )
+            
+    SET(drumstick-rt-alsa_HEADERS
+        rt/alsa/alsamidiinput.h
+	rt/alsa/alsamidioutput.h
+    )
+    
+    SET(drumstick-rt-alsa_SRCS
+	rt/alsa/alsamidiinput.cpp
+	rt/alsa/alsamidioutput.cpp
+    )
+    
+    QT4_WRAP_CPP(drumstick-rt_MOC_SRCS ${drumstick-rt_QTOBJ_SRCS})
+    
+    ADD_LIBRARY(drumstick-rt-alsa STATIC
+        ${drumstick-rt_MOC_SRCS}
+        ${drumstick-rt-alsa_SRCS}
+        ${drumstick-rt-alsa_HEADERS}
+    )
+    
+    TARGET_LINK_LIBRARIES(drumstick-rt-alsa
+        ${QT_LIBRARIES}
+        ${ALSA_LIBS}
+        drumstick-alsa
+    )
+
+    IF(STATIC_DRUMSTICK)
+        SET_TARGET_PROPERTIES(drumstick-alsa PROPERTIES
+             STATIC_LIB "libdrumstick-rt-alsa.a"
+        )
+        IF(NOT WIN32)
+	    SET_TARGET_PROPERTIES(drumstick-rt-alsa PROPERTIES
+	      COMPILE_FLAGS -fPIC
+	    )
+        ENDIF(NOT WIN32)
+    ELSE(STATIC_DRUMSTICK)
+        SET_TARGET_PROPERTIES(drumstick-rt-alsa PROPERTIES
+            VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
+            SOVERSION ${VERSION_MAJOR}
+#           OUTPUT_NAME drumstick-alsa-${VERSION_MAJOR}.${VERSION_MINOR}
+        )
+    ENDIF(STATIC_DRUMSTICK)
+    
 ENDIF(ALSA_FOUND)
 
 INSTALL(TARGETS drumstick-file
