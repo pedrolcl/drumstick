@@ -18,73 +18,50 @@
 */
 
 #include "connections.h"
-#include "connectionitem.h"
 
 Connections::Connections(QWidget *parent)
-    : QDialog(parent)
+    : QDialog(parent),
+      m_midiIn(0),
+      m_midiOut(0)
 {
     ui.setupUi(this);
+    connect(ui.m_advanced, SIGNAL(toggled(bool)), SLOT(refresh()));
 }
 
-ConnectionItem* Connections::createConnectionItem(PortInfo& pi, PortInfoList& subs)
+void Connections::accept()
 {
-    ConnectionItem *itm = new ConnectionItem(QString("%1:%2").
-                                             arg(pi.getClientName()).
-                                             arg(pi.getPort()));
-    itm->setCheckState(Qt::Unchecked);
-    itm->setPortInfo(pi);
-    PortInfoList::ConstIterator it;
-    for( it = subs.constBegin(); it != subs.constEnd(); ++it ) {
-        PortInfo s = *it;
-        if ((s.getClient() == pi.getClient()) &&
-            (s.getPort() == pi.getPort())) {
-            itm->setCheckState(Qt::Checked);
-            break;
+    QString conn = ui.m_inputs->currentText();
+    if (m_midiIn != 0) {
+        if (conn != m_midiIn->currentConnection()) {
+            m_midiIn->close();
+            if (!conn.isEmpty())
+                m_midiIn->open(conn);
+        }
+        m_midiIn->enableMIDIThru(ui.m_thru->isChecked());
+    }
+    if (m_midiOut != 0) {
+        conn = ui.m_outputs->currentText();
+        if (conn != m_midiOut->currentConnection()) {
+            m_midiOut->close();
+            if (!conn.isEmpty())
+                m_midiOut->open(conn);
         }
     }
-    return itm;
+    QDialog::accept();
 }
 
-void Connections::setInputs(PortInfoList inputs, PortInfoList subs)
+void Connections::refresh()
 {
-    ui.m_listInputs->clear();
-    PortInfoList::Iterator it;
-    for( it = inputs.begin(); it != inputs.end(); ++it) {
-        ui.m_listInputs->addItem(createConnectionItem(*it, subs));
+    bool advanced = ui.m_advanced->isChecked();
+    ui.m_inputs->clear();
+    ui.m_outputs->clear();
+    if (m_midiIn != 0) {
+        ui.m_inputs->addItem(QString());
+        ui.m_inputs->addItems(m_midiIn->connections(advanced));
+        ui.m_inputs->setCurrentText(m_midiIn->currentConnection());
     }
-}
-
-void Connections::setOutputs(PortInfoList outputs, PortInfoList subs)
-{
-    ui.m_listOutputs->clear();
-    PortInfoList::Iterator it;
-    for( it = outputs.begin(); it != outputs.end(); ++it) {
-        ui.m_listOutputs->addItem(createConnectionItem(*it, subs));
+    if (m_midiOut != 0) {
+        ui.m_outputs->addItems(m_midiOut->connections(advanced));
+        ui.m_outputs->setCurrentText(m_midiOut->currentConnection());
     }
-}
-
-PortInfoList Connections::getSelectedInputPorts() const
-{
-    PortInfoList lst;
-    int row;
-    for ( row = 0; row < ui.m_listInputs->count(); ++row ) {
-        ConnectionItem *itm = dynamic_cast<ConnectionItem*>(ui.m_listInputs->item(row));
-        if ((itm != NULL) && (itm->checkState() == Qt::Checked)) {
-            lst << itm->getPortInfo();
-        }
-    }
-    return lst;
-}
-
-PortInfoList Connections::getSelectedOutputPorts() const
-{
-    PortInfoList lst;
-    int row;
-    for ( row = 0; row < ui.m_listOutputs->count(); ++row ) {
-        ConnectionItem *itm = dynamic_cast<ConnectionItem*>(ui.m_listOutputs->item(row));
-        if ((itm != NULL) && (itm->checkState() == Qt::Checked)) {
-            lst << itm->getPortInfo();
-        }
-    }
-    return lst;
 }

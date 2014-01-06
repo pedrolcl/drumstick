@@ -26,17 +26,10 @@
 #include "connections.h"
 #include "preferences.h"
 
-#include "alsaevent.h"
-#include "alsaclient.h"
-#include "alsaport.h"
-#include "alsaqueue.h"
+#include "rtmidiinput.h"
+#include "rtmidioutput.h"
 
-using namespace drumstick;
-
-/* MidiClient can deliver SequencerEvents with only
- * signals or posting QEvents to the QApplication loop */
-#undef USE_QEVENTS
-//#define USE_QEVENTS
+using namespace drumstick::rt;
 
 class VPiano : public QMainWindow
 {
@@ -53,21 +46,14 @@ public slots:
     void slotPreferences();
     void slotNoteOn(const int midiNote);
     void slotNoteOff(const int midiNote);
-    void slotSubscription(MidiPort* port, Subscription* subs);
 
-#ifdef USE_QEVENTS
-protected:
-    virtual void customEvent( QEvent *ev );
-#else
-    void sequencerEvent( SequencerEvent* ev );
-#endif
+    void slotNoteOn(const int chan, const int note, const int vel);
+    void slotNoteOff(const int chan, const int note, const int vel);
 
 private:
-    void displayEvent( SequencerEvent* ev );
+    MIDIInput * m_midiIn;
+    MIDIOutput* m_midiOut;
 
-    int m_portId;
-    MidiClient* m_Client;
-    MidiPort* m_Port;
     Ui::VPiano ui;
     About dlgAbout;
     Connections dlgConnections;

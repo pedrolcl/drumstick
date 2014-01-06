@@ -20,7 +20,7 @@
 #define PIANOKEYBD_H
 
 #include "pianoscene.h"
-#include "rawkeybdapp.h"
+//#include "rawkeybdapp.h"
 #include <QGraphicsView>
 
 #if defined(VPIANO_PLUGIN)
@@ -29,7 +29,7 @@
 #define QDESIGNER_WIDGET_EXPORT
 #endif
 
-class QDESIGNER_WIDGET_EXPORT PianoKeybd : public QGraphicsView, public RawKbdHandler
+class QDESIGNER_WIDGET_EXPORT PianoKeybd : public QGraphicsView //, public RawKbdHandler
 {
     Q_OBJECT
     Q_PROPERTY( int baseOctave READ baseOctave WRITE setBaseOctave )
@@ -51,9 +51,9 @@ public:
     void setKeyboardMap(KeyboardMap* m) { m_scene->setKeyboardMap(m); }
     void resetKeyboardMap() { m_scene->setKeyboardMap(&m_defaultMap); }
     KeyboardMap* getKeyboardMap() { return m_scene->getKeyboardMap(); }
-    void setRawKeyboardMap(KeyboardMap* m) { m_rawMap = m; }
-    KeyboardMap* getRawKeyboardMap() { return m_rawMap; }
-    void resetRawKeyboardMap() { m_rawMap = &m_defaultRawMap; }
+    //void setRawKeyboardMap(KeyboardMap* m) { m_rawMap = m; }
+    //KeyboardMap* getRawKeyboardMap() { return m_rawMap; }
+    //void resetRawKeyboardMap() { m_rawMap = &m_defaultRawMap; }
 
     int baseOctave() const { return m_scene->baseOctave(); }
     int numOctaves() const { return m_scene->numOctaves(); }

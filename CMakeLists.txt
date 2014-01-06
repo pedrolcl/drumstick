@@ -19,6 +19,7 @@
 # The name of our project is "DRUMSTICK". CMakeLists files in this project can
 # refer to the root source directory of the project as ${DRUMSTICK_SOURCE_DIR} 
 # and to the root binary directory of the project as ${DRUMSTICK_BINARY_DIR}
+
 PROJECT(DRUMSTICK)
 
 # CMake minimum version
@@ -51,7 +52,7 @@ SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_admin")
 # DRUMSTICK version string
 SET (VERSION_MAJOR "0")
 SET (VERSION_MINOR "5")
-SET (VERSION_PATCH "1")
+SET (VERSION_PATCH "99")
 SET (VERSION_SUFFIX "svn")
 SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 
@@ -156,23 +157,25 @@ IF(${CMAKE_SYSTEM} MATCHES "Linux")
         )
     ENDIF(DOXYGEN_FOUND)
     ADD_SUBDIRECTORY(doc)
+    CONFIGURE_FILE(drumstick-alsa.pc.in drumstick-alsa.pc IMMEDIATE @ONLY)
+    CONFIGURE_FILE(drumstick.spec.in drumstick.spec IMMEDIATE @ONLY)
+    INSTALL( FILES 
+	${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
+	DESTINATION lib${LIB_SUFFIX}/pkgconfig )
 ENDIF(${CMAKE_SYSTEM} MATCHES "Linux")
 
-CONFIGURE_FILE(drumstick-alsa.pc.in drumstick-alsa.pc IMMEDIATE @ONLY)
 CONFIGURE_FILE(drumstick-file.pc.in drumstick-file.pc IMMEDIATE @ONLY)
-CONFIGURE_FILE(drumstick.spec.in drumstick.spec IMMEDIATE @ONLY)
 INSTALL( FILES 
     ${CMAKE_CURRENT_BINARY_DIR}/drumstick-file.pc
-    ${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
     DESTINATION lib${LIB_SUFFIX}/pkgconfig )
 
 # XML mime types
 set( SHARED_MIME_INFO_MINIMUM_VERSION "0.30" )
-set( XDG_MIME_INSTALL_DIR "share/mime/packages" ) 
+set( XDG_MIME_INSTALL_DIR "share/mime/packages" )
 find_package( SharedMimeInfo )
 if( SHARED_MIME_INFO_FOUND )
     install( FILES drumstick.xml DESTINATION ${XDG_MIME_INSTALL_DIR} ) 
-    update_xdg_mimetypes( ${XDG_MIME_INSTALL_DIR} )     
+    update_xdg_mimetypes( ${XDG_MIME_INSTALL_DIR} )
 endif( SHARED_MIME_INFO_FOUND )
 
 # uninstall custom target

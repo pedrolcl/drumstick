@@ -9,5 +9,6 @@ MOC_DIR = ../../build/moc
 INCLUDEPATH += . ../../library/include ../common ../../build/common
 DEPENDPATH += . ../../library ../../library/include
 LIBS = -L../../build/lib -ldrumstick-common -ldrumstick-alsa -lasound
+include (../../global.pri)
 # Input
 SOURCES += sysinfo.cpp

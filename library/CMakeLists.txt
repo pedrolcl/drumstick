@@ -39,9 +39,9 @@ SET(drumstick-file_HEADERS
 )
 
 SET(drumstick-file_SRCS
-    src/qsmf.cpp
-    src/qwrk.cpp
-    src/qove.cpp
+    file/qsmf.cpp
+    file/qwrk.cpp
+    file/qove.cpp
 )
 
 QT4_WRAP_CPP(drumstick-file_MOC_SRCS ${drumstick-file_QTOBJ_SRCS})
@@ -84,7 +84,7 @@ IF(ALSA_FOUND)
         include/alsatimer.h
         include/playthread.h
     )
-    
+
     SET(drumstick-alsa_HEADERS
         include/alsaclient.h
         include/alsaevent.h
@@ -95,30 +95,30 @@ IF(ALSA_FOUND)
         include/playthread.h
         include/subscription.h
     )
-    
+
     SET(drumstick-alsa_SRCS
-        src/alsaclient.cpp
-        src/alsaevent.cpp
-        src/alsaport.cpp
-        src/alsaqueue.cpp
-        src/alsatimer.cpp
-        src/playthread.cpp
-        src/subscription.cpp
+        alsa/alsaclient.cpp
+        alsa/alsaevent.cpp
+        alsa/alsaport.cpp
+        alsa/alsaqueue.cpp
+        alsa/alsatimer.cpp
+        alsa/playthread.cpp
+        alsa/subscription.cpp
     )
 
     QT4_WRAP_CPP(drumstick-alsa_MOC_SRCS ${drumstick-alsa_QTOBJ_SRCS})
-   
+
     ADD_LIBRARY(drumstick-alsa 
         ${drumstick-alsa_MOC_SRCS}
         ${drumstick-alsa_SRCS} 
         ${drumstick-alsa_HEADERS} 
     )
-    
+
     TARGET_LINK_LIBRARIES(drumstick-alsa
         ${QT_LIBRARIES}
         ${ALSA_LIBS}
     )
-    
+
     IF(STATIC_DRUMSTICK)
         SET_TARGET_PROPERTIES(drumstick-alsa PROPERTIES
              STATIC_LIB "libdrumstick-alsa.a"

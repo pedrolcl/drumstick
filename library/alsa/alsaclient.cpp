@@ -2514,7 +2514,7 @@ getRuntimeALSALibraryNumber()
 QString
 getRuntimeALSADriverVersion()
 {
-    QRegExp rx(".*Driver Version ([\\d\\.]+).*");
+    QRegExp rx(".*Driver Version.*([\\d\\.]+).*");
     QString s;
     QFile f("/proc/asound/version");
     if (f.open(QFile::ReadOnly)) {

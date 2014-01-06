@@ -1,58 +1,66 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>ConnectionsClass</class>
- <widget class="QDialog" name="ConnectionsClass" >
-  <property name="geometry" >
+ <widget class="QDialog" name="ConnectionsClass">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>272</width>
-    <height>302</height>
+    <width>289</width>
+    <height>188</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Connections</string>
   </property>
-  <layout class="QVBoxLayout" >
+  <layout class="QVBoxLayout">
    <item>
-    <widget class="QTabWidget" name="tabWidget" >
-     <property name="currentIndex" >
-      <number>0</number>
+    <widget class="QLabel" name="label_in">
+     <property name="text">
+      <string>MIDI IN</string>
      </property>
-     <widget class="QWidget" name="tabInput" >
-      <attribute name="title" >
-       <string>Input</string>
-      </attribute>
-      <layout class="QVBoxLayout" >
-       <item>
-        <widget class="QListWidget" name="m_listInputs" />
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabOutput" >
-      <attribute name="title" >
-       <string>Output</string>
-      </attribute>
-      <layout class="QVBoxLayout" >
-       <item>
-        <widget class="QListWidget" name="m_listOutputs" />
-       </item>
-      </layout>
-     </widget>
     </widget>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="orientation" >
+    <widget class="QComboBox" name="m_inputs"/>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="m_thru">
+     <property name="text">
+      <string>Enable MIDI THRU</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_out">
+     <property name="text">
+      <string>MIDI OUT</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="m_outputs"/>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="m_advanced">
+     <property name="text">
+      <string>Show advanced connections</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="standardButtons" >
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections>
   <connection>
@@ -61,11 +69,11 @@
    <receiver>ConnectionsClass</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>264</x>
      <y>303</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>283</x>
      <y>112</y>
     </hint>
@@ -77,11 +85,11 @@
    <receiver>ConnectionsClass</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>65</x>
      <y>303</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>93</x>
      <y>74</y>
     </hint>

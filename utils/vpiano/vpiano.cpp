@@ -18,38 +18,53 @@
 */
 
 #include <QDebug>
+#include <QPluginLoader>
+#include <qglobal.h>
 #include "vpiano.h"
+
+#if defined(Q_OS_LINUX)
+Q_IMPORT_PLUGIN(ALSAMIDIInput)
+Q_IMPORT_PLUGIN(ALSAMIDIOutput)
+#endif
 
 VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     : QMainWindow(parent, flags),
-    m_portId(-1),
-    m_Client(0),
-    m_Port(0)
+    m_midiIn(0),
+    m_midiOut(0)
 {
     ui.setupUi(this);
     ui.statusBar->hide();
-    ui.pianokeybd->setRawKeyboardMode(true);
+    ui.pianokeybd->setRawKeyboardMode(false);
 
-    m_Client = new MidiClient(this);
-    m_Client->open();
-    m_Client->setClientName("Virtual Piano");
+    QString name_in(QLatin1String("Virtual Piano IN"));
+    QString name_out(QLatin1String("Virtual Piano OUT"));
+    QStringList names;
+    names << name_in;
+    names << name_out;
 
-#ifdef USE_QEVENTS
-    m_Client->addListener(this);
-    m_Client->setEventsEnabled(true);
-#else // USE_QEVENTS (using signals instead)
-    connect( m_Client, SIGNAL(eventReceived(SequencerEvent*)),
-             SLOT(sequencerEvent(SequencerEvent*)), Qt::QueuedConnection );
-#endif // USE_QEVENTS
+    foreach(QObject* obj, QPluginLoader::staticInstances()) {
+        if (obj != 0) {
+            MIDIInput *input = qobject_cast<MIDIInput*>(obj);
+            if (input != 0 && m_midiIn == 0) {
+                input->setPublicName(name_in);
+                input->setExcludedConnections(names);
+                m_midiIn = input;
+            } else {
+                MIDIOutput *output = qobject_cast<MIDIOutput*>(obj);
+                if (output != 0 && m_midiOut == 0) {
+                    output->setPublicName(name_out);
+                    output->setExcludedConnections(names);
+                    m_midiOut = output;
+                }
+            }
+        }
+    }
 
-    m_Port = new MidiPort(this);
-    m_Port->attach( m_Client );
-    m_Port->setPortName("Virtual Piano");
-    m_Port->setCapability( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ |
-                           SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE );
-    m_Port->setPortType( SND_SEQ_PORT_TYPE_APPLICATION );
-
-    m_portId = m_Port->getPortId();
+    if (m_midiIn != 0) {
+        connect(m_midiIn, SIGNAL(midiNoteOn(int,int,int)), SLOT(slotNoteOn(int,int,int)));
+        connect(m_midiIn, SIGNAL(midiNoteOff(int,int,int)), SLOT(slotNoteOff(int,int,int)));
+        m_midiIn->setMIDIThruDevice(m_midiOut);
+    }
 
     connect(ui.actionExit, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(ui.actionAbout, SIGNAL(triggered()), SLOT(slotAbout()));
@@ -58,18 +73,16 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     connect(ui.actionPreferences, SIGNAL(triggered()), SLOT(slotPreferences()));
     connect(ui.pianokeybd, SIGNAL(noteOn(int)), SLOT(slotNoteOn(int)));
     connect(ui.pianokeybd, SIGNAL(noteOff(int)), SLOT(slotNoteOff(int)));
-    connect(m_Port, SIGNAL(subscribed(MidiPort*,Subscription*)), SLOT(slotSubscription(MidiPort*,Subscription*)));
 
-    m_Port->subscribeFromAnnounce();
-    m_Client->setRealTimeInput(false);
-    m_Client->startSequencerInput();
+    dlgConnections.setInput(m_midiIn);
+    dlgConnections.setOutput(m_midiOut);
+
 }
 
 VPiano::~VPiano()
 {
-    m_Client->stopSequencerInput();
-    m_Port->detach();
-    m_Client->close();
+    m_midiIn->close();
+    m_midiOut->close();
     qDebug() << "Cheers!";
 }
 
@@ -77,81 +90,29 @@ void VPiano::slotNoteOn(const int midiNote)
 {
     int chan = dlgPreferences.getOutChannel();
     int vel = dlgPreferences.getVelocity();
-    NoteOnEvent ev(chan, midiNote, vel);
-    ev.setSource(m_portId);
-    ev.setSubscribers();
-    ev.setDirect();
-    m_Client->outputDirect(&ev);
+    m_midiOut->sendNoteOn(chan, midiNote, vel);
 }
 
 void VPiano::slotNoteOff(const int midiNote)
 {
     int chan = dlgPreferences.getOutChannel();
     int vel = dlgPreferences.getVelocity();
-    NoteOffEvent ev(chan, midiNote, vel);
-    ev.setSource(m_portId);
-    ev.setSubscribers();
-    ev.setDirect();
-    m_Client->outputDirect(&ev);
+    m_midiOut->sendNoteOff(chan, midiNote, vel);
 }
 
-void VPiano::displayEvent(SequencerEvent *ev)
+
+void VPiano::slotNoteOn(const int chan, const int note, const int vel)
 {
-    try {
-        switch (ev->getSequencerType()) {
-        case SND_SEQ_EVENT_NOTEON: {
-            NoteOnEvent* e = static_cast<NoteOnEvent*>(ev);
-            if ((e != NULL) && (dlgPreferences.getInChannel() == e->getChannel())) {
-                int note = e->getKey();
-                if (e->getVelocity() == 0)
-                    ui.pianokeybd->showNoteOff(note);
-                else
-                    ui.pianokeybd->showNoteOn(note);
-                //qDebug() << "NoteOn" << note;
-            }
-            break;
-        }
-        case SND_SEQ_EVENT_NOTEOFF: {
-            NoteOffEvent* e = static_cast<NoteOffEvent*>(ev);
-            if ((e != NULL) && (dlgPreferences.getInChannel() == e->getChannel())) {
-                int note = e->getKey();
-                ui.pianokeybd->showNoteOff(note);
-                //qDebug() << "NoteOff" << note;
-            }
-            break;
-        }
-        default:
-            break;
-        }
-    } catch (SequencerError& err) {
-        qWarning() << "SequencerError exception. Error code: " << err.code()
-                   << " (" << err.qstrError() << ")";
-        qWarning() << "Location: " << err.location();
-        throw err;
+    if (dlgPreferences.getInChannel() == chan) {
+        ui.pianokeybd->showNoteOn(note);
     }
 }
 
-#ifdef USE_QEVENTS
-void VPiano::customEvent(QEvent *ev)
+void VPiano::slotNoteOff(const int chan, const int note, const int vel)
 {
-    if ( (ev == 0) || (ev->type() != SequencerEventType) )
-        return;
-    SequencerEvent* sev = static_cast<SequencerEvent*>(ev);
-    displayEvent (sev);
-}
-#else
-void
-VPiano::sequencerEvent(SequencerEvent *ev)
-{
-    displayEvent (ev);
-    delete ev;
-}
-#endif
-
-void VPiano::slotSubscription(MidiPort*, Subscription* subs)
-{
-    qDebug() << "Subscription made with" << subs->getSender()->client
-             << ":" << subs->getSender()->port;
+    if (dlgPreferences.getInChannel() == chan) {
+        ui.pianokeybd->showNoteOff(note);
+    }
 }
 
 void VPiano::slotAbout()
@@ -166,15 +127,8 @@ void VPiano::slotAboutQt()
 
 void VPiano::slotConnections()
 {
-    m_Port->updateSubscribers();
-    dlgConnections.setInputs(m_Client->getAvailableInputs(),
-                             m_Port->getWriteSubscribers());
-    dlgConnections.setOutputs(m_Client->getAvailableOutputs(),
-                              m_Port->getReadSubscribers());
-    if (dlgConnections.exec() == QDialog::Accepted) {
-        m_Port->updateConnectionsFrom(dlgConnections.getSelectedInputPorts());
-        m_Port->updateConnectionsTo(dlgConnections.getSelectedOutputPorts());
-    }
+    dlgConnections.refresh();
+    dlgConnections.exec();
 }
 
 void VPiano::slotPreferences()

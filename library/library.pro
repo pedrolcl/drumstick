@@ -1,5 +1,7 @@
 TEMPLATE = subdirs
-SUBDIRS += drumstick-file.pro
+CONFIG += ordered
 linux* {
-    SUBDIRS += drumstick-alsa.pro
+    SUBDIRS += alsa
 }
+SUBDIRS += file
+SUBDIRS += rt

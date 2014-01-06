@@ -16,14 +16,11 @@
     with this program; if not, write to the Free Software Foundation, Inc., 
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
-
+#include <QApplication>
+#include <QDebug>
 #include "vpiano.h"
 #include "rawkeybdapp.h"
 #include "cmdlineargs.h"
-
-#include "drumstickcommon.h"
-#include <QApplication>
-#include <QMessageBox>
 
 const QString errorstr = "Fatal error from the ALSA sequencer. "
     "This usually happens when the kernel doesn't have ALSA support, "
@@ -33,7 +30,8 @@ const QString errorstr = "Fatal error from the ALSA sequencer. "
 
 int main(int argc, char *argv[])
 {
-    RawKeybdApp a(argc, argv);
+    //RawKeybdApp a(argc, argv);
+    QApplication a(argc, argv);
     CmdLineArgs args;
     args.setStdQtArgs(true);
     args.setUsage("[options]");
@@ -42,9 +40,6 @@ int main(int argc, char *argv[])
         VPiano w;
         w.show();
         return a.exec();
-    } catch (const SequencerError& ex) {
-        QMessageBox::critical(0, "Error",
-            errorstr + " Returned error was: " + ex.qstrError() );
     } catch (...) {
         qWarning() << errorstr;
     }

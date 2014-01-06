@@ -1,19 +1,20 @@
 DESTDIR = ../build/common
 TEMPLATE = subdirs
+CONFIG += ordered
 include (../global.pri)
 VERSIONH = $$sprintf(const QString PGM_VERSION(\"%1\");,$$VERSION)
 system($$QMAKE_MKDIR $$DESTDIR)
-win32 { 
+win32 {
     system(echo $$VERSIONH > ../build/common/cmdversion.h)
-    SUBDIRS += common \ 
+    SUBDIRS += common \
            buildsmf \
            dumpove \
            dumpsmf \
            dumpwrk
 }
-linux* { 
+linux* {
     system(echo \'$$VERSIONH\' > ../build/common/cmdversion.h)
-    SUBDIRS += common \ 
+    SUBDIRS += common \
            buildsmf \
            drumgrid \
            dumpmid \

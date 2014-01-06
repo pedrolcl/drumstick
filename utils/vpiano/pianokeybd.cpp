@@ -16,6 +16,7 @@
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QApplication>
 #include "pianokeybd.h"
 
 PianoKeybd::PianoKeybd(QWidget *parent) 
@@ -34,8 +35,6 @@ PianoKeybd::PianoKeybd(const int baseOctave, const int numOctaves, QWidget *pare
 
 PianoKeybd::~PianoKeybd()
 {
-    setRawKeyboardMode(false);
-    setRawKeyboardMap(NULL);
 }
 
 void PianoKeybd::initScene(int base, int num, const QColor& c)
@@ -60,10 +59,6 @@ void PianoKeybd::initialize()
     setOptimizationFlag(DontAdjustForAntialiasing, true);
     setBackgroundBrush(QApplication::palette().background());
     initDefaultMap();
-    RawKeybdApp* rapp = dynamic_cast<RawKeybdApp*>(qApp);
-    if (rapp != NULL) {
-        rapp->setRawKbdHandler(this);
-    }
 }
 
 void PianoKeybd::resizeEvent(QResizeEvent *event)

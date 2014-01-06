@@ -8,6 +8,7 @@ OBJECTS_DIR = ../../build/obj
 MOC_DIR = ../../build/moc
 INCLUDEPATH += . ../../library/include ../common ../../build/common
 LIBS = -L../../build/lib -ldrumstick-common -ldrumstick-alsa -ldrumstick-file -lasound
+include (../../global.pri)
 # Input
 HEADERS += playsmf.h
 SOURCES += playsmf.cpp

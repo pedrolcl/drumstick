@@ -20,12 +20,15 @@
 #ifndef CONNECTIONS_H
 #define CONNECTIONS_H
 
+#include <QObject>
 #include <QDialog>
-#include "alsaport.h"
-#include "ui_connections.h"
-#include "connectionitem.h"
 
-using namespace drumstick;
+#include "rtmidiinput.h"
+#include "rtmidioutput.h"
+
+#include "ui_connections.h"
+
+using namespace drumstick::rt;
 
 class Connections : public QDialog
 {
@@ -33,14 +36,17 @@ class Connections : public QDialog
 
 public:
     Connections(QWidget *parent = 0);
-    void setInputs(PortInfoList inputs, PortInfoList subs);
-    void setOutputs(PortInfoList outputs, PortInfoList subs);
-    PortInfoList getSelectedInputPorts() const;
-    PortInfoList getSelectedOutputPorts() const;
+    void setInput(MIDIInput *in) { m_midiIn = in; }
+    void setOutput(MIDIOutput *out) { m_midiOut = out; }
+
+public slots:
+    void refresh();
+    void accept();
 
 private:
-    ConnectionItem* createConnectionItem(PortInfo& pi, PortInfoList& subs);
     Ui::ConnectionsClass ui;
+    MIDIInput* m_midiIn;
+    MIDIOutput* m_midiOut;
 };
 
 #endif // CONNECTIONS_H
