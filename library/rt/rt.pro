@@ -9,9 +9,9 @@ linux* {
 #unix {
 #    SUBDIRS += oss
 #}
-#macx {
-#    SUBDIRS += mac
-#}
+macx {
+    SUBDIRS += mac
+}
 #win32 {
 #    SUBDIRS += win
 #}

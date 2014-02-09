@@ -25,6 +25,25 @@
 #include <QStringList>
 #include <QtPlugin>
 
+#define MIDI_CHANNELS               16
+#define MIDI_GM_DRUM_CHANNEL        (10-1)
+#define MIDI_CTL_MSB_MAIN_VOLUME    0x07
+#define MIDI_CTL_ALL_SOUNDS_OFF     0x78
+#define MIDI_CTL_ALL_NOTES_OFF      0x7b
+#define MIDI_CTL_RESET_CONTROLLERS  0x79
+
+#define MIDI_STATUS_NOTEOFF         0x80
+#define MIDI_STATUS_NOTEON          0x90
+#define MIDI_STATUS_KEYPRESURE      0xa0
+#define MIDI_STATUS_CONTROLCHANGE   0xb0
+#define MIDI_STATUS_PROGRAMCHANGE   0xc0
+#define MIDI_STATUS_CHANNELPRESSURE 0xd0
+#define MIDI_STATUS_PITCHBEND       0xe0
+#define MIDI_STATUS_SYSEX           0xf0
+#define MIDI_STATUS_ENDSYSEX        0xf7
+#define MIDI_STATUS_REALTIME        0xf8
+#define MIDI_STATUS_MASK            0x80
+
 namespace drumstick {
 namespace rt {
 
