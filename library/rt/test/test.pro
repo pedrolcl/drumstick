@@ -11,8 +11,10 @@ dummy {
     DEFINES += DUMMY_BACKEND
     LIBS += -L../../../build/lib -ldrumstick-rt-dummy
 }
-DEFINES += ALSA_BACKEND
-LIBS += -L../../../build/lib -ldrumstick-rt-alsa -ldrumstick-alsa -lasound
+linux* {
+    DEFINES += ALSA_BACKEND
+    LIBS += -L../../../build/lib -ldrumstick-rt-alsa -ldrumstick-alsa -lasound
+}
 
 DEFINES += NET_BACKEND
 LIBS += -L../../../build/lib -ldrumstick-rt-net

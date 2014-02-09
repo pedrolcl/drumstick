@@ -41,14 +41,14 @@ Q_IMPORT_PLUGIN(ALSAMIDIOutput)
 #endif
 #endif
 
-#if defined(DUMMY_BACKEND)
-Q_IMPORT_PLUGIN(DummyInput)
-Q_IMPORT_PLUGIN(DummyOutput)
-#endif
-
 #if defined(NET_BACKEND)
 Q_IMPORT_PLUGIN(NetMIDIInput)
 Q_IMPORT_PLUGIN(NetMIDIOutput)
+#endif
+
+#if defined(DUMMY_BACKEND)
+Q_IMPORT_PLUGIN(DummyInput)
+Q_IMPORT_PLUGIN(DummyOutput)
 #endif
 
 using namespace drumstick::rt;
