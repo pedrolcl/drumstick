@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-vpiano
-QT += svg dbus
+QT += svg dbus network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets gui
 CONFIG += qt thread exceptions
 DESTDIR = ../../build/bin
@@ -10,7 +10,7 @@ RCC_DIR = ../../build/rcc
 UI_DIR = ../../build/ui
 include (../../global.pri)
 INCLUDEPATH += . ../../library/include ../common ../../build/common
-LIBS += -L../../build/lib -ldrumstick-common
+LIBS += -L../../build/lib -ldrumstick-common -ldrumstick-rt-net
 linux* {
     LIBS += -L../../build/lib -ldrumstick-rt-alsa -ldrumstick-alsa -lasound
 }

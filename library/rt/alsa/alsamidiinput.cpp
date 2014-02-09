@@ -1,5 +1,5 @@
 /*
-    Drumstick Backend using the ALSA Sequencer
+    Drumstick RT Backend using the ALSA Sequencer
     Copyright (C) 2009-2010 Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
@@ -34,12 +34,12 @@ namespace rt {
     {
     public:
         ALSAMIDIInput *m_inp;
-        ALSAMIDIOutput *m_out;
+        MIDIOutput *m_out;
         MidiClient *m_client;
         MidiPort *m_port;
         int m_portId;
         int m_clientId;
-        int m_thruEnabled;
+        bool m_thruEnabled;
         bool m_clientFilter;
         int m_runtimeAlsaNum;
         QString m_publicName;
@@ -55,7 +55,7 @@ namespace rt {
             m_port(0),
             m_portId(-1),
             m_clientId(-1),
-            m_thruEnabled(0),
+            m_thruEnabled(false),
             m_publicName(DEFAULT_PUBLIC_NAME)
         {
             m_runtimeAlsaNum = getRuntimeALSALibraryNumber();
@@ -251,7 +251,6 @@ namespace rt {
         delete d;
     }
 
-
     QString ALSAMIDIInput::backendName()
     {
         return QLatin1String("ALSA");
@@ -295,7 +294,7 @@ namespace rt {
 
     void ALSAMIDIInput::setMIDIThruDevice(MIDIOutput *device)
     {
-        d->m_out = qobject_cast<ALSAMIDIOutput*>(device);
+        d->m_out = device;
     }
 
     void ALSAMIDIInput::enableMIDIThru(bool enable)

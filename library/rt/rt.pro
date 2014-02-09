@@ -15,6 +15,6 @@ linux* {
 #win32 {
 #    SUBDIRS += win
 #}
-#SUBDIRS += net
+SUBDIRS += net
 #SUBDIRS += synth
 SUBDIRS += test

@@ -1,3 +1,22 @@
+/*
+    Drumstick RT (realtime MIDI In/Out)
+    Copyright (C) 2009-2010 Pedro Lopez-Cabanillas <plcl@users.sf.net>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
 #include <QCoreApplication>
 #include <QFileInfo>
 #include <QtPlugin>
@@ -9,7 +28,6 @@
 #include "rtmidiinput.h"
 #include "rtmidioutput.h"
 
-
 #if defined(ALSA_BACKEND)
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 namespace drumstick {
@@ -18,17 +36,22 @@ Q_IMPORT_PLUGIN(drumstick_rt_alsa_in)
 Q_IMPORT_PLUGIN(drumstick_rt_alsa_out)
 }}
 #else
-#if defined(DUMMY_BACKEND)
-Q_IMPORT_PLUGIN(DummyInput)
-Q_IMPORT_PLUGIN(DummyOutput)
-#endif
 Q_IMPORT_PLUGIN(ALSAMIDIInput)
 Q_IMPORT_PLUGIN(ALSAMIDIOutput)
 #endif
 #endif
 
-using namespace drumstick::rt;
+#if defined(DUMMY_BACKEND)
+Q_IMPORT_PLUGIN(DummyInput)
+Q_IMPORT_PLUGIN(DummyOutput)
+#endif
 
+#if defined(NET_BACKEND)
+Q_IMPORT_PLUGIN(NetMIDIInput)
+Q_IMPORT_PLUGIN(NetMIDIOutput)
+#endif
+
+using namespace drumstick::rt;
 
 int main(int argc, char **argv)
 {

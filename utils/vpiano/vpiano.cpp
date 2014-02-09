@@ -35,6 +35,17 @@ Q_IMPORT_PLUGIN(ALSAMIDIOutput)
 #endif
 #endif
 
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+namespace drumstick {
+namespace rt {
+Q_IMPORT_PLUGIN(drumstick_rt_net_in)
+Q_IMPORT_PLUGIN(drumstick_rt_net_out)
+}}
+#else
+Q_IMPORT_PLUGIN(NetMIDIInput)
+Q_IMPORT_PLUGIN(NetMIDIOutput)
+#endif
+
 VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     : QMainWindow(parent, flags),
     m_midiIn(0),
@@ -53,25 +64,25 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     foreach(QObject* obj, QPluginLoader::staticInstances()) {
         if (obj != 0) {
             MIDIInput *input = qobject_cast<MIDIInput*>(obj);
-            if (input != 0 && m_midiIn == 0) {
+            if (input != 0) {
                 input->setPublicName(name_in);
                 input->setExcludedConnections(names);
-                m_midiIn = input;
+                m_inputs << input;
+                if (m_midiIn == 0 && (input->backendName() == "ALSA"))  {
+                    m_midiIn = input;
+                }
             } else {
                 MIDIOutput *output = qobject_cast<MIDIOutput*>(obj);
-                if (output != 0 && m_midiOut == 0) {
+                if (output != 0) {
                     output->setPublicName(name_out);
                     output->setExcludedConnections(names);
-                    m_midiOut = output;
+                    m_outputs << output;
+                    if (m_midiOut == 0 && (output->backendName() == "ALSA"))  {
+                        m_midiOut = output;
+                    }
                 }
             }
         }
-    }
-
-    if (m_midiIn != 0) {
-        connect(m_midiIn, SIGNAL(midiNoteOn(int,int,int)), SLOT(slotNoteOn(int,int,int)));
-        connect(m_midiIn, SIGNAL(midiNoteOff(int,int,int)), SLOT(slotNoteOff(int,int,int)));
-        m_midiIn->setMIDIThruDevice(m_midiOut);
     }
 
     connect(ui.actionExit, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -82,8 +93,14 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     connect(ui.pianokeybd, SIGNAL(noteOn(int)), SLOT(slotNoteOn(int)));
     connect(ui.pianokeybd, SIGNAL(noteOff(int)), SLOT(slotNoteOff(int)));
 
+    dlgConnections.setInputs(m_inputs);
+    dlgConnections.setOutputs(m_outputs);
     dlgConnections.setInput(m_midiIn);
     dlgConnections.setOutput(m_midiOut);
+    if (m_midiIn != 0) {
+        connect(m_midiIn, SIGNAL(midiNoteOn(int,int,int)), SLOT(slotNoteOn(int,int,int)));
+        connect(m_midiIn, SIGNAL(midiNoteOff(int,int,int)), SLOT(slotNoteOff(int,int,int)));
+    }
 
 }
 
@@ -111,6 +128,7 @@ void VPiano::slotNoteOff(const int midiNote)
 
 void VPiano::slotNoteOn(const int chan, const int note, const int vel)
 {
+    Q_UNUSED(vel)
     if (dlgPreferences.getInChannel() == chan) {
         ui.pianokeybd->showNoteOn(note);
     }
@@ -118,6 +136,7 @@ void VPiano::slotNoteOn(const int chan, const int note, const int vel)
 
 void VPiano::slotNoteOff(const int chan, const int note, const int vel)
 {
+    Q_UNUSED(vel)
     if (dlgPreferences.getInChannel() == chan) {
         ui.pianokeybd->showNoteOff(note);
     }
@@ -136,7 +155,16 @@ void VPiano::slotAboutQt()
 void VPiano::slotConnections()
 {
     dlgConnections.refresh();
-    dlgConnections.exec();
+    if (dlgConnections.exec() == QDialog::Accepted) {
+        if (m_midiIn != 0) {
+            m_midiIn->disconnect();
+        }
+        m_midiIn =  dlgConnections.getInput();
+        if (m_midiIn != 0) {
+            connect(m_midiIn, SIGNAL(midiNoteOn(int,int,int)), SLOT(slotNoteOn(int,int,int)));
+            connect(m_midiIn, SIGNAL(midiNoteOff(int,int,int)), SLOT(slotNoteOff(int,int,int)));
+        }
+    }
 }
 
 void VPiano::slotPreferences()

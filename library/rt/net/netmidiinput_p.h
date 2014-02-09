@@ -17,68 +17,41 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#include "dummyinput.h"
+#ifndef NETMIDIINPUT_P_H
+#define NETMIDIINPUT_P_H
+
+#include <QObject>
+#include <QUdpSocket>
 
 namespace drumstick {
 namespace rt {
 
-QString DummyInput::backendName()
-{
-    return "DUMMY";
-}
+class MIDIOutput;
+class NetMIDIInput;
 
-QString DummyInput::publicName()
+class NetMIDIInputPrivate : public QObject
 {
-    return QString();
-}
+    Q_OBJECT
+public:
+    NetMIDIInput *m_inp;
+    MIDIOutput *m_out;
+    QUdpSocket *m_socket;
+    int m_thruEnabled;
+    quint16 m_port;
+    QString m_publicName;
+    QString m_currentInput;
+    QStringList m_inputDevices;
+    QStringList m_excludedNames;
 
-void DummyInput::setPublicName(QString name)
-{
-    Q_UNUSED(name)
-}
+    NetMIDIInputPrivate(QObject *parent = 0);
 
-QStringList DummyInput::connections(bool advanced)
-{
-    Q_UNUSED(advanced)
-    return QStringList();
-}
+    void open(QString portName);
+    void close();
+    void parse(const QByteArray& msg);
 
-void DummyInput::setExcludedConnections(QStringList conns)
-{
-    Q_UNUSED(conns)
-}
-
-QString DummyInput::currentConnection()
-{
-    return QString();
-}
-
-void DummyInput::open(QString name)
-{
-    Q_UNUSED(name)
-}
-
-void DummyInput::close()
-{
-}
-
-void DummyInput::setMIDIThruDevice(MIDIOutput *device)
-{
-    Q_UNUSED(device)
-}
-
-void DummyInput::enableMIDIThru(bool enable)
-{
-    Q_UNUSED(enable)
-}
-
-bool DummyInput::isEnabledMIDIThru()
-{
-    return false;
-}
-
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-    Q_EXPORT_PLUGIN2(drumstick_rt_dummy_in,DummyInput)
-#endif
+public slots:
+    void processIncomingMessages();
+};
 
 }}
+#endif // NETMIDIINPUT_P_H

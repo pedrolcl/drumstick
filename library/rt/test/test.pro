@@ -14,3 +14,6 @@ dummy {
 DEFINES += ALSA_BACKEND
 LIBS += -L../../../build/lib -ldrumstick-rt-alsa -ldrumstick-alsa -lasound
 
+DEFINES += NET_BACKEND
+LIBS += -L../../../build/lib -ldrumstick-rt-net
+QT += network

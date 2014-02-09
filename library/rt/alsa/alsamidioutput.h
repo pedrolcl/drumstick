@@ -1,5 +1,5 @@
 /*
-    Drumstick RT backend using ALSA Sequencer
+    Drumstick RT Backend using the ALSA Sequencer
     Copyright (C) 2009-2014 Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify

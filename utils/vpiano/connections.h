@@ -38,8 +38,14 @@ public:
     Connections(QWidget *parent = 0);
     void setInput(MIDIInput *in) { m_midiIn = in; }
     void setOutput(MIDIOutput *out) { m_midiOut = out; }
+    void setInputs(QList<MIDIInput *> ins);
+    void setOutputs(QList<MIDIOutput *> outs);
+    MIDIInput *getInput() { return m_midiIn; }
+    MIDIOutput *getOutput() { return m_midiOut; }
 
 public slots:
+    void refreshInputs(QString id);
+    void refreshOutputs(QString id);
     void refresh();
     void accept();
 
@@ -47,6 +53,8 @@ private:
     Ui::ConnectionsClass ui;
     MIDIInput* m_midiIn;
     MIDIOutput* m_midiOut;
+    QHash<QString, MIDIInput*> m_inputs;
+    QHash<QString, MIDIOutput*> m_outputs;
 };
 
 #endif // CONNECTIONS_H

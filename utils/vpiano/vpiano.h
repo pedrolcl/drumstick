@@ -51,6 +51,9 @@ public slots:
     void slotNoteOff(const int chan, const int note, const int vel);
 
 private:
+    QList<MIDIInput*> m_inputs;
+    QList<MIDIOutput*> m_outputs;
+
     MIDIInput * m_midiIn;
     MIDIOutput* m_midiOut;
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>289</width>
-    <height>188</height>
+    <height>244</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,10 @@
     </widget>
    </item>
    <item>
-    <widget class="QComboBox" name="m_inputs"/>
+    <widget class="QComboBox" name="m_inputBackends"/>
+   </item>
+   <item>
+    <widget class="QComboBox" name="m_inputPorts"/>
    </item>
    <item>
     <widget class="QCheckBox" name="m_thru">
@@ -39,7 +42,10 @@
     </widget>
    </item>
    <item>
-    <widget class="QComboBox" name="m_outputs"/>
+    <widget class="QComboBox" name="m_outputBackends"/>
+   </item>
+   <item>
+    <widget class="QComboBox" name="m_outputPorts"/>
    </item>
    <item>
     <widget class="QCheckBox" name="m_advanced">
