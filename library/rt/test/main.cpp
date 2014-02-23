@@ -41,6 +41,11 @@ Q_IMPORT_PLUGIN(ALSAMIDIOutput)
 #endif
 #endif
 
+#if defined(MAC_BACKEND)
+Q_IMPORT_PLUGIN(MacMIDIInput)
+Q_IMPORT_PLUGIN(MacMIDIOutput)
+#endif
+
 #if defined(NET_BACKEND)
 Q_IMPORT_PLUGIN(NetMIDIInput)
 Q_IMPORT_PLUGIN(NetMIDIOutput)

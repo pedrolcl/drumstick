@@ -26,6 +26,7 @@ namespace drumstick {
 namespace rt {
 
     class MIDIOutput;
+    class MacMIDIInputPrivate;
 
     class MacMIDIInput : public MIDIInput
     {
@@ -54,7 +55,6 @@ namespace rt {
         virtual bool isEnabledMIDIThru();
 
     private:
-        class MacMIDIInputPrivate;
         MacMIDIInputPrivate* const d;
     };
 

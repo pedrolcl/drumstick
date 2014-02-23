@@ -15,7 +15,10 @@ linux* {
     DEFINES += ALSA_BACKEND
     LIBS += -L../../../build/lib -ldrumstick-rt-alsa -ldrumstick-alsa -lasound
 }
-
+macx {
+    DEFINES += MAC_BACKEND
+    LIBS += -L../../../build/lib -ldrumstick-rt-mac -framework CoreMidi -framework CoreFoundation
+}
 DEFINES += NET_BACKEND
 LIBS += -L../../../build/lib -ldrumstick-rt-net
 QT += network

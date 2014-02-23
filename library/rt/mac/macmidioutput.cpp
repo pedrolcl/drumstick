@@ -24,99 +24,17 @@
 #include <QStringList>
 #include <QByteArray>
 #include <QVarLengthArray>
+
+#include <CoreFoundation/CoreFoundation.h>
 #include <CoreMIDI/MIDIServices.h>
 
 namespace drumstick {
 namespace rt {
 
-    class MacMIDIOutput::MacMIDIOutputPrivate {
-    public:
-        MacMIDIOutputPrivate::MacMIDIOutputPrivate():
-            m_client(NULL),
-            m_outPort(NULL),
-            m_destination(NULL),
-            m_pitchShift(0),
-            m_clientFilter(true)
-        {
-        }
+    static CFStringRef DEFAULT_PUBLIC_NAME CFSTR("MIDI Out");
 
-        virtual MacMIDIOutputPrivate::~MacMIDIOutputPrivate()
-        {
-            OSStatus result;
-            if (m_client != NULL)
-              result = MIDIClientDispose(m_client);
-            if (result != noErr)
-                qDebug() << "MIDIClientDispose() error:" << result;
-        }
-
-
-        void transform(MIDIPacket *packet)
-        {
-            quint8 status = packet->data[0] & 0xf0;
-            //quint8 chan = packet->data[0] & 0x0f;
-            switch ( status ) {
-            case MIDI_STATUS_CONTROLCHANGE:
-                transformControllerEvent(packet);
-                break;
-            case MIDI_STATUS_NOTEOFF:
-            case MIDI_STATUS_NOTEON:
-                transformNoteEvent(packet);
-                break;
-            case MIDI_STATUS_PROGRAMCHANGE:
-                transformProgramEvent(packet);
-                break;
-            /*case MIDI_STATUS_PITCHBEND:
-                transformPitchBendEvent(packet);
-                break;*/
-            default:
-                break;
-            }
-            /*if ( status >= MIDI_STATUS_NOTEOFF &&
-                 status <  MIDI_STATUS_SYSEX &&
-                 m_mapper != NULL && m_mapper->isOK() ) {
-                int channel = m_mapper->channel(chan);
-                if (channel >= 0 && channel < MIDI_CHANNELS)
-                    packet->data[0] = status + channel;
-            }*/
-        }
-
-        MIDIClientRef m_client;
-        MIDIPortRef m_outPort;
-        MIDIEndpointRef m_destination;
-        //MidiMapper *m_mapper;
-        int m_pitchShift;
-        bool m_clientFilter;
-        QString m_currentOutput;
-        QStringList m_outputDevices;
-
-        int m_lastpgm[MIDI_CHANNELS];
-        qreal m_volumeShift[MIDI_CHANNELS];
-        int m_volume[MIDI_CHANNELS];
-        bool m_muted[MIDI_CHANNELS];
-        bool m_locked[MIDI_CHANNELS];
-        int m_lockedpgm[MIDI_CHANNELS];
-        QByteArray m_resetMessage;
-    };
-
-    MacMIDIOutput::MacMIDIOutput(QObject *parent) :
-        MIDIOutput(parent), d(new MacMIDIOutputPrivate)
-    {
-        OSStatus result;
-        result = MIDIClientCreate(CFSTR("Drumstick Karaoke"), NULL, NULL, &d->m_client);
-        if ( result != noErr )
-            return;
-        result = MIDIOutputPortCreate(d->m_client, CFSTR("Drumstick Karaoke Output"), &d->m_outPort);
-        if ( result != noErr )
-            return;
-        reloadDeviceList();
-    }
-
-    MacMIDIOutput::~MacMIDIOutput()
-    {
-        delete d;
-    }
-
-    QString CFStringToQString(CFStringRef str)
+#if QT_VERSION < QT_VERSION_CHECK(5,2,0)
+    static QString CFStringToQString(CFStringRef str)
     {
         if (!str)
             return QString();
@@ -128,53 +46,7 @@ namespace rt {
         CFStringGetCharacters(str, CFRangeMake(0, length), buffer.data());
         return QString(reinterpret_cast<const QChar *>(buffer.constData()), length);
     }
-
-
-    int MacMIDIOutput::outputDevice() const
-    {
-        return d->m_outputDevices.indexOf(d->m_currentOutput);
-    }
-
-    QString MacMIDIOutput::outputDeviceName() const
-    {
-        return d->m_currentOutput;
-    }
-
-    bool MacMIDIOutput::isMuted(int channel) const
-    {
-        if (channel >= 0 && channel < MIDI_CHANNELS)
-            return d->m_muted[channel];
-        return false;
-    }
-
-    int MacMIDIOutput::pitchShift()
-    {
-        return d->m_pitchShift;
-    }
-
-    QStringList MacMIDIOutput::outputDeviceList( bool basicOnly )
-    {
-        d->m_clientFilter = basicOnly;
-        reloadDeviceList();
-        return d->m_outputDevices;
-    }
-
-    /* SLOTS */
-
-    void MacMIDIOutput::setVolume(int channel, qreal value)
-    {
-        if (channel >= 0 && channel < MIDI_CHANNELS) {
-            d->m_volumeShift[channel] = value;
-            sendController(channel, MIDI_CTL_MSB_MAIN_VOLUME, d->m_volume[channel]);
-            emit volumeChanged( channel, value );
-        } else if ( channel == -1 ) {
-            for (int chan = 0; chan < MIDI_CHANNELS; ++chan) {
-                d->m_volumeShift[chan] = value;
-                sendController(chan, MIDI_CTL_MSB_MAIN_VOLUME, d->m_volume[chan]);
-                emit volumeChanged( chan, value );
-            }
-        }
-    }
+#endif
 
     static QString getEndpointName(MIDIEndpointRef endpoint)
     {
@@ -182,7 +54,7 @@ namespace rt {
         CFStringRef str = 0;
         MIDIObjectGetStringProperty (endpoint, kMIDIPropertyName, &str);
         if (str != 0) {
-            result = CFStringToQString(str);
+            result = QString::fromCFString(str);
             CFRelease(str);
             str = 0;
         }
@@ -193,7 +65,7 @@ namespace rt {
         if (result.isEmpty()) {
             MIDIObjectGetStringProperty (entity, kMIDIPropertyName, &str);
             if (str != 0) {
-                result = CFStringToQString(str);
+                result = QString::fromCFString(str);
                 CFRelease(str);
                 str = 0;
             }
@@ -204,7 +76,7 @@ namespace rt {
             return result;
         MIDIObjectGetStringProperty (device, kMIDIPropertyName, &str);
         if (str != 0) {
-            QString s = CFStringToQString(str);
+            QString s =QString::fromCFString(str);
             CFRelease (str);
             str = 0;
             if (!result.startsWith(s, Qt::CaseInsensitive) )
@@ -213,101 +85,171 @@ namespace rt {
         return result;
     }
 
-    void MacMIDIOutput::reloadDeviceList()
-    {
-        int num = MIDIGetNumberOfDestinations();
-        d->m_outputDevices.clear();
-        for (int i = 0; i < num; ++i) {
-            QString result;
-            MIDIEndpointRef dest = MIDIGetDestination( i );
-            if (dest != 0) {
-                QString name = getEndpointName(dest);
-                if ( d->m_clientFilter &&
-                     name.contains(QLatin1String("IAC"), Qt::CaseSensitive) )
-                    continue;
-                d->m_outputDevices << name;
+    class MacMIDIOutput::MacMIDIOutputPrivate {
+    public:
+        MIDIClientRef m_client;
+        MIDIPortRef m_outPort;
+        MIDIEndpointRef m_endpoint;
+        MIDIEndpointRef m_destination;
+        bool m_clientFilter;
+
+        QString m_currentOutput;
+        QString m_publicName;
+        QStringList m_excludedNames;
+        QStringList m_outputDevices;
+
+        MacMIDIOutputPrivate():
+            m_client(0),
+            m_outPort(0),
+            m_endpoint(0),
+            m_destination(0),
+            m_clientFilter(true),
+            m_publicName(QString::fromCFString(DEFAULT_PUBLIC_NAME))
+        {
+            OSStatus result;
+            result = MIDIClientCreate(DEFAULT_PUBLIC_NAME, NULL, NULL, &m_client);
+            if ( result != noErr )
+                return;
+
+            result = MIDISourceCreate(m_client, DEFAULT_PUBLIC_NAME, &m_endpoint);
+            if ( result != noErr )
+                return;
+            reloadDeviceList(true);
+        }
+
+        virtual ~MacMIDIOutputPrivate()
+        {
+            OSStatus result = noErr;
+            if (m_client != 0)
+              result = MIDIClientDispose(m_client);
+            if (result != noErr)
+                qDebug() << "MIDIClientDispose() error:" << result;
+        }
+
+        void setPublicName(QString name)
+        {
+            if (m_publicName != name) {
+                m_publicName = name;
+                //MIDIObjectSetStringProperty(m_client, kMIDIPropertyName, QString::toCFString(name));
             }
         }
-        if (!d->m_currentOutput.isEmpty() &&
-            !d->m_outputDevices.contains(d->m_currentOutput)) {
-            d->m_currentOutput.clear();
-            d->m_destination = NULL;
-            emit outputDeviceChanged(d->m_currentOutput);
-        }
-    }
 
-    bool MacMIDIOutput::setOutputDevice(int index)
-    {
-        if (index >= 0 && index < d->m_outputDevices.count())
-            return setOutputDeviceName(d->m_outputDevices[index]);
-        return false;
-    }
-
-    bool MacMIDIOutput::setOutputDeviceName(const QString &newOutputDevice)
-    {
-        int index;
-        QStringList allOutputDevices;
-        int num = MIDIGetNumberOfDestinations();
-        for (int i = 0; i < num; ++i) {
-            MIDIEndpointRef dest = MIDIGetDestination( i );
-            if (dest != 0)
-               allOutputDevices << getEndpointName( dest );
-        }
-        index = allOutputDevices.indexOf(newOutputDevice);
-        if (index < 0)
-            return false;
-        d->m_destination = MIDIGetDestination( index );
-        d->m_currentOutput = newOutputDevice;
-        return true;
-    }
-
-    MIDIClientRef MacMIDIOutput::client() const
-    {
-        return d->m_client;
-    }
-
-    void MacMIDIOutput::setMuted(int channel, bool mute)
-    {
-        if (channel >= 0 && channel < MIDI_CHANNELS) {
-            if (d->m_muted[channel] != mute) {
-                if (mute) {
-                    sendController(channel, MIDI_CTL_ALL_NOTES_OFF, 0);
-                    sendController(channel, MIDI_CTL_ALL_SOUNDS_OFF, 0);
+        void reloadDeviceList(bool advanced)
+        {
+            int num = MIDIGetNumberOfDestinations();
+            m_clientFilter = advanced;
+            m_outputDevices.clear();
+            for (int i = 0; i < num; ++i) {
+                QString result;
+                MIDIEndpointRef dest = MIDIGetDestination( i );
+                if (dest != 0) {
+                    QString name = getEndpointName(dest);
+                    if ( m_clientFilter &&
+                         name.contains(QLatin1String("IAC"), Qt::CaseSensitive) )
+                        continue;
+                    m_outputDevices << name;
                 }
-                d->m_muted[channel] = mute;
-                emit mutedChanged( channel, mute );
+            }
+            if (!m_currentOutput.isEmpty() &&
+                !m_outputDevices.contains(m_currentOutput)) {
+                m_currentOutput.clear();
+                m_destination = 0;
             }
         }
-    }
 
-    void MacMIDIOutput::setLocked(int channel, bool lock)
-    {
-        if (channel >= 0 && channel < MIDI_CHANNELS) {
-            if (d->m_locked[channel] != lock) {
-                d->m_locked[channel] = lock;
-                if (lock)
-                    d->m_lockedpgm[channel] = d->m_lastpgm[channel];
-                emit lockedChanged( channel, lock );
+        void sendEvents( const MIDIPacketList* events )
+        {
+            MIDIReceived(m_endpoint, events);
+            if (m_destination != 0)
+                MIDISend(m_outPort, m_destination, events);
+        }
+
+        bool open(const QString &newOutputDevice)
+        {
+            int index;
+            QStringList allOutputDevices;
+            int num = MIDIGetNumberOfDestinations();
+            for (int i = 0; i < num; ++i) {
+                MIDIEndpointRef dest = MIDIGetDestination( i );
+                if (dest != 0)
+                   allOutputDevices << getEndpointName( dest );
             }
+            index = allOutputDevices.indexOf(newOutputDevice);
+            if (index < 0)
+                return false;
+            OSStatus result = MIDIOutputPortCreate(m_client, DEFAULT_PUBLIC_NAME, &m_outPort);
+            if (result != noErr) {
+                qDebug() << "MIDIOutputPortCreate() error:" << result;
+                return false;
+            }
+            m_destination = MIDIGetDestination( index );
+            m_currentOutput = newOutputDevice;
+            return true;
         }
+
+        void close()
+        {
+            MIDIPortDispose( m_outPort );
+            m_destination = 0;
+            m_currentOutput.clear();
+        }
+
+    };
+
+    MacMIDIOutput::MacMIDIOutput(QObject *parent) :
+        MIDIOutput(parent), d(new MacMIDIOutputPrivate)
+    {
     }
 
-    void MacMIDIOutput::setPitchShift(int amt)
+    MacMIDIOutput::~MacMIDIOutput()
     {
-        if (d->m_pitchShift != amt) {
-            allNotesOff();
-            d->m_pitchShift = amt;
-        }
+        delete d;
     }
 
-    void MacMIDIOutput::setResetMessage(const QByteArray& msg)
+    QString MacMIDIOutput::backendName()
     {
-        d->m_resetMessage = msg;
+        return QLatin1Literal("Mac OSX CoreMIDI");
+    }
+
+    QString MacMIDIOutput::publicName()
+    {
+        return d->m_publicName;
+    }
+
+    void MacMIDIOutput::setPublicName(QString name)
+    {
+        d->setPublicName(name);
+    }
+
+    QStringList MacMIDIOutput::connections(bool advanced)
+    {
+        d->reloadDeviceList(advanced);
+        return d->m_outputDevices;
+    }
+
+    void MacMIDIOutput::setExcludedConnections(QStringList conns)
+    {
+        d->m_excludedNames = conns;
+    }
+
+    void MacMIDIOutput::open(QString name)
+    {
+        d->open(name);
+    }
+
+    void MacMIDIOutput::close()
+    {
+        d->close();
+    }
+
+    QString MacMIDIOutput::currentConnection()
+    {
+        return d->m_currentOutput;
     }
 
     /* Realtime MIDI slots */
 
-    void MacMIDIOutput::allNotesOff()
+    /*void MacMIDIOutput::allNotesOff()
     {
         quint8 data[3];
         quint8 buf[2048];
@@ -326,10 +268,10 @@ namespace rt {
             }
         }
         if (packet != NULL)
-            sendEvents(pktlist);
-    }
+            d->sendEvents(pktlist);
+    }*/
 
-    void MacMIDIOutput::resetControllers()
+    /*void MacMIDIOutput::resetControllers()
     {
         quint8 data[3];
         quint8 buf[2048];
@@ -349,19 +291,11 @@ namespace rt {
             }
         }
         if (packet != NULL)
-            sendEvents(pktlist);
-    }
-
-    void MacMIDIOutput::sendResetMessage()
-    {
-        if (d->m_resetMessage.size() > 0)
-            sendSysexEvent(d->m_resetMessage);
-    }
+            d->sendEvents(pktlist);
+    }*/
 
     void MacMIDIOutput::sendNoteOn(int chan, int note, int vel)
     {
-        if ( d->m_muted[chan] )
-            return;
         quint8 data[3];
         MIDIPacketList pktlist ;
         MIDIPacket* packet = MIDIPacketListInit(&pktlist);
@@ -371,13 +305,11 @@ namespace rt {
         packet = MIDIPacketListAdd(&pktlist, sizeof(pktlist), packet, 0,
             sizeof(data), data);
         if (packet != NULL)
-            sendEvents(&pktlist);
+            d->sendEvents(&pktlist);
     }
 
     void MacMIDIOutput::sendNoteOff(int chan, int note, int vel)
     {
-        if ( d->m_muted[chan] )
-            return;
         quint8 data[3];
         MIDIPacketList pktlist ;
         MIDIPacket* packet = MIDIPacketListInit(&pktlist);
@@ -387,13 +319,11 @@ namespace rt {
         packet = MIDIPacketListAdd(&pktlist, sizeof(pktlist), packet, 0,
             sizeof(data), data);
         if (packet != NULL)
-            sendEvents(&pktlist);
+            d->sendEvents(&pktlist);
     }
 
     void MacMIDIOutput::sendController(int chan, int control, int value)
     {
-        if ( d->m_muted[chan] )
-            return;
         quint8 data[3];
         MIDIPacketList pktlist ;
         MIDIPacket* packet = MIDIPacketListInit(&pktlist);
@@ -403,13 +333,11 @@ namespace rt {
         packet = MIDIPacketListAdd(&pktlist, sizeof(pktlist), packet, 0,
             sizeof(data), data);
         if (packet != NULL)
-            sendEvents(&pktlist);
+            d->sendEvents(&pktlist);
     }
 
     void MacMIDIOutput::sendKeyPressure(int chan, int note, int value)
     {
-        if ( d->m_muted[chan] )
-            return;
         quint8 data[3];
         MIDIPacketList pktlist ;
         MIDIPacket* packet = MIDIPacketListInit(&pktlist);
@@ -419,15 +347,11 @@ namespace rt {
         packet = MIDIPacketListAdd(&pktlist, sizeof(pktlist), packet, 0,
             sizeof(data), data);
         if (packet != NULL)
-            sendEvents(&pktlist);
+            d->sendEvents(&pktlist);
     }
 
     void MacMIDIOutput::sendProgram(int chan, int program)
     {
-        if ( d->m_muted[chan] )
-            return;
-        if ( d->m_locked[chan] )
-            return;
         quint8 data[2];
         MIDIPacketList pktlist ;
         MIDIPacket* packet = MIDIPacketListInit(&pktlist);
@@ -436,13 +360,11 @@ namespace rt {
         packet = MIDIPacketListAdd(&pktlist, sizeof(pktlist), packet, 0,
             sizeof(data), data);
         if (packet != NULL)
-            sendEvents(&pktlist);
+            d->sendEvents(&pktlist);
     }
 
     void MacMIDIOutput::sendChannelPressure(int chan, int value)
     {
-        if ( d->m_muted[chan] )
-            return;
         quint8 data[2];
         MIDIPacketList pktlist ;
         MIDIPacket* packet = MIDIPacketListInit(&pktlist);
@@ -451,13 +373,11 @@ namespace rt {
         packet = MIDIPacketListAdd(&pktlist, sizeof(pktlist), packet, 0,
             sizeof(data), data);
         if (packet != NULL)
-            sendEvents(&pktlist);
+            d->sendEvents(&pktlist);
     }
 
     void MacMIDIOutput::sendPitchBend(int chan, int value)
     {
-        if ( d->m_muted[chan] )
-            return;
         quint16 val = value + 8192; // value between -8192 and +8191
         quint8 data[3];
         MIDIPacketList pktlist ;
@@ -468,10 +388,10 @@ namespace rt {
         packet = MIDIPacketListAdd(&pktlist, sizeof(pktlist), packet, 0,
             sizeof(data), data);
         if (packet != NULL)
-            sendEvents(&pktlist);
+            d->sendEvents(&pktlist);
     }
 
-    void MacMIDIOutput::sendSysexEvent(const QByteArray& data)
+    void MacMIDIOutput::sendSysex(const QByteArray& data)
     {
         quint8 buf[4096];
         if (data.size() > 4096)
@@ -481,49 +401,22 @@ namespace rt {
         packet = MIDIPacketListAdd(pktlist, sizeof(buf), packet, 0,
             data.size(), (const Byte*)data.data());
         if (packet != NULL)
-            sendEvents(pktlist);
+            d->sendEvents(pktlist);
     }
 
-    void MacMIDIOutput::sendEvents( const MIDIPacketList* events,
-                                    bool discardable )
+    void MacMIDIOutput::sendSystemMsg(const int status)
     {
-        quint8 buf[4096];
-        MIDIPacketList* pktlist = (MIDIPacketList*) &buf;
-        MIDIPacket *curpacket = MIDIPacketListInit(pktlist);
-        const MIDIPacket *srcpacket = events->packet;
-        for ( int i = 0; i < events->numPackets; ++i ) {
-            MIDIPacket dstpacket = *srcpacket;
-            d->transform(&dstpacket);
-            quint8 status = dstpacket.data[0] & 0xf0;
-            quint8 chan = dstpacket.data[0] & 0x0f;
-            bool reject = ( status < MIDI_STATUS_NOTEOFF ) ||
-                          ( status >= MIDI_STATUS_SYSEX ) ||
-                          ((status < MIDI_STATUS_SYSEX) &&
-                            discardable && d->m_muted[chan]);
-            if ( discardable && status == MIDI_STATUS_PROGRAMCHANGE )
-                 reject |= d->m_locked[chan];
-            if (!reject)
-               curpacket = MIDIPacketListAdd(pktlist, sizeof(buf), curpacket, 0,
-                           dstpacket.length, (const Byte*)&dstpacket.data);
-            srcpacket = MIDIPacketNext(srcpacket);
-        }
-        MIDISend(d->m_outPort, d->m_destination, pktlist);
+        quint8 data;
+        MIDIPacketList pktlist;
+        MIDIPacket* packet = MIDIPacketListInit(&pktlist);
+        data = status;
+        packet = MIDIPacketListAdd(&pktlist, sizeof(pktlist), packet, 0,
+            sizeof(data), &data);
+        if (packet != NULL)
+            d->sendEvents(&pktlist);
     }
 
-    void MacMIDIOutput::sendInitialProgram(int chan, int program)
-    {
-        int pgm(d->m_locked[chan] ? d->m_lockedpgm[chan] : program);
-        if (pgm > -1) {
-            quint8 data[2];
-            MIDIPacketList pktlist ;
-            MIDIPacket* packet = MIDIPacketListInit(&pktlist);
-            data[0] = MIDI_STATUS_PROGRAMCHANGE | (chan & 0x0f);
-            data[1] = pgm;
-            packet = MIDIPacketListAdd(&pktlist, sizeof(pktlist), packet, 0,
-                sizeof(data), data);
-            if (packet != NULL)
-                sendEvents(&pktlist, false);
-        }
-    }
-
-}
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+    Q_EXPORT_PLUGIN2(drumstick_rt_mac_out, MacMIDIOutput)
+#endif
+}}

@@ -1,6 +1,6 @@
 TEMPLATE = lib
 CONFIG += plugin static
-TARGET = drumstick-rt-net
+TARGET = drumstick-rt-mac
 DESTDIR = ../../../build/lib
 OBJECTS_DIR = ../../../build/obj
 MOC_DIR = ../../../build/moc
