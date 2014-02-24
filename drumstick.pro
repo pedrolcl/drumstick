@@ -1,6 +1,4 @@
 TEMPLATE = subdirs
 CONFIG += ordered
-SUBDIRS += library
-linux* {
-    SUBDIRS += utils
-}
+SUBDIRS += library \
+           utils

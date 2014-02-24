@@ -10,7 +10,8 @@ win32 {
            buildsmf \
            dumpove \
            dumpsmf \
-           dumpwrk
+           dumpwrk \
+           vpiano
 }
 linux* {
     system(echo \'$$VERSIONH\' > ../build/common/cmdversion.h)
@@ -27,5 +28,14 @@ linux* {
            sysinfo \
            testevents \
            timertest \
+           vpiano
+}
+macx {
+    system(echo \'$$VERSIONH\' > ../build/common/cmdversion.h)
+    SUBDIRS += common \
+           buildsmf \
+           dumpove \
+           dumpsmf \
+           dumpwrk \
            vpiano
 }

@@ -35,6 +35,19 @@ Q_IMPORT_PLUGIN(ALSAMIDIOutput)
 #endif
 #endif
 
+#if defined(Q_OS_OSX)
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+namespace drumstick {
+namespace rt {
+Q_IMPORT_PLUGIN(drumstick_rt_mac_in)
+Q_IMPORT_PLUGIN(drumstick_rt_mac_out)
+}}
+#else
+Q_IMPORT_PLUGIN(MacMIDIInput)
+Q_IMPORT_PLUGIN(MacMIDIOutput)
+#endif
+#endif
+
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 namespace drumstick {
 namespace rt {

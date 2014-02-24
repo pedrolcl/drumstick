@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-vpiano
-QT += svg dbus network
+QT += svg network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets gui
 CONFIG += qt thread exceptions
 DESTDIR = ../../build/bin
@@ -13,6 +13,9 @@ INCLUDEPATH += . ../../library/include ../common ../../build/common
 LIBS += -L../../build/lib -ldrumstick-common -ldrumstick-rt-net
 linux* {
     LIBS += -L../../build/lib -ldrumstick-rt-alsa -ldrumstick-alsa -lasound
+}
+macx {
+    LIBS += -L../../build/lib -ldrumstick-rt-mac -framework CoreMIDI -framework CoreFoundation
 }
 # Input
 FORMS += vpiano.ui connections.ui vpianoabout.ui preferences.ui
