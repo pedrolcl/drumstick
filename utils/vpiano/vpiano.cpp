@@ -23,6 +23,7 @@
 #include "vpiano.h"
 
 #if defined(Q_OS_LINUX)
+QString nativeBackend("ALSA");
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 namespace drumstick {
 namespace rt {
@@ -36,6 +37,7 @@ Q_IMPORT_PLUGIN(ALSAMIDIOutput)
 #endif
 
 #if defined(Q_OS_OSX)
+QString nativeBackend("CoreMIDI");
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 namespace drumstick {
 namespace rt {
@@ -81,7 +83,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
                 input->setPublicName(name_in);
                 input->setExcludedConnections(names);
                 m_inputs << input;
-                if (m_midiIn == 0 && (input->backendName() == "ALSA"))  {
+                if (m_midiIn == 0 && (input->backendName() == nativeBackend))  {
                     m_midiIn = input;
                 }
             } else {
@@ -90,7 +92,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
                     output->setPublicName(name_out);
                     output->setExcludedConnections(names);
                     m_outputs << output;
-                    if (m_midiOut == 0 && (output->backendName() == "ALSA"))  {
+                    if (m_midiOut == 0 && (output->backendName() == nativeBackend))  {
                         m_midiOut = output;
                     }
                 }

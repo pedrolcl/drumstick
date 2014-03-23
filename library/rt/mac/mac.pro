@@ -14,10 +14,12 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 HEADERS += ../../include/rtmidiinput.h \
            ../../include/rtmidioutput.h \
            macmidiinput.h \
-           macmidioutput.h
+           macmidioutput.h \
+           maccommon.h
 
 SOURCES += macmidiinput.cpp \
-           macmidioutput.cpp
+           macmidioutput.cpp \
+           maccommon.cpp
 
 LIBS += -framework CoreMidi -framework CoreFoundation
 

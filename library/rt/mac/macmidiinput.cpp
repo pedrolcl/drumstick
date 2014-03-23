@@ -19,6 +19,7 @@
 
 #include "macmidiinput.h"
 #include "macmidioutput.h"
+#include "maccommon.h"
 
 #include <QDebug>
 #include <QStringList>
@@ -27,11 +28,7 @@
 #include <QObject>
 
 #include <CoreFoundation/CoreFoundation.h>
-//#include <CoreServices/CoreServices.h>
-//#include <AudioToolbox/AudioToolbox.h>
-//#include <AudioToolbox/MusicPlayer.h>
 #include <CoreMIDI/CoreMIDI.h>
-#include <CoreMIDI/MIDIServices.h>
 
 namespace drumstick {
 namespace rt {
@@ -41,49 +38,14 @@ namespace rt {
     void MacMIDIReadProc( const MIDIPacketList *pktlist,
                           void *refCon, void *connRefCon );
 
-    static QString getEndpointName(MIDIEndpointRef endpoint)
-    {
-        QString result;
-        CFStringRef str = 0;
-        MIDIObjectGetStringProperty (endpoint, kMIDIPropertyName, &str);
-        if (str != 0) {
-            result = QString::fromCFString(str);
-            CFRelease(str);
-            str = 0;
-        }
-        MIDIEntityRef entity = 0;
-        MIDIEndpointGetEntity(endpoint, &entity);
-        if (entity == 0)
-            return result;
-        if (result.isEmpty()) {
-            MIDIObjectGetStringProperty (entity, kMIDIPropertyName, &str);
-            if (str != 0) {
-                result = QString::fromCFString(str);
-                CFRelease(str);
-                str = 0;
-            }
-        }
-        MIDIDeviceRef device = 0;
-        MIDIEntityGetDevice (entity, &device);
-        if (device == 0)
-            return result;
-        MIDIObjectGetStringProperty (device, kMIDIPropertyName, &str);
-        if (str != 0) {
-            QString s = QString::fromCFString(str);
-            CFRelease (str);
-            str = 0;
-            if (!result.startsWith(s, Qt::CaseInsensitive) )
-                result = (s + ' ' + result).trimmed();
-        }
-        return result;
-    }
-
     class MacMIDIInputPrivate {
     public:
         MacMIDIInput *m_inp;
         MIDIOutput *m_out;
         MIDIClientRef m_client;
+        MIDIPortRef m_port;
         MIDIEndpointRef m_endpoint;
+        MIDIEndpointRef m_source;
         bool m_thruEnabled;
         bool m_clientFilter;
         QString m_publicName;
@@ -95,33 +57,65 @@ namespace rt {
             m_inp(inp),
             m_out(0),
             m_client(0),
+            m_port(0),
             m_endpoint(0),
+            m_source(0),
             m_thruEnabled(false),
             m_clientFilter(true),
             m_publicName(QString::fromCFString(DEFAULT_PUBLIC_NAME))
         {
-            OSStatus result = MIDIClientCreate( DEFAULT_PUBLIC_NAME, NULL, NULL, &m_client);
-            if (result != noErr)
+            internalCreate( DEFAULT_PUBLIC_NAME );
+        }
+
+        void internalCreate(CFStringRef name)
+        {
+            OSStatus result = noErr;
+            result = MIDIClientCreate( name , NULL, NULL, &m_client );
+            if (result != noErr) {
                 qDebug() << "MIDIClientCreate() err:" << result;
-            result = MIDIDestinationCreate ( m_client, DEFAULT_PUBLIC_NAME, MacMIDIReadProc,
-                        (void*) this, &m_endpoint );
-            if (result != noErr)
+                return;
+            }
+            result = MIDIDestinationCreate ( m_client, name, MacMIDIReadProc, (void*) this, &m_endpoint );
+            if (result != noErr) {
                 qDebug() << "MIDIDestinationCreate() err:" << result;
+                return;
+            }
+            result = MIDIInputPortCreate( m_client, name, MacMIDIReadProc, (void *) this,  &m_port );
+            if (result != noErr) {
+                qDebug() << "MIDIInputPortCreate() error:" << result;
+                return;
+            }
+            reloadDeviceList(true);
         }
 
         virtual ~MacMIDIInputPrivate()
         {
-            OSStatus result;
+            internalDispose();
+        }
+
+        void internalDispose()
+        {
+            OSStatus result = noErr;
+            if (m_port != 0) {
+                result = MIDIPortDispose(m_port);
+                if (result != noErr) {
+                    qDebug() << "MIDIPortDispose() error:" << result;
+                    m_port = 0;
+                }
+            }
             if (m_endpoint != 0) {
                 result = MIDIEndpointDispose(m_endpoint);
-                if (result != noErr)
+                if (result != noErr) {
                     qDebug() << "MIDIEndpointDispose() err:" << result;
+                    m_endpoint = 0;
+                }
             }
-            if (m_client != 0)
-            {
+            if (m_client != 0) {
                 result = MIDIClientDispose(m_client);
-                if (result != noErr)
+                if (result != noErr) {
                     qDebug() << "MIDIClientDispose() err:" << result;
+                    m_client = 0;
+                }
             }
         }
 
@@ -131,37 +125,75 @@ namespace rt {
             m_clientFilter = advanced;
             m_inputDevices.clear();
             for (int i = 0; i < num; ++i) {
-                QString result;
+                bool excluded = false;
                 MIDIEndpointRef dest = MIDIGetSource( i );
                 if (dest != 0) {
                     QString name = getEndpointName(dest);
                     if ( m_clientFilter &&
                          name.contains(QLatin1String("IAC"), Qt::CaseSensitive) )
                         continue;
-                    m_inputDevices << name;
+                    if ( name.contains(m_publicName))
+                        continue;
+                    foreach( const QString& n, m_excludedNames) {
+                        if (name.contains(n)) {
+                            excluded = true;
+                            break;
+                        }
+                    }
+                    if (!excluded)
+                        m_inputDevices << name;
                 }
             }
-            if (!m_currentInput.isEmpty() &&
+            if (!m_currentInput.isEmpty() && m_source != 0 &&
                 !m_inputDevices.contains(m_currentInput)) {
                 m_currentInput.clear();
-                m_endpoint = 0;
+                m_source = 0;
             }
         }
 
         void setPublicName(QString name)
         {
-
+            if (m_publicName != name) {
+                internalDispose();
+                internalCreate(name.toCFString());
+                m_publicName = name;
+            }
         }
 
         void open(QString name)
         {
-
+            int index = -1;
+            OSStatus result = noErr;
+            QStringList allInputDevices;
+            int num = MIDIGetNumberOfSources();
+            for (int i = 0; i < num; ++i) {
+                MIDIEndpointRef dest = MIDIGetDestination( i );
+                if (dest != 0)
+                   allInputDevices << getEndpointName( dest );
+            }
+            index = allInputDevices.indexOf(name);
+            if (index < 0)
+                return;
+            m_source = MIDIGetSource( index );
+            result = MIDIPortConnectSource( m_port, m_source, NULL );
+            if (result != noErr) {
+                qDebug() << "MIDIPortConnectSource() error:" << result;
+                return;
+            }
+            m_currentInput = name;
+            return;
         }
 
         void close()
         {
-            m_endpoint = 0;
-            m_currentInput.clear();
+            OSStatus result = noErr;
+            if (m_source != 0) {
+                result = MIDIPortDisconnectSource(m_port, m_source);
+                if (result != noErr)
+                    qDebug() << "MIDIPortDisconnectSource() error:" << result;
+                m_source = 0;
+                m_currentInput.clear();
+            }
         }
 
         void emitSignals(MIDIPacket* packet)
@@ -248,7 +280,7 @@ namespace rt {
 
     QString MacMIDIInput::backendName()
     {
-        return QLatin1Literal("Mac OSX CoreMIDI");
+        return QLatin1Literal("CoreMIDI");
     }
 
     QString MacMIDIInput::publicName()
