@@ -12,9 +12,9 @@ linux* {
 macx {
     SUBDIRS += mac
 }
-#win32 {
-#    SUBDIRS += win
-#}
+win32 {
+    SUBDIRS += win
+}
 SUBDIRS += net
 #SUBDIRS += synth
 SUBDIRS += test

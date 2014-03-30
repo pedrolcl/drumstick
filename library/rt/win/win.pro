@@ -1,6 +1,6 @@
 TEMPLATE = lib
 CONFIG += plugin static
-TARGET = drumstick-rt-net
+TARGET = drumstick-rt-win
 DESTDIR = ../../../build/lib
 OBJECTS_DIR = ../../../build/obj
 MOC_DIR = ../../../build/moc
@@ -13,11 +13,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 HEADERS += ../../include/rtmidiinput.h \
            ../../include/rtmidioutput.h \
-           netmidiinput.h \
-           netmidioutput.h \
-           netmidiinput_p.h
-SOURCES += netmidiinput.cpp \
-           netmidioutput.cpp \
-           netmidiinput_p.cpp
+           winmidioutput.h \
+           winmidiinput.h
 
-QT += network
+SOURCES += winmidioutput.cpp \
+           winmidiinput.cpp
+
+LIBS += -lwinmm
