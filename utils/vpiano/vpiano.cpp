@@ -50,6 +50,20 @@ Q_IMPORT_PLUGIN(MacMIDIOutput)
 #endif
 #endif
 
+#if defined(Q_OS_WIN)
+QString nativeBackend("Windows MM");
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+namespace drumstick {
+namespace rt {
+Q_IMPORT_PLUGIN(drumstick_rt_win_in)
+Q_IMPORT_PLUGIN(drumstick_rt_win_out)
+}}
+#else
+Q_IMPORT_PLUGIN(WinMIDIInput)
+Q_IMPORT_PLUGIN(WinMIDIOutput)
+#endif
+#endif
+
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 namespace drumstick {
 namespace rt {

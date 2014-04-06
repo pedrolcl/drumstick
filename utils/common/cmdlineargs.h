@@ -99,4 +99,5 @@ private:
     Private *d;
 };
 
+
 #endif /* CMDLINEARGS_H */

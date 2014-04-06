@@ -43,6 +43,7 @@
 #define MIDI_STATUS_ENDSYSEX        0xf7
 #define MIDI_STATUS_REALTIME        0xf8
 #define MIDI_STATUS_MASK            0x80
+#define MIDI_CHANNEL_MASK           0x0f
 
 #define MIDI_LSB(x) (x % 0x80)
 #define MIDI_MSB(x) (x / 0x80)

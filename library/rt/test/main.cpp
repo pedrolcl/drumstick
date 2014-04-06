@@ -17,13 +17,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+#include <cstdlib>
 #include <QCoreApplication>
 #include <QFileInfo>
 #include <QtPlugin>
 #include <QPluginLoader>
 #include <QString>
 #include <QStringList>
-#include <QDebug>
+#include <QTextStream>
 
 #include "rtmidiinput.h"
 #include "rtmidioutput.h"
@@ -46,6 +47,11 @@ Q_IMPORT_PLUGIN(MacMIDIInput)
 Q_IMPORT_PLUGIN(MacMIDIOutput)
 #endif
 
+#if defined(WIN_BACKEND)
+Q_IMPORT_PLUGIN(WinMIDIInput)
+Q_IMPORT_PLUGIN(WinMIDIOutput)
+#endif
+
 #if defined(NET_BACKEND)
 Q_IMPORT_PLUGIN(NetMIDIInput)
 Q_IMPORT_PLUGIN(NetMIDIOutput)
@@ -57,6 +63,8 @@ Q_IMPORT_PLUGIN(DummyOutput)
 #endif
 
 using namespace drumstick::rt;
+
+QTextStream cout(stdout, QIODevice::WriteOnly);
 
 int main(int argc, char **argv)
 {
@@ -75,14 +83,16 @@ int main(int argc, char **argv)
     QList<MIDIOutput*> outputsList;
 
     QFileInfo exeInfo(app.applicationFilePath());
-    qDebug() << "program" << exeInfo.fileName();
+    cout << "program " << exeInfo.fileName() << endl;
 
     QStringList cliFiles;
     foreach(const QString& a, app.arguments()) {
         if (!a.endsWith(exeInfo.fileName()))
             cliFiles << a;
     }
-    qDebug() << "arguments" << cliFiles << endl;
+    foreach(const QString& c, cliFiles) {
+        cout << "argument " << c << endl;
+    }
 
     foreach(QObject* obj, QPluginLoader::staticInstances()) {
         if (obj != 0) {
@@ -103,18 +113,27 @@ int main(int argc, char **argv)
     }
 
     foreach(MIDIInput* input, inputsList) {
-        qDebug() << "Input Backend" << input->backendName();
-        qDebug() << "public name" << input->publicName();
-        qDebug() << "ports" << input->connections();
-        qDebug() << "advanced ports" << input->connections(true) << endl;
+        cout << "Input Backend " << input->backendName() << endl;
+        cout << "public name " << input->publicName() << endl;
+        foreach(const QString& c, input->connections()) {
+            cout << "port " << c << endl;
+        }
+        foreach(const QString& c, input->connections(true)) {
+            cout << "advanced port " << c << endl;
+        }
     }
 
     foreach(MIDIOutput* output, outputsList) {
-        qDebug() << "Output Backend" << output->backendName();
-        qDebug() << "public name" << output->publicName();
-        qDebug() << "ports" << output->connections();
-        qDebug() << "advanced ports" << output->connections(true) << endl;
+        cout << "Output Backend " << output->backendName() << endl;
+        cout << "public name " << output->publicName() << endl;
+        foreach(const QString& c, output->connections()) {
+            cout << "port " << c << endl;
+        }
+        foreach(const QString& c, output->connections(true)) {
+            cout << "advanced port " << c << endl;
+        }
     }
 
+    cout.flush();
     return 0;
 }

@@ -17,7 +17,10 @@ namespace rt {
         Q_INTERFACES(drumstick::rt::MIDIInput)
 
     public:
+        class WinMIDIInputPrivate;
+
         explicit WinMIDIInput(QObject *parent = 0);
+        virtual ~WinMIDIInput();
 
         // MIDIInput interface
     public:
@@ -34,7 +37,6 @@ namespace rt {
         virtual bool isEnabledMIDIThru();
 
     private:
-        class WinMIDIInputPrivate;
         WinMIDIInputPrivate * const d;
     };
 

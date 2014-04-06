@@ -17,3 +17,6 @@ HEADERS += ../include/macros.h \
 SOURCES += qsmf.cpp \
            qwrk.cpp \
            qove.cpp
+win32 {
+    TARGET_EXT = .dll
+}

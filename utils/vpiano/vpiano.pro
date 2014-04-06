@@ -17,6 +17,9 @@ linux* {
 macx {
     LIBS += -L../../build/lib -ldrumstick-rt-mac -framework CoreMIDI -framework CoreFoundation
 }
+win32 {
+    LIBS += -L../../build/lib -ldrumstick-rt-win -lwinmm
+}
 # Input
 FORMS += vpiano.ui connections.ui vpianoabout.ui preferences.ui
 HEADERS += pianokey.h pianokeybd.h pianoscene.h vpiano.h \

@@ -2,10 +2,11 @@ DESTDIR = ../build/common
 TEMPLATE = subdirs
 CONFIG += ordered
 include (../global.pri)
-VERSIONH = $$sprintf(const QString PGM_VERSION(\"%1\");,$$VERSION)
+DEFINES += VERSION=$$VERSION
+#VERSIONH = $$sprintf(const QString PGM_VERSION(\"%1\");,$$VERSION)
 system($$QMAKE_MKDIR $$DESTDIR)
 win32 {
-    system(echo $$VERSIONH > ../build/common/cmdversion.h)
+    #system(echo $$VERSIONH > ../build/common/cmdversion.h)
     SUBDIRS += common \
            buildsmf \
            dumpove \
@@ -14,7 +15,7 @@ win32 {
            vpiano
 }
 linux* {
-    system(echo \'$$VERSIONH\' > ../build/common/cmdversion.h)
+    #system(echo \'$$VERSIONH\' > ../build/common/cmdversion.h)
     SUBDIRS += common \
            buildsmf \
            drumgrid \
@@ -31,7 +32,7 @@ linux* {
            vpiano
 }
 macx {
-    system(echo \'$$VERSIONH\' > ../build/common/cmdversion.h)
+    #system(echo \'$$VERSIONH\' > ../build/common/cmdversion.h)
     SUBDIRS += common \
            buildsmf \
            dumpove \

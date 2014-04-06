@@ -53,8 +53,8 @@ void QSMFBuilder::trackHandler(int )
     m_engine->writeKeySignature(0, 2, major_mode); // D major (2 sharps)
 
     // system exclusive event
-    static char gsreset[] = { 0xf0, 0x41, 0x10, 0x42, 0x12, 
-                              0x40, 0x00, 0x7f, 0x00, 0x41, 0xf7 };
+    static char gsreset[] = { 0xf0, 0x41, 0x10, 0x42, 0x12,
+                               0x40, 0x00, 0x7f, 0x00, 0x41, 0xf7 };
     m_engine->writeMidiEvent(0, system_exclusive, sizeof(gsreset), gsreset);
 
     // some note events

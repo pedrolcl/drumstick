@@ -19,10 +19,12 @@
 #ifndef PIANODEFS_H
 #define PIANODEFS_H
 
-#if defined(VPIANO_PLUGIN)
-#define VPIANO_EXPORT Q_DECL_EXPORT
-#else
-#define VPIANO_EXPORT Q_DECL_IMPORT
-#endif
+//#if defined(VPIANO_PLUGIN)
+//#define VPIANO_EXPORT Q_DECL_EXPORT
+//#else
+//#define VPIANO_EXPORT Q_DECL_IMPORT
+//#endif
+
+#define VPIANO_EXPORT
 
 #endif // PIANODEFS_H

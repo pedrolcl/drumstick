@@ -37,11 +37,12 @@ namespace rt {
         Q_INTERFACES(drumstick::rt::MIDIOutput)
 
     public:
+        class WinMIDIOutputPrivate;
+
         explicit WinMIDIOutput(QObject *parent = 0);
         virtual ~WinMIDIOutput();
 
         // MIDIOutput interface
-    public:
         virtual QString backendName();
         virtual QString publicName();
         virtual void setPublicName(QString name);
@@ -63,7 +64,6 @@ namespace rt {
         virtual void sendSystemMsg(const int status);
 
     private:
-        class WinMIDIOutputPrivate;
         WinMIDIOutputPrivate * const d;
     };
 
