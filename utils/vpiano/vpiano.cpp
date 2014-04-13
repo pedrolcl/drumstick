@@ -75,6 +75,15 @@ Q_IMPORT_PLUGIN(NetMIDIInput)
 Q_IMPORT_PLUGIN(NetMIDIOutput)
 #endif
 
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+namespace drumstick {
+namespace rt {
+Q_IMPORT_PLUGIN(drumstick_rt_synth)
+}}
+#else
+Q_IMPORT_PLUGIN(SynthOutput)
+#endif
+
 VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     : QMainWindow(parent, flags),
     m_midiIn(0),
@@ -188,7 +197,11 @@ void VPiano::slotConnections()
         if (m_midiIn != 0) {
             m_midiIn->disconnect();
         }
-        m_midiIn =  dlgConnections.getInput();
+        if (m_midiOut != 0) {
+            m_midiOut->disconnect();
+        }
+        m_midiIn = dlgConnections.getInput();
+        m_midiOut = dlgConnections.getOutput();
         if (m_midiIn != 0) {
             connect(m_midiIn, SIGNAL(midiNoteOn(int,int,int)), SLOT(slotNoteOn(int,int,int)));
             connect(m_midiIn, SIGNAL(midiNoteOff(int,int,int)), SLOT(slotNoteOff(int,int,int)));

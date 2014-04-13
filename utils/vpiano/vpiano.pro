@@ -11,6 +11,7 @@ UI_DIR = ../../build/ui
 include (../../global.pri)
 INCLUDEPATH += . ../../library/include ../common ../../build/common
 LIBS += -L../../build/lib -ldrumstick-common -ldrumstick-rt-net
+LIBS += -L../../build/lib -ldrumstick-rt-synth -lfluidsynth
 linux* {
     LIBS += -L../../build/lib -ldrumstick-rt-alsa -ldrumstick-alsa -lasound
 }

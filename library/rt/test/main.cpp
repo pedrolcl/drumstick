@@ -62,6 +62,10 @@ Q_IMPORT_PLUGIN(DummyInput)
 Q_IMPORT_PLUGIN(DummyOutput)
 #endif
 
+#if defined(SYNTH_BACKEND)
+Q_IMPORT_PLUGIN(SynthOutput)
+#endif
+
 using namespace drumstick::rt;
 
 QTextStream cout(stdout, QIODevice::WriteOnly);

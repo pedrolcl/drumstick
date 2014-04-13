@@ -16,5 +16,5 @@ win32 {
     SUBDIRS += win
 }
 SUBDIRS += net
-#SUBDIRS += synth
+SUBDIRS += synth
 SUBDIRS += test

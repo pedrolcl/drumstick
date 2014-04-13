@@ -29,7 +29,9 @@ const QString errorstr = "Fatal error from the ALSA sequencer. "
 
 int main(int argc, char *argv[])
 {
-    //RawKeybdApp a(argc, argv);
+    QCoreApplication::setOrganizationName("drumstick.sourceforge.net");
+    QCoreApplication::setOrganizationDomain("drumstick.sourceforge.net");
+    QCoreApplication::setApplicationName("VPiano");
     QApplication a(argc, argv);
     CmdLineArgs args;
     args.setStdQtArgs(true);
