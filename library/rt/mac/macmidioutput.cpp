@@ -1,6 +1,6 @@
 /*
     Drumstick RT Backend
-    Copyright (C) 2009-2010 Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2009-2014 Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -371,8 +371,8 @@ namespace rt {
         MIDIPacketList pktlist ;
         MIDIPacket* packet = MIDIPacketListInit(&pktlist);
         data[0] = MIDI_STATUS_PITCHBEND | (chan & 0x0f);
-        data[1] = val % 0x80; // LSB
-        data[2] = val / 0x80; // MSB
+        data[1] = MIDI_LSB(val); // LSB
+        data[2] = MIDI_MSB(val); // MSB
         packet = MIDIPacketListAdd(&pktlist, sizeof(pktlist), packet, 0,
             sizeof(data), data);
         if (packet != NULL)

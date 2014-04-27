@@ -1,6 +1,6 @@
 /*
     Standard MIDI File dump program
-    Copyright (C) 2006-2013, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2014, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     Based on midifile.c by Tim Thompson, M.Czeiszperger and Greg Lee
 

@@ -1,6 +1,6 @@
 /*
     Drumstick RT (realtime MIDI In/Out)
-    Copyright (C) 2009-2010 Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2009-2014 Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -64,6 +64,11 @@ Q_IMPORT_PLUGIN(DummyOutput)
 
 #if defined(SYNTH_BACKEND)
 Q_IMPORT_PLUGIN(SynthOutput)
+#endif
+
+#if defined(OSS_BACKEND)
+Q_IMPORT_PLUGIN(OSSInput)
+Q_IMPORT_PLUGIN(OSSOutput)
 #endif
 
 using namespace drumstick::rt;

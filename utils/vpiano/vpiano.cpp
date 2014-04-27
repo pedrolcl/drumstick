@@ -1,6 +1,6 @@
 /*
     Virtual Piano test using the MIDI Sequencer C++ library
-    Copyright (C) 2006-2013, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2014, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -61,6 +61,19 @@ Q_IMPORT_PLUGIN(drumstick_rt_win_out)
 #else
 Q_IMPORT_PLUGIN(WinMIDIInput)
 Q_IMPORT_PLUGIN(WinMIDIOutput)
+#endif
+#endif
+
+#if defined(Q_OS_UNIX)
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+namespace drumstick {
+namespace rt {
+Q_IMPORT_PLUGIN(drumstick_rt_oss_in)
+Q_IMPORT_PLUGIN(drumstick_rt_oss_out)
+}}
+#else
+Q_IMPORT_PLUGIN(OSSInput)
+Q_IMPORT_PLUGIN(OSSOutput)
 #endif
 #endif
 

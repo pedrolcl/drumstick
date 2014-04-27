@@ -10,17 +10,6 @@ RCC_DIR = ../../build/rcc
 UI_DIR = ../../build/ui
 include (../../global.pri)
 INCLUDEPATH += . ../../library/include ../common ../../build/common
-LIBS += -L../../build/lib -ldrumstick-common -ldrumstick-rt-net
-LIBS += -L../../build/lib -ldrumstick-rt-synth -lfluidsynth
-linux* {
-    LIBS += -L../../build/lib -ldrumstick-rt-alsa -ldrumstick-alsa -lasound
-}
-macx {
-    LIBS += -L../../build/lib -ldrumstick-rt-mac -framework CoreMIDI -framework CoreFoundation
-}
-win32 {
-    LIBS += -L../../build/lib -ldrumstick-rt-win -lwinmm
-}
 # Input
 FORMS += vpiano.ui connections.ui vpianoabout.ui preferences.ui
 HEADERS += pianokey.h pianokeybd.h pianoscene.h vpiano.h \
@@ -29,3 +18,27 @@ HEADERS += pianokey.h pianokeybd.h pianoscene.h vpiano.h \
 SOURCES += pianokey.cpp pianokeybd.cpp pianoscene.cpp vpiano.cpp \
            keylabel.cpp connections.cpp vpianoabout.cpp preferences.cpp vpianomain.cpp
 RESOURCES += pianokeybd.qrc
+
+# libs
+LIBS += -L$$OUT_PWD/../../build/lib -ldrumstick-common -ldrumstick-rt-net
+LIBS += -L$$OUT_PWD/../../build/lib -ldrumstick-rt-synth -lfluidsynth
+PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/libdrumstick-common.a
+PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/libdrumstick-rt-net.a
+PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/libdrumstick-rt-synth.a
+
+linux* {
+    LIBS += -L$$OUT_PWD/../../build/lib -ldrumstick-rt-alsa -ldrumstick-alsa -lasound
+    PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/libdrumstick-rt-alsa.a
+}
+unix {
+    LIBS += -L$$OUT_PWD/../../build/lib -ldrumstick-rt-oss
+    PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/libdrumstick-rt-oss.a
+}
+macx {
+    LIBS += -L$$OUT_PWD/../../build/lib -ldrumstick-rt-mac -framework CoreMIDI -framework CoreFoundation
+    PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/libdrumstick-rt-mac.a
+}
+win32 {
+    LIBS += -L$$OUT_PWD/../../build/lib -ldrumstick-rt-win -lwinmm
+    PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/drumstick-rt-win.lib
+}

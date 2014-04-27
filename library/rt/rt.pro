@@ -6,9 +6,9 @@ dummy {
 linux* {
     SUBDIRS += alsa
 }
-#unix {
-#    SUBDIRS += oss
-#}
+unix {
+    SUBDIRS += oss
+}
 macx {
     SUBDIRS += mac
 }

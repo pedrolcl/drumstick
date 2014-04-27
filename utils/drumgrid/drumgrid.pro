@@ -9,6 +9,7 @@ MOC_DIR = ../../build/moc
 UI_DIR = ../../build/ui
 INCLUDEPATH += . ../../library/include ../common ../../build/common
 LIBS = -L../../build/lib -ldrumstick-common -ldrumstick-alsa -lasound
+PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/libdrumstick-common.a
 include (../../global.pri)
 SOURCES += drumgridabout.cpp \
     drumgridmain.cpp \

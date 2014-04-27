@@ -1,6 +1,6 @@
 /*
     Drumstick MIDI realtime input-output
-    Copyright (C) 2009-2013 Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2009-2014 Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,8 +42,21 @@
 #define MIDI_STATUS_SYSEX           0xf0
 #define MIDI_STATUS_ENDSYSEX        0xf7
 #define MIDI_STATUS_REALTIME        0xf8
-#define MIDI_STATUS_MASK            0x80
+
+#define MIDI_STATUS_MASK            0xf0
 #define MIDI_CHANNEL_MASK           0x0f
+
+#define MIDI_COMMON_QTRFRAME        0xF1
+#define MIDI_COMMON_SONGPP          0xF2
+#define MIDI_COMMON_SONSELECT       0xF3
+#define MIDI_COMMON_TUNEREQ         0xF6
+
+#define MIDI_REALTIME_CLOCK         0xF8
+#define MIDI_REALTIME_START         0xFA
+#define MIDI_REALTIME_CONTINUE      0xFB
+#define MIDI_REALTIME_STOP          0xFC
+#define MIDI_REALTIME_SENSING       0xFE
+#define MIDI_REALTIME_RESET         0xFF
 
 #define MIDI_LSB(x) (x % 0x80)
 #define MIDI_MSB(x) (x / 0x80)

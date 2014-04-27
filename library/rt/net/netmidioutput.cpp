@@ -1,6 +1,6 @@
 /*
     Drumstick RT (realtime MIDI In/Out)
-    Copyright (C) 2009-2010 Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2009-2014 Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -159,39 +159,37 @@ QString NetMIDIOutput::currentConnection()
 
 void NetMIDIOutput::sendNoteOff(int chan, int note, int vel)
 {
-    d->sendMessage(0x80 + chan, note, vel);
+    d->sendMessage(MIDI_STATUS_NOTEOFF + chan, note, vel);
 }
 
 void NetMIDIOutput::sendNoteOn(int chan, int note, int vel)
 {
-    d->sendMessage(0x90 + chan, note, vel);
+    d->sendMessage(MIDI_STATUS_NOTEON + chan, note, vel);
 }
 
 void NetMIDIOutput::sendKeyPressure(int chan, int note, int value)
 {
-    d->sendMessage(0xA0 + chan, note, value);
+    d->sendMessage(MIDI_STATUS_KEYPRESURE + chan, note, value);
 }
 
 void NetMIDIOutput::sendController(int chan, int control, int value)
 {
-    d->sendMessage(0xB0 + chan, control, value);
+    d->sendMessage(MIDI_STATUS_CONTROLCHANGE + chan, control, value);
 }
 
 void NetMIDIOutput::sendProgram(int chan, int program)
 {
-    d->sendMessage(0xC0 + chan, program);
+    d->sendMessage(MIDI_STATUS_PROGRAMCHANGE + chan, program);
 }
 
 void NetMIDIOutput::sendChannelPressure(int chan, int value)
 {
-    d->sendMessage(0xD0 + chan, value);
+    d->sendMessage(MIDI_STATUS_CHANNELPRESSURE + chan, value);
 }
 
 void NetMIDIOutput::sendPitchBend(int chan, int value)
 {
-    int lo = value % 0x80;
-    int hi = value / 0x80;
-    d->sendMessage(0xE0 + chan, lo, hi);
+    d->sendMessage(MIDI_STATUS_PITCHBEND + chan, MIDI_LSB(value), MIDI_MSB(value));
 }
 
 void NetMIDIOutput::sendSysex(const QByteArray &data)
