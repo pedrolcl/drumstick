@@ -27,3 +27,5 @@ SOURCES += alsaclient.cpp \
            alsatimer.cpp \
            playthread.cpp \
            subscription.cpp
+
+LIBS += -lasound

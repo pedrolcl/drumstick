@@ -25,51 +25,12 @@
 #include <QString>
 #include <QStringList>
 #include <QTextStream>
+#include <QDir>
 
 #include "rtmidiinput.h"
 #include "rtmidioutput.h"
-
-#if defined(ALSA_BACKEND)
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-namespace drumstick {
-namespace rt {
-Q_IMPORT_PLUGIN(drumstick_rt_alsa_in)
-Q_IMPORT_PLUGIN(drumstick_rt_alsa_out)
-}}
-#else
-Q_IMPORT_PLUGIN(ALSAMIDIInput)
-Q_IMPORT_PLUGIN(ALSAMIDIOutput)
-#endif
-#endif
-
-#if defined(MAC_BACKEND)
-Q_IMPORT_PLUGIN(MacMIDIInput)
-Q_IMPORT_PLUGIN(MacMIDIOutput)
-#endif
-
-#if defined(WIN_BACKEND)
-Q_IMPORT_PLUGIN(WinMIDIInput)
-Q_IMPORT_PLUGIN(WinMIDIOutput)
-#endif
-
-#if defined(NET_BACKEND)
-Q_IMPORT_PLUGIN(NetMIDIInput)
-Q_IMPORT_PLUGIN(NetMIDIOutput)
-#endif
-
-#if defined(DUMMY_BACKEND)
-Q_IMPORT_PLUGIN(DummyInput)
-Q_IMPORT_PLUGIN(DummyOutput)
-#endif
-
-#if defined(SYNTH_BACKEND)
-Q_IMPORT_PLUGIN(SynthOutput)
-#endif
-
-#if defined(OSS_BACKEND)
-Q_IMPORT_PLUGIN(OSSInput)
-Q_IMPORT_PLUGIN(OSSOutput)
-#endif
+#include "backendmanager.h"
+#include "cmdlineargs.h"
 
 using namespace drumstick::rt;
 
@@ -81,45 +42,32 @@ int main(int argc, char **argv)
     QCoreApplication::setOrganizationDomain("drumstick.sourceforge.net");
     QCoreApplication::setApplicationName("drumstick-rt-test");
     QCoreApplication app(argc, argv);
+    CmdLineArgs args;
+    args.setStdQtArgs(true);
+    args.parse(argc, argv);
 
-    QString name_in(QLatin1String("TEST MIDI IN"));
-    QString name_out(QLatin1String("TEST MIDI OUT"));
-    QStringList names;
-    names << name_in;
-    names << name_out;
+    QDir backendir = QDir(app.applicationDirPath());
+    backendir.cdUp();
+    backendir.cd("backends");
+
+    QFileInfo exeInfo(app.applicationFilePath());
+    cout << "program=" << exeInfo.fileName() << " backends=" << backendir.absolutePath() << endl;
+
+    QSettings settings;
+    settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
+    settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("TEST MIDI IN"));
+    settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("TEST MIDI OUT"));
+    settings.setValue(QSTR_DRUMSTICKRT_PATH, backendir.absolutePath());
+    settings.endGroup();
+    settings.sync();
 
     QList<MIDIInput*> inputsList;
     QList<MIDIOutput*> outputsList;
 
-    QFileInfo exeInfo(app.applicationFilePath());
-    cout << "program " << exeInfo.fileName() << endl;
-
-    QStringList cliFiles;
-    foreach(const QString& a, app.arguments()) {
-        if (!a.endsWith(exeInfo.fileName()))
-            cliFiles << a;
-    }
-    foreach(const QString& c, cliFiles) {
-        cout << "argument " << c << endl;
-    }
-
-    foreach(QObject* obj, QPluginLoader::staticInstances()) {
-        if (obj != 0) {
-            MIDIInput *input = qobject_cast<MIDIInput*>(obj);
-            if (input != 0) {
-                input->setPublicName(name_in);
-                input->setExcludedConnections(names);
-                inputsList << input;
-            } else {
-                MIDIOutput *output = qobject_cast<MIDIOutput*>(obj);
-                if (output != 0) {
-                    output->setPublicName(name_out);
-                    output->setExcludedConnections(names);
-                    outputsList << output;
-                }
-            }
-        }
-    }
+    BackendManager man;
+    man.refresh(&settings);
+    inputsList = man.inputsAvailable();
+    outputsList = man.outputsAvailable();
 
     foreach(MIDIInput* input, inputsList) {
         cout << "Input Backend " << input->backendName() << endl;

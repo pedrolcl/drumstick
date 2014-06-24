@@ -1,7 +1,7 @@
 TEMPLATE = lib
-CONFIG += plugin static create_prl
-TARGET = $$qtLibraryTarget(drumstick-rt-alsa)
-DESTDIR = ../../../build/lib
+CONFIG += plugin create_prl #static
+TARGET = $$qtLibraryTarget(drumstick-rt-alsa-in)
+DESTDIR = ../../../build/backends
 DEPENDPATH += . ../../include
 INCLUDEPATH += . ../../include
 include (../../../global.pri)
@@ -11,10 +11,12 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 HEADERS += ../../include/rtmidiinput.h \
            ../../include/rtmidioutput.h \
-           alsamidiinput.h \
-           alsamidioutput.h
-SOURCES += alsamidiinput.cpp \
-           alsamidioutput.cpp
+           alsamidiinput.h
+SOURCES += alsamidiinput.cpp
+
+LIBS += -L../../../build/lib \
+        -l$$qtLibraryTarget(drumstick-alsa) \
+        -lasound
 
 #CONFIG += link_pkgconfig
 #PKGCONFIG += drumstick-alsa

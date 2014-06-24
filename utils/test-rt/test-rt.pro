@@ -1,24 +1,17 @@
-TEMPLATE = lib
-TARGET = $$qtLibraryTarget(drumstick-rt)
-DESTDIR = ../../build/lib
-DEPENDPATH += . ../include
-INCLUDEPATH += . ../include
-include (../../global.pri)
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-CONFIG += qt thread create_prl
-DEFINES += drumstick_rt_EXPORTS
-QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
-# Input
-HEADERS += \
-    ../include/rtmidiinput.h \
-    ../include/rtmidioutput.h
+TEMPLATE = app
+TARGET = drumstick-rt-test
+CONFIG += qt console link_prl
+DESTDIR = ../../build/bin
+DEPENDPATH  += . ../../library/include
+INCLUDEPATH += . ../../library/include ../common
 
-SOURCES += \
-    backendmanager.cpp
+SOURCES += main.cpp
+
+LIBS += -L$$OUT_PWD/../../build/lib \
+        -l$$qtLibraryTarget(drumstick-common) \
+        -l$$qtLibraryTarget(drumstick-rt)
 
 #LIBS += -L$$OUT_PWD/../../build/backends
-#LIBS += -L$$OUT_PWD/../../build/lib
-
 #dummy {
 #    DEFINES += DUMMY_BACKEND
 #    LIBS += -l$$qtLibraryTarget(drumstick-rt-dummy-in) \

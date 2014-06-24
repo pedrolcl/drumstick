@@ -1,7 +1,7 @@
 TEMPLATE = lib
-CONFIG += plugin static create_prl
-TARGET = $$qtLibraryTarget(drumstick-rt-win)
-DESTDIR = ../../../build/lib
+CONFIG += plugin create_prl #static
+TARGET = $$qtLibraryTarget(drumstick-rt-net-out)
+DESTDIR = ../../../build/backends
 DEPENDPATH += . ../../include
 INCLUDEPATH += . ../../include
 include (../../../global.pri)
@@ -11,10 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 HEADERS += ../../include/rtmidiinput.h \
            ../../include/rtmidioutput.h \
-           winmidioutput.h \
-           winmidiinput.h
+           netmidioutput.h
+SOURCES += \
+           netmidioutput.cpp
 
-SOURCES += winmidioutput.cpp \
-           winmidiinput.cpp
-
-LIBS += -lwinmm
+QT += network

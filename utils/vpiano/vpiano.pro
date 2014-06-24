@@ -5,7 +5,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets gui
 CONFIG += qt thread exceptions link_prl
 DESTDIR = ../../build/bin
 include (../../global.pri)
-INCLUDEPATH += . ../../library/include ../common ../../build/common
+INCLUDEPATH += . ../../library/include ../common
 
 # Input
 FORMS += vpiano.ui connections.ui vpianoabout.ui preferences.ui
@@ -19,30 +19,37 @@ RESOURCES += pianokeybd.qrc
 # libs
 LIBS += -L$$OUT_PWD/../../build/lib/
 LIBS += -l$$qtLibraryTarget(drumstick-common) \
-        -l$$qtLibraryTarget(drumstick-rt-net)
+        -l$$qtLibraryTarget(drumstick-rt)
 
+#LIBS += -L$$OUT_PWD/../../build/backends/
+#LIBS += -l$$qtLibraryTarget(drumstick-rt-net-in) \
+#        -l$$qtLibraryTarget(drumstick-rt-net-out)
 
 #DEFINES += SYNTH_BACKEND
 #LIBS += -l$$qtLibraryTarget(drumstick-rt-synth) \
 #        -lfluidsynth
 
-linux* {
-    LIBS += -l$$qtLibraryTarget(drumstick-rt-alsa) \
-            -l$$qtLibraryTarget(drumstick-alsa) \
-            -lasound
-}
+#linux* {
+#    LIBS += -l$$qtLibraryTarget(drumstick-rt-alsa-in) \
+#            -l$$qtLibraryTarget(drumstick-rt-alsa-out) \
+#            -l$$qtLibraryTarget(drumstick-alsa) \
+#            -lasound
+#}
 
-unix {
-    LIBS += -l$$qtLibraryTarget(drumstick-rt-oss)
-}
+#unix {
+#    LIBS += -l$$qtLibraryTarget(drumstick-rt-oss-in) \
+#            -l$$qtLibraryTarget(drumstick-rt-oss-out)
+#}
 
-macx {
-    LIBS += -l$$qtLibraryTarget(drumstick-rt-mac) \
-            -framework CoreMIDI \
-            -framework CoreFoundation
-}
+#macx {
+#    LIBS += -l$$qtLibraryTarget(drumstick-rt-mac-in) \
+#            -l$$qtLibraryTarget(drumstick-rt-mac-out) \
+#            -framework CoreMIDI \
+#            -framework CoreFoundation
+#}
 
-win32 {
-    LIBS += -l$$qtLibraryTarget(drumstick-rt-win) \
-            -lwinmm
-}
+#win32 {
+#    LIBS += -l$$qtLibraryTarget(drumstick-rt-win-in) \
+#            -l$$qtLibraryTarget(drumstick-rt-win-out) \
+#            -lwinmm
+#}

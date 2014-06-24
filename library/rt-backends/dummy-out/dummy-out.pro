@@ -1,14 +1,14 @@
 TEMPLATE = lib
-TARGET = $$qtLibraryTarget(drumstick-rt-synth)
-DESTDIR = ../../../build/lib
+TARGET = $$qtLibraryTarget(drumstick-rt-dummy-out)
+DESTDIR = ../../../build/backends
 include (../../../global.pri)
 CONFIG += plugin create_prl #static
 DEPENDPATH += ../../include
 INCLUDEPATH += ../../include
 HEADERS += ../../include/rtmidiinput.h \
            ../../include/rtmidioutput.h \
-           synthengine.h \
-           synthoutput.h
+           dummyoutput.h
 
-SOURCES += synthoutput.cpp synthengine.cpp
+SOURCES += \
+           dummyoutput.cpp
 

@@ -18,86 +18,40 @@
 */
 
 #include <QDebug>
-#include <QPluginLoader>
-#include <qglobal.h>
+#include <QDir>
+//#include <qglobal.h>
 #include "vpiano.h"
+#include "backendmanager.h"
 
 #if defined(Q_OS_LINUX)
 QString nativeBackend("ALSA");
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-namespace drumstick {
-namespace rt {
-Q_IMPORT_PLUGIN(drumstick_rt_alsa_in)
-Q_IMPORT_PLUGIN(drumstick_rt_alsa_out)
-}}
-#else
-Q_IMPORT_PLUGIN(ALSAMIDIInput)
-Q_IMPORT_PLUGIN(ALSAMIDIOutput)
-#endif
+//Q_IMPORT_PLUGIN(ALSAMIDIInput)
+//Q_IMPORT_PLUGIN(ALSAMIDIOutput)
 #endif
 
 #if defined(Q_OS_OSX)
 QString nativeBackend("CoreMIDI");
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-namespace drumstick {
-namespace rt {
-Q_IMPORT_PLUGIN(drumstick_rt_mac_in)
-Q_IMPORT_PLUGIN(drumstick_rt_mac_out)
-}}
-#else
-Q_IMPORT_PLUGIN(MacMIDIInput)
-Q_IMPORT_PLUGIN(MacMIDIOutput)
-#endif
+//Q_IMPORT_PLUGIN(MacMIDIInput)
+//Q_IMPORT_PLUGIN(MacMIDIOutput)
 #endif
 
 #if defined(Q_OS_WIN)
-QString nativeBackend("Windows MM");
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-namespace drumstick {
-namespace rt {
-Q_IMPORT_PLUGIN(drumstick_rt_win_in)
-Q_IMPORT_PLUGIN(drumstick_rt_win_out)
-}}
-#else
-Q_IMPORT_PLUGIN(WinMIDIInput)
-Q_IMPORT_PLUGIN(WinMIDIOutput)
-#endif
+QString nativeBackend("WinMM");
+//Q_IMPORT_PLUGIN(WinMIDIInput)
+//Q_IMPORT_PLUGIN(WinMIDIOutput)
 #endif
 
-#if defined(Q_OS_UNIX)
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-namespace drumstick {
-namespace rt {
-Q_IMPORT_PLUGIN(drumstick_rt_oss_in)
-Q_IMPORT_PLUGIN(drumstick_rt_oss_out)
-}}
-#else
-Q_IMPORT_PLUGIN(OSSInput)
-Q_IMPORT_PLUGIN(OSSOutput)
-#endif
-#endif
+//#if defined(Q_OS_UNIX)
+//Q_IMPORT_PLUGIN(OSSInput)
+//Q_IMPORT_PLUGIN(OSSOutput)
+//#endif
 
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-namespace drumstick {
-namespace rt {
-Q_IMPORT_PLUGIN(drumstick_rt_net_in)
-Q_IMPORT_PLUGIN(drumstick_rt_net_out)
-}}
-#else
-Q_IMPORT_PLUGIN(NetMIDIInput)
-Q_IMPORT_PLUGIN(NetMIDIOutput)
-#endif
+//Q_IMPORT_PLUGIN(NetMIDIInput)
+//Q_IMPORT_PLUGIN(NetMIDIOutput)
 
-#if defined(SYNTH_BACKEND)
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-namespace drumstick {
-namespace rt {
-Q_IMPORT_PLUGIN(drumstick_rt_synth)
-}}
-#else
-Q_IMPORT_PLUGIN(SynthOutput)
-#endif
-#endif
+//#if defined(SYNTH_BACKEND)
+//Q_IMPORT_PLUGIN(SynthOutput)
+//#endif
 
 VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     : QMainWindow(parent, flags),
@@ -108,33 +62,37 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     ui.statusBar->hide();
     ui.pianokeybd->setRawKeyboardMode(false);
 
-    QString name_in(QLatin1String("Virtual Piano IN"));
-    QString name_out(QLatin1String("Virtual Piano OUT"));
-    QStringList names;
-    names << name_in;
-    names << name_out;
+    QDir backendir = QDir(qApp->applicationDirPath());
+    backendir.cdUp();
+    backendir.cd("backends");
 
-    foreach(QObject* obj, QPluginLoader::staticInstances()) {
-        if (obj != 0) {
-            MIDIInput *input = qobject_cast<MIDIInput*>(obj);
-            if (input != 0) {
-                input->setPublicName(name_in);
-                input->setExcludedConnections(names);
-                m_inputs << input;
-                if (m_midiIn == 0 && (input->backendName() == nativeBackend))  {
-                    m_midiIn = input;
-                }
-            } else {
-                MIDIOutput *output = qobject_cast<MIDIOutput*>(obj);
-                if (output != 0) {
-                    output->setPublicName(name_out);
-                    output->setExcludedConnections(names);
-                    m_outputs << output;
-                    if (m_midiOut == 0 && (output->backendName() == nativeBackend))  {
-                        m_midiOut = output;
-                    }
-                }
-            }
+    QFileInfo exeInfo(qApp->applicationFilePath());
+    qDebug() << "program=" << exeInfo.fileName() << " backends=" << backendir.absolutePath() << endl;
+
+    QSettings settings;
+    settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
+    settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("Virtual Piano IN"));
+    settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("Virtual Piano OUT"));
+    settings.setValue(QSTR_DRUMSTICKRT_PATH, backendir.absolutePath());
+    settings.endGroup();
+    settings.sync();
+
+    BackendManager man;
+    man.refresh(&settings);
+    m_inputs = man.inputsAvailable();
+    m_outputs = man.outputsAvailable();
+
+    foreach(MIDIInput* input, m_inputs) {
+        if (m_midiIn == 0 && (input->backendName() == nativeBackend))  {
+            m_midiIn = input;
+            break;
+        }
+    }
+
+    foreach(MIDIOutput* output, m_outputs) {
+        if (m_midiOut == 0 && (output->backendName() == nativeBackend))  {
+            m_midiOut = output;
+            break;
         }
     }
 

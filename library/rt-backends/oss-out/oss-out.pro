@@ -1,17 +1,14 @@
 TEMPLATE = lib
-TARGET = $$qtLibraryTarget(drumstick-rt-oss)
-DESTDIR = ../../../build/lib
+TARGET = $$qtLibraryTarget(drumstick-rt-oss-out)
+DESTDIR = ../../../build/backends
 include (../../../global.pri)
-CONFIG += plugin static create_prl
+CONFIG += plugin create_prl #static
 DEPENDPATH += ../../include
 INCLUDEPATH += ../../include
 HEADERS += ../../include/rtmidiinput.h \
            ../../include/rtmidioutput.h \
-           ossinput_p.h \
-           ossinput.h \
            ossoutput.h
 
-SOURCES += ossinput.cpp \
-           ossinput_p.cpp \
+SOURCES += \
            ossoutput.cpp
 

@@ -1,38 +1,24 @@
-DESTDIR = ../build/common
 TEMPLATE = subdirs
 CONFIG += ordered
 include (../global.pri)
 DEFINES += VERSION=$$VERSION
-system($$QMAKE_MKDIR $$DESTDIR)
-win32 {
-    SUBDIRS += common \
+
+SUBDIRS += common \
            buildsmf \
            dumpove \
            dumpsmf \
            dumpwrk \
+           test-rt \
            vpiano
-}
+
 linux* {
-    SUBDIRS += common \
-           buildsmf \
+    SUBDIRS += \
            drumgrid \
            dumpmid \
-           dumpove \
-           dumpsmf \
-           dumpwrk \
            guiplayer \
            metronome \
            playsmf \
            sysinfo \
            testevents \
            timertest \
-           vpiano
-}
-macx {
-    SUBDIRS += common \
-           buildsmf \
-           dumpove \
-           dumpsmf \
-           dumpwrk \
-           vpiano
 }

@@ -2,7 +2,7 @@ TEMPLATE = lib
 TARGET = $$qtLibraryTarget(drumstick-common)
 DESTDIR = ../../build/lib
 DEPENDPATH += . ../include ../src
-INCLUDEPATH += . ../include ../../build/common
+INCLUDEPATH += . ../include 
 include (../../global.pri)
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += qt staticlib create_prl

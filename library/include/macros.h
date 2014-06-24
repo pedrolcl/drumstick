@@ -33,7 +33,7 @@
 #  if defined(DRUMSTICK_STATIC)
 #    define DRUMSTICK_EXPORT
 #  else
-#    if defined(drumstick_alsa_EXPORTS) || defined(drumstick_file_EXPORTS)
+#    if defined(drumstick_alsa_EXPORTS) || defined(drumstick_file_EXPORTS) || defined(drumstick_rt_EXPORTS)
 #      define DRUMSTICK_EXPORT Q_DECL_EXPORT
 #    else
 #      if defined(Q_WS_WIN)
