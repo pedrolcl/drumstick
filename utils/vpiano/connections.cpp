@@ -49,20 +49,25 @@ void Connections::setOutputs(QList<MIDIOutput *> outs)
 void Connections::accept()
 {
     QString conn;
+    QSettings settings;
     if (m_midiOut != 0) {
         conn = ui.m_outputPorts->currentText();
         if (conn != m_midiOut->currentConnection()) {
             m_midiOut->close();
-            if (!conn.isEmpty())
+            if (!conn.isEmpty()) {
+                m_midiOut->initialize(&settings);
                 m_midiOut->open(conn);
+            }
         }
     }
     if (m_midiIn != 0) {
         conn = ui.m_inputPorts->currentText();
         if (conn != m_midiIn->currentConnection()) {
             m_midiIn->close();
-            if (!conn.isEmpty())
+            if (!conn.isEmpty()) {
+                m_midiIn->initialize(&settings);
                 m_midiIn->open(conn);
+            }
         }
         m_midiIn->enableMIDIThru(ui.m_thru->isChecked());
         m_midiIn->setMIDIThruDevice(m_midiOut);

@@ -88,6 +88,7 @@ Q_IMPORT_PLUGIN(NetMIDIInput)
 Q_IMPORT_PLUGIN(NetMIDIOutput)
 #endif
 
+#if defined(SYNTH_BACKEND)
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 namespace drumstick {
 namespace rt {
@@ -95,6 +96,7 @@ Q_IMPORT_PLUGIN(drumstick_rt_synth)
 }}
 #else
 Q_IMPORT_PLUGIN(SynthOutput)
+#endif
 #endif
 
 VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )

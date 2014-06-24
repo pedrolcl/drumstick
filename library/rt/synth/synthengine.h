@@ -24,13 +24,16 @@
 #include <QList>
 #include <QColor>
 #include <QDir>
+#include <QSettings>
 
 #include "fluidsynth.h"
 //#include "preset.h"
 //#include "ctl.h"
 
-#define str(s) #s
-#define stringify(s) str(s)
+#define cvtstr(s) #s
+#define stringify(s) cvtstr(s)
+
+const QString QSTR_FLUIDSYNTH(QLatin1String("FluidSynth"));
 
 class SynthEngine : public QObject
 {
@@ -45,8 +48,8 @@ public:
     void setSoundFont(const QString &value);
 
     Q_INVOKABLE void initialize();
-    Q_INVOKABLE void readSettings();
-    Q_INVOKABLE void saveSettings();
+    Q_INVOKABLE void readSettings(QSettings *settings);
+    Q_INVOKABLE void saveSettings(QSettings *settings);
     Q_INVOKABLE void scanSoundFonts();
     Q_INVOKABLE void panic();
     Q_INVOKABLE QString currentInstrumentName(const int channel);
@@ -57,12 +60,17 @@ public:
     Q_INVOKABLE void bender(const int channel, const int value);
     Q_INVOKABLE QString version() const { return stringify(VERSION); }
 
+    QString currentConnection() const { return m_currentConnection; }
+    void close();
+    void open();
+
 private:
     void scanSoundFonts(const QDir &dir);
-    void initializeSynth();
+    void initializeSynth(QSettings *settings = 0);
     void loadSoundFont();
 
     int m_sfid;
+    QString m_currentConnection;
     QString m_soundFont;
     QString m_defSoundFont;
     fluid_settings_t* m_settings;

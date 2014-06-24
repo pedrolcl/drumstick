@@ -135,6 +135,11 @@ OSSOutput::~OSSOutput()
     delete d;
 }
 
+void OSSOutput::initialize(QSettings *settings)
+{
+    Q_UNUSED(settings)
+}
+
 QString OSSOutput::backendName()
 {
     return QLatin1String("OSS");

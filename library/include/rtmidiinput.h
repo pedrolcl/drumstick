@@ -24,6 +24,7 @@
 #include <QString>
 #include <QStringList>
 #include <QtPlugin>
+#include <QSettings>
 
 #include "rtmidioutput.h"
 
@@ -31,7 +32,7 @@ namespace drumstick {
 namespace rt {
 
     /**
-     * Virtual MIDI IN port
+     * MIDI IN port
      */
     class MIDIInput : public QObject
     {
@@ -47,6 +48,11 @@ namespace rt {
          * @brief ~MIDIInput destructor
          */
         virtual ~MIDIInput() {}
+        /**
+         * @brief initialize
+         * @param settings
+         */
+        virtual void initialize(QSettings* settings) = 0;
         /**
          * @brief backendName
          * @return plugin name

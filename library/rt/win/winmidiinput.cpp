@@ -257,6 +257,11 @@ namespace rt {
         delete d;
     }
 
+    void WinMIDIInput::initialize(QSettings *settings)
+    {
+        Q_UNUSED(settings)
+    }
+
     QString WinMIDIInput::backendName()
     {
         return QLatin1Literal("Windows MM");

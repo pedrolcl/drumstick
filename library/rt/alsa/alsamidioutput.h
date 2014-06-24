@@ -38,6 +38,7 @@ namespace rt {
         ALSAMIDIOutput(QObject *parent = 0);
         virtual ~ALSAMIDIOutput();
 
+        virtual void initialize(QSettings* settings);
         virtual QString backendName();
         virtual QString publicName();
         virtual void setPublicName(QString name);

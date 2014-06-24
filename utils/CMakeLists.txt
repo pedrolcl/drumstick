@@ -25,8 +25,8 @@ INCLUDE_DIRECTORIES (
     ${CMAKE_CURRENT_BINARY_DIR}/common
 )
 
-FILE(WRITE ${CMAKE_CURRENT_BINARY_DIR}/common/cmdversion.h
-     "const QString PGM_VERSION(\"${VERSION}\");\n")
+#FILE(WRITE ${CMAKE_CURRENT_BINARY_DIR}/common/cmdversion.h
+#     "const QString PGM_VERSION(\"${VERSION}\");\n")
 
 ADD_SUBDIRECTORY(common)
 ADD_SUBDIRECTORY(buildsmf)

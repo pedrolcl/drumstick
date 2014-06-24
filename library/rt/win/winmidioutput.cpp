@@ -238,6 +238,11 @@ namespace rt {
         delete d;
     }
 
+    void WinMIDIOutput::initialize(QSettings *settings)
+    {
+        Q_UNUSED(settings)
+    }
+
     QString WinMIDIOutput::backendName()
     {
         return "Windows MM";

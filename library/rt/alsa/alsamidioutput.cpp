@@ -165,6 +165,11 @@ namespace rt {
         delete d;
     }
 
+    void ALSAMIDIOutput::initialize(QSettings* settings)
+    {
+        Q_UNUSED(settings)
+    }
+
     /* SLOTS */
 
     void ALSAMIDIOutput::sendNoteOn(int chan, int note, int vel)

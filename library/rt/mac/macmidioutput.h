@@ -38,6 +38,7 @@ namespace rt {
         virtual ~MacMIDIOutput();
 
         // MIDIOutput interface
+        virtual void initialize(QSettings* settings);
         virtual QString backendName();
         virtual QString publicName();
         virtual void setPublicName(QString name);

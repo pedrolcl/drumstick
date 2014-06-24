@@ -1,12 +1,10 @@
 TEMPLATE = lib
-TARGET = drumstick-file
+TARGET = $$qtLibraryTarget(drumstick-file)
 DESTDIR = ../../build/lib
-OBJECTS_DIR = ../../build/obj
-MOC_DIR = ../../build/moc
 DEPENDPATH += . ../include
 INCLUDEPATH += . ../include
 include (../../global.pri)
-CONFIG += qt
+CONFIG += qt create_prl
 DEFINES += drumstick_file_EXPORTS
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
 # Input

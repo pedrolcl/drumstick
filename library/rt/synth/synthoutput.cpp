@@ -18,15 +18,27 @@
 */
 
 #include "synthoutput.h"
+#include <QDebug>
 
 namespace drumstick {
 namespace rt {
 
-const QString QSTR_FLUIDSYNTH(QLatin1String("FluidSynth"));
-
 SynthOutput::SynthOutput(QObject *parent) : MIDIOutput(parent),
     m_synth(new SynthEngine(this))
-{ }
+{
+    qDebug() << Q_FUNC_INFO;
+}
+
+SynthOutput::~SynthOutput()
+{
+    qDebug() << Q_FUNC_INFO;
+}
+
+void SynthOutput::initialize(QSettings *settings)
+{
+    m_synth->readSettings(settings);
+    m_synth->initialize();
+}
 
 QString SynthOutput::backendName()
 {
@@ -57,15 +69,17 @@ void SynthOutput::setExcludedConnections(QStringList conns)
 void SynthOutput::open(QString name)
 {
     Q_UNUSED(name)
+    m_synth->open();
 }
 
 void SynthOutput::close()
 {
+    m_synth->close();
 }
 
 QString SynthOutput::currentConnection()
 {
-    return QSTR_FLUIDSYNTH;
+    return m_synth->currentConnection();
 }
 
 void SynthOutput::sendNoteOff(int chan, int note, int vel)

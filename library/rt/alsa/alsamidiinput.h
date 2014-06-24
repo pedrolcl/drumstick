@@ -40,6 +40,7 @@ namespace rt {
         virtual ~ALSAMIDIInput();
 
         // MIDIInput interface
+        virtual void initialize(QSettings* settings);
         virtual QString backendName();
         virtual QString publicName();
         virtual void setPublicName(QString name);

@@ -19,9 +19,9 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QSettings>
-#include <QDebug>
 #include <QDesktopServices>
 #include <QStandardPaths>
+#include <QDebug>
 
 #include "synthengine.h"
 
@@ -32,22 +32,18 @@ const QString QSTR_SOUNDFONT("default.sf2");
 
 SynthEngine::SynthEngine(QObject *parent)
     : QObject(parent)
-{
-    initializeSynth();
-    readSettings();
-    initialize();
-}
+{ }
 
 SynthEngine::~SynthEngine()
 {
-    saveSettings();
     ::delete_fluid_audio_driver(m_driver);
     ::delete_fluid_synth(m_synth);
     ::delete_fluid_settings(m_settings);
 }
 
-void SynthEngine::initializeSynth()
+void SynthEngine::initializeSynth(QSettings* settings)
 {
+    Q_UNUSED(settings)
     m_settings = ::new_fluid_settings();
 #if defined(Q_OS_LINUX)
     ::fluid_settings_setstr(m_settings, "audio.driver", "pulseaudio");
@@ -80,7 +76,6 @@ void SynthEngine::setInstrument(int channel, int pgm)
     //}
     ::fluid_synth_program_change(m_synth, channel, pgm);
 }
-
 void SynthEngine::noteOn(int channel, int midiNote, int velocity)
 {
     //qDebug() << "NoteOn " << midiNote << " vel: " << velocity; // << " time: " << m_time.elapsed();
@@ -119,6 +114,8 @@ void SynthEngine::loadSoundFont()
 
 void SynthEngine::initialize()
 {
+    qDebug() << Q_FUNC_INFO;
+    initializeSynth();
     scanSoundFonts();
     loadSoundFont();
     if (m_sfid < 0) {
@@ -193,9 +190,9 @@ void SynthEngine::scanSoundFonts()
     }
 }
 
-void SynthEngine::readSettings()
+void SynthEngine::readSettings(QSettings *settings)
 {
-    //qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO;
     QDir dir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
     QFileInfo sf2(dir, QSTR_SOUNDFONT);
     if (sf2.exists()) {
@@ -203,17 +200,26 @@ void SynthEngine::readSettings()
     }
     m_sfid = -1;
 
-    QSettings settings;
-    settings.beginGroup(QSTR_PREFERENCES);
-    m_soundFont = settings.value(QSTR_INSTRUMENTSDEFINITION, m_defSoundFont).toString();
-    settings.endGroup();
+    settings->beginGroup(QSTR_PREFERENCES);
+    m_soundFont = settings->value(QSTR_INSTRUMENTSDEFINITION, m_defSoundFont).toString();
+    settings->endGroup();
 }
 
-void SynthEngine::saveSettings()
+void SynthEngine::saveSettings(QSettings *settings)
 {
-    QSettings settings;
-    settings.beginGroup(QSTR_PREFERENCES);
-    settings.setValue(QSTR_INSTRUMENTSDEFINITION, m_soundFont);
-    settings.endGroup();
-    settings.sync();
+    qDebug() << Q_FUNC_INFO;
+    settings->beginGroup(QSTR_PREFERENCES);
+    settings->setValue(QSTR_INSTRUMENTSDEFINITION, m_soundFont);
+    settings->endGroup();
+    settings->sync();
+}
+
+void SynthEngine::close()
+{
+    m_currentConnection.clear();
+}
+
+void SynthEngine::open()
+{
+    m_currentConnection = QSTR_FLUIDSYNTH;
 }

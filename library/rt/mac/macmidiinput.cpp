@@ -278,6 +278,11 @@ namespace rt {
         delete d;
     }
 
+    void MacMIDIInput::initialize(QSettings *settings)
+    {
+        Q_UNUSED(settings)
+    }
+
     QString MacMIDIInput::backendName()
     {
         return QLatin1Literal("CoreMIDI");

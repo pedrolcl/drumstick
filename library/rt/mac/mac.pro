@@ -1,9 +1,7 @@
 TEMPLATE = lib
-CONFIG += plugin static
-TARGET = drumstick-rt-mac
+CONFIG += plugin static create_prl
+TARGET = $$qtLibraryTarget(drumstick-rt-mac)
 DESTDIR = ../../../build/lib
-OBJECTS_DIR = ../../../build/obj
-MOC_DIR = ../../../build/moc
 DEPENDPATH += . ../../include
 INCLUDEPATH += . ../../include
 include (../../../global.pri)

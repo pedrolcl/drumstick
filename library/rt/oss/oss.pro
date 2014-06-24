@@ -1,10 +1,8 @@
 TEMPLATE = lib
-TARGET = drumstick-rt-oss
+TARGET = $$qtLibraryTarget(drumstick-rt-oss)
 DESTDIR = ../../../build/lib
-OBJECTS_DIR = ../../../build/obj
-MOC_DIR = ../../../build/moc
 include (../../../global.pri)
-CONFIG += plugin static
+CONFIG += plugin static create_prl
 DEPENDPATH += ../../include
 INCLUDEPATH += ../../include
 HEADERS += ../../include/rtmidiinput.h \

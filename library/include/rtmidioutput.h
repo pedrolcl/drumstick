@@ -24,6 +24,7 @@
 #include <QString>
 #include <QStringList>
 #include <QtPlugin>
+#include <QSettings>
 
 #define MIDI_CHANNELS               16
 #define MIDI_GM_DRUM_CHANNEL        (10-1)
@@ -65,16 +66,27 @@ namespace drumstick {
 namespace rt {
 
     /**
-     * Virtual MIDI OUT port
+     * MIDI OUT port
      */
     class MIDIOutput : public QObject
     {
         Q_OBJECT
 
     public:
+        /**
+         * @brief MIDIOutput constructor
+         * @param parent
+         */
         explicit MIDIOutput(QObject *parent = 0) : QObject(parent) {}
+        /**
+         * @brief ~MIDIOutput destructor
+         */
         virtual ~MIDIOutput() {}
-
+        /**
+         * @brief initialize
+         * @param settings
+         */
+        virtual void initialize(QSettings* settings) = 0;
         /**
          * @brief backendName
          * @return plugin name

@@ -22,6 +22,11 @@
 namespace drumstick {
 namespace rt {
 
+void DummyOutput::initialize(QSettings* settings)
+{
+    Q_UNUSED(settings)
+}
+
 QString DummyOutput::backendName()
 {
     return QLatin1String("DUMMY");

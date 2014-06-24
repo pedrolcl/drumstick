@@ -2,14 +2,11 @@ TEMPLATE = app
 TARGET = drumstick-vpiano
 QT += svg network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets gui
-CONFIG += qt thread exceptions
+CONFIG += qt thread exceptions link_prl
 DESTDIR = ../../build/bin
-OBJECTS_DIR = ../../build/obj
-MOC_DIR = ../../build/moc
-RCC_DIR = ../../build/rcc
-UI_DIR = ../../build/ui
 include (../../global.pri)
 INCLUDEPATH += . ../../library/include ../common ../../build/common
+
 # Input
 FORMS += vpiano.ui connections.ui vpianoabout.ui preferences.ui
 HEADERS += pianokey.h pianokeybd.h pianoscene.h vpiano.h \
@@ -20,25 +17,32 @@ SOURCES += pianokey.cpp pianokeybd.cpp pianoscene.cpp vpiano.cpp \
 RESOURCES += pianokeybd.qrc
 
 # libs
-LIBS += -L$$OUT_PWD/../../build/lib -ldrumstick-common -ldrumstick-rt-net
-LIBS += -L$$OUT_PWD/../../build/lib -ldrumstick-rt-synth -lfluidsynth
-PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/libdrumstick-common.a
-PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/libdrumstick-rt-net.a
-PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/libdrumstick-rt-synth.a
+LIBS += -L$$OUT_PWD/../../build/lib/
+LIBS += -l$$qtLibraryTarget(drumstick-common) \
+        -l$$qtLibraryTarget(drumstick-rt-net)
+
+
+#DEFINES += SYNTH_BACKEND
+#LIBS += -l$$qtLibraryTarget(drumstick-rt-synth) \
+#        -lfluidsynth
 
 linux* {
-    LIBS += -L$$OUT_PWD/../../build/lib -ldrumstick-rt-alsa -ldrumstick-alsa -lasound
-    PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/libdrumstick-rt-alsa.a
+    LIBS += -l$$qtLibraryTarget(drumstick-rt-alsa) \
+            -l$$qtLibraryTarget(drumstick-alsa) \
+            -lasound
 }
+
 unix {
-    LIBS += -L$$OUT_PWD/../../build/lib -ldrumstick-rt-oss
-    PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/libdrumstick-rt-oss.a
+    LIBS += -l$$qtLibraryTarget(drumstick-rt-oss)
 }
+
 macx {
-    LIBS += -L$$OUT_PWD/../../build/lib -ldrumstick-rt-mac -framework CoreMIDI -framework CoreFoundation
-    PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/libdrumstick-rt-mac.a
+    LIBS += -l$$qtLibraryTarget(drumstick-rt-mac) \
+            -framework CoreMIDI \
+            -framework CoreFoundation
 }
+
 win32 {
-    LIBS += -L$$OUT_PWD/../../build/lib -ldrumstick-rt-win -lwinmm
-    PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/drumstick-rt-win.lib
+    LIBS += -l$$qtLibraryTarget(drumstick-rt-win) \
+            -lwinmm
 }

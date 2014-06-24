@@ -40,6 +40,7 @@ namespace rt {
 
         // MIDIOutput interface
     public:
+        virtual void initialize(QSettings* settings);
         virtual QString backendName();
         virtual QString publicName();
         virtual void setPublicName(QString name);

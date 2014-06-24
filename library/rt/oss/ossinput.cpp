@@ -31,6 +31,11 @@ OSSInput::~OSSInput()
     delete d;
 }
 
+void OSSInput::initialize(QSettings *settings)
+{
+    Q_UNUSED(settings)
+}
+
 QString OSSInput::backendName()
 {
     return "OSS";

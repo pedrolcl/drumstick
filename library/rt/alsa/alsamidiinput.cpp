@@ -251,6 +251,11 @@ namespace rt {
         delete d;
     }
 
+    void ALSAMIDIInput::initialize(QSettings* settings)
+    {
+        Q_UNUSED(settings)
+    }
+
     QString ALSAMIDIInput::backendName()
     {
         return QLatin1String("ALSA");

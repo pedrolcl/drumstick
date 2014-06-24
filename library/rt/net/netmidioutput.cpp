@@ -116,6 +116,11 @@ NetMIDIOutput::~NetMIDIOutput()
     delete d;
 }
 
+void NetMIDIOutput::initialize(QSettings *settings)
+{
+    Q_UNUSED(settings)
+}
+
 QString NetMIDIOutput::backendName()
 {
     return QLatin1String("Network");
