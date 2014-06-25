@@ -26,7 +26,7 @@
 #include <cstdlib>
 #include <QObject>
 #include <QString>
-#include <QApplication>
+#include <QCoreApplication>
 #include <QTextStream>
 #include <QTextCodec>
 

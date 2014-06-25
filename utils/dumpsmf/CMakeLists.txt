@@ -25,7 +25,7 @@ SET(dumpsmf_qtobject_SRCS
     dumpsmf.h
 )
 
-QT4_WRAP_CPP(dumpsmf_moc_SRCS ${dumpsmf_qtobject_SRCS})
+QT5_WRAP_CPP(dumpsmf_moc_SRCS ${dumpsmf_qtobject_SRCS})
 
 ADD_EXECUTABLE(drumstick-dumpsmf 
     ${dumpsmf_moc_SRCS}
@@ -33,7 +33,6 @@ ADD_EXECUTABLE(drumstick-dumpsmf
 )
 
 TARGET_LINK_LIBRARIES(drumstick-dumpsmf
-    ${QT_LIBRARIES} 
     drumstick-common
     drumstick-file
 )

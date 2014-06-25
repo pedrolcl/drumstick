@@ -23,7 +23,7 @@
 #include <signal.h>
 #include <QObject>
 #include <QString>
-#include <QApplication>
+#include <QCoreApplication>
 #include <QTextStream>
 #include <QtDebug>
 #include <QReadLocker>

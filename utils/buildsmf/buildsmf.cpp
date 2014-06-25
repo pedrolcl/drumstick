@@ -20,7 +20,7 @@
 #include "buildsmf.h"
 #include "qsmf.h"
 #include "cmdlineargs.h"
-#include <QApplication>
+#include <QCoreApplication>
 #include <QDebug>
 #include <QTextCodec>
 

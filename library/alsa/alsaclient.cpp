@@ -734,7 +734,7 @@ MidiClient::doEvents()
                    QObjectList::Iterator it;
                     for(it=m_listeners.begin(); it!=m_listeners.end(); ++it) {
                         QObject* sub = (*it);
-                        QApplication::postEvent(sub, event->clone());
+                        QCoreApplication::postEvent(sub, event->clone());
                     }
                 } else {
                     // finally, process signals

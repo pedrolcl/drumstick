@@ -20,7 +20,6 @@
 #include <QUdpSocket>
 #include "netmidiinput.h"
 #include "netmidiinput_p.h"
-#include "netmidioutput.h"
 
 namespace drumstick {
 namespace rt {

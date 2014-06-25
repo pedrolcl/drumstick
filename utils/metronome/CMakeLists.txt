@@ -25,7 +25,7 @@ SET(metronome_qtobject_SRCS
     metronome.h
 )
 
-QT4_WRAP_CPP(metronome_moc_SRCS ${metronome_qtobject_SRCS})
+QT5_WRAP_CPP(metronome_moc_SRCS ${metronome_qtobject_SRCS})
 
 ADD_EXECUTABLE(drumstick-metronome
     ${metronome_moc_SRCS}
@@ -33,7 +33,6 @@ ADD_EXECUTABLE(drumstick-metronome
 )
 
 TARGET_LINK_LIBRARIES(drumstick-metronome
-    ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     drumstick-common
     drumstick-alsa

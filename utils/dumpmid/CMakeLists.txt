@@ -25,7 +25,7 @@ SET(dumpmid_qtobject_SRCS
     dumpmid.h
 )
 
-QT4_WRAP_CPP(dumpmid_moc_SRCS ${dumpmid_qtobject_SRCS})
+QT5_WRAP_CPP(dumpmid_moc_SRCS ${dumpmid_qtobject_SRCS})
 
 ADD_EXECUTABLE(drumstick-dumpmid
     ${dumpmid_moc_SRCS}
@@ -33,7 +33,6 @@ ADD_EXECUTABLE(drumstick-dumpmid
 )
 
 TARGET_LINK_LIBRARIES(drumstick-dumpmid
-    ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     drumstick-common
     drumstick-alsa

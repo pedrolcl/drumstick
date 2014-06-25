@@ -25,7 +25,7 @@ SET(testevents_qtobject_SRCS
     testevents.h
 )
 
-QT4_WRAP_CPP(testevents_moc_SRCS ${testevents_qtobject_SRCS})
+QT5_WRAP_CPP(testevents_moc_SRCS ${testevents_qtobject_SRCS})
 
 ADD_EXECUTABLE(drumstick-testevents
     ${testevents_moc_SRCS}
@@ -33,7 +33,6 @@ ADD_EXECUTABLE(drumstick-testevents
 )
 
 TARGET_LINK_LIBRARIES(drumstick-testevents
-    ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     drumstick-common
     drumstick-alsa

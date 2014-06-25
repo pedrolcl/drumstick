@@ -25,7 +25,7 @@ SET(dumpove_qtobject_SRCS
     dumpove.h
 )
 
-QT4_WRAP_CPP(dumpove_moc_SRCS ${dumpove_qtobject_SRCS})
+QT5_WRAP_CPP(dumpove_moc_SRCS ${dumpove_qtobject_SRCS})
 
 ADD_EXECUTABLE(drumstick-dumpove 
     ${dumpove_moc_SRCS}
@@ -33,7 +33,6 @@ ADD_EXECUTABLE(drumstick-dumpove
 )
 
 TARGET_LINK_LIBRARIES(drumstick-dumpove
-    ${QT_LIBRARIES} 
     drumstick-common
     drumstick-file
 )

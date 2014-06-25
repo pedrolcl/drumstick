@@ -25,7 +25,6 @@ ADD_EXECUTABLE(drumstick-sysinfo
 )
 
 TARGET_LINK_LIBRARIES(drumstick-sysinfo
-    ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     drumstick-common
     drumstick-alsa

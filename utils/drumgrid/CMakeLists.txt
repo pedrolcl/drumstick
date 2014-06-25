@@ -16,6 +16,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
+find_package(Qt5Widgets REQUIRED)
+include_directories(
+    ${Qt5Widgets_INCLUDE_DIRS}
+)
+link_libraries(
+    ${Qt5Widgets_LIBRARIES}
+)
+add_definitions(
+    ${Qt5Widgets_DEFINITIONS}
+)
+
 SET(drumgrid_forms_SRCS
     drumgridabout.ui
     drumgrid.ui
@@ -37,9 +48,9 @@ SET(drumgrid_qtobject_SRCS
     drumgrid.h
 )
 
-QT4_WRAP_UI(drumgrid_ui_SRCS ${drumgrid_forms_SRCS})
+QT5_WRAP_UI(drumgrid_ui_SRCS ${drumgrid_forms_SRCS})
 
-QT4_WRAP_CPP(drumgrid_moc_SRCS ${drumgrid_qtobject_SRCS})
+QT5_WRAP_CPP(drumgrid_moc_SRCS ${drumgrid_qtobject_SRCS})
 
 ADD_EXECUTABLE(drumstick-drumgrid
     ${drumgrid_ui_SRCS}
@@ -48,7 +59,6 @@ ADD_EXECUTABLE(drumstick-drumgrid
 )
 
 TARGET_LINK_LIBRARIES(drumstick-drumgrid
-    ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     drumstick-common
     drumstick-alsa

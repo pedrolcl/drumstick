@@ -23,7 +23,7 @@
 #include "alsaport.h"
 #include "alsaevent.h"
 #include "alsamidiinput.h"
-#include "alsamidioutput.h"
+#include "rtmidioutput.h"
 
 namespace drumstick {
 namespace rt {

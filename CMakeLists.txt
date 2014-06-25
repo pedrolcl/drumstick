@@ -1,4 +1,4 @@
-# MIDI Sequencer C++ Library
+# MIDI C++ Library
 # Copyright (C) 2005-2014 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -23,10 +23,7 @@
 PROJECT(DRUMSTICK)
 
 # CMake minimum version
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8)
-IF(COMMAND CMAKE_POLICY)
-    CMAKE_POLICY(SET CMP0003 NEW)
-ENDIF(COMMAND CMAKE_POLICY)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.11)
 
 IF(CMAKE_SIZEOF_VOID_P MATCHES "8")
     SET(_INIT_LIB_SUFFIX "64")
@@ -75,23 +72,28 @@ ELSE(STATIC_DRUMSTICK)
 ENDIF(STATIC_DRUMSTICK)
 
 # Check for Qt
-SET(QT_MIN_VERSION "4.4.0")
-FIND_PACKAGE(Qt4 REQUIRED)
-IF(QT4_FOUND)
-    MESSAGE (STATUS "Found Qt4 ${QT_EDITION} version = ${QTVERSION}")
-    SET (QT_USE_QTSVG TRUE)
-    IF (USE_DBUS)
-        SET(QT_USE_QTDBUS TRUE)
-        ADD_DEFINITIONS(-DRTKIT_SUPPORT)
-    ENDIF (USE_DBUS)
-    INCLUDE (${QT_USE_FILE})
-    INCLUDE_DIRECTORIES (${QT_INCLUDES}) 
-    LINK_DIRECTORIES (${QT_LIBRARY_DIR})
-    LINK_LIBRARIES (${QT_LIBRARIES})
-    ADD_DEFINITIONS (-DQT_STRICT_ITERATORS)
-ELSE(QT4_FOUND)
-    MESSAGE(FATAL_ERROR "Qt4 not found")
-ENDIF(QT4_FOUND)
+find_package(Qt5Core REQUIRED)
+message(STATUS "Found Qt5 version = ${Qt5Core_VERSION_STRING}")
+
+if(USE_DBUS)
+    find_package(Qt5DBus REQUIRED)
+    ADD_DEFINITIONS(-DRTKIT_SUPPORT)
+endif()
+
+include_directories(
+    ${Qt5Core_INCLUDE_DIRS}
+    ${Qt5DBus_INCLUDE_DIRS}
+)
+link_libraries(
+    ${Qt5Core_LIBRARIES}
+    ${Qt5DBus_LIBRARIES}
+)
+add_definitions(
+    ${Qt5Core_DEFINITIONS}
+    ${Qt5DBus_DEFINITIONS}
+)
+
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Check for PKG-CONFIG
 FIND_PACKAGE(PkgConfig REQUIRED)

@@ -21,11 +21,16 @@
 #define NETMIDIINPUT_H
 
 #include <QObject>
+#include <QHostAddress>
 #include <QtPlugin>
 #include "rtmidiinput.h"
 
 namespace drumstick {
 namespace rt {
+
+    const QHostAddress MULTICAST_ADDRESS(QHostAddress("225.0.0.37"));
+    const int MULTICAST_PORT(21928);
+    const int LAST_PORT(21948);
 
     class NetMIDIInputPrivate;
 

@@ -16,6 +16,21 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Svg REQUIRED)
+include_directories(
+    ${Qt5Widgets_INCLUDE_DIRS}
+    ${Qt5Svg_INCLUDE_DIRS}
+)
+link_libraries(
+    ${Qt5Widgets_LIBRARIES}
+    ${Qt5Svg_LIBRARIES}
+)
+add_definitions(
+    ${Qt5Widgets_DEFINITIONS}
+    ${Qt5Svg_DEFINITIONS}
+)
+
 SET(vpiano_forms_SRCS
     vpianoabout.ui
     connections.ui
@@ -23,7 +38,7 @@ SET(vpiano_forms_SRCS
     vpiano.ui
 )
 
-QT4_WRAP_UI(vpiano_ui_SRCS ${vpiano_forms_SRCS})
+QT5_WRAP_UI(vpiano_ui_SRCS ${vpiano_forms_SRCS})
 
 SET(vpiano_SRCS
     pianokey.cpp
@@ -56,9 +71,9 @@ SET(vpiano_qtobject_SRCS
     vpiano.h
 )
 
-QT4_WRAP_CPP(vpiano_moc_SRCS ${vpiano_qtobject_SRCS})
+QT5_WRAP_CPP(vpiano_moc_SRCS ${vpiano_qtobject_SRCS})
 
-QT4_ADD_RESOURCES(vpiano_SRCS pianokeybd.qrc)
+QT5_ADD_RESOURCES(vpiano_SRCS pianokeybd.qrc)
 
 ADD_EXECUTABLE(drumstick-vpiano
     ${vpiano_ui_SRCS}
@@ -67,11 +82,10 @@ ADD_EXECUTABLE(drumstick-vpiano
 )
 
 TARGET_LINK_LIBRARIES(drumstick-vpiano
-    ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     drumstick-common
     drumstick-alsa
-    drumstick-rt-alsa
+    drumstick-rt
 )
 
 INSTALL(TARGETS drumstick-vpiano

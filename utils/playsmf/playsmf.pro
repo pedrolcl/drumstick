@@ -1,7 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-playsmf
 QT += dbus
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += qt console thread exceptions link_prl
 DESTDIR = ../../build/bin
 INCLUDEPATH += . ../../library/include ../common 

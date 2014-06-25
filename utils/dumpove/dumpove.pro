@@ -1,6 +1,5 @@
 TEMPLATE = app
 TARGET = drumstick-dumpove
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += qt console link_prl
 DESTDIR = ../../build/bin
 INCLUDEPATH += . ../../library/include ../common 

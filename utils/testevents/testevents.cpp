@@ -21,7 +21,7 @@
 #include "cmdlineargs.h"
 #include <QObject>
 #include <QString>
-#include <QApplication>
+#include <QCoreApplication>
 #include <QTextStream>
 
 static QTextStream cout(stdout, QIODevice::WriteOnly);

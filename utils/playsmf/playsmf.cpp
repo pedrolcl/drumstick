@@ -21,7 +21,7 @@
 #include "cmdlineargs.h"
 
 #include <signal.h>
-#include <QApplication>
+#include <QCoreApplication>
 #include <QTextStream>
 #include <QtAlgorithms>
 #include <QFileInfo>

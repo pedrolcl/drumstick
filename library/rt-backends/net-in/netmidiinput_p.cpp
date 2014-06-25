@@ -22,7 +22,6 @@
 
 #include "netmidiinput_p.h"
 #include "netmidiinput.h"
-#include "netmidioutput.h"
 
 namespace drumstick {
 namespace rt {

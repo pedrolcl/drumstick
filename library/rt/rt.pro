@@ -4,7 +4,6 @@ DESTDIR = ../../build/lib
 DEPENDPATH += . ../include
 INCLUDEPATH += . ../include
 include (../../global.pri)
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += qt thread create_prl
 DEFINES += drumstick_rt_EXPORTS
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS

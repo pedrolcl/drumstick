@@ -23,7 +23,7 @@
 #include "macros.h"
 #include <qglobal.h>
 #include <QString>
-#include <QApplication>
+#include <QCoreApplication>
 #include <QtDebug>
 
 extern "C" {

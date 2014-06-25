@@ -25,7 +25,7 @@ SET(timertest_qtobject_SRCS
     timertest.h
 )
 
-QT4_WRAP_CPP(timertest_moc_SRCS ${timertest_qtobject_SRCS})
+QT5_WRAP_CPP(timertest_moc_SRCS ${timertest_qtobject_SRCS})
 
 ADD_EXECUTABLE(drumstick-timertest
     ${timertest_SRCS}
@@ -33,7 +33,6 @@ ADD_EXECUTABLE(drumstick-timertest
 )
 
 TARGET_LINK_LIBRARIES(drumstick-timertest
-    ${QT_LIBRARIES} 
     ${ALSA_LIBS} 
     drumstick-common
     drumstick-alsa

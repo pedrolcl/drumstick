@@ -24,7 +24,6 @@
 
 #include "ossinput_p.h"
 #include "ossinput.h"
-#include "ossoutput.h"
 
 namespace drumstick {
 namespace rt {
