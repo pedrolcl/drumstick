@@ -1,7 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-guiplayer
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets gui
-QT += dbus
+QT += gui widgets dbus
 CONFIG += qt thread exceptions link_prl
 DESTDIR = ../../build/bin
 INCLUDEPATH += . ../../library/include ../common 

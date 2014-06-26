@@ -16,12 +16,33 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-if(ALSA_FOUND)
-    add_subdirectory(alsa)
-endif()
+#INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-add_subdirectory(file)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-add_subdirectory(rt)
+set(drumstick-rt-alsa-in_QTOBJ_SRCS
+    ../../include/rtmidiinput.h
+    ../../include/rtmidioutput.h
+    alsamidiinput.h
+)
 
-add_subdirectory(rt-backends)
+set(drumstick-rt-alsa-in_SRCS
+    alsamidiinput.cpp
+)
+
+add_definitions(-DQT_PLUGIN)
+
+qt5_wrap_cpp(drumstick-rt-alsa-in_MOC_SRCS ${drumstick-rt-alsa-in_QTOBJ_SRCS})
+
+add_library(drumstick-rt-alsa-in MODULE
+    ${drumstick-rt-alsa-in_MOC_SRCS}
+    ${drumstick-rt-alsa-in_SRCS}
+)
+
+set_target_properties(drumstick-rt-alsa-in PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/backends)
+
+install(TARGETS drumstick-rt-alsa-in
+        RUNTIME DESTINATION bin
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}
+        LIBRARY DESTINATION lib${LIB_SUFFIX})

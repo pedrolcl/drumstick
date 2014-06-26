@@ -15,13 +15,3 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
-
-if(ALSA_FOUND)
-    add_subdirectory(alsa)
-endif()
-
-add_subdirectory(file)
-
-add_subdirectory(rt)
-
-add_subdirectory(rt-backends)

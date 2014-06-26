@@ -4,6 +4,7 @@ DESTDIR = ../../build/lib
 DEPENDPATH += . ../include
 INCLUDEPATH += . ../include
 include (../../global.pri)
+QT -= gui
 QT += dbus
 CONFIG += qt thread create_prl
 DEFINES += drumstick_alsa_EXPORTS RTKIT_SUPPORT

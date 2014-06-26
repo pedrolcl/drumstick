@@ -15,13 +15,32 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-if(ALSA_FOUND)
-    add_subdirectory(alsa)
-endif()
+set(drumstick-rt-dummy-in_QTOBJ_SRCS
+    ../../include/rtmidiinput.h
+    ../../include/rtmidioutput.h
+    dummyinput.h
+)
 
-add_subdirectory(file)
+set(drumstick-rt-dummy-in_SRCS
+    dummyinput.cpp
+)
 
-add_subdirectory(rt)
+add_definitions(-DQT_PLUGIN)
 
-add_subdirectory(rt-backends)
+qt5_wrap_cpp(drumstick-rt-dummy-in_MOC_SRCS ${drumstick-rt-dummy-in_QTOBJ_SRCS})
+
+add_library(drumstick-rt-dummy-in MODULE
+    ${drumstick-rt-dummy-in_MOC_SRCS}
+    ${drumstick-rt-dummy-in_SRCS}
+)
+
+set_target_properties(drumstick-rt-dummy-in PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/backends)
+
+
+install(TARGETS drumstick-rt-dummy-in
+        RUNTIME DESTINATION bin
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}
+        LIBRARY DESTINATION lib${LIB_SUFFIX})

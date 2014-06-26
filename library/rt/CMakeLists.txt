@@ -16,12 +16,34 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-if(ALSA_FOUND)
-    add_subdirectory(alsa)
+#INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+SET(drumstick-rt_QTOBJ_SRCS
+    ../include/rtmidiinput.h
+    ../include/rtmidioutput.h
+)
+
+SET(drumstick-rt_SRCS
+    backendmanager.cpp
+)
+    
+QT5_WRAP_CPP(drumstick-rt_MOC_SRCS ${drumstick-rt_QTOBJ_SRCS})
+
+ADD_LIBRARY(drumstick-rt
+    ${drumstick-rt_MOC_SRCS}
+    ${drumstick-rt_SRCS}
+)
+
+if(NOT STATIC_DRUMSTICK)
+    SET_TARGET_PROPERTIES(drumstick-rt PROPERTIES
+        VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
+        SOVERSION ${VERSION_MAJOR})
 endif()
+    
 
-add_subdirectory(file)
-
-add_subdirectory(rt)
-
-add_subdirectory(rt-backends)
+install(TARGETS drumstick-rt
+	RUNTIME DESTINATION bin
+	ARCHIVE DESTINATION lib${LIB_SUFFIX}
+	LIBRARY DESTINATION lib${LIB_SUFFIX})

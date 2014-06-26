@@ -7,6 +7,7 @@ include (../../global.pri)
 CONFIG += qt thread create_prl
 DEFINES += drumstick_rt_EXPORTS
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
+QT -= gui
 # Input
 HEADERS += \
     ../include/rtmidiinput.h \

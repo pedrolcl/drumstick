@@ -36,15 +36,16 @@ SET(LIB_SUFFIX ${_INIT_LIB_SUFFIX} CACHE STRING "optional library install direct
 #SET(CMAKE_USE_RELATIVE_PATHS OFF)
 
 # Assorted settings
-SET(CMAKE_COLOR_MAKEFILE ON)
-SET(CMAKE_INCLUDE_CURRENT_DIR TRUE)
-#SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-SET(CMAKE_SKIP_RULE_DEPENDENCY FALSE)
-SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
-SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
+set(CMAKE_COLOR_MAKEFILE ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
+#set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_SKIP_RULE_DEPENDENCY FALSE)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 # Additional CMake modules for 3rd party library checks reside here
-SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_admin")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_admin")
 
 # DRUMSTICK version string
 SET (VERSION_MAJOR "0")
@@ -52,6 +53,7 @@ SET (VERSION_MINOR "5")
 SET (VERSION_PATCH "99")
 SET (VERSION_SUFFIX "svn")
 SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
+add_definitions(-DVERSION=${VERSION})
 
 MESSAGE(STATUS "drumstick ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
 
@@ -64,7 +66,7 @@ MESSAGE(STATUS "Build configuration: ${CMAKE_BUILD_TYPE}")
 # LIBRARY BUILD TYPE
 IF(STATIC_DRUMSTICK)
     SET(BUILD_SHARED_LIBS OFF)
-    add_definitions (-DDRUMSTICK_STATIC)
+    add_definitions(-DDRUMSTICK_STATIC)
     MESSAGE(STATUS "Building static libraries")
 ELSE(STATIC_DRUMSTICK)
     SET(BUILD_SHARED_LIBS ON)
@@ -74,24 +76,18 @@ ENDIF(STATIC_DRUMSTICK)
 # Check for Qt
 find_package(Qt5Core REQUIRED)
 message(STATUS "Found Qt5 version = ${Qt5Core_VERSION_STRING}")
+include_directories(${Qt5Core_INCLUDE_DIRS})
+link_libraries(${Qt5Core_LIBRARIES})
+add_definitions(${Qt5Core_DEFINITIONS})
 
 if(USE_DBUS)
     find_package(Qt5DBus REQUIRED)
     ADD_DEFINITIONS(-DRTKIT_SUPPORT)
+    include_directories(${Qt5DBus_INCLUDE_DIRS})
+    link_libraries(${Qt5DBus_LIBRARIES})
+    add_definitions(${Qt5DBus_DEFINITIONS})
 endif()
 
-include_directories(
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5DBus_INCLUDE_DIRS}
-)
-link_libraries(
-    ${Qt5Core_LIBRARIES}
-    ${Qt5DBus_LIBRARIES}
-)
-add_definitions(
-    ${Qt5Core_DEFINITIONS}
-    ${Qt5DBus_DEFINITIONS}
-)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -107,46 +103,46 @@ ENDIF(PKG_CONFIG_FOUND)
 SET(HAVE_ALSA FALSE)
 
 # Check for ALSA 1.0.0
-PKG_CHECK_MODULES(ALSA alsa>=1.0.0)
-IF(ALSA_FOUND)
+pkg_check_modules(ALSA alsa>=1.0.0)
+if(ALSA_FOUND)
     SET(HAVE_ALSA TRUE)
     ADD_DEFINITIONS(-DHAVE_ALSA)
     SET(ALSA_LIBS ${ALSA_LIBRARIES})
     LIST(APPEND ALSA_LIB_DIR ${ALSA_LIBRARY_DIRS} ${ALSA_LIBDIR})
     LIST(APPEND ALSA_INC_DIR ${ALSA_INCLUDE_DIRS} ${ALSA_INCLUDEDIR})
-ELSE(ALSA_FOUND)
+else()
     MESSAGE(STATUS "Warning: ALSA library not found.")
-ENDIF(ALSA_FOUND)
+endif()
 
-LINK_DIRECTORIES (
+link_directories(
     ${DRUMSTICK_BINARY_DIR}/lib
     ${ALSA_LIB_DIR}
 )
 
-INCLUDE_DIRECTORIES ( BEFORE 
+include_directories( BEFORE
     ${DRUMSTICK_SOURCE_DIR}/library
     ${DRUMSTICK_SOURCE_DIR}/library/include
     ${ALSA_INC_DIR}
 )
 
-if (CMAKE_COMPILER_IS_GNUCXX)
+if(CMAKE_COMPILER_IS_GNUCXX)
 # exceptions are needed by this library, please don't try to disable them!
-  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -UQT_NO_EXCEPTIONS")
-  if (NOT WIN32)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -UQT_NO_EXCEPTIONS")
+  if(NOT WIN32)
     include (CheckCXXCompilerFlag)
     check_cxx_compiler_flag (-fvisibility=hidden _HAVE_GCC_VISIBILITY)
-    if (_HAVE_GCC_VISIBILITY)
-      set (CMAKE_CXX_FLAGS 
+    if(_HAVE_GCC_VISIBILITY)
+      set(CMAKE_CXX_FLAGS
            "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden")
-    endif (_HAVE_GCC_VISIBILITY)
-    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
-  endif (NOT WIN32)
-endif (CMAKE_COMPILER_IS_GNUCXX)
+    endif(_HAVE_GCC_VISIBILITY)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
+  endif(NOT WIN32)
+endif(CMAKE_COMPILER_IS_GNUCXX)
 
-ADD_SUBDIRECTORY(library)
-ADD_SUBDIRECTORY(utils)
-ADD_SUBDIRECTORY(icons)
-IF(${CMAKE_SYSTEM} MATCHES "Linux")
+add_subdirectory(library)
+add_subdirectory(utils)
+add_subdirectory(icons)
+if(${CMAKE_SYSTEM} MATCHES "Linux")
     FIND_PACKAGE(Doxygen)
     IF(DOXYGEN_FOUND)
         CONFIGURE_FILE(
@@ -164,7 +160,7 @@ IF(${CMAKE_SYSTEM} MATCHES "Linux")
     INSTALL( FILES 
 	${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
 	DESTINATION lib${LIB_SUFFIX}/pkgconfig )
-ENDIF(${CMAKE_SYSTEM} MATCHES "Linux")
+endif()
 
 CONFIGURE_FILE(drumstick-file.pc.in drumstick-file.pc IMMEDIATE @ONLY)
 INSTALL( FILES 

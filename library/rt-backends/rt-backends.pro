@@ -1,4 +1,5 @@
 TEMPLATE = subdirs
+
 dummy {
     SUBDIRS += dummy-in dummy-out
 }

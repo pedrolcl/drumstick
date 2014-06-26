@@ -1,7 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-vpiano
-QT += svg network
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets gui
+QT += gui widgets svg
 CONFIG += qt thread exceptions link_prl
 DESTDIR = ../../build/bin
 include (../../global.pri)

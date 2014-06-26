@@ -19,7 +19,6 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QSettings>
-#include <QDesktopServices>
 #include <QStandardPaths>
 #include <QDebug>
 

@@ -22,13 +22,9 @@
 #include <QObject>
 #include <QString>
 #include <QList>
-#include <QColor>
 #include <QDir>
 #include <QSettings>
-
 #include "fluidsynth.h"
-//#include "preset.h"
-//#include "ctl.h"
 
 #define cvtstr(s) #s
 #define stringify(s) cvtstr(s)

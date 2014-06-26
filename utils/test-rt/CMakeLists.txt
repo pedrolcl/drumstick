@@ -16,12 +16,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-if(ALSA_FOUND)
-    add_subdirectory(alsa)
-endif()
+SET(test-rt_SRCS
+    main.cpp
+)
 
-add_subdirectory(file)
+ADD_EXECUTABLE(drumstick-test-rt
+    ${test-rt_SRCS}
+)
 
-add_subdirectory(rt)
+TARGET_LINK_LIBRARIES(drumstick-test-rt
+    drumstick-common
+    drumstick-rt
+)
 
-add_subdirectory(rt-backends)
+INSTALL(TARGETS drumstick-test-rt
+        RUNTIME DESTINATION bin)
