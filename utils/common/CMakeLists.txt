@@ -16,18 +16,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-SET ( common_SRCS
+set( common_SRCS
     cmdlineargs.cpp
     cmdlineargs.h
     cmdversion.h
 )
 
-ADD_LIBRARY( drumstick-common STATIC
-    ${common_SRCS}
-)
+add_compiler_export_flags()
 
-#IF(NOT WIN32)
-#    SET_TARGET_PROPERTIES( drumstick-common
-#        PROPERTIES COMPILE_FLAGS -fPIC )
-#ENDIF(NOT WIN32)
+add_library( drumstick-common STATIC
+    ${common_SRCS})
 
+target_link_libraries(drumstick-common Qt5::Core)

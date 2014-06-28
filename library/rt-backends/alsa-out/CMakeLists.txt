@@ -28,6 +28,9 @@ set(drumstick-rt-alsa-out_SRCS
 )
 
 add_definitions(-DQT_PLUGIN)
+if(STATIC_DRUMSTICK)
+    add_definitions(-DQT_STATICPLUGIN)
+endif()
 
 qt5_wrap_cpp(drumstick-rt-alsa-out_MOC_SRCS ${drumstick-rt-alsa-out_QTOBJ_SRCS})
 
@@ -35,6 +38,10 @@ add_library(drumstick-rt-alsa-out MODULE
     ${drumstick-rt-alsa-out_MOC_SRCS}
     ${drumstick-rt-alsa-out_SRCS}
 )
+
+target_link_libraries(drumstick-rt-alsa-out
+    drumstick-alsa
+    Qt5::Core)
 
 set_target_properties(drumstick-rt-alsa-out PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/backends)

@@ -15,3 +15,42 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(drumstick-rt-oss-out_QTOBJ_SRCS
+    ../../include/rtmidioutput.h
+    ossoutput.h
+)
+
+set(drumstick-rt-oss-out_SRCS
+    ossoutput.cpp
+)
+
+add_definitions(-DQT_PLUGIN)
+
+qt5_wrap_cpp(drumstick-rt-oss-out_MOC_SRCS ${drumstick-rt-oss-out_QTOBJ_SRCS})
+
+if(STATIC_DRUMSTICK)
+    add_definitions(-DQT_STATICPLUGIN)
+    add_library(drumstick-rt-oss-out STATIC
+        ${drumstick-rt-oss-out_MOC_SRCS}
+        ${drumstick-rt-oss-out_SRCS})
+    set_target_properties(drumstick-alsa PROPERTIES
+         STATIC_LIB "libdrumstick-rt-oss-out.a")
+else()
+    add_library(drumstick-rt-oss-out MODULE
+        ${drumstick-rt-oss-out_MOC_SRCS}
+        ${drumstick-rt-oss-out_SRCS})
+endif()
+
+target_link_libraries(drumstick-rt-oss-out
+    Qt5::Core)
+
+set_target_properties(drumstick-rt-oss-out PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/backends)
+
+install(TARGETS drumstick-rt-oss-out
+        RUNTIME DESTINATION bin
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}
+        LIBRARY DESTINATION lib${LIB_SUFFIX})

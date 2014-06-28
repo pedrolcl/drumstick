@@ -15,3 +15,47 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
+
+find_package(Qt5Network REQUIRED)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(drumstick-rt-net-in_QTOBJ_SRCS
+    ../../include/rtmidiinput.h
+    ../../include/rtmidioutput.h
+    netmidiinput_p.h
+    netmidiinput.h
+)
+
+set(drumstick-rt-net-in_SRCS
+    netmidiinput_p.cpp
+    netmidiinput.cpp
+)
+
+add_definitions(-DQT_PLUGIN)
+
+qt5_wrap_cpp(drumstick-rt-net-in_MOC_SRCS ${drumstick-rt-net-in_QTOBJ_SRCS})
+
+if(STATIC_DRUMSTICK)
+    add_definitions(-DQT_STATICPLUGIN)
+    add_library(drumstick-rt-net-in STATIC
+        ${drumstick-rt-net-in_MOC_SRCS}
+        ${drumstick-rt-net-in_SRCS})
+    set_target_properties(drumstick-alsa PROPERTIES
+         STATIC_LIB "libdrumstick-rt-net-in.a")
+else()
+    add_library(drumstick-rt-net-in MODULE
+        ${drumstick-rt-net-in_MOC_SRCS}
+        ${drumstick-rt-net-in_SRCS})
+endif()
+
+target_link_libraries(drumstick-rt-net-in
+    Qt5::Network)
+
+set_target_properties(drumstick-rt-net-in PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/backends)
+
+install(TARGETS drumstick-rt-net-in
+        RUNTIME DESTINATION bin
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}
+        LIBRARY DESTINATION lib${LIB_SUFFIX})

@@ -15,3 +15,50 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+pkg_check_modules(
+    FLUIDSYNTH REQUIRED fluidsynth>=1.1.1)
+include_directories(${FLUIDSYNTH_INCLUDEDIR})
+link_directories(${FLUIDSYNTH_LIBDIR})
+
+set(drumstick-rt-synth_QTOBJ_SRCS
+    ../../include/rtmidioutput.h
+    synthengine.h
+    synthoutput.h
+)
+
+set(drumstick-rt-synth_SRCS
+    synthengine.cpp
+    synthoutput.cpp
+)
+
+add_definitions(-DQT_PLUGIN)
+
+qt5_wrap_cpp(drumstick-rt-synth_MOC_SRCS ${drumstick-rt-synth_QTOBJ_SRCS})
+
+if(STATIC_DRUMSTICK)
+    add_definitions(-DQT_STATICPLUGIN)
+    add_library(drumstick-rt-synth STATIC
+        ${drumstick-rt-synth_MOC_SRCS}
+        ${drumstick-rt-synth_SRCS})
+    set_target_properties(drumstick-alsa PROPERTIES
+         STATIC_LIB "libdrumstick-rt-synth.a")
+else()
+    add_library(drumstick-rt-synth MODULE
+        ${drumstick-rt-synth_MOC_SRCS}
+        ${drumstick-rt-synth_SRCS})
+endif()
+
+target_link_libraries(drumstick-rt-synth
+    Qt5::Core
+    ${FLUIDSYNTH_LIBRARIES})
+
+set_target_properties(drumstick-rt-synth PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/backends)
+
+install(TARGETS drumstick-rt-synth
+        RUNTIME DESTINATION bin
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}
+        LIBRARY DESTINATION lib${LIB_SUFFIX})

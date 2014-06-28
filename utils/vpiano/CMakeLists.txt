@@ -18,29 +18,17 @@
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Svg REQUIRED)
-include_directories(
-    ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5Svg_INCLUDE_DIRS}
-)
-link_libraries(
-    ${Qt5Widgets_LIBRARIES}
-    ${Qt5Svg_LIBRARIES}
-)
-add_definitions(
-    ${Qt5Widgets_DEFINITIONS}
-    ${Qt5Svg_DEFINITIONS}
-)
 
-SET(vpiano_forms_SRCS
+set(vpiano_forms_SRCS
     vpianoabout.ui
     connections.ui
     preferences.ui
     vpiano.ui
 )
 
-QT5_WRAP_UI(vpiano_ui_SRCS ${vpiano_forms_SRCS})
+qt5_wrap_ui(vpiano_ui_SRCS ${vpiano_forms_SRCS})
 
-SET(vpiano_SRCS
+set(vpiano_SRCS
     pianokey.cpp
     pianokey.h
     pianoscene.cpp
@@ -60,7 +48,7 @@ SET(vpiano_SRCS
     vpianomain.cpp
 )
 
-SET(vpiano_qtobject_SRCS
+set(vpiano_qtobject_SRCS
     ../../library/include/rtmidiinput.h
     ../../library/include/rtmidioutput.h
     pianoscene.h
@@ -71,25 +59,25 @@ SET(vpiano_qtobject_SRCS
     vpiano.h
 )
 
-QT5_WRAP_CPP(vpiano_moc_SRCS ${vpiano_qtobject_SRCS})
+qt5_wrap_cpp(vpiano_moc_SRCS ${vpiano_qtobject_SRCS})
 
-QT5_ADD_RESOURCES(vpiano_SRCS pianokeybd.qrc)
+qt5_add_resources(vpiano_SRCS pianokeybd.qrc)
 
-ADD_EXECUTABLE(drumstick-vpiano
+add_executable(drumstick-vpiano
     ${vpiano_ui_SRCS}
     ${vpiano_moc_SRCS}
     ${vpiano_SRCS}
 )
 
-TARGET_LINK_LIBRARIES(drumstick-vpiano
-    ${ALSA_LIBS} 
+target_link_libraries(drumstick-vpiano
     drumstick-common
-    drumstick-alsa
     drumstick-rt
+    Qt5::Widgets
+    Qt5::Svg
 )
 
-INSTALL(TARGETS drumstick-vpiano
+install(TARGETS drumstick-vpiano
         RUNTIME DESTINATION bin)
 
-INSTALL(FILES drumstick-vpiano.desktop
+install(FILES drumstick-vpiano.desktop
         DESTINATION share/applications)

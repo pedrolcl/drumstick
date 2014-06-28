@@ -19,9 +19,6 @@
 if(ALSA_FOUND)
     add_subdirectory(alsa)
 endif()
-
 add_subdirectory(file)
-
 add_subdirectory(rt)
-
 add_subdirectory(rt-backends)

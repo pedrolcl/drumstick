@@ -36,6 +36,7 @@ TARGET_LINK_LIBRARIES(drumstick-testevents
     ${ALSA_LIBS} 
     drumstick-common
     drumstick-alsa
+    Qt5::Core
 )
 
 # we should install some files...

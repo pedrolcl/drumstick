@@ -17,15 +17,6 @@
 # MA 02110-1301, USA
 
 find_package(Qt5Widgets REQUIRED)
-include_directories(
-    ${Qt5Widgets_INCLUDE_DIRS}
-)
-link_libraries(
-    ${Qt5Widgets_LIBRARIES}
-)
-add_definitions(
-    ${Qt5Widgets_DEFINITIONS}
-)
 
 SET(guiplayer_forms_SRCS
     guiplayer.ui
@@ -68,6 +59,7 @@ TARGET_LINK_LIBRARIES(drumstick-guiplayer
     drumstick-common
     drumstick-file
     drumstick-alsa
+    Qt5::Widgets
 )
 
 INSTALL(TARGETS drumstick-guiplayer

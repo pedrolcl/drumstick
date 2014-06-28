@@ -36,6 +36,8 @@ add_library(drumstick-rt-dummy-in MODULE
     ${drumstick-rt-dummy-in_SRCS}
 )
 
+target_link_libraries(drumstick-rt-dummy-in Qt5::Core)
+
 set_target_properties(drumstick-rt-dummy-in PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/backends)
 

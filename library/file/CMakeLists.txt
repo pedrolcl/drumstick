@@ -16,51 +16,52 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-#INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-SET(drumstick-file_QTOBJ_SRCS
+set(drumstick-file_QTOBJ_SRCS
     ../include/qsmf.h
     ../include/qwrk.h
     ../include/qove.h
 )
 
-SET(drumstick-file_HEADERS
+set(drumstick-file_HEADERS
     ../include/macros.h
     ../include/qsmf.h
     ../include/qwrk.h
     ../include/qove.h
 )
 
-SET(drumstick-file_SRCS
+set(drumstick-file_SRCS
     qsmf.cpp
     qwrk.cpp
     qove.cpp
 )
 
-QT5_WRAP_CPP(drumstick-file_MOC_SRCS ${drumstick-file_QTOBJ_SRCS})
+qt5_wrap_cpp(drumstick-file_MOC_SRCS ${drumstick-file_QTOBJ_SRCS})
 
-ADD_LIBRARY(drumstick-file
+add_compiler_export_flags()
+
+add_library(drumstick-file
     ${drumstick-file_MOC_SRCS}
     ${drumstick-file_SRCS} 
     ${drumstick-file_HEADERS} 
 )
 
+target_link_libraries(drumstick-file Qt5::Core)
+
 if(STATIC_DRUMSTICK)
-    SET_TARGET_PROPERTIES(drumstick-file PROPERTIES
-        STATIC_LIB "libdrumstick-file.a"
-    )
+    set_target_properties(drumstick-file PROPERTIES
+        STATIC_LIB "libdrumstick-file.a")
 else()
-    SET_TARGET_PROPERTIES(drumstick-file PROPERTIES
+    set_target_properties(drumstick-file PROPERTIES
         VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
         SOVERSION ${VERSION_MAJOR})
 endif()
 
-INSTALL(TARGETS drumstick-file
+install(TARGETS drumstick-file
 	RUNTIME DESTINATION bin
 	ARCHIVE DESTINATION lib${LIB_SUFFIX}
 	LIBRARY DESTINATION lib${LIB_SUFFIX})
 
-INSTALL(FILES ${drumstick-file_HEADERS}
+install(FILES ${drumstick-file_HEADERS}
         DESTINATION include/drumstick)

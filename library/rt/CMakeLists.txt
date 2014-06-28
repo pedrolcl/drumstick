@@ -16,34 +16,42 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-#INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-SET(drumstick-rt_QTOBJ_SRCS
+set(drumstick-rt_HEADERS
     ../include/rtmidiinput.h
     ../include/rtmidioutput.h
 )
 
-SET(drumstick-rt_SRCS
+set(drumstick-rt_SRCS
     backendmanager.cpp
 )
     
-QT5_WRAP_CPP(drumstick-rt_MOC_SRCS ${drumstick-rt_QTOBJ_SRCS})
+qt5_wrap_cpp(drumstick-rt_MOC_SRCS ${drumstick-rt_HEADERS})
 
-ADD_LIBRARY(drumstick-rt
+add_compiler_export_flags()
+
+add_library(drumstick-rt
     ${drumstick-rt_MOC_SRCS}
     ${drumstick-rt_SRCS}
+    ${drumstick-rt_HEADERS}
 )
 
-if(NOT STATIC_DRUMSTICK)
-    SET_TARGET_PROPERTIES(drumstick-rt PROPERTIES
+target_link_libraries(drumstick-rt Qt5::Core)
+
+if(STATIC_DRUMSTICK)
+    set_target_properties(drumstick-rt PROPERTIES
+        STATIC_LIB "libdrumstick-rt.a")
+else()
+    set_target_properties(drumstick-rt PROPERTIES
         VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
         SOVERSION ${VERSION_MAJOR})
 endif()
-    
 
 install(TARGETS drumstick-rt
 	RUNTIME DESTINATION bin
 	ARCHIVE DESTINATION lib${LIB_SUFFIX}
 	LIBRARY DESTINATION lib${LIB_SUFFIX})
+
+install(FILES ${drumstick-rt_HEADERS}
+        DESTINATION include/drumstick)

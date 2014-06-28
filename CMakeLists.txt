@@ -16,36 +16,28 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-# The name of our project is "DRUMSTICK". CMakeLists files in this project can
-# refer to the root source directory of the project as ${DRUMSTICK_SOURCE_DIR} 
-# and to the root binary directory of the project as ${DRUMSTICK_BINARY_DIR}
+cmake_minimum_required(VERSION 2.8.11)
+project(DRUMSTICK)
 
-PROJECT(DRUMSTICK)
+if(CMAKE_SIZEOF_VOID_P MATCHES "8")
+    set(_INIT_LIB_SUFFIX "64")
+else()
+    set(_INIT_LIB_SUFFIX "")
+endif()
+set(LIB_SUFFIX ${_INIT_LIB_SUFFIX} CACHE STRING "optional library install directory suffix: 32, 64, none")
 
-# CMake minimum version
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.11)
-
-IF(CMAKE_SIZEOF_VOID_P MATCHES "8")
-    SET(_INIT_LIB_SUFFIX "64")
-ELSE(CMAKE_SIZEOF_VOID_P MATCHES "8")
-    SET(_INIT_LIB_SUFFIX "")
-ENDIF(CMAKE_SIZEOF_VOID_P MATCHES "8")
-SET(LIB_SUFFIX ${_INIT_LIB_SUFFIX} CACHE STRING "optional library install directory suffix: 32, 64, none")
-
-#Comment out if relative paths break the link scripts
-#SET(CMAKE_USE_RELATIVE_PATHS OFF)
-
-# Assorted settings
 set(CMAKE_COLOR_MAKEFILE ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 #set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set(CMAKE_SKIP_RULE_DEPENDENCY FALSE)
+#set(CMAKE_SKIP_RULE_DEPENDENCY FALSE)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 # Additional CMake modules for 3rd party library checks reside here
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_admin")
+
+include(GenerateExportHeader)
 
 # DRUMSTICK version string
 SET (VERSION_MAJOR "0")
@@ -63,107 +55,74 @@ OPTION(USE_DBUS "Include DBus support (required for RealtimeKit)" ON)
 
 MESSAGE(STATUS "Build configuration: ${CMAKE_BUILD_TYPE}")
 
-# LIBRARY BUILD TYPE
-IF(STATIC_DRUMSTICK)
-    SET(BUILD_SHARED_LIBS OFF)
+if(STATIC_DRUMSTICK)
+    set(BUILD_SHARED_LIBS OFF)
     add_definitions(-DDRUMSTICK_STATIC)
-    MESSAGE(STATUS "Building static libraries")
-ELSE(STATIC_DRUMSTICK)
-    SET(BUILD_SHARED_LIBS ON)
-    MESSAGE(STATUS "Building dynamic libraries")
-ENDIF(STATIC_DRUMSTICK)
+    message(STATUS "Building static libraries")
+else()
+    set(BUILD_SHARED_LIBS ON)
+    message(STATUS "Building dynamic libraries")
+endif()
 
-# Check for Qt
 find_package(Qt5Core REQUIRED)
 message(STATUS "Found Qt5 version = ${Qt5Core_VERSION_STRING}")
-include_directories(${Qt5Core_INCLUDE_DIRS})
-link_libraries(${Qt5Core_LIBRARIES})
-add_definitions(${Qt5Core_DEFINITIONS})
 
 if(USE_DBUS)
     find_package(Qt5DBus REQUIRED)
-    ADD_DEFINITIONS(-DRTKIT_SUPPORT)
-    include_directories(${Qt5DBus_INCLUDE_DIRS})
-    link_libraries(${Qt5DBus_LIBRARIES})
-    add_definitions(${Qt5DBus_DEFINITIONS})
+    add_definitions(-DRTKIT_SUPPORT)
 endif()
 
+find_package(PkgConfig REQUIRED)
+if(PKG_CONFIG_FOUND)
+    message(STATUS "Program pkg-config found (${PKG_CONFIG_EXECUTABLE})")
+else()
+    message(FATAL_ERROR "Program pkg-config not found")
+endif()
 
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
-# Check for PKG-CONFIG
-FIND_PACKAGE(PkgConfig REQUIRED)
-IF(PKG_CONFIG_FOUND)
-    MESSAGE(STATUS "Program pkg-config found (${PKG_CONFIG_EXECUTABLE})")
-ELSE(PKG_CONFIG_FOUND)
-    MESSAGE(FATAL_ERROR "Program pkg-config not found")
-ENDIF(PKG_CONFIG_FOUND)
-
-# Initialize some variables
-SET(HAVE_ALSA FALSE)
-
-# Check for ALSA 1.0.0
 pkg_check_modules(ALSA alsa>=1.0.0)
 if(ALSA_FOUND)
-    SET(HAVE_ALSA TRUE)
-    ADD_DEFINITIONS(-DHAVE_ALSA)
-    SET(ALSA_LIBS ${ALSA_LIBRARIES})
-    LIST(APPEND ALSA_LIB_DIR ${ALSA_LIBRARY_DIRS} ${ALSA_LIBDIR})
-    LIST(APPEND ALSA_INC_DIR ${ALSA_INCLUDE_DIRS} ${ALSA_INCLUDEDIR})
+    set(ALSA_LIBS ${ALSA_LIBRARIES})
+    list(APPEND ALSA_LIB_DIR ${ALSA_LIBRARY_DIRS} ${ALSA_LIBDIR})
+    list(APPEND ALSA_INC_DIR ${ALSA_INCLUDE_DIRS} ${ALSA_INCLUDEDIR})
 else()
-    MESSAGE(STATUS "Warning: ALSA library not found.")
+    message(STATUS "Warning: ALSA library not found.")
 endif()
 
-link_directories(
-    ${DRUMSTICK_BINARY_DIR}/lib
-    ${ALSA_LIB_DIR}
-)
-
+link_directories(${DRUMSTICK_BINARY_DIR}/lib)
 include_directories( BEFORE
     ${DRUMSTICK_SOURCE_DIR}/library
-    ${DRUMSTICK_SOURCE_DIR}/library/include
-    ${ALSA_INC_DIR}
-)
+    ${DRUMSTICK_SOURCE_DIR}/library/include)
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-# exceptions are needed by this library, please don't try to disable them!
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -UQT_NO_EXCEPTIONS")
-  if(NOT WIN32)
-    include (CheckCXXCompilerFlag)
-    check_cxx_compiler_flag (-fvisibility=hidden _HAVE_GCC_VISIBILITY)
-    if(_HAVE_GCC_VISIBILITY)
-      set(CMAKE_CXX_FLAGS
-           "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden")
-    endif(_HAVE_GCC_VISIBILITY)
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
-  endif(NOT WIN32)
-endif(CMAKE_COMPILER_IS_GNUCXX)
+#if(CMAKE_COMPILER_IS_GNUCXX)
+## exceptions are needed by this library, please don't try to disable them!
+#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -UQT_NO_EXCEPTIONS")
+#endif(CMAKE_COMPILER_IS_GNUCXX)
 
 add_subdirectory(library)
 add_subdirectory(utils)
 add_subdirectory(icons)
+
 if(${CMAKE_SYSTEM} MATCHES "Linux")
-    FIND_PACKAGE(Doxygen)
-    IF(DOXYGEN_FOUND)
-        CONFIGURE_FILE(
+    find_package(Doxygen)
+    if(DOXYGEN_FOUND)
+        configure_file(
             "${CMAKE_SOURCE_DIR}/Doxyfile.in"
             "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
             IMMEDIATE @ONLY)
-        ADD_CUSTOM_TARGET ( doxygen
+        add_custom_target(doxygen
             ${DOXYGEN} Doxyfile
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        )
-    ENDIF(DOXYGEN_FOUND)
-    ADD_SUBDIRECTORY(doc)
-    CONFIGURE_FILE(drumstick-alsa.pc.in drumstick-alsa.pc IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick.spec.in drumstick.spec IMMEDIATE @ONLY)
-    INSTALL( FILES 
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    endif()
+    add_subdirectory(doc)
+    configure_file(drumstick-alsa.pc.in drumstick-alsa.pc IMMEDIATE @ONLY)
+    configure_file(drumstick.spec.in drumstick.spec IMMEDIATE @ONLY)
+    install(FILES
 	${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
 	DESTINATION lib${LIB_SUFFIX}/pkgconfig )
 endif()
 
-CONFIGURE_FILE(drumstick-file.pc.in drumstick-file.pc IMMEDIATE @ONLY)
-INSTALL( FILES 
+configure_file(drumstick-file.pc.in drumstick-file.pc IMMEDIATE @ONLY)
+install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/drumstick-file.pc
     DESTINATION lib${LIB_SUFFIX}/pkgconfig )
 
@@ -174,20 +133,20 @@ find_package( SharedMimeInfo )
 if( SHARED_MIME_INFO_FOUND )
     install( FILES drumstick.xml DESTINATION ${XDG_MIME_INSTALL_DIR} ) 
     update_xdg_mimetypes( ${XDG_MIME_INSTALL_DIR} )
-endif( SHARED_MIME_INFO_FOUND )
+endif()
 
 # uninstall custom target
-CONFIGURE_FILE(
+configure_file(
     "${CMAKE_SOURCE_DIR}/cmake_admin/cmake_uninstall.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
     IMMEDIATE @ONLY)
 
-ADD_CUSTOM_TARGET ( uninstall
+add_custom_target( uninstall
     "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
 
-IF(${CMAKE_SYSTEM} MATCHES "Linux")
+if(${CMAKE_SYSTEM} MATCHES "Linux")
     # tarball target
-    ADD_CUSTOM_TARGET ( tarball
+    add_custom_target( tarball
         COMMAND mkdir -p drumstick-${VERSION}
         COMMAND cp -r cmake_admin drumstick-${VERSION}
         COMMAND cp -r library drumstick-${VERSION}
@@ -200,4 +159,4 @@ IF(${CMAKE_SYSTEM} MATCHES "Linux")
         COMMAND rm -rf drumstick-${VERSION}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
-ENDIF(${CMAKE_SYSTEM} MATCHES "Linux")
+endif()

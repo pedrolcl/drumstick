@@ -30,19 +30,29 @@ const QString QSTR_DATADIR("soundfonts");
 const QString QSTR_SOUNDFONT("default.sf2");
 
 SynthEngine::SynthEngine(QObject *parent)
-    : QObject(parent)
-{ }
+    : QObject(parent),
+      m_driver(0),
+      m_synth(0),
+      m_settings(0)
+{
+    qDebug() << Q_FUNC_INFO;
+}
 
 SynthEngine::~SynthEngine()
 {
-    ::delete_fluid_audio_driver(m_driver);
-    ::delete_fluid_synth(m_synth);
-    ::delete_fluid_settings(m_settings);
+    qDebug() << Q_FUNC_INFO;
+    if (m_driver != 0)
+        ::delete_fluid_audio_driver(m_driver);
+    if (m_synth != 0)
+        ::delete_fluid_synth(m_synth);
+    if (m_settings != 0)
+        ::delete_fluid_settings(m_settings);
 }
 
 void SynthEngine::initializeSynth(QSettings* settings)
 {
     Q_UNUSED(settings)
+    qDebug() << Q_FUNC_INFO;
     m_settings = ::new_fluid_settings();
 #if defined(Q_OS_LINUX)
     ::fluid_settings_setstr(m_settings, "audio.driver", "pulseaudio");
@@ -75,6 +85,7 @@ void SynthEngine::setInstrument(int channel, int pgm)
     //}
     ::fluid_synth_program_change(m_synth, channel, pgm);
 }
+
 void SynthEngine::noteOn(int channel, int midiNote, int velocity)
 {
     //qDebug() << "NoteOn " << midiNote << " vel: " << velocity; // << " time: " << m_time.elapsed();

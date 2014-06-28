@@ -37,6 +37,7 @@ TARGET_LINK_LIBRARIES(drumstick-playsmf
     drumstick-common
     drumstick-alsa
     drumstick-file
+    Qt5::Core
 )
 
 # we should install some files...

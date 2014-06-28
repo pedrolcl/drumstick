@@ -16,11 +16,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-#INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR} )
-
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+include_directories(${ALSA_INC_DIR})
+link_directories(${ALSA_LIB_DIR})
 
-SET(drumstick-alsa_QTOBJ_SRCS
+set(drumstick-alsa_QTOBJ_SRCS
     ../include/alsaclient.h
     ../include/alsaevent.h
     ../include/alsaport.h
@@ -29,7 +29,7 @@ SET(drumstick-alsa_QTOBJ_SRCS
     ../include/playthread.h
 )
 
-SET(drumstick-alsa_HEADERS
+set(drumstick-alsa_HEADERS
     ../include/alsaclient.h
     ../include/alsaevent.h
     ../include/alsaport.h
@@ -50,40 +50,38 @@ SET(drumstick-alsa_SRCS
     subscription.cpp
 )
 
-QT5_WRAP_CPP(drumstick-alsa_MOC_SRCS ${drumstick-alsa_QTOBJ_SRCS})
 
-ADD_LIBRARY(drumstick-alsa
+qt5_wrap_cpp(drumstick-alsa_MOC_SRCS ${drumstick-alsa_QTOBJ_SRCS})
+
+add_compiler_export_flags()
+
+add_library(drumstick-alsa
     ${drumstick-alsa_MOC_SRCS}
     ${drumstick-alsa_SRCS}
     ${drumstick-alsa_HEADERS}
 )
 
-TARGET_LINK_LIBRARIES(drumstick-alsa
+target_link_libraries(drumstick-alsa
     ${ALSA_LIBS}
+    Qt5::Core
+    Qt5::DBus
 )
 
-IF(STATIC_DRUMSTICK)
-    SET_TARGET_PROPERTIES(drumstick-alsa PROPERTIES
-         STATIC_LIB "libdrumstick-alsa.a"
-    )
-    IF(NOT WIN32)
-        SET_TARGET_PROPERTIES(drumstick-file PROPERTIES
-        COMPILE_FLAGS -fPIC
-    )
-    ENDIF(NOT WIN32)
-ELSE(STATIC_DRUMSTICK)
-    SET_TARGET_PROPERTIES(drumstick-alsa PROPERTIES
+if(STATIC_DRUMSTICK)
+    set_target_properties(drumstick-alsa PROPERTIES
+         STATIC_LIB "libdrumstick-alsa.a")
+else()
+    set_target_properties(drumstick-alsa PROPERTIES
         VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
         SOVERSION ${VERSION_MAJOR}
     )
-ENDIF(STATIC_DRUMSTICK)
+endif()
 
-INSTALL(TARGETS drumstick-alsa
-    RUNTIME DESTINATION bin
-    ARCHIVE DESTINATION lib${LIB_SUFFIX}
-    LIBRARY DESTINATION lib${LIB_SUFFIX})
-INSTALL(FILES ${drumstick-alsa_HEADERS}
+install(TARGETS drumstick-alsa
+        RUNTIME DESTINATION bin
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}
+        LIBRARY DESTINATION lib${LIB_SUFFIX})
+install(FILES ${drumstick-alsa_HEADERS}
         DESTINATION include/drumstick)
-INSTALL(FILES include/drumstick.h
+install(FILES include/drumstick.h
         DESTINATION include)
-            

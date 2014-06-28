@@ -16,17 +16,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-add_subdirectory(dummy-in)
-add_subdirectory(dummy-out)
+#add_subdirectory(dummy-in)
+#add_subdirectory(dummy-out)
 
 if(ALSA_FOUND)
     add_subdirectory(alsa-in)
     add_subdirectory(alsa-out)
-endif()
-
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    add_subdirectory(mac-in)
-    add_subdirectory(mac-out)
 endif()
 
 find_package(Qt5Network)
@@ -40,12 +35,17 @@ if(UNIX)
     add_subdirectory(oss-out)
 endif()
 
-if(WIN32)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    add_subdirectory(mac-in)
+    add_subdirectory(mac-out)
+endif()
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     add_subdirectory(win-in)
     add_subdirectory(win-out)
 endif()
 
-pkg_check_modules(FLUIDSYNTH fluidsynth>=1.0.0)
+pkg_check_modules(FLUIDSYNTH fluidsynth>=1.1.1)
 if(FLUIDSYNTH_FOUND)
     add_subdirectory(synth)
 endif()

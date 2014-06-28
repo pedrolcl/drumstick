@@ -17,22 +17,13 @@
 # MA 02110-1301, USA
 
 find_package(Qt5Widgets REQUIRED)
-include_directories(
-    ${Qt5Widgets_INCLUDE_DIRS}
-)
-link_libraries(
-    ${Qt5Widgets_LIBRARIES}
-)
-add_definitions(
-    ${Qt5Widgets_DEFINITIONS}
-)
 
-SET(drumgrid_forms_SRCS
+set(drumgrid_forms_SRCS
     drumgridabout.ui
     drumgrid.ui
 )
 
-SET(drumgrid_SRCS
+set(drumgrid_SRCS
     drumgridabout.cpp
     drumgridabout.h
     drumgrid.cpp
@@ -42,7 +33,7 @@ SET(drumgrid_SRCS
     drumgridmain.cpp
 )
 
-SET(drumgrid_qtobject_SRCS
+set(drumgrid_qtobject_SRCS
     drumgridabout.h
     drumgridmodel.h
     drumgrid.h
@@ -62,6 +53,7 @@ TARGET_LINK_LIBRARIES(drumstick-drumgrid
     ${ALSA_LIBS} 
     drumstick-common
     drumstick-alsa
+    Qt5::Widgets
 )
 
 INSTALL(TARGETS drumstick-drumgrid 

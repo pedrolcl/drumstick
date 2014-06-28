@@ -35,6 +35,7 @@ ADD_EXECUTABLE(drumstick-buildsmf
 TARGET_LINK_LIBRARIES(drumstick-buildsmf
     drumstick-common
     drumstick-file
+    Qt5::Core
 )
 
 INSTALL(TARGETS drumstick-buildsmf 

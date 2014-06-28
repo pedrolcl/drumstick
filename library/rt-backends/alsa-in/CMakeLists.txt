@@ -16,8 +16,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-#INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(drumstick-rt-alsa-in_QTOBJ_SRCS
@@ -34,10 +32,22 @@ add_definitions(-DQT_PLUGIN)
 
 qt5_wrap_cpp(drumstick-rt-alsa-in_MOC_SRCS ${drumstick-rt-alsa-in_QTOBJ_SRCS})
 
-add_library(drumstick-rt-alsa-in MODULE
-    ${drumstick-rt-alsa-in_MOC_SRCS}
-    ${drumstick-rt-alsa-in_SRCS}
-)
+if(STATIC_DRUMSTICK)
+    add_definitions(-DQT_STATICPLUGIN)
+    add_library(drumstick-rt-alsa-in STATIC
+        ${drumstick-rt-alsa-in_MOC_SRCS}
+        ${drumstick-rt-alsa-in_SRCS})
+    set_target_properties(drumstick-alsa PROPERTIES
+         STATIC_LIB "libdrumstick-rt-alsa-in.a")
+else()
+    add_library(drumstick-rt-alsa-in MODULE
+        ${drumstick-rt-alsa-in_MOC_SRCS}
+        ${drumstick-rt-alsa-in_SRCS})
+endif()
+
+target_link_libraries(drumstick-rt-alsa-in
+    drumstick-alsa
+    Qt5::Core)
 
 set_target_properties(drumstick-rt-alsa-in PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/backends)

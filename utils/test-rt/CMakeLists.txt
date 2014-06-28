@@ -16,18 +16,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-SET(test-rt_SRCS
+set(SRCS
     main.cpp
 )
 
-ADD_EXECUTABLE(drumstick-test-rt
-    ${test-rt_SRCS}
+add_executable(drumstick-test-rt
+    ${SRCS}
 )
 
-TARGET_LINK_LIBRARIES(drumstick-test-rt
+target_link_libraries(drumstick-test-rt
     drumstick-common
     drumstick-rt
+    Qt5::Core
 )
 
-INSTALL(TARGETS drumstick-test-rt
+install(TARGETS drumstick-test-rt
         RUNTIME DESTINATION bin)

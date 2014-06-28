@@ -16,30 +16,28 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-# common settings
-
-INCLUDE_DIRECTORIES ( 
+include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/common
     ${CMAKE_CURRENT_BINARY_DIR}/common
 )
 
-ADD_SUBDIRECTORY(common)
-ADD_SUBDIRECTORY(buildsmf)
-ADD_SUBDIRECTORY(dumpsmf)
-ADD_SUBDIRECTORY(dumpwrk)
-ADD_SUBDIRECTORY(dumpove)
-ADD_SUBDIRECTORY(test-rt)
+add_subdirectory(common)
+add_subdirectory(buildsmf)
+add_subdirectory(dumpsmf)
+add_subdirectory(dumpwrk)
+add_subdirectory(dumpove)
+add_subdirectory(test-rt)
 
-IF(ALSA_FOUND)
-    ADD_SUBDIRECTORY(dumpmid)
-    ADD_SUBDIRECTORY(playsmf)
-    ADD_SUBDIRECTORY(guiplayer)
-    ADD_SUBDIRECTORY(sysinfo)
-    ADD_SUBDIRECTORY(testevents)
-    ADD_SUBDIRECTORY(timertest)
-    ADD_SUBDIRECTORY(metronome)
-    ADD_SUBDIRECTORY(drumgrid)
-    #ADD_SUBDIRECTORY(vpiano)
-ENDIF(ALSA_FOUND)
+if(ALSA_FOUND)
+    add_subdirectory(dumpmid)
+    add_subdirectory(playsmf)
+    add_subdirectory(guiplayer)
+    add_subdirectory(sysinfo)
+    add_subdirectory(testevents)
+    add_subdirectory(timertest)
+    add_subdirectory(metronome)
+    add_subdirectory(drumgrid)
+    add_subdirectory(vpiano)
+endif()
