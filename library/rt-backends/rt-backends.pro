@@ -21,4 +21,4 @@ win32 {
 }
 
 SUBDIRS += net-in net-out
-SUBDIRS += synth
+#SUBDIRS += synth

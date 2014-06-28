@@ -18,7 +18,7 @@
 */
 
 #include "macmidiinput.h"
-#include "macmidioutput.h"
+#include "rtmidioutput.h"
 #include "maccommon.h"
 
 #include <QDebug>

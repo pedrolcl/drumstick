@@ -11,7 +11,8 @@ QT -= gui
 # Input
 HEADERS += \
     ../include/rtmidiinput.h \
-    ../include/rtmidioutput.h
+    ../include/rtmidioutput.h \
+    ../include/backendmanager.h
 
 SOURCES += \
     backendmanager.cpp
