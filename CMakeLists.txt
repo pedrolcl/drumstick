@@ -40,20 +40,25 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_admin")
 include(GenerateExportHeader)
 
 # DRUMSTICK version string
-SET (VERSION_MAJOR "0")
-SET (VERSION_MINOR "5")
-SET (VERSION_PATCH "99")
-SET (VERSION_SUFFIX "svn")
-SET (VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
+set(VERSION_MAJOR "0")
+set(VERSION_MINOR "5")
+set(VERSION_PATCH "99")
+set(VERSION_SUFFIX "svn")
+set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 add_definitions(-DVERSION=${VERSION})
 
-MESSAGE(STATUS "drumstick ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "drumstick ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
+
+set(_DBUS_INIT OFF)
+if(${CMAKE_SYSTEM} MATCHES "Linux")
+	set(_DBUS_INIT ON)
+endif()
 
 # User options
-OPTION(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)
-OPTION(USE_DBUS "Include DBus support (required for RealtimeKit)" ON)
+option(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)
+option(USE_DBUS "Include DBus support (required for RealtimeKit)" ${_DBUS_INIT})
 
-MESSAGE(STATUS "Build configuration: ${CMAKE_BUILD_TYPE}")
+message(STATUS "Build configuration: ${CMAKE_BUILD_TYPE}")
 
 if(STATIC_DRUMSTICK)
     set(BUILD_SHARED_LIBS OFF)
@@ -79,13 +84,15 @@ else()
     message(FATAL_ERROR "Program pkg-config not found")
 endif()
 
-pkg_check_modules(ALSA alsa>=1.0.0)
-if(ALSA_FOUND)
-    set(ALSA_LIBS ${ALSA_LIBRARIES})
-    list(APPEND ALSA_LIB_DIR ${ALSA_LIBRARY_DIRS} ${ALSA_LIBDIR})
-    list(APPEND ALSA_INC_DIR ${ALSA_INCLUDE_DIRS} ${ALSA_INCLUDEDIR})
-else()
-    message(STATUS "Warning: ALSA library not found.")
+if(${CMAKE_SYSTEM} MATCHES "Linux")
+    pkg_check_modules(ALSA alsa>=1.0.0)
+    if(ALSA_FOUND)
+        set(ALSA_LIBS ${ALSA_LIBRARIES})
+        list(APPEND ALSA_LIB_DIR ${ALSA_LIBRARY_DIRS} ${ALSA_LIBDIR})
+        list(APPEND ALSA_INC_DIR ${ALSA_INCLUDE_DIRS} ${ALSA_INCLUDEDIR})
+    else()
+        message(STATUS "Warning: ALSA library not found.")
+    endif()
 endif()
 
 link_directories(${DRUMSTICK_BINARY_DIR}/lib)
@@ -124,6 +131,11 @@ endif()
 configure_file(drumstick-file.pc.in drumstick-file.pc IMMEDIATE @ONLY)
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/drumstick-file.pc
+    DESTINATION lib${LIB_SUFFIX}/pkgconfig )
+
+configure_file(drumstick-rt.pc.in drumstick-rt.pc IMMEDIATE @ONLY)
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/drumstick-rt.pc
     DESTINATION lib${LIB_SUFFIX}/pkgconfig )
 
 # XML mime types

@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG += plugin create_prl #static
+CONFIG += plugin #create_prl static
 TARGET = $$qtLibraryTarget(drumstick-rt-net-out)
 DESTDIR = ../../../build/backends
 DEPENDPATH += . ../../include
@@ -16,3 +16,7 @@ SOURCES += \
            netmidioutput.cpp
 
 QT += network
+
+win32 {
+    TARGET_EXT = .dll
+}

@@ -4,7 +4,7 @@ DESTDIR = ../../build/lib
 DEPENDPATH += . ../include
 INCLUDEPATH += . ../include
 include (../../global.pri)
-CONFIG += qt thread create_prl
+CONFIG += qt #create_prl
 DEFINES += drumstick_rt_EXPORTS
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
 QT -= gui
@@ -15,6 +15,10 @@ HEADERS += \
 
 SOURCES += \
     backendmanager.cpp
+
+win32 {
+    TARGET_EXT = .dll
+}
 
 #LIBS += -L$$OUT_PWD/../../build/backends
 #LIBS += -L$$OUT_PWD/../../build/lib

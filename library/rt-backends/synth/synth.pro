@@ -2,7 +2,8 @@ TEMPLATE = lib
 TARGET = $$qtLibraryTarget(drumstick-rt-synth)
 DESTDIR = ../../../build/backends
 include (../../../global.pri)
-CONFIG += plugin create_prl #static
+CONFIG += plugin #create_prl static
+CONFIG += link_pkgconfig
 DEPENDPATH += ../../include
 INCLUDEPATH += ../../include
 QT -= gui
@@ -14,4 +15,8 @@ HEADERS += ../../include/rtmidiinput.h \
 
 SOURCES += synthoutput.cpp synthengine.cpp
 
-LIBS += -lfluidsynth
+PKGCONFIG += fluidsynth
+
+win32 {
+    TARGET_EXT = .dll
+}

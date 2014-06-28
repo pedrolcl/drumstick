@@ -31,9 +31,9 @@ const QString QSTR_SOUNDFONT("default.sf2");
 
 SynthEngine::SynthEngine(QObject *parent)
     : QObject(parent),
-      m_driver(0),
+      m_settings(0),
       m_synth(0),
-      m_settings(0)
+      m_driver(0)
 {
     qDebug() << Q_FUNC_INFO;
 }

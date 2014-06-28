@@ -36,7 +36,7 @@ QString nativeBackend("CoreMIDI");
 #endif
 
 #if defined(Q_OS_WIN)
-QString nativeBackend("WinMM");
+QString nativeBackend("Windows MM");
 //Q_IMPORT_PLUGIN(WinMIDIInput)
 //Q_IMPORT_PLUGIN(WinMIDIOutput)
 #endif
