@@ -8,7 +8,7 @@ linux* {
     SUBDIRS += alsa-in alsa-out
 }
 
-unix {
+unix:!macx {
     SUBDIRS += oss-in oss-out
 }
 
@@ -21,4 +21,4 @@ win32 {
 }
 
 SUBDIRS += net-in net-out
-#SUBDIRS += synth
+SUBDIRS += synth

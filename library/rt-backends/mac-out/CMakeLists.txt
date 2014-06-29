@@ -15,3 +15,46 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(drumstick-rt-mac-out_QTOBJ_SRCS
+    ../../include/rtmidioutput.h
+    macmidioutput.h
+)
+
+set(drumstick-rt-mac-out_SRCS
+    maccommon.h
+    maccommon.cpp
+    macmidioutput.cpp
+)
+
+add_definitions(-DQT_PLUGIN)
+
+qt5_wrap_cpp(drumstick-rt-mac-out_MOC_SRCS ${drumstick-rt-mac-out_QTOBJ_SRCS})
+
+if(STATIC_DRUMSTICK)
+    add_definitions(-DQT_STATICPLUGIN)
+    add_library(drumstick-rt-mac-out STATIC
+        ${drumstick-rt-mac-out_MOC_SRCS}
+        ${drumstick-rt-mac-out_SRCS})
+    set_target_properties(drumstick-alsa PROPERTIES
+         STATIC_LIB "libdrumstick-rt-mac-out.a")
+else()
+    add_library(drumstick-rt-mac-out MODULE
+        ${drumstick-rt-mac-out_MOC_SRCS}
+        ${drumstick-rt-mac-out_SRCS})
+endif()
+
+target_link_libraries(drumstick-rt-mac-out
+    Qt5::Core
+    "-framework CoreMidi -framework CoreFoundation"
+)
+
+set_target_properties(drumstick-rt-mac-out PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/backends)
+
+install(TARGETS drumstick-rt-mac-out
+        RUNTIME DESTINATION bin
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}
+        LIBRARY DESTINATION lib${LIB_SUFFIX})

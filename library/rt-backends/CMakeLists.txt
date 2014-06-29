@@ -30,7 +30,7 @@ if(Qt5Network_FOUND)
     add_subdirectory(net-out)
 endif()
 
-if(UNIX)
+if(UNIX AND NOT APPLE)
     add_subdirectory(oss-in)
     add_subdirectory(oss-out)
 endif()
