@@ -42,7 +42,62 @@ target_link_libraries(drumstick-rt Qt5::Core)
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-rt PROPERTIES
         STATIC_LIB "libdrumstick-rt.a")
-else()
+    #
+    #    add_definitions(-DDUMMY_BACKEND)
+    #    target_link_libraries(drumstick-rt-dummy-in)
+    #    target_link_libraries(drumstick-rt-dummy-out)
+    #
+
+    if(ALSA_FOUND)
+        add_definitions(-DALSA_BACKEND)
+        target_link_libraries(drumstick-rt
+            drumstick-rt-alsa-in
+            drumstick-rt-alsa-out
+            drumstick-alsa)
+    endif()
+
+    if(UNIX AND NOT APPLE)
+        add_definitions(-DOSS_BACKEND)
+        target_link_libraries(drumstick-rt
+            drumstick-rt-oss-in
+            drumstick-rt-oss-out)
+    endif()
+
+
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+        add_definitions(-DMAC_BACKEND)
+        target_link_libraries(drumstick-rt
+            drumstick-rt-mac-in
+            drumstick-rt-mac-out
+            "-framework CoreMidi -framework CoreFoundation")
+    endif()
+
+
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+        add_definitions(-DWIN_BACKEND)
+        target_link_libraries(drumstick-rt
+            drumstick-rt-win-in
+            drumstick-rt-win-out
+            winmm)
+    endif()
+
+
+    find_package(Qt5Network)
+    if(Qt5Network_FOUND)
+        add_definitions(-DNET_BACKEND)
+        target_link_libraries(drumstick-rt
+            drumstick-rt-net-in
+            drumstick-rt-net-out)
+    endif()
+
+    pkg_check_modules(FLUIDSYNTH fluidsynth>=1.1.1)
+    if(FLUIDSYNTH_FOUND)
+        add_definitions(-DSYNTH_BACKEND)
+        target_link_libraries(drumstick-rt drumstick-rt-synth)
+    endif()
+
+else() # STATIC_DRUMSTICK
+
     set_target_properties(drumstick-rt PROPERTIES
         VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
         SOVERSION ${VERSION_MAJOR})

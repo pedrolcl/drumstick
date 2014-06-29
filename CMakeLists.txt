@@ -24,7 +24,7 @@ if(CMAKE_SIZEOF_VOID_P MATCHES "8")
 else()
     set(_INIT_LIB_SUFFIX "")
 endif()
-option(LIB_SUFFIX "optional library install directory suffix: 32, 64, none" ${_INIT_LIB_SUFFIX})
+set(LIB_SUFFIX ${_INIT_LIB_SUFFIX} CACHE STRING "optional library install directory suffix: 32, 64, none")
 
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
