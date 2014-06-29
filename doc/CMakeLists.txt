@@ -37,10 +37,6 @@ IF(XSLTPROC_EXECUTABLE)
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-guiplayer.xml IMMEDIATE @ONLY)
     CONFIGURE_FILE(drumstick-sysinfo.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-sysinfo.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-testevents.xml.in 
-        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-testevents.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-timertest.xml.in 
-        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-timertest.xml IMMEDIATE @ONLY)
     CONFIGURE_FILE(drumstick-vpiano.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-vpiano.xml IMMEDIATE @ONLY)
     INCLUDE(CreateManpages)
@@ -55,8 +51,6 @@ IF(XSLTPROC_EXECUTABLE)
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-playsmf.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-guiplayer.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-sysinfo.xml
-        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-testevents.xml
-        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-timertest.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-vpiano.xml 
     )
 ELSE(XSLTPROC_EXECUTABLE)

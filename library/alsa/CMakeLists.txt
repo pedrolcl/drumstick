@@ -83,5 +83,5 @@ install(TARGETS drumstick-alsa
         LIBRARY DESTINATION lib${LIB_SUFFIX})
 install(FILES ${drumstick-alsa_HEADERS}
         DESTINATION include/drumstick)
-install(FILES include/drumstick.h
+install(FILES ../include/drumstick.h
         DESTINATION include)

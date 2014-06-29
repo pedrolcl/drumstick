@@ -54,5 +54,5 @@ set_target_properties(drumstick-rt-win-in PROPERTIES
 
 install(TARGETS drumstick-rt-win-in
         RUNTIME DESTINATION bin
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}
-        LIBRARY DESTINATION lib${LIB_SUFFIX})
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}/drumstick
+        LIBRARY DESTINATION lib${LIB_SUFFIX}/drumstick)

@@ -39,6 +39,6 @@ TARGET_LINK_LIBRARIES(drumstick-testevents
     Qt5::Core
 )
 
-# we should install some files...
-INSTALL(TARGETS drumstick-testevents
-        RUNTIME DESTINATION bin)
+# not an utility
+#INSTALL(TARGETS drumstick-testevents
+#        RUNTIME DESTINATION bin)

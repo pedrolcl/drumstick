@@ -66,7 +66,7 @@ namespace drumstick {
 namespace rt {
 
     /**
-     * MIDI OUT port
+     * MIDI OUT interface
      */
     class MIDIOutput : public QObject
     {
@@ -196,6 +196,6 @@ namespace rt {
 }
 }
 
-Q_DECLARE_INTERFACE(drumstick::rt::MIDIOutput, "net.sourceforge.drumstick.rt.MIDIOutput/0.1")
+Q_DECLARE_INTERFACE(drumstick::rt::MIDIOutput, "net.sourceforge.drumstick.rt.MIDIOutput/1.0")
 
 #endif /* MIDIOUTPUT_H */

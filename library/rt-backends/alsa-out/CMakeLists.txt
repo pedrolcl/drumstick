@@ -53,5 +53,5 @@ set_target_properties(drumstick-rt-alsa-out PROPERTIES
 
 install(TARGETS drumstick-rt-alsa-out
         RUNTIME DESTINATION bin
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}
-        LIBRARY DESTINATION lib${LIB_SUFFIX})
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}/drumstick
+        LIBRARY DESTINATION lib${LIB_SUFFIX}/drumstick)

@@ -348,6 +348,41 @@ public:
     QReadWriteLock m_mutex;
 };
 
+class MidiClient::MidiClientPrivate
+{
+public:
+    MidiClientPrivate() :
+        m_eventsEnabled(false),
+        m_BlockMode(false),
+        m_NeedRefreshClientList(true),
+        m_OpenMode(SND_SEQ_OPEN_DUPLEX),
+        m_DeviceName("default"),
+        m_SeqHandle(0),
+        m_Thread(0),
+        m_Queue(0),
+        m_handler(0)
+    { }
+
+    bool m_eventsEnabled;
+    bool m_BlockMode;
+    bool m_NeedRefreshClientList;
+    int  m_OpenMode;
+    QString m_DeviceName;
+    snd_seq_t* m_SeqHandle;
+    QPointer<SequencerInputThread> m_Thread;
+    QPointer<MidiQueue> m_Queue;
+    SequencerEventHandler* m_handler;
+
+    ClientInfo m_Info;
+    ClientInfoList m_ClientList;
+    MidiPortList m_Ports;
+    PortInfoList m_OutputsAvail;
+    PortInfoList m_InputsAvail;
+    QObjectList m_listeners;
+    SystemInfo m_sysInfo;
+    PoolInfo m_poolInfo;
+};
+
 /**
  * Constructor.
  *
@@ -365,15 +400,7 @@ public:
  */
 MidiClient::MidiClient( QObject* parent ) :
     QObject(parent),
-    m_eventsEnabled(false),
-    m_BlockMode(false),
-    m_NeedRefreshClientList(true),
-    m_OpenMode(SND_SEQ_OPEN_DUPLEX),
-    m_DeviceName("default"),
-    m_SeqHandle(NULL),
-    m_Thread(NULL),
-    m_Queue(NULL),
-    m_handler(NULL)
+    d(new MidiClientPrivate)
 { }
 
 /**
@@ -385,13 +412,73 @@ MidiClient::~MidiClient()
 {
     stopSequencerInput();
     detachAllPorts();
-    if (m_Queue != NULL)
-        delete m_Queue;
+    if (d->m_Queue != 0)
+        delete d->m_Queue;
     close();
     freeClients();
-    if (m_Thread != NULL)
-        delete m_Thread;
+    if (d->m_Thread != 0)
+        delete d->m_Thread;
+    delete d;
 }
+
+
+/**
+ * Returns the sequencer handler managed by ALSA
+ */
+snd_seq_t*
+MidiClient::getHandle()
+{
+    return d->m_SeqHandle;
+}
+
+/**
+ * Returns true if the sequencer is opened
+ */
+bool MidiClient::isOpened()
+{
+    return (d->m_SeqHandle != NULL);
+}
+
+/**
+ * Returns the name of the sequencer device
+ */
+QString MidiClient::getDeviceName()
+{
+    return d->m_DeviceName;
+}
+
+/**
+ * Returns the last open mode used in open()
+ */
+int MidiClient::getOpenMode()
+{
+    return d->m_OpenMode;
+}
+
+/**
+ * Returns the last block mode used in open()
+ */
+bool MidiClient::getBlockMode()
+{
+    return d->m_BlockMode;
+}
+
+/**
+ * Returns true if the events mode of delivery has been enabled
+ */
+bool MidiClient::getEventsEnabled() const
+{
+    return d->m_eventsEnabled;
+}
+
+/**
+ * Sets a sequencer event handler enabling the callback delivery mode
+ */
+void MidiClient::setHandler(SequencerEventHandler* handler)
+{
+    d->m_handler = handler;
+}
+
 
 /**
  * Enables real-time priority for the MIDI input thread. The system needs either
@@ -403,9 +490,9 @@ MidiClient::~MidiClient()
  */
 void MidiClient::setRealTimeInput(bool enable)
 {
-    if (m_Thread == 0) {
-        m_Thread = new SequencerInputThread(this, DEFAULT_INPUT_TIMEOUT);
-        m_Thread->m_RealTime = enable;
+    if (d->m_Thread == 0) {
+        d->m_Thread = new SequencerInputThread(this, DEFAULT_INPUT_TIMEOUT);
+        d->m_Thread->m_RealTime = enable;
     }
 }
 
@@ -416,9 +503,9 @@ void MidiClient::setRealTimeInput(bool enable)
  */
 bool MidiClient::realTimeInputEnabled()
 {
-    if (m_Thread == 0)
+    if (d->m_Thread == 0)
         return true;
-    return m_Thread->m_RealTime;
+    return d->m_Thread->m_RealTime;
 }
 
 /**
@@ -446,12 +533,12 @@ MidiClient::open( const QString deviceName,
                   const int openMode,
                   const bool blockMode)
 {
-    CHECK_ERROR( snd_seq_open( &m_SeqHandle, deviceName.toLocal8Bit().data(),
+    CHECK_ERROR( snd_seq_open( &d->m_SeqHandle, deviceName.toLocal8Bit().data(),
                               openMode, blockMode ? 0 : SND_SEQ_NONBLOCK ) );
-    CHECK_WARNING( snd_seq_get_client_info( m_SeqHandle, m_Info.m_Info ) );
-    m_DeviceName = deviceName;
-    m_OpenMode = openMode;
-    m_BlockMode = blockMode;
+    CHECK_WARNING( snd_seq_get_client_info( d->m_SeqHandle, d->m_Info.m_Info ) );
+    d->m_DeviceName = deviceName;
+    d->m_OpenMode = openMode;
+    d->m_BlockMode = blockMode;
 }
 
 /**
@@ -480,15 +567,15 @@ MidiClient::open( snd_config_t* conf,
                   const int openMode,
                   const bool blockMode )
 {
-    CHECK_ERROR( snd_seq_open_lconf( &m_SeqHandle,
+    CHECK_ERROR( snd_seq_open_lconf( &d->m_SeqHandle,
                                      deviceName.toLocal8Bit().data(),
                                      openMode,
                                      blockMode ? 0 : SND_SEQ_NONBLOCK,
                                      conf ));
-    CHECK_WARNING( snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info));
-    m_DeviceName = deviceName;
-    m_OpenMode = openMode;
-    m_BlockMode = blockMode;
+    CHECK_WARNING( snd_seq_get_client_info(d->m_SeqHandle, d->m_Info.m_Info));
+    d->m_DeviceName = deviceName;
+    d->m_OpenMode = openMode;
+    d->m_BlockMode = blockMode;
 }
 
 /**
@@ -501,10 +588,10 @@ MidiClient::open( snd_config_t* conf,
 void
 MidiClient::close()
 {
-    if (m_SeqHandle != NULL) {
+    if (d->m_SeqHandle != NULL) {
         stopSequencerInput();
-        CHECK_WARNING(snd_seq_close(m_SeqHandle));
-        m_SeqHandle = NULL;
+        CHECK_WARNING(snd_seq_close(d->m_SeqHandle));
+        d->m_SeqHandle = NULL;
     }
 }
 
@@ -519,7 +606,7 @@ MidiClient::close()
 size_t
 MidiClient::getOutputBufferSize()
 {
-    return snd_seq_get_output_buffer_size(m_SeqHandle);
+    return snd_seq_get_output_buffer_size(d->m_SeqHandle);
 }
 
 /**
@@ -534,7 +621,7 @@ void
 MidiClient::setOutputBufferSize(size_t newSize)
 {
     if (getOutputBufferSize() != newSize) {
-        CHECK_WARNING(snd_seq_set_output_buffer_size(m_SeqHandle, newSize));
+        CHECK_WARNING(snd_seq_set_output_buffer_size(d->m_SeqHandle, newSize));
     }
 }
 
@@ -549,7 +636,7 @@ MidiClient::setOutputBufferSize(size_t newSize)
 size_t
 MidiClient::getInputBufferSize()
 {
-    return snd_seq_get_input_buffer_size(m_SeqHandle);
+    return snd_seq_get_input_buffer_size(d->m_SeqHandle);
 }
 
 /**
@@ -564,7 +651,7 @@ void
 MidiClient::setInputBufferSize(size_t newSize)
 {
     if (getInputBufferSize() != newSize) {
-        CHECK_WARNING(snd_seq_set_input_buffer_size(m_SeqHandle, newSize));
+        CHECK_WARNING(snd_seq_set_input_buffer_size(d->m_SeqHandle, newSize));
     }
 }
 
@@ -580,12 +667,12 @@ MidiClient::setInputBufferSize(size_t newSize)
 void
 MidiClient::setBlockMode(bool newValue)
 {
-    if (m_BlockMode != newValue)
+    if (d->m_BlockMode != newValue)
     {
-        m_BlockMode = newValue;
-        if (m_SeqHandle != NULL)
+        d->m_BlockMode = newValue;
+        if (d->m_SeqHandle != NULL)
         {
-            CHECK_WARNING(snd_seq_nonblock(m_SeqHandle, m_BlockMode ? 0 : 1));
+            CHECK_WARNING(snd_seq_nonblock(d->m_SeqHandle, d->m_BlockMode ? 0 : 1));
         }
     }
 }
@@ -601,7 +688,7 @@ MidiClient::setBlockMode(bool newValue)
 int
 MidiClient::getClientId()
 {
-    return CHECK_WARNING(snd_seq_client_id(m_SeqHandle));
+    return CHECK_WARNING(snd_seq_client_id(d->m_SeqHandle));
 }
 
 /**
@@ -611,7 +698,7 @@ MidiClient::getClientId()
 snd_seq_type_t
 MidiClient::getSequencerType()
 {
-    return snd_seq_type(m_SeqHandle);
+    return snd_seq_type(d->m_SeqHandle);
 }
 
 /**
@@ -641,7 +728,7 @@ MidiClient::doEvents()
         int err = 0;
         snd_seq_event_t* evp = NULL;
         SequencerEvent* event = NULL;
-        err = snd_seq_event_input(m_SeqHandle, &evp);
+        err = snd_seq_event_input(d->m_SeqHandle, &evp);
         if ((err >= 0) && (evp != NULL)) {
             switch (evp->type) {
 
@@ -693,14 +780,14 @@ MidiClient::doEvents()
             case SND_SEQ_EVENT_PORT_EXIT:
             case SND_SEQ_EVENT_PORT_START:
                 event = new PortEvent(evp);
-                m_NeedRefreshClientList = true;
+                d->m_NeedRefreshClientList = true;
                 break;
 
             case SND_SEQ_EVENT_CLIENT_CHANGE:
             case SND_SEQ_EVENT_CLIENT_EXIT:
             case SND_SEQ_EVENT_CLIENT_START:
                 event = new ClientEvent(evp);
-                m_NeedRefreshClientList = true;
+                d->m_NeedRefreshClientList = true;
                 break;
 
             case SND_SEQ_EVENT_SONGPOS:
@@ -726,13 +813,13 @@ MidiClient::doEvents()
                 break;
             }
             // first, process the callback (if any)
-            if (m_handler != NULL) {
-                m_handler->handleSequencerEvent(event->clone());
+            if (d->m_handler != NULL) {
+                d->m_handler->handleSequencerEvent(event->clone());
             } else {
                 // second, process the event listeners
-                if (m_eventsEnabled) {
+                if (d->m_eventsEnabled) {
                    QObjectList::Iterator it;
-                    for(it=m_listeners.begin(); it!=m_listeners.end(); ++it) {
+                    for(it=d->m_listeners.begin(); it!=d->m_listeners.end(); ++it) {
                         QObject* sub = (*it);
                         QCoreApplication::postEvent(sub, event->clone());
                     }
@@ -744,7 +831,7 @@ MidiClient::doEvents()
             delete event;
         }
     }
-    while (snd_seq_event_input_pending(m_SeqHandle, 0) > 0);
+    while (snd_seq_event_input_pending(d->m_SeqHandle, 0) > 0);
 }
 
 /**
@@ -753,10 +840,10 @@ MidiClient::doEvents()
 void
 MidiClient::startSequencerInput()
 {
-    if (m_Thread == 0) {
-        m_Thread = new SequencerInputThread(this, DEFAULT_INPUT_TIMEOUT);
+    if (d->m_Thread == 0) {
+        d->m_Thread = new SequencerInputThread(this, DEFAULT_INPUT_TIMEOUT);
     }
-    m_Thread->start( m_Thread->m_RealTime ?
+    d->m_Thread->start( d->m_Thread->m_RealTime ?
             QThread::TimeCriticalPriority : QThread::InheritPriority );
 }
 
@@ -767,17 +854,17 @@ void
 MidiClient::stopSequencerInput()
 {
     int counter = 0;
-    if (m_Thread != 0) {
-        if (m_Thread->isRunning()) {
-            m_Thread->stop();
-            while (!m_Thread->wait(500) && (counter < 10)) {
+    if (d->m_Thread != 0) {
+        if (d->m_Thread->isRunning()) {
+            d->m_Thread->stop();
+            while (!d->m_Thread->wait(500) && (counter < 10)) {
                 counter++;
             }
-            if (!m_Thread->isFinished()) {
-                m_Thread->terminate();
+            if (!d->m_Thread->isFinished()) {
+                d->m_Thread->terminate();
             }
         }
-        delete m_Thread;
+        delete d->m_Thread;
     }
 }
 
@@ -790,11 +877,11 @@ MidiClient::readClients()
     ClientInfo cInfo;
     freeClients();
     cInfo.setClient(-1);
-    while (snd_seq_query_next_client(m_SeqHandle, cInfo.m_Info) >= 0) {
+    while (snd_seq_query_next_client(d->m_SeqHandle, cInfo.m_Info) >= 0) {
         cInfo.readPorts(this);
-        m_ClientList.append(cInfo);
+        d->m_ClientList.append(cInfo);
     }
-    m_NeedRefreshClientList = false;
+    d->m_NeedRefreshClientList = false;
 }
 
 /**
@@ -803,7 +890,7 @@ MidiClient::readClients()
 void
 MidiClient::freeClients()
 {
-    m_ClientList.clear();
+    d->m_ClientList.clear();
 }
 
 /**
@@ -813,9 +900,9 @@ MidiClient::freeClients()
 ClientInfoList
 MidiClient::getAvailableClients()
 {
-    if (m_NeedRefreshClientList)
+    if (d->m_NeedRefreshClientList)
         readClients();
-    ClientInfoList lst = m_ClientList; // copy
+    ClientInfoList lst = d->m_ClientList; // copy
     return lst;
 }
 
@@ -826,8 +913,8 @@ MidiClient::getAvailableClients()
 ClientInfo&
 MidiClient::getThisClientInfo()
 {
-    snd_seq_get_client_info(m_SeqHandle, m_Info.m_Info);
-    return m_Info;
+    snd_seq_get_client_info(d->m_SeqHandle, d->m_Info.m_Info);
+    return d->m_Info;
 }
 
 /**
@@ -840,8 +927,8 @@ MidiClient::getThisClientInfo()
 void
 MidiClient::setThisClientInfo(const ClientInfo& val)
 {
-    m_Info = val;
-    snd_seq_set_client_info(m_SeqHandle, m_Info.m_Info);
+    d->m_Info = val;
+    snd_seq_set_client_info(d->m_SeqHandle, d->m_Info.m_Info);
 }
 
 /**
@@ -850,8 +937,8 @@ MidiClient::setThisClientInfo(const ClientInfo& val)
 void
 MidiClient::applyClientInfo()
 {
-    if (m_SeqHandle != NULL) {
-        snd_seq_set_client_info(m_SeqHandle, m_Info.m_Info);
+    if (d->m_SeqHandle != NULL) {
+        snd_seq_set_client_info(d->m_SeqHandle, d->m_Info.m_Info);
     }
 }
 
@@ -862,7 +949,7 @@ MidiClient::applyClientInfo()
 QString
 MidiClient::getClientName()
 {
-    return m_Info.getName();
+    return d->m_Info.getName();
 }
 
 /**
@@ -874,9 +961,9 @@ QString
 MidiClient::getClientName(const int clientId)
 {
     ClientInfoList::Iterator it;
-    if (m_NeedRefreshClientList)
+    if (d->m_NeedRefreshClientList)
         readClients();
-    for (it = m_ClientList.begin(); it != m_ClientList.end(); ++it) {
+    for (it = d->m_ClientList.begin(); it != d->m_ClientList.end(); ++it) {
         if ((*it).getClientId() == clientId) {
             return (*it).getName();
         }
@@ -891,8 +978,8 @@ MidiClient::getClientName(const int clientId)
 void
 MidiClient::setClientName(QString const& newName)
 {
-    if (newName != m_Info.getName()) {
-        m_Info.setName(newName);
+    if (newName != d->m_Info.getName()) {
+        d->m_Info.setName(newName);
         applyClientInfo();
     }
 }
@@ -904,7 +991,7 @@ MidiClient::setClientName(QString const& newName)
 MidiPortList
 MidiClient::getMidiPorts() const
 {
-    return m_Ports;
+    return d->m_Ports;
 }
 
 /**
@@ -926,9 +1013,9 @@ MidiClient::createPort()
 void
 MidiClient::portAttach(MidiPort* port)
 {
-    if (m_SeqHandle != NULL) {
-        CHECK_ERROR(snd_seq_create_port(m_SeqHandle, port->m_Info.m_Info));
-        m_Ports.push_back(port);
+    if (d->m_SeqHandle != NULL) {
+        CHECK_ERROR(snd_seq_create_port(d->m_SeqHandle, port->m_Info.m_Info));
+        d->m_Ports.push_back(port);
     }
 }
 
@@ -939,20 +1026,20 @@ MidiClient::portAttach(MidiPort* port)
 void
 MidiClient::portDetach(MidiPort* port)
 {
-    if (m_SeqHandle != NULL) {
+    if (d->m_SeqHandle != NULL) {
         if(port->getPortInfo()->getClient() == getClientId())
         {
             return;
         }
-        CHECK_ERROR(snd_seq_delete_port(m_SeqHandle, port->getPortInfo()->getPort()));
+        CHECK_ERROR(snd_seq_delete_port(d->m_SeqHandle, port->getPortInfo()->getPort()));
         port->setMidiClient(NULL);
 
         MidiPortList::iterator it;
-        for(it = m_Ports.begin(); it != m_Ports.end(); ++it)
+        for(it = d->m_Ports.begin(); it != d->m_Ports.end(); ++it)
         {
             if ((*it)->getPortInfo()->getPort() == port->getPortInfo()->getPort())
             {
-                m_Ports.erase(it);
+                d->m_Ports.erase(it);
                 break;
             }
         }
@@ -964,12 +1051,12 @@ MidiClient::portDetach(MidiPort* port)
  */
 void MidiClient::detachAllPorts()
 {
-    if (m_SeqHandle != NULL) {
+    if (d->m_SeqHandle != NULL) {
         MidiPortList::iterator it;
-        for (it = m_Ports.begin(); it != m_Ports.end(); ++it) {
-            CHECK_ERROR(snd_seq_delete_port(m_SeqHandle, (*it)->getPortInfo()->getPort()));
+        for (it = d->m_Ports.begin(); it != d->m_Ports.end(); ++it) {
+            CHECK_ERROR(snd_seq_delete_port(d->m_SeqHandle, (*it)->getPortInfo()->getPort()));
             (*it)->setMidiClient(NULL);
-            m_Ports.erase(it);
+            d->m_Ports.erase(it);
         }
     }
 }
@@ -981,7 +1068,7 @@ void MidiClient::detachAllPorts()
 void
 MidiClient::addEventFilter(int evtype)
 {
-    snd_seq_set_client_event_filter(m_SeqHandle, evtype);
+    snd_seq_set_client_event_filter(d->m_SeqHandle, evtype);
 }
 
 /**
@@ -992,7 +1079,7 @@ MidiClient::addEventFilter(int evtype)
 bool
 MidiClient::getBroadcastFilter()
 {
-    return m_Info.getBroadcastFilter();
+    return d->m_Info.getBroadcastFilter();
 }
 
 /**
@@ -1003,7 +1090,7 @@ MidiClient::getBroadcastFilter()
 void
 MidiClient::setBroadcastFilter(bool newValue)
 {
-    m_Info.setBroadcastFilter(newValue);
+    d->m_Info.setBroadcastFilter(newValue);
     applyClientInfo();
 }
 
@@ -1015,7 +1102,7 @@ MidiClient::setBroadcastFilter(bool newValue)
 bool
 MidiClient::getErrorBounce()
 {
-    return m_Info.getErrorBounce();
+    return d->m_Info.getErrorBounce();
 }
 
 /**
@@ -1026,7 +1113,7 @@ MidiClient::getErrorBounce()
 void
 MidiClient::setErrorBounce(bool newValue)
 {
-    m_Info.setErrorBounce(newValue);
+    d->m_Info.setErrorBounce(newValue);
     applyClientInfo();
 }
 
@@ -1047,12 +1134,12 @@ MidiClient::output(SequencerEvent* ev, bool async, int timeout)
     int npfds;
     pollfd* pfds;
     if (async) {
-        CHECK_WARNING(snd_seq_event_output(m_SeqHandle, ev->getHandle()));
+        CHECK_WARNING(snd_seq_event_output(d->m_SeqHandle, ev->getHandle()));
     } else {
-        npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
+        npfds = snd_seq_poll_descriptors_count(d->m_SeqHandle, POLLOUT);
         pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
-        snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-        while (snd_seq_event_output(m_SeqHandle, ev->getHandle()) < 0)
+        snd_seq_poll_descriptors(d->m_SeqHandle, pfds, npfds, POLLOUT);
+        while (snd_seq_event_output(d->m_SeqHandle, ev->getHandle()) < 0)
         {
             poll(pfds, npfds, timeout);
         }
@@ -1075,12 +1162,12 @@ void MidiClient::outputDirect(SequencerEvent* ev, bool async, int timeout)
     int npfds;
     pollfd* pfds;
     if (async) {
-        CHECK_WARNING(snd_seq_event_output_direct(m_SeqHandle, ev->getHandle()));
+        CHECK_WARNING(snd_seq_event_output_direct(d->m_SeqHandle, ev->getHandle()));
     } else {
-        npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
+        npfds = snd_seq_poll_descriptors_count(d->m_SeqHandle, POLLOUT);
         pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
-        snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-        while (snd_seq_event_output_direct(m_SeqHandle, ev->getHandle()) < 0)
+        snd_seq_poll_descriptors(d->m_SeqHandle, pfds, npfds, POLLOUT);
+        while (snd_seq_event_output_direct(d->m_SeqHandle, ev->getHandle()) < 0)
         {
             poll(pfds, npfds, timeout);
         }
@@ -1098,7 +1185,7 @@ void MidiClient::outputDirect(SequencerEvent* ev, bool async, int timeout)
 void
 MidiClient::outputBuffer(SequencerEvent* ev)
 {
-    CHECK_WARNING(snd_seq_event_output_buffer(m_SeqHandle, ev->getHandle()));
+    CHECK_WARNING(snd_seq_event_output_buffer(d->m_SeqHandle, ev->getHandle()));
 }
 
 /**
@@ -1117,12 +1204,12 @@ void MidiClient::drainOutput(bool async, int timeout)
     int npfds;
     pollfd* pfds;
     if (async) {
-        CHECK_WARNING(snd_seq_drain_output(m_SeqHandle));
+        CHECK_WARNING(snd_seq_drain_output(d->m_SeqHandle));
     } else {
-        npfds = snd_seq_poll_descriptors_count(m_SeqHandle, POLLOUT);
+        npfds = snd_seq_poll_descriptors_count(d->m_SeqHandle, POLLOUT);
         pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
-        snd_seq_poll_descriptors(m_SeqHandle, pfds, npfds, POLLOUT);
-        while (snd_seq_drain_output(m_SeqHandle) < 0)
+        snd_seq_poll_descriptors(d->m_SeqHandle, pfds, npfds, POLLOUT);
+        while (snd_seq_drain_output(d->m_SeqHandle) < 0)
         {
             poll(pfds, npfds, timeout);
         }
@@ -1137,7 +1224,7 @@ void MidiClient::drainOutput(bool async, int timeout)
 void
 MidiClient::synchronizeOutput()
 {
-    snd_seq_sync_output_queue(m_SeqHandle);
+    snd_seq_sync_output_queue(d->m_SeqHandle);
 }
 
 /**
@@ -1148,10 +1235,10 @@ MidiClient::synchronizeOutput()
 MidiQueue*
 MidiClient::getQueue()
 {
-    if (m_Queue == NULL) {
+    if (d->m_Queue == NULL) {
         createQueue();
     }
-    return m_Queue;
+    return d->m_Queue;
 }
 
 /**
@@ -1161,11 +1248,11 @@ MidiClient::getQueue()
 MidiQueue*
 MidiClient::createQueue()
 {
-    if (m_Queue != NULL) {
-        delete m_Queue;
+    if (d->m_Queue != NULL) {
+        delete d->m_Queue;
     }
-    m_Queue = new MidiQueue(this, this);
-    return m_Queue;
+    d->m_Queue = new MidiQueue(this, this);
+    return d->m_Queue;
 }
 
 /**
@@ -1177,11 +1264,11 @@ MidiClient::createQueue()
 MidiQueue*
 MidiClient::createQueue(QString const& queueName )
 {
-    if (m_Queue != NULL) {
-        delete m_Queue;
+    if (d->m_Queue != NULL) {
+        delete d->m_Queue;
     }
-    m_Queue = new MidiQueue(this, queueName, this);
-    return m_Queue;
+    d->m_Queue = new MidiQueue(this, queueName, this);
+    return d->m_Queue;
 }
 
 /**
@@ -1194,11 +1281,11 @@ MidiClient::createQueue(QString const& queueName )
 MidiQueue*
 MidiClient::useQueue(int queue_id)
 {
-    if (m_Queue != NULL) {
-        delete m_Queue;
+    if (d->m_Queue != NULL) {
+        delete d->m_Queue;
     }
-    m_Queue = new MidiQueue(this, queue_id, this);
-    return m_Queue;
+    d->m_Queue = new MidiQueue(this, queue_id, this);
+    return d->m_Queue;
 }
 
 /**
@@ -1211,14 +1298,14 @@ MidiClient::useQueue(int queue_id)
 MidiQueue*
 MidiClient::useQueue(const QString& name)
 {
-    if (m_Queue != NULL) {
-        delete m_Queue;
+    if (d->m_Queue != NULL) {
+        delete d->m_Queue;
     }
     int queue_id = getQueueId(name);
     if ( queue_id >= 0) {
-       m_Queue = new MidiQueue(this, queue_id, this);
+       d->m_Queue = new MidiQueue(this, queue_id, this);
     }
-    return m_Queue;
+    return d->m_Queue;
 }
 
 /**
@@ -1230,12 +1317,12 @@ MidiClient::useQueue(const QString& name)
 MidiQueue*
 MidiClient::useQueue(MidiQueue* queue)
 {
-    if (m_Queue != NULL) {
-        delete m_Queue;
+    if (d->m_Queue != NULL) {
+        delete d->m_Queue;
     }
     queue->setParent(this);
-    m_Queue = queue;
-    return m_Queue;
+    d->m_Queue = queue;
+    return d->m_Queue;
 }
 
 /**
@@ -1251,7 +1338,7 @@ MidiClient::getAvailableQueues()
     snd_seq_queue_info_alloca(&qinfo);
     max = getSystemInfo().getMaxQueues();
     for ( q = 0; q < max; ++q ) {
-        err = snd_seq_get_queue_info(m_SeqHandle, q, qinfo);
+        err = snd_seq_get_queue_info(d->m_SeqHandle, q, qinfo);
         if (err == 0) {
             queues.append(q);
         }
@@ -1273,13 +1360,13 @@ MidiClient::filterPorts(unsigned int filter)
     ClientInfoList::ConstIterator itc;
     PortInfoList::ConstIterator itp;
 
-    if (m_NeedRefreshClientList)
+    if (d->m_NeedRefreshClientList)
         readClients();
 
-    for (itc = m_ClientList.constBegin(); itc != m_ClientList.constEnd(); ++itc) {
+    for (itc = d->m_ClientList.constBegin(); itc != d->m_ClientList.constEnd(); ++itc) {
         ClientInfo ci = (*itc);
         if ((ci.getClientId() == SND_SEQ_CLIENT_SYSTEM) ||
-            (ci.getClientId() == m_Info.getClientId()))
+            (ci.getClientId() == d->m_Info.getClientId()))
             continue;
         PortInfoList lstPorts = ci.getPorts();
         for(itp = lstPorts.constBegin(); itp != lstPorts.constEnd(); ++itp) {
@@ -1300,11 +1387,11 @@ MidiClient::filterPorts(unsigned int filter)
 void
 MidiClient::updateAvailablePorts()
 {
-    m_InputsAvail.clear();
-    m_OutputsAvail.clear();
-    m_InputsAvail = filterPorts( SND_SEQ_PORT_CAP_READ |
+    d->m_InputsAvail.clear();
+    d->m_OutputsAvail.clear();
+    d->m_InputsAvail = filterPorts( SND_SEQ_PORT_CAP_READ |
                                  SND_SEQ_PORT_CAP_SUBS_READ );
-    m_OutputsAvail = filterPorts( SND_SEQ_PORT_CAP_WRITE |
+    d->m_OutputsAvail = filterPorts( SND_SEQ_PORT_CAP_WRITE |
                                   SND_SEQ_PORT_CAP_SUBS_WRITE );
 }
 
@@ -1315,9 +1402,9 @@ MidiClient::updateAvailablePorts()
 PortInfoList
 MidiClient::getAvailableInputs()
 {
-    m_NeedRefreshClientList = true;
+    d->m_NeedRefreshClientList = true;
     updateAvailablePorts();
-    return m_InputsAvail;
+    return d->m_InputsAvail;
 }
 
 /**
@@ -1327,9 +1414,9 @@ MidiClient::getAvailableInputs()
 PortInfoList
 MidiClient::getAvailableOutputs()
 {
-    m_NeedRefreshClientList = true;
+    d->m_NeedRefreshClientList = true;
     updateAvailablePorts();
-    return m_OutputsAvail;
+    return d->m_OutputsAvail;
 }
 
 /**
@@ -1341,7 +1428,7 @@ MidiClient::getAvailableOutputs()
 void
 MidiClient::addListener(QObject* listener)
 {
-    m_listeners.append(listener);
+    d->m_listeners.append(listener);
 }
 
 /**
@@ -1352,7 +1439,7 @@ MidiClient::addListener(QObject* listener)
 void
 MidiClient::removeListener(QObject* listener)
 {
-    m_listeners.removeAll(listener);
+    d->m_listeners.removeAll(listener);
 }
 
 /**
@@ -1364,8 +1451,8 @@ MidiClient::removeListener(QObject* listener)
 void
 MidiClient::setEventsEnabled(bool bEnabled)
 {
-    if (bEnabled != m_eventsEnabled) {
-        m_eventsEnabled = bEnabled;
+    if (bEnabled != d->m_eventsEnabled) {
+        d->m_eventsEnabled = bEnabled;
     }
 }
 
@@ -1376,8 +1463,8 @@ MidiClient::setEventsEnabled(bool bEnabled)
 SystemInfo&
 MidiClient::getSystemInfo()
 {
-    snd_seq_system_info(m_SeqHandle, m_sysInfo.m_Info);
-    return m_sysInfo;
+    snd_seq_system_info(d->m_SeqHandle, d->m_sysInfo.m_Info);
+    return d->m_sysInfo;
 }
 
 /**
@@ -1387,8 +1474,8 @@ MidiClient::getSystemInfo()
 PoolInfo&
 MidiClient::getPoolInfo()
 {
-    snd_seq_get_client_pool(m_SeqHandle, m_poolInfo.m_Info);
-    return m_poolInfo;
+    snd_seq_get_client_pool(d->m_SeqHandle, d->m_poolInfo.m_Info);
+    return d->m_poolInfo;
 }
 
 /**
@@ -1398,8 +1485,8 @@ MidiClient::getPoolInfo()
 void
 MidiClient::setPoolInfo(const PoolInfo& info)
 {
-    m_poolInfo = info;
-    CHECK_WARNING(snd_seq_set_client_pool(m_SeqHandle, m_poolInfo.m_Info));
+    d->m_poolInfo = info;
+    CHECK_WARNING(snd_seq_set_client_pool(d->m_SeqHandle, d->m_poolInfo.m_Info));
 }
 
 /**
@@ -1409,7 +1496,7 @@ MidiClient::setPoolInfo(const PoolInfo& info)
 void
 MidiClient::resetPoolInput()
 {
-    CHECK_WARNING(snd_seq_reset_pool_input(m_SeqHandle));
+    CHECK_WARNING(snd_seq_reset_pool_input(d->m_SeqHandle));
 }
 
 /**
@@ -1419,7 +1506,7 @@ MidiClient::resetPoolInput()
 void
 MidiClient::resetPoolOutput()
 {
-    CHECK_WARNING(snd_seq_reset_pool_output(m_SeqHandle));
+    CHECK_WARNING(snd_seq_reset_pool_output(d->m_SeqHandle));
 }
 
 /**
@@ -1429,7 +1516,7 @@ MidiClient::resetPoolOutput()
 void
 MidiClient::setPoolInput(int size)
 {
-    CHECK_WARNING(snd_seq_set_client_pool_input(m_SeqHandle, size));
+    CHECK_WARNING(snd_seq_set_client_pool_input(d->m_SeqHandle, size));
 }
 
 /**
@@ -1439,7 +1526,7 @@ MidiClient::setPoolInput(int size)
 void
 MidiClient::setPoolOutput(int size)
 {
-    CHECK_WARNING(snd_seq_set_client_pool_output(m_SeqHandle, size));
+    CHECK_WARNING(snd_seq_set_client_pool_output(d->m_SeqHandle, size));
 }
 
 /**
@@ -1449,7 +1536,7 @@ MidiClient::setPoolOutput(int size)
 void
 MidiClient::setPoolOutputRoom(int size)
 {
-    CHECK_WARNING(snd_seq_set_client_pool_output_room(m_SeqHandle, size));
+    CHECK_WARNING(snd_seq_set_client_pool_output_room(d->m_SeqHandle, size));
 }
 
 /**
@@ -1459,7 +1546,7 @@ MidiClient::setPoolOutputRoom(int size)
 void
 MidiClient::dropInput()
 {
-    CHECK_WARNING(snd_seq_drop_input(m_SeqHandle));
+    CHECK_WARNING(snd_seq_drop_input(d->m_SeqHandle));
 }
 
 /**
@@ -1469,7 +1556,7 @@ MidiClient::dropInput()
 void
 MidiClient::dropInputBuffer()
 {
-    CHECK_WARNING(snd_seq_drop_input_buffer(m_SeqHandle));
+    CHECK_WARNING(snd_seq_drop_input_buffer(d->m_SeqHandle));
 }
 
 /**
@@ -1482,7 +1569,7 @@ MidiClient::dropInputBuffer()
 void
 MidiClient::dropOutput()
 {
-    CHECK_WARNING(snd_seq_drop_output(m_SeqHandle));
+    CHECK_WARNING(snd_seq_drop_output(d->m_SeqHandle));
 }
 
 /**
@@ -1495,7 +1582,7 @@ MidiClient::dropOutput()
 void
 MidiClient::dropOutputBuffer()
 {
-    CHECK_WARNING(snd_seq_drop_output_buffer(m_SeqHandle));
+    CHECK_WARNING(snd_seq_drop_output_buffer(d->m_SeqHandle));
 }
 
 /**
@@ -1507,7 +1594,7 @@ MidiClient::dropOutputBuffer()
 void
 MidiClient::removeEvents(const RemoveEvents* spec)
 {
-    CHECK_WARNING(snd_seq_remove_events(m_SeqHandle, spec->m_Info));
+    CHECK_WARNING(snd_seq_remove_events(d->m_SeqHandle, spec->m_Info));
 }
 
 /**
@@ -1518,7 +1605,7 @@ SequencerEvent*
 MidiClient::extractOutput()
 {
     snd_seq_event_t* ev;
-    if (CHECK_WARNING(snd_seq_extract_output(m_SeqHandle, &ev) == 0)) {
+    if (CHECK_WARNING(snd_seq_extract_output(d->m_SeqHandle, &ev) == 0)) {
         return new SequencerEvent(ev);
     }
     return NULL;
@@ -1532,7 +1619,7 @@ MidiClient::extractOutput()
 int
 MidiClient::outputPending()
 {
-    return snd_seq_event_output_pending(m_SeqHandle);
+    return snd_seq_event_output_pending(d->m_SeqHandle);
 }
 
 /**
@@ -1551,7 +1638,7 @@ MidiClient::outputPending()
 int
 MidiClient::inputPending(bool fetch)
 {
-    return snd_seq_event_input_pending(m_SeqHandle, fetch ? 1 : 0);
+    return snd_seq_event_input_pending(d->m_SeqHandle, fetch ? 1 : 0);
 }
 
 /**
@@ -1563,7 +1650,7 @@ MidiClient::inputPending(bool fetch)
 int
 MidiClient::getQueueId(const QString& name)
 {
-    return snd_seq_query_named_queue(m_SeqHandle, name.toLocal8Bit().data());
+    return snd_seq_query_named_queue(d->m_SeqHandle, name.toLocal8Bit().data());
 }
 
 /**
@@ -1574,7 +1661,7 @@ MidiClient::getQueueId(const QString& name)
 int
 MidiClient::getPollDescriptorsCount(short events)
 {
-    return snd_seq_poll_descriptors_count(m_SeqHandle, events);
+    return snd_seq_poll_descriptors_count(d->m_SeqHandle, events);
 }
 
 /**
@@ -1594,7 +1681,7 @@ int
 MidiClient::pollDescriptors( struct pollfd *pfds, unsigned int space,
                              short events )
 {
-    return snd_seq_poll_descriptors(m_SeqHandle, pfds, space, events);
+    return snd_seq_poll_descriptors(d->m_SeqHandle, pfds, space, events);
 }
 
 /**
@@ -1607,7 +1694,7 @@ unsigned short
 MidiClient::pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds)
 {
     unsigned short revents;
-    CHECK_WARNING( snd_seq_poll_descriptors_revents( m_SeqHandle,
+    CHECK_WARNING( snd_seq_poll_descriptors_revents( d->m_SeqHandle,
                                                      pfds, nfds,
                                                      &revents ));
     return revents;
@@ -1620,7 +1707,7 @@ MidiClient::pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds)
 const char *
 MidiClient::_getDeviceName()
 {
-    return snd_seq_name(m_SeqHandle);
+    return snd_seq_name(d->m_SeqHandle);
 }
 
 /**
@@ -1630,7 +1717,7 @@ MidiClient::_getDeviceName()
 void
 MidiClient::_setClientName(const char *name)
 {
-    CHECK_WARNING(snd_seq_set_client_name(m_SeqHandle, name));
+    CHECK_WARNING(snd_seq_set_client_name(d->m_SeqHandle, name));
 }
 
 /**
@@ -1645,7 +1732,7 @@ MidiClient::createSimplePort( const char *name,
                               unsigned int caps,
                               unsigned int type )
 {
-    return CHECK_WARNING( snd_seq_create_simple_port( m_SeqHandle,
+    return CHECK_WARNING( snd_seq_create_simple_port( d->m_SeqHandle,
                                                       name, caps, type ));
 }
 
@@ -1656,7 +1743,7 @@ MidiClient::createSimplePort( const char *name,
 void
 MidiClient::deleteSimplePort(int port)
 {
-    CHECK_WARNING( snd_seq_delete_simple_port( m_SeqHandle, port ));
+    CHECK_WARNING( snd_seq_delete_simple_port( d->m_SeqHandle, port ));
 }
 
 /**
@@ -1668,7 +1755,7 @@ MidiClient::deleteSimplePort(int port)
 void
 MidiClient::connectFrom(int myport, int client, int port)
 {
-    CHECK_WARNING( snd_seq_connect_from(m_SeqHandle, myport, client, port ));
+    CHECK_WARNING( snd_seq_connect_from(d->m_SeqHandle, myport, client, port ));
 }
 
 /**
@@ -1680,7 +1767,7 @@ MidiClient::connectFrom(int myport, int client, int port)
 void
 MidiClient::connectTo(int myport, int client, int port)
 {
-    CHECK_WARNING( snd_seq_connect_to(m_SeqHandle, myport, client, port ));
+    CHECK_WARNING( snd_seq_connect_to(d->m_SeqHandle, myport, client, port ));
 }
 
 /**
@@ -1692,7 +1779,7 @@ MidiClient::connectTo(int myport, int client, int port)
 void
 MidiClient::disconnectFrom(int myport, int client, int port)
 {
-    CHECK_WARNING( snd_seq_disconnect_from(m_SeqHandle, myport, client, port ));
+    CHECK_WARNING( snd_seq_disconnect_from(d->m_SeqHandle, myport, client, port ));
 }
 
 /**
@@ -1704,7 +1791,7 @@ MidiClient::disconnectFrom(int myport, int client, int port)
 void
 MidiClient::disconnectTo(int myport, int client, int port)
 {
-    CHECK_WARNING( snd_seq_disconnect_to(m_SeqHandle, myport, client, port ));
+    CHECK_WARNING( snd_seq_disconnect_to(d->m_SeqHandle, myport, client, port ));
 }
 
 /**
@@ -1736,10 +1823,10 @@ MidiClient::parseAddress( const QString& straddr, snd_seq_addr& addr )
     if (ok)
         addr.port = testPort.toInt(&ok);
     if (!ok) {
-        if (m_NeedRefreshClientList)
+        if (d->m_NeedRefreshClientList)
             readClients();
-        for ( cit = m_ClientList.constBegin();
-              cit != m_ClientList.constEnd(); ++cit ) {
+        for ( cit = d->m_ClientList.constBegin();
+              cit != d->m_ClientList.constEnd(); ++cit ) {
             ClientInfo ci = *cit;
             if (testClient.compare(ci.getName(), Qt::CaseInsensitive) == 0) {
                 addr.client = ci.getClientId();
@@ -1758,7 +1845,7 @@ MidiClient::parseAddress( const QString& straddr, snd_seq_addr& addr )
 bool
 MidiClient::SequencerInputThread::stopped()
 {
-	QReadLocker locker(&m_mutex);
+    QReadLocker locker(&m_mutex);
     return m_Stopped;
 }
 
@@ -1768,7 +1855,7 @@ MidiClient::SequencerInputThread::stopped()
 void
 MidiClient::SequencerInputThread::stop()
 {
-	QWriteLocker locker(&m_mutex);
+    QWriteLocker locker(&m_mutex);
     m_Stopped = true;
 }
 

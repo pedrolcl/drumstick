@@ -18,8 +18,7 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-pkg_check_modules(
-    FLUIDSYNTH REQUIRED fluidsynth>=1.1.1)
+pkg_check_modules(FLUIDSYNTH REQUIRED fluidsynth>=1.1.1)
 include_directories(${FLUIDSYNTH_INCLUDEDIR})
 link_directories(${FLUIDSYNTH_LIBDIR})
 
@@ -60,5 +59,5 @@ set_target_properties(drumstick-rt-synth PROPERTIES
 
 install(TARGETS drumstick-rt-synth
         RUNTIME DESTINATION bin
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}
-        LIBRARY DESTINATION lib${LIB_SUFFIX})
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}/drumstick
+        LIBRARY DESTINATION lib${LIB_SUFFIX}/drumstick)

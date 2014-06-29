@@ -231,21 +231,16 @@ public:
 
     int getClientId();
     snd_seq_type_t getSequencerType();
-    /** Returns the sequencer handler managed by ALSA */
-    snd_seq_t* getHandle() { return m_SeqHandle; }
-    /** Returns true if the sequencer is opened */
-    bool isOpened() { return (m_SeqHandle != NULL); }
+    snd_seq_t* getHandle();
+    bool isOpened();
 
     size_t getOutputBufferSize();
     void setOutputBufferSize(size_t newSize);
     size_t getInputBufferSize();
     void setInputBufferSize(size_t newSize);
-    /** Returns the name of the sequencer device */
-    QString getDeviceName() { return m_DeviceName; }
-    /** Returns the last open mode used in open() */
-    int getOpenMode() { return m_OpenMode; }
-    /** Returns the last block mode used in open() */
-    bool getBlockMode() { return m_BlockMode; }
+    QString getDeviceName();
+    int getOpenMode();
+    bool getBlockMode();
     void setBlockMode(bool newValue);
     QString getClientName();
     QString getClientName(const int clientId);
@@ -284,10 +279,8 @@ public:
     void addListener(QObject* listener);
     void removeListener(QObject* listener);
     void setEventsEnabled(const bool bEnabled);
-    /** Returns true if the events mode of delivery has been enabled */
-    bool getEventsEnabled() const { return m_eventsEnabled; }
-    /** Sets a sequencer event handler enabling the callback delivery mode */
-    void setHandler(SequencerEventHandler* handler)  { m_handler = handler; }
+    bool getEventsEnabled() const;
+    void setHandler(SequencerEventHandler* handler);
     bool parseAddress( const QString& straddr, snd_seq_addr& result );
     void setRealTimeInput(bool enabled);
     bool realTimeInputEnabled();
@@ -323,24 +316,8 @@ protected:
 
 private:
     class SequencerInputThread;
-    bool m_eventsEnabled;
-    bool m_BlockMode;
-    bool m_NeedRefreshClientList;
-    int  m_OpenMode;
-    QString m_DeviceName;
-    snd_seq_t* m_SeqHandle;
-    QPointer<SequencerInputThread> m_Thread;
-    QPointer<MidiQueue> m_Queue;
-    SequencerEventHandler* m_handler;
-
-    ClientInfo m_Info;
-    ClientInfoList m_ClientList;
-    MidiPortList m_Ports;
-    PortInfoList m_OutputsAvail;
-    PortInfoList m_InputsAvail;
-    QObjectList m_listeners;
-    SystemInfo m_sysInfo;
-    PoolInfo m_poolInfo;
+    class MidiClientPrivate;
+    MidiClientPrivate *d;
 };
 
 #if SND_LIB_VERSION > 0x010004

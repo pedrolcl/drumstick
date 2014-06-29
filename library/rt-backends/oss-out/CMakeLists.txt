@@ -52,5 +52,5 @@ set_target_properties(drumstick-rt-oss-out PROPERTIES
 
 install(TARGETS drumstick-rt-oss-out
         RUNTIME DESTINATION bin
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}
-        LIBRARY DESTINATION lib${LIB_SUFFIX})
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}/drumstick
+        LIBRARY DESTINATION lib${LIB_SUFFIX}/drumstick)

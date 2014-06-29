@@ -54,5 +54,5 @@ set_target_properties(drumstick-rt-net-out PROPERTIES
 
 install(TARGETS drumstick-rt-net-out
         RUNTIME DESTINATION bin
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}
-        LIBRARY DESTINATION lib${LIB_SUFFIX})
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}/drumstick
+        LIBRARY DESTINATION lib${LIB_SUFFIX}/drumstick)

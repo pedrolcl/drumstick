@@ -30,5 +30,6 @@ target_link_libraries(drumstick-test-rt
     Qt5::Core
 )
 
-install(TARGETS drumstick-test-rt
-        RUNTIME DESTINATION bin)
+#not an utility, don't install
+#install(TARGETS drumstick-test-rt
+#        RUNTIME DESTINATION bin)

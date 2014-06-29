@@ -40,4 +40,9 @@
 #include <drumstick/qwrk.h>
 #include <drumstick/qove.h>
 
+// RealTime interfaces
+#include <drumstick/rtmidiinput.h>
+#include <drumstick/rtmidioutput.h>
+#include <drumstick/backendmanager.h>
+
 #endif /*DRUMSTICK_H*/

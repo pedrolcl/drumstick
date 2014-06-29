@@ -44,5 +44,5 @@ set_target_properties(drumstick-rt-dummy-in PROPERTIES
 
 install(TARGETS drumstick-rt-dummy-in
         RUNTIME DESTINATION bin
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}
-        LIBRARY DESTINATION lib${LIB_SUFFIX})
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}/drumstick
+        LIBRARY DESTINATION lib${LIB_SUFFIX}/drumstick)

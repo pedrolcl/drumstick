@@ -25,8 +25,8 @@ Requirements
 
 Minimum supported versions:
 
-* CMake 2.6
-* Qt4 4.4
+* CMake 2.8.11
+* Qt5
 * For Linux: ALSA 1.0
 
 * shared-mime-info 0.30

@@ -18,16 +18,22 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+set(drumstick-rt_QOBJ_SRCS
+    ../include/rtmidiinput.h
+    ../include/rtmidioutput.h
+)
+
 set(drumstick-rt_HEADERS
     ../include/rtmidiinput.h
     ../include/rtmidioutput.h
+    ../include/backendmanager.h
 )
 
 set(drumstick-rt_SRCS
     backendmanager.cpp
 )
     
-qt5_wrap_cpp(drumstick-rt_MOC_SRCS ${drumstick-rt_HEADERS})
+qt5_wrap_cpp(drumstick-rt_MOC_SRCS ${drumstick-rt_QOBJ_SRCS})
 
 add_compiler_export_flags()
 
