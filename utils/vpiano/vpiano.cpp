@@ -18,8 +18,6 @@
 */
 
 #include <QDebug>
-#include <QDir>
-//#include <qglobal.h>
 #include "vpiano.h"
 #include "backendmanager.h"
 
@@ -62,20 +60,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     ui.statusBar->hide();
     ui.pianokeybd->setRawKeyboardMode(false);
 
-    QDir backendir = QDir(qApp->applicationDirPath());
-    backendir.cdUp();
-    backendir.cd("backends");
-
-    QFileInfo exeInfo(qApp->applicationFilePath());
-    qDebug() << "program=" << exeInfo.fileName() << " backends=" << backendir.absolutePath() << endl;
-
     QSettings settings;
-    settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
-    settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("Virtual Piano IN"));
-    settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("Virtual Piano OUT"));
-    settings.setValue(QSTR_DRUMSTICKRT_PATH, backendir.absolutePath());
-    settings.endGroup();
-    settings.sync();
 
     BackendManager man;
     man.refresh(&settings);

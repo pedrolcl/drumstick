@@ -3,10 +3,10 @@ exec_prefix=${prefix}
 libdir=${prefix}/@LIB@
 includedir=${prefix}/include/drumstick
 
-Name: drumstick-file
+Name: drumstick-rt
 Version: @VERSION@
-Description: MIDI Sequencer C++ Library Bindings for Qt5
+Description: MIDI Realtime Library for Qt5
 URL: http://sourceforge.net/projects/drumstick
 Requires: QtCore >= 5.0
-Libs: -L${libdir} -ldrumstick-file -lQtCore
+Libs: -L${libdir} -ldrumstick-rt -lQtCore
 Cflags: -I${includedir}

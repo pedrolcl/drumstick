@@ -16,33 +16,53 @@
     with this program; if not, write to the Free Software Foundation, Inc., 
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
-#include <QApplication>
-#include <QDebug>
-#include "vpiano.h"
-#include "cmdlineargs.h"
 
-const QString errorstr = "Fatal error from the ALSA sequencer. "
-    "This usually happens when the kernel doesn't have ALSA support, "
-    "or the device node (/dev/snd/seq) doesn't exists, "
-    "or the kernel module (snd_seq) is not loaded. "
-    "Please check your ALSA/MIDI configuration.";
+#include <QApplication>
+#include <QFileInfo>
+#include <QSettings>
+#include <QTextStream>
+#include "cmdlineargs.h"
+#include "vpiano.h"
+#include "backendmanager.h"
 
 int main(int argc, char *argv[])
 {
+    QTextStream cout(stdout, QIODevice::WriteOnly);
+    QTextStream cerr(stderr, QIODevice::WriteOnly);
     QCoreApplication::setOrganizationName("drumstick.sourceforge.net");
     QCoreApplication::setOrganizationDomain("drumstick.sourceforge.net");
     QCoreApplication::setApplicationName("VPiano");
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
+
     CmdLineArgs args;
     args.setStdQtArgs(true);
-    args.setUsage("[options]");
+    args.addRequiredArgument("dir", "Directory for MIDI Backends");
+    args.setUsage("dir [options]");
     args.parse(argc, argv);
+
+    QString backendir;
+    QVariant vdir = args.getArgument("dir");
+    if (!vdir.isNull())
+    {
+        backendir = vdir.toString();
+    }
+    QFileInfo exeInfo(app.applicationFilePath());
+    cout << "program=" << exeInfo.fileName() << " backends directory=" << backendir << endl;
+
+    QSettings settings;
+    settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
+    settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("Virtual Piano IN"));
+    settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("Virtual Piano OUT"));
+    settings.setValue(QSTR_DRUMSTICKRT_PATH, backendir);
+    settings.endGroup();
+    settings.sync();
+
     try {
         VPiano w;
         w.show();
-        return a.exec();
+        return app.exec();
     } catch (...) {
-        qWarning() << errorstr;
+        cerr << "Fatal error from a MIDI backend." << endl;
     }
     return 0;
 }

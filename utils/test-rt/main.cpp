@@ -44,20 +44,25 @@ int main(int argc, char **argv)
     QCoreApplication app(argc, argv);
     CmdLineArgs args;
     args.setStdQtArgs(true);
+    args.setUsage("dir");
+    args.addRequiredArgument("dir", "Directory of RT Backends");
     args.parse(argc, argv);
 
-    QDir backendir = QDir(app.applicationDirPath());
-    backendir.cdUp();
-    backendir.cd("backends");
+    QString backendir;
+    QVariant vdir = args.getArgument("dir");
+    if (!vdir.isNull())
+    {
+        backendir = vdir.toString();
+    }
 
     QFileInfo exeInfo(app.applicationFilePath());
-    cout << "program=" << exeInfo.fileName() << " backends=" << backendir.absolutePath() << endl;
+    cout << "program=" << exeInfo.fileName() << " backends=" << backendir << endl;
 
     QSettings settings;
     settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
     settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("TEST MIDI IN"));
     settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("TEST MIDI OUT"));
-    settings.setValue(QSTR_DRUMSTICKRT_PATH, backendir.absolutePath());
+    settings.setValue(QSTR_DRUMSTICKRT_PATH, backendir);
     settings.endGroup();
     settings.sync();
 
