@@ -20,7 +20,6 @@
 #include <QFileInfo>
 #include <QSettings>
 #include <QStandardPaths>
-#include <QDebug>
 
 #include "synthengine.h"
 
@@ -29,18 +28,41 @@ const QString QSTR_INSTRUMENTSDEFINITION("InstrumentsDefinition");
 const QString QSTR_DATADIR("soundfonts");
 const QString QSTR_SOUNDFONT("default.sf2");
 
+const QString QSTR_AUDIODRIVER("AudioDriver");
+const QString QSTR_PERIODSIZE("PeriodSize");
+const QString QSTR_PERIODS("Periods");
+const QString QSTR_SAMPLERATE("SampleRate");
+const QString QSTR_CHORUS("Chorus");
+const QString QSTR_REVERB("Reverb");
+const QString QSTR_GAIN("Gain");
+const QString QSTR_POLYPHONY("Polyphony");
+
+const QString QSTR_DEFAULT_AUDIODRIVER =
+#if defined(Q_OS_LINUX)
+    QLatin1Literal("pulseaudio");
+#elif defined(Q_OS_WIN)
+    QLatin1Literal("dsound");
+#elif defined(Q_OS_OSX)
+    QLatin1Literal("coreaudio");
+#endif
+
+const int DEFAULT_PERIODSIZE = 1024;
+const int DEFAULT_PERIODS = 2;
+const double DEFAULT_SAMPLERATE = 48000.0d;
+const int DEFAULT_CHORUS = 0;
+const int DEFAULT_REVERB = 0;
+const double DEFAULT_GAIN = .4d;
+const int DEFAULT_POLYPHONY = 16;
+
 SynthEngine::SynthEngine(QObject *parent)
     : QObject(parent),
       m_settings(0),
       m_synth(0),
       m_driver(0)
-{
-    qDebug() << Q_FUNC_INFO;
-}
+{ }
 
 SynthEngine::~SynthEngine()
 {
-    qDebug() << Q_FUNC_INFO;
     if (m_driver != 0)
         ::delete_fluid_audio_driver(m_driver);
     if (m_synth != 0)
@@ -51,80 +73,67 @@ SynthEngine::~SynthEngine()
 
 void SynthEngine::initializeSynth(QSettings* settings)
 {
-    Q_UNUSED(settings)
-    qDebug() << Q_FUNC_INFO;
+    QString fs_audiodriver = QSTR_DEFAULT_AUDIODRIVER;
+    int fs_periodSize = DEFAULT_PERIODSIZE;
+    int fs_periods = DEFAULT_PERIODS;
+    double fs_sampleRate = DEFAULT_SAMPLERATE;
+    int fs_chorus = DEFAULT_CHORUS;
+    int fs_reverb = DEFAULT_REVERB;
+    double fs_gain = DEFAULT_GAIN;
+    int fs_polyphony = DEFAULT_POLYPHONY;
+    if (settings != 0) {
+        settings->beginGroup(QSTR_PREFERENCES);
+        fs_audiodriver = settings->value(QSTR_AUDIODRIVER, QSTR_DEFAULT_AUDIODRIVER).toString();
+        fs_periodSize = settings->value(QSTR_PERIODSIZE, DEFAULT_PERIODSIZE).toInt();
+        fs_periods = settings->value(QSTR_PERIODS, DEFAULT_PERIODS).toInt();
+        fs_sampleRate = settings->value(QSTR_SAMPLERATE, DEFAULT_SAMPLERATE).toDouble();
+        fs_chorus = settings->value(QSTR_CHORUS, DEFAULT_CHORUS).toInt();
+        fs_reverb = settings->value(QSTR_REVERB, DEFAULT_REVERB).toInt();
+        fs_gain = settings->value(QSTR_GAIN, DEFAULT_GAIN).toDouble();
+        fs_polyphony = settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toInt();
+        settings->endGroup();
+    }
     m_settings = ::new_fluid_settings();
-#if defined(Q_OS_LINUX)
-    ::fluid_settings_setstr(m_settings, "audio.driver", "pulseaudio");
-#elif defined(Q_OS_WIN)
-    ::fluid_settings_setstr(m_settings, "audio.driver", "dsound");
-#elif defined(Q_OS_OSX)
-    ::fluid_settings_setstr(m_settings, "audio.driver", "coreaudio");
-#endif
-    ::fluid_settings_setint(m_settings, "audio.period-size", 256);
-    ::fluid_settings_setint(m_settings, "audio.periods", 2);
-    ::fluid_settings_setnum(m_settings, "synth.sample-rate", 48000.0);
-    ::fluid_settings_setint(m_settings, "synth.chorus.active", 0);
-    ::fluid_settings_setint(m_settings, "synth.reverb.active", 0);
-    ::fluid_settings_setnum(m_settings, "synth.gain", 0.4);
-    ::fluid_settings_setint(m_settings, "synth.polyphony", 16);
+    ::fluid_settings_setstr(m_settings, "audio.driver", qPrintable(fs_audiodriver));
+    ::fluid_settings_setint(m_settings, "audio.period-size", fs_periodSize);
+    ::fluid_settings_setint(m_settings, "audio.periods", fs_periods);
+    ::fluid_settings_setnum(m_settings, "synth.sample-rate", fs_sampleRate);
+    ::fluid_settings_setint(m_settings, "synth.chorus.active", fs_chorus);
+    ::fluid_settings_setint(m_settings, "synth.reverb.active", fs_reverb);
+    ::fluid_settings_setnum(m_settings, "synth.gain", fs_gain);
+    ::fluid_settings_setint(m_settings, "synth.polyphony", fs_polyphony);
     m_synth = ::new_fluid_synth(m_settings);
     m_driver = ::new_fluid_audio_driver(m_settings, m_synth);
-    ::fluid_synth_set_chorus_on(m_synth, 0);
-    ::fluid_synth_set_reverb_on(m_synth, 0);
+    ::fluid_synth_set_chorus_on(m_synth, fs_chorus);
+    ::fluid_synth_set_reverb_on(m_synth, fs_reverb);
     ::fluid_synth_set_interp_method(m_synth, -1, FLUID_INTERP_DEFAULT);
 }
 
 void SynthEngine::setInstrument(int channel, int pgm)
 {
-    //Preset *bp = dynamic_cast<Preset*>(m_instruments.at(i));
-    //if (bp != 0) {
-        //qDebug() << i << bp->name() << bp->bank() << bp->program();
-        //::fluid_synth_bank_select(m_synth, channel, bp->bank());
-        //::fluid_synth_program_change(m_synth, channel, bp->program());
-    //}
     ::fluid_synth_program_change(m_synth, channel, pgm);
 }
 
 void SynthEngine::noteOn(int channel, int midiNote, int velocity)
 {
-    //qDebug() << "NoteOn " << midiNote << " vel: " << velocity; // << " time: " << m_time.elapsed();
     ::fluid_synth_noteon(m_synth, channel, midiNote, velocity);
 }
 
 void SynthEngine::noteOff(int channel, int midiNote, int /*velocity*/)
 {
-    //qDebug() << "NoteOff " << midiNote << " vel: " << velocity; // << " time: " << m_time.elapsed();
     ::fluid_synth_noteoff(m_synth, channel, midiNote);
 }
 
 void SynthEngine::loadSoundFont()
 {
-    //fluid_preset_t preset;
-    //m_instruments.clear();
     if (m_sfid != -1) {
         ::fluid_synth_sfunload(m_synth, unsigned(m_sfid), 1);
     }
-    m_sfid = ::fluid_synth_sfload(m_synth, m_soundFont.toLocal8Bit(), 1);
-    /*if (m_sfid != -1) {
-        fluid_sfont_t *pSoundFont = ::fluid_synth_get_sfont_by_id(m_synth, unsigned(m_sfid));
-        if (pSoundFont) {
-            pSoundFont->iteration_start(pSoundFont);
-            while (pSoundFont->iteration_next(pSoundFont, &preset)) {
-                //int iBank = preset.get_banknum(&preset);
-                //int iProg = preset.get_num(&preset);
-                QString sName = preset.get_name(&preset);
-                //qDebug() << iBank << iProg << sName;
-                //Preset *bp = new Preset(iBank, iProg, sName, this);
-                //m_instruments.append(bp);
-            }
-        }
-    }*/
+    m_sfid = ::fluid_synth_sfload(m_synth, qPrintable(m_soundFont), 1);
 }
 
 void SynthEngine::initialize()
 {
-    qDebug() << Q_FUNC_INFO;
     initializeSynth();
     scanSoundFonts();
     loadSoundFont();
@@ -132,17 +141,6 @@ void SynthEngine::initialize()
         m_soundFont = m_defSoundFont;
         loadSoundFont();
     }
-}
-
-QString SynthEngine::currentInstrumentName(int channel)
-{
-    unsigned int sfid, bank, preset;
-    ::fluid_synth_get_program(m_synth, channel, &sfid, &bank, &preset);
-    /*foreach(Preset *bp, m_instruments) {
-        if (bp->bank() == bank && bp->program() == preset)
-            return bp->name();
-    }*/
-    return QLatin1String("Select...");
 }
 
 void SynthEngine::panic()
@@ -162,7 +160,6 @@ void SynthEngine::bender(const int channel, const int value)
 
 void SynthEngine::setSoundFont(const QString &value)
 {
-    //qDebug() << Q_FUNC_INFO << value;
     if (value != m_soundFont) {
         m_soundFont = value;
         loadSoundFont();
@@ -171,7 +168,6 @@ void SynthEngine::setSoundFont(const QString &value)
 
 void SynthEngine::scanSoundFonts(const QDir &initialDir)
 {
-    //qDebug() << Q_FUNC_INFO << initialDir.absolutePath();
     QDir dir(initialDir);
     dir.setFilter(QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot);
     dir.setSorting(QDir::Name);
@@ -202,7 +198,6 @@ void SynthEngine::scanSoundFonts()
 
 void SynthEngine::readSettings(QSettings *settings)
 {
-    qDebug() << Q_FUNC_INFO;
     QDir dir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
     QFileInfo sf2(dir, QSTR_SOUNDFONT);
     if (sf2.exists()) {
@@ -213,15 +208,6 @@ void SynthEngine::readSettings(QSettings *settings)
     settings->beginGroup(QSTR_PREFERENCES);
     m_soundFont = settings->value(QSTR_INSTRUMENTSDEFINITION, m_defSoundFont).toString();
     settings->endGroup();
-}
-
-void SynthEngine::saveSettings(QSettings *settings)
-{
-    qDebug() << Q_FUNC_INFO;
-    settings->beginGroup(QSTR_PREFERENCES);
-    settings->setValue(QSTR_INSTRUMENTSDEFINITION, m_soundFont);
-    settings->endGroup();
-    settings->sync();
 }
 
 void SynthEngine::close()

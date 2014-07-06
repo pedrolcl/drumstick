@@ -339,9 +339,5 @@ namespace rt {
         return d->m_thruEnabled && d->m_out != 0;
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-    Q_EXPORT_PLUGIN2(drumstick_rt_mac_in, MacMIDIInput)
-#endif
 }} // namespace drumstick::rt
 
-//#include "macmidiobject.moc"

@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     CmdLineArgs args;
     args.setStdQtArgs(true);
     args.setUsage("dir");
-    args.addRequiredArgument("dir", "Directory of RT Backends");
+    args.addOptionalArgument("dir", "Directory for RT Backends");
     args.parse(argc, argv);
 
     QString backendir;
@@ -73,6 +73,10 @@ int main(int argc, char **argv)
     man.refresh(&settings);
     inputsList = man.inputsAvailable();
     outputsList = man.outputsAvailable();
+
+    foreach(QString path, man.defaultPaths()) {
+        cout << path << endl;
+    }
 
     foreach(MIDIInput* input, inputsList) {
         cout << "Input Backend " << input->backendName() << endl;

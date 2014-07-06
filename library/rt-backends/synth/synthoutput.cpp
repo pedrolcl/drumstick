@@ -18,21 +18,16 @@
 */
 
 #include "synthoutput.h"
-#include <QDebug>
 
 namespace drumstick {
 namespace rt {
 
 SynthOutput::SynthOutput(QObject *parent) : MIDIOutput(parent),
     m_synth(new SynthEngine(this))
-{
-    qDebug() << Q_FUNC_INFO;
-}
+{ }
 
 SynthOutput::~SynthOutput()
-{
-    qDebug() << Q_FUNC_INFO;
-}
+{ }
 
 void SynthOutput::initialize(QSettings *settings)
 {
@@ -129,9 +124,5 @@ void SynthOutput::sendSystemMsg(const int status)
 {
     Q_UNUSED(status)
 }
-
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-    Q_EXPORT_PLUGIN2(drumstick_rt_synth,SynthOutput)
-#endif
 
 }}

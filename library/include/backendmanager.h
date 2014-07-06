@@ -41,6 +41,7 @@ namespace rt {
         void refresh(QSettings* settings = 0);
         QList<MIDIInput*> inputsAvailable();
         QList<MIDIOutput*> outputsAvailable();
+        QStringList defaultPaths();
 
     private:
         class BackendManagerPrivate;

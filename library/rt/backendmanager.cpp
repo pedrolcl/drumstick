@@ -19,6 +19,7 @@
 
 #include <QDir>
 #include <QPluginLoader>
+#include <QCoreApplication>
 #include "backendmanager.h"
 
 #if defined(ALSA_BACKEND)
@@ -68,6 +69,30 @@ namespace rt {
         d(new BackendManagerPrivate)
     {
         refresh();
+    }
+
+    QStringList BackendManager::defaultPaths()
+    {
+        QStringList result;
+
+        const QStringList path_list = QCoreApplication::libraryPaths();
+
+        const QString dirName = QStringLiteral("drumstick");
+        foreach (const QString &path, path_list) {
+            QString libPath = path;
+            libPath += QDir::separator();
+            libPath += dirName;
+            result.append(libPath);
+        }
+
+        /*QString homeLibPath = QDir::homePath();
+        homeLibPath += QDir::separator();
+        homeLibPath += QStringLiteral(".drumstick");
+        homeLibPath += QDir::separator();
+        homeLibPath += QStringLiteral("backends");
+        result.append(homeLibPath);*/
+
+        return result;
     }
 
     void BackendManager::refresh(QSettings *settings)

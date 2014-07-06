@@ -409,7 +409,4 @@ namespace rt {
             d->sendEvents(&pktlist);
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-    Q_EXPORT_PLUGIN2(drumstick_rt_mac_out, MacMIDIOutput)
-#endif
 }}

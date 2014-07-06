@@ -45,10 +45,8 @@ public:
 
     Q_INVOKABLE void initialize();
     Q_INVOKABLE void readSettings(QSettings *settings);
-    Q_INVOKABLE void saveSettings(QSettings *settings);
     Q_INVOKABLE void scanSoundFonts();
     Q_INVOKABLE void panic();
-    Q_INVOKABLE QString currentInstrumentName(const int channel);
     Q_INVOKABLE void setInstrument(const int channel, int i);
     Q_INVOKABLE void noteOn(const int channel, const int midiNote, const int velocity);
     Q_INVOKABLE void noteOff(const int channel, const int midiNote, const int velocity);
@@ -72,7 +70,6 @@ private:
     fluid_settings_t* m_settings;
     fluid_synth_t* m_synth;
     fluid_audio_driver_t* m_driver;
-    //QList<Preset*> m_instruments;
     QStringList m_soundFontsList;
 };
 
