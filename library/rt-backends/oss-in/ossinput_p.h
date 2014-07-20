@@ -25,6 +25,7 @@
 #include <QSocketNotifier>
 #include <QStringList>
 #include <QByteArray>
+#include "midiparser.h"
 
 namespace drumstick {
 namespace rt {
@@ -40,6 +41,7 @@ public:
     MIDIOutput *m_out;
     QIODevice *m_device;
     QSocketNotifier *m_notifier;
+    MIDIParser *m_parser;
     bool m_thruEnabled;
     bool m_advanced;
     QString m_publicName;
@@ -52,7 +54,8 @@ public:
     void reloadDeviceList(bool advanced = false);
     void open(QString portName);
     void close();
-    void parse();
+    //void parse();
+    void setMIDIThruDevice(MIDIOutput* device);
 
 public slots:
     void processIncomingMessages(int);

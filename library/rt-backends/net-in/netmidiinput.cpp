@@ -77,7 +77,8 @@ QString NetMIDIInput::currentConnection()
 
 void NetMIDIInput::setMIDIThruDevice(MIDIOutput *device)
 {
-    d->m_out = device;
+    //d->m_out = device;
+    d->setMIDIThruDevice(device);
 }
 
 void NetMIDIInput::enableMIDIThru(bool enable)

@@ -1,5 +1,5 @@
 /*
-    Drumstick RT (realtime MIDI In/Out)
+    Drumstick MIDI realtime input-output
     Copyright (C) 2009-2014 Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
@@ -17,16 +17,31 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef MACCOMMON_H
-#define MACCOMMON_H
+#ifndef MIDIPARSER_H
+#define MIDIPARSER_H
 
-#include <QString>
-#include <CoreMIDI/CoreMIDI.h>
+#include <QObject>
+#include "rtmidiinput.h"
 
-#if QT_VERSION < QT_VERSION_CHECK(5,2,0)
-    QString CFStringToQString(CFStringRef str);
-#endif
+namespace drumstick {
+namespace rt {
 
-QString getEndpointName(MIDIEndpointRef endpoint);
+class MIDIParser : public QObject
+{
+    Q_OBJECT
+public:
+    explicit MIDIParser(MIDIInput *in = 0, QObject *parent = 0);
+    void setMIDIThruDevice(MIDIOutput* device);
 
-#endif // MACCOMMON_H
+public slots:
+    void parse(unsigned char byte);
+    void parse(QByteArray bytes);
+
+private:
+    class MIDIParserPrivate;
+    MIDIParserPrivate *d;
+};
+
+}}
+
+#endif // MIDIPARSER_H

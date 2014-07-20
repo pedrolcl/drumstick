@@ -25,8 +25,8 @@ set(drumstick-rt-mac-in_QTOBJ_SRCS
 )
 
 set(drumstick-rt-mac-in_SRCS
-    maccommon.h
-    maccommon.cpp
+    ../common/maccommon.h
+    ../common/maccommon.cpp
     macmidiinput.cpp
 )
 

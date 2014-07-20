@@ -2,20 +2,18 @@ TEMPLATE = lib
 CONFIG += plugin #create_prl #static
 TARGET = $$qtLibraryTarget(drumstick-rt-mac-in)
 DESTDIR = ../../../build/backends
-DEPENDPATH += . ../../include
-INCLUDEPATH += . ../../include
+DEPENDPATH += . ../../include ../common
+INCLUDEPATH += . ../../include ../common
 include (../../../global.pri)
-DEPENDPATH += ../../include
-INCLUDEPATH += ../../include
 QT -= gui
 
 HEADERS += ../../include/rtmidiinput.h \
            ../../include/rtmidioutput.h \
            macmidiinput.h \
-           maccommon.h
+           ../common/maccommon.h
 
 SOURCES += macmidiinput.cpp \
-           maccommon.cpp
+           ../common/maccommon.cpp
 
 LIBS += -framework CoreMidi -framework CoreFoundation
 

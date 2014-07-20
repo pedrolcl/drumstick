@@ -32,6 +32,7 @@ NetMIDIInputPrivate::NetMIDIInputPrivate(QObject *parent) : QObject(parent),
     m_inp(qobject_cast<NetMIDIInput *>(parent)),
     m_out(0),
     m_socket(0),
+    m_parser(0),
     m_thruEnabled(false),
     m_port(0),
     m_publicName(DEFAULT_PUBLIC_NAME)
@@ -47,6 +48,7 @@ void NetMIDIInputPrivate::open(QString portName)
     if (p > -1)
     {
         m_socket = new QUdpSocket();
+        m_parser = new MIDIParser(m_inp);
         m_port = MULTICAST_PORT + p;
         m_currentInput = portName;
         m_socket->bind(QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress);
@@ -65,98 +67,16 @@ void NetMIDIInputPrivate::open(QString portName)
 void NetMIDIInputPrivate::close()
 {
     delete m_socket;
+    delete m_parser;
     m_socket = 0;
+    m_parser = 0;
     m_currentInput.clear();
 }
 
-void NetMIDIInputPrivate::parse(const QByteArray& msg)
+void NetMIDIInputPrivate::setMIDIThruDevice(MIDIOutput* device)
 {
-    qDebug() << Q_FUNC_INFO << msg.toHex();
-    int pos = 0;
-    while(pos < msg.length()) {
-        uchar status = static_cast<unsigned>(msg.at(pos));
-        if (status < 0xF0) { // channel message
-            int chan = status & 0x0F;
-            status &= 0xF0;
-            switch(status) {
-            case 0x80: {
-                int m1 = static_cast<unsigned>(msg.at(++pos));
-                int m2 = static_cast<unsigned>(msg.at(++pos));
-                if(m_out != 0 && m_thruEnabled) {
-                    m_out->sendNoteOff(chan, m1, m2);
-                }
-                emit m_inp->midiNoteOff(chan, m1, m2);
-                break; }
-            case 0x90: {
-                int m1 = static_cast<unsigned>(msg.at(++pos));
-                int m2 = static_cast<unsigned>(msg.at(++pos));
-                if(m_out != 0 && m_thruEnabled) {
-                    m_out->sendNoteOn(chan, m1, m2);
-                }
-                emit m_inp->midiNoteOn(chan, m1, m2);
-                break; }
-            case 0xA0: {
-                int m1 = static_cast<unsigned>(msg.at(++pos));
-                int m2 = static_cast<unsigned>(msg.at(++pos));
-                if(m_out != 0 && m_thruEnabled) {
-                    m_out->sendKeyPressure(chan, m1, m2);
-                }
-                emit m_inp->midiKeyPressure(chan, m1, m2);
-                break; }
-            case 0xB0: {
-                int m1 = static_cast<unsigned>(msg.at(++pos));
-                int m2 = static_cast<unsigned>(msg.at(++pos));
-                if(m_out != 0 && m_thruEnabled) {
-                    m_out->sendController(chan, m1, m2);
-                }
-                emit m_inp->midiController(chan, m1, m2);
-                break; }
-            case 0xC0: {
-                int m1 = static_cast<unsigned>(msg.at(++pos));
-                if(m_out != 0 && m_thruEnabled) {
-                    m_out->sendProgram(chan, m1);
-                }
-                emit m_inp->midiProgram(chan, m1);
-                break; }
-            case 0xD0: {
-                int m1 = static_cast<unsigned>(msg.at(++pos));
-                if(m_out != 0 && m_thruEnabled) {
-                    m_out->sendChannelPressure(chan, m1);
-                }
-                emit m_inp->midiChannelPressure(chan, m1);
-                break; }
-            case 0xE0: {
-                int lo = static_cast<unsigned>(msg.at(++pos));
-                int hi = static_cast<unsigned>(msg.at(++pos));
-                int v = lo + hi * 0x80 - 0x2000;
-                if(m_out != 0 && m_thruEnabled) {
-                    m_out->sendPitchBend(chan, v);
-                }
-                emit m_inp->midiPitchBend(chan, v);
-                break; }
-            }
-            pos++;
-        } else { // system message
-            if (status == 0xF0) {
-                int p = msg.indexOf(0xF7, pos);
-                int len = p < 0 ? p : p - pos + 1;
-                if(m_out != 0 && m_thruEnabled) {
-                    m_out->sendSysex(msg.mid(pos, len));
-                }
-                emit m_inp->midiSysex(msg.mid(pos, len));
-                pos = p < 0 ? msg.length() : pos + len;
-            } else {
-                if(m_out != 0 && m_thruEnabled) {
-                    m_out->sendSystemMsg(status);
-                }
-                if (status < 0xF7)
-                    emit m_inp->midiSystemCommon(status);
-                else if (status > 0xF7)
-                    emit m_inp->midiSystemRealtime(status);
-                pos++;
-            }
-        }
-    }
+    m_out = device;
+    m_parser->setMIDIThruDevice(device);
 }
 
 void NetMIDIInputPrivate::processIncomingMessages()
@@ -165,7 +85,7 @@ void NetMIDIInputPrivate::processIncomingMessages()
         QByteArray datagram;
         datagram.resize(m_socket->pendingDatagramSize());
         m_socket->readDatagram(datagram.data(), datagram.size());
-        parse(datagram);
+        m_parser->parse(datagram);
     }
 }
 

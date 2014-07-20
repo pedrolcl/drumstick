@@ -79,7 +79,8 @@ void OSSInput::close()
 
 void OSSInput::setMIDIThruDevice(MIDIOutput *device)
 {
-    d->m_out = device;
+    d->setMIDIThruDevice(device);
+    //d->m_out = device;
 }
 
 void OSSInput::enableMIDIThru(bool enable)

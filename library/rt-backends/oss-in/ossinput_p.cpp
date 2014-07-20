@@ -68,6 +68,7 @@ void OSSInputPrivate::open(QString portName)
     m_device = f;
     m_device->open( QIODevice::ReadOnly | QIODevice::Unbuffered );
     m_notifier = new QSocketNotifier(f->handle(), QSocketNotifier::Read);
+    m_parser = new MIDIParser(m_inp);
     m_buffer.clear();
     connect(m_notifier, SIGNAL(activated(int)), this, SLOT(processIncomingMessages(int)));
     qDebug() << Q_FUNC_INFO << portName;
@@ -79,103 +80,17 @@ void OSSInputPrivate::close()
         m_device->close();
         delete m_notifier;
         delete m_device;
+        delete m_parser;
         m_device = 0;
+        m_parser = 0;
     }
     m_currentInput.clear();
 }
 
-void OSSInputPrivate::parse()
+void OSSInputPrivate::setMIDIThruDevice(MIDIOutput* device)
 {
-    uchar status = static_cast<unsigned>(m_buffer.at(0));
-    if (status < MIDI_STATUS_SYSEX) { // channel message
-        int chan = status & MIDI_CHANNEL_MASK;
-        status = status & MIDI_STATUS_MASK;
-        switch(status) {
-        case MIDI_STATUS_NOTEOFF: {
-            if (m_buffer.length() < 3)
-                return;
-            int m1 = static_cast<unsigned>(m_buffer.at(1));
-            int m2 = static_cast<unsigned>(m_buffer.at(2));
-            if(m_out != 0 && m_thruEnabled) {
-                m_out->sendNoteOff(chan, m1, m2);
-            }
-            emit m_inp->midiNoteOff(chan, m1, m2);
-            break; }
-        case MIDI_STATUS_NOTEON: {
-            if (m_buffer.length() < 3)
-                return;
-            int m1 = static_cast<unsigned>(m_buffer.at(1));
-            int m2 = static_cast<unsigned>(m_buffer.at(2));
-            if(m_out != 0 && m_thruEnabled) {
-                m_out->sendNoteOn(chan, m1, m2);
-            }
-            emit m_inp->midiNoteOn(chan, m1, m2);
-            break; }
-        case MIDI_STATUS_KEYPRESURE: {
-            if (m_buffer.length() < 3)
-                return;
-            int m1 = static_cast<unsigned>(m_buffer.at(1));
-            int m2 = static_cast<unsigned>(m_buffer.at(2));
-            if(m_out != 0 && m_thruEnabled) {
-                m_out->sendKeyPressure(chan, m1, m2);
-            }
-            emit m_inp->midiKeyPressure(chan, m1, m2);
-            break; }
-        case MIDI_STATUS_CONTROLCHANGE: {
-            if (m_buffer.length() < 3)
-                return;
-            int m1 = static_cast<unsigned>(m_buffer.at(1));
-            int m2 = static_cast<unsigned>(m_buffer.at(2));
-            if(m_out != 0 && m_thruEnabled) {
-                m_out->sendController(chan, m1, m2);
-            }
-            emit m_inp->midiController(chan, m1, m2);
-            break; }
-        case MIDI_STATUS_PROGRAMCHANGE: {
-            if (m_buffer.length() < 2)
-                return;
-            int m1 = static_cast<unsigned>(m_buffer.at(1));
-            if(m_out != 0 && m_thruEnabled) {
-                m_out->sendProgram(chan, m1);
-            }
-            emit m_inp->midiProgram(chan, m1);
-            break; }
-        case MIDI_STATUS_CHANNELPRESSURE: {
-            if (m_buffer.length() < 2)
-                return;
-            int m1 = static_cast<unsigned>(m_buffer.at(1));
-            if(m_out != 0 && m_thruEnabled) {
-                m_out->sendChannelPressure(chan, m1);
-            }
-            emit m_inp->midiChannelPressure(chan, m1);
-            break; }
-        case MIDI_STATUS_PITCHBEND: {
-            if (m_buffer.length() < 3)
-                return;
-            int lo = static_cast<unsigned>(m_buffer.at(1));
-            int hi = static_cast<unsigned>(m_buffer.at(2));
-            int v = lo + hi * 0x80 - 0x2000;
-            if(m_out != 0 && m_thruEnabled) {
-                m_out->sendPitchBend(chan, v);
-            }
-            emit m_inp->midiPitchBend(chan, v);
-            break; }
-        }
-        qDebug() << Q_FUNC_INFO << m_buffer.toHex();
-        m_buffer.clear();
-    } else { // system message
-        if (status == MIDI_STATUS_SYSEX) {
-            int p = m_buffer.at(m_buffer.length() - 1);
-            if (p != MIDI_STATUS_ENDSYSEX)
-                return;
-            if(m_out != 0 && m_thruEnabled) {
-                m_out->sendSysex(m_buffer);
-            }
-            emit m_inp->midiSysex(m_buffer);
-            qDebug() << Q_FUNC_INFO << m_buffer.toHex();
-            m_buffer.clear();
-        }
-    }
+    m_out = device;
+    m_parser->setMIDIThruDevice(device);
 }
 
 void OSSInputPrivate::processIncomingMessages(int)
@@ -183,35 +98,7 @@ void OSSInputPrivate::processIncomingMessages(int)
     char ch;
     m_device->getChar(&ch);
     uchar uch = static_cast<unsigned>(ch);
-    switch (uch) {
-        /*case 0xF1:
-        case 0xF2:
-        case 0xF3:
-        case 0xF4:
-        case 0xF5:
-        case 0xF6:
-            if(m_out != 0 && m_thruEnabled) {
-                m_out->sendSystemMsg(uch);
-            }
-            emit m_inp->midiSystemCommon(uch);
-            break;*/
-        case 0xF8:
-        case 0xF9:
-        case 0xFA:
-        case 0xFB:
-        case 0xFC:
-        case 0xFD:
-        case 0xFE:
-        case 0xFF:
-            if(m_out != 0 && m_thruEnabled) {
-                m_out->sendSystemMsg(uch);
-            }
-            emit m_inp->midiSystemRealtime(uch);
-            break;
-        default:
-            m_buffer.append(ch);
-            parse();
-    }
+    m_parser->parse(uch);
 }
 
 }}

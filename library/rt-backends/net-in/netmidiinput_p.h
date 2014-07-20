@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QUdpSocket>
+#include "midiparser.h"
 
 namespace drumstick {
 namespace rt {
@@ -36,6 +37,7 @@ public:
     NetMIDIInput *m_inp;
     MIDIOutput *m_out;
     QUdpSocket *m_socket;
+    MIDIParser *m_parser;
     int m_thruEnabled;
     quint16 m_port;
     QString m_publicName;
@@ -47,7 +49,8 @@ public:
 
     void open(QString portName);
     void close();
-    void parse(const QByteArray& msg);
+    //void parse(const QByteArray& msg);
+    void setMIDIThruDevice(MIDIOutput* device);
 
 public slots:
     void processIncomingMessages();

@@ -20,14 +20,18 @@ find_package(Qt5Network REQUIRED)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+include_directories(../common)
+
 set(drumstick-rt-net-in_QTOBJ_SRCS
     ../../include/rtmidiinput.h
     ../../include/rtmidioutput.h
+    ../common/midiparser.h
     netmidiinput_p.h
     netmidiinput.h
 )
 
 set(drumstick-rt-net-in_SRCS
+    ../common/midiparser.cpp
     netmidiinput_p.cpp
     netmidiinput.cpp
 )
