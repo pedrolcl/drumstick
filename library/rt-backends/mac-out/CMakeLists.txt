@@ -18,6 +18,8 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+include_directories(../common)
+
 set(drumstick-rt-mac-out_QTOBJ_SRCS
     ../../include/rtmidioutput.h
     macmidioutput.h

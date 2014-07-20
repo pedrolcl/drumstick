@@ -48,10 +48,10 @@ const QString QSTR_DEFAULT_AUDIODRIVER =
 
 const int DEFAULT_PERIODSIZE = 1024;
 const int DEFAULT_PERIODS = 2;
-const double DEFAULT_SAMPLERATE = 48000.0d;
+const double DEFAULT_SAMPLERATE = 48000.0;
 const int DEFAULT_CHORUS = 0;
 const int DEFAULT_REVERB = 0;
-const double DEFAULT_GAIN = .4d;
+const double DEFAULT_GAIN = .4;
 const int DEFAULT_POLYPHONY = 16;
 
 SynthEngine::SynthEngine(QObject *parent)
