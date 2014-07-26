@@ -62,8 +62,8 @@ int main(int argc, char **argv)
 
     BackendManager man;
     man.refresh(&settings);
-    inputsList = man.inputsAvailable();
-    outputsList = man.outputsAvailable();
+    inputsList = man.availableInputs();
+    outputsList = man.availableOutputs();
 
     foreach(MIDIInput* input, inputsList) {
         cout << "Input Backend " << input->backendName() << endl;

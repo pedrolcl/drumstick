@@ -64,8 +64,8 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
 
     BackendManager man;
     man.refresh(&settings);
-    m_inputs = man.inputsAvailable();
-    m_outputs = man.outputsAvailable();
+    m_inputs = man.availableInputs();
+    m_outputs = man.availableOutputs();
 
     foreach(MIDIInput* input, m_inputs) {
         if (m_midiIn == 0 && (input->backendName() == nativeBackend))  {

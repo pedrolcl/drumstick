@@ -22,7 +22,6 @@
 #include <QPluginLoader>
 #include <QCoreApplication>
 #include <QLibraryInfo>
-//#include <QDebug>
 #include "backendmanager.h"
 
 #if defined(ALSA_BACKEND)
@@ -59,8 +58,26 @@ Q_IMPORT_PLUGIN(OSSInput)
 Q_IMPORT_PLUGIN(OSSOutput)
 #endif
 
+/**
+ * @file backendmanager.cpp
+ * Implementation of a class managing realtime MIDI input/output backends
+ */
+
 namespace drumstick {
 namespace rt {
+
+
+/**
+ * @addtogroup RT
+ * @{
+ *
+ * BackendManager provides a mechanism to find and enumerate backends (plugins)
+ * to manage realtime MIDI input/output
+ *
+ * This class and plugins are multiplatform
+ *
+ * @}
+ */
 
     class BackendManager::BackendManagerPrivate {
     public:
@@ -76,8 +93,7 @@ namespace rt {
         }
     };
 
-    BackendManager::BackendManager():
-        d(new BackendManagerPrivate)
+    BackendManager::BackendManager(): d(new BackendManagerPrivate)
     {
         refresh();
     }
@@ -85,28 +101,27 @@ namespace rt {
     QStringList BackendManager::defaultPaths()
     {
         QStringList result;
-        QString dirName = QStringLiteral("drumstick");
         QString appPath = QCoreApplication::applicationDirPath() + QDir::separator();
     #if defined(Q_OS_WIN)
-        d->appendDir( appPath + dirName, result );
+        d->appendDir( appPath + QSTR_DRUMSTICK, result );
     #elif defined(Q_OS_MAC)
         d->appendDir( appPath + QStringLiteral("../PlugIns"), result );
     #else // Linux, Unix...
         QStringList libs;
         libs << "../lib/" << "../lib32/" << "../lib64/";
         foreach(const QString& lib, libs) {
-            d->appendDir( appPath + lib + dirName, result );
+            d->appendDir( appPath + lib + QSTR_DRUMSTICK, result );
         }
     #endif
-        d->appendDir( appPath + ".." + QDir::separator() + dirName, result );
-        QByteArray envdir = qgetenv("DRUMSTICKRT");
+        d->appendDir( appPath + ".." + QDir::separator() + QSTR_DRUMSTICK, result );
+        QByteArray envdir = qgetenv(QSTR_DRUMSTICKRT.toLatin1());
         if(!envdir.isEmpty()) {
             d->appendDir(QString(envdir), result );
         }
-        d->appendDir( QDir::homePath() + QDir::separator() + dirName, result );
-        d->appendDir( QLibraryInfo::location(QLibraryInfo::PluginsPath) + QDir::separator() + dirName, result );
+        d->appendDir( QDir::homePath() + QDir::separator() + QSTR_DRUMSTICK, result );
+        d->appendDir( QLibraryInfo::location(QLibraryInfo::PluginsPath) + QDir::separator() + QSTR_DRUMSTICK, result );
         foreach(const QString& path, QCoreApplication::libraryPaths()) {
-            d->appendDir( path + QDir::separator() + dirName, result );
+            d->appendDir( path + QDir::separator() + QSTR_DRUMSTICK, result );
         }
         return result;
     }
@@ -176,12 +191,12 @@ namespace rt {
         }
     }
 
-    QList<MIDIInput*> BackendManager::inputsAvailable()
+    QList<MIDIInput*> BackendManager::availableInputs()
     {
         return d->m_inputsList;
     }
 
-    QList<MIDIOutput*> BackendManager::outputsAvailable()
+    QList<MIDIOutput*> BackendManager::availableOutputs()
     {
         return d->m_outputsList;
     }

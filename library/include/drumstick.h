@@ -22,9 +22,10 @@
 
 /**
  * @file drumstick.h
- * The main header that a program can include to use all the drumstick features.
+ * The main header that a program can include to use all drumstick features.
  */
 
+#if defined(Q_OS_LINUX)
 // ALSA library interface
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaevent.h>
@@ -34,6 +35,7 @@
 #include <drumstick/drumstickcommon.h>
 #include <drumstick/playthread.h>
 #include <drumstick/subscription.h>
+#endif
 
 // File formats
 #include <drumstick/qsmf.h>

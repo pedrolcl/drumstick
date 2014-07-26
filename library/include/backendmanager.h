@@ -25,22 +25,58 @@
 #include "rtmidiinput.h"
 #include "rtmidioutput.h"
 
+/**
+ * @file backendmanager.h
+ * Realtime MIDI input/output multiplatform classes
+ * @defgroup RT Realtime MIDI (I/O)
+ * @{
+ */
+
 namespace drumstick {
 namespace rt {
 
+    const QString QSTR_DRUMSTICK(QLatin1Literal("drumstick"));
+    const QString QSTR_DRUMSTICKRT(QLatin1Literal("DRUMSTICKRT"));
     const QString QSTR_DRUMSTICKRT_GROUP(QLatin1Literal("DrumstickRT"));
     const QString QSTR_DRUMSTICKRT_PUBLICNAMEIN(QLatin1Literal("PublicNameIN"));
     const QString QSTR_DRUMSTICKRT_PUBLICNAMEOUT(QLatin1Literal("PublicNameOUT"));
     const QString QSTR_DRUMSTICKRT_EXCLUDED(QLatin1Literal("ExcludedNames"));
     const QString QSTR_DRUMSTICKRT_PATH(QLatin1Literal("BackendsPath"));
 
+    /**
+     * @brief The BackendManager class manages lists of dynamic and static
+     * backends for applications based on drumstick-rt
+     */
     class DRUMSTICK_EXPORT BackendManager
     {
     public:
+        /**
+         * @brief BackendManager constructor
+         */
         explicit BackendManager();
+
+        /**
+         * @brief refresh the list of backends
+         * @param settings Program settings
+         */
         void refresh(QSettings* settings = 0);
-        QList<MIDIInput*> inputsAvailable();
-        QList<MIDIOutput*> outputsAvailable();
+
+        /**
+         * @brief availableInputs
+         * @return list of available MIDI inputs
+         */
+        QList<MIDIInput*> availableInputs();
+
+        /**
+         * @brief availableOutputs
+         * @return list of available MIDI outputs
+         */
+        QList<MIDIOutput*> availableOutputs();
+
+        /**
+         * @brief defaultPaths
+         * @return list of paths for backends search
+         */
         QStringList defaultPaths();
 
     private:
@@ -49,5 +85,7 @@ namespace rt {
     };
 
 }}
+
+/** @} */
 
 #endif // BACKENDMANAGER_H

@@ -67,17 +67,17 @@ namespace drumstick {
 
 /**
 @mainpage drumstick Documentation
-@author Copyright &copy; 2009-2010 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
-@date 2010-09-09
-@version 0.5.0
+@author Copyright &copy; 2009-2014 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
+@date 2014-08-01
+@version 0.5.99
 
 This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/
 
 @section Abstract
 
-This is the reference documentation for drumstick. This library is a C++ wrapper
-around the ALSA library sequencer interface, using Qt4 objects, idioms and style.
+This is the reference documentation for drumstick. This library is a set of C++ MIDI related classes,
+using Qt5 objects, idioms and style.
 ALSA sequencer provides software support for MIDI technology on Linux.
 
 @see http://doc.trolltech.com/index.html
@@ -95,10 +95,9 @@ development. Please visit the drumstick web site to read the latest version.
 @section Introduction
 
 For an introduction to design and programming with C++ and Qt4, see the book
-"An Introduction to Design Patterns in C++ with Qt 4" by by Alan Ezust and Paul
+"An Introduction to Design Patterns in C++ with Qt" by by Alan Ezust and Paul
 Ezust. It is available published on dead trees, and also
-<a href="http://cartan.cas.suffolk.edu/oopdocbook/opensource/index.html">
-online</a>.
+<a href="http://www.ics.com/design-patterns"> online</a>.
 
 Here is how a simple program playing a note-on MIDI message using drumstick
 looks like:
