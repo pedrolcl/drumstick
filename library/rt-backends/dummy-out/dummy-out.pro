@@ -1,6 +1,6 @@
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(drumstick-rt-dummy-out)
-DESTDIR = ../../../build/backends
+DESTDIR = ../../../build/lib/drumstick
 include (../../../global.pri)
 CONFIG += plugin create_prl #static
 DEPENDPATH += ../../include

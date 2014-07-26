@@ -50,7 +50,7 @@ target_link_libraries(drumstick-rt-net-out
     Qt5::Network)
 
 set_target_properties(drumstick-rt-net-out PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/backends)
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
 install(TARGETS drumstick-rt-net-out
         RUNTIME DESTINATION bin

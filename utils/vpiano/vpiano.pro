@@ -20,7 +20,7 @@ LIBS += -L$$OUT_PWD/../../build/lib/
 LIBS += -l$$qtLibraryTarget(drumstick-common) \
         -l$$qtLibraryTarget(drumstick-rt)
 
-#LIBS += -L$$OUT_PWD/../../build/backends/
+#LIBS += -L$$OUT_PWD/../../build/lib/drumstick/
 #LIBS += -l$$qtLibraryTarget(drumstick-rt-net-in) \
 #        -l$$qtLibraryTarget(drumstick-rt-net-out)
 

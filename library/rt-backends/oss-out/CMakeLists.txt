@@ -48,7 +48,7 @@ target_link_libraries(drumstick-rt-oss-out
     Qt5::Core)
 
 set_target_properties(drumstick-rt-oss-out PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/backends)
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
 install(TARGETS drumstick-rt-oss-out
         RUNTIME DESTINATION bin

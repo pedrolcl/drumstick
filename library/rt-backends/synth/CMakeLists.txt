@@ -55,7 +55,7 @@ target_link_libraries(drumstick-rt-synth
     ${FLUIDSYNTH_LIBRARIES})
 
 set_target_properties(drumstick-rt-synth PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/backends)
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
 install(TARGETS drumstick-rt-synth
         RUNTIME DESTINATION bin

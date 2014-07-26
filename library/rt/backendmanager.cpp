@@ -17,9 +17,12 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+#include <QtGlobal>
 #include <QDir>
 #include <QPluginLoader>
 #include <QCoreApplication>
+#include <QLibraryInfo>
+//#include <QDebug>
 #include "backendmanager.h"
 
 #if defined(ALSA_BACKEND)
@@ -63,6 +66,14 @@ namespace rt {
     public:
         QList<MIDIInput*> m_inputsList;
         QList<MIDIOutput*> m_outputsList;
+        void appendDir(const QString& candidate, QStringList& result)
+        {
+            //qDebug() << "testing " << candidate;
+            QDir checked(candidate);
+            if (checked.exists()) {
+                result << checked.absolutePath();
+            }
+        }
     };
 
     BackendManager::BackendManager():
@@ -74,37 +85,42 @@ namespace rt {
     QStringList BackendManager::defaultPaths()
     {
         QStringList result;
-
-        const QStringList path_list = QCoreApplication::libraryPaths();
-
-        const QString dirName = QStringLiteral("drumstick");
-        foreach (const QString &path, path_list) {
-            QString libPath = path;
-            libPath += QDir::separator();
-            libPath += dirName;
-            result.append(libPath);
+        QString dirName = QStringLiteral("drumstick");
+        QString appPath = QCoreApplication::applicationDirPath() + QDir::separator();
+    #if defined(Q_OS_WIN)
+        d->appendDir( appPath + dirName, result );
+    #elif defined(Q_OS_MAC)
+        d->appendDir( appPath + QStringLiteral("../PlugIns"), result );
+    #else // Linux, Unix...
+        QStringList libs;
+        libs << "../lib/" << "../lib32/" << "../lib64/";
+        foreach(const QString& lib, libs) {
+            d->appendDir( appPath + lib + dirName, result );
         }
-
-        /*QString homeLibPath = QDir::homePath();
-        homeLibPath += QDir::separator();
-        homeLibPath += QStringLiteral(".drumstick");
-        homeLibPath += QDir::separator();
-        homeLibPath += QStringLiteral("backends");
-        result.append(homeLibPath);*/
-
+    #endif
+        d->appendDir( appPath + ".." + QDir::separator() + dirName, result );
+        QByteArray envdir = qgetenv("DRUMSTICKRT");
+        if(!envdir.isEmpty()) {
+            d->appendDir(QString(envdir), result );
+        }
+        d->appendDir( QDir::homePath() + QDir::separator() + dirName, result );
+        d->appendDir( QLibraryInfo::location(QLibraryInfo::PluginsPath) + QDir::separator() + dirName, result );
+        foreach(const QString& path, QCoreApplication::libraryPaths()) {
+            d->appendDir( path + QDir::separator() + dirName, result );
+        }
         return result;
     }
 
     void BackendManager::refresh(QSettings *settings)
     {
-        QString dir;
         QString name_in;
         QString name_out;
         QStringList names;
+        QStringList paths;
 
         if (settings != 0) {
             settings->beginGroup(QSTR_DRUMSTICKRT_GROUP);
-            dir = settings->value(QSTR_DRUMSTICKRT_PATH).toString();
+            d->appendDir(settings->value(QSTR_DRUMSTICKRT_PATH).toString(), paths);
             name_in = settings->value(QSTR_DRUMSTICKRT_PUBLICNAMEIN).toString();
             name_out = settings->value(QSTR_DRUMSTICKRT_PUBLICNAMEOUT).toString();
             names << settings->value(QSTR_DRUMSTICKRT_EXCLUDED).toStringList();
@@ -112,24 +128,29 @@ namespace rt {
             names << name_out;
             settings->endGroup();
         }
+        paths << defaultPaths();
 
         // Dynamic backends
-        QDir pluginsDir(dir);
-        foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-            QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-            QObject *obj = loader.instance();
-            if (obj != 0) {
-                MIDIInput *input = qobject_cast<MIDIInput*>(obj);
-                if (input != 0) {
-                    input->setPublicName(name_in);
-                    input->setExcludedConnections(names);
-                    d->m_inputsList << input;
-                } else {
-                    MIDIOutput *output = qobject_cast<MIDIOutput*>(obj);
-                    if (output != 0) {
-                        output->setPublicName(name_out);
-                        output->setExcludedConnections(names);
-                        d->m_outputsList << output;
+        foreach(const QString& dir, paths) {
+            QDir pluginsDir(dir);
+            foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+                if (QLibrary::isLibrary(fileName)) {
+                    QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+                    QObject *obj = loader.instance();
+                    if (obj != 0) {
+                        MIDIInput *input = qobject_cast<MIDIInput*>(obj);
+                        if (input != 0) {
+                            input->setPublicName(name_in);
+                            input->setExcludedConnections(names);
+                            d->m_inputsList << input;
+                        } else {
+                            MIDIOutput *output = qobject_cast<MIDIOutput*>(obj);
+                            if (output != 0) {
+                                output->setPublicName(name_out);
+                                output->setExcludedConnections(names);
+                                d->m_outputsList << output;
+                            }
+                        }
                     }
                 }
             }

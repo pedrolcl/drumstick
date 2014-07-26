@@ -36,24 +36,16 @@ int main(int argc, char *argv[])
 
     CmdLineArgs args;
     args.setStdQtArgs(true);
-    args.addRequiredArgument("dir", "Directory for MIDI Backends");
-    args.setUsage("dir [options]");
     args.parse(argc, argv);
 
-    QString backendir;
-    QVariant vdir = args.getArgument("dir");
-    if (!vdir.isNull())
-    {
-        backendir = vdir.toString();
-    }
     QFileInfo exeInfo(app.applicationFilePath());
-    cout << "program=" << exeInfo.fileName() << " backends directory=" << backendir << endl;
+    cout << "program=" << exeInfo.fileName() << endl;
 
     QSettings settings;
     settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
     settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("Virtual Piano IN"));
     settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("Virtual Piano OUT"));
-    settings.setValue(QSTR_DRUMSTICKRT_PATH, backendir);
+    //settings.setValue(QSTR_DRUMSTICKRT_PATH, backendir);
     settings.endGroup();
     settings.sync();
 

@@ -44,25 +44,16 @@ int main(int argc, char **argv)
     QCoreApplication app(argc, argv);
     CmdLineArgs args;
     args.setStdQtArgs(true);
-    args.setUsage("dir");
-    args.addOptionalArgument("dir", "Directory for RT Backends");
     args.parse(argc, argv);
 
-    QString backendir;
-    QVariant vdir = args.getArgument("dir");
-    if (!vdir.isNull())
-    {
-        backendir = vdir.toString();
-    }
-
     QFileInfo exeInfo(app.applicationFilePath());
-    cout << "program=" << exeInfo.fileName() << " backends=" << backendir << endl;
+    cout << "program=" << exeInfo.fileName();
 
     QSettings settings;
     settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
     settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("TEST MIDI IN"));
     settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("TEST MIDI OUT"));
-    settings.setValue(QSTR_DRUMSTICKRT_PATH, backendir);
+    //settings.setValue(QSTR_DRUMSTICKRT_PATH, backendir);
     settings.endGroup();
     settings.sync();
 
@@ -73,10 +64,6 @@ int main(int argc, char **argv)
     man.refresh(&settings);
     inputsList = man.inputsAvailable();
     outputsList = man.outputsAvailable();
-
-    foreach(QString path, man.defaultPaths()) {
-        cout << path << endl;
-    }
 
     foreach(MIDIInput* input, inputsList) {
         cout << "Input Backend " << input->backendName() << endl;

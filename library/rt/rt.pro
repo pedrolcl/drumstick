@@ -21,7 +21,7 @@ win32 {
     TARGET_EXT = .dll
 }
 
-#LIBS += -L$$OUT_PWD/../../build/backends
+#LIBS += -L$$OUT_PWD/../../build/lib/drumstick
 #LIBS += -L$$OUT_PWD/../../build/lib
 
 #dummy {
