@@ -56,6 +56,11 @@ namespace rt {
         explicit BackendManager();
 
         /**
+         * @brief ~BackendManager destructor
+         */
+        virtual ~BackendManager();
+
+        /**
          * @brief refresh the list of backends
          * @param settings Program settings
          */

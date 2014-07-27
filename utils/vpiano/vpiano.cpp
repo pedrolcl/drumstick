@@ -23,33 +23,13 @@
 
 #if defined(Q_OS_LINUX)
 QString nativeBackend("ALSA");
-//Q_IMPORT_PLUGIN(ALSAMIDIInput)
-//Q_IMPORT_PLUGIN(ALSAMIDIOutput)
-#endif
-
-#if defined(Q_OS_OSX)
+#elif defined(Q_OS_OSX)
 QString nativeBackend("CoreMIDI");
-//Q_IMPORT_PLUGIN(MacMIDIInput)
-//Q_IMPORT_PLUGIN(MacMIDIOutput)
-#endif
-
-#if defined(Q_OS_WIN)
+#elif defined(Q_OS_WIN)
 QString nativeBackend("Windows MM");
-//Q_IMPORT_PLUGIN(WinMIDIInput)
-//Q_IMPORT_PLUGIN(WinMIDIOutput)
+#else
+QString nativeBackend("Network");
 #endif
-
-//#if defined(Q_OS_UNIX)
-//Q_IMPORT_PLUGIN(OSSInput)
-//Q_IMPORT_PLUGIN(OSSOutput)
-//#endif
-
-//Q_IMPORT_PLUGIN(NetMIDIInput)
-//Q_IMPORT_PLUGIN(NetMIDIOutput)
-
-//#if defined(SYNTH_BACKEND)
-//Q_IMPORT_PLUGIN(SynthOutput)
-//#endif
 
 VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     : QMainWindow(parent, flags),

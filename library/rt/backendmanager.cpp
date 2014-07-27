@@ -83,6 +83,15 @@ namespace rt {
     public:
         QList<MIDIInput*> m_inputsList;
         QList<MIDIOutput*> m_outputsList;
+        ~BackendManagerPrivate()
+        {
+            clearLists();
+        }
+        void clearLists()
+        {
+            m_inputsList.clear();
+            m_outputsList.clear();
+        }
         void appendDir(const QString& candidate, QStringList& result)
         {
             //qDebug() << "testing " << candidate;
@@ -96,6 +105,11 @@ namespace rt {
     BackendManager::BackendManager(): d(new BackendManagerPrivate)
     {
         refresh();
+    }
+
+    BackendManager::~BackendManager()
+    {
+        delete d;
     }
 
     QStringList BackendManager::defaultPaths()
@@ -144,6 +158,7 @@ namespace rt {
             settings->endGroup();
         }
         paths << defaultPaths();
+        d->clearLists();
 
         // Dynamic backends
         foreach(const QString& dir, paths) {

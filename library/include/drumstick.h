@@ -19,7 +19,7 @@
 
 #ifndef DRUMSTICK_H
 #define DRUMSTICK_H
-
+#include <QtCore>
 /**
  * @file drumstick.h
  * The main header that a program can include to use all drumstick features.
