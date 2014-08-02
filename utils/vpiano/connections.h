@@ -22,10 +22,9 @@
 
 #include <QObject>
 #include <QDialog>
-
+#include <QShowEvent>
 #include "rtmidiinput.h"
 #include "rtmidioutput.h"
-
 #include "ui_connections.h"
 
 using namespace drumstick::rt;
@@ -42,19 +41,24 @@ public:
     void setOutputs(QList<MIDIOutput *> outs);
     MIDIInput *getInput() { return m_midiIn; }
     MIDIOutput *getOutput() { return m_midiOut; }
+    void setAdvanced(bool value);
+    bool advanced();
+    bool midiThru();
 
 public slots:
+    void clickedAdvanced(bool value);
+    void setMidiThru(bool value);
     void refreshInputs(QString id);
     void refreshOutputs(QString id);
     void refresh();
     void accept();
 
 private:
-    Ui::ConnectionsClass ui;
+    bool m_advanced;
+    bool m_thru;
     MIDIInput* m_midiIn;
     MIDIOutput* m_midiOut;
-    QHash<QString, MIDIInput*> m_inputs;
-    QHash<QString, MIDIOutput*> m_outputs;
+    Ui::ConnectionsClass ui;
 };
 
 #endif // CONNECTIONS_H

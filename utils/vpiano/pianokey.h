@@ -1,10 +1,10 @@
 /*
-    Virtual Piano Widget for Qt4 
+    Virtual Piano Widget for Qt5
     Copyright (C) 2008-2014, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation; either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -32,9 +32,14 @@ public:
     PianoKey(const QRectF &rect, const bool black, const int note);
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
     int getNote() const { return m_note; }
+    void setBrush(const QBrush& b) { m_brush = b; }
     void setPressedBrush(const QBrush& b) { m_selectedBrush = b; }
+    void resetBrush();
     bool isPressed() const { return m_pressed; }
     void setPressed(bool p);
+    int getDegree() const { return m_note % 12; }
+    int getType() const { return (m_black ? 1 : 0); }
+
 private:
     bool m_pressed;
     QBrush m_selectedBrush;

@@ -303,7 +303,7 @@ CmdLineArgs::helpText(const QString & id)
         }
     }
     if (d->m_stdQtArgs)
-        out += QLatin1String("This program also accepts Qt4 standard options\n");
+        out += QLatin1String("This program also accepts Qt standard options\n");
     return out;
 }
 

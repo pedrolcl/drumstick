@@ -1,10 +1,10 @@
 /*
-    Virtual Piano Widget for Qt4 
+    Virtual Piano Widget for Qt5
     Copyright (C) 2008-2014, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation; either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -23,37 +23,40 @@ PianoKeybd::PianoKeybd(QWidget *parent)
     : QGraphicsView(parent), m_rotation(0), m_scene(NULL), m_rawMap(NULL)
 {
     initialize();
-    initScene(3, 5);
+    initScene(DEFAULTBASEOCTAVE, DEFAULTNUMBEROFKEYS, DEFAULTSTARTINGKEY);
 }
 
-PianoKeybd::PianoKeybd(const int baseOctave, const int numOctaves, QWidget *parent) 
+PianoKeybd::PianoKeybd(const int baseOctave, const int numKeys, const int startKey, QWidget *parent)
     : QGraphicsView(parent), m_rotation(0), m_scene(NULL), m_rawMap(NULL)
 {
     initialize();
-    initScene(baseOctave, numOctaves);
+    initScene(baseOctave, numKeys, startKey);
 }
 
 PianoKeybd::~PianoKeybd()
 {
+    m_scene->setRawKeyboardMode(false);
+    setRawKeyboardMap(0);
 }
 
-void PianoKeybd::initScene(int base, int num, const QColor& c)
+void PianoKeybd::initScene(int base, int num, int strt, const QColor& c)
 {
-    m_scene = new PianoScene(base, num, c, this);
+    m_scene = new PianoScene(base, num, strt, c, this);
     m_scene->setKeyboardMap(&m_defaultMap);
-    connect(m_scene, SIGNAL(noteOn(int)), SIGNAL(noteOn(int)));
-    connect(m_scene, SIGNAL(noteOff(int)), SIGNAL(noteOff(int)));
+    connect(m_scene, SIGNAL(noteOn(int,int)), SIGNAL(noteOn(int,int)));
+    connect(m_scene, SIGNAL(noteOff(int,int)), SIGNAL(noteOff(int,int)));
     setScene(m_scene);
 }
 
 void PianoKeybd::initialize()
 {
+    setAttribute(Qt::WA_AcceptTouchEvents);
     setAttribute(Qt::WA_InputMethodEnabled, false);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(MinimalViewportUpdate);
-    setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+    setRenderHints(QPainter::Antialiasing|QPainter::TextAntialiasing|QPainter::SmoothPixmapTransform);
     setOptimizationFlag(DontClipPainter, true);
     setOptimizationFlag(DontSavePainterState, true);
     setOptimizationFlag(DontAdjustForAntialiasing, true);
@@ -65,16 +68,6 @@ void PianoKeybd::resizeEvent(QResizeEvent *event)
 {
     QGraphicsView::resizeEvent(event);
     fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
-}
-
-void PianoKeybd::showNoteOn(int midiNote)
-{
-    m_scene->showNoteOn(midiNote);
-}
-
-void PianoKeybd::showNoteOff(int midiNote)
-{
-    m_scene->showNoteOff(midiNote);
 }
 
 void PianoKeybd::initDefaultMap()
@@ -111,7 +104,7 @@ void PianoKeybd::initDefaultMap()
     m_defaultMap.insert(Qt::Key_P, 40);
 
     // Default Raw Keyboard Map
-#if defined(Q_WS_X11)
+#if defined(Q_OS_LINUX)
     m_defaultRawMap.insert(94, 11);
     m_defaultRawMap.insert(52, 12);
     m_defaultRawMap.insert(39, 13);
@@ -153,7 +146,7 @@ void PianoKeybd::initDefaultMap()
     m_defaultRawMap.insert(35, 48);
 #endif
 
-#if defined(Q_WS_WIN)
+#if defined(Q_OS_WIN)
     m_defaultRawMap.insert(86, 11);
     m_defaultRawMap.insert(44, 12);
     m_defaultRawMap.insert(31, 13);
@@ -195,7 +188,7 @@ void PianoKeybd::initDefaultMap()
     m_defaultRawMap.insert(27, 48);
 #endif
 
-#if defined(Q_WS_MAC)
+#if defined(Q_OS_MAC)
     m_defaultRawMap.insert(50, 11);
     m_defaultRawMap.insert(6, 12);
     m_defaultRawMap.insert(1, 13);
@@ -239,17 +232,24 @@ void PianoKeybd::initDefaultMap()
     m_rawMap = &m_defaultRawMap;
 }
 
-void PianoKeybd::setNumOctaves(const int numOctaves)
+void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
 {
-    if (numOctaves != m_scene->numOctaves()) {
+    if ( numKeys != m_scene->numKeys() || startKey != m_scene->startKey() )
+    {
         int baseOctave = m_scene->baseOctave();
         QColor color = m_scene->getKeyPressedColor();
         PianoHandler* handler = m_scene->getPianoHandler();
         KeyboardMap* keyMap = m_scene->getKeyboardMap();
+        bool keyboardEnabled = m_scene->isKeyboardEnabled();
+        bool mouseEnabled = m_scene->isMouseEnabled();
+        bool touchEnabled = m_scene->isTouchEnabled();
         delete m_scene;
-        initScene(baseOctave, numOctaves, color);
+        initScene(baseOctave, numKeys, startKey, color);
         m_scene->setPianoHandler(handler);
         m_scene->setKeyboardMap(keyMap);
+        m_scene->setKeyboardEnabled(keyboardEnabled);
+        m_scene->setMouseEnabled(mouseEnabled);
+        m_scene->setTouchEnabled(touchEnabled);
         fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
     }
 }
@@ -269,9 +269,10 @@ QSize PianoKeybd::sizeHint() const
     return mapFromScene(sceneRect()).boundingRect().size();
 }
 
+#if defined(RAWKBD_SUPPORT)
 bool PianoKeybd::handleKeyPressed(int keycode)
 {
-    if (m_rawMap != NULL && m_rawMap->contains(keycode)) {
+    if (m_scene->isKeyboardEnabled() && m_rawMap != NULL && m_rawMap->contains(keycode)) {
         m_scene->keyOn(m_rawMap->value(keycode));
         return true;
     }
@@ -280,9 +281,10 @@ bool PianoKeybd::handleKeyPressed(int keycode)
 
 bool PianoKeybd::handleKeyReleased(int keycode)
 {
-    if (m_rawMap != NULL && m_rawMap->contains(keycode)) {
+    if (m_scene->isKeyboardEnabled() && m_rawMap != NULL && m_rawMap->contains(keycode)) {
         m_scene->keyOff(m_rawMap->value(keycode));
         return true;
     }
     return false;
 }
+#endif

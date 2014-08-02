@@ -1,5 +1,5 @@
 /*
-    Virtual Piano Widget for Qt4
+    Virtual Piano Widget for Qt5
     Copyright (C) 2008-2014, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify

@@ -94,7 +94,7 @@ development. Please visit the drumstick web site to read the latest version.
 
 @section Introduction
 
-For an introduction to design and programming with C++ and Qt4, see the book
+For an introduction to design and programming with C++ and Qt, see the book
 "An Introduction to Design Patterns in C++ with Qt" by by Alan Ezust and Paul
 Ezust. It is available published on dead trees, and also
 <a href="http://www.ics.com/design-patterns"> online</a>.

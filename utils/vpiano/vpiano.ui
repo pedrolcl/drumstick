@@ -16,11 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout">
     <item>
-     <widget class="PianoKeybd" name="pianokeybd">
-      <property name="numOctaves">
-       <number>5</number>
-      </property>
-     </widget>
+     <widget class="PianoKeybd" name="pianokeybd"/>
     </item>
    </layout>
   </widget>
@@ -30,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>664</width>
-     <height>25</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

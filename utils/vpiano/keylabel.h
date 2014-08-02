@@ -1,10 +1,10 @@
 /*
-    Virtual Piano Widget for Qt4
+    Virtual Piano Widget for Qt5
     Copyright (C) 2008-2014, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation; either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -27,6 +27,7 @@ class VPIANO_EXPORT KeyLabel : public QGraphicsTextItem
 public:
     KeyLabel(QGraphicsItem *parent = 0);
     virtual ~KeyLabel() {}
+    virtual QRectF boundingRect() const;
 };
 
 #endif // KEYLABEL_H

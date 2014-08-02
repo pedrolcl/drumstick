@@ -29,11 +29,21 @@ class Preferences : public QDialog
 
 public:
     Preferences(QWidget *parent = 0);
+
+    void setInChannel(const int chan);
+    void setOutChannel(const int chan);
+    void setVelocity(const int vel);
+    void setBaseOctave(const int octave);
+    void setNumKeys(const int keys);
+    void setStartingKey(const int key);
+
     int getInChannel() const { return m_inChannel; }
     int getOutChannel() const { return m_outChannel; }
     int getVelocity() const { return m_velocity; }
     int getBaseOctave() const { return m_baseOctave; }
-    int getNumOctaves() const { return m_numOctaves; }
+    int getNumKeys() const { return m_numKeys; }
+    int getStartingKey() const { return m_startingKey; }
+
     void apply();
 
 public slots:
@@ -49,7 +59,8 @@ private:
     int m_outChannel;
     int m_velocity;
     int m_baseOctave;
-    int m_numOctaves;
+    int m_numKeys;
+    int m_startingKey;
 };
 
 #endif // PREFERENCES_H

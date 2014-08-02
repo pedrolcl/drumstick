@@ -16,40 +16,49 @@
     with this program; if not, write to the Free Software Foundation, Inc., 
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.    
 */
-#include <QDebug>
+
 #include "connections.h"
 
 Connections::Connections(QWidget *parent)
     : QDialog(parent),
+      m_advanced(false),
+      m_thru(false),
       m_midiIn(0),
       m_midiOut(0)
 {
     ui.setupUi(this);
-    connect(ui.m_advanced, SIGNAL(toggled(bool)), SLOT(refresh()));
+    connect(ui.m_advanced, SIGNAL(clicked(bool)), SLOT(clickedAdvanced(bool)));
     connect(ui.m_inputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshInputs(QString)));
     connect(ui.m_outputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshOutputs(QString)));
+    ui.m_advanced->setChecked(m_advanced);
+    ui.m_thru->setChecked(m_thru);
 }
 
 void Connections::setInputs(QList<MIDIInput *> ins)
 {
-    m_inputs.clear();
+    ui.m_inputBackends->disconnect();
+    ui.m_inputBackends->clear();
     foreach(MIDIInput *i, ins) {
-        m_inputs.insert(i->backendName(), i);
+        ui.m_inputBackends->addItem(i->backendName(), qVariantFromValue((void *) i));
     }
+    connect(ui.m_inputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshInputs(QString)));
 }
 
 void Connections::setOutputs(QList<MIDIOutput *> outs)
 {
-    m_outputs.clear();
+    ui.m_outputBackends->disconnect();
     foreach(MIDIOutput *o, outs) {
-        m_outputs.insert(o->backendName(), o);
+        ui.m_outputBackends->addItem(o->backendName(), qVariantFromValue((void *) o));
     }
+    connect(ui.m_outputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshOutputs(QString)));
 }
 
 void Connections::accept()
 {
     QString conn;
     QSettings settings;
+    m_advanced = ui.m_advanced->isChecked();
+    m_thru = ui.m_thru->isChecked();
     if (m_midiOut != 0) {
         conn = ui.m_outputPorts->currentText();
         if (conn != m_midiOut->currentConnection()) {
@@ -69,24 +78,17 @@ void Connections::accept()
                 m_midiIn->open(conn);
             }
         }
-        m_midiIn->enableMIDIThru(ui.m_thru->isChecked());
-        m_midiIn->setMIDIThruDevice(m_midiOut);
+        if (m_midiOut != 0) {
+            m_midiIn->setMIDIThruDevice(m_midiOut);
+            m_midiIn->enableMIDIThru(m_thru);
+        }
     }
     QDialog::accept();
 }
 
 void Connections::refresh()
 {
-    ui.m_inputBackends->disconnect();
-    ui.m_outputBackends->disconnect();
-    ui.m_inputBackends->clear();
-    ui.m_outputBackends->clear();
-    foreach(MIDIInput *i, m_inputs.values()) {
-        ui.m_inputBackends->addItem(i->backendName());
-    }
-    foreach(MIDIOutput *o, m_outputs.values()) {
-        ui.m_outputBackends->addItem(o->backendName());
-    }
+    m_advanced = ui.m_advanced->isChecked();
     if (m_midiIn != 0) {
         ui.m_inputBackends->setCurrentText(m_midiIn->backendName());
         refreshInputs(m_midiIn->backendName());
@@ -95,51 +97,67 @@ void Connections::refresh()
         ui.m_outputBackends->setCurrentText(m_midiOut->backendName());
         refreshOutputs(m_midiOut->backendName());
     }
-    connect(ui.m_inputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshInputs(QString)));
-    connect(ui.m_outputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshOutputs(QString)));
 }
 
 void Connections::refreshInputs(QString id)
 {
-    qDebug() << Q_FUNC_INFO << id;
-    bool advanced = ui.m_advanced->isChecked();
-    if (m_midiIn != 0) {
+    if (m_midiIn != 0 && m_midiIn->backendName() != id) {
         m_midiIn->close();
+        int idx = ui.m_inputBackends->findText(id, Qt::MatchStartsWith);
+        if (idx > -1)
+            m_midiIn = (MIDIInput *) ui.m_inputBackends->itemData(idx).value<void *>();
+        else
+            m_midiIn = 0;
     }
-    if (m_inputs.contains(id))
-        m_midiIn = m_inputs[id];
-    else
-        m_midiIn = 0;
     ui.m_inputPorts->clear();
     if (m_midiIn != 0) {
         ui.m_inputPorts->addItem(QString());
-        ui.m_inputPorts->addItems(m_midiIn->connections(advanced));
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-        ui.m_inputPorts->setCurrentIndex(ui.m_inputs->findText(m_midiIn->currentConnection()));
-#else
+        ui.m_inputPorts->addItems(m_midiIn->connections(m_advanced));
         ui.m_inputPorts->setCurrentText(m_midiIn->currentConnection());
-#endif
     }
 }
 
 void Connections::refreshOutputs(QString id)
 {
-    qDebug() << Q_FUNC_INFO << id;
-    bool advanced = ui.m_advanced->isChecked();
-    if (m_midiOut != 0) {
+    if (m_midiOut != 0 && m_midiOut->backendName() != id) {
         m_midiOut->close();
+        int idx = ui.m_outputBackends->findText(id, Qt::MatchStartsWith);
+        if (idx > -1)
+            m_midiOut = (MIDIOutput *) ui.m_outputBackends->itemData(idx).value<void *>();
+        else
+            m_midiOut = 0;
     }
-    if (m_outputs.contains(id))
-        m_midiOut = m_outputs[id];
-    else
-        m_midiOut = 0;
     ui.m_outputPorts->clear();
     if (m_midiOut != 0) {
-        ui.m_outputPorts->addItems(m_midiOut->connections(advanced));
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-        ui.m_outputPorts->setCurrentIndex(ui.m_outputs->findText(m_midiOut->currentConnection()));
-#else
+        ui.m_outputPorts->addItems(m_midiOut->connections(m_advanced));
         ui.m_outputPorts->setCurrentText(m_midiOut->currentConnection());
-#endif
     }
+}
+
+void Connections::setAdvanced(bool value)
+{
+    ui.m_advanced->setChecked(value);
+    refresh();
+}
+
+void Connections::clickedAdvanced(bool value)
+{
+    m_advanced = value;
+    refresh();
+}
+
+void Connections::setMidiThru(bool value)
+{
+    m_thru = value;
+    ui.m_thru->setChecked(value);
+}
+
+bool Connections::advanced()
+{
+    return ui.m_advanced->isChecked();
+}
+
+bool Connections::midiThru()
+{
+    return ui.m_thru->isChecked();
 }

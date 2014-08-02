@@ -21,6 +21,8 @@
 #define VPIANO_H
 
 #include <QMainWindow>
+#include <QCloseEvent>
+
 #include "ui_vpiano.h"
 #include "vpianoabout.h"
 #include "connections.h"
@@ -38,19 +40,32 @@ class VPiano : public QMainWindow
 public:
     VPiano( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
     virtual ~VPiano();
+    void closeEvent(QCloseEvent *event);
+    void findInput(QString name);
+    void findOutput(QString name);
 
 public slots:
+    void readSettings();
+    void writeSettings();
+
     void slotAbout();
     void slotAboutQt();
     void slotConnections();
     void slotPreferences();
-    void slotNoteOn(const int midiNote);
-    void slotNoteOff(const int midiNote);
 
+    void slotNoteOn(const int midiNote, const int vel);
     void slotNoteOn(const int chan, const int note, const int vel);
+    void slotNoteOff(const int midiNote, const int vel);
     void slotNoteOff(const int chan, const int note, const int vel);
 
 private:
+    QString m_lastInputBackend;
+    QString m_lastOutputBackend;
+    QString m_lastInputConnection;
+    QString m_lastOutputConnection;
+    bool m_midiThru;
+    bool m_advanced;
+
     QList<MIDIInput*> m_inputs;
     QList<MIDIOutput*> m_outputs;
 
