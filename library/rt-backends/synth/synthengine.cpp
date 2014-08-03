@@ -23,7 +23,7 @@
 
 #include "synthengine.h"
 
-const QString QSTR_PREFERENCES("Preferences");
+const QString QSTR_PREFERENCES("FluidSynth");
 const QString QSTR_INSTRUMENTSDEFINITION("InstrumentsDefinition");
 const QString QSTR_DATADIR("soundfonts");
 const QString QSTR_SOUNDFONT("default.sf2");
@@ -39,20 +39,22 @@ const QString QSTR_POLYPHONY("Polyphony");
 
 const QString QSTR_DEFAULT_AUDIODRIVER =
 #if defined(Q_OS_LINUX)
-    QLatin1Literal("pulseaudio");
+    QLatin1Literal("alsa");
 #elif defined(Q_OS_WIN)
     QLatin1Literal("dsound");
 #elif defined(Q_OS_OSX)
     QLatin1Literal("coreaudio");
+#else
+    QLatin1Literal("oss");
 #endif
 
-const int DEFAULT_PERIODSIZE = 1024;
-const int DEFAULT_PERIODS = 2;
+const int DEFAULT_PERIODSIZE = 512;
+const int DEFAULT_PERIODS = 3;
 const double DEFAULT_SAMPLERATE = 48000.0;
 const int DEFAULT_CHORUS = 0;
 const int DEFAULT_REVERB = 0;
 const double DEFAULT_GAIN = .4;
-const int DEFAULT_POLYPHONY = 16;
+const int DEFAULT_POLYPHONY = 32;
 
 SynthEngine::SynthEngine(QObject *parent)
     : QObject(parent),
@@ -104,9 +106,6 @@ void SynthEngine::initializeSynth(QSettings* settings)
     ::fluid_settings_setint(m_settings, "synth.polyphony", fs_polyphony);
     m_synth = ::new_fluid_synth(m_settings);
     m_driver = ::new_fluid_audio_driver(m_settings, m_synth);
-    ::fluid_synth_set_chorus_on(m_synth, fs_chorus);
-    ::fluid_synth_set_reverb_on(m_synth, fs_reverb);
-    ::fluid_synth_set_interp_method(m_synth, -1, FLUID_INTERP_DEFAULT);
 }
 
 void SynthEngine::setInstrument(int channel, int pgm)
@@ -132,9 +131,9 @@ void SynthEngine::loadSoundFont()
     m_sfid = ::fluid_synth_sfload(m_synth, qPrintable(m_soundFont), 1);
 }
 
-void SynthEngine::initialize()
+void SynthEngine::initialize(QSettings *settings)
 {
-    initializeSynth();
+    initializeSynth(settings);
     scanSoundFonts();
     loadSoundFont();
     if (m_sfid < 0) {

@@ -125,7 +125,7 @@ namespace rt {
 
         bool setSubscription(const QString &newDevice)
         {
-            qDebug() << Q_FUNC_INFO << newDevice;
+            //qDebug() << Q_FUNC_INFO << newDevice;
             if (m_inputDevices.contains(newDevice)) {
                 m_currentInput = newDevice;
                 m_port->unsubscribeAll();

@@ -35,8 +35,6 @@ set(drumstick-rt_SRCS
     
 qt5_wrap_cpp(drumstick-rt_MOC_SRCS ${drumstick-rt_QOBJ_SRCS})
 
-add_compiler_export_flags()
-
 add_library(drumstick-rt
     ${drumstick-rt_MOC_SRCS}
     ${drumstick-rt_SRCS}

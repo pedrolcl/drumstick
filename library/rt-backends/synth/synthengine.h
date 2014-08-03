@@ -43,7 +43,7 @@ public:
     QString soundFont() const { return m_soundFont; }
     void setSoundFont(const QString &value);
 
-    Q_INVOKABLE void initialize();
+    Q_INVOKABLE void initialize(QSettings *settings);
     Q_INVOKABLE void readSettings(QSettings *settings);
     Q_INVOKABLE void scanSoundFonts();
     Q_INVOKABLE void panic();

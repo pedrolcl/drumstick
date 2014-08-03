@@ -32,7 +32,7 @@ SynthOutput::~SynthOutput()
 void SynthOutput::initialize(QSettings *settings)
 {
     m_synth->readSettings(settings);
-    m_synth->initialize();
+    m_synth->initialize(settings);
 }
 
 QString SynthOutput::backendName()

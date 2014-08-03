@@ -54,13 +54,13 @@ void NetMIDIInputPrivate::open(QString portName)
         m_socket->bind(QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress);
         m_socket->setSocketOption(QAbstractSocket::MulticastLoopbackOption, 0);
         m_socket->setSocketOption(QAbstractSocket::MulticastTtlOption, 1);
-        m_socket->joinMulticastGroup(MULTICAST_ADDRESS);
-        //QNetworkInterface iface;
-        //if (iface.isValid()) {
-        //  socket->setMulticastInterface(iface);
-        //}
+        if (m_iface.isValid()) {
+            m_socket->joinMulticastGroup(MULTICAST_ADDRESS, m_iface);
+        } else {
+            m_socket->joinMulticastGroup(MULTICAST_ADDRESS);
+        }
         connect(m_socket, SIGNAL(readyRead()), this, SLOT(processIncomingMessages()));
-        qDebug() << Q_FUNC_INFO << portName;
+        //qDebug() << Q_FUNC_INFO << portName;
     }
 }
 
@@ -71,6 +71,18 @@ void NetMIDIInputPrivate::close()
     m_socket = 0;
     m_parser = 0;
     m_currentInput.clear();
+}
+
+void NetMIDIInputPrivate::initialize(QSettings *settings)
+{
+    if (settings != 0) {
+        settings->beginGroup("Network");
+        QString ifaceName = settings->value("interfaceIn", QString()).toString();
+        settings->endGroup();
+        if (!ifaceName.isEmpty()) {
+            m_iface = QNetworkInterface::interfaceFromName(ifaceName);
+        }
+    }
 }
 
 void NetMIDIInputPrivate::setMIDIThruDevice(MIDIOutput* device)

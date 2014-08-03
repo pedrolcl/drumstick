@@ -53,8 +53,6 @@ SET(drumstick-alsa_SRCS
 
 qt5_wrap_cpp(drumstick-alsa_MOC_SRCS ${drumstick-alsa_QTOBJ_SRCS})
 
-add_compiler_export_flags()
-
 add_library(drumstick-alsa
     ${drumstick-alsa_MOC_SRCS}
     ${drumstick-alsa_SRCS}

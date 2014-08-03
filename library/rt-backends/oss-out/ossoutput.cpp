@@ -72,7 +72,7 @@ public:
 
     void open(QString portName)
     {
-        qDebug() << Q_FUNC_INFO << portName;
+        //qDebug() << Q_FUNC_INFO << portName;
         m_device = new QFile(portName);
         m_device->open(QIODevice::WriteOnly | QIODevice::Unbuffered);
         m_currentOutput = portName;

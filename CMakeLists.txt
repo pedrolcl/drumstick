@@ -26,14 +26,16 @@ else()
 endif()
 set(LIB_SUFFIX ${_INIT_LIB_SUFFIX} CACHE STRING "optional library install directory suffix: 32, 64, none")
 
+set(CMAKE_COLOR_MAKEFILE ON)
+#set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 # Additional CMake modules for 3rd party library checks reside here
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_admin")
-
-include(GenerateExportHeader)
 
 # DRUMSTICK version string
 set(VERSION_MAJOR "0")
@@ -95,11 +97,6 @@ link_directories(${DRUMSTICK_BINARY_DIR}/lib)
 include_directories( BEFORE
     ${DRUMSTICK_SOURCE_DIR}/library
     ${DRUMSTICK_SOURCE_DIR}/library/include)
-
-#if(CMAKE_COMPILER_IS_GNUCXX)
-## exceptions are needed by this library, please don't try to disable them!
-#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -UQT_NO_EXCEPTIONS")
-#endif(CMAKE_COMPILER_IS_GNUCXX)
 
 add_subdirectory(library)
 add_subdirectory(utils)
@@ -164,6 +161,7 @@ if(${CMAKE_SYSTEM} MATCHES "Linux")
         COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO drumstick*.in drumstick.pro drumstick.xml configure* Doxyfile.in link-drumstick chkcoverage drumstick-${VERSION}
         COMMAND tar -cj --exclude=.[a-z]* -f drumstick-${VERSION}.tar.bz2 drumstick-${VERSION}
         COMMAND tar -cz --exclude=.[a-z]* -f drumstick-${VERSION}.tar.gz  drumstick-${VERSION}
+        COMMAND zip -qr drumstick-${VERSION}.zip drumstick-${VERSION} -x '.[a-z]*'
         COMMAND rm -rf drumstick-${VERSION}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )

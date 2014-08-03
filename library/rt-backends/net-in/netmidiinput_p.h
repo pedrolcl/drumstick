@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QUdpSocket>
+#include <QNetworkInterface>
 #include "midiparser.h"
 
 namespace drumstick {
@@ -44,12 +45,13 @@ public:
     QString m_currentInput;
     QStringList m_inputDevices;
     QStringList m_excludedNames;
+    QNetworkInterface m_iface;
 
     NetMIDIInputPrivate(QObject *parent = 0);
 
     void open(QString portName);
     void close();
-    //void parse(const QByteArray& msg);
+    void initialize(QSettings* settings);
     void setMIDIThruDevice(MIDIOutput* device);
 
 public slots:

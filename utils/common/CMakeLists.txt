@@ -22,8 +22,6 @@ set( common_SRCS
     cmdversion.h
 )
 
-add_compiler_export_flags()
-
 add_library( drumstick-common STATIC
     ${common_SRCS})
 

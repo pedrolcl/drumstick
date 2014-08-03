@@ -71,7 +71,7 @@ void OSSInputPrivate::open(QString portName)
     m_parser = new MIDIParser(m_inp);
     m_buffer.clear();
     connect(m_notifier, SIGNAL(activated(int)), this, SLOT(processIncomingMessages(int)));
-    qDebug() << Q_FUNC_INFO << portName;
+    //qDebug() << Q_FUNC_INFO << portName;
 }
 
 void OSSInputPrivate::close()

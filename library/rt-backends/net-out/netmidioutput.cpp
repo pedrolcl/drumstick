@@ -19,6 +19,8 @@
 
 #include <QDebug>
 #include <QUdpSocket>
+#include <QNetworkInterface>
+#include <QSettings>
 #include "netmidioutput.h"
 
 namespace drumstick {
@@ -35,6 +37,7 @@ public:
     QString m_currentOutput;
     QStringList m_outputDevices;
     QStringList m_excludedNames;
+    QNetworkInterface m_iface;
 
     NetMIDIOutputPrivate() :
         m_socket(0),
@@ -51,6 +54,18 @@ public:
         close();
     }
 
+    void initialize(QSettings* settings)
+    {
+        if (settings != 0) {
+            settings->beginGroup("Network");
+            QString ifaceName = settings->value("interfaceOut", QString()).toString();
+            settings->endGroup();
+            if (!ifaceName.isEmpty()) {
+                m_iface = QNetworkInterface::interfaceFromName(ifaceName);
+            }
+        }
+    }
+
     void open(QString portName)
     {
         int p = m_outputDevices.indexOf(portName);
@@ -59,7 +74,10 @@ public:
             m_socket = new QUdpSocket();
             m_port = MULTICAST_PORT + p;
             m_currentOutput = portName;
-            qDebug() << Q_FUNC_INFO << portName;
+            if (m_iface.isValid()) {
+                m_socket->setMulticastInterface(m_iface);
+            }
+            //qDebug() << Q_FUNC_INFO << portName;
         }
     }
 
@@ -118,7 +136,7 @@ NetMIDIOutput::~NetMIDIOutput()
 
 void NetMIDIOutput::initialize(QSettings *settings)
 {
-    Q_UNUSED(settings)
+    d->initialize(settings);
 }
 
 QString NetMIDIOutput::backendName()

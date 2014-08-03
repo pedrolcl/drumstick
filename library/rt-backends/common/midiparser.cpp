@@ -34,7 +34,7 @@ public:
 
     void processNoteOff(const int chan, const int note, const int vel)
     {
-        qDebug() << "NoteOff(" << hex << chan << "," << note << "," << vel << ")";
+        //qDebug() << "NoteOff(" << hex << chan << "," << note << "," << vel << ")";
         if (m_in != 0 && m_in->isEnabledMIDIThru() && m_out != 0) {
             m_out->sendNoteOff(chan, note, vel);
         }
@@ -45,7 +45,7 @@ public:
 
     void processNoteOn(const int chan, const int note, const int vel)
     {
-        qDebug() << "NoteOn(" << hex << chan << "," << note << "," << vel << ")";
+        //qDebug() << "NoteOn(" << hex << chan << "," << note << "," << vel << ")";
         if (m_in != 0 && m_in->isEnabledMIDIThru() && m_out != 0) {
             m_out->sendNoteOn(chan, note, vel);
         }
@@ -56,7 +56,7 @@ public:
 
     void processKeyPressure(const int chan, const int note, const int value)
     {
-        qDebug() << "KeyPressure(" << hex << chan << "," << note << "," << value << ")";
+        //qDebug() << "KeyPressure(" << hex << chan << "," << note << "," << value << ")";
         if (m_in != 0 && m_in->isEnabledMIDIThru() && m_out != 0) {
             m_out->sendKeyPressure(chan, note, value);
         }
@@ -67,7 +67,7 @@ public:
 
     void processController(const int chan, const int control, const int value)
     {
-        qDebug() << "Controller(" << chan << "," << control << "," << value << ")";
+        //qDebug() << "Controller(" << chan << "," << control << "," << value << ")";
         if (m_in != 0 && m_in->isEnabledMIDIThru() && m_out != 0) {
             m_out->sendController(chan, control, value);
         }
@@ -78,7 +78,7 @@ public:
 
     void processProgram(const int chan, const int program)
     {
-        qDebug() << "Program(" << hex << chan << "," << program << ")";
+        //qDebug() << "Program(" << hex << chan << "," << program << ")";
         if (m_in != 0 && m_in->isEnabledMIDIThru() && m_out != 0) {
             m_out->sendProgram(chan, program);
         }
@@ -89,7 +89,7 @@ public:
 
     void processChannelPressure(const int chan, const int value)
     {
-        qDebug() << "ChannelPressure(" << chan << "," << value << ")";
+        //qDebug() << "ChannelPressure(" << chan << "," << value << ")";
         if (m_in != 0 && m_in->isEnabledMIDIThru() && m_out != 0) {
             m_out->sendChannelPressure(chan, value);
         }
@@ -100,7 +100,7 @@ public:
 
     void processPitchBend(const int chan, const int value)
     {
-        qDebug() << "PitchBend(" << chan << "," << value << ")";
+        //qDebug() << "PitchBend(" << chan << "," << value << ")";
         if (m_in != 0 && m_in->isEnabledMIDIThru() && m_out != 0) {
             m_out->sendPitchBend(chan, value);
         }
@@ -111,7 +111,7 @@ public:
 
     void processSysex(const QByteArray &data)
     {
-        qDebug() << "Sysex(" << data.toHex() << ")";
+        //qDebug() << "Sysex(" << data.toHex() << ")";
         if (m_in != 0 && m_in->isEnabledMIDIThru() && m_out != 0) {
             m_out->sendSysex(data);
         }
@@ -122,7 +122,7 @@ public:
 
     void processSystemCommon(const int status)
     {
-        qDebug() << "common SystemMsg(" << hex << status << ")";
+        //qDebug() << "common SystemMsg(" << hex << status << ")";
         if (m_in != 0 && m_in->isEnabledMIDIThru() && m_out != 0) {
             m_out->sendSystemMsg(status);
         }
@@ -134,7 +134,7 @@ public:
 
     void processSystemRealtime(unsigned char byte)
     {
-        qDebug() << "realtime SystemMsg(" << hex << byte << ")";
+        //qDebug() << "realtime SystemMsg(" << hex << byte << ")";
         if (m_in != 0 && m_in->isEnabledMIDIThru() && m_out != 0) {
             m_out->sendSystemMsg(byte);
         }

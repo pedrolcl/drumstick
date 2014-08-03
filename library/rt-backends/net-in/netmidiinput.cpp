@@ -31,7 +31,7 @@ NetMIDIInput::NetMIDIInput(QObject *parent):
 
 void NetMIDIInput::initialize(QSettings *settings)
 {
-    Q_UNUSED(settings)
+    d->initialize(settings);
 }
 
 QString NetMIDIInput::backendName()
@@ -77,7 +77,6 @@ QString NetMIDIInput::currentConnection()
 
 void NetMIDIInput::setMIDIThruDevice(MIDIOutput *device)
 {
-    //d->m_out = device;
     d->setMIDIThruDevice(device);
 }
 
