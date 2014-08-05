@@ -47,7 +47,7 @@ class QDESIGNER_WIDGET_EXPORT PianoKeybd : public QGraphicsView
 #if defined(VPIANO_PLUGIN)
     Q_CLASSINFO("Author", "Pedro Lopez-Cabanillas <plcl@users.sf.net>")
     Q_CLASSINFO("URL", "http://sourceforge.net/projects/vmpk")
-    Q_CLASSINFO("Version", "0.10")
+    Q_CLASSINFO("Version", "1.0")
 #endif
 public:
     PianoKeybd(QWidget *parent = 0);

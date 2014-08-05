@@ -22,15 +22,12 @@
 #include "pianokey.h"
 #include "keylabel.h"
 #include "keyboardmap.h"
-//#include "pianopalette.h"
+#if defined(PALETTE_SUPPORT)
+#include "pianopalette.h"
+#endif
 
 #include <QGraphicsScene>
 #include <QHash>
-
-const int DEFAULTSTARTINGKEY = 9;
-const int DEFAULTBASEOCTAVE = 1;
-const int DEFAULTNUMBEROFKEYS = 88;
-const int KEYLABELFONTSIZE = 7;
 
 class PianoHandler
 {
@@ -56,9 +53,14 @@ public:
     KeyboardMap* getKeyboardMap() const { return m_keybdMap; }
     PianoHandler* getPianoHandler() const { return m_handler; }
     void setPianoHandler(PianoHandler* handler) { m_handler = handler; }
-    //PianoPalette* getPianoPalette() const { return m_palette; }
-    //void setPianoPalette( PianoPalette* p );
-    //void setColorScalePalette( PianoPalette* p ) { m_scalePalette = p; }
+
+#if defined(PALETTE_SUPPORT)
+    PianoPalette* getPianoPalette() const { return m_palette; }
+    void setPianoPalette( PianoPalette* p );
+    void setColorScalePalette( PianoPalette* p ) { m_scalePalette = p; }
+    bool showColorScale() const { return m_showColorScale; }
+    void setShowColorScale(const bool show);
+#endif
 
     QColor getKeyPressedColor() const { return m_keyPressedColor; }
     void setKeyPressedColor(const QColor& color);
@@ -79,8 +81,6 @@ public:
     void setMouseEnabled( const bool enable );
     bool isTouchEnabled() const { return m_touchEnabled; }
     void setTouchEnabled( const bool enable );
-    //bool showColorScale() const { return m_showColorScale; }
-    //void setShowColorScale(const bool show);
     bool velocityTint() const { return m_velocityTint; }
     void setVelocityTint( const bool enable ) { m_velocityTint = enable; }
 
@@ -152,7 +152,6 @@ private:
     bool m_mousePressed;
     int m_velocity;
     int m_channel;
-    //bool m_showColorScale;
     bool m_velocityTint;
     PianoHandler* m_handler;
     KeyboardMap* m_keybdMap;
@@ -161,8 +160,11 @@ private:
     QStringList m_noteNames;
     QStringList m_names_s;
     QStringList m_names_f;
-    //PianoPalette* m_palette;
-    //PianoPalette* m_scalePalette;
+#if defined(PALETTE_SUPPORT)
+    bool m_showColorScale;
+    PianoPalette* m_palette;
+    PianoPalette* m_scalePalette;
+#endif
 };
 
 #endif /*PIANOSCENE_H_*/

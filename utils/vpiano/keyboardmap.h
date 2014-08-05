@@ -21,4 +21,9 @@
 
 typedef QHash<int, int> KeyboardMap;
 
+const int DEFAULTSTARTINGKEY = 9;
+const int DEFAULTBASEOCTAVE = 1;
+const int DEFAULTNUMBEROFKEYS = 88;
+const int KEYLABELFONTSIZE = 7;
+
 #endif // KEYBOARDMAP_H

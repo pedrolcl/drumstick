@@ -21,22 +21,22 @@
 #include "vpiano.h"
 #include "backendmanager.h"
 
-#if defined(Q_OS_LINUX)
-QString nativeBackend("ALSA");
-#elif defined(Q_OS_OSX)
-QString nativeBackend("CoreMIDI");
-#elif defined(Q_OS_WIN)
-QString nativeBackend("Windows MM");
-#else
-QString nativeBackend("Network");
-#endif
-
-
 VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     : QMainWindow(parent, flags),
     m_midiIn(0),
     m_midiOut(0)
 {
+    QString nativeBackend;
+#if defined(Q_OS_LINUX)
+    nativeBackend = QLatin1Literal("ALSA");
+#elif defined(Q_OS_OSX)
+    nativeBackend = QLatin1Literal("CoreMIDI");
+#elif defined(Q_OS_WIN)
+    nativeBackend = QLatin1Literal("Windows MM");
+#else
+    nativeBackend = QLatin1Literal("Network");
+#endif
+
     ui.setupUi(this);
     ui.statusBar->hide();
 
@@ -45,17 +45,17 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     QSettings settings;
     BackendManager man;
     man.refresh(&settings);
-    m_inputs = man.availableInputs();
-    m_outputs = man.availableOutputs();
+    QList<MIDIInput*> inputs = man.availableInputs();
+    QList<MIDIOutput*> outputs = man.availableOutputs();
 
-    findInput(m_lastInputBackend);
+    findInput(m_lastInputBackend, inputs);
     if (m_midiIn == 0) {
-        findInput(nativeBackend);
+        findInput(nativeBackend, inputs);
     }
 
-    findOutput(m_lastOutputBackend);
+    findOutput(m_lastOutputBackend, outputs);
     if (m_midiOut == 0) {
-        findOutput(nativeBackend);
+        findOutput(nativeBackend, outputs);
     }
 
     connect(ui.actionExit, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -66,8 +66,8 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     connect(ui.pianokeybd, SIGNAL(noteOn(int,int)), SLOT(slotNoteOn(int,int)));
     connect(ui.pianokeybd, SIGNAL(noteOff(int,int)), SLOT(slotNoteOff(int,int)));
 
-    dlgConnections.setInputs(m_inputs);
-    dlgConnections.setOutputs(m_outputs);
+    dlgConnections.setInputs(inputs);
+    dlgConnections.setOutputs(outputs);
     dlgConnections.setInput(m_midiIn);
     dlgConnections.setOutput(m_midiOut);
     dlgConnections.setMidiThru(m_midiThru);
@@ -237,9 +237,9 @@ void VPiano::readSettings()
     settings.endGroup();
 }
 
-void VPiano::findInput(QString name)
+void VPiano::findInput(QString name, QList<MIDIInput *> &inputs)
 {
-    foreach(MIDIInput* input, m_inputs) {
+    foreach(MIDIInput* input, inputs) {
         if (m_midiIn == 0 && (input->backendName() == name))  {
             m_midiIn = input;
             break;
@@ -247,9 +247,9 @@ void VPiano::findInput(QString name)
     }
 }
 
-void VPiano::findOutput(QString name)
+void VPiano::findOutput(QString name, QList<MIDIOutput *> &outputs)
 {
-    foreach(MIDIOutput* output, m_outputs) {
+    foreach(MIDIOutput* output, outputs) {
         if (m_midiOut == 0 && (output->backendName() == name))  {
             m_midiOut = output;
             break;

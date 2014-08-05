@@ -77,7 +77,7 @@ void NetMIDIInputPrivate::initialize(QSettings *settings)
 {
     if (settings != 0) {
         settings->beginGroup("Network");
-        QString ifaceName = settings->value("interfaceIn", QString()).toString();
+        QString ifaceName = settings->value("interface", QString()).toString();
         settings->endGroup();
         if (!ifaceName.isEmpty()) {
             m_iface = QNetworkInterface::interfaceFromName(ifaceName);
