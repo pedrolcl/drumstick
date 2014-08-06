@@ -27,7 +27,7 @@
 namespace drumstick {
 namespace rt {
 
-    const QHostAddress MULTICAST_ADDRESS(QHostAddress("225.0.0.37"));
+    const QString STR_ADDRESS(QLatin1Literal("225.0.0.37"));
     const int MULTICAST_PORT(21928);
     const int LAST_PORT(21948);
 

@@ -42,6 +42,7 @@ public:
     int m_thruEnabled;
     quint16 m_port;
     QString m_publicName;
+    QHostAddress m_groupAddress;
     QString m_currentInput;
     QStringList m_inputDevices;
     QStringList m_excludedNames;

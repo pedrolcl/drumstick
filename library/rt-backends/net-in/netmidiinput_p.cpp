@@ -35,7 +35,8 @@ NetMIDIInputPrivate::NetMIDIInputPrivate(QObject *parent) : QObject(parent),
     m_parser(0),
     m_thruEnabled(false),
     m_port(0),
-    m_publicName(DEFAULT_PUBLIC_NAME)
+    m_publicName(DEFAULT_PUBLIC_NAME),
+    m_groupAddress(QHostAddress(STR_ADDRESS))
 {
     for(int i=MULTICAST_PORT; i<LAST_PORT; ++i) {
         m_inputDevices << QString::number(i);
@@ -55,9 +56,9 @@ void NetMIDIInputPrivate::open(QString portName)
         m_socket->setSocketOption(QAbstractSocket::MulticastLoopbackOption, 0);
         m_socket->setSocketOption(QAbstractSocket::MulticastTtlOption, 1);
         if (m_iface.isValid()) {
-            m_socket->joinMulticastGroup(MULTICAST_ADDRESS, m_iface);
+            m_socket->joinMulticastGroup(m_groupAddress, m_iface);
         } else {
-            m_socket->joinMulticastGroup(MULTICAST_ADDRESS);
+            m_socket->joinMulticastGroup(m_groupAddress);
         }
         connect(m_socket, SIGNAL(readyRead()), this, SLOT(processIncomingMessages()));
         //qDebug() << Q_FUNC_INFO << portName;
@@ -78,9 +79,13 @@ void NetMIDIInputPrivate::initialize(QSettings *settings)
     if (settings != 0) {
         settings->beginGroup("Network");
         QString ifaceName = settings->value("interface", QString()).toString();
+        QString address = settings->value("address", STR_ADDRESS).toString();
         settings->endGroup();
         if (!ifaceName.isEmpty()) {
             m_iface = QNetworkInterface::interfaceFromName(ifaceName);
+        }
+        if (!address.isEmpty()) {
+            m_groupAddress.setAddress(address);
         }
     }
 }
@@ -88,7 +93,9 @@ void NetMIDIInputPrivate::initialize(QSettings *settings)
 void NetMIDIInputPrivate::setMIDIThruDevice(MIDIOutput* device)
 {
     m_out = device;
-    m_parser->setMIDIThruDevice(device);
+    if (m_parser != 0) {
+        m_parser->setMIDIThruDevice(device);
+    }
 }
 
 void NetMIDIInputPrivate::processIncomingMessages()
@@ -97,7 +104,9 @@ void NetMIDIInputPrivate::processIncomingMessages()
         QByteArray datagram;
         datagram.resize(m_socket->pendingDatagramSize());
         m_socket->readDatagram(datagram.data(), datagram.size());
-        m_parser->parse(datagram);
+        if (m_parser != 0) {
+            m_parser->parse(datagram);
+        }
     }
 }
 

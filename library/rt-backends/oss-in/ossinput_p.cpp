@@ -35,6 +35,7 @@ OSSInputPrivate::OSSInputPrivate(QObject *parent) : QObject(parent),
     m_out(0),
     m_device(0),
     m_notifier(0),
+    m_parser(0),
     m_thruEnabled(false),
     m_advanced(false),
     m_publicName(DEFAULT_PUBLIC_NAME)
@@ -90,15 +91,19 @@ void OSSInputPrivate::close()
 void OSSInputPrivate::setMIDIThruDevice(MIDIOutput* device)
 {
     m_out = device;
-    m_parser->setMIDIThruDevice(device);
+    if (m_parser != 0) {
+        m_parser->setMIDIThruDevice(device);
+    }
 }
 
 void OSSInputPrivate::processIncomingMessages(int)
 {
     char ch;
     m_device->getChar(&ch);
-    uchar uch = static_cast<unsigned>(ch);
-    m_parser->parse(uch);
+    if (m_parser != 0) {
+        uchar uch = static_cast<unsigned>(ch);
+        m_parser->parse(uch);
+    }
 }
 
 }}

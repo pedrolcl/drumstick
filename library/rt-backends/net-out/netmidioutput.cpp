@@ -34,6 +34,7 @@ public:
     QUdpSocket *m_socket;
     quint16 m_port;
     QString m_publicName;
+    QHostAddress m_groupAddress;
     QString m_currentOutput;
     QStringList m_outputDevices;
     QStringList m_excludedNames;
@@ -42,7 +43,8 @@ public:
     NetMIDIOutputPrivate() :
         m_socket(0),
         m_port(0),
-        m_publicName(DEFAULT_PUBLIC_NAME)
+        m_publicName(DEFAULT_PUBLIC_NAME),
+        m_groupAddress(QHostAddress(STR_ADDRESS))
     {
         for(int i=MULTICAST_PORT; i<LAST_PORT; ++i) {
             m_outputDevices << QString::number(i);
@@ -59,9 +61,13 @@ public:
         if (settings != 0) {
             settings->beginGroup("Network");
             QString ifaceName = settings->value("interface", QString()).toString();
+            QString address = settings->value("address", STR_ADDRESS).toString();
             settings->endGroup();
             if (!ifaceName.isEmpty()) {
                 m_iface = QNetworkInterface::interfaceFromName(ifaceName);
+            }
+            if (!address.isEmpty()) {
+                m_groupAddress.setAddress(address);
             }
         }
     }
@@ -121,7 +127,7 @@ public:
             qDebug() << "udp socket is null";
             return;
         }
-        m_socket->writeDatagram(message, MULTICAST_ADDRESS, m_port);
+        m_socket->writeDatagram(message, m_groupAddress, m_port);
     }
 };
 

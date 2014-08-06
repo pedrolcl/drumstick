@@ -53,7 +53,6 @@ int main(int argc, char **argv)
     settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
     settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("TEST MIDI IN"));
     settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("TEST MIDI OUT"));
-    //settings.setValue(QSTR_DRUMSTICKRT_PATH, backendir);
     settings.endGroup();
     settings.sync();
 
