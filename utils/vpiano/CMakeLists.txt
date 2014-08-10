@@ -18,8 +18,11 @@
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Svg REQUIRED)
+find_package(Qt5Network REQUIRED)
 
 set(vpiano_forms_SRCS
+    networksettingsdialog.ui
+    fluidsettingsdialog.ui
     vpianoabout.ui
     connections.ui
     preferences.ui
@@ -46,6 +49,8 @@ set(vpiano_SRCS
     vpiano.cpp
     vpiano.h
     vpianomain.cpp
+    networksettingsdialog.cpp
+    fluidsettingsdialog.cpp
 )
 
 set(vpiano_qtobject_SRCS
@@ -57,6 +62,8 @@ set(vpiano_qtobject_SRCS
     connections.h
     preferences.h
     vpiano.h
+    networksettingsdialog.h
+    fluidsettingsdialog.h
 )
 
 qt5_wrap_cpp(vpiano_moc_SRCS ${vpiano_qtobject_SRCS})
@@ -74,6 +81,7 @@ target_link_libraries(drumstick-vpiano
     drumstick-rt
     Qt5::Widgets
     Qt5::Svg
+    Qt5::Network
 )
 
 install(TARGETS drumstick-vpiano
