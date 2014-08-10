@@ -18,11 +18,14 @@
 */
 
 #include "connections.h"
+#include "networksettingsdialog.h"
+#include "fluidsettingsdialog.h"
 
 Connections::Connections(QWidget *parent)
     : QDialog(parent),
       m_advanced(false),
       m_thru(false),
+      m_settingsChanged(false),
       m_midiIn(0),
       m_midiOut(0)
 {
@@ -30,6 +33,8 @@ Connections::Connections(QWidget *parent)
     connect(ui.m_advanced, SIGNAL(clicked(bool)), SLOT(clickedAdvanced(bool)));
     connect(ui.m_inputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshInputs(QString)));
     connect(ui.m_outputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshOutputs(QString)));
+    connect(ui.btnInputDriverCfg, &QToolButton::clicked, this, &Connections::configureInputDriver);
+    connect(ui.btnOutputDriverCfg, &QToolButton::clicked, this, &Connections::configureOutputDriver);
     ui.m_advanced->setChecked(m_advanced);
     ui.m_thru->setChecked(m_thru);
 }
@@ -61,7 +66,7 @@ void Connections::accept()
     m_thru = ui.m_thru->isChecked();
     if (m_midiOut != 0) {
         conn = ui.m_outputPorts->currentText();
-        if (conn != m_midiOut->currentConnection()) {
+        if (conn != m_midiOut->currentConnection() || m_settingsChanged) {
             m_midiOut->close();
             if (!conn.isEmpty()) {
                 m_midiOut->initialize(&settings);
@@ -71,7 +76,7 @@ void Connections::accept()
     }
     if (m_midiIn != 0) {
         conn = ui.m_inputPorts->currentText();
-        if (conn != m_midiIn->currentConnection()) {
+        if (conn != m_midiIn->currentConnection() || m_settingsChanged) {
             m_midiIn->close();
             if (!conn.isEmpty()) {
                 m_midiIn->initialize(&settings);
@@ -83,6 +88,7 @@ void Connections::accept()
             m_midiIn->enableMIDIThru(m_thru);
         }
     }
+    m_settingsChanged = false;
     QDialog::accept();
 }
 
@@ -101,13 +107,15 @@ void Connections::refresh()
 
 void Connections::refreshInputs(QString id)
 {
+    ui.btnInputDriverCfg->setEnabled(id == "Network");
     if (m_midiIn != 0 && m_midiIn->backendName() != id) {
         m_midiIn->close();
         int idx = ui.m_inputBackends->findText(id, Qt::MatchStartsWith);
-        if (idx > -1)
+        if (idx > -1) {
             m_midiIn = (MIDIInput *) ui.m_inputBackends->itemData(idx).value<void *>();
-        else
+        } else {
             m_midiIn = 0;
+        }
     }
     ui.m_inputPorts->clear();
     if (m_midiIn != 0) {
@@ -119,13 +127,15 @@ void Connections::refreshInputs(QString id)
 
 void Connections::refreshOutputs(QString id)
 {
+    ui.btnOutputDriverCfg->setEnabled(id == "Network" || id == "FluidSynth");
     if (m_midiOut != 0 && m_midiOut->backendName() != id) {
         m_midiOut->close();
         int idx = ui.m_outputBackends->findText(id, Qt::MatchStartsWith);
-        if (idx > -1)
+        if (idx > -1) {
             m_midiOut = (MIDIOutput *) ui.m_outputBackends->itemData(idx).value<void *>();
-        else
+        } else {
             m_midiOut = 0;
+        }
     }
     ui.m_outputPorts->clear();
     if (m_midiOut != 0) {
@@ -160,4 +170,25 @@ bool Connections::advanced()
 bool Connections::midiThru()
 {
     return ui.m_thru->isChecked();
+}
+
+void Connections::configureInputDriver()
+{
+    QString driver = ui.m_inputBackends->currentText();
+    if (driver == "Network") {
+        NetworkSettingsDialog dlg(this);
+        m_settingsChanged |= (dlg.exec() == QDialog::Accepted);
+    }
+}
+
+void Connections::configureOutputDriver()
+{
+    QString driver = ui.m_outputBackends->currentText();
+    if (driver == "Network") {
+        NetworkSettingsDialog dlg(this);
+        m_settingsChanged |= (dlg.exec() == QDialog::Accepted);
+    } else if (driver == "FluidSynth") {
+        FluidSettingsDialog dlg(this);
+        m_settingsChanged |= (dlg.exec() == QDialog::Accepted);
+    }
 }

@@ -46,6 +46,8 @@ public:
     bool midiThru();
 
 public slots:
+    void configureInputDriver();
+    void configureOutputDriver();
     void clickedAdvanced(bool value);
     void setMidiThru(bool value);
     void refreshInputs(QString id);
@@ -56,6 +58,7 @@ public slots:
 private:
     bool m_advanced;
     bool m_thru;
+    bool m_settingsChanged;
     MIDIInput* m_midiIn;
     MIDIOutput* m_midiOut;
     Ui::ConnectionsClass ui;

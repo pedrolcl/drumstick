@@ -1,18 +1,20 @@
 TEMPLATE = app
 TARGET = drumstick-vpiano
-QT += gui widgets svg
+QT += gui widgets svg network
 CONFIG += qt thread exceptions link_prl
 DESTDIR = ../../build/bin
 include (../../global.pri)
 INCLUDEPATH += . ../../library/include ../common
 
 # Input
-FORMS += vpiano.ui connections.ui vpianoabout.ui preferences.ui
+FORMS += vpiano.ui connections.ui vpianoabout.ui preferences.ui fluidsettingsdialog.ui networksettingsdialog.ui
 HEADERS += pianokey.h pianokeybd.h pianoscene.h vpiano.h \
            keyboardmap.h keylabel.h pianodefs.h \
-           connections.h vpianoabout.h preferences.h
+           connections.h vpianoabout.h preferences.h \
+           fluidsettingsdialog.h networksettingsdialog.h
 SOURCES += pianokey.cpp pianokeybd.cpp pianoscene.cpp vpiano.cpp \
-           keylabel.cpp connections.cpp vpianoabout.cpp preferences.cpp vpianomain.cpp
+           keylabel.cpp connections.cpp vpianoabout.cpp preferences.cpp vpianomain.cpp \
+           fluidsettingsdialog.cpp networksettingsdialog.cpp
 RESOURCES += pianokeybd.qrc
 
 # libs
