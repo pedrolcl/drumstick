@@ -57,6 +57,7 @@ public:
     QString currentConnection() const { return m_currentConnection; }
     void close();
     void open();
+    void uninitialize();
 
 private:
     void scanSoundFonts(const QDir &dir);

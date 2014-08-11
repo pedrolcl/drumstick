@@ -111,6 +111,7 @@ CmdLineArgs::CmdLineArgs() :
 CmdLineArgs::~CmdLineArgs()
 {
     clear();
+    delete d;
 }
 
 QStringList CmdLineArgs::getArgumentIds()

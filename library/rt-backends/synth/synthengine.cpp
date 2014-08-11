@@ -65,12 +65,23 @@ SynthEngine::SynthEngine(QObject *parent)
 
 SynthEngine::~SynthEngine()
 {
-    if (m_driver != 0)
+    uninitialize();
+}
+
+void SynthEngine::uninitialize()
+{
+    if (m_driver != 0) {
         ::delete_fluid_audio_driver(m_driver);
-    if (m_synth != 0)
+        m_driver = 0;
+    }
+    if (m_synth != 0) {
         ::delete_fluid_synth(m_synth);
-    if (m_settings != 0)
+        m_synth = 0;
+    }
+    if (m_settings != 0) {
         ::delete_fluid_settings(m_settings);
+        m_settings = 0;
+    }
 }
 
 void SynthEngine::initializeSynth(QSettings* settings)
@@ -95,6 +106,7 @@ void SynthEngine::initializeSynth(QSettings* settings)
         fs_polyphony = settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toInt();
         settings->endGroup();
     }
+    uninitialize();
     m_settings = ::new_fluid_settings();
     ::fluid_settings_setstr(m_settings, "audio.driver", qPrintable(fs_audiodriver));
     ::fluid_settings_setint(m_settings, "audio.period-size", fs_periodSize);
@@ -212,9 +224,11 @@ void SynthEngine::readSettings(QSettings *settings)
 void SynthEngine::close()
 {
     m_currentConnection.clear();
+    uninitialize();
 }
 
 void SynthEngine::open()
 {
     m_currentConnection = QSTR_FLUIDSYNTH;
 }
+

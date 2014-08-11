@@ -27,7 +27,7 @@
 /**
  * @class QEvent
  * The QEvent class is the base class of all event classes.
- * @see http://doc.trolltech.com/qevent.html
+ * @see http://qt-project.org/doc/qt-5/qevent.html
  */
 
 namespace drumstick {

@@ -1,4 +1,3 @@
-VERSION = 0.5.99
-# will be 0.6.0 upon release
+VERSION = 1.0.0
 DEFINES += VERSION=$$VERSION
 

@@ -102,16 +102,26 @@ namespace rt {
         }
     };
 
+    /**
+     * @brief Constructor
+     */
     BackendManager::BackendManager(): d(new BackendManagerPrivate)
     {
         refresh();
     }
 
+    /**
+     * @brief Destructor
+     */
     BackendManager::~BackendManager()
     {
         delete d;
     }
 
+    /**
+     * @brief returns the paths where backends are searched
+     * @return list of paths
+     */
     QStringList BackendManager::defaultPaths()
     {
         QStringList result;
@@ -140,6 +150,11 @@ namespace rt {
         return result;
     }
 
+    /**
+     * @brief BackendManager::refresh finds the installed backends searching the list of paths
+     * provided by the function defaultPaths() applying the optional settings as well.
+     * @param settings (optional)
+     */
     void BackendManager::refresh(QSettings *settings)
     {
         QString name_in;

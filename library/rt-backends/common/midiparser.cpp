@@ -153,6 +153,11 @@ MIDIParser::MIDIParser(MIDIInput *in, QObject *parent) :
     d->m_in = in;
 }
 
+MIDIParser::~MIDIParser()
+{
+    delete d;
+}
+
 void MIDIParser::setMIDIThruDevice(MIDIOutput *device)
 {
     d->m_out = device;

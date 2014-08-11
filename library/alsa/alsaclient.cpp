@@ -54,13 +54,13 @@
 /**
  * @class QObject
  * The QObject class is the base class of all Qt objects.
- * @see   http://doc.trolltech.com/qobject.html
+ * @see   http://qt-project.org/doc/qt-5/qobject.html
  */
 
 /**
  * @class QThread
  * The QThread class provides platform-independent threads.
- * @see   http://doc.trolltech.com/qthread.html
+ * @see   http://qt-project.org/doc/qt-5/qthread.html
  */
 
 namespace drumstick {
@@ -68,8 +68,8 @@ namespace drumstick {
 /**
 @mainpage drumstick Documentation
 @author Copyright &copy; 2009-2014 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
-@date 2014-08-01
-@version 0.5.99
+@date 2014-08-31
+@version 1.0.0
 
 This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/
@@ -80,9 +80,9 @@ This is the reference documentation for drumstick. This library is a set of C++ 
 using Qt5 objects, idioms and style.
 ALSA sequencer provides software support for MIDI technology on Linux.
 
-@see http://doc.trolltech.com/index.html
+@see http://qt-project.org/doc/qt-5/index.html
 @see http://www.alsa-project.org/alsa-doc/alsa-lib/seq.html
-@see http://cartan.cas.suffolk.edu/oopdocbook/opensource/index.html
+@see http://www.ics.com/design-patterns
 @see http://www.midi.org/aboutmidi/tutorials.php
 
 @section Disclaimer
@@ -114,7 +114,7 @@ int main(int argc, char **argv) {
     client->open();
     client->setClientName( "MyClient" );
 
-    // create the port
+    // create the port. Pointer is owned by the client instance
     drumstick::MidiPort *port = client->createPort();
     port->setPortName( "MyPort" );
     port->setCapability( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ );
@@ -281,14 +281,14 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
  * is emitted. In any case, the event pointer must be deleted by the receiver
  * method.
  *
- * @see http://doc.trolltech.com/threads.html#qobject-reentrancy
+ * @see http://qt-project.org/doc/qt-5/threads-reentrancy.html
  *
  * @section EventOutput Output
  *
  * The methods to send a single event to the ALSA sequencer are:
  * <ul>
  * <li>MidiClient::output() using the library buffer, automatically flushed.</li>
- * <li>MidiClient::outputBuffer() using the library buffer. Not flushed.</li>
+ * <li>MidiClient::outputBuffer() using the library buffer. Not flushed automatically.</li>
  * <li>MidiClient::outputDirect() not using the library buffer.</li>
  * </ul>
  * The two first methods usually require a call to MidiClient::drainOutput() to

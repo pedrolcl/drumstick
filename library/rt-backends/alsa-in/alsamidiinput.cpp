@@ -80,6 +80,7 @@ namespace rt {
                 if (m_port != NULL)
                     m_port->detach();
                 m_client->close();
+                delete m_client;
             }
         }
 
