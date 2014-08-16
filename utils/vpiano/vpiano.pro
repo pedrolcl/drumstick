@@ -22,35 +22,38 @@ LIBS += -L$$OUT_PWD/../../build/lib/
 LIBS += -l$$qtLibraryTarget(drumstick-common) \
         -l$$qtLibraryTarget(drumstick-rt)
 
-#LIBS += -L$$OUT_PWD/../../build/lib/drumstick/
-#LIBS += -l$$qtLibraryTarget(drumstick-rt-net-in) \
-#        -l$$qtLibraryTarget(drumstick-rt-net-out)
+static {
+LIBS += -L$$OUT_PWD/../../build/lib/drumstick/
+LIBS += -l$$qtLibraryTarget(drumstick-rt-net-in) \
+        -l$$qtLibraryTarget(drumstick-rt-net-out)
 
-#DEFINES += SYNTH_BACKEND
-#LIBS += -l$$qtLibraryTarget(drumstick-rt-synth) \
-#        -lfluidsynth
+DEFINES += SYNTH_BACKEND
+CONFIG += link_pkgconfig
+LIBS += -l$$qtLibraryTarget(drumstick-rt-synth)
+PKGCONFIG += fluidsynth
 
-#linux* {
-#    LIBS += -l$$qtLibraryTarget(drumstick-rt-alsa-in) \
-#            -l$$qtLibraryTarget(drumstick-rt-alsa-out) \
-#            -l$$qtLibraryTarget(drumstick-alsa) \
-#            -lasound
-#}
+linux* {
+    LIBS += -l$$qtLibraryTarget(drumstick-rt-alsa-in) \
+            -l$$qtLibraryTarget(drumstick-rt-alsa-out) \
+            -l$$qtLibraryTarget(drumstick-alsa) \
+            -lasound
+}
 
-#unix {
-#    LIBS += -l$$qtLibraryTarget(drumstick-rt-oss-in) \
-#            -l$$qtLibraryTarget(drumstick-rt-oss-out)
-#}
+unix:!macx {
+    LIBS += -l$$qtLibraryTarget(drumstick-rt-oss-in) \
+            -l$$qtLibraryTarget(drumstick-rt-oss-out)
+}
 
-#macx {
-#    LIBS += -l$$qtLibraryTarget(drumstick-rt-mac-in) \
-#            -l$$qtLibraryTarget(drumstick-rt-mac-out) \
-#            -framework CoreMIDI \
-#            -framework CoreFoundation
-#}
+macx {
+    LIBS += -l$$qtLibraryTarget(drumstick-rt-mac-in) \
+            -l$$qtLibraryTarget(drumstick-rt-mac-out) \
+            -framework CoreMIDI \
+            -framework CoreFoundation
+}
 
-#win32 {
-#    LIBS += -l$$qtLibraryTarget(drumstick-rt-win-in) \
-#            -l$$qtLibraryTarget(drumstick-rt-win-out) \
-#            -lwinmm
-#}
+win32 {
+    LIBS += -l$$qtLibraryTarget(drumstick-rt-win-in) \
+            -l$$qtLibraryTarget(drumstick-rt-win-out) \
+            -lwinmm
+}
+}

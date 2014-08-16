@@ -19,3 +19,6 @@ SOURCES += qsmf.cpp \
 win32 {
     TARGET_EXT = .dll
 }
+static {
+    DEFINES += DRUMSTICK_STATIC
+}
