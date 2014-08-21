@@ -24,7 +24,7 @@
 #include <QList>
 #include <QDir>
 #include <QSettings>
-#include "fluidsynth.h"
+#include <fluidsynth.h>
 
 #define cvtstr(s) #s
 #define stringify(s) cvtstr(s)

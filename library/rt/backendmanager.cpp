@@ -96,7 +96,7 @@ namespace rt {
         {
             //qDebug() << "testing " << candidate;
             QDir checked(candidate);
-            if (checked.exists()) {
+            if (checked.exists() && !result.contains(checked.absolutePath())) {
                 result << checked.absolutePath();
             }
         }
@@ -129,7 +129,7 @@ namespace rt {
     #if defined(Q_OS_WIN)
         d->appendDir( appPath + QSTR_DRUMSTICK, result );
     #elif defined(Q_OS_MAC)
-        d->appendDir( appPath + QStringLiteral("../PlugIns"), result );
+        d->appendDir( appPath + QStringLiteral("../PlugIns/") + QSTR_DRUMSTICK, result );
     #else // Linux, Unix...
         QStringList libs;
         libs << "../lib/" << "../lib32/" << "../lib64/";
@@ -184,13 +184,13 @@ namespace rt {
                     QObject *obj = loader.instance();
                     if (obj != 0) {
                         MIDIInput *input = qobject_cast<MIDIInput*>(obj);
-                        if (input != 0) {
+                        if (input != 0 && !d->m_inputsList.contains(input)) {
                             input->setPublicName(name_in);
                             input->setExcludedConnections(names);
                             d->m_inputsList << input;
                         } else {
                             MIDIOutput *output = qobject_cast<MIDIOutput*>(obj);
-                            if (output != 0) {
+                            if (output != 0 && !d->m_outputsList.contains(output)) {
                                 output->setPublicName(name_out);
                                 output->setExcludedConnections(names);
                                 d->m_outputsList << output;
@@ -205,13 +205,13 @@ namespace rt {
         foreach(QObject* obj, QPluginLoader::staticInstances()) {
             if (obj != 0) {
                 MIDIInput *input = qobject_cast<MIDIInput*>(obj);
-                if (input != 0) {
+                if (input != 0 && !d->m_inputsList.contains(input)) {
                     input->setPublicName(name_in);
                     input->setExcludedConnections(names);
                     d->m_inputsList << input;
                 } else {
                     MIDIOutput *output = qobject_cast<MIDIOutput*>(obj);
-                    if (output != 0) {
+                    if (output != 0 && !d->m_outputsList.contains(output)) {
                         output->setPublicName(name_out);
                         output->setExcludedConnections(names);
                         d->m_outputsList << output;

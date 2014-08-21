@@ -21,52 +21,61 @@ win32 {
     TARGET_EXT = .dll
 }
 
-static {
-LIBS += -L$$OUT_PWD/../../build/lib/drumstick
-LIBS += -L$$OUT_PWD/../../build/lib
-
-#dummy {
-#    DEFINES += DUMMY_BACKEND
-#    LIBS += -l$$qtLibraryTarget(drumstick-rt-dummy-in) \
-#            -l$$qtLibraryTarget(drumstick-rt-dummy-out)
-#}
-
-linux* {
-    DEFINES += ALSA_BACKEND
-    LIBS += -l$$qtLibraryTarget(drumstick-rt-alsa-in) \
-            -l$$qtLibraryTarget(drumstick-rt-alsa-out) \
-            -l$$qtLibraryTarget(drumstick-alsa) \
-            -lasound
-}
-
-unix:!macx {
-    DEFINES += OSS_BACKEND
-    LIBS += -l$$qtLibraryTarget(drumstick-rt-oss-in) \
-            -l$$qtLibraryTarget(drumstick-rt-oss-out)
-}
-
 macx {
-    DEFINES += MAC_BACKEND
-    LIBS += -l$$qtLibraryTarget(drumstick-rt-mac-in) \
-            -l$$qtLibraryTarget(drumstick-rt-mac-out) \
-            -framework CoreMidi \
-            -framework CoreFoundation
+    CONFIG += lib_bundle
+    FRAMEWORK_HEADERS.version = Versions
+    FRAMEWORK_HEADERS.files = $$HEADERS
+    FRAMEWORK_HEADERS.path = Headers
+    QMAKE_BUNDLE_DATA += FRAMEWORK_HEADERS
+    QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/
 }
 
-win32 {
-    DEFINES += WIN_BACKEND
-    LIBS += -l$$qtLibraryTarget(drumstick-rt-win-in) \
-            -l$$qtLibraryTarget(drumstick-rt-win-out) \
-            -lwinmm
-}
+static {
+    LIBS += -L$$OUT_PWD/../../build/lib/drumstick
+    LIBS += -L$$OUT_PWD/../../build/lib
 
-DEFINES += NET_BACKEND
-QT += network
-LIBS += -l$$qtLibraryTarget(drumstick-rt-net-in) \
-        -l$$qtLibraryTarget(drumstick-rt-net-out)
+    #dummy {
+    #    DEFINES += DUMMY_BACKEND
+    #    LIBS += -l$$qtLibraryTarget(drumstick-rt-dummy-in) \
+    #            -l$$qtLibraryTarget(drumstick-rt-dummy-out)
+    #}
 
-DEFINES += SYNTH_BACKEND
-CONFIG += link_pkgconfig
-LIBS += -l$$qtLibraryTarget(drumstick-rt-synth)
-PKGCONFIG += fluidsynth
+    linux* {
+        DEFINES += ALSA_BACKEND
+        LIBS += -l$$qtLibraryTarget(drumstick-rt-alsa-in) \
+                -l$$qtLibraryTarget(drumstick-rt-alsa-out) \
+                -l$$qtLibraryTarget(drumstick-alsa) \
+                -lasound
+    }
+
+    unix:!macx {
+        DEFINES += OSS_BACKEND
+        LIBS += -l$$qtLibraryTarget(drumstick-rt-oss-in) \
+                -l$$qtLibraryTarget(drumstick-rt-oss-out)
+    }
+
+    macx {
+        DEFINES += MAC_BACKEND
+        LIBS += -l$$qtLibraryTarget(drumstick-rt-mac-in) \
+                -l$$qtLibraryTarget(drumstick-rt-mac-out) \
+                -framework CoreMidi \
+                -framework CoreFoundation
+    }
+
+    win32 {
+        DEFINES += WIN_BACKEND
+        LIBS += -l$$qtLibraryTarget(drumstick-rt-win-in) \
+                -l$$qtLibraryTarget(drumstick-rt-win-out) \
+                -lwinmm
+    }
+
+    DEFINES += NET_BACKEND
+    QT += network
+    LIBS += -l$$qtLibraryTarget(drumstick-rt-net-in) \
+            -l$$qtLibraryTarget(drumstick-rt-net-out)
+
+    DEFINES += SYNTH_BACKEND
+    CONFIG += link_pkgconfig
+    LIBS += -l$$qtLibraryTarget(drumstick-rt-synth)
+    PKGCONFIG += fluidsynth
 }
