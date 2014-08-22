@@ -20,7 +20,8 @@
 #include <QFileInfo>
 #include <QSettings>
 #include <QStandardPaths>
-
+#include <QCoreApplication>
+#include <QDebug>
 #include "synthengine.h"
 
 const QString QSTR_PREFERENCES("FluidSynth");
@@ -199,6 +200,9 @@ void SynthEngine::scanSoundFonts()
 {
     m_soundFontsList.clear();
     QStringList paths = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
+#if defined(Q_OS_OSX)
+    paths << (QCoreApplication::applicationDirPath() + QLatin1Literal("../Resources"));
+#endif
     foreach(const QString& p, paths) {
        QDir d(p + QDir::separator() + QSTR_DATADIR);
        if (d.exists()) {
@@ -209,13 +213,18 @@ void SynthEngine::scanSoundFonts()
 
 void SynthEngine::readSettings(QSettings *settings)
 {
-    QDir dir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
+    QDir dir;
+#if defined(Q_OS_OSX)
+    dir = QDir(QCoreApplication::applicationDirPath() + QLatin1Literal("/../Resources"));
+#else
+    dir = QDir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
+#endif
     QFileInfo sf2(dir, QSTR_SOUNDFONT);
     if (sf2.exists()) {
         m_defSoundFont = sf2.absoluteFilePath();
     }
     m_sfid = -1;
-
+    qDebug() << "defSoundFont:" << m_defSoundFont;
     settings->beginGroup(QSTR_PREFERENCES);
     m_soundFont = settings->value(QSTR_INSTRUMENTSDEFINITION, m_defSoundFont).toString();
     settings->endGroup();

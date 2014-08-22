@@ -123,7 +123,7 @@ namespace rt {
         void reloadDeviceList(bool advanced)
         {
             int num = MIDIGetNumberOfDestinations();
-            m_clientFilter = advanced;
+            m_clientFilter = !advanced;
             m_outputDevices.clear();
             for (int i = 0; i < num; ++i) {
                 bool excluded = false;

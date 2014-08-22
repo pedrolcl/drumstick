@@ -122,7 +122,7 @@ namespace rt {
         void reloadDeviceList(bool advanced)
         {
             int num = MIDIGetNumberOfSources();
-            m_clientFilter = advanced;
+            m_clientFilter = !advanced;
             m_inputDevices.clear();
             for (int i = 0; i < num; ++i) {
                 bool excluded = false;
