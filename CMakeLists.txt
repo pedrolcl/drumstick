@@ -41,7 +41,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_admin")
 set(VERSION_MAJOR "1")
 set(VERSION_MINOR "0")
 set(VERSION_PATCH "0")
-set(VERSION_SUFFIX "svn")
+set(VERSION_SUFFIX "")
 set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 add_definitions(-DVERSION=${VERSION})
 
@@ -119,6 +119,14 @@ if(${CMAKE_SYSTEM} MATCHES "Linux")
     install(FILES
 	${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
 	DESTINATION lib${LIB_SUFFIX}/pkgconfig )
+    # XML mime types
+    set( SHARED_MIME_INFO_MINIMUM_VERSION "0.30" )
+    set( XDG_MIME_INSTALL_DIR "share/mime/packages" )
+    find_package( SharedMimeInfo )
+    if( SHARED_MIME_INFO_FOUND )
+        install( FILES drumstick.xml DESTINATION ${XDG_MIME_INSTALL_DIR} )
+        update_xdg_mimetypes( ${XDG_MIME_INSTALL_DIR} )
+    endif()
 endif()
 
 configure_file(drumstick-file.pc.in drumstick-file.pc IMMEDIATE @ONLY)
@@ -130,15 +138,6 @@ configure_file(drumstick-rt.pc.in drumstick-rt.pc IMMEDIATE @ONLY)
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/drumstick-rt.pc
     DESTINATION lib${LIB_SUFFIX}/pkgconfig )
-
-# XML mime types
-set( SHARED_MIME_INFO_MINIMUM_VERSION "0.30" )
-set( XDG_MIME_INSTALL_DIR "share/mime/packages" )
-find_package( SharedMimeInfo )
-if( SHARED_MIME_INFO_FOUND )
-    install( FILES drumstick.xml DESTINATION ${XDG_MIME_INSTALL_DIR} ) 
-    update_xdg_mimetypes( ${XDG_MIME_INSTALL_DIR} )
-endif()
 
 # uninstall custom target
 configure_file(

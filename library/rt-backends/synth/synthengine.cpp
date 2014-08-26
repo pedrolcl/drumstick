@@ -48,9 +48,13 @@ const QString QSTR_DEFAULT_AUDIODRIVER =
 #else
     QLatin1Literal("oss");
 #endif
-
+const int DEFAULT_PERIODS =
+#if defined(Q_OS_WIN)
+    4;
+#else
+    3;
+#endif
 const int DEFAULT_PERIODSIZE = 512;
-const int DEFAULT_PERIODS = 3;
 const double DEFAULT_SAMPLERATE = 48000.0;
 const int DEFAULT_CHORUS = 0;
 const int DEFAULT_REVERB = 0;
