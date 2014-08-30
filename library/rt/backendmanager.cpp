@@ -74,7 +74,12 @@ namespace rt {
  * BackendManager provides a mechanism to find and enumerate backends (plugins)
  * to manage realtime MIDI input/output
  *
- * This class and plugins are multiplatform
+ * This class and plugins are multiplatform. The backends implement one of these
+ * interfaces:
+ *
+ * MIDIInput: for plugins that can receive MIDI events
+ *
+ * MIDIOutput: for plugings that can produce MIDI events
  *
  * @}
  */

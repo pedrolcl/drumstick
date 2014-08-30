@@ -68,7 +68,7 @@ namespace drumstick {
 /**
 @mainpage drumstick Documentation
 @author Copyright &copy; 2009-2014 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
-@date 2014-08-31
+@date 2014-08-30
 @version 1.0.0
 
 This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
@@ -138,11 +138,12 @@ int main(int argc, char **argv) {
 @endcode
 
 There are more examples in the source tree, under the utils/ directory, and
-you can also see applications using this library, as kmetronome and kmidimon.
+you can also see applications using this library, like kmetronome and kmidimon.
 
 @see http://kmetronome.sourceforge.net
 @see http://kmidimon.sourceforge.net
 @see http://kmid2.sourceforge.net
+@see http://vmpk.sourceforge.net
 
 @section Acknowledgments
 Parts of this documentation are copied from the ALSA library documentation,

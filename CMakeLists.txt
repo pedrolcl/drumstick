@@ -157,7 +157,7 @@ if(${CMAKE_SYSTEM} MATCHES "Linux")
         COMMAND cp -r utils drumstick-${VERSION}
         COMMAND cp -r doc drumstick-${VERSION}
         COMMAND cp -r icons drumstick-${VERSION}
-        COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO drumstick*.in drumstick.pro drumstick.xml configure* Doxyfile.in link-drumstick chkcoverage drumstick-${VERSION}
+        COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO drumstick*.in drumstick.pro drumstick.xml configure* Doxyfile.in chkcoverage drumstick-${VERSION}
         COMMAND tar -cj --exclude=.[a-z]* -f drumstick-${VERSION}.tar.bz2 drumstick-${VERSION}
         COMMAND tar -cz --exclude=.[a-z]* -f drumstick-${VERSION}.tar.gz  drumstick-${VERSION}
         COMMAND zip -qr drumstick-${VERSION}.zip drumstick-${VERSION} -x '.[a-z]*'
