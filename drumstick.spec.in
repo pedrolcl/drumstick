@@ -1,7 +1,6 @@
-#
 # spec file for package drumstick (Version @VERSION@)
 #
-# MIDI Sequencer C++ Library Bindings for Qt5 and ALSA
+# MIDI Sequencer C++ Library Bindings for Qt5
 # Copyright (C) 2005-2014 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 #
 # This file and all modifications and additions to the pristine
@@ -14,21 +13,20 @@ Name:           drumstick
 Version:        @VERSION@
 Release:        1
 License:        GPL v2 or later
-Summary:        MIDI Sequencer C++ Library Bindings
+Summary:        MIDI Sequencer C++ Libraries for Qt5
 Group:          Productivity/Multimedia/Sound/Midi
 URL:            http://drumstick.sourceforge.net
 Source:         %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  cmake
-BuildRequires:  alsa-devel
-BuildRequires:  libqt5-devel
+BuildRequires:  alsa-lib-devel
+BuildRequires:  qt5-qtbase-devel
 BuildRequires:  doxygen
 BuildRequires:  graphviz
-BuildRequires:  update-desktop-files
 BuildRequires:  libxslt
-BuildRequires:  docbook_4
-BuildRequires:  docbook-xsl-stylesheets
-PreReq:         shared-mime-info
+BuildRequires:  docbook-utils
+BuildRequires:  docbook-style-xsl
+Requires:       shared-mime-info
 
 %description
 This package includes test and example programs for drumstick libraries.
@@ -39,27 +37,26 @@ Authors:
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
 
-%package -n libdrumstick-file0
-Summary:        MIDI Sequencer C++ Library
+%package -n libdrumstick-file1
+Summary:        MIDI File C++ Library
 Group:          System/Libraries
 
-%description -n libdrumstick-file0
-MIDI Sequencer C++ Library Bindings for Qt5 and ALSA.
+%description -n libdrumstick-file1
+MIDI File C++ Library for Qt5
 This library includes classes providing file input and output in formats 
 commonly used by MIDI programs. Currently, SMF (standard MIDI file) 
-read/write and WRK (Cakewalk) file read are supported. This library does not 
-depend on ALSA.
+read/write, WRK (Cakewalk) and OVE (Overture) file read are supported.
 
 
 Authors:
 --------
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
-%package -n libdrumstick-alsa0
+%package -n libdrumstick-alsa1
 Summary:        MIDI Sequencer C++ Library
 Group:          System/Libraries
 
-%description -n libdrumstick-alsa0
+%description -n libdrumstick-alsa1
 MIDI Sequencer C++ Library Bindings for Qt5 and ALSA.
 This library includes the ALSA Sequencer library classes, providing MIDI 
 recording and playback functionality to C++/Qt5 programs.
@@ -69,11 +66,25 @@ Authors:
 --------
     Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
+%package -n libdrumstick-rt1
+Summary:        MIDI Realtime IO C++ Library
+Group:          System/Libraries
+
+%description -n libdrumstick-rt1
+MIDI Realtime IO C++ Library for Qt5
+This library includes realtime library classes, providing MIDI 
+realtime IO functionality to C++/Qt5 programs.
+
+
+Authors:
+--------
+    Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+
 %package -n libdrumstick-devel
 Summary:        Development package for the libdrumstick library
 Group:          Development/Libraries/C and C++
-Requires:       libdrumstick-file0 = %{version}
-Requires:       libdrumstick-alsa0 = %{version}
+Requires:       libdrumstick-file1 = %{version}
+Requires:       libdrumstick-alsa1 = %{version}
 Requires:       glibc-devel libstdc++-devel alsa-devel libqt4-devel
 
 %description -n libdrumstick-devel
@@ -110,9 +121,6 @@ make doxygen
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
-%suse_update_desktop_file -n drumstick-drumgrid Midi
-%suse_update_desktop_file -n drumstick-guiplayer Midi
-%suse_update_desktop_file -n drumstick-vpiano Midi
 
 %post 
 %{_bindir}/update-mime-database %{_datadir}/mime
@@ -120,13 +128,17 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %postun
 %{_bindir}/update-mime-database %{_datadir}/mime
 
-%post -n libdrumstick-file0 -p /sbin/ldconfig
+%post -n libdrumstick-file1 -p /sbin/ldconfig
 
-%postun -n libdrumstick-file0 -p /sbin/ldconfig
+%postun -n libdrumstick-file1 -p /sbin/ldconfig
 
-%post -n libdrumstick-alsa0 -p /sbin/ldconfig
+%post -n libdrumstick-alsa1 -p /sbin/ldconfig
 
-%postun -n libdrumstick-alsa0 -p /sbin/ldconfig
+%postun -n libdrumstick-alsa1 -p /sbin/ldconfig
+
+%post -n libdrumstick-rt1 -p /sbin/ldconfig
+
+%postun -n libdrumstick-rt1 -p /sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -139,20 +151,26 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/applications/*
 %{_bindir}/*
 
-%files -n libdrumstick-file0
+%files -n libdrumstick-file1
 %defattr(-,root,root)
 %{_libdir}/libdrumstick-file.so.*
 %{_datadir}/mime/packages/*
 
-%files -n libdrumstick-alsa0
+%files -n libdrumstick-alsa1
 %defattr(-,root,root)
 %{_libdir}/libdrumstick-alsa.so.*
+
+%files -n libdrumstick-rt1
+%defattr(-,root,root)
+%{_libdir}/libdrumstick-rt.so.*
+%{_libdir}/drumstick/*.so
 
 %files -n libdrumstick-devel
 %defattr(-, root, root)
 %dir %{_includedir}/drumstick
 %{_libdir}/libdrumstick-file.so
 %{_libdir}/libdrumstick-alsa.so
+%{_libdir}/libdrumstick-rt.so
 %{_includedir}/drumstick.h
 %{_includedir}/drumstick/*.h
 %{_libdir}/pkgconfig/*.pc
@@ -162,5 +180,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/html/*
 
 %changelog
+* Sat Aug 30 2014 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 1.0.0
+- New version
+
 * Thu Sep 9 2010 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net> 0.5.0
 - New version
