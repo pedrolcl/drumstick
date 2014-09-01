@@ -7,6 +7,5 @@ Name: drumstick-file
 Version: @VERSION@
 Description: MIDI Sequencer C++ Library Bindings for Qt5
 URL: http://sourceforge.net/projects/drumstick
-Requires: Qt5Core >= 5.0
 Libs: -L${libdir} -ldrumstick-file
 Cflags: -I${includedir}

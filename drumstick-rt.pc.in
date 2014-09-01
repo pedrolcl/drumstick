@@ -7,6 +7,5 @@ Name: drumstick-rt
 Version: @VERSION@
 Description: MIDI Realtime Library for Qt5
 URL: http://sourceforge.net/projects/drumstick
-Requires: Qt5Core >= 5.0
 Libs: -L${libdir} -ldrumstick-rt
 Cflags: -I${includedir}

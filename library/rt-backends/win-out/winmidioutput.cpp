@@ -130,7 +130,9 @@ namespace rt {
             dev = deviceIndex(name);
             if (dev > -1) {
                 res = midiOutOpen( &m_handle, dev, (DWORD_PTR) midiCallback, (DWORD_PTR) this, CALLBACK_FUNCTION);
-                if (res != MMSYSERR_NOERROR)
+                if (res == MMSYSERR_NOERROR)
+                    m_currentOutput = name;
+                else
                     qDebug() << "midiStreamOpen() err:" << mmErrorString(res);
             }
         }
@@ -143,7 +145,9 @@ namespace rt {
                 if (res != MMSYSERR_NOERROR)
                     qDebug() << "midiOutReset() err:" << mmErrorString(res);
                 res = midiOutClose( m_handle );
-                if (res != MMSYSERR_NOERROR)
+                if (res == MMSYSERR_NOERROR)
+                    m_currentOutput.clear();
+                else
                     qDebug() << "midiStreamClose() err:" << mmErrorString(res);
                 m_handle = 0;
             }
