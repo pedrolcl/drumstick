@@ -12,7 +12,8 @@ QT -= gui
 HEADERS += \
     ../include/rtmidiinput.h \
     ../include/rtmidioutput.h \
-    ../include/backendmanager.h
+    ../include/backendmanager.h \
+    ../include/macros.h
 
 SOURCES += \
     backendmanager.cpp
@@ -25,7 +26,7 @@ macx {
     CONFIG += lib_bundle
     FRAMEWORK_HEADERS.version = Versions
     FRAMEWORK_HEADERS.files = $$HEADERS
-    FRAMEWORK_HEADERS.path = Headers
+    FRAMEWORK_HEADERS.path = Headers/drumstick
     QMAKE_BUNDLE_DATA += FRAMEWORK_HEADERS
     QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/
 }
