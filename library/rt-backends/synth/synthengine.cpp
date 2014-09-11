@@ -220,6 +220,8 @@ void SynthEngine::readSettings(QSettings *settings)
     QDir dir;
 #if defined(Q_OS_OSX)
     dir = QDir(QCoreApplication::applicationDirPath() + QLatin1Literal("/../Resources"));
+#elif defined(Q_OS_UNIX)
+    dir = QDir(QCoreApplication::applicationDirPath() + QLatin1Literal("/../share/soundfonts/"));
 #else
     dir = QDir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
 #endif
