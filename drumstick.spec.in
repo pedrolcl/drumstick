@@ -13,7 +13,7 @@ Name:           drumstick
 Version:        @VERSION@
 Release:        1
 License:        GPL v2 or later
-Summary:        MIDI Sequencer C++ Libraries for Qt5
+Summary:        MIDI Sequencer C++ Library Bindings
 Group:          Productivity/Multimedia/Sound/Midi
 URL:            http://drumstick.sourceforge.net
 Source:         %{name}-%{version}.tar.bz2
@@ -21,6 +21,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  cmake
 BuildRequires:  alsa-lib-devel
 BuildRequires:  qt5-qtbase-devel
+BuildRequires:  qt5-qtsvg-devel
 BuildRequires:  doxygen
 BuildRequires:  graphviz
 BuildRequires:  libxslt
@@ -38,14 +39,14 @@ Authors:
 
 
 %package -n libdrumstick-file1
-Summary:        MIDI File C++ Library
+Summary:        MIDI Sequencer C++ Library
 Group:          System/Libraries
 
 %description -n libdrumstick-file1
-MIDI File C++ Library for Qt5
+MIDI Sequencer C++ Library Bindings for Qt5
 This library includes classes providing file input and output in formats 
 commonly used by MIDI programs. Currently, SMF (standard MIDI file) 
-read/write, WRK (Cakewalk) and OVE (Overture) file read are supported.
+read/write and WRK (Cakewalk) file read are supported.
 
 
 Authors:
@@ -72,7 +73,7 @@ Group:          System/Libraries
 
 %description -n libdrumstick-rt1
 MIDI Realtime IO C++ Library for Qt5
-This library includes realtime library classes, providing MIDI 
+This library includes the RT library classes, providing MIDI 
 realtime IO functionality to C++/Qt5 programs.
 
 
@@ -85,7 +86,7 @@ Summary:        Development package for the libdrumstick library
 Group:          Development/Libraries/C and C++
 Requires:       libdrumstick-file1 = %{version}
 Requires:       libdrumstick-alsa1 = %{version}
-Requires:       glibc-devel libstdc++-devel alsa-devel libqt4-devel
+Requires:       glibc-devel libstdc++-devel alsa-lib-devel qt5-qtbase-devel
 
 %description -n libdrumstick-devel
 This package contains the files needed to compile programs that use the

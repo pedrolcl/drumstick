@@ -83,7 +83,7 @@ void NetworkSettingsDialog::writeSettings()
     QString networkIface;
 
     networkAddr = ui->txtAddress->text();
-    networkIface = ui->comboInterface->currentData().toString();
+    networkIface = ui->comboInterface->currentText();
 
     settings.beginGroup("Network");
     settings.setValue("interface", networkIface);
