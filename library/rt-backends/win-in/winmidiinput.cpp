@@ -149,6 +149,8 @@ namespace rt {
 
         void emitSignals(int status, int channel, int data1, int data2)
         {
+            if (status == MIDI_STATUS_NOTEON && data2 == 0)
+                status = MIDI_STATUS_NOTEOFF;
             switch (status) {
             case MIDI_STATUS_NOTEOFF:
                 if(m_out != 0 && m_thruEnabled)
