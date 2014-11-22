@@ -85,6 +85,9 @@ namespace rt {
                     res = midiInOpen(&m_handle, dev, (DWORD_PTR) midiCallback, (DWORD_PTR) this, CALLBACK_FUNCTION | MIDI_IO_STATUS );
                     if (res != MMSYSERR_NOERROR)
                         qDebug() << "midiInOpen() err:" << mmErrorString(res);
+                    res = midiInStart(m_handle);
+                    if (res != MMSYSERR_NOERROR)
+                        qDebug() << "midiInStart() err:" << mmErrorString(res);
                     m_currentInput = name;
                 }
             }
@@ -93,6 +96,9 @@ namespace rt {
         void close() {
             MMRESULT res;
             if (m_handle != 0) {
+                res = midiInStop(m_handle);
+                if (res != MMSYSERR_NOERROR)
+                    qDebug() << "midiInStop() err:" << mmErrorString(res);
                 res = midiInReset( m_handle );
                 if (res != MMSYSERR_NOERROR)
                     qDebug() << "midiInReset() err:" << mmErrorString(res);
@@ -182,7 +188,7 @@ namespace rt {
                 }
                 break;
             default:
-                qDebug() << "status?" << status;
+                qDebug() << "MIDI in status?" << status;
             }
         }
 
@@ -216,22 +222,22 @@ namespace rt {
                                 DWORD_PTR dwParam1,
                                 DWORD_PTR dwParam2 )
     {
-        Q_UNUSED(hMidiIn)
+        //Q_UNUSED(hMidiIn)
         Q_UNUSED(dwParam2)
         WinMIDIInput::WinMIDIInputPrivate* object = (WinMIDIInput::WinMIDIInputPrivate*) dwInstance;
         switch( wMsg ) {
         case MIM_OPEN:
-            qDebug() << "Open";
+            qDebug() << "Open input" << hMidiIn;
             break;
         case MIM_CLOSE:
-            qDebug() << "Close";
+            qDebug() << "Close input" << hMidiIn;
             break;
         case MIM_ERROR:
         case MIM_LONGERROR:
-            qDebug() << "Errors";
+            qDebug() << "Errors input";
             break;
         case MIM_LONGDATA:
-            qDebug() << "Sysex data";
+            qDebug() << "Sysex data input";
             break;
         case MIM_DATA:
         case MIM_MOREDATA: {
@@ -243,7 +249,7 @@ namespace rt {
             }
             break;
         default:
-            qDebug() << "unknown:" << hex << wMsg;
+            qDebug() << "unknown input message:" << hex << wMsg;
             break;
         }
     }

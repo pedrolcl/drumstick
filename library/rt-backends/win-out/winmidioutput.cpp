@@ -213,7 +213,7 @@ namespace rt {
                                 DWORD_PTR dwParam1,
                                 DWORD_PTR dwParam2)
     {
-        Q_UNUSED(hmo)
+        //Q_UNUSED(hmo)
         Q_UNUSED(dwParam2)
 
         WinMIDIOutput::WinMIDIOutputPrivate* obj = (WinMIDIOutput::WinMIDIOutputPrivate*) dwInstance;
@@ -222,13 +222,13 @@ namespace rt {
             obj->doneHeader( (LPMIDIHDR) dwParam1 );
             break;
         case MOM_OPEN:
-            qDebug() << "Open";
+            qDebug() << "Open output" << hmo;
             break;
         case MOM_CLOSE:
-            qDebug() << "Close";
+            qDebug() << "Close output" << hmo;
             break;
         default:
-            qDebug() << "unknown:" << hex << wMsg;
+            qDebug() << "unknown output message:" << hex << wMsg;
             break;
         }
     }
