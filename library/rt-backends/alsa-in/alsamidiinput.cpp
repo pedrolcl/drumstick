@@ -130,7 +130,7 @@ namespace rt {
             if (m_inputDevices.contains(newDevice)) {
                 m_currentInput = newDevice;
                 m_port->unsubscribeAll();
-                m_port->subscribeTo(newDevice);
+                m_port->subscribeFrom(newDevice);
                 m_client->startSequencerInput();
                 return true;
             }
