@@ -1,6 +1,6 @@
 /*
     Standard MIDI File creation from scratch.
-    Copyright (C) 2006-2014, Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+    Copyright (C) 2006-2015, Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
  
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ void QSMFBuilder::trackHandler(int )
 
     // Text event
     m_engine->writeMetaEvent(0, copyright_notice, 
-        QString::fromUtf8("Copyright (C) 2006-2014 Pedro López-Cabanillas"));
+        QString::fromUtf8("Copyright (C) 2006-2015 Pedro López-Cabanillas"));
 
     m_engine->writeBpmTempo(0, 100);                
     m_engine->writeTimeSignature(0, 3, 2, 36, 8);  // ts = 3/4

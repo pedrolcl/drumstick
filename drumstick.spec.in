@@ -1,7 +1,7 @@
 # spec file for package drumstick (Version @VERSION@)
 #
 # MIDI Sequencer C++ Library Bindings for Qt5
-# Copyright (C) 2005-2014 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+# Copyright (C) 2005-2015 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 #
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
