@@ -23,12 +23,14 @@ win32 {
 }
 
 macx {
+    TARGET = drumstick-rt
     CONFIG += lib_bundle
     FRAMEWORK_HEADERS.version = Versions
     FRAMEWORK_HEADERS.files = $$HEADERS
     FRAMEWORK_HEADERS.path = Headers/drumstick
     QMAKE_BUNDLE_DATA += FRAMEWORK_HEADERS
-    QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/
+    #QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/
+    QMAKE_SONAME_PREFIX = @rpath
 }
 
 static {

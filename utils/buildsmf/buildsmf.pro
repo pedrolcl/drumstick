@@ -9,7 +9,7 @@ HEADERS += buildsmf.h
 SOURCES += buildsmf.cpp
 
 macx {
-    QMAKE_LFLAGS += -F$$OUT_PWD/../../build/lib -L$$OUT_PWD/../../build/lib
+    QMAKE_LFLAGS += -L$$OUT_PWD/../../build/lib/ -F$$OUT_PWD/../../build/lib/
     LIBS += -framework drumstick-file
     LIBS += -l$$qtLibraryTarget(drumstick-common)
 }
