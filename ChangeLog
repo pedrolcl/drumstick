@@ -1,3 +1,12 @@
+2015-08-20
+    * release 1.0.1
+
+2015-04-26
+    * RT library: fixed ticket #4: ALSA Midi Input not working
+
+2014-11-22
+    * RT library: fixed windows midi input
+
 2014-08-30
     * release 1.0.0
 
