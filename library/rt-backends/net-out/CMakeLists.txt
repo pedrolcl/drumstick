@@ -38,8 +38,8 @@ if(STATIC_DRUMSTICK)
     add_library(drumstick-rt-net-out STATIC
         ${drumstick-rt-net-out_MOC_SRCS}
         ${drumstick-rt-net-out_SRCS})
-    set_target_properties(drumstick-alsa PROPERTIES
-         STATIC_LIB "libdrumstick-rt-net-out.a")
+    set_target_properties(drumstick-rt-net-out PROPERTIES
+         STATIC_LIB "libdrumstick-rt-net-out")
 else()
     add_library(drumstick-rt-net-out MODULE
         ${drumstick-rt-net-out_MOC_SRCS}

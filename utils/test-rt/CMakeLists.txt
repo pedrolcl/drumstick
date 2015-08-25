@@ -16,6 +16,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
+if(STATIC_DRUMSTICK)
+  pkg_check_modules(FLUIDSYNTH REQUIRED fluidsynth>=1.1.1)
+  link_directories(${FLUIDSYNTH_LIBDIR})
+endif()
+
 set(SRCS
     main.cpp
 )

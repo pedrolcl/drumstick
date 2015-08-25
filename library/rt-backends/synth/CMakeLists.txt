@@ -42,8 +42,8 @@ if(STATIC_DRUMSTICK)
     add_library(drumstick-rt-synth STATIC
         ${drumstick-rt-synth_MOC_SRCS}
         ${drumstick-rt-synth_SRCS})
-    set_target_properties(drumstick-alsa PROPERTIES
-         STATIC_LIB "libdrumstick-rt-synth.a")
+    set_target_properties(drumstick-rt-synth PROPERTIES
+         STATIC_LIB "libdrumstick-rt-synth")
 else()
     add_library(drumstick-rt-synth MODULE
         ${drumstick-rt-synth_MOC_SRCS}
