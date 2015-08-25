@@ -24,6 +24,7 @@ set(drumstick-rt_QOBJ_SRCS
 )
 
 set(drumstick-rt_HEADERS
+	../include/macros.h
     ../include/rtmidiinput.h
     ../include/rtmidioutput.h
     ../include/backendmanager.h
