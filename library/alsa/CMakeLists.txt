@@ -67,7 +67,7 @@ target_link_libraries(drumstick-alsa
 
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-alsa PROPERTIES
-         STATIC_LIB "libdrumstick-alsa.a")
+         STATIC_LIB "libdrumstick-alsa")
 else()
     set_target_properties(drumstick-alsa PROPERTIES
         VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}

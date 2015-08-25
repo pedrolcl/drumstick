@@ -36,7 +36,7 @@ if(STATIC_DRUMSTICK)
         ${drumstick-rt-alsa-out_MOC_SRCS}
         ${drumstick-rt-alsa-out_SRCS})
     set_target_properties(drumstick-rt-alsa-out PROPERTIES
-         STATIC_LIB "libdrumstick-rt-alsa-in.a")
+         STATIC_LIB "libdrumstick-rt-alsa-out")
 else()
     add_library(drumstick-rt-alsa-out MODULE
         ${drumstick-rt-alsa-out_MOC_SRCS}

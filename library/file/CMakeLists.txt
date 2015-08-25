@@ -49,7 +49,7 @@ target_link_libraries(drumstick-file Qt5::Core)
 
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-file PROPERTIES
-        STATIC_LIB "libdrumstick-file.a")
+        STATIC_LIB "libdrumstick-file")
 else()
     set_target_properties(drumstick-file PROPERTIES
         VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}

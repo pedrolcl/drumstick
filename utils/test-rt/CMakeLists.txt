@@ -17,6 +17,7 @@
 # MA 02110-1301, USA
 
 if(STATIC_DRUMSTICK)
+  find_package(Qt5Network REQUIRED)
   pkg_check_modules(FLUIDSYNTH REQUIRED fluidsynth>=1.1.1)
   link_directories(${FLUIDSYNTH_LIBDIR})
 endif()

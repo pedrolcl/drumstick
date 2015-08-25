@@ -46,7 +46,7 @@ target_link_libraries(drumstick-rt Qt5::Core)
 
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-rt PROPERTIES
-        STATIC_LIB "libdrumstick-rt.a")
+        STATIC_LIB "libdrumstick-rt")
     #
     #    add_definitions(-DDUMMY_BACKEND)
     #    target_link_libraries(drumstick-rt-dummy-in)
