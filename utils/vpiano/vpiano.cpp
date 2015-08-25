@@ -111,7 +111,7 @@ void VPiano::slotNoteOff(const int midiNote, const int vel)
 
 void VPiano::slotNoteOn(const int chan, const int note, const int vel)
 {
-    Q_UNUSED(vel)
+    //Q_UNUSED(vel)
     if (dlgPreferences.getInChannel() == chan) {
         if (vel > 0)
             ui.pianokeybd->getPianoScene()->showNoteOn(note);

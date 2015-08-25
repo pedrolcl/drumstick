@@ -54,8 +54,8 @@ set(vpiano_SRCS
 )
 
 set(vpiano_qtobject_SRCS
-    ../../library/include/rtmidiinput.h
-    ../../library/include/rtmidioutput.h
+#    ../../library/include/rtmidiinput.h
+#    ../../library/include/rtmidioutput.h
     pianoscene.h
     pianokeybd.h
     vpianoabout.h
