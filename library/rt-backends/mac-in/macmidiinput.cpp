@@ -167,7 +167,7 @@ namespace rt {
             QStringList allInputDevices;
             int num = MIDIGetNumberOfSources();
             for (int i = 0; i < num; ++i) {
-                MIDIEndpointRef dest = MIDIGetDestination( i );
+                MIDIEndpointRef dest = MIDIGetSource( i );
                 if (dest != 0)
                    allInputDevices << getEndpointName( dest );
             }
