@@ -31,5 +31,5 @@ MACRO(CREATE_MANPAGES)
     ENDFOREACH (it)
     ADD_CUSTOM_TARGET(manpages ALL DEPENDS ${outfiles})
     INSTALL ( FILES ${outfiles}
-              DESTINATION share/man/man1 )
+              DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/man/man1" )
 ENDMACRO(CREATE_MANPAGES)

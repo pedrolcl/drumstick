@@ -37,6 +37,8 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 # Additional CMake modules for 3rd party library checks reside here
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_admin")
 
+include(GNUInstallDirs)
+
 # DRUMSTICK version string
 set(VERSION_MAJOR "1")
 set(VERSION_MINOR "0")
@@ -121,7 +123,7 @@ if(${CMAKE_SYSTEM} MATCHES "Linux")
 	DESTINATION lib${LIB_SUFFIX}/pkgconfig )
     # XML mime types
     set( SHARED_MIME_INFO_MINIMUM_VERSION "0.30" )
-    set( XDG_MIME_INSTALL_DIR "share/mime/packages" )
+    set( XDG_MIME_INSTALL_DIR "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages" )
     find_package( SharedMimeInfo )
     if( SHARED_MIME_INFO_FOUND )
         install( FILES drumstick.xml DESTINATION ${XDG_MIME_INSTALL_DIR} )

@@ -66,4 +66,4 @@ INSTALL(TARGETS drumstick-guiplayer
         RUNTIME DESTINATION bin)
 
 INSTALL(FILES drumstick-guiplayer.desktop
-        DESTINATION share/applications)
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")

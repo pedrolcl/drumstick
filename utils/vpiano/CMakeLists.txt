@@ -93,4 +93,4 @@ install(TARGETS drumstick-vpiano
         RUNTIME DESTINATION bin)
 
 install(FILES drumstick-vpiano.desktop
-        DESTINATION share/applications)
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")

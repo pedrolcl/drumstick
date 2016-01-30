@@ -60,5 +60,5 @@ INSTALL(TARGETS drumstick-drumgrid
         RUNTIME DESTINATION bin)
 
 INSTALL(FILES drumstick-drumgrid.desktop
-        DESTINATION share/applications)
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
         
