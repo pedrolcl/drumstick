@@ -67,8 +67,8 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     m_aboutDlg(0),
     m_song(new Song)
 {
-	m_ui->setupUi(this);
-	setAcceptDrops(true);
+    m_ui->setupUi(this);
+    setAcceptDrops(true);
     connect(m_ui->actionAbout, SIGNAL(triggered()), SLOT(about()));
     connect(m_ui->actionAboutQt, SIGNAL(triggered()), SLOT(aboutQt()));
     connect(m_ui->actionPlay, SIGNAL(triggered()), SLOT(play()));
@@ -76,7 +76,7 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     connect(m_ui->actionStop, SIGNAL(triggered()), SLOT(stop()));
     connect(m_ui->actionOpen, SIGNAL(triggered()), SLOT(open()));
     connect(m_ui->actionMIDISetup, SIGNAL(triggered()), SLOT(setup()));
-    connect(m_ui->actionQuit, SIGNAL(triggered()), SLOT(quit()));
+    connect(m_ui->actionQuit, SIGNAL(triggered()), SLOT(close()));
     connect(m_ui->btnTempo, SIGNAL(clicked()), SLOT(tempoReset()));
     connect(m_ui->btnVolume, SIGNAL(clicked()), SLOT(volumeReset()));
     connect(m_ui->sliderTempo, SIGNAL(valueChanged(int)), SLOT(tempoSlider(int)));
@@ -628,6 +628,8 @@ void GUIPlayer::writeSettings()
 
 void GUIPlayer::closeEvent( QCloseEvent *event )
 {
+    stop();
+    m_player->wait();
     writeSettings();
     event->accept();
 }
@@ -642,13 +644,6 @@ void GUIPlayer::about()
 void GUIPlayer::aboutQt()
 {
     qApp->aboutQt();
-}
-
-void GUIPlayer::quit()
-{
-    stop();
-    m_player->wait();
-    close();
 }
 
 /* **************************************** *

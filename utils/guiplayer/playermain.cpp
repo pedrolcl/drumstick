@@ -42,7 +42,6 @@ int main(int argc, char *argv[])
     args.parse(argc, argv);
     try {
         GUIPlayer w;
-        w.setAttribute(Qt::WA_QuitOnClose);
         w.show();
         return a.exec();
     } catch (const SequencerError& ex) {
