@@ -11356,7 +11356,7 @@ void QOve::convertSignatures() {
 				OVE::MeasureData* measureData = d->ove.getMeasureData(i, j, k);
 				QList<OVE::MusicData*> tempoPtrs = measureData->getMusicDatas(OVE::MusicData_Tempo);
 
-				if (k == 0 || (k > 0 && abs(measure->getTypeTempo()	- d->ove.getMeasure(k - 1)->getTypeTempo()) > 0.01)) {
+				if (k == 0 || (k > 0 && std::abs(measure->getTypeTempo()	- d->ove.getMeasure(k - 1)->getTypeTempo()) > 0.01)) {
 					int tick = d->mtt.getTick(k, 0);
 					int tempo = (int) measure->getTypeTempo();
 					tempos[tick] = tempo;
@@ -11739,7 +11739,7 @@ void QOve::convertNotes(int trackNo, int measureTick, OVE::NoteContainer* contai
 				}
 				case OVE::Articulation_Arpeggio: {
 					//if( art->getChangeSoundEffect() ) {
-						unsigned int soundEffect = abs(art->getSoundEffect().first) + abs(art->getSoundEffect().second);
+						unsigned int soundEffect = std::abs(art->getSoundEffect().first) + std::abs(art->getSoundEffect().second);
 						int tickAmount = (soundEffect / notes.size()) * ((notes.size() - i) - 1);
 						startTick -= tickAmount;
 					//}

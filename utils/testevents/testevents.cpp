@@ -262,8 +262,8 @@ void QTestEvents::run()
     dumpEvent(new KeyPressEvent(5, 60, 124));
     dumpEvent(new ChanPressEvent(6, 111));
     dumpEvent(new PitchBendEvent(7, 1234));
-    char sysex[] = {0xf0, 0x41, 0x10, 0x42, 0x12, 0x40, 0, 0x7f, 0, 0x41, 0xf7};
-    dumpEvent(new SysExEvent(QByteArray(sysex, sizeof(sysex))));
+    QByteArray sysex = QByteArray::fromHex("f04110421240007f0041f7");
+    dumpEvent(new SysExEvent(sysex));
     QString text = "This can be a copyright, song name, instrument, lyric...";
     TextEvent te(text, 3);
     dumpEvent(new TextEvent(te));

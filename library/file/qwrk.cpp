@@ -1047,8 +1047,8 @@ void QWrk::processNewTrack()
 {
     qint16 bank = -1;
     qint16 patch = -1;
-    qint16 vol = -1;
-    qint16 pan = -1;
+    //qint16 vol = -1;
+    //qint16 pan = -1;
     qint8 key = -1;
     qint8 vel = 0;
     quint8 port = 0;
@@ -1061,8 +1061,8 @@ void QWrk::processNewTrack()
     QString name = readString(len);
     bank = read16bit();
     patch = read16bit();
-    vol = read16bit();
-    pan = read16bit();
+    /*vol =*/ read16bit();
+    /*pan =*/ read16bit();
     key = readByte();
     vel = readByte();
     readGap(7);
