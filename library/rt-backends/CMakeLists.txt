@@ -49,3 +49,7 @@ pkg_check_modules(FLUIDSYNTH fluidsynth>=1.1.1)
 if(FLUIDSYNTH_FOUND)
     add_subdirectory(synth)
 endif()
+
+if (PULSE_FOUND)
+    add_subdirectory(eassynth)
+endif()

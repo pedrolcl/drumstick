@@ -5,7 +5,7 @@ dummy {
 }
 
 linux* {
-    SUBDIRS += alsa-in alsa-out
+    SUBDIRS += alsa-in alsa-out eassynth
 }
 
 unix:!macx {
@@ -13,7 +13,7 @@ unix:!macx {
 }
 
 macx {
-    SUBDIRS += mac-in mac-out
+    SUBDIRS += mac-in mac-out macsynth
 }
 
 win32 {

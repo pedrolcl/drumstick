@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     args.parse(argc, argv);
 
     QFileInfo exeInfo(app.applicationFilePath());
-    cout << "program=" << exeInfo.fileName();
+    cout << "program=" << exeInfo.fileName() << endl;
 
     QSettings settings;
     settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
@@ -61,9 +61,11 @@ int main(int argc, char **argv)
 
     BackendManager man;
     man.refresh(&settings);
-    inputsList = man.availableInputs();
-    outputsList = man.availableOutputs();
 
+    foreach(const QString& p, man.defaultPaths())
+        cout << "path: " << p << endl;
+
+    inputsList = man.availableInputs();
     foreach(MIDIInput* input, inputsList) {
         cout << "Input Backend " << input->backendName() << endl;
         cout << "public name " << input->publicName() << endl;
@@ -75,6 +77,7 @@ int main(int argc, char **argv)
         }
     }
 
+    outputsList = man.availableOutputs();
     foreach(MIDIOutput* output, outputsList) {
         cout << "Output Backend " << output->backendName() << endl;
         cout << "public name " << output->publicName() << endl;
