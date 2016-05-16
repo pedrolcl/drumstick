@@ -20,7 +20,6 @@
 #include <QDebug>
 #include <QSettings>
 #include "macsynth.h"
-#include "maccommon.h"
 
 #include <CoreServices/CoreServices.h>
 #include <AudioUnit/AUAudioUnit.h>

@@ -22,7 +22,6 @@
 
 #include <QObject>
 #include <QStringList>
-#include <QMap>
 #include "rtmidioutput.h"
 
 namespace drumstick { 

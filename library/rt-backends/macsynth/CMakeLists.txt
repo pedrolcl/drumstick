@@ -26,8 +26,6 @@ set(drumstick-rt-macsynth_QTOBJ_SRCS
 )
 
 set(drumstick-rt-macsynth_SRCS
-    ../common/maccommon.h
-    ../common/maccommon.cpp
     macsynth.cpp
 )
 
@@ -50,7 +48,8 @@ endif()
 
 target_link_libraries(drumstick-rt-macsynth
     Qt5::Core
-    "-framework CoreMidi -framework CoreFoundation"
+    "-framework CoreMidi -framework CoreFoundation -framework CoreServices"
+    "-framework CoreAudio -framework AudioToolbox -framework AudioUnit"
 )
 
 set_target_properties(drumstick-rt-macsynth PROPERTIES
