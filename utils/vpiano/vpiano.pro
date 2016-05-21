@@ -43,6 +43,7 @@ static {
     linux* {
         LIBS += -l$$qtLibraryTarget(drumstick-rt-alsa-in) \
                 -l$$qtLibraryTarget(drumstick-rt-alsa-out) \
+                -l$$qtLibraryTarget(drumstick-rt-eassynth) \
                 -l$$qtLibraryTarget(drumstick-alsa) \
                 -lasound
     }
@@ -55,6 +56,7 @@ static {
     macx {
         LIBS += -l$$qtLibraryTarget(drumstick-rt-mac-in) \
                 -l$$qtLibraryTarget(drumstick-rt-mac-out) \
+                -l$$qtLibraryTarget(drumstick-rt-macsynth) \
                 -framework CoreMIDI \
                 -framework CoreFoundation
     }

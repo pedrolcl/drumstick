@@ -29,9 +29,10 @@ LIBS += -L$$OUT_PWD/../../build/lib/drumstick
 #}
 
 linux* {
-    DEFINES += ALSA_BACKEND
+    DEFINES += LINUX_BACKEND
     LIBS += -l$$qtLibraryTarget(drumstick-rt-alsa-in) \
             -l$$qtLibraryTarget(drumstick-rt-alsa-out) \
+            -l$$qtLibraryTarget(drumstick-rt-eassynth) \
             -l$$qtLibraryTarget(drumstick-alsa) \
             -lasound
 }
@@ -46,6 +47,7 @@ macx {
     DEFINES += MAC_BACKEND
     LIBS += -l$$qtLibraryTarget(drumstick-rt-mac-in) \
             -l$$qtLibraryTarget(drumstick-rt-mac-out) \
+            -l$$qtLibraryTarget(drumstick-rt-macsynth) \
             -framework CoreMidi \
             -framework CoreFoundation
 }

@@ -11,6 +11,7 @@ QMAKE_CFLAGS_WARN_ON += -Wno-unused-parameter -Wno-unused-value -Wno-unused-vari
 
 TARGET = sonivox
 TEMPLATE = lib
+DESTDIR = ../../../../build/lib
 VERSION = 3.6.10
 CONFIG += staticlib \
     stdlib \

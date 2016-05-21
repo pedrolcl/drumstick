@@ -24,14 +24,16 @@
 #include <QLibraryInfo>
 #include "backendmanager.h"
 
-#if defined(ALSA_BACKEND)
+#if defined(LINUX_BACKEND)
 Q_IMPORT_PLUGIN(ALSAMIDIInput)
 Q_IMPORT_PLUGIN(ALSAMIDIOutput)
+Q_IMPORT_PLUGIN(SynthController)
 #endif
 
 #if defined(MAC_BACKEND)
 Q_IMPORT_PLUGIN(MacMIDIInput)
 Q_IMPORT_PLUGIN(MacMIDIOutput)
+Q_IMPORT_PLUGIN(MacSynthOutput)
 #endif
 
 #if defined(WIN_BACKEND)
@@ -79,7 +81,7 @@ namespace rt {
  *
  * MIDIInput: for plugins that can receive MIDI events
  *
- * MIDIOutput: for plugings that can produce MIDI events
+ * MIDIOutput: for plugins that can consume MIDI events
  *
  * @}
  */

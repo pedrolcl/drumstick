@@ -54,10 +54,11 @@ if(STATIC_DRUMSTICK)
     #
 
     if(ALSA_FOUND)
-        add_definitions(-DALSA_BACKEND)
+        add_definitions(-DLINUX_BACKEND)
         target_link_libraries(drumstick-rt
             drumstick-rt-alsa-in
             drumstick-rt-alsa-out
+            drumstick-rt-eassynth
             drumstick-alsa)
     endif()
 
@@ -74,6 +75,7 @@ if(STATIC_DRUMSTICK)
         target_link_libraries(drumstick-rt
             drumstick-rt-mac-in
             drumstick-rt-mac-out
+            drumstick-rt-macsynth
             "-framework CoreMidi -framework CoreFoundation")
     endif()
 

@@ -2,14 +2,14 @@ TEMPLATE = lib
 TARGET = $$qtLibraryTarget(drumstick-rt-eassynth)
 DESTDIR = ../../../../build/lib/drumstick
 include (../../../../global.pri)
-CONFIG += plugin #create_prl static
+CONFIG += plugin create_prl #static
 DEPENDPATH += ../sonivox
 DEPENDPATH += ../../../include
 INCLUDEPATH += ../sonivox/host_src
 INCLUDEPATH += ../../../include
 QT -= gui
-QMAKE_LFLAGS += -L../sonivox
-LIBS += -lsonivox
+LIBS += -L../../../../build/lib \
+        -lsonivox
 
 HEADERS += ../../../include/rtmidiinput.h \
            ../../../include/rtmidioutput.h \
