@@ -4,7 +4,7 @@ DESTDIR = ../../build/lib
 DEPENDPATH += . ../include
 INCLUDEPATH += . ../include
 include (../../global.pri)
-CONFIG += qt #create_prl
+CONFIG += qt create_prl
 DEFINES += drumstick_rt_EXPORTS
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
 QT -= gui
@@ -22,7 +22,7 @@ win32 {
     TARGET_EXT = .dll
 }
 
-macx {
+macx:!static {
     TARGET = drumstick-rt
     CONFIG += lib_bundle
     FRAMEWORK_HEADERS.version = Versions
@@ -86,7 +86,11 @@ static {
             -l$$qtLibraryTarget(drumstick-rt-net-out)
 
     DEFINES += SYNTH_BACKEND
-    CONFIG += link_pkgconfig
     LIBS += -l$$qtLibraryTarget(drumstick-rt-synth)
-    PKGCONFIG += fluidsynth
+    macx {
+        LIBS += -framework FluidSynth
+    } else {
+        CONFIG += link_pkgconfig
+        PKGCONFIG += fluidsynth
+    }
 }

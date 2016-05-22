@@ -8,12 +8,11 @@ include(../../global.pri)
 HEADERS += buildsmf.h
 SOURCES += buildsmf.cpp
 
-macx {
+macx:!static {
     QMAKE_LFLAGS += -L$$OUT_PWD/../../build/lib/ -F$$OUT_PWD/../../build/lib/
-    LIBS += -framework drumstick-file
     LIBS += -l$$qtLibraryTarget(drumstick-common)
-}
-else {
+    LIBS += -framework drumstick-file
+} else {
     LIBS = -L$$OUT_PWD/../../build/lib \
         -l$$qtLibraryTarget(drumstick-common) \
         -l$$qtLibraryTarget(drumstick-file)

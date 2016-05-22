@@ -18,13 +18,12 @@ SOURCES += pianokey.cpp pianokeybd.cpp pianoscene.cpp vpiano.cpp \
 RESOURCES += pianokeybd.qrc
 
 # libs
-macx {
+macx:!static {
     QMAKE_LFLAGS += -F$$OUT_PWD/../../build/lib -L$$OUT_PWD/../../build/lib
     LIBS += -framework drumstick-rt
     LIBS += -l$$qtLibraryTarget(drumstick-common)
     ICON = ../../icons/drumstick.icns
-}
-else {
+} else {
     LIBS += -L$$OUT_PWD/../../build/lib/
     LIBS += -l$$qtLibraryTarget(drumstick-common) \
             -l$$qtLibraryTarget(drumstick-rt)
@@ -36,9 +35,14 @@ static {
             -l$$qtLibraryTarget(drumstick-rt-net-out)
 
     DEFINES += SYNTH_BACKEND
-    CONFIG += link_pkgconfig
     LIBS += -l$$qtLibraryTarget(drumstick-rt-synth)
-    PKGCONFIG += fluidsynth
+    macx {
+        QMAKE_LFLAGS += -F/Library/Frameworks
+        LIBS += -framework FluidSynth
+    } else {
+        CONFIG += link_pkgconfig
+        PKGCONFIG += fluidsynth
+    }
 
     linux* {
         LIBS += -l$$qtLibraryTarget(drumstick-rt-alsa-in) \

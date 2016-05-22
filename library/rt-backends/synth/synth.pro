@@ -2,7 +2,7 @@ TEMPLATE = lib
 TARGET = $$qtLibraryTarget(drumstick-rt-synth)
 DESTDIR = ../../../build/lib/drumstick
 include (../../../global.pri)
-CONFIG += plugin #create_prl static
+CONFIG += plugin create_prl #static
 DEPENDPATH += ../../include
 INCLUDEPATH += ../../include
 QT -= gui
@@ -18,8 +18,7 @@ macx {
     INCLUDEPATH += /Library/Frameworks/FluidSynth.framework/Headers
     QMAKE_LFLAGS += -F/Library/Frameworks
     LIBS += -framework FluidSynth
-}
-else {
+} else {
     CONFIG += link_pkgconfig
     PKGCONFIG += fluidsynth
 }

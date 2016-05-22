@@ -4,7 +4,7 @@ DESTDIR = ../../build/lib
 DEPENDPATH += . ../include
 INCLUDEPATH += . ../include
 include (../../global.pri)
-CONFIG += qt #create_prl
+CONFIG += qt create_prl
 DEFINES += drumstick_file_EXPORTS
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
 QT -= gui
@@ -24,7 +24,7 @@ static {
     DEFINES += DRUMSTICK_STATIC
 }
 
-macx {
+macx:!static {
     TARGET = drumstick-file
     CONFIG += lib_bundle
     FRAMEWORK_HEADERS.version = Versions

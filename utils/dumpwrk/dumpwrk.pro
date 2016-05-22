@@ -8,12 +8,11 @@ include (../../global.pri)
 HEADERS += dumpwrk.h
 SOURCES += dumpwrk.cpp
 
-macx {
+macx:!static {
     QMAKE_LFLAGS += -F$$OUT_PWD/../../build/lib -L$$OUT_PWD/../../build/lib
     LIBS += -framework drumstick-file
     LIBS += -l$$qtLibraryTarget(drumstick-common)
-}
-else {
+} else {
     LIBS = -L$$OUT_PWD/../../build/lib \
         -l$$qtLibraryTarget(drumstick-common) \
         -l$$qtLibraryTarget(drumstick-file)
