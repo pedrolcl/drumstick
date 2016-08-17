@@ -1,6 +1,6 @@
 /*
     Drumstick RT (realtime MIDI In/Out)
-    Copyright (C) 2009-2015 Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2009-2016 Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -67,7 +67,6 @@ Q_IMPORT_PLUGIN(OSSOutput)
 
 namespace drumstick {
 namespace rt {
-
 
 /**
  * @addtogroup RT
@@ -175,8 +174,8 @@ namespace rt {
             name_in = settings->value(QSTR_DRUMSTICKRT_PUBLICNAMEIN).toString();
             name_out = settings->value(QSTR_DRUMSTICKRT_PUBLICNAMEOUT).toString();
             names << settings->value(QSTR_DRUMSTICKRT_EXCLUDED).toStringList();
-            names << name_in;
-            names << name_out;
+            names << (name_in.isEmpty() ? QLatin1String("MIDI In") : name_in);
+            names << (name_out.isEmpty() ? QLatin1String("MIDI Out") : name_out);
             settings->endGroup();
         }
         paths << defaultPaths();
@@ -192,13 +191,17 @@ namespace rt {
                     if (obj != 0) {
                         MIDIInput *input = qobject_cast<MIDIInput*>(obj);
                         if (input != 0 && !d->m_inputsList.contains(input)) {
-                            input->setPublicName(name_in);
+                            if (!name_in.isEmpty()) {
+                                input->setPublicName(name_in);
+                            }
                             input->setExcludedConnections(names);
                             d->m_inputsList << input;
                         } else {
                             MIDIOutput *output = qobject_cast<MIDIOutput*>(obj);
                             if (output != 0 && !d->m_outputsList.contains(output)) {
-                                output->setPublicName(name_out);
+                                if (!name_out.isEmpty()) {
+                                    output->setPublicName(name_out);
+                                }
                                 output->setExcludedConnections(names);
                                 d->m_outputsList << output;
                             }
@@ -236,6 +239,26 @@ namespace rt {
     QList<MIDIOutput*> BackendManager::availableOutputs()
     {
         return d->m_outputsList;
+    }
+
+    MIDIInput* BackendManager::inputBackendByName(const QString name)
+    {
+        foreach (MIDIInput* i, d->m_inputsList) {
+            if (i->backendName() == name) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    MIDIOutput* BackendManager::outputBackendByName(const QString name)
+    {
+        foreach (MIDIOutput* i, d->m_outputsList) {
+            if (i->backendName() == name) {
+                return i;
+            }
+        }
+        return 0;
     }
 
 }}

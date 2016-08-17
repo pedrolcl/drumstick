@@ -28,6 +28,7 @@
 #include <eas_chorus.h>
 #include <pulse/simple.h>
 #include "synthrenderer.h"
+#include "drumstickcommon.h"
 
 namespace drumstick {
 namespace rt {

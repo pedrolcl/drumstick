@@ -1,6 +1,6 @@
 /*
     Drumstick RT (realtime MIDI In/Out)
-    Copyright (C) 2009-2015 Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2009-2016 Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -83,6 +83,20 @@ namespace rt {
          * @return list of paths for backends search
          */
         QStringList defaultPaths();
+
+        /**
+         * @brief inputBackendByName
+         * @param name The name of some input backend
+         * @return Input backend instance if available
+         */
+        MIDIInput* inputBackendByName(const QString name);
+
+        /**
+         * @brief outputBackendByName
+         * @param name The name of some output backend
+         * @return Output backend instance if available
+         */
+        MIDIOutput* outputBackendByName(const QString name);
 
     private:
         class BackendManagerPrivate;

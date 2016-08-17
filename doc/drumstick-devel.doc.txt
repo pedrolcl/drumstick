@@ -1,0 +1,245 @@
+/**
+@mainpage drumstick Documentation
+@author Copyright &copy; 2009-2016 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
+@date 2016-08-21
+@version 1.1.0
+
+This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
+To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/
+
+@section Abstract
+
+This is the reference documentation for drumstick. These libraries are a set of C++ MIDI related classes,
+using Qt5 objects, idioms and style.
+
+Currently, there are three libraries:
+- \b drumstick-alsa is a C++/Qt wrapper around the ALSA Sequencer API. ALSA sequencer provides software support for MIDI technology on Linux.
+- \b drumstick-file provides easy multiplatform file I/O for Standard MIDI Files (.mid), Cakewalk (.wrk) and Overture (.ove) file formats.
+- \b drumstick-rt is a realtime MIDI I/O library with pluggable backends. It uses drumstick-alsa on Linux, and other frameworks on Mac and Windows.
+
+@see http://qt-project.org/doc/qt-5/index.html
+@see http://www.alsa-project.org/alsa-doc/alsa-lib/seq.html
+@see http://www.ics.com/design-patterns
+@see http://www.midi.org/articles/tutorials
+
+@section Disclaimer
+
+This document is a work in progress, in a very early state. It will be always in
+development. Please visit the drumstick web site to read the latest version.
+
+@see http://drumstick.sourceforge.net
+
+@section Introduction
+
+For an introduction to design and programming with C++ and Qt, see the book
+"An Introduction to Design Patterns in C++ with Qt" by by Alan Ezust and Paul
+Ezust. It is available published on dead trees, and also
+<a href="http://www.ics.com/design-patterns"> online</a>.
+
+Here is how a simple program playing notes using drumstick-alsa looks like:
+
+@code
+#include <QApplication>
+#include <drumstick.h>
+
+int main(int argc, char **argv) {
+    QApplication app(argc, argv, false);
+
+    // create a client object on the heap
+    drumstick::MidiClient *client = new drumstick::MidiClient;
+    client->open();
+    client->setClientName( "MyClient" );
+
+    // create the port. Pointer is owned by the client instance
+    drumstick::MidiPort *port = client->createPort();
+    port->setPortName( "MyPort" );
+    port->setCapability( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ );
+    port->setPortType( SND_SEQ_PORT_TYPE_MIDI_GENERIC );
+    // subscribe the port to some other client:port
+    port->subscribeTo( "128:0" ); // or "name:port", like in "FluidSynth:0"
+
+    QList<int> notes = { 60, 62, 64, 65, 67, 69, 71, 72 };
+    for(int i = 0; i < notes.length(); ++i)
+    {
+        // create event objects on the stack, to send note on/off messages
+        drumstick::NoteOnEvent ev1( 0, notes[i], 100 ); // (channel, note number, velocity)
+        ev1.setSource( port->getPortId() );
+        ev1.setSubscribers();   // deliver to all the connected ports
+        ev1.setDirect();        // not scheduled, deliver immediately
+        client->output( &ev1 ); // or outputDirect() if you prefer not buffered
+        client->drainOutput();  // flush the buffer
+
+        QThread::msleep(250);   // wait a quarter second
+
+        drumstick::NoteOffEvent ev2( 0, notes[i], 0 ); // (channel, note number, velocity)
+        ev2.setSource( port->getPortId() );
+        ev2.setSubscribers();   // deliver to all the connected ports
+        ev2.setDirect();        // not scheduled, deliver immediately
+        client->output( &ev2 ); // or outputDirect() if you prefer not buffered
+        client->drainOutput();  // flush the buffer
+    }
+    // close and clean
+    client->close();
+    delete client;
+    return 0;
+}
+@endcode
+
+A similar example can also be implemented using the drumstick-rt library:
+
+@code
+#include <QApplication>
+#include <drumstick.h>
+
+int main(int argc, char **argv) {
+    QApplication app(argc, argv, false);
+
+    BackendManager man;
+    MIDIOutput* output = man.outputBackendByName("ALSA");
+    if (output != 0) {
+        qDebug() << "testing backend: " << output->backendName();
+        qDebug() << "public name " << output->publicName();
+        foreach(const QString& c, output->connections()) {
+            qDebug() << "port " << c;
+        }
+        output->open("FLUID Synth (qsynth):0");
+        QList<int> notes = { 60, 62, 64, 65, 67, 69, 71, 72 };
+        for(int i = 0; i < notes.length(); ++i)
+        {
+            output->sendNoteOn(0, notes[i], 100);
+            QThread::msleep(250); // wait a quarter second
+            output->sendNoteOff(0, notes[i], 0);
+        }
+        output->close();
+    }
+    return 0;
+}
+@endcode
+
+A common feature on both implementations is QThread::msleep(250) to do the rhythm.
+If you are targeting only Linux, you may be interested on another way to do the same,
+using drumstick-alsa again, because ALSA Sequencer is capable of event sacheduling
+(that is why it is called a Sequencer).
+
+@code
+#include <QApplication>
+#include <drumstick.h>
+
+int main(int argc, char **argv) {
+    QApplication app(argc, argv, false);
+    drumstick::MidiClient *client = new drumstick::MidiClient;
+    client->open();
+    client->setClientName( "MyClient" );
+
+    drumstick::MidiPort *port = client->createPort();
+    port->setPortName( "MyPort" );
+    port->setCapability( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ );
+    port->setPortType( SND_SEQ_PORT_TYPE_MIDI_GENERIC );
+    port->subscribeTo( "FLUID Synth (qsynth):0" );
+
+    drumstick::MidiQueue *queue = client->createQueue( "MyQueue" );
+    drumstick::QueueTempo tempo = queue->getTempo();
+    tempo.setNominalBPM( 120 );
+    queue->setTempo(tempo);
+    client->drainOutput();
+    queue->start();
+
+    int tick = 0;
+    QList<int> notes = { 60, 62, 64, 65, 67, 69, 71, 72 };
+    for(int i = 0; i < notes.length(); ++i)
+    {
+        drumstick::NoteOnEvent ev1( 0, notes[i], 100 );
+        ev1.setSource( port->getPortId() );
+        ev1.setSubscribers();
+        ev1.scheduleTick(queue->getId(), tick, false);
+        client->output( &ev1 );
+
+        tick += 60;
+        drumstick::NoteOffEvent ev2( 0, notes[i], 0 );
+        ev2.setSource( port->getPortId() );
+        ev2.setSubscribers();
+        ev2.scheduleTick(queue->getId(), tick, false);
+        client->output( &ev2 );
+    }
+    client->drainOutput();
+    client->synchronizeOutput();
+    queue->stop();
+
+    // close and clean
+    client->close();
+    delete client;
+    return 0;
+}
+@endcode
+
+There are more examples in the source tree, under the utils/ directory, and
+you can also see applications using this library, like kmetronome, kmidimon and VMPK.
+
+@see http://kmetronome.sourceforge.net
+@see http://kmidimon.sourceforge.net
+@see http://kmid2.sourceforge.net
+@see http://vmpk.sourceforge.net
+
+@section Acknowledgments
+Parts of this documentation are copied from the ALSA library documentation,
+whose authors are:
+<ul>
+<li>Jaroslav Kysela &lt;perex AT perex.cz&gt;</li>
+<li>Abramo Bagnara &lt;abramo AT alsa-project.org&gt;</li>
+<li>Takashi Iwai &lt;tiwai AT suse.de&gt;</li>
+<li>Frank van de Pol &lt;fvdpol AT coil.demon.nl&gt;</li>
+</ul>
+
+@example drumgrid.cpp
+Simple drum patterns
+@include drumgrid.h
+
+@example dumpmid.cpp
+Print received sequencer events
+@include dumpmid.h
+
+@example playsmf.cpp
+SMF playback, command line interface program
+@include playsmf.h
+
+@example guiplayer.cpp
+SMF playback, graphic user interface program
+@include guiplayer.h
+
+@example buildsmf.cpp
+SMF output from scratch
+@include buildsmf.h
+
+@example dumpsmf.cpp
+SMF read and print
+@include dumpsmf.h
+
+@example dumpwrk.cpp
+Cakewalk WRK file parse and print
+@include dumpwrk.h
+
+@example dumpove.cpp
+Overture OVE file parse and print
+@include dumpove.h
+
+@example metronome.cpp
+Simple command line MIDI metronome
+@include metronome.h
+
+@example sysinfo.cpp
+Prints information about the ALSA sequencer subsystem
+
+@example testevents.cpp
+SequencerEvents test
+@include testevents.h
+
+@example timertest.cpp
+ALSA Timers test
+@include timertest.h
+
+@example vpiano.cpp
+A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
+@include vpiano.h
+
+*/
+ 

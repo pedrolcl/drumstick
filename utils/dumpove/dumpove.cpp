@@ -1,6 +1,6 @@
 /*
     Overture OVE file dump program
-    Copyright (C) 2006-2015, Fan Rui <vanferry@gmail.com>
+    Copyright (C) 2006-2016, Fan Rui <vanferry@gmail.com>
 
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

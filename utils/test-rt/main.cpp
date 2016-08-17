@@ -1,6 +1,6 @@
 /*
     Drumstick RT (realtime MIDI In/Out)
-    Copyright (C) 2009-2015 Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2009-2016 Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -49,18 +49,18 @@ int main(int argc, char **argv)
     QFileInfo exeInfo(app.applicationFilePath());
     cout << "program=" << exeInfo.fileName() << endl;
 
-    QSettings settings;
-    settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
-    settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("TEST MIDI IN"));
-    settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("TEST MIDI OUT"));
-    settings.endGroup();
-    settings.sync();
+//    QSettings settings;
+//    settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
+//    settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("TEST MIDI IN"));
+//    settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("TEST MIDI OUT"));
+//    settings.endGroup();
+//    settings.sync();
 
     QList<MIDIInput*> inputsList;
     QList<MIDIOutput*> outputsList;
 
     BackendManager man;
-    man.refresh(&settings);
+//    man.refresh(&settings);
 
     foreach(const QString& p, man.defaultPaths())
         cout << "path: " << p << endl;

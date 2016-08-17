@@ -22,7 +22,6 @@
 
 #include <QObject>
 #include <QReadWriteLock>
-#include <drumstick.h>
 #include <pulse/simple.h>
 #include "eas.h"
 
