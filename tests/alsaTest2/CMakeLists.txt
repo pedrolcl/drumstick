@@ -16,27 +16,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-SET(buildsmf_SRCS
-    buildsmf.cpp
-    buildsmf.h
-)
+add_executable (alsaTest2 alsatest2.cpp)
 
-SET(buildsmf_qtobject_SRCS
-    buildsmf.h
-)
-
-QT5_WRAP_CPP(buildsmf_moc_SRCS ${buildsmf_qtobject_SRCS})
-
-ADD_EXECUTABLE(drumstick-buildsmf 
-    ${buildsmf_moc_SRCS}
-    ${buildsmf_SRCS}
-)
-
-TARGET_LINK_LIBRARIES(drumstick-buildsmf
-    drumstick-common
-    drumstick-file
+target_link_libraries (alsaTest2
+    drumstick-alsa
     Qt5::Core
+    Qt5::Test
 )
 
-INSTALL(TARGETS drumstick-buildsmf 
-        RUNTIME DESTINATION bin)
+add_test (alsaTest2 ${PROJECT_BINARY_DIR}/bin/alsaTest2)

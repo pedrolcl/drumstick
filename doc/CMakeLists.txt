@@ -17,8 +17,6 @@
 FIND_PROGRAM(XSLTPROC_EXECUTABLE xsltproc)
 IF(XSLTPROC_EXECUTABLE)
     MESSAGE(STATUS "XSLTPROC Found: ${XSLTPROC_EXECUTABLE}")
-    CONFIGURE_FILE(drumstick-buildsmf.xml.in 
-        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-buildsmf.xml IMMEDIATE @ONLY)
     CONFIGURE_FILE(drumstick-drumgrid.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-drumgrid.xml IMMEDIATE @ONLY)
     CONFIGURE_FILE(drumstick-dumpmid.xml.in 
@@ -41,7 +39,6 @@ IF(XSLTPROC_EXECUTABLE)
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-vpiano.xml IMMEDIATE @ONLY)
     INCLUDE(CreateManpages)
     CREATE_MANPAGES ( 
-        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-buildsmf.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-drumgrid.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpmid.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpove.xml

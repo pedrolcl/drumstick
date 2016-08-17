@@ -4,11 +4,9 @@ include (../global.pri)
 DEFINES += VERSION=$$VERSION
 QMAKE_LFLAGS += -F../build/lib
 SUBDIRS += common \
-           buildsmf \
            dumpove \
            dumpsmf \
            dumpwrk \
-           test-rt \
            vpiano
 
 linux* {
@@ -18,7 +16,5 @@ linux* {
            guiplayer \
            metronome \
            playsmf \
-           sysinfo \
-           testevents \
-           timertest \
+           sysinfo
 }

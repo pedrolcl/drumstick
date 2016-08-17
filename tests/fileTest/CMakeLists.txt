@@ -16,29 +16,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-SET(timertest_SRCS
-    timertest.cpp
-    timertest.h
-)
+add_executable (fileTest filetest.cpp)
 
-SET(timertest_qtobject_SRCS
-    timertest.h
-)
-
-QT5_WRAP_CPP(timertest_moc_SRCS ${timertest_qtobject_SRCS})
-
-ADD_EXECUTABLE(drumstick-timertest
-    ${timertest_SRCS}
-    ${timertest_moc_SRCS}
-)
-
-TARGET_LINK_LIBRARIES(drumstick-timertest
-    ${ALSA_LIBS} 
-    drumstick-common
-    drumstick-alsa
+target_link_libraries (fileTest
+    drumstick-file
     Qt5::Core
+    Qt5::Test    
 )
 
-# not an utility
-#INSTALL(TARGETS drumstick-timertest
-#        RUNTIME DESTINATION bin)
+add_test (fileTest ${PROJECT_BINARY_DIR}/bin/fileTest)

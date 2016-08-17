@@ -16,24 +16,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/common
-    ${CMAKE_CURRENT_BINARY_DIR}/common
+add_executable (rtTest rttest.cpp)
+
+target_link_libraries (rtTest
+    drumstick-rt
+    Qt5::Core
+    Qt5::Test
 )
 
-add_subdirectory(common)
-add_subdirectory(dumpsmf)
-add_subdirectory(dumpwrk)
-add_subdirectory(dumpove)
-add_subdirectory(vpiano)
-
-if(ALSA_FOUND)
-    add_subdirectory(dumpmid)
-    add_subdirectory(playsmf)
-    add_subdirectory(guiplayer)
-    add_subdirectory(sysinfo)
-    add_subdirectory(metronome)
-    add_subdirectory(drumgrid)
-endif()
+add_test (rtTest ${PROJECT_BINARY_DIR}/bin/rtTest)

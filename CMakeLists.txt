@@ -39,6 +39,17 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_admin")
 
 include(GNUInstallDirs)
 
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+if(COMPILER_SUPPORTS_CXX11)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif(COMPILER_SUPPORTS_CXX0X)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+else()
+        message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+endif()
+
 # DRUMSTICK version string
 set(VERSION_MAJOR "1")
 set(VERSION_MINOR "0")
@@ -108,6 +119,11 @@ add_subdirectory(library)
 add_subdirectory(utils)
 add_subdirectory(icons)
 
+include(CTest)
+if(BUILD_TESTING)
+  add_subdirectory(tests)
+endif()
+
 if(${CMAKE_SYSTEM} MATCHES "Linux")
     find_package(Doxygen)
     if(DOXYGEN_FOUND)
@@ -163,6 +179,7 @@ if(${CMAKE_SYSTEM} MATCHES "Linux")
         COMMAND cp -r utils drumstick-${VERSION}
         COMMAND cp -r doc drumstick-${VERSION}
         COMMAND cp -r icons drumstick-${VERSION}
+        COMMAND cp -r tests drumstick-${VERSION}
         COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO drumstick*.in drumstick.pro drumstick.xml configure* Doxyfile.in chkcoverage global.pri drumstick-${VERSION}
         COMMAND tar -cj --exclude=.[a-z]* -f drumstick-${VERSION}.tar.bz2 drumstick-${VERSION}
         COMMAND tar -cz --exclude=.[a-z]* -f drumstick-${VERSION}.tar.gz  drumstick-${VERSION}

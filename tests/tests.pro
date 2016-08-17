@@ -1,8 +1,8 @@
-QT       += testlib
-QT       -= gui
-TARGET = drumsticktest
-CONFIG   += console
-CONFIG   -= app_bundle
-TEMPLATE = app
-SOURCES += drumsticktest.cpp
-DEFINES += SRCDIR=\\\"$$PWD/\\\"
+TEMPLATE = subdirs
+CONFIG += ordered
+linux* {
+    SUBDIRS += alsaTest1
+    SUBDIRS += alsaTest2
+}
+SUBDIRS += fileTest
+SUBDIRS += rtTest

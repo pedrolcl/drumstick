@@ -16,29 +16,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-SET(testevents_SRCS
-    testevents.cpp
-    testevents.h
-)
+add_executable (alsaTest1 alsatest1.cpp)
 
-SET(testevents_qtobject_SRCS
-    testevents.h
-)
-
-QT5_WRAP_CPP(testevents_moc_SRCS ${testevents_qtobject_SRCS})
-
-ADD_EXECUTABLE(drumstick-testevents
-    ${testevents_moc_SRCS}
-    ${testevents_SRCS}
-)
-
-TARGET_LINK_LIBRARIES(drumstick-testevents
-    ${ALSA_LIBS} 
-    drumstick-common
+target_link_libraries (alsaTest1
     drumstick-alsa
     Qt5::Core
+    Qt5::Test
 )
 
-# not an utility
-#INSTALL(TARGETS drumstick-testevents
-#        RUNTIME DESTINATION bin)
+add_test (alsaTest1 ${PROJECT_BINARY_DIR}/bin/alsaTest1)

@@ -16,26 +16,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA
 
-if(STATIC_DRUMSTICK)
-  find_package(Qt5Network REQUIRED)
-  pkg_check_modules(FLUIDSYNTH REQUIRED fluidsynth>=1.1.1)
-  link_directories(${FLUIDSYNTH_LIBDIR})
+find_package(Qt5Test REQUIRED)
+set (CMAKE_AUTOMOC ON)
+enable_testing()
+
+if (ALSA_FOUND)
+    add_subdirectory(alsaTest1)
+    add_subdirectory(alsaTest2)
 endif()
 
-set(SRCS
-    main.cpp
-)
-
-add_executable(drumstick-test-rt
-    ${SRCS}
-)
-
-target_link_libraries(drumstick-test-rt
-    drumstick-common
-    drumstick-rt
-    Qt5::Core
-)
-
-#not an utility, don't install
-#install(TARGETS drumstick-test-rt
-#        RUNTIME DESTINATION bin)
+add_subdirectory(fileTest)
+add_subdirectory(rtTest)
