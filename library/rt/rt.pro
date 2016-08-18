@@ -31,6 +31,7 @@ macx:!static {
     QMAKE_BUNDLE_DATA += FRAMEWORK_HEADERS
     #QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/
     QMAKE_SONAME_PREFIX = @rpath
+    QMAKE_TARGET_BUNDLE_PREFIX = net.sourceforge
 }
 
 static {

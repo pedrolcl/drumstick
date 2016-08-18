@@ -17,6 +17,12 @@
 # MA 02110-1301, USA
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+if (APPLE)
+    set(CMAKE_MACOSX_RPATH 1)
+    set(MACOSX_FRAMEWORK_IDENTIFIER “net.sourceforge”)
+    set(MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
+    set(MACOSX_FRAMEWORK_BUNDLE_VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
+endif()
 
 set(drumstick-file_QTOBJ_SRCS
     ../include/qsmf.h
@@ -52,14 +58,18 @@ if(STATIC_DRUMSTICK)
         STATIC_LIB "libdrumstick-file")
 else()
     set_target_properties(drumstick-file PROPERTIES
+        FRAMEWORK TRUE
         VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
         SOVERSION ${VERSION_MAJOR})
+
 endif()
 
 install(TARGETS drumstick-file
 	RUNTIME DESTINATION bin
 	ARCHIVE DESTINATION lib${LIB_SUFFIX}
-	LIBRARY DESTINATION lib${LIB_SUFFIX})
+	LIBRARY DESTINATION lib${LIB_SUFFIX}
+	FRAMEWORK DESTINATION lib${LIB_SUFFIX}
+)
 
 install(FILES ${drumstick-file_HEADERS}
         DESTINATION include/drumstick)

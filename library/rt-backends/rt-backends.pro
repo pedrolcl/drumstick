@@ -14,6 +14,9 @@ unix:!macx {
 
 macx {
     SUBDIRS += mac-in mac-out macsynth
+    exists(/Library/Frameworks/FluidSynth.framework/Headers/*) {
+        SUBDIRS += synth
+    }
 }
 
 win32 {
@@ -21,4 +24,4 @@ win32 {
 }
 
 SUBDIRS += net-in net-out
-SUBDIRS += synth
+#SUBDIRS += synth
