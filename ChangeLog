@@ -1,3 +1,7 @@
+2016-08-18
+    * release 1.1.0 preparation
+    * removed four utilities, now implemented as unit tests
+
 2016-08-17
     * drumstick-rt: fix backendmanager initialization, added two new methods to retrieve backends by name
     * documentation updated

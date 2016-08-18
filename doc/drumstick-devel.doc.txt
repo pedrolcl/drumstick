@@ -206,10 +206,6 @@ SMF playback, command line interface program
 SMF playback, graphic user interface program
 @include guiplayer.h
 
-@example buildsmf.cpp
-SMF output from scratch
-@include buildsmf.h
-
 @example dumpsmf.cpp
 SMF read and print
 @include dumpsmf.h
@@ -228,14 +224,6 @@ Simple command line MIDI metronome
 
 @example sysinfo.cpp
 Prints information about the ALSA sequencer subsystem
-
-@example testevents.cpp
-SequencerEvents test
-@include testevents.h
-
-@example timertest.cpp
-ALSA Timers test
-@include timertest.h
 
 @example vpiano.cpp
 A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
