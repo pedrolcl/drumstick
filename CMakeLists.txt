@@ -17,7 +17,10 @@
 # MA 02110-1301, USA
 
 cmake_minimum_required(VERSION 2.8.11)
-cmake_policy(SET CMP0063 OLD)
+if (POLICY CMP0063)
+    cmake_policy(SET CMP0063 OLD)
+endif()
+
 project(DRUMSTICK)
 
 if(CMAKE_SIZEOF_VOID_P MATCHES "8")

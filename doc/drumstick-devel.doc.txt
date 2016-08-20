@@ -94,8 +94,8 @@ A similar example can also be implemented using the drumstick-rt library:
 int main(int argc, char **argv) {
     QApplication app(argc, argv, false);
 
-    BackendManager man;
-    MIDIOutput* output = man.outputBackendByName("ALSA");
+    drumstick::rt::BackendManager man;
+    drumstick::rt::MIDIOutput* output = man.outputBackendByName("ALSA");
     if (output != 0) {
         qDebug() << "testing backend: " << output->backendName();
         qDebug() << "public name " << output->publicName();
@@ -116,8 +116,8 @@ int main(int argc, char **argv) {
 }
 @endcode
 
-A common feature on both implementations is QThread::msleep(250) to do the rhythm.
-If you are targeting only Linux, you may be interested on another way to do the same,
+A common pattern on both implementations is QThread::msleep(250) to do the rhythm.
+If you are targeting only Linux, you may be interested on another (better) way to do the same,
 using drumstick-alsa again, because ALSA Sequencer is capable of event sacheduling
 (that is why it is called a Sequencer).
 

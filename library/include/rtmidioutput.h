@@ -62,11 +62,18 @@
 #define MIDI_LSB(x) (x % 0x80)
 #define MIDI_MSB(x) (x / 0x80)
 
+/**
+ * @file rtmidioutput.h
+ * Realtime MIDI output interface
+ * @addtogroup RT
+ * @{
+ */
+
 namespace drumstick {
 namespace rt {
 
     /**
-     * MIDI OUT interface
+     * @brief MIDI OUT interface
      */
     class MIDIOutput : public QObject
     {
@@ -193,9 +200,10 @@ namespace rt {
          */
         virtual void sendSystemMsg(const int status) = 0;
     };
-}
-}
+}}
 
 Q_DECLARE_INTERFACE(drumstick::rt::MIDIOutput, "net.sourceforge.drumstick.rt.MIDIOutput/1.0")
+
+/** @} */
 
 #endif /* MIDIOUTPUT_H */

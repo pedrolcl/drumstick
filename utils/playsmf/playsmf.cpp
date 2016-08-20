@@ -96,16 +96,6 @@ PlaySMF::PlaySMF() :
     connect(m_engine, SIGNAL(signalSMFTimeSig(int,int,int,int)), SLOT(timeSigEvent(int,int,int,int)));
     connect(m_engine, SIGNAL(signalSMFKeySig(int,int)), SLOT(keySigEvent(int,int)));
     connect(m_engine, SIGNAL(signalSMFError(const QString&)), SLOT(errorHandler(const QString&)));
-
-    //connect(m_engine, SIGNAL(signalSMFTrackStart()), SLOT(trackStartEvent()));
-    //connect(m_engine, SIGNAL(signalSMFTrackEnd()), SLOT(trackEndEvent()));
-    //connect(m_engine, SIGNAL(signalSMFendOfTrack()), SLOT(endOfTrackEvent()));
-    //connect(m_engine, SIGNAL(signalSMFMetaMisc(int, const QByteArray&)), SLOT(metaMiscEvent(int, const QByteArray&)));
-    //connect(m_engine, SIGNAL(signalSMFVariable(const QByteArray&)), SLOT(variableEvent(const QByteArray&)));
-    //connect(m_engine, SIGNAL(signalSMFSequenceNum(int)), SLOT(seqNum(int)));
-    //connect(m_engine, SIGNAL(signalSMFforcedChannel(int)), SLOT(forcedChannel(int)));
-    //connect(m_engine, SIGNAL(signalSMFforcedPort(int)), SLOT(forcedPort(int)));
-    //connect(m_engine, SIGNAL(signalSMFSmpte(int,int,int,int,int)), SLOT(smpteEvent(int,int,int,int,int)));
 }
 
 PlaySMF::~PlaySMF()
@@ -310,27 +300,6 @@ void PlaySMF::play(QString fileName)
     }
 }
 
-/*
-void PlaySMF::usage()
-{
-    cout << "Error: wrong parameters" << endl;
-    cout << "Usage:" << endl;
-    cout << "\tplaysmf PORT FILE.MID" << endl;
-}
-
-void PlaySMF::info()
-{
-    SystemInfo info = m_Client->getSystemInfo();
-    cout << "ALSA Sequencer System Info" << endl;
-    cout << "\tMax Clients: " << info.getMaxClients() << endl;
-    cout << "\tMax Ports: " << info.getMaxPorts() << endl;
-    cout << "\tMax Queues: " << info.getMaxQueues() << endl;
-    cout << "\tMax Channels: " << info.getMaxChannels() << endl;
-    cout << "\tCurrent Queues: " << info.getCurrentQueues() << endl;
-    cout << "\tCurrent Clients: " << info.getCurrentClients() << endl;
-}
-*/
-
 PlaySMF* player = 0;
 
 void signalHandler(int sig)
@@ -372,7 +341,6 @@ int main(int argc, char **argv)
             if (file.exists())
                 player->play(file.canonicalFilePath());
         }
-        //player->info();
     } catch (const SequencerError& ex) {
         cerr << errorstr + " Returned error was: " + ex.qstrError() << endl;
     } catch (...) {

@@ -57,8 +57,6 @@ public:
     void stop();
     void subscribe(const QString& portName);
     void shutupSound();
-    //void usage();
-    //void info();
 
     void sendControlChange( int cc, int value );
     void sendInitialControls();

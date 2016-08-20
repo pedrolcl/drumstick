@@ -221,27 +221,6 @@ void Metronome::play(QString tempo)
     }
 }
 
-/*
-void Metronome::usage()
-{
-    cout << "Error: wrong parameters" << endl;
-    cout << "Usage:" << endl;
-    cout << "   metronome PORT BPM" << endl;
-}
-
-void Metronome::info()
-{
-    SystemInfo info = m_Client->getSystemInfo();
-    cout << "ALSA Sequencer System Info" << endl;
-    cout << "Max Clients: " << info.getMaxClients() << endl;
-    cout << "Max Ports: " << info.getMaxPorts() << endl;
-    cout << "Max Queues: " << info.getMaxQueues() << endl;
-    cout << "Max Channels: " << info.getMaxChannels() << endl;
-    cout << "Current Queues: " << info.getCurrentQueues() << endl;
-    cout << "Current Clients: " << info.getCurrentClients() << endl;
-}
-*/
-
 Metronome* metronome = 0;
 
 void signalHandler(int sig)

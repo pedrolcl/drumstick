@@ -28,11 +28,18 @@
 
 #include "rtmidioutput.h"
 
+/**
+ * @file rtmidiinput.h
+ * Realtime MIDI input interface
+ * @addtogroup RT
+ * @{
+ */
+
 namespace drumstick {
 namespace rt {
 
     /**
-     * MIDI IN interface
+     * @brief MIDI IN interface
      */
     class MIDIInput : public QObject
     {
@@ -180,9 +187,10 @@ namespace rt {
          */
         void midiSystemRealtime(const int status);
     };
-}
-}
+}}
 
 Q_DECLARE_INTERFACE(drumstick::rt::MIDIInput, "net.sourceforge.drumstick.rt.MIDIInput/1.0")
+
+/** @} */
 
 #endif // MIDIINPUT_H

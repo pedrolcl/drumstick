@@ -56,8 +56,6 @@ public:
     void dump(const QString& chan, const QString& event, const QString& data);
     void dumpStr(const QString& event, const QString& data);
     void shutupSound();
-    //void usage();
-    //void info();
 
 public slots:
     void headerEvent(int format, int ntrks, int division);
@@ -74,16 +72,6 @@ public slots:
     void timeSigEvent(int b0, int b1, int b2, int b3);
     void keySigEvent(int b0, int b1);
     void errorHandler(const QString& errorStr);
-
-//  void trackStartEvent();
-//  void trackEndEvent();
-//  void endOfTrackEvent();
-//  void variableEvent(const QByteArray& data);
-//  void metaMiscEvent(int typ, const QByteArray& data);
-//  void seqNum(int seq);
-//  void forcedChannel(int channel);
-//  void forcedPort(int port);
-//  void smpteEvent(int b0, int b1, int b2, int b3, int b4);
 
 private:
     int m_division;
