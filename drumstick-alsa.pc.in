@@ -7,6 +7,5 @@ Name: drumstick-alsa
 Version: @VERSION@
 Description: MIDI Sequencer C++ Library Bindings for ALSA and Qt5
 URL: http://sourceforge.net/projects/drumstick
-Requires: alsa >= 1.0.0, Qt5Core >= 5.0, Qt5DBus >= 5.0
 Libs: -L${libdir} -ldrumstick-alsa
 Cflags: -I${includedir}

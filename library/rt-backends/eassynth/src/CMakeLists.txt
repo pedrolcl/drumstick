@@ -1,5 +1,5 @@
 link_directories(
-    ${PULSE_LIBRARY_DIRS}
+    ${AO_LIBRARY_DIRS}
 )
 
 set( HEADERS
@@ -29,11 +29,11 @@ endif()
 target_link_libraries( drumstick-rt-eassynth
     sonivox 
     Qt5::Core 
-    ${PULSE_LIBRARIES}
+    ${AO_LIBRARIES}
 )
 
 target_include_directories( drumstick-rt-eassynth
-    PRIVATE ${PULSE_INCLUDE_DIRS}
+    PRIVATE ${AO_INCLUDE_DIRS}
 )
 
 set_target_properties(drumstick-rt-eassynth PROPERTIES

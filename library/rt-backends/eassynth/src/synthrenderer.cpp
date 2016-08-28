@@ -26,7 +26,7 @@
 #include <QWriteLocker>
 #include <eas_reverb.h>
 #include <eas_chorus.h>
-#include <pulse/simple.h>
+#include <ao/ao.h>
 #include "synthrenderer.h"
 #include "drumstickcommon.h"
 
@@ -37,7 +37,7 @@ SynthRenderer::SynthRenderer(QObject *parent) : QObject(parent),
     m_Stopped(true)
 {
     initEAS();
-    initPulse();  
+    initAudio();
 }
 
 void
@@ -77,35 +77,28 @@ SynthRenderer::initEAS()
 }
 
 void
-SynthRenderer::initPulse()
+SynthRenderer::initAudio()
 {
-    pa_sample_spec samplespec;
-    pa_buffer_attr bufattr;
-    int period_bytes;
-    char *server = 0;
-    char *device = 0;
-    int err;
+    ao_sample_format format;
+    ::memset(&format, 0, sizeof(format));
+    format.bits = 16;
+    format.channels = m_channels;
+    format.rate = m_sampleRate;
+    format.byte_format = AO_FMT_LITTLE;
 
-    samplespec.format = PA_SAMPLE_S16LE;
-    samplespec.channels = m_channels;
-    samplespec.rate = m_sampleRate;
-
-    period_bytes = m_bufferSize * sizeof (EAS_PCM) * m_channels;
-    bufattr.maxlength = (int32_t)-1;
-    bufattr.tlength = period_bytes;
-    bufattr.minreq = (int32_t)-1;
-    bufattr.prebuf = (int32_t)-1; /* Just initialize to same value as tlength */
-    bufattr.fragsize = (int32_t)-1; /* Not used */
-
-    m_pulseHandle = pa_simple_new (server, "SonivoxEAS", PA_STREAM_PLAYBACK,
-                    device, "Synthesizer output", &samplespec,
-                    NULL, /* pa_channel_map */
-                    &bufattr,
-                    &err);
-
-    if (!m_pulseHandle)
+    ao_initialize();
+    int id = ao_default_driver_id();
+//    ao_info* info = ao_driver_info(id);
+//    if (info != 0) {
+//        qDebug() << "libao driver type:" <<  info->type;
+//        qDebug() << "libao driver short_name:" << info->short_name;
+//        qDebug() << "libao driver name:" << info->name;
+//        qDebug() << "libao driver comment:" << info->comment;
+//    }
+    m_aoDevice = ao_open_live(id, &format, 0);
+    if (!m_aoDevice)
     {
-      qCritical() << "Failed to create PulseAudio connection";
+      qCritical() << "Failed to create libAO audio device";
     }
     qDebug() << Q_FUNC_INFO;
 }
@@ -123,7 +116,8 @@ SynthRenderer::~SynthRenderer()
           qWarning() << "EAS_Shutdown error: " << eas_res;
       }
     }
-    pa_simple_free(m_pulseHandle);
+    ao_close(m_aoDevice);
+    ao_shutdown();
     qDebug() << Q_FUNC_INFO;
 }
 
@@ -145,8 +139,7 @@ SynthRenderer::stop()
 void
 SynthRenderer::run()
 {
-    int pa_err;
-    unsigned char data[1024];
+    char data[1024];
     qDebug() << Q_FUNC_INFO << "started";
     try {
         m_Stopped = false;
@@ -163,10 +156,9 @@ SynthRenderer::run()
                     qWarning() << "EAS_Render error:" << eas_res;
                 }
                 bytes += (size_t) numGen * sizeof(EAS_PCM) * m_channels;
-                // hand over to pulseaudio the rendered buffer
-                if (pa_simple_write (m_pulseHandle, data, bytes, &pa_err) < 0)
-                {
-                    qWarning() << "Error writing to PulseAudio connection:" << pa_err;
+                // hand over to libao the rendered buffer
+                if(ao_play(m_aoDevice, data, bytes) == 0) {
+                    qWarning() << "Error writing audio";
                 }
             }
         }

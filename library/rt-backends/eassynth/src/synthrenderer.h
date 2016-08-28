@@ -22,7 +22,7 @@
 
 #include <QObject>
 #include <QReadWriteLock>
-#include <pulse/simple.h>
+#include <ao/ao.h>
 #include "eas.h"
 
 #define cvtstr(s) #s
@@ -53,7 +53,7 @@ namespace rt {
 
     private:
         void initEAS();
-        void initPulse();
+        void initAudio();
         void writeMIDIData(const QByteArray& message);
 
     public slots:
@@ -70,8 +70,8 @@ namespace rt {
         EAS_DATA_HANDLE m_easData;
         EAS_HANDLE m_streamHandle;
         EAS_HANDLE m_fileHandle;
-        /* pulseaudio */
-        pa_simple *m_pulseHandle;
+        /* libAO */
+        ao_device *m_aoDevice;
     };
 
 }}

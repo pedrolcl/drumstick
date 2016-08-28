@@ -19,4 +19,5 @@ HEADERS += ../../../include/rtmidiinput.h \
 SOURCES += synthcontroller.cpp synthrenderer.cpp
 
 CONFIG += link_pkgconfig
-PKGCONFIG += libpulse-simple
+PKGCONFIG += ao
+
