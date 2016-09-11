@@ -18,10 +18,12 @@ macx {
         SUBDIRS += synth
     }
 }
+else {
+    SUBDIRS += synth
+}
 
 win32 {
     SUBDIRS += win-in win-out
 }
 
 SUBDIRS += net-in net-out
-#SUBDIRS += synth

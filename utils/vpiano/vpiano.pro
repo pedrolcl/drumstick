@@ -7,14 +7,20 @@ include (../../global.pri)
 INCLUDEPATH += . ../../library/include ../common
 
 # Input
-FORMS += vpiano.ui connections.ui vpianoabout.ui preferences.ui fluidsettingsdialog.ui networksettingsdialog.ui
+FORMS += vpiano.ui connections.ui vpianoabout.ui preferences.ui fluidsettingsdialog.ui networksettingsdialog.ui \
+    sonivoxsettingsdialog.ui \
+    macsynthsettingsdialog.ui
 HEADERS += pianokey.h pianokeybd.h pianoscene.h vpiano.h \
            keyboardmap.h keylabel.h pianodefs.h \
            connections.h vpianoabout.h preferences.h \
-           fluidsettingsdialog.h networksettingsdialog.h
+           fluidsettingsdialog.h networksettingsdialog.h \
+    macsynthsettingsdialog.h \
+    sonivoxsettingsdialog.h
 SOURCES += pianokey.cpp pianokeybd.cpp pianoscene.cpp vpiano.cpp \
            keylabel.cpp connections.cpp vpianoabout.cpp preferences.cpp vpianomain.cpp \
-           fluidsettingsdialog.cpp networksettingsdialog.cpp
+           fluidsettingsdialog.cpp networksettingsdialog.cpp \
+    macsynthsettingsdialog.cpp \
+    sonivoxsettingsdialog.cpp
 RESOURCES += pianokeybd.qrc
 
 # libs

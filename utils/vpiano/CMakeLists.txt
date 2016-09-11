@@ -20,6 +20,7 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Svg REQUIRED)
 find_package(Qt5Network REQUIRED)
 
+
 if(STATIC_DRUMSTICK)
   pkg_check_modules(FLUIDSYNTH REQUIRED fluidsynth>=1.1.1)
   link_directories(${FLUIDSYNTH_LIBDIR})
@@ -28,6 +29,8 @@ endif()
 set(vpiano_forms_SRCS
     networksettingsdialog.ui
     fluidsettingsdialog.ui
+    macsynthsettingsdialog.ui
+    sonivoxsettingsdialog.ui
     vpianoabout.ui
     connections.ui
     preferences.ui
@@ -56,11 +59,11 @@ set(vpiano_SRCS
     vpianomain.cpp
     networksettingsdialog.cpp
     fluidsettingsdialog.cpp
+    macsynthsettingsdialog.cpp
+    sonivoxsettingsdialog.cpp
 )
 
 set(vpiano_qtobject_SRCS
-#    ../../library/include/rtmidiinput.h
-#    ../../library/include/rtmidioutput.h
     pianoscene.h
     pianokeybd.h
     vpianoabout.h
@@ -69,6 +72,8 @@ set(vpiano_qtobject_SRCS
     vpiano.h
     networksettingsdialog.h
     fluidsettingsdialog.h
+    macsynthsettingsdialog.h
+    sonivoxsettingsdialog.h
 )
 
 qt5_wrap_cpp(vpiano_moc_SRCS ${vpiano_qtobject_SRCS})

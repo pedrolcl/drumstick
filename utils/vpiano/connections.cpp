@@ -20,6 +20,8 @@
 #include "connections.h"
 #include "networksettingsdialog.h"
 #include "fluidsettingsdialog.h"
+#include "sonivoxsettingsdialog.h"
+#include "macsynthsettingsdialog.h"
 
 Connections::Connections(QWidget *parent)
     : QDialog(parent),
@@ -127,7 +129,10 @@ void Connections::refreshInputs(QString id)
 
 void Connections::refreshOutputs(QString id)
 {
-    ui.btnOutputDriverCfg->setEnabled(id == "Network" || id == "FluidSynth");
+    ui.btnOutputDriverCfg->setEnabled(id == "Network" ||
+                                      id == "FluidSynth" ||
+                                      id == "DLS Synth" ||
+                                      id == "SonivoxEAS");
     if (m_midiOut != 0 && m_midiOut->backendName() != id) {
         m_midiOut->close();
         int idx = ui.m_outputBackends->findText(id, Qt::MatchStartsWith);
@@ -189,6 +194,12 @@ void Connections::configureOutputDriver()
         m_settingsChanged |= (dlg.exec() == QDialog::Accepted);
     } else if (driver == "FluidSynth") {
         FluidSettingsDialog dlg(this);
+        m_settingsChanged |= (dlg.exec() == QDialog::Accepted);
+    } else if (driver == "SonivoxEAS") {
+        SonivoxSettingsDialog dlg(this);
+        m_settingsChanged |= (dlg.exec() == QDialog::Accepted);
+    } else if (driver == "DLS Synth") {
+        MacSynthSettingsDialog dlg(this);
         m_settingsChanged |= (dlg.exec() == QDialog::Accepted);
     }
 }

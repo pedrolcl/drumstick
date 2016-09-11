@@ -1,3 +1,8 @@
+2016-09-11
+    * reverted audio backend for sonivox eas to pulseaudio again
+    * rt: settings for sonivox eas and mac native synth
+    * vpiano: dialogs for synth settings
+
 2016-08-18
     * release 1.1.0 preparation
     * removed four utilities, now implemented as unit tests

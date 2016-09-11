@@ -31,6 +31,7 @@
 const QString QSTR_PREFERENCES("FluidSynth");
 const QString QSTR_INSTRUMENTSDEFINITION("InstrumentsDefinition");
 const QString QSTR_DATADIR("soundfonts");
+const QString QSTR_DATADIR2("sounds/sf2");
 const QString QSTR_SOUNDFONT("default.sf2");
 const QString QSTR_AUDIODRIVER("AudioDriver");
 const QString QSTR_PERIODSIZE("PeriodSize");
@@ -41,12 +42,12 @@ const QString QSTR_REVERB("Reverb");
 const QString QSTR_GAIN("Gain");
 const QString QSTR_POLYPHONY("Polyphony");
 
-const int DEFAULT_PERIODSIZE = 512;
-const int DEFAULT_PERIODS = 3;
+const int DEFAULT_PERIODSIZE = 3072;
+const int DEFAULT_PERIODS = 1;
 const double DEFAULT_SAMPLERATE = 48000.0;
 const int DEFAULT_CHORUS = 0;
 const int DEFAULT_REVERB = 0;
-const double DEFAULT_GAIN = .4;
+const double DEFAULT_GAIN = .5;
 const int DEFAULT_POLYPHONY = 32;
 
 FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
@@ -85,7 +86,7 @@ QString FluidSettingsDialog::defaultAudioDriver() const
 {
     const QString QSTR_DEFAULT_AUDIODRIVER =
 #if defined(Q_OS_LINUX)
-        QLatin1Literal("alsa");
+        QLatin1Literal("pulseaudio");
 #elif defined(Q_OS_WIN)
         QLatin1Literal("dsound");
 #elif defined(Q_OS_OSX)
@@ -112,6 +113,9 @@ void FluidSettingsDialog::readSettings()
 #endif
 
     QDir dir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
+    if (!dir.exists()) {
+        dir = QDir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR2, QStandardPaths::LocateDirectory));
+    }
     QFileInfo sf2(dir, QSTR_SOUNDFONT);
     if (sf2.exists()) {
         fs_defSoundFont = sf2.absoluteFilePath();
@@ -189,6 +193,9 @@ void FluidSettingsDialog::restoreDefaults()
 void FluidSettingsDialog::showFileDialog()
 {
     QDir dir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
+    if (!dir.exists()) {
+        dir = QDir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR2, QStandardPaths::LocateDirectory));
+    }
     QString fileName = QFileDialog::getOpenFileName(this, tr("Select SoundFont"), dir.absolutePath(), tr("SoundFont Files (*.sf2)"));
     if (!fileName.isEmpty()) {
         ui->soundFont->setText(fileName);

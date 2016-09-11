@@ -70,6 +70,10 @@ private:
     About dlgAbout;
     Connections dlgConnections;
     Preferences dlgPreferences;
+    QString m_nativeInput;
+    QString m_nativeOutput;
+    QString m_defaultInput;
+    QString m_defaultOutput;
 };
 
 #endif // VPIANO_H

@@ -22,7 +22,8 @@
 
 #include <QObject>
 #include <QReadWriteLock>
-#include <ao/ao.h>
+#include <QSettings>
+#include <pulse/simple.h>
 #include "eas.h"
 
 #define cvtstr(s) #s
@@ -50,10 +51,14 @@ namespace rt {
         void sendMessage(int m0, int m1);
         void sendMessage(int m0, int m1, int m2);
         QString connection();
+        void setBufferTime(int milliseconds);
+        void initialize(QSettings* settings);
 
     private:
         void initEAS();
-        void initAudio();
+        void initPulse();
+        void uninitEAS();
+        void uninitPulse();
         void writeMIDIData(const QByteArray& message);
 
     public slots:
@@ -70,8 +75,9 @@ namespace rt {
         EAS_DATA_HANDLE m_easData;
         EAS_HANDLE m_streamHandle;
         EAS_HANDLE m_fileHandle;
-        /* libAO */
-        ao_device *m_aoDevice;
+        /* pulseaudio */
+        int m_bufferTime;
+        pa_simple *m_pulseHandle;
     };
 
 }}

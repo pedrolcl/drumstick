@@ -29,7 +29,6 @@ SynthController::SynthController(QObject *parent) : MIDIOutput(parent)
     m_renderer = new SynthRenderer();
     m_renderer->moveToThread(&m_renderingThread);
     connect(&m_renderingThread, &QThread::started,  m_renderer, &SynthRenderer::run);
-    //connect(&m_renderingThread, &QThread::finished, m_renderer, &QObject::deleteLater);
 }
 
 SynthController::~SynthController()
@@ -61,7 +60,8 @@ SynthController::stop()
 void
 SynthController::initialize(QSettings* settings)
 {
-    Q_UNUSED(settings)
+    m_renderer->initialize(settings);
+    qDebug() << Q_FUNC_INFO;
 }
 
 QString SynthController::backendName()
@@ -93,11 +93,13 @@ void SynthController::setExcludedConnections(QStringList conns)
 void SynthController::open(QString name)
 {
     Q_UNUSED(name)
+    qDebug() << Q_FUNC_INFO;
     start();
 }
 
 void SynthController::close()
 {
+    qDebug() << Q_FUNC_INFO;
     stop();
 }
 

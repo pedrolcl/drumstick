@@ -27,6 +27,7 @@
 const QString QSTR_PREFERENCES("FluidSynth");
 const QString QSTR_INSTRUMENTSDEFINITION("InstrumentsDefinition");
 const QString QSTR_DATADIR("soundfonts");
+const QString QSTR_DATADIR2("sounds/sf2");
 const QString QSTR_SOUNDFONT("default.sf2");
 
 const QString QSTR_AUDIODRIVER("AudioDriver");
@@ -40,7 +41,7 @@ const QString QSTR_POLYPHONY("Polyphony");
 
 const QString QSTR_DEFAULT_AUDIODRIVER =
 #if defined(Q_OS_LINUX)
-    QLatin1Literal("alsa");
+    QLatin1Literal("pulseaudio");
 #elif defined(Q_OS_WIN)
     QLatin1Literal("dsound");
 #elif defined(Q_OS_OSX)
@@ -48,13 +49,8 @@ const QString QSTR_DEFAULT_AUDIODRIVER =
 #else
     QLatin1Literal("oss");
 #endif
-const int DEFAULT_PERIODS =
-#if defined(Q_OS_WIN)
-    4;
-#else
-    3;
-#endif
-const int DEFAULT_PERIODSIZE = 512;
+const int DEFAULT_PERIODS = 1;
+const int DEFAULT_PERIODSIZE = 3072;
 const double DEFAULT_SAMPLERATE = 48000.0;
 const int DEFAULT_CHORUS = 0;
 const int DEFAULT_REVERB = 0;
@@ -192,7 +188,7 @@ void SynthEngine::scanSoundFonts(const QDir &initialDir)
     QFileInfoList entries= dir.entryInfoList(filters);
     foreach(const QFileInfo &info, entries) {
         QString name = info.absoluteFilePath();
-        if (info.isFile()) {
+        if (info.isFile() && info.fileName().toLower() == QSTR_SOUNDFONT) {
             m_soundFontsList << name;
         } else if (info.isDir()){
             scanSoundFonts(name);
@@ -209,9 +205,15 @@ void SynthEngine::scanSoundFonts()
 #endif
     foreach(const QString& p, paths) {
        QDir d(p + QDir::separator() + QSTR_DATADIR);
+       if (!d.exists()) {
+           d = QDir(p + QDir::separator() + QSTR_DATADIR2);
+       }
        if (d.exists()) {
             scanSoundFonts(d);
        }
+    }
+    if (m_defSoundFont.isEmpty() && m_soundFontsList.length() > 0) {
+        m_defSoundFont = m_soundFontsList.first();
     }
 }
 
@@ -222,6 +224,9 @@ void SynthEngine::readSettings(QSettings *settings)
     dir = QDir(QCoreApplication::applicationDirPath() + QLatin1Literal("/../Resources"));
 #elif defined(Q_OS_UNIX)
     dir = QDir(QCoreApplication::applicationDirPath() + QLatin1Literal("/../share/soundfonts/"));
+    if (!dir.exists()) {
+        dir = QDir(QCoreApplication::applicationDirPath() + QLatin1Literal("/../share/sounds/sf2/"));
+    }
 #else
     dir = QDir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
 #endif

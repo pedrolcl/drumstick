@@ -26,15 +26,20 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     m_midiIn(0),
     m_midiOut(0)
 {
-    QString nativeBackend;
+    m_nativeInput = QLatin1Literal("Network");
+    m_defaultInput = QLatin1Literal("21928");
 #if defined(Q_OS_LINUX)
-    nativeBackend = QLatin1Literal("ALSA");
+    m_nativeOutput = QLatin1Literal("SonivoxEAS");
+    m_defaultOutput = QLatin1Literal("SonivoxEAS");
 #elif defined(Q_OS_OSX)
-    nativeBackend = QLatin1Literal("CoreMIDI");
+    m_nativeOutput = QLatin1Literal("DLSSynth");
+    m_defaultOutput = QLatin1Literal("DLSSynth");
 #elif defined(Q_OS_WIN)
-    nativeBackend = QLatin1Literal("Windows MM");
+    m_nativeOutput = QLatin1Literal("Windows MM");
+    m_defaultOutput = QLatin1Literal("MIDI Mapper");
 #else
-    nativeBackend = QLatin1Literal("Network");
+    m_nativeOutput = m_nativeInput;
+    m_defaultOutput = m_defaultInput;
 #endif
 
     ui.setupUi(this);
@@ -50,12 +55,12 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
 
     findInput(m_lastInputBackend, inputs);
     if (m_midiIn == 0) {
-        findInput(nativeBackend, inputs);
+        findInput(m_nativeInput, inputs);
     }
 
     findOutput(m_lastOutputBackend, outputs);
     if (m_midiOut == 0) {
-        findOutput(nativeBackend, outputs);
+        findOutput(m_nativeOutput, outputs);
     }
 
     connect(ui.actionExit, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -192,7 +197,7 @@ void VPiano::writeSettings()
     settings.beginGroup("Connections");
     settings.setValue("inputBackend", m_midiIn->backendName());
     settings.setValue("outputBackend", m_midiOut->backendName());
-    settings.setValue("inputConenction", m_midiIn->currentConnection());
+    settings.setValue("inputConnection", m_midiIn->currentConnection());
     settings.setValue("outputConnection", m_midiOut->currentConnection());
     settings.setValue("midiThru", m_midiThru);
     settings.setValue("advanced", m_advanced);
@@ -220,10 +225,10 @@ void VPiano::readSettings()
     settings.endGroup();
 
     settings.beginGroup("Connections");
-    m_lastInputBackend = settings.value("inputBackend").toString();
-    m_lastOutputBackend = settings.value("outputBackend").toString();
-    m_lastInputConnection = settings.value("inputConenction").toString();
-    m_lastOutputConnection = settings.value("outputConnection").toString();
+    m_lastInputBackend = settings.value("inputBackend", m_nativeInput).toString();
+    m_lastOutputBackend = settings.value("outputBackend", m_nativeOutput).toString();
+    m_lastInputConnection = settings.value("inputConnection", m_defaultInput).toString();
+    m_lastOutputConnection = settings.value("outputConnection", m_defaultOutput).toString();
     m_midiThru = settings.value("midiThru", false).toBool();
     m_advanced = settings.value("advanced", false).toBool();
     settings.endGroup();

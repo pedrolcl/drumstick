@@ -26,18 +26,25 @@
 #include <QWriteLocker>
 #include <eas_reverb.h>
 #include <eas_chorus.h>
-#include <ao/ao.h>
+#include <pulse/simple.h>
 #include "synthrenderer.h"
 #include "drumstickcommon.h"
 
 namespace drumstick {
 namespace rt {
 
+const QString QSTR_PREFERENCES("SonivoxEAS");
+const QString QSTR_BUFFERTIME("BufferTime");
+const QString QSTR_REVERBTYPE("ReverbType");
+const QString QSTR_REVERBAMT("ReverbAmt");
+const QString QSTR_CHORUSTYPE("ChorusType");
+const QString QSTR_CHORUSAMT("ChorusAmt");
+
 SynthRenderer::SynthRenderer(QObject *parent) : QObject(parent),
-    m_Stopped(true)
+    m_Stopped(true),
+    m_bufferTime(60)
 {
     initEAS();
-    initAudio();
 }
 
 void
@@ -77,33 +84,42 @@ SynthRenderer::initEAS()
 }
 
 void
-SynthRenderer::initAudio()
+SynthRenderer::initPulse()
 {
-    ao_sample_format format;
-    ::memset(&format, 0, sizeof(format));
-    format.bits = 16;
-    format.channels = m_channels;
-    format.rate = m_sampleRate;
-    format.byte_format = AO_FMT_LITTLE;
+    pa_sample_spec samplespec;
+    pa_buffer_attr bufattr;
+    int period_bytes;
+    char *server = 0;
+    char *device = 0;
+    int err;
 
-    ao_initialize();
-    int id = ao_default_driver_id();
-//    ao_info* info = ao_driver_info(id);
-//    if (info != 0) {
-//        qDebug() << "libao driver type:" <<  info->type;
-//        qDebug() << "libao driver short_name:" << info->short_name;
-//        qDebug() << "libao driver name:" << info->name;
-//        qDebug() << "libao driver comment:" << info->comment;
-//    }
-    m_aoDevice = ao_open_live(id, &format, 0);
-    if (!m_aoDevice)
+    samplespec.format = PA_SAMPLE_S16LE;
+    samplespec.channels = m_channels;
+    samplespec.rate = m_sampleRate;
+
+    //period_bytes = m_bufferSize * sizeof (EAS_PCM) * m_channels;
+    period_bytes = pa_usec_to_bytes(m_bufferTime * 1000, &samplespec);
+    bufattr.maxlength = (int32_t)-1;
+    bufattr.tlength = period_bytes;
+    bufattr.minreq = (int32_t)-1;
+    bufattr.prebuf = (int32_t)-1;
+    bufattr.fragsize = (int32_t)-1;
+
+    m_pulseHandle = pa_simple_new (server, "SonivoxEAS", PA_STREAM_PLAYBACK,
+                    device, "Synthesizer output", &samplespec,
+                    NULL, /* pa_channel_map */
+                    &bufattr,
+                    &err);
+
+    if (!m_pulseHandle)
     {
-      qCritical() << "Failed to create libAO audio device";
+      qCritical() << "Failed to create PulseAudio connection";
     }
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO << "period_bytes=" << period_bytes;
 }
 
-SynthRenderer::~SynthRenderer()
+void
+SynthRenderer::uninitEAS()
 {
     EAS_RESULT eas_res;
     if (m_easData != 0 && m_streamHandle != 0) {
@@ -115,10 +131,41 @@ SynthRenderer::~SynthRenderer()
       if (eas_res != EAS_SUCCESS) {
           qWarning() << "EAS_Shutdown error: " << eas_res;
       }
+      m_streamHandle = 0;
+      m_easData = 0;
     }
-    ao_close(m_aoDevice);
-    ao_shutdown();
     qDebug() << Q_FUNC_INFO;
+}
+
+void
+SynthRenderer::uninitPulse()
+{
+    if (m_pulseHandle != 0) {
+        pa_simple_free(m_pulseHandle);
+        m_pulseHandle = 0;
+    }
+    qDebug() << Q_FUNC_INFO;
+}
+
+SynthRenderer::~SynthRenderer()
+{
+    uninitEAS();
+}
+
+void
+SynthRenderer::initialize(QSettings *settings)
+{
+    settings->beginGroup(QSTR_PREFERENCES);
+    m_bufferTime = settings->value(QSTR_BUFFERTIME, 60).toInt();
+    int reverbType = settings->value(QSTR_REVERBTYPE, EAS_PARAM_REVERB_HALL).toInt();
+    int reverbAmt = settings->value(QSTR_REVERBAMT, 25800).toInt();
+    int chorusType = settings->value(QSTR_CHORUSTYPE, -1).toInt();
+    int chorusAmt = settings->value(QSTR_CHORUSAMT, 0).toInt();
+    settings->endGroup();
+    initReverb(reverbType);
+    setReverbWet(reverbAmt);
+    initChorus(chorusType);
+    setChorusLevel(chorusAmt);
 }
 
 bool
@@ -139,9 +186,11 @@ SynthRenderer::stop()
 void
 SynthRenderer::run()
 {
-    char data[1024];
+    int pa_err;
+    unsigned char data[1024];
     qDebug() << Q_FUNC_INFO << "started";
     try {
+        initPulse();
         m_Stopped = false;
         while (!stopped()) {
             EAS_RESULT eas_res;
@@ -156,12 +205,14 @@ SynthRenderer::run()
                     qWarning() << "EAS_Render error:" << eas_res;
                 }
                 bytes += (size_t) numGen * sizeof(EAS_PCM) * m_channels;
-                // hand over to libao the rendered buffer
-                if(ao_play(m_aoDevice, data, bytes) == 0) {
-                    qWarning() << "Error writing audio";
+                // hand over to pulseaudio the rendered buffer
+                if (pa_simple_write (m_pulseHandle, data, bytes, &pa_err) < 0)
+                {
+                    qWarning() << "Error writing to PulseAudio connection:" << pa_err;
                 }
             }
         }
+        uninitPulse();
     } catch (const SequencerError& err) {
         qWarning() << "SequencerError exception. Error code: " << err.code()
                    << " (" << err.qstrError() << ")";
@@ -280,6 +331,13 @@ SynthRenderer::connection()
     } else {
         return QSTR_SONIVOXEAS;
     }
+}
+
+void
+SynthRenderer::setBufferTime(int milliseconds)
+{
+    qDebug() << Q_FUNC_INFO << milliseconds;
+    m_bufferTime = milliseconds;
 }
 
 }}
