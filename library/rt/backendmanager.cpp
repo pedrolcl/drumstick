@@ -134,9 +134,10 @@ namespace rt {
         QString appPath = QCoreApplication::applicationDirPath() + QDir::separator();
     #if defined(Q_OS_WIN)
         d->appendDir( appPath + QSTR_DRUMSTICK, result );
-    #elif defined(Q_OS_MAC)
+    #else
+    #if defined(Q_OS_MAC)
         d->appendDir( appPath + QStringLiteral("../PlugIns/") + QSTR_DRUMSTICK, result );
-    #else // Linux, Unix...
+    #endif // Linux, Unix...
         QStringList libs;
         libs << "../lib/" << "../lib32/" << "../lib64/";
         foreach(const QString& lib, libs) {

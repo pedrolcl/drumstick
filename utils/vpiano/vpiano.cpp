@@ -32,8 +32,8 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     m_nativeOutput = QLatin1Literal("SonivoxEAS");
     m_defaultOutput = QLatin1Literal("SonivoxEAS");
 #elif defined(Q_OS_OSX)
-    m_nativeOutput = QLatin1Literal("DLSSynth");
-    m_defaultOutput = QLatin1Literal("DLSSynth");
+    m_nativeOutput = QLatin1Literal("DLS Synth");
+    m_defaultOutput = QLatin1Literal("DLS Synth");
 #elif defined(Q_OS_WIN)
     m_nativeOutput = QLatin1Literal("Windows MM");
     m_defaultOutput = QLatin1Literal("MIDI Mapper");
