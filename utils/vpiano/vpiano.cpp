@@ -36,7 +36,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     m_defaultOutput = QLatin1Literal("DLS Synth");
 #elif defined(Q_OS_WIN)
     m_nativeOutput = QLatin1Literal("Windows MM");
-    m_defaultOutput = QLatin1Literal("MIDI Mapper");
+    m_defaultOutput = QLatin1Literal("Microsoft GS Wavetable Synth");
 #else
     m_nativeOutput = m_nativeInput;
     m_defaultOutput = m_defaultInput;

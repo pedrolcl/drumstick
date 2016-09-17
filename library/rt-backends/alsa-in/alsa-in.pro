@@ -15,6 +15,3 @@ SOURCES += alsamidiinput.cpp
 LIBS += -L../../../build/lib \
         -l$$qtLibraryTarget(drumstick-alsa) \
         -lasound
-
-#CONFIG += link_pkgconfig
-#PKGCONFIG += drumstick-alsa

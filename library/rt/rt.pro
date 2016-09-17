@@ -48,11 +48,13 @@ static {
         DEFINES += LINUX_BACKEND
         LIBS += -l$$qtLibraryTarget(drumstick-rt-alsa-in) \
                 -l$$qtLibraryTarget(drumstick-rt-alsa-out) \
-                -l$$qtLibraryTarget(drumstick-rt-eassynth) \
                 -l$$qtLibraryTarget(drumstick-alsa) \
                 -lasound
-        CONFIG += link_pkgconfig
-        PKGCONFIG += libpulse-simple
+        packagesExist(libpulse-simple) {
+            LIBS += -l$$qtLibraryTarget(drumstick-rt-eassynth)
+            CONFIG += link_pkgconfig
+            PKGCONFIG += libpulse-simple
+        }
     }
 
     unix:!macx {
@@ -86,12 +88,14 @@ static {
     LIBS += -l$$qtLibraryTarget(drumstick-rt-net-in) \
             -l$$qtLibraryTarget(drumstick-rt-net-out)
 
-    DEFINES += SYNTH_BACKEND
-    LIBS += -l$$qtLibraryTarget(drumstick-rt-synth)
-    macx {
-        LIBS += -framework FluidSynth
-    } else {
-        CONFIG += link_pkgconfig
-        PKGCONFIG += fluidsynth
+    packagesExist(fluidsynth) {
+        DEFINES += SYNTH_BACKEND
+        LIBS += -l$$qtLibraryTarget(drumstick-rt-synth)
+        macx {
+            LIBS += -framework FluidSynth
+        } else {
+            CONFIG += link_pkgconfig
+            PKGCONFIG += fluidsynth
+        }
     }
 }

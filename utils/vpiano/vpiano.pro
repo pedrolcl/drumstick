@@ -40,14 +40,16 @@ static {
     LIBS += -l$$qtLibraryTarget(drumstick-rt-net-in) \
             -l$$qtLibraryTarget(drumstick-rt-net-out)
 
-    DEFINES += SYNTH_BACKEND
-    LIBS += -l$$qtLibraryTarget(drumstick-rt-synth)
-    macx {
-        QMAKE_LFLAGS += -F/Library/Frameworks
-        LIBS += -framework FluidSynth
-    } else {
-        CONFIG += link_pkgconfig
-        PKGCONFIG += fluidsynth
+    packagesExist(fluidsynth) {
+        DEFINES += SYNTH_BACKEND
+        LIBS += -l$$qtLibraryTarget(drumstick-rt-synth)
+        macx {
+            QMAKE_LFLAGS += -F/Library/Frameworks
+            LIBS += -framework FluidSynth
+        } else {
+            CONFIG += link_pkgconfig
+            PKGCONFIG += fluidsynth
+        }
     }
 
     linux* {

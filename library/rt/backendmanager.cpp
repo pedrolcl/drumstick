@@ -134,6 +134,7 @@ namespace rt {
         QString appPath = QCoreApplication::applicationDirPath() + QDir::separator();
     #if defined(Q_OS_WIN)
         d->appendDir( appPath + QSTR_DRUMSTICK, result );
+        d->appendDir( appPath + "../lib/" + QSTR_DRUMSTICK, result );
     #else
     #if defined(Q_OS_MAC)
         d->appendDir( appPath + QStringLiteral("../PlugIns/") + QSTR_DRUMSTICK, result );

@@ -24,10 +24,12 @@ RtTest::RtTest()
 
 void RtTest::testRT()
 {
+    QSettings settings;
     QList<MIDIInput*> inputsList;
     QList<MIDIOutput*> outputsList;
     BackendManager man;
 
+    man.refresh(&settings);
     QStringList paths = man.defaultPaths();
     QVERIFY2(paths.length() > 0, "Plugins path is empty");
     foreach(const QString& p, paths) {

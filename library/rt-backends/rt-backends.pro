@@ -5,7 +5,10 @@ dummy {
 }
 
 linux* {
-    SUBDIRS += alsa-in alsa-out eassynth
+    SUBDIRS += alsa-in alsa-out
+    packagesExist(libpulse-simple) {
+        SUBDIRS += eassynth
+    }
 }
 
 unix:!macx {
@@ -19,7 +22,9 @@ macx {
     }
 }
 else {
-    SUBDIRS += synth
+    packagesExist(fluidsynth) {
+        SUBDIRS += synth
+    }
 }
 
 win32 {

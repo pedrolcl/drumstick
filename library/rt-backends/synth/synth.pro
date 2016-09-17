@@ -20,7 +20,9 @@ macx {
     LIBS += -framework FluidSynth
 } else {
     CONFIG += link_pkgconfig
-    PKGCONFIG += fluidsynth
+    packagesExist(fluidsynth) {
+        PKGCONFIG += fluidsynth
+    }
 }
 
 win32 {
