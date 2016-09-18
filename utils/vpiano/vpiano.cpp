@@ -63,7 +63,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
         findOutput(m_nativeOutput, outputs);
     }
 
-    connect(ui.actionExit, SIGNAL(triggered()), qApp, SLOT(quit()));
+    connect(ui.actionExit, SIGNAL(triggered()), SLOT(close()));
     connect(ui.actionAbout, SIGNAL(triggered()), SLOT(slotAbout()));
     connect(ui.actionAbout_Qt, SIGNAL(triggered()), SLOT(slotAboutQt()));
     connect(ui.actionConnections, SIGNAL(triggered()), SLOT(slotConnections()));
@@ -90,13 +90,16 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     if (m_midiOut != 0 && !m_lastOutputConnection.isEmpty()) {
         m_midiOut->initialize(&settings);
         m_midiOut->open(m_lastOutputConnection);
-        m_midiIn->setMIDIThruDevice(m_midiOut);
-        m_midiIn->enableMIDIThru(m_midiThru);
+        if (m_midiIn != 0) {
+            m_midiIn->setMIDIThruDevice(m_midiOut);
+            m_midiIn->enableMIDIThru(m_midiThru);
+        }
     }
 }
 
 VPiano::~VPiano()
 {
+    //qDebug() << Q_FUNC_INFO;
     m_midiIn->close();
     m_midiOut->close();
     qDebug() << "Cheers!";
@@ -116,7 +119,6 @@ void VPiano::slotNoteOff(const int midiNote, const int vel)
 
 void VPiano::slotNoteOn(const int chan, const int note, const int vel)
 {
-    //Q_UNUSED(vel)
     if (dlgPreferences.getInChannel() == chan) {
         if (vel > 0)
             ui.pianokeybd->getPianoScene()->showNoteOn(note);
@@ -181,6 +183,7 @@ void VPiano::slotPreferences()
 
 void VPiano::closeEvent(QCloseEvent *event)
 {
+    //qDebug() << Q_FUNC_INFO;
     writeSettings();
     event->accept();
 }
