@@ -243,6 +243,7 @@
   <tabstop>spinVelocity</tabstop>
   <tabstop>spinBaseOctave</tabstop>
   <tabstop>spinNumKeys</tabstop>
+  <tabstop>comboNotes</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources/>
