@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>289</width>
-    <height>244</height>
+    <height>253</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -87,6 +87,16 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>m_inputBackends</tabstop>
+  <tabstop>btnInputDriverCfg</tabstop>
+  <tabstop>m_inputPorts</tabstop>
+  <tabstop>m_thru</tabstop>
+  <tabstop>m_outputBackends</tabstop>
+  <tabstop>btnOutputDriverCfg</tabstop>
+  <tabstop>m_outputPorts</tabstop>
+  <tabstop>m_advanced</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
