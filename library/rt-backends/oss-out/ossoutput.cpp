@@ -210,8 +210,10 @@ void OSSOutput::sendChannelPressure(int chan, int value)
     d->sendMessage(MIDI_STATUS_CHANNELPRESSURE + chan, value);
 }
 
-void OSSOutput::sendPitchBend(int chan, int value)
+void OSSOutput::sendPitchBend(int chan, int v)
 {
+    // -8192 <= v <= 8191; 0 <= value <= 16384
+    int value = 8192 + v;
     d->sendMessage(MIDI_STATUS_PITCHBEND + chan, MIDI_LSB(value), MIDI_MSB(value));
 }
 

@@ -1,3 +1,15 @@
+2017-05-10
+    * rt: fixed pitch bend events on several output backends
+
+2017-04-16
+    * fixed tab order on forms
+
+2017-04-03
+    * added keywords to the desktop files. Patch by Ross Gammon
+
+2016-09-25
+    * release 1.1.0
+
 2016-09-11
     * reverted audio backend for sonivox eas to pulseaudio again
     * rt: settings for sonivox eas and mac native synth

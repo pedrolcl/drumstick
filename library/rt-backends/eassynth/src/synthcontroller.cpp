@@ -138,8 +138,10 @@ void SynthController::sendChannelPressure(int chan, int value)
     m_renderer->sendMessage(MIDI_STATUS_CHANNELPRESSURE + chan, value);
 }
 
-void SynthController::sendPitchBend(int chan, int value)
+void SynthController::sendPitchBend(int chan, int v)
 {
+    // -8192 <= v <= 8191; 0 <= value <= 16384
+    int value = 8192 + v;
     m_renderer->sendMessage(MIDI_STATUS_PITCHBEND + chan, MIDI_LSB(value), MIDI_MSB(value));
 }
 
