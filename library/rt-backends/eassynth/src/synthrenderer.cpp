@@ -28,7 +28,6 @@
 #include <eas_chorus.h>
 #include <pulse/simple.h>
 #include "synthrenderer.h"
-#include "drumstickcommon.h"
 
 namespace drumstick {
 namespace rt {
@@ -76,7 +75,7 @@ SynthRenderer::initEAS()
 
     m_easData = dataHandle;
     m_streamHandle = handle;
-    assert(m_streamHandle != 0);
+    Q_ASSERT(m_streamHandle != 0);
     m_sampleRate = easConfig->sampleRate;
     m_bufferSize = easConfig->mixBufferSize;
     m_channels = easConfig->numChannels;
@@ -171,14 +170,14 @@ SynthRenderer::initialize(QSettings *settings)
 bool
 SynthRenderer::stopped()
 {
-	QReadLocker locker(&m_mutex);
+    QReadLocker locker(&m_mutex);
     return m_Stopped;
 }
 
 void
 SynthRenderer::stop()
 {
-	QWriteLocker locker(&m_mutex);
+    QWriteLocker locker(&m_mutex);
     qDebug() << Q_FUNC_INFO;
     m_Stopped = true;
 }
@@ -213,10 +212,8 @@ SynthRenderer::run()
             }
         }
         uninitPulse();
-    } catch (const SequencerError& err) {
-        qWarning() << "SequencerError exception. Error code: " << err.code()
-                   << " (" << err.qstrError() << ")";
-        qWarning() << "Location: " << err.location();
+    } catch (...) {
+        qWarning() << "Exception in rendering loop - exiting";
     }
     qDebug() << Q_FUNC_INFO << "ended";
     emit finished();

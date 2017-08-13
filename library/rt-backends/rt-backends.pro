@@ -6,9 +6,6 @@ dummy {
 
 linux* {
     SUBDIRS += alsa-in alsa-out
-    packagesExist(libpulse-simple) {
-        SUBDIRS += eassynth
-    }
 }
 
 unix:!macx {
@@ -24,6 +21,9 @@ macx {
 else {
     packagesExist(fluidsynth) {
         SUBDIRS += synth
+    }
+    packagesExist(libpulse-simple) {
+        SUBDIRS += eassynth
     }
 }
 

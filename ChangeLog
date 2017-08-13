@@ -1,3 +1,7 @@
+2017-08-13
+    * fix for ticket #11: replaced assert() by Q_ASSERT()
+    * fix for ticket #9: removed ALSA/Linux dependency where possible.
+
 2017-05-10
     * rt: fixed pitch bend events on several output backends
 

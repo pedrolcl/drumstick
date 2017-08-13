@@ -20,13 +20,14 @@
 #add_subdirectory(dummy-out)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-if(ALSA_FOUND)
-    add_subdirectory(alsa-in)
-    add_subdirectory(alsa-out)
+    if(ALSA_FOUND)
+	add_subdirectory(alsa-in)
+	add_subdirectory(alsa-out)
+    endif()
 endif()
+
 if (PULSE_FOUND)
     add_subdirectory(eassynth)
-endif()
 endif()
 
 find_package(Qt5Network)
