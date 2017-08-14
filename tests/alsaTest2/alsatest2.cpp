@@ -15,60 +15,78 @@ public:
 
 private Q_SLOTS:
     void testTimer();
+    void initTestCase();
+    void cleanupTestCase();
 
 private:
-    TimerInfo   m_info;
-    TimerStatus m_status;
-    TimerParams m_params;
-    int         m_count;
+    QPointer<Timer> m_test_timer;
+    int             m_count;
 };
 
 AlsaTest2::AlsaTest2():
+    m_test_timer(0),
     m_count(0)
-{
-}
+{ }
 
 void AlsaTest2::handleTimerEvent(int , int )
 {
     m_count++;
 }
 
+void AlsaTest2::initTestCase()
+{
+    try {
+        QFileInfo check_devsnd("/dev/snd/");
+        QVERIFY(check_devsnd.exists() && check_devsnd.isDir());
+        QFileInfo check_devsndseq("/dev/snd/seq");
+        QVERIFY(check_devsndseq.exists() && !check_devsndseq.isFile() && !check_devsndseq.isDir());
+        QFileInfo check_devsndtimer("/dev/snd/timer");
+        QVERIFY(check_devsndtimer.exists() && !check_devsndseq.isFile() && !check_devsndseq.isDir());
+        m_test_timer = Timer::bestGlobalTimer( SND_TIMER_OPEN_NONBLOCK |
+                                               SND_TIMER_OPEN_TREAD );
+    } catch (...) {
+        QWARN("Timer test initialization failed");
+    }
+}
+
+void AlsaTest2::cleanupTestCase()
+{
+    delete m_test_timer;
+}
+
 void AlsaTest2::testTimer()
 {
-    QPointer<Timer> test_timer;
-    test_timer = Timer::bestGlobalTimer( SND_TIMER_OPEN_NONBLOCK |
-                                         SND_TIMER_OPEN_TREAD );
-    if (test_timer != 0) {
+    if (m_test_timer != 0) {
         m_count = 0;
-        m_info = test_timer->getTimerInfo();
         try {
-            m_params.setAutoStart(true);
-            if (!m_info.isSlave()) {
+            TimerParams tparams;
+            TimerInfo tinfo = m_test_timer->getTimerInfo();
+            tparams.setAutoStart(true);
+            if (!tinfo.isSlave()) {
                 /* 50 Hz */
-                m_params.setTicks( 1000000000L / m_info.getResolution() / 50);
-                if (m_params.getTicks() < 1) {
-                    m_params.setTicks(1);
+                tparams.setTicks( 1000000000L / tinfo.getResolution() / 50);
+                if (tparams.getTicks() < 1) {
+                    tparams.setTicks(1);
                 }
             } else {
-                m_params.setTicks(1);
+                tparams.setTicks(1);
             }
-            m_params.setFilter(1 << SND_TIMER_EVENT_TICK);
-            test_timer->setTimerParams(m_params);
-            test_timer->setHandler(this);
+            tparams.setFilter(1 << SND_TIMER_EVENT_TICK);
+            m_test_timer->setTimerParams(tparams);
+            m_test_timer->setHandler(this);
             // Testing timer callback method
-            test_timer->start();
-            test_timer->startEvents();
+            m_test_timer->start();
+            m_test_timer->startEvents();
             QTest::qWait(1000);
-            test_timer->stopEvents();
-            test_timer->stop();
-            QCOMPARE(m_count, 51);
-            m_status = test_timer->getTimerStatus();
-            QCOMPARE(m_status.getLost(), 0L);
-            QCOMPARE(m_status.getOverrun(), 0L);
+            m_test_timer->stopEvents();
+            m_test_timer->stop();
+            QVERIFY2(qAbs(50 - m_count) <= 1, "Timer results are wrong");
+            TimerStatus tstatus = m_test_timer->getTimerStatus();
+            QCOMPARE(tstatus.getLost(), 0L);
+            QCOMPARE(tstatus.getOverrun(), 0L);
         } catch (...) {
             QFAIL("Timer test failed");
         }
-        delete test_timer;
     }
 }
 
