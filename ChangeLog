@@ -1,3 +1,7 @@
+2017-08-14
+    * fixed unit test for more tolerance
+    * release preparations
+
 2017-08-13
     * fix for ticket #11: replaced assert() by Q_ASSERT()
     * fix for ticket #9: removed ALSA/Linux dependency where possible.

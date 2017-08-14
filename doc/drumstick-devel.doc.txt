@@ -1,8 +1,8 @@
 /**
 @mainpage drumstick Documentation
-@author Copyright &copy; 2009-2016 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
-@date 2016-08-21
-@version 1.1.0
+@author Copyright &copy; 2009-2017 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
+@date 2017-08-15
+@version 1.1.1
 
 This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/
