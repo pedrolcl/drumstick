@@ -22,7 +22,7 @@
 #include "macsynth.h"
 
 #include <CoreServices/CoreServices.h>
-#include <AudioUnit/AUAudioUnit.h>
+#include <AudioUnit/AudioUnit.h>
 #include <AudioToolbox/AudioToolbox.h>
 
 #define PRETTY_NAME "DLS Synth"
