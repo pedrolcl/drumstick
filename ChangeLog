@@ -1,5 +1,6 @@
-2018-01-06
+2018-01-07
     * disabled fluidsynth output driver
+    * Fixed build on macOS < 10.11, thanks to Andreas
 
 2017-08-14
     * fixed unit test for more tolerance
