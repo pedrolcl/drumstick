@@ -14,14 +14,14 @@ unix:!macx {
 
 macx {
     SUBDIRS += mac-in mac-out macsynth
-    exists(/Library/Frameworks/FluidSynth.framework/Headers/*) {
-        SUBDIRS += synth
-    }
+    #exists(/Library/Frameworks/FluidSynth.framework/Headers/*) {
+    #    SUBDIRS += synth
+    #}
 }
 else {
-    packagesExist(fluidsynth) {
-        SUBDIRS += synth
-    }
+    #packagesExist(fluidsynth) {
+    #    SUBDIRS += synth
+    #}
     packagesExist(libpulse-simple) {
         SUBDIRS += eassynth
     }

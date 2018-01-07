@@ -1,3 +1,6 @@
+2018-01-06
+    * disabled fluidsynth output driver
+
 2017-08-14
     * fixed unit test for more tolerance
     * release preparations
