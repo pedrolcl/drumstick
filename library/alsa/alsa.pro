@@ -5,9 +5,9 @@ DEPENDPATH += . ../include
 INCLUDEPATH += . ../include
 include (../../global.pri)
 QT -= gui
-QT += dbus
+#QT += dbus
 CONFIG += qt thread create_prl
-DEFINES += drumstick_alsa_EXPORTS RTKIT_SUPPORT
+DEFINES += drumstick_alsa_EXPORTS #RTKIT_SUPPORT
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
 # Input
 HEADERS += ../include/alsaclient.h \

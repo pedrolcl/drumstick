@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-metronome
-QT += dbus
+#QT += dbus
 CONFIG += qt console thread exceptions link_prl
 DESTDIR = ../../build/bin
 INCLUDEPATH += . ../../library/include ../common 

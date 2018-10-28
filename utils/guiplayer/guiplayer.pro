@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-guiplayer
-QT += gui widgets dbus
+QT += gui widgets #dbus
 CONFIG += qt thread exceptions link_prl
 DESTDIR = ../../build/bin
 INCLUDEPATH += . ../../library/include ../common 

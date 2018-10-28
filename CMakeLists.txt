@@ -55,17 +55,17 @@ endif()
 # DRUMSTICK version string
 set(VERSION_MAJOR "1")
 set(VERSION_MINOR "1")
-set(VERSION_PATCH "1")
-set(VERSION_SUFFIX "")
+set(VERSION_PATCH "2")
+set(VERSION_SUFFIX "svn")
 set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 add_definitions(-DVERSION=${VERSION})
 
 message(STATUS "drumstick ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
 
 set(_DBUS_INIT OFF)
-if(${CMAKE_SYSTEM} MATCHES "Linux")
-	set(_DBUS_INIT ON)
-endif()
+#if(${CMAKE_SYSTEM} MATCHES "Linux")
+#	set(_DBUS_INIT ON)
+#endif()
 
 # User options
 option(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)

@@ -78,8 +78,14 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     dlgConnections.setAdvanced(m_advanced);
 
     if (m_midiIn != 0) {
-        connect(m_midiIn, SIGNAL(midiNoteOn(int,int,int)), SLOT(slotNoteOn(int,int,int)));
-        connect(m_midiIn, SIGNAL(midiNoteOff(int,int,int)), SLOT(slotNoteOff(int,int,int)));
+        //connect(m_midiIn, SIGNAL(midiNoteOn(int,int,int)), SLOT(slotNoteOn(int,int,int)));
+        //connect(m_midiIn, SIGNAL(midiNoteOff(int,int,int)), SLOT(slotNoteOff(int,int,int)));
+        connect(m_midiIn, &MIDIInput::midiNoteOn,
+                this, QOverload<int,int,int>::of(&VPiano::slotNoteOn),
+                Qt::QueuedConnection);
+        connect(m_midiIn, &MIDIInput::midiNoteOff,
+                this, QOverload<int,int,int>::of(&VPiano::slotNoteOff),
+                Qt::QueuedConnection);
         if (!m_lastInputConnection.isEmpty()) {
             m_midiIn->initialize(&settings);
             m_midiIn->open(m_lastInputConnection);
@@ -119,6 +125,7 @@ void VPiano::slotNoteOff(const int midiNote, const int vel)
 void VPiano::slotNoteOn(const int chan, const int note, const int vel)
 {
     if (dlgPreferences.getInChannel() == chan) {
+        qDebug() << "slot noteon" << chan << note << vel;
         if (vel > 0)
             ui.pianokeybd->getPianoScene()->showNoteOn(note);
         else
@@ -128,8 +135,9 @@ void VPiano::slotNoteOn(const int chan, const int note, const int vel)
 
 void VPiano::slotNoteOff(const int chan, const int note, const int vel)
 {
-    Q_UNUSED(vel)
+    //Q_UNUSED(vel)
     if (dlgPreferences.getInChannel() == chan) {
+        qDebug() << "slot noteoff" << chan << note << vel;
         ui.pianokeybd->getPianoScene()->showNoteOff(note);
     }
 }
