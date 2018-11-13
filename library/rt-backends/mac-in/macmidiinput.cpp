@@ -25,6 +25,7 @@
 #include <QMutex>
 #include <QTextCodec>
 #include <QObject>
+#include <QtConcurrent>
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreMIDI/CoreMIDI.h>
@@ -54,7 +55,7 @@ namespace rt {
 
         MacMIDIInputPrivate(MacMIDIInput *inp) :
             m_inp(inp),
-            m_out(0),
+            m_out(nullptr),
             m_client(0),
             m_port(0),
             m_endpoint(0),
@@ -69,7 +70,7 @@ namespace rt {
         void internalCreate(CFStringRef name)
         {
             OSStatus result = noErr;
-            result = MIDIClientCreate( name , NULL, NULL, &m_client );
+            result = MIDIClientCreate( name , nullptr, nullptr, &m_client );
             if (result != noErr) {
                 qDebug() << "MIDIClientCreate() err:" << result;
                 return;
@@ -174,7 +175,7 @@ namespace rt {
             if (index < 0)
                 return;
             m_source = MIDIGetSource( index );
-            result = MIDIPortConnectSource( m_port, m_source, NULL );
+            result = MIDIPortConnectSource( m_port, m_source, nullptr );
             if (result != noErr) {
                 qDebug() << "MIDIPortConnectSource() error:" << result;
                 return;
@@ -195,74 +196,82 @@ namespace rt {
             }
         }
 
-        void emitSignals(MIDIPacket* packet)
+        void emitSignals(QByteArray& packet)
         {
-            int value = 0;
-            int status = packet->data[0] & 0xf0;
-            int channel = packet->data[0] & 0x0f;
-            QByteArray data;
-            switch (status) {
-            case MIDI_STATUS_NOTEOFF:
-                if(m_out != 0 && m_thruEnabled)
-                    m_out->sendNoteOff(channel, packet->data[1], packet->data[2]);
-                emit m_inp->midiNoteOff(channel, packet->data[1], packet->data[2]);
-                break;
-            case MIDI_STATUS_NOTEON:
-                if(m_out != 0 && m_thruEnabled)
-                    m_out->sendNoteOn(channel, packet->data[1], packet->data[2]);
-                emit m_inp->midiNoteOn(channel, packet->data[1], packet->data[2]);
-                break;
-            case MIDI_STATUS_KEYPRESURE:
-                if(m_out != 0 && m_thruEnabled)
-                    m_out->sendKeyPressure(channel, packet->data[1], packet->data[2]);
-                emit m_inp->midiKeyPressure(channel, packet->data[1], packet->data[2]);
-                break;
-            case MIDI_STATUS_CONTROLCHANGE:
-                if(m_out != 0 && m_thruEnabled)
-                    m_out->sendController(channel, packet->data[1], packet->data[2]);
-                emit m_inp->midiController(channel, packet->data[1], packet->data[2]);
-                break;
-            case MIDI_STATUS_PROGRAMCHANGE:
-                if(m_out != 0 && m_thruEnabled)
-                    m_out->sendProgram(channel, packet->data[1]);
-                emit m_inp->midiProgram(channel, packet->data[1]);
-                break;
-            case MIDI_STATUS_CHANNELPRESSURE:
-                if(m_out != 0 && m_thruEnabled)
-                    m_out->sendChannelPressure(channel, packet->data[1]);
-                emit m_inp->midiChannelPressure(channel, packet->data[1]);
-                break;
-            case MIDI_STATUS_PITCHBEND:
-                value = (packet->data[1] + packet->data[2] * 0x80) - 8192;
-                if(m_out != 0 && m_thruEnabled)
-                    m_out->sendPitchBend(channel, value);
-                emit m_inp->midiPitchBend(channel, value);
-                break;
-            case MIDI_STATUS_SYSEX:
-                data = QByteArray((const char *)packet->data, packet->length);
-                if(m_out != 0 && m_thruEnabled)
-                    m_out->sendSysex(data);
-                emit m_inp->midiSysex(data);
-                break;
-            default:
-                qDebug() << "status?" << status;
+            int value = 0, j = 0;
+            while(j < packet.length()) {
+                int status = packet[j] & 0xf0;
+                int channel = packet[j] & 0x0f;
+                QByteArray data;
+                switch (status) {
+                case MIDI_STATUS_NOTEOFF:
+                    if(m_out != nullptr && m_thruEnabled)
+                        m_out->sendNoteOff(channel, packet[j+1], packet[j+2]);
+                    emit m_inp->midiNoteOff(channel, packet[j+1], packet[j+2]);
+                    j+=3;
+                    break;
+                case MIDI_STATUS_NOTEON:
+                    if(m_out != nullptr && m_thruEnabled)
+                        m_out->sendNoteOn(channel, packet[j+1], packet[j+2]);
+                    emit m_inp->midiNoteOn(channel, packet[j+1], packet[j+2]);
+                    j+=3;
+                    break;
+                case MIDI_STATUS_KEYPRESURE:
+                    if(m_out != nullptr && m_thruEnabled)
+                        m_out->sendKeyPressure(channel, packet[j+1], packet[j+2]);
+                    emit m_inp->midiKeyPressure(channel, packet[j+1], packet[j+2]);
+                    j+=3;
+                    break;
+                case MIDI_STATUS_CONTROLCHANGE:
+                    if(m_out != nullptr && m_thruEnabled)
+                        m_out->sendController(channel, packet[j+1], packet[j+2]);
+                    emit m_inp->midiController(channel, packet[j+1], packet[j+2]);
+                    j+=3;
+                    break;
+                case MIDI_STATUS_PROGRAMCHANGE:
+                    if(m_out != nullptr && m_thruEnabled)
+                        m_out->sendProgram(channel, packet[j+1]);
+                    emit m_inp->midiProgram(channel, packet[j+1]);
+                    j+=2;
+                    break;
+                case MIDI_STATUS_CHANNELPRESSURE:
+                    if(m_out != nullptr && m_thruEnabled)
+                        m_out->sendChannelPressure(channel, packet[j+1]);
+                    emit m_inp->midiChannelPressure(channel, packet[j+1]);
+                    j+=2;
+                    break;
+                case MIDI_STATUS_PITCHBEND:
+                    value = (packet[j+1] + packet[j+2] * 0x80) - 8192;
+                    if(m_out != nullptr && m_thruEnabled)
+                        m_out->sendPitchBend(channel, value);
+                    emit m_inp->midiPitchBend(channel, value);
+                    j+=3;
+                    break;
+                case MIDI_STATUS_SYSEX:
+                    if(m_out != nullptr && m_thruEnabled)
+                        m_out->sendSysex(packet);
+                    emit m_inp->midiSysex(packet);
+                    j+=packet.length();
+                    break;
+                default:
+                    qDebug() << "status?" << status;
+                }
             }
         }
-
     };
 
-    void MacMIDIReadProc( const MIDIPacketList *pktlist,
-                          void *refCon, void *connRefCon )
+    void MacMIDIReadProc( const MIDIPacketList *pktlist, void *refCon, void *connRefCon )
     {
         Q_UNUSED(connRefCon)
-        MacMIDIInputPrivate  *obj = NULL;
-        if (refCon != NULL)
+        MacMIDIInputPrivate  *obj = nullptr;
+        if (refCon != nullptr)
             obj = static_cast<MacMIDIInputPrivate*>(refCon);
-
-        MIDIPacket *packet = (MIDIPacket *)pktlist->packet;
+        const MIDIPacket *packet = static_cast<const MIDIPacket *>(pktlist->packet);
         for (unsigned int i = 0; i < pktlist->numPackets; ++i) {
-            if (obj != NULL)
-               obj->emitSignals(packet);
+            if (obj != nullptr && packet != nullptr) {
+                QByteArray data((const char *)packet->data, packet->length);
+                QtConcurrent::run(obj, &MacMIDIInputPrivate::emitSignals, data);
+            }
             packet = MIDIPacketNext(packet);
         }
     }

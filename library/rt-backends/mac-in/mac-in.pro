@@ -6,6 +6,7 @@ DEPENDPATH += . ../../include ../common
 INCLUDEPATH += . ../../include ../common
 include (../../../global.pri)
 QT -= gui
+QT += concurrent
 
 HEADERS += ../../include/rtmidiinput.h \
            ../../include/rtmidioutput.h \
