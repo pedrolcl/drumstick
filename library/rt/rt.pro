@@ -32,6 +32,8 @@ macx:!static {
     #QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/
     QMAKE_SONAME_PREFIX = @rpath
     QMAKE_TARGET_BUNDLE_PREFIX = net.sourceforge
+    QMAKE_BUNDLE = drumstick-rt
+    QMAKE_INFO_PLIST = ../Info.plist.lib
 }
 
 static {

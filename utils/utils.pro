@@ -18,3 +18,6 @@ linux* {
            playsmf \
            sysinfo
 }
+macx {
+    OTHER_FILES += Info.plist.app
+}

@@ -30,6 +30,9 @@ macx:!static {
     LIBS += -framework drumstick-rt
     LIBS += -l$$qtLibraryTarget(drumstick-common)
     ICON = ../../icons/drumstick.icns
+    QMAKE_TARGET_BUNDLE_PREFIX = net.sourceforge
+    QMAKE_BUNDLE = drumstick-vpiano
+    QMAKE_INFO_PLIST = ../Info.plist.app
 } else {
     LIBS += -L$$OUT_PWD/../../build/lib/
     LIBS += -l$$qtLibraryTarget(drumstick-common) \
