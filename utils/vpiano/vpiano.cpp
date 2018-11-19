@@ -107,7 +107,7 @@ VPiano::~VPiano()
     //qDebug() << Q_FUNC_INFO;
     m_midiIn->close();
     m_midiOut->close();
-    qDebug() << "Cheers!";
+    //qDebug() << "Cheers!";
 }
 
 void VPiano::slotNoteOn(const int midiNote, const int vel)

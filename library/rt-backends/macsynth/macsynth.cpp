@@ -44,13 +44,13 @@ namespace rt {
             m_graph(0),
             m_synthUnit(0)
         {
-            qDebug() << Q_FUNC_INFO;
+            //qDebug() << Q_FUNC_INFO;
             m_connection.clear();
         }
 
         virtual ~MacSynthOutputPrivate()
         {
-            qDebug() << Q_FUNC_INFO;
+            //qDebug() << Q_FUNC_INFO;
             stop();
         }
 
@@ -106,7 +106,7 @@ namespace rt {
             AUNode outputNode = 0;
             AUNode limiterNode = 0;
 
-            qDebug() << Q_FUNC_INFO;
+            //qDebug() << Q_FUNC_INFO;
             if (m_graph == 0) {
                 cd.componentManufacturer = kAudioUnitManufacturer_Apple;
                 cd.componentFlags = 0;
@@ -187,7 +187,7 @@ namespace rt {
         void stop ()
         {
             OSStatus result;
-            qDebug() << Q_FUNC_INFO;
+            //qDebug() << Q_FUNC_INFO;
             if (m_graph != 0) {
                 result = AUGraphStop(m_graph);
                 if (result != noErr)
@@ -205,14 +205,14 @@ namespace rt {
 
         void initialize ( QSettings *settings )
         {
-            qDebug() << Q_FUNC_INFO;
+            //qDebug() << Q_FUNC_INFO;
             settings->beginGroup(PRETTY_NAME);
             m_default_dls = settings->value("default_dls", true).toBool();
             m_reverb_dls = settings->value("reverb_dls", true).toBool();
             m_soundfont_dls = settings->value("soundfont_dls").toString();
-            qDebug() << "default_dls:" << m_default_dls;
-            qDebug() << "reverb_dls:" << m_reverb_dls;
-            qDebug() << "soundfont_dls" << m_soundfont_dls;
+            //qDebug() << "default_dls:" << m_default_dls;
+            //qDebug() << "reverb_dls:" << m_reverb_dls;
+            //qDebug() << "soundfont_dls" << m_soundfont_dls;
             settings->endGroup();
         }
 
