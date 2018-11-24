@@ -78,7 +78,7 @@ SynthRenderer::initEAS()
     m_sampleRate = easConfig->sampleRate;
     m_bufferSize = easConfig->mixBufferSize;
     m_channels = easConfig->numChannels;
-    qDebug() << Q_FUNC_INFO << "EAS bufferSize=" << m_bufferSize << " sampleRate=" << m_sampleRate << " channels=" << m_channels;
+    //qDebug() << Q_FUNC_INFO << "EAS bufferSize=" << m_bufferSize << " sampleRate=" << m_sampleRate << " channels=" << m_channels;
 }
 
 void
@@ -113,7 +113,7 @@ SynthRenderer::initPulse()
     {
       qCritical() << "Failed to create PulseAudio connection";
     }
-    qDebug() << Q_FUNC_INFO << "period_bytes=" << period_bytes;
+    //qDebug() << Q_FUNC_INFO << "period_bytes=" << period_bytes;
 }
 
 void
@@ -132,7 +132,7 @@ SynthRenderer::uninitEAS()
       m_streamHandle = 0;
       m_easData = 0;
     }
-    qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO;
 }
 
 void
@@ -142,7 +142,7 @@ SynthRenderer::uninitPulse()
         pa_simple_free(m_pulseHandle);
         m_pulseHandle = 0;
     }
-    qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO;
 }
 
 SynthRenderer::~SynthRenderer()
@@ -177,7 +177,7 @@ void
 SynthRenderer::stop()
 {
     QWriteLocker locker(&m_mutex);
-    qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO;
     m_Stopped = true;
 }
 
@@ -186,7 +186,7 @@ SynthRenderer::run()
 {
     int pa_err;
     unsigned char data[1024];
-    qDebug() << Q_FUNC_INFO << "started";
+    //qDebug() << Q_FUNC_INFO << "started";
     try {
         initPulse();
         m_Stopped = false;
@@ -214,7 +214,7 @@ SynthRenderer::run()
     } catch (...) {
         qWarning() << "Exception in rendering loop - exiting";
     }
-    qDebug() << Q_FUNC_INFO << "ended";
+    //qDebug() << Q_FUNC_INFO << "ended";
     emit finished();
 }
 
@@ -332,7 +332,7 @@ SynthRenderer::connection()
 void
 SynthRenderer::setBufferTime(int milliseconds)
 {
-    qDebug() << Q_FUNC_INFO << milliseconds;
+    //qDebug() << Q_FUNC_INFO << milliseconds;
     m_bufferTime = milliseconds;
 }
 
