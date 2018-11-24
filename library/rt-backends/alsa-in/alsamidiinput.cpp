@@ -162,7 +162,6 @@ namespace rt {
                         if(m_out != 0 && m_thruEnabled) {
                             m_out->sendNoteOff(n->getChannel(), n->getKey(), n->getVelocity());
                         }
-                        qDebug() << "signal noteoff" << n->getChannel() << n->getKey() << n->getVelocity();
                         emit m_inp->midiNoteOff(n->getChannel(), n->getKey(), n->getVelocity());
                     }
                     break;
@@ -171,7 +170,6 @@ namespace rt {
                         if(m_out != 0 && m_thruEnabled) {
                             m_out->sendNoteOn(n->getChannel(), n->getKey(), n->getVelocity());
                         }
-                        qDebug() << "signal noteon" << n->getChannel() << n->getKey() << n->getVelocity();
                         emit m_inp->midiNoteOn(n->getChannel(), n->getKey(), n->getVelocity());
                     }
                     break;

@@ -14,9 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.1)
 if (POLICY CMP0063)
     cmake_policy(SET CMP0063 OLD)
+endif()
+if (POLICY CMP0028)
+    cmake_policy(SET CMP0028 OLD)
 endif()
 
 project(DRUMSTICK)

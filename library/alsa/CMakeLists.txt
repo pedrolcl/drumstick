@@ -60,8 +60,13 @@ add_library(drumstick-alsa
 target_link_libraries(drumstick-alsa
     ${ALSA_LIBS}
     Qt5::Core
-    Qt5::DBus
 )
+
+if(USE_DBUS)
+    target_link_libraries(drumstick-alsa
+        Qt5::DBus
+    )
+endif()
 
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-alsa PROPERTIES

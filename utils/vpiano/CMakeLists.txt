@@ -72,6 +72,7 @@ set(vpiano_qtobject_SRCS
     fluidsettingsdialog.h
     macsynthsettingsdialog.h
     sonivoxsettingsdialog.h
+    ../../library/include/rtmidiinput.h
 )
 
 qt5_wrap_cpp(vpiano_moc_SRCS ${vpiano_qtobject_SRCS})
