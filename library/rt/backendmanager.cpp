@@ -59,6 +59,9 @@ Q_IMPORT_PLUGIN(OSSInput)
 Q_IMPORT_PLUGIN(OSSOutput)
 #endif
 
+#define _MKSTR(x) #x
+#define MKSTR(x) _MKSTR(x)
+
 /**
  * @file backendmanager.cpp
  * Implementation of a class managing realtime MIDI input/output backends
@@ -139,7 +142,10 @@ namespace rt {
         d->appendDir( appPath + QStringLiteral("../PlugIns/") + QSTR_DRUMSTICK, result );
     #endif // Linux, Unix...
         QStringList libs;
-        libs << "../lib/" << "../lib32/" << "../lib64/";
+        libs << "../lib/";
+    #if defined(LIBSUFFIX)
+        libs << QString("../lib%1/").arg(MKSTR(LIBSUFFIX));
+    #endif
         foreach(const QString& lib, libs) {
             d->appendDir( appPath + lib + QSTR_DRUMSTICK, result );
         }
