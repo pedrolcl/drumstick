@@ -110,9 +110,14 @@ if(${CMAKE_SYSTEM} MATCHES "Linux")
         message(STATUS "Warning: ALSA library not found.")
     endif()
 endif()
+
 pkg_check_modules(PULSE libpulse-simple)
 if(NOT PULSE_FOUND)
     message(STATUS "Warning: PulseAudio library not found.")
+endif()
+
+if(${CMAKE_SYSTEM} MATCHES "Darwin")
+    find_package(Qt5Concurrent REQUIRED)
 endif()
 
 link_directories(${DRUMSTICK_BINARY_DIR}/lib)

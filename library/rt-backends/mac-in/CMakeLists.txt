@@ -49,6 +49,7 @@ endif()
 
 target_link_libraries(drumstick-rt-mac-in
     Qt5::Core
+    Qt5::Concurrent
     "-framework CoreMidi -framework CoreFoundation"
 )
 
