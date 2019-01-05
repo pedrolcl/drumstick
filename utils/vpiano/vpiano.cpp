@@ -77,15 +77,22 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     dlgConnections.setMidiThru(m_midiThru);
     dlgConnections.setAdvanced(m_advanced);
 
-    if (m_midiIn != 0) {
-        //connect(m_midiIn, SIGNAL(midiNoteOn(int,int,int)), SLOT(slotNoteOn(int,int,int)));
-        //connect(m_midiIn, SIGNAL(midiNoteOff(int,int,int)), SLOT(slotNoteOff(int,int,int)));
+    if (m_midiIn != nullptr) {
+#if QT_VERSION < 0x050700
+        connect(m_midiIn, SIGNAL(midiNoteOn(int,int,int)),
+                          SLOT(slotNoteOn(int,int,int)),
+                          Qt::QueuedConnection);
+        connect(m_midiIn, SIGNAL(midiNoteOff(int,int,int)),
+                          SLOT(slotNoteOff(int,int,int)),
+                          Qt::QueuedConnection);
+#else
         connect(m_midiIn, &MIDIInput::midiNoteOn,
                 this, QOverload<int,int,int>::of(&VPiano::slotNoteOn),
                 Qt::QueuedConnection);
         connect(m_midiIn, &MIDIInput::midiNoteOff,
                 this, QOverload<int,int,int>::of(&VPiano::slotNoteOff),
                 Qt::QueuedConnection);
+#endif
         if (!m_lastInputConnection.isEmpty()) {
             m_midiIn->initialize(&settings);
             m_midiIn->open(m_lastInputConnection);
