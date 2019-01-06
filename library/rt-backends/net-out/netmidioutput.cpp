@@ -83,7 +83,7 @@ public:
         if (p > -1)
         {
             m_socket = new QUdpSocket();
-            bool res = m_socket->bind(m_ipv6 ? QHostAddress::AnyIPv6 : QHostAddress::AnyIPv4);
+            bool res = m_socket->bind(m_ipv6 ? QHostAddress::AnyIPv6 : QHostAddress::AnyIPv4, m_socket->localPort());
             if (res) {
                 m_socket->setSocketOption(QAbstractSocket::MulticastLoopbackOption, 0);
                 m_socket->setSocketOption(QAbstractSocket::MulticastTtlOption, 1);
@@ -136,10 +136,10 @@ public:
     void sendMessage(const QByteArray& message )
     {
         if (m_socket == nullptr) {
-            qWarning() << "udp socket is null";
+            qWarning() << Q_FUNC_INFO << "udp socket is null";
             return;
         } else if (!m_socket->isValid() || m_socket->state() != QAbstractSocket::BoundState) {
-            qWarning() << "udp socket has invalid state:" << m_socket->state() << "Error:" << m_socket->error() << m_socket->errorString();
+            qWarning() << Q_FUNC_INFO << "udp socket has invalid state:" << m_socket->state() << "Error:" << m_socket->error() << m_socket->errorString();
             return;
         }
         m_socket->writeDatagram(message, m_groupAddress, m_port);
