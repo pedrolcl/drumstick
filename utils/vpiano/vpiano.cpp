@@ -22,8 +22,8 @@
 
 VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     : QMainWindow(parent, flags),
-    m_midiIn(0),
-    m_midiOut(0)
+    m_midiIn(nullptr),
+    m_midiOut(nullptr)
 {
     m_nativeInput = QLatin1Literal("Network");
     m_defaultInput = QLatin1Literal("21928");
@@ -53,12 +53,12 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     QList<MIDIOutput*> outputs = man.availableOutputs();
 
     findInput(m_lastInputBackend, inputs);
-    if (m_midiIn == 0) {
+    if (m_midiIn == nullptr) {
         findInput(m_nativeInput, inputs);
     }
 
     findOutput(m_lastOutputBackend, outputs);
-    if (m_midiOut == 0) {
+    if (m_midiOut == nullptr) {
         findOutput(m_nativeOutput, outputs);
     }
 
@@ -99,10 +99,10 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
         }
     }
 
-    if (m_midiOut != 0 && !m_lastOutputConnection.isEmpty()) {
+    if (m_midiOut != nullptr && !m_lastOutputConnection.isEmpty()) {
         m_midiOut->initialize(&settings);
         m_midiOut->open(m_lastOutputConnection);
-        if (m_midiIn != 0) {
+        if (m_midiIn != nullptr) {
             m_midiIn->setMIDIThruDevice(m_midiOut);
             m_midiIn->enableMIDIThru(m_midiThru);
         }
@@ -161,15 +161,15 @@ void VPiano::slotConnections()
 {
     dlgConnections.refresh();
     if (dlgConnections.exec() == QDialog::Accepted) {
-        if (m_midiIn != 0) {
+        if (m_midiIn != nullptr) {
             m_midiIn->disconnect();
         }
-        if (m_midiOut != 0) {
+        if (m_midiOut != nullptr) {
             m_midiOut->disconnect();
         }
         m_midiIn = dlgConnections.getInput();
         m_midiOut = dlgConnections.getOutput();
-        if (m_midiIn != 0) {
+        if (m_midiIn != nullptr) {
             connect(m_midiIn, SIGNAL(midiNoteOn(int,int,int)), SLOT(slotNoteOn(int,int,int)));
             connect(m_midiIn, SIGNAL(midiNoteOff(int,int,int)), SLOT(slotNoteOff(int,int,int)));
         }
@@ -263,7 +263,7 @@ void VPiano::readSettings()
 void VPiano::findInput(QString name, QList<MIDIInput *> &inputs)
 {
     foreach(MIDIInput* input, inputs) {
-        if (m_midiIn == 0 && (input->backendName() == name))  {
+        if (m_midiIn == nullptr && (input->backendName() == name))  {
             m_midiIn = input;
             break;
         }
@@ -273,7 +273,7 @@ void VPiano::findInput(QString name, QList<MIDIInput *> &inputs)
 void VPiano::findOutput(QString name, QList<MIDIOutput *> &outputs)
 {
     foreach(MIDIOutput* output, outputs) {
-        if (m_midiOut == 0 && (output->backendName() == name))  {
+        if (m_midiOut == nullptr && (output->backendName() == name))  {
             m_midiOut = output;
             break;
         }
