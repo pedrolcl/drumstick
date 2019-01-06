@@ -48,7 +48,7 @@ public:
     QNetworkInterface m_iface;
     bool m_ipv6;
 
-    NetMIDIInputPrivate(QObject *parent = 0);
+    NetMIDIInputPrivate(QObject *parent = nullptr);
 
     void open(QString portName);
     void close();

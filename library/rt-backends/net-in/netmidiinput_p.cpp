@@ -53,10 +53,8 @@ void NetMIDIInputPrivate::open(QString portName)
         m_parser = new MIDIParser(m_inp);
         m_port = static_cast<quint16>(MULTICAST_PORT + p);
         m_currentInput = portName;
-        bool res = m_socket->bind(m_ipv6 ? QHostAddress::AnyIPv6 : QHostAddress::AnyIPv4, 0, QUdpSocket::ShareAddress);
+        bool res = m_socket->bind(m_ipv6 ? QHostAddress::AnyIPv6 : QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress);
         if (res) {
-            //m_socket->setSocketOption(QAbstractSocket::MulticastLoopbackOption, 0);
-            //m_socket->setSocketOption(QAbstractSocket::MulticastTtlOption, 1);
             if (m_iface.isValid()) {
                 res = m_socket->joinMulticastGroup(m_groupAddress, m_iface);
             } else {
