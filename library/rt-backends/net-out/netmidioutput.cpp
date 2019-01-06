@@ -31,20 +31,20 @@ class NetMIDIOutput::NetMIDIOutputPrivate
 {
 public:
     QUdpSocket *m_socket;
-    quint16 m_port;
     QString m_publicName;
     QHostAddress m_groupAddress;
-    bool m_ipv6;
     QString m_currentOutput;
     QStringList m_outputDevices;
     QStringList m_excludedNames;
     QNetworkInterface m_iface;
+    quint16 m_port;
+    bool m_ipv6;
 
     NetMIDIOutputPrivate() :
         m_socket(nullptr),
-        m_port(0),
         m_publicName(DEFAULT_PUBLIC_NAME),
         m_groupAddress(QHostAddress(STR_ADDRESS_IPV4)),
+        m_port(0),
         m_ipv6(false)
     {
         for(int i=MULTICAST_PORT; i<LAST_PORT; ++i) {
@@ -78,15 +78,17 @@ public:
 
     void open(QString portName)
     {
-        //qDebug() << Q_FUNC_INFO << portName;
+        qDebug() << Q_FUNC_INFO << portName;
         int p = m_outputDevices.indexOf(portName);
         if (p > -1)
         {
             m_socket = new QUdpSocket();
             bool res = m_socket->bind(m_ipv6 ? QHostAddress::AnyIPv6 : QHostAddress::AnyIPv4, m_socket->localPort());
             if (res) {
-                m_socket->setSocketOption(QAbstractSocket::MulticastLoopbackOption, 0);
-                m_socket->setSocketOption(QAbstractSocket::MulticastTtlOption, 1);
+                if (!m_ipv6) {
+                    m_socket->setSocketOption(QAbstractSocket::MulticastLoopbackOption, 0);
+                    m_socket->setSocketOption(QAbstractSocket::MulticastTtlOption, 1);
+                }
                 m_port = static_cast<quint16>(MULTICAST_PORT + p);
                 m_currentOutput = portName;
                 if (m_iface.isValid()) {
@@ -135,6 +137,7 @@ public:
 
     void sendMessage(const QByteArray& message )
     {
+        //qDebug() << Q_FUNC_INFO << message.toHex() << m_groupAddress << m_port;
         if (m_socket == nullptr) {
             qWarning() << Q_FUNC_INFO << "udp socket is null";
             return;
@@ -142,7 +145,11 @@ public:
             qWarning() << Q_FUNC_INFO << "udp socket has invalid state:" << m_socket->state() << "Error:" << m_socket->error() << m_socket->errorString();
             return;
         }
-        m_socket->writeDatagram(message, m_groupAddress, m_port);
+        auto res = m_socket->writeDatagram(message, m_groupAddress, m_port);
+        //qDebug() << Q_FUNC_INFO << "writeDatagram:" << res;
+        if (res < 0) {
+            qWarning() << Q_FUNC_INFO << "Error:" << m_socket->error() << m_socket->errorString();
+        }
     }
 };
 
@@ -249,3 +256,4 @@ void NetMIDIOutput::sendSystemMsg(const int status)
 }
 
 }}
+
