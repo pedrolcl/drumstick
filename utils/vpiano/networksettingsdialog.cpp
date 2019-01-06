@@ -23,7 +23,8 @@
 #include "networksettingsdialog.h"
 #include "ui_networksettingsdialog.h"
 
-const QString QSTR_ADDRESS(QLatin1Literal("225.0.0.37"));
+const QString QSTR_ADDRESS_IPV4(QLatin1Literal("225.0.0.37"));
+const QString QSTR_ADDRESS_IPV6(QLatin1Literal("ff12::37"));
 
 NetworkSettingsDialog::NetworkSettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -32,6 +33,7 @@ NetworkSettingsDialog::NetworkSettingsDialog(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::pressed,
             this, &NetworkSettingsDialog::restoreDefaults);
+    connect(ui->checkIPv6, &QCheckBox::toggled, this, &NetworkSettingsDialog::toggledIPv6);
 }
 
 NetworkSettingsDialog::~NetworkSettingsDialog()
@@ -53,17 +55,22 @@ void NetworkSettingsDialog::showEvent(QShowEvent *event)
 
 void NetworkSettingsDialog::readSettings()
 {
-
     QSettings settings;
     settings.beginGroup("Network");
     QString ifaceName = settings.value("interface", QString()).toString();
-    QString address = settings.value("address", QSTR_ADDRESS).toString();
+    bool ipv6 = settings.value("ipv6", false).toBool();
+    QString address = settings.value("address", ipv6 ? QSTR_ADDRESS_IPV6 : QSTR_ADDRESS_IPV4).toString();
     settings.endGroup();
 
     ui->txtAddress->setText(address);
-    ui->comboInterface->addItem("Any", "");
+    ui->checkIPv6->setChecked(ipv6);
+    ui->comboInterface->addItem(tr("Any"), "");
     foreach( const QNetworkInterface& iface,  QNetworkInterface::allInterfaces() ) {
-        if ( iface.isValid() && ((iface.flags() & QNetworkInterface::IsLoopBack) == 0) ) {
+        if ( iface.isValid() &&
+             iface.flags().testFlag(QNetworkInterface::CanMulticast) &&
+             iface.flags().testFlag(QNetworkInterface::IsUp) &&
+             iface.flags().testFlag(QNetworkInterface::IsRunning) &&
+             !iface.flags().testFlag(QNetworkInterface::IsLoopBack) ) {
             QString name = iface.name();
             QString text = iface.humanReadableName();
             ui->comboInterface->addItem(text, name);
@@ -78,21 +85,30 @@ void NetworkSettingsDialog::readSettings()
 void NetworkSettingsDialog::writeSettings()
 {
     QSettings settings;
-    QString networkAddr = QSTR_ADDRESS;
+    QString networkAddr = QSTR_ADDRESS_IPV4;
     QString networkIface;
+    bool ipv6 = false;
 
     networkAddr = ui->txtAddress->text();
-    networkIface = ui->comboInterface->currentText();
+    networkIface = ui->comboInterface->currentData().toString();
+    ipv6 = ui->checkIPv6->isChecked();
 
     settings.beginGroup("Network");
-    settings.setValue("interface", networkIface);
     settings.setValue("address", networkAddr);
+    settings.setValue("interface", networkIface);
+    settings.setValue("ipv6", ipv6);
     settings.endGroup();
     settings.sync();
 }
 
 void NetworkSettingsDialog::restoreDefaults()
 {
-    ui->txtAddress->setText(QSTR_ADDRESS);
+    ui->checkIPv6->setChecked(false);
+    ui->txtAddress->setText(QSTR_ADDRESS_IPV4);
     ui->comboInterface->setCurrentText(tr("Any"));
+}
+
+void NetworkSettingsDialog::toggledIPv6(bool checked)
+{
+    ui->txtAddress->setText(checked ? QSTR_ADDRESS_IPV6 : QSTR_ADDRESS_IPV4);
 }

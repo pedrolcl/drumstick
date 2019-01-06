@@ -26,7 +26,8 @@
 namespace drumstick {
 namespace rt {
 
-    const QString STR_ADDRESS(QLatin1Literal("225.0.0.37"));
+    const QString STR_ADDRESS_IPV4(QLatin1Literal("225.0.0.37"));
+    const QString STR_ADDRESS_IPV6(QLatin1Literal("ff12::37"));
     const int MULTICAST_PORT(21928);
     const int LAST_PORT(21948);
 
@@ -37,7 +38,7 @@ namespace rt {
         Q_INTERFACES(drumstick::rt::MIDIOutput)
 
     public:
-        NetMIDIOutput(QObject *parent = 0);
+        NetMIDIOutput(QObject *parent = nullptr);
         virtual ~NetMIDIOutput();
 
         // MIDIOutput interface

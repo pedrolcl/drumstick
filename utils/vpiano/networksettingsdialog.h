@@ -31,7 +31,7 @@ class NetworkSettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit NetworkSettingsDialog(QWidget *parent = 0);
+    explicit NetworkSettingsDialog(QWidget *parent = nullptr);
     ~NetworkSettingsDialog();
     void readSettings();
     void writeSettings();
@@ -40,6 +40,7 @@ public slots:
     void accept();
     void showEvent(QShowEvent *event);
     void restoreDefaults();
+    void toggledIPv6(bool checked);
 
 private:
     Ui::NetworkSettingsDialog *ui;

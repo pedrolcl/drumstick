@@ -29,13 +29,14 @@ static QString DEFAULT_PUBLIC_NAME(QLatin1String("MIDI In"));
 
 NetMIDIInputPrivate::NetMIDIInputPrivate(QObject *parent) : QObject(parent),
     m_inp(qobject_cast<NetMIDIInput *>(parent)),
-    m_out(0),
-    m_socket(0),
-    m_parser(0),
+    m_out(nullptr),
+    m_socket(nullptr),
+    m_parser(nullptr),
     m_thruEnabled(false),
     m_port(0),
     m_publicName(DEFAULT_PUBLIC_NAME),
-    m_groupAddress(QHostAddress(STR_ADDRESS))
+    m_groupAddress(QHostAddress(STR_ADDRESS_IPV4)),
+    m_ipv6(false)
 {
     for(int i=MULTICAST_PORT; i<LAST_PORT; ++i) {
         m_inputDevices << QString::number(i);
@@ -47,20 +48,25 @@ void NetMIDIInputPrivate::open(QString portName)
     int p = m_inputDevices.indexOf(portName);
     if (p > -1)
     {
+        //qDebug() << Q_FUNC_INFO << portName;
         m_socket = new QUdpSocket();
         m_parser = new MIDIParser(m_inp);
-        m_port = MULTICAST_PORT + p;
+        m_port = static_cast<quint16>(MULTICAST_PORT + p);
         m_currentInput = portName;
-        m_socket->bind(QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress);
-        m_socket->setSocketOption(QAbstractSocket::MulticastLoopbackOption, 0);
-        m_socket->setSocketOption(QAbstractSocket::MulticastTtlOption, 1);
-        if (m_iface.isValid()) {
-            m_socket->joinMulticastGroup(m_groupAddress, m_iface);
-        } else {
-            m_socket->joinMulticastGroup(m_groupAddress);
+        bool res = m_socket->bind(m_ipv6 ? QHostAddress::AnyIPv6 : QHostAddress::AnyIPv4, 0, QUdpSocket::ShareAddress);
+        if (res) {
+            m_socket->setSocketOption(QAbstractSocket::MulticastLoopbackOption, 0);
+            m_socket->setSocketOption(QAbstractSocket::MulticastTtlOption, 1);
+            if (m_iface.isValid()) {
+                res = m_socket->joinMulticastGroup(m_groupAddress, m_iface);
+            } else {
+                res = m_socket->joinMulticastGroup(m_groupAddress);
+            }
+            connect(m_socket, SIGNAL(readyRead()), this, SLOT(processIncomingMessages()));
         }
-        connect(m_socket, SIGNAL(readyRead()), this, SLOT(processIncomingMessages()));
-        //qDebug() << Q_FUNC_INFO << portName;
+        if (!res) {
+            qWarning() << "Socket error. err:" << m_socket->error() << m_socket->errorString();
+        }
     }
 }
 
@@ -68,22 +74,25 @@ void NetMIDIInputPrivate::close()
 {
     delete m_socket;
     delete m_parser;
-    m_socket = 0;
-    m_parser = 0;
+    m_socket = nullptr;
+    m_parser = nullptr;
     m_currentInput.clear();
 }
 
 void NetMIDIInputPrivate::initialize(QSettings *settings)
 {
-    if (settings != 0) {
+    if (settings != nullptr) {
         settings->beginGroup("Network");
         QString ifaceName = settings->value("interface", QString()).toString();
-        QString address = settings->value("address", STR_ADDRESS).toString();
+        m_ipv6 = settings->value("ipv6", false).toBool();
+        QString address = settings->value("address", m_ipv6 ? STR_ADDRESS_IPV6 : STR_ADDRESS_IPV4).toString();
         settings->endGroup();
         if (!ifaceName.isEmpty()) {
             m_iface = QNetworkInterface::interfaceFromName(ifaceName);
         }
-        if (!address.isEmpty()) {
+        if (address.isEmpty()) {
+            m_groupAddress.setAddress(m_ipv6 ? STR_ADDRESS_IPV6 : STR_ADDRESS_IPV4);
+        } else {
             m_groupAddress.setAddress(address);
         }
     }
@@ -92,7 +101,7 @@ void NetMIDIInputPrivate::initialize(QSettings *settings)
 void NetMIDIInputPrivate::setMIDIThruDevice(MIDIOutput* device)
 {
     m_out = device;
-    if (m_parser != 0) {
+    if (m_parser != nullptr) {
         m_parser->setMIDIThruDevice(device);
     }
 }
@@ -101,9 +110,9 @@ void NetMIDIInputPrivate::processIncomingMessages()
 {
     while (m_socket->hasPendingDatagrams()) {
         QByteArray datagram;
-        datagram.resize(m_socket->pendingDatagramSize());
+        datagram.resize(static_cast<int>(m_socket->pendingDatagramSize()));
         m_socket->readDatagram(datagram.data(), datagram.size());
-        if (m_parser != 0) {
+        if (m_parser != nullptr) {
             m_parser->parse(datagram);
         }
     }
