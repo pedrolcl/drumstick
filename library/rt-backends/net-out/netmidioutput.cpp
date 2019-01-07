@@ -85,15 +85,15 @@ public:
             m_socket = new QUdpSocket();
             bool res = m_socket->bind(m_ipv6 ? QHostAddress::AnyIPv6 : QHostAddress::AnyIPv4, m_socket->localPort());
             if (res) {
-                if (!m_ipv6) {
-                    m_socket->setSocketOption(QAbstractSocket::MulticastLoopbackOption, 0);
-                    m_socket->setSocketOption(QAbstractSocket::MulticastTtlOption, 1);
-                }
+                m_socket->setSocketOption(QAbstractSocket::MulticastTtlOption, 1);
+#ifdef Q_OS_UNIX
+                m_socket->setSocketOption(QAbstractSocket::MulticastLoopbackOption, 0);
+#endif
                 m_port = static_cast<quint16>(MULTICAST_PORT + p);
-                m_currentOutput = portName;
                 if (m_iface.isValid()) {
                     m_socket->setMulticastInterface(m_iface);
                 }
+                m_currentOutput = portName;
             }
             if (!res) {
                 qWarning() << Q_FUNC_INFO << "Socket error:" << m_socket->error() << m_socket->errorString();

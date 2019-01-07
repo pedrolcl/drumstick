@@ -55,6 +55,10 @@ void NetMIDIInputPrivate::open(QString portName)
         m_currentInput = portName;
         bool res = m_socket->bind(m_ipv6 ? QHostAddress::AnyIPv6 : QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress);
         if (res) {
+#ifdef Q_OS_WIN
+            // https://docs.microsoft.com/es-es/windows/desktop/WinSock/ip-multicast-2
+            m_socket->setSocketOption(QAbstractSocket::MulticastLoopbackOption, 0);
+#endif
             if (m_iface.isValid()) {
                 res = m_socket->joinMulticastGroup(m_groupAddress, m_iface);
             } else {
