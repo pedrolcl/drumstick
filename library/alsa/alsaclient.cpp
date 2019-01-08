@@ -1777,10 +1777,10 @@ MidiClient::SequencerInputThread::setRealtimePriority()
         if (reply.type() == QDBusMessage::ErrorMessage )
             qWarning() << "error returned by RealtimeKit.MakeThreadRealtime:"
                         << reply.errorMessage();
-#else
+#endif
+    } else {
         qWarning() << "pthread_setschedparam() failed, err="
                    << rt << ::strerror(rt);
-#endif
     }
 }
 
