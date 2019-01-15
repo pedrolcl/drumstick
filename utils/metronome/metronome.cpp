@@ -16,10 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "metronome.h"
-#include "alsatimer.h"
-#include "cmdlineargs.h"
-
 #include <signal.h>
 #include <QCoreApplication>
 #include <QTextStream>
@@ -27,7 +23,14 @@
 #include <QStringList>
 #include <QReadLocker>
 #include <QWriteLocker>
+#include <QCommandLineParser>
 
+#include "metronome.h"
+#include "alsatimer.h"
+#include "cmdversion.h"
+
+const QString PGM_NAME("drumstick-metronome");
+const QString PGM_DESCRIPTION("ALSA based command line metronome");
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
@@ -92,13 +95,13 @@ Metronome::~Metronome()
 void Metronome::handleSequencerEvent( SequencerEvent *ev )
 {
     if (ev->getSequencerType() == SND_SEQ_EVENT_USR0)
-        metronome_pattern(ev->getTick() + m_patternDuration);
+        metronome_pattern(static_cast<int>(ev->getTick()) + m_patternDuration);
     delete ev;
 }
 
 void Metronome::metronome_event_output(SequencerEvent* ev)
 {
-    ev->setSource(m_portId);
+    ev->setSource(static_cast<unsigned char>(m_portId));
     ev->setSubscribers();
     ev->setDirect();
     m_Client->outputDirect(ev);
@@ -125,9 +128,9 @@ void Metronome::metronome_set_program()
 
 void Metronome::metronome_schedule_event(SequencerEvent* ev, int tick, bool lb)
 {
-    ev->setSource(m_portId);
+    ev->setSource(static_cast<unsigned char>(m_portId));
     if (lb) // loop back
-        ev->setDestination(m_clientId, m_portId);
+        ev->setDestination(static_cast<unsigned char>(m_clientId), static_cast<unsigned char>(m_portId));
     else
         ev->setSubscribers();
     ev->scheduleTick(m_queueId, tick, false);
@@ -220,7 +223,7 @@ void Metronome::play(QString tempo)
     }
 }
 
-Metronome* metronome = 0;
+static Metronome* metronome = nullptr;
 
 void signalHandler(int sig)
 {
@@ -228,7 +231,7 @@ void signalHandler(int sig)
         qDebug() << "Caught a SIGINT. Exiting";
     else if (sig == SIGTERM)
         qDebug() << "Caught a SIGTERM. Exiting";
-    if (metronome != 0) {
+    if (metronome != nullptr) {
         metronome->stop();
         metronome->shutupSound();
     }
@@ -242,22 +245,43 @@ int main(int argc, char **argv)
         "or the kernel module (snd_seq) is not loaded. "
         "Please check your ALSA/MIDI configuration.";
 
-    CmdLineArgs args;
     signal(SIGINT, signalHandler);
     signal(SIGTERM, signalHandler);
 
-    args.setUsage("[options] port [bpm]");
-    args.addRequiredArgument("port", "Destination, MIDI port identifier");
-    args.addOptionalArgument("bpm", "Tempo, in beats per minute (default=120)");
-    args.parse(argc, argv);
+    QCoreApplication app(argc, argv);
+    QCoreApplication::setApplicationName(PGM_NAME);
+    QCoreApplication::setApplicationVersion(PGM_VERSION);
+
+    QCommandLineParser parser;
+    parser.setApplicationDescription(PGM_DESCRIPTION);
+    auto helpOption = parser.addHelpOption();
+    auto versionOption = parser.addVersionOption();
+    QCommandLineOption portOption({"p","port"}, "Destination, MIDI port identifier.", "client:port");
+    parser.addOption(portOption);
+    QCommandLineOption bpmOption({"b","bpm"}, "Tempo, in beats per minute (default=120).", "BPM", "120");
+    parser.addOption(bpmOption);
+    parser.process(app);
+
+    if (parser.isSet(versionOption) || parser.isSet(helpOption)) {
+        return 0;
+    }
 
     try {
         metronome = new Metronome();
-        QVariant port = args.getArgument("port");
-        if (!port.isNull())
-            metronome->subscribe(port.toString());
-        QVariant bpm = args.getArgument("bpm");
-        metronome->play(bpm.toString());
+        if (parser.isSet(portOption)) {
+            QString port = parser.value(portOption);
+            metronome->subscribe(port);
+        } else {
+            cerr << "Destination Port is mandatory" << endl;
+            parser.showHelp();
+        }
+
+        QString bpm("120");
+        if (parser.isSet(bpmOption)) {
+            bpm = parser.value(bpmOption);
+        }
+        metronome->play(bpm);
+
     } catch (const SequencerError& ex) {
         cerr << errorstr + " Returned error was: " + ex.qstrError() << endl;
     } catch (...) {

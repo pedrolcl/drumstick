@@ -54,7 +54,6 @@ ADD_EXECUTABLE(drumstick-guiplayer
 
 TARGET_LINK_LIBRARIES(drumstick-guiplayer
     ${ALSA_LIBS} 
-    drumstick-common
     drumstick-file
     drumstick-alsa
     Qt5::Widgets

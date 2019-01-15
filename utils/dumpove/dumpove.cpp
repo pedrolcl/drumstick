@@ -18,7 +18,7 @@
 
 #include "dumpove.h"
 #include "qove.h"
-#include "cmdlineargs.h"
+#include "cmdversion.h"
 
 #include <cstdlib>
 #include <QObject>
@@ -29,14 +29,17 @@
 #include <QStringList>
 #include <QFileInfo>
 #include <QVariant>
-
-static QTextStream cout(stdout, QIODevice::WriteOnly);
+#include <QCommandLineParser>
 
 const QString NO_CHANNEL("--");
+const QString PGM_NAME("drumstick-dumpove");
+const QString PGM_DESCRIPTION("Drumstick command line utility for decoding OVE (Overture) files");
+static QTextStream cout(stdout, QIODevice::WriteOnly);
+static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
 QSpyOve::QSpyOve():
     m_verbosity(false),
-    m_engine(0)
+    m_engine(nullptr)
 {
     m_engine = new QOve(this);
 
@@ -169,7 +172,7 @@ bool QSpyOve::verbosityEnabled() const
 
 void QSpyOve::errorHandler(const QString& errorStr)
 {
-    cout << "*** Warning! " << errorStr << endl;
+    cerr << "*** Warning! " << errorStr << endl;
 }
 
 void QSpyOve::fileHeader(int res, int tracks)
@@ -315,24 +318,39 @@ void QSpyOve::run(QString fileName)
 int main(int argc, char *argv[])
 {
     QSpyOve spy;
-    CmdLineArgs args;
-    args.setUsage("[options] file");
-    args.addOption('v', "verbose", "Verbose output");
-    args.addRequiredArgument("file", "Input OVE file name");
-    args.parse(argc, argv);
+    QCoreApplication app(argc, argv);
+    QCoreApplication::setApplicationName(PGM_NAME);
+    QCoreApplication::setApplicationVersion(PGM_VERSION);
 
-    QVariant verbose = args.getOption("verbose");
-    if (!verbose.isNull())
+    QCommandLineParser parser;
+    parser.setApplicationDescription(PGM_DESCRIPTION);
+    auto helpOption = parser.addHelpOption();
+    auto versionOption = parser.addVersionOption();
+    QCommandLineOption verboseOption("verbose", "Verbose output.");
+    parser.addOption(verboseOption);
+    parser.addPositionalArgument("file", "Input OVE file name.", "files...");
+    parser.process(app);
+
+    if (parser.isSet(versionOption) || parser.isSet(helpOption)) {
+        return 0;
+    }
+
+    if (parser.isSet(verboseOption)) {
         spy.setVerbosity(true);
+    }
 
-    QVariantList files = args.getArguments("file");
-    QStringList fileNames;
-    foreach(const QVariant& a, files) {
-        QFileInfo f(a.toString());
+    QStringList fileNames, positionalArgs = parser.positionalArguments();
+    if (positionalArgs.isEmpty()) {
+        cerr << "Inpout file name(s) missing" << endl;
+        parser.showHelp();
+    }
+
+    foreach(const QString& a, positionalArgs) {
+        QFileInfo f(a);
         if (f.exists())
             fileNames += f.canonicalFilePath();
         else
-            cout << "File not found: " << a.toString() << endl;
+            cerr << "File not found: " << a << endl;
     }
 
     foreach(const QString& file, fileNames) {

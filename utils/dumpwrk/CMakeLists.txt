@@ -31,7 +31,6 @@ ADD_EXECUTABLE(drumstick-dumpwrk
 )
 
 TARGET_LINK_LIBRARIES(drumstick-dumpwrk
-    drumstick-common
     drumstick-file
     Qt5::Core
 )

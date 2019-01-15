@@ -17,10 +17,10 @@
             </author>
         </authorgroup>
         <copyright>
-            <year>2010</year>
+            <year>2010-2019</year>
             <holder>Pedro Lopez-Cabanillas</holder>
         </copyright>
-        <date>May 13, 2010</date>
+        <date>Jan 13, 2019</date>
     </refentryinfo>
 
     <refmeta>
@@ -41,7 +41,6 @@
         <title>Synopsis</title>
         <cmdsynopsis><command>&product;</command>
             <arg choice="opt">options</arg>
-            <arg choice="opt">PORT</arg>
         </cmdsynopsis>
     </refsynopsisdiv>
 
@@ -55,6 +54,20 @@
 
     <refsect1 id="drumstick-dumpmid.options">
         <title>Arguments</title>
+        <para>The following argument is mandatory:</para>
+        <variablelist>
+            <varlistentry>
+                <term>
+                    <option>-p|--port=</option>
+                    client:port
+                </term>
+                <listitem>
+                    <para>An ALSA client:port specification that will be subscribed 
+                    in order to read MIDI events from it. The client portion can be
+                    a number or a name, like in "20:0" or "Virtual Piano:0".</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
         <para>The following arguments are optional:</para>
         <variablelist>
             <varlistentry>
@@ -68,21 +81,12 @@
 
             <varlistentry>
                 <term>
-                    <option>-V|--version</option>
+                    <option>-v|--version</option>
                 </term>
                 <listitem>
                     <para>Prints the program version number and exit.</para>
                 </listitem>
-            </varlistentry>
-            
-            <varlistentry>
-                <term><option>PORT</option></term>
-                <listitem>
-                <para>An ALSA client:port specification that will be subscribed 
-                in order to read MIDI events from it. The client portion can be
-                a number or a name, like in "20:0" or "Virtual Piano:0".</para>
-                </listitem>
-            </varlistentry>
+            </varlistentry>           
         </variablelist>
     </refsect1>
 

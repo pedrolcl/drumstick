@@ -17,7 +17,7 @@
             </author>
         </authorgroup>
         <copyright>
-            <year>2010</year>
+            <year>2010-2019</year>
             <holder>Rui Fan</holder>
         </copyright>
         <date>Aug 31, 2010</date>
@@ -55,7 +55,7 @@
 
     <refsect1 id="drumstick-dumpove.options">
         <title>Arguments</title>
-        <para>The following arguments are required:</para>
+        <para>The following argument is mandatory:</para>
         <variablelist>
             <varlistentry>
                 <term><option>FILE</option></term>
@@ -78,7 +78,7 @@
 
             <varlistentry>
                 <term>
-                    <option>-V|--version</option>
+                    <option>-v|--version</option>
                 </term>
                 <listitem>
                     <para>Prints the program version number and exit.</para>
@@ -87,7 +87,7 @@
         
             <varlistentry>
                 <term>
-                    <option>-v|--verbose</option>
+                    <option>--verbose</option>
                 </term>
                 <listitem>
                     <para>Verbose output.</para>

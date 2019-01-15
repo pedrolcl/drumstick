@@ -16,11 +16,16 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "guiplayer.h"
-#include "cmdlineargs.h"
-#include "drumstickcommon.h"
 #include <QApplication>
+#include <QFileInfo>
 #include <QMessageBox>
+#include <QCommandLineParser>
+
+#include "guiplayer.h"
+#include "cmdversion.h"
+#include "drumstickcommon.h"
+
+const QString PGM_DESCRIPTION("ALSA Sequencer based MIDI file player");
 
 const QString errorstr = "Fatal error from the ALSA sequencer. "
     "This usually happens when the kernel doesn't have ALSA support, "
@@ -33,18 +38,44 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName(QSTR_DOMAIN);
     QCoreApplication::setOrganizationDomain(QSTR_DOMAIN);
     QCoreApplication::setApplicationName(QSTR_APPNAME);    
-    QApplication a(argc, argv);
-    CmdLineArgs args;
-    args.setStdQtArgs(true);
-    args.setUsage("[options] [file]");
-    args.addOptionalArgument("file", "Input SMF (mid/kar) or Cakewalk (wrk) file");
-    args.parse(argc, argv);
+    QCoreApplication::setApplicationVersion(PGM_VERSION);
+    QApplication app(argc, argv);
+
+    QCommandLineParser parser;
+    parser.setApplicationDescription(PGM_DESCRIPTION);
+    auto helpOption = parser.addHelpOption();
+    auto versionOption = parser.addVersionOption();
+    QCommandLineOption portOption({"p", "port"}, "MIDI Out Connection.", "client:port");
+    parser.addOption(portOption);
+    parser.addPositionalArgument("file", "Input SMF/KAR/OVE/WRK file name.", "file");
+    parser.process(app);
+
+    if (parser.isSet(versionOption) || parser.isSet(helpOption)) {
+        return 0;
+    }
+
+    QStringList fileNames, positionalArgs = parser.positionalArguments();
+    foreach(const QString& a, positionalArgs) {
+        QFileInfo f(a);
+        if (f.exists())
+            fileNames += f.canonicalFilePath();
+        else
+            qWarning() << "File not found: " << a << endl;
+    }
+
     try {
         GUIPlayer w;
+        if(parser.isSet(portOption)) {
+            QString port = parser.value(portOption);
+            w.subscribe(port);
+        }
+        if (!fileNames.isEmpty()) {
+            w.openFile(fileNames.first());
+        }
         w.show();
-        return a.exec();
+        return app.exec();
     } catch (const SequencerError& ex) {
-        QMessageBox::critical(0, "Error",
+        QMessageBox::critical(nullptr, "Error",
             errorstr + " Returned error was: " + ex.qstrError() );
     } catch (...) {
         qWarning() << errorstr;

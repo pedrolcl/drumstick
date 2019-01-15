@@ -86,7 +86,6 @@ add_executable(drumstick-vpiano
 )
 
 target_link_libraries(drumstick-vpiano
-    drumstick-common
     drumstick-rt
     Qt5::Widgets
     Qt5::Svg

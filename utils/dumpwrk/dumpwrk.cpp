@@ -18,10 +18,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "dumpwrk.h"
-#include "qwrk.h"
-#include "cmdlineargs.h"
-
 #include <cstdlib>
 #include <QObject>
 #include <QString>
@@ -31,14 +27,21 @@
 #include <QStringList>
 #include <QFileInfo>
 #include <QVariant>
+#include <QCommandLineParser>
 
-static QTextStream cout(stdout, QIODevice::WriteOnly);
+#include "dumpwrk.h"
+#include "qwrk.h"
+#include "cmdversion.h"
 
 const QString NO_CHANNEL("--");
+const QString PGM_NAME("drumstick-dumpwrk");
+const QString PGM_DESCRIPTION("Drumstick command line utility for decoding WRK (Cakewalk) files");
+static QTextStream cout(stdout, QIODevice::WriteOnly);
+static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
 QSpyWrk::QSpyWrk():
     m_verbosity(false),
-    m_engine(0)
+    m_engine(nullptr)
 {
     m_engine = new QWrk(this);
     m_engine->setTextCodec(QTextCodec::codecForName("WIN1252"));
@@ -148,7 +151,7 @@ void QSpyWrk::dumpHex(const QByteArray& data)
         while ( i < data.count() ) {
             s.clear();
             for (j = 0; j < 16 && i < data.count(); ++j) {
-                quint8 c = data[i++];
+                quint8 c = static_cast<quint8>(data[i++]);
                 s += QString(" %1").arg(c & 0xff, 2, 16, QChar('0'));
             }
             cout << qSetFieldWidth(42) << ' '
@@ -365,7 +368,7 @@ void QSpyWrk::variableRecord(const QString& name, const QByteArray& data)
                        name == "Instructions" || name == "Keywords" );
     if (isReadable) {
         s += ": ";
-        if (m_engine->getTextCodec() == 0)
+        if (m_engine->getTextCodec() == nullptr)
             s += QString(data);
         else
             s += m_engine->getTextCodec()->toUnicode(data);
@@ -453,29 +456,37 @@ void QSpyWrk::run(QString fileName)
 int main(int argc, char *argv[])
 {
     QSpyWrk spy;
-    CmdLineArgs args;
-    args.setUsage("[options] file");
-    args.addOption('v', "verbose", "Verbose output");
-    args.addRequiredArgument("file", "Input WRK file name");
-    args.parse(argc, argv);
+    QCoreApplication app(argc, argv);
+    QCoreApplication::setApplicationName(PGM_NAME);
+    QCoreApplication::setApplicationVersion(PGM_VERSION);
 
-    QVariant verbose = args.getOption("verbose");
-    if (!verbose.isNull())
+    QCommandLineParser parser;
+    parser.setApplicationDescription(PGM_DESCRIPTION);
+    auto helpOption = parser.addHelpOption();
+    auto versionOption = parser.addVersionOption();
+    QCommandLineOption verboseOption("verbose", "Verbose output.");
+    parser.addOption(verboseOption);
+    parser.addPositionalArgument("file", "Input WRK File Name(s).", "files...");
+    parser.process(app);
+
+    if (parser.isSet(versionOption) || parser.isSet(helpOption)) {
+        return 0;
+    }
+
+    if (parser.isSet(verboseOption)) {
         spy.setVerbosity(true);
+    }
 
-    QVariantList files = args.getArguments("file");
-    QStringList fileNames;
-    foreach(const QVariant& a, files) {
+    QStringList fileNames, positionalArgs = parser.positionalArguments();
+    foreach(const QVariant& a, positionalArgs) {
         QFileInfo f(a.toString());
         if (f.exists())
             fileNames += f.canonicalFilePath();
         else
-            cout << "File not found: " << a.toString() << endl;
+            cerr << "File not found: " << a.toString() << endl;
     }
-
     foreach(const QString& file, fileNames) {
         spy.run(file);
     }
-
     return 0;
 }

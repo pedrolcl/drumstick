@@ -32,7 +32,6 @@ ADD_EXECUTABLE(drumstick-dumpmid
 
 TARGET_LINK_LIBRARIES(drumstick-dumpmid
     ${ALSA_LIBS} 
-    drumstick-common
     drumstick-alsa
     Qt5::Core
 )

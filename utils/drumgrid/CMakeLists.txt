@@ -49,7 +49,6 @@ ADD_EXECUTABLE(drumstick-drumgrid
 
 TARGET_LINK_LIBRARIES(drumstick-drumgrid
     ${ALSA_LIBS} 
-    drumstick-common
     drumstick-alsa
     Qt5::Widgets
 )

@@ -17,10 +17,10 @@
             </author>
         </authorgroup>
         <copyright>
-            <year>2010</year>
+            <year>2010-2019</year>
             <holder>Pedro Lopez-Cabanillas</holder>
         </copyright>
-        <date>May 13, 2010</date>
+        <date>Jan 13, 2019</date>
     </refentryinfo>
 
     <refmeta>
@@ -41,8 +41,6 @@
         <title>Synopsis</title>
         <cmdsynopsis><command>&product;</command>
             <arg choice="opt">options</arg>
-            <arg choice="req">PORT</arg>
-            <arg choice="opt">BPM</arg>
         </cmdsynopsis>
     </refsynopsisdiv>
 
@@ -59,7 +57,10 @@
         <para>The following arguments are required:</para>
         <variablelist>
             <varlistentry>
-                <term><option>PORT</option></term>
+                <term>
+                    <option>-p|--port=</option>
+                    client:port
+                </term>
                 <listitem>
                 <para>An ALSA client:port specification that will be subscribed 
                 in order to send MIDI events to it. The client portion can be
@@ -71,9 +72,12 @@
         <para>The following arguments are optional:</para>
         <variablelist>
             <varlistentry>
-                <term><option>BPM</option></term>
+                <term>
+                    <option>-b|--bpm=</option>
+                    BPM
+                </term>
                 <listitem>
-                <para>Tempo in beats per minute.</para>
+                    <para>Tempo in beats per minute. Default is 120 BPM.</para>
                 </listitem>
             </varlistentry>
 
@@ -88,7 +92,7 @@
 
             <varlistentry>
                 <term>
-                    <option>-V|--version</option>
+                    <option>-v|--version</option>
                 </term>
                 <listitem>
                     <para>Prints the program version number and exit.</para>

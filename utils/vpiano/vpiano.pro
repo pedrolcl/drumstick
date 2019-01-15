@@ -28,15 +28,13 @@ RESOURCES += pianokeybd.qrc
 macx:!static {
     QMAKE_LFLAGS += -F$$OUT_PWD/../../build/lib -L$$OUT_PWD/../../build/lib
     LIBS += -framework drumstick-rt
-    LIBS += -l$$qtLibraryTarget(drumstick-common)
     ICON = ../../icons/drumstick.icns
     QMAKE_TARGET_BUNDLE_PREFIX = net.sourceforge
     QMAKE_BUNDLE = drumstick-vpiano
     QMAKE_INFO_PLIST = ../Info.plist.app
 } else {
     LIBS += -L$$OUT_PWD/../../build/lib/
-    LIBS += -l$$qtLibraryTarget(drumstick-common) \
-            -l$$qtLibraryTarget(drumstick-rt)
+    LIBS += -l$$qtLibraryTarget(drumstick-rt)
 }
 
 static {

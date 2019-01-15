@@ -16,9 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "playsmf.h"
-#include "cmdlineargs.h"
-
 #include <signal.h>
 #include <QCoreApplication>
 #include <QTextStream>
@@ -26,7 +23,13 @@
 #include <QFileInfo>
 #include <QReadLocker>
 #include <QWriteLocker>
+#include <QCommandLineParser>
 
+#include "playsmf.h"
+#include "cmdversion.h"
+
+const QString PGM_NAME("drumstick-playsmf");
+const QString PGM_DESCRIPTION("Drumstick command line MIDI file player");
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
@@ -134,7 +137,7 @@ void PlaySMF::shutupSound()
     int channel;
     for (channel = 0; channel < 16; ++channel) {
         ControllerEvent ev(channel, MIDI_CTL_ALL_SOUNDS_OFF, 0);
-        ev.setSource(m_portId);
+        ev.setSource(static_cast<unsigned char>(m_portId));
         ev.setSubscribers();
         ev.setDirect();
         m_Client->outputDirect(&ev);
@@ -145,11 +148,11 @@ void PlaySMF::shutupSound()
 void PlaySMF::appendEvent(SequencerEvent* ev)
 {
     long tick = m_engine->getCurrentTime();
-    ev->setSource(m_portId);
+    ev->setSource(static_cast<unsigned char>(m_portId));
     if (ev->getSequencerType() != SND_SEQ_EVENT_TEMPO) {
         ev->setSubscribers();
     }
-    ev->scheduleTick(m_queueId, tick, false);
+    ev->scheduleTick(m_queueId, static_cast<int>(tick), false);
     m_song.append(ev);
 }
 
@@ -270,7 +273,7 @@ void PlaySMF::play(QString fileName)
     QueueTempo firstTempo = m_Queue->getTempo();
     firstTempo.setPPQ(m_division);
     if (m_initialTempo > 0)
-        firstTempo.setTempo(m_initialTempo);
+        firstTempo.setTempo(static_cast<unsigned int>(m_initialTempo));
     m_Queue->setTempo(firstTempo);
     m_Client->drainOutput();
     cout << "Starting playback" << endl;
@@ -299,7 +302,7 @@ void PlaySMF::play(QString fileName)
     }
 }
 
-PlaySMF* player = 0;
+static PlaySMF* player = nullptr;
 
 void signalHandler(int sig)
 {
@@ -307,7 +310,7 @@ void signalHandler(int sig)
         qDebug() << "Caught a SIGINT. Exiting";
     else if (sig == SIGTERM)
         qDebug() << "Caught a SIGTERM. Exiting";
-    if (player != 0)
+    if (player != nullptr)
         player->stop();
 }
 
@@ -319,24 +322,42 @@ int main(int argc, char **argv)
         "or the kernel module (snd_seq) is not loaded. "
         "Please check your ALSA/MIDI configuration.";
 
-    CmdLineArgs args;
     signal(SIGINT, signalHandler);
     signal(SIGTERM, signalHandler);
 
-    args.setUsage("[options] port file...");
-    args.addRequiredArgument("port", "Destination, MIDI port");
-    args.addMultipleArgument("file", "Input SMF(s)");
-    args.parse(argc, argv);
+    QCoreApplication app(argc, argv);
+    QCoreApplication::setApplicationName(PGM_NAME);
+    QCoreApplication::setApplicationVersion(PGM_VERSION);
+
+    QCommandLineParser parser;
+    parser.setApplicationDescription(PGM_DESCRIPTION);
+    auto helpOption = parser.addHelpOption();
+    auto versionOption = parser.addVersionOption();
+    QCommandLineOption portOption({"p","port"}, "Destination, MIDI port.", "client:port");
+    parser.addOption(portOption);
+    parser.addPositionalArgument("file", "Input SMF File(s).", "files...");
+    parser.process(app);
+
+    if (parser.isSet(versionOption) || parser.isSet(helpOption)) {
+        return 0;
+    }
 
     try {
         player = new PlaySMF();
-        QVariant port = args.getArgument("port");
-        if (!port.isNull())
-            player->subscribe(port.toString());
-
-        QVariantList files = args.getArguments("file");
-        foreach(const QVariant& f, files) {
-            QFileInfo file(f.toString());
+        if (parser.isSet(portOption)) {
+            QString port = parser.value(portOption);
+            player->subscribe(port);
+        } else {
+            cerr << "Port argument is missing" << endl;
+            parser.showHelp();
+        }
+        QStringList files = parser.positionalArguments();
+        if (files.isEmpty()) {
+            cerr << "No input files" << endl;
+            parser.showHelp();
+        }
+        foreach(const QString& f, files) {
+            QFileInfo file(f);
             if (file.exists())
                 player->play(file.canonicalFilePath());
         }

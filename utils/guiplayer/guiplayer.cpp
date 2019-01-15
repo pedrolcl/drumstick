@@ -576,21 +576,21 @@ void GUIPlayer::dropEvent( QDropEvent * event )
     }
 }
 
-bool GUIPlayer::event( QEvent * event )
-{
-    if(event->type() == QEvent::Polish) {
-        readSettings();
-        /* Process the command line arguments.
-           The first argument should be a MIDI file name */
-        QStringList args = QCoreApplication::arguments();
-        if (args.size() > 1) {
-            QString first = args.at(1);
-            openFile(first);
-        }
-        event->accept();
-    }
-    return QMainWindow::event(event);
-}
+//bool GUIPlayer::event( QEvent * event )
+//{
+//    if(event->type() == QEvent::Polish) {
+//        readSettings();
+//        /* Process the command line arguments.
+//           The first argument should be a MIDI file name */
+//        QStringList args = QCoreApplication::arguments();
+//        if (args.size() > 1) {
+//            QString first = args.at(1);
+//            openFile(first);
+//        }
+//        event->accept();
+//    }
+//    return QMainWindow::event(event);
+//}
 
 void GUIPlayer::readSettings()
 {

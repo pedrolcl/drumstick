@@ -63,7 +63,7 @@ class GUIPlayer : public QMainWindow
     Q_OBJECT
 
 public:
-    GUIPlayer(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    GUIPlayer(QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
     ~GUIPlayer();
 
     void appendSMFEvent(SequencerEvent* ev);
@@ -76,7 +76,7 @@ public:
     void dragEnterEvent(QDragEnterEvent* event);
     void dropEvent(QDropEvent* event);
     void closeEvent(QCloseEvent* event);
-    bool event(QEvent* event);
+    //bool event(QEvent* event);
     void openFile(const QString& fileName);
     void readSettings();
     void writeSettings();

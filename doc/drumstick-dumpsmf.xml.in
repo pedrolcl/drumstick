@@ -17,10 +17,10 @@
             </author>
         </authorgroup>
         <copyright>
-            <year>2010</year>
+            <year>2010-2019</year>
             <holder>Pedro Lopez-Cabanillas</holder>
         </copyright>
-        <date>May 13, 2010</date>
+        <date>Jan 13, 2019</date>
     </refentryinfo>
 
     <refmeta>
@@ -79,7 +79,7 @@
 
             <varlistentry>
                 <term>
-                    <option>-V|--version</option>
+                    <option>-v|--version</option>
                 </term>
                 <listitem>
                     <para>Prints the program version number and exit.</para>

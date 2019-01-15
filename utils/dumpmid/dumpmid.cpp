@@ -16,9 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "dumpmid.h"
-#include "cmdlineargs.h"
-
 #include <signal.h>
 #include <QObject>
 #include <QString>
@@ -27,6 +24,13 @@
 #include <QtDebug>
 #include <QReadLocker>
 #include <QWriteLocker>
+#include <QCommandLineParser>
+
+#include "dumpmid.h"
+#include "cmdversion.h"
+
+const QString PGM_NAME("drumstick-dumpmid");
+const QString PGM_DESCRIPTION("Drumstick command line utility for decoding MIDI events");
 
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 static QTextStream cerr(stderr, QIODevice::WriteOnly);
@@ -452,17 +456,33 @@ int main(int argc, char **argv)
         "or the kernel module (snd_seq) is not loaded. "
         "Please check your ALSA/MIDI configuration.";
 
-    CmdLineArgs args;
-    args.setUsage("[port]");
-    args.addOptionalArgument("port", "Source MIDI port");
-    args.parse(argc, argv);
+    QCoreApplication app(argc, argv);
+    QCoreApplication::setApplicationName(PGM_NAME);
+    QCoreApplication::setApplicationVersion(PGM_VERSION);
+
+    QCommandLineParser parser;
+    parser.setApplicationDescription(PGM_DESCRIPTION);
+    auto helpOption = parser.addHelpOption();
+    auto versionOption = parser.addVersionOption();
+    QCommandLineOption portOption({"p", "port"}, "Source MIDI Port.", "client:port");
+    parser.addOption(portOption);
+    parser.process(app);
+
+    if (parser.isSet(versionOption) || parser.isSet(helpOption)) {
+        return 0;
+    }
+
     try {
         test = new QDumpMIDI();
         signal(SIGINT, signalHandler);
         signal(SIGTERM, signalHandler);
-        QVariant portName = args.getArgument("port");
-        if (!portName.isNull())
-            test->subscribe(portName.toString());
+        if (parser.isSet(portOption)) {
+            QString portName = parser.value(portOption);
+            test->subscribe(portName);
+        } else {
+            cerr << "Port argument is mandatory" << endl;
+            parser.showHelp();
+        }
         test->run();
     } catch (const SequencerError& ex) {
         cerr << errorstr + " Returned error was: " + ex.qstrError() << endl;

@@ -27,7 +27,7 @@ const int FORMAT( 0 );
 const int TRACKS( 1 );
 const int DIVISION( 120 );
 const int TEMPO( 100 );
-const QString COPYRIGHT( "Copyright (C) 2006-2017 Pedro López-Cabanillas" );
+const QString COPYRIGHT( "Copyright (C) 2006-2018 Pedro López-Cabanillas" );
 const QByteArray GSRESET( "f04110421240007f0041f7" );
 const QList<int> NOTES({ 60, 62, 64, 65, 67, 69, 71, 72 });
 
@@ -90,8 +90,8 @@ private:
 };
 
 FileTest::FileTest():
-    m_engine(0),
-    m_stream(0),
+    m_engine(nullptr),
+    m_stream(nullptr),
     m_numNoteOn(0),
     m_lastNoteOn(0),
     m_numNoteOff(0),
@@ -108,7 +108,7 @@ FileTest::FileTest():
     m_engine = new QSmf(this);
     m_engine->setTextCodec(QTextCodec::codecForName("UTF-8"));
     m_stream = new QDataStream(&m_data, QIODevice::ReadWrite);
-    m_expected = QByteArray::fromRawData((const char *) test_mid, test_mid_len);
+    m_expected = QByteArray::fromRawData(reinterpret_cast<const char *>(test_mid), test_mid_len);
 
     connect(m_engine, SIGNAL(signalSMFError(const QString&)), this, SLOT(errorHandler(const QString&)));
     connect(m_engine, SIGNAL(signalSMFWriteTrack(int)), this, SLOT(trackHandler(int)));
@@ -238,7 +238,7 @@ void FileTest::keySigEvent(int b0, int b1)
 
 void FileTest::tempoEvent(int tempo)
 {
-    m_lastTempo = 6e7 / tempo;
+    m_lastTempo = static_cast<int>( 6e7 / tempo );
 }
 
 void FileTest::testCaseWriteSmf()

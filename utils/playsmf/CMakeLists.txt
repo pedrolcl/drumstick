@@ -32,7 +32,6 @@ ADD_EXECUTABLE(drumstick-playsmf
 
 TARGET_LINK_LIBRARIES(drumstick-playsmf
     ${ALSA_LIBS} 
-    drumstick-common
     drumstick-alsa
     drumstick-file
     Qt5::Core

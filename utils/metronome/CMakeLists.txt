@@ -32,7 +32,6 @@ ADD_EXECUTABLE(drumstick-metronome
 
 TARGET_LINK_LIBRARIES(drumstick-metronome
     ${ALSA_LIBS} 
-    drumstick-common
     drumstick-alsa
     Qt5::Core
 )

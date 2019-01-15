@@ -20,7 +20,7 @@
 
 #include "dumpsmf.h"
 #include "qsmf.h"
-#include "cmdlineargs.h"
+#include "cmdversion.h"
 
 #include <cstdlib>
 #include <QObject>
@@ -28,8 +28,13 @@
 #include <QCoreApplication>
 #include <QTextStream>
 #include <QTextCodec>
+#include <QFileInfo>
+#include <QCommandLineParser>
 
+const QString PGM_NAME("drumstick-dumpsmf");
+const QString PGM_DESCRIPTION("Drumstick command line utility for decoding SMF (Standard MIDI) files");
 static QTextStream cout(stdout, QIODevice::WriteOnly);
+static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
 QSpySMF::QSpySMF():
     m_currentTrack(0)
@@ -236,12 +241,38 @@ void QSpySMF::run(QString fileName)
 int main(int argc, char **argv)
 {
     QSpySMF spy;
-    CmdLineArgs args;
-    args.setUsage("file");
-    args.addRequiredArgument("file", "Input SMF name");
-    args.parse(argc, argv);
-    QVariant file = args.getArgument("file");
-    if (!file.isNull())
-        spy.run(file.toString());
+    QString file;
+    QCoreApplication app(argc, argv);
+    QCoreApplication::setApplicationName(PGM_NAME);
+    QCoreApplication::setApplicationVersion(PGM_VERSION);
+
+    QCommandLineParser parser;
+    parser.setApplicationDescription(PGM_DESCRIPTION);
+    auto helpOption = parser.addHelpOption();
+    auto versionOption = parser.addVersionOption();
+    parser.addPositionalArgument("file", "Input SMF file name.", "files...");
+    parser.process(app);
+
+    if (parser.isSet(versionOption) || parser.isSet(helpOption)) {
+        return 0;
+    }
+
+    QStringList fileNames, positionalArgs = parser.positionalArguments();
+    if (positionalArgs.isEmpty()) {
+        cerr << "Input file name(s) missing" << endl;
+        parser.showHelp();
+    }
+
+    foreach(const QString& a, positionalArgs) {
+        QFileInfo f(a);
+        if (f.exists())
+            fileNames += f.canonicalFilePath();
+        else
+            cerr << "File not found: " << a << endl;
+    }
+
+    foreach(const QString& file, fileNames) {
+        spy.run(file);
+    }
 }
 

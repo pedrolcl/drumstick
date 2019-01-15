@@ -4,8 +4,7 @@ QT += gui widgets #dbus
 CONFIG += qt thread exceptions link_prl
 DESTDIR = ../../build/bin
 INCLUDEPATH += . ../../library/include ../common 
-LIBS = -L../../build/lib -ldrumstick-common -ldrumstick-alsa -lasound
-PRE_TARGETDEPS += $$OUT_PWD/../../build/lib/libdrumstick-common.a
+LIBS = -L../../build/lib -ldrumstick-alsa -lasound
 include (../../global.pri)
 SOURCES += drumgridabout.cpp \
     drumgridmain.cpp \

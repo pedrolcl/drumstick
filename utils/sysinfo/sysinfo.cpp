@@ -20,11 +20,14 @@
 #include "alsaqueue.h"
 #include "alsaclient.h"
 #include "subscription.h"
-#include "cmdlineargs.h"
+#include "cmdversion.h"
 #include <QTextStream>
 #include <QStringList>
+#include <QCommandLineParser>
 
-static QTextStream cout(stdout, QIODevice::WriteOnly); 
+const QString PGM_NAME("drumstick-sysinfo");
+const QString PGM_DESCRIPTION("ALSA Sequencer System Info");
+static QTextStream cout(stdout, QIODevice::WriteOnly);
 static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
 using namespace drumstick;
@@ -71,7 +74,7 @@ void queryQueues(MidiClient* c)
     QList<int> queues = c->getAvailableQueues();
     foreach( int q, queues ) {
         MidiQueue* queue = new MidiQueue(c, q);
-        if (queue != NULL) {
+        if (queue != nullptr) {
             QueueInfo qinfo = queue->getInfo();
             QueueStatus qsts = queue->getStatus();
             QueueTempo qtmp = queue->getTempo();
@@ -153,8 +156,8 @@ QString subsNames(SubscribersList& subs)
 {
     QStringList lst;
     foreach( Subscriber s, subs ) {
-        QString sname = QString("%1:%2").arg((int)s.getAddr()->client)
-                                        .arg((int)s.getAddr()->port);
+        QString sname = QString("%1:%2").arg(static_cast<int>(s.getAddr()->client))
+                                        .arg(static_cast<int>(s.getAddr()->port));
         lst << sname;
     }
     return lst.join(", ");
@@ -185,14 +188,13 @@ void queryClients(MidiClient* c)
     }
 }
 
-void systemInfo(CmdLineArgs* args)
+void systemInfo()
 {
     MidiClient* client = new MidiClient();
     client->open();
-    client->setClientName(args->programName());
+    client->setClientName(PGM_NAME);
     SystemInfo info = client->getSystemInfo();
-    cout << "ALSA Sequencer System Info, version: "
-         << args->programVersion() << endl;
+    cout << PGM_DESCRIPTION << ", version: "<< PGM_VERSION << endl;
     cout << "Compiled ALSA library: " << LIBRARY_VERSION << endl;
     cout << "Runtime ALSA library: "
          << getRuntimeALSALibraryVersion() << endl;
@@ -225,10 +227,22 @@ int main(int argc, char **argv)
         "or the device node (/dev/snd/seq) doesn't exists, "
         "or the kernel module (snd_seq) is not loaded. "
         "Please check your ALSA/MIDI configuration.";
-    CmdLineArgs args;
-    args.parse(argc, argv);
+    QCoreApplication app(argc, argv);
+    QCoreApplication::setApplicationName(PGM_NAME);
+    QCoreApplication::setApplicationVersion(PGM_VERSION);
+
+    QCommandLineParser parser;
+    parser.setApplicationDescription(PGM_DESCRIPTION);
+    auto helpOption = parser.addHelpOption();
+    auto versionOption = parser.addVersionOption();
+    parser.process(app);
+
+    if (parser.isSet(versionOption) || parser.isSet(helpOption)) {
+        return 0;
+    }
+
     try {
-        systemInfo(&args);
+        systemInfo();
     } catch (const SequencerError& ex) {
         cerr << errorstr + " Returned error was: " + ex.qstrError() << endl;
     } catch (...) {

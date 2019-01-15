@@ -18,10 +18,8 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/common
-    ${CMAKE_CURRENT_BINARY_DIR}/common
 )
 
-add_subdirectory(common)
 add_subdirectory(dumpsmf)
 add_subdirectory(dumpwrk)
 add_subdirectory(dumpove)

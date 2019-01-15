@@ -20,31 +20,36 @@
 #include <QFileInfo>
 #include <QSettings>
 #include <QTextStream>
-#include "cmdlineargs.h"
+#include <QCommandLineParser>
+
+#include "cmdversion.h"
 #include "vpiano.h"
 #include "backendmanager.h"
 
+const QString PGM_DESCRIPTION("Drumstick Simple Virtual Piano");
+
 int main(int argc, char *argv[])
 {
-    QTextStream cout(stdout, QIODevice::WriteOnly);
     QTextStream cerr(stderr, QIODevice::WriteOnly);
     QCoreApplication::setOrganizationName("drumstick.sourceforge.net");
     QCoreApplication::setOrganizationDomain("drumstick.sourceforge.net");
     QCoreApplication::setApplicationName("VPiano");
+    QCoreApplication::setApplicationVersion(PGM_VERSION);
     QApplication app(argc, argv);
 
-    CmdLineArgs args;
-    args.setStdQtArgs(true);
-    args.parse(argc, argv);
-
-    QFileInfo exeInfo(app.applicationFilePath());
-    cout << "program=" << exeInfo.fileName() << endl;
+    QCommandLineParser parser;
+    parser.setApplicationDescription(PGM_DESCRIPTION);
+    auto helpOption = parser.addHelpOption();
+    auto versionOption = parser.addVersionOption();
+    parser.process(app);
+    if (parser.isSet(versionOption) || parser.isSet(helpOption)) {
+        return 0;
+    }
 
     QSettings settings;
     settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
     settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("Virtual Piano IN"));
     settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("Virtual Piano OUT"));
-    //settings.setValue(QSTR_DRUMSTICKRT_PATH, backendir);
     settings.endGroup();
     settings.sync();
 
