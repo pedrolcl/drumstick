@@ -27,7 +27,7 @@ const int FORMAT( 0 );
 const int TRACKS( 1 );
 const int DIVISION( 120 );
 const int TEMPO( 100 );
-const QString COPYRIGHT( "Copyright (C) 2006-2018 Pedro López-Cabanillas" );
+const QString COPYRIGHT( "Copyright (C) 2006-2019 Pedro López-Cabanillas" );
 const QByteArray GSRESET( "f04110421240007f0041f7" );
 const QList<int> NOTES({ 60, 62, 64, 65, 67, 69, 71, 72 });
 
