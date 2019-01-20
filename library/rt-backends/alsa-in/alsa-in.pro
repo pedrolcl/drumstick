@@ -3,7 +3,7 @@ CONFIG += plugin
 static {
     CONFIG += staticlib create_prl
 }
-TARGET = $$qtLibraryTarget(drumstick-rt-alsa-in)
+TARGET = drumstick-rt-alsa-in
 DESTDIR = ../../../build/lib/drumstick
 DEPENDPATH += . ../../include
 INCLUDEPATH += . ../../include
@@ -16,5 +16,5 @@ HEADERS += ../../include/rtmidiinput.h \
 SOURCES += alsamidiinput.cpp
 
 LIBS += -L../../../build/lib \
-        -l$$qtLibraryTarget(drumstick-alsa) \
+        -ldrumstick-alsa \
         -lasound

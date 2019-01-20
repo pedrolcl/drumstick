@@ -1,5 +1,5 @@
 TEMPLATE = lib
-TARGET = $$qtLibraryTarget(drumstick-rt-oss-out)
+TARGET = drumstick-rt-oss-out
 DESTDIR = ../../../build/lib/drumstick
 include (../../../global.pri)
 CONFIG += plugin

@@ -16,5 +16,5 @@ macx:!static {
     LIBS += -framework drumstick-file
 } else {
     LIBS = -L$$OUT_PWD/../../build/lib \
-        -l$$qtLibraryTarget(drumstick-file)
+        -l$$drumstickLib(drumstick-file)
 }

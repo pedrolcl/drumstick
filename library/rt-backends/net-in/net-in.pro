@@ -3,7 +3,7 @@ CONFIG += plugin
 static {
     CONFIG += staticlib create_prl
 }
-TARGET = $$qtLibraryTarget(drumstick-rt-net-in)
+TARGET = drumstick-rt-net-in
 DESTDIR = ../../../build/lib/drumstick
 DEPENDPATH += . ../../include ../common
 INCLUDEPATH += . ../../include ../common
@@ -21,7 +21,3 @@ SOURCES += netmidiinput.cpp \
            ../common/midiparser.cpp
 
 QT += network
-
-win32 {
-    TARGET_EXT = .dll
-}

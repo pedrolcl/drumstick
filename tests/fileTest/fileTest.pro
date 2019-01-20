@@ -4,6 +4,7 @@ TARGET = fileTest
 CONFIG   += console
 CONFIG   -= app_bundle
 TEMPLATE = app
+include (../../global.pri)
 SOURCES += filetest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 INCLUDEPATH += . ../../library/include
@@ -13,6 +14,6 @@ macx:!static {
     LIBS += -framework drumstick-file
 } else {
     LIBS += -L$$OUT_PWD/../../build/lib \
-            -l$$qtLibraryTarget(drumstick-file)
+            -l$$drumstickLib(drumstick-file)
 }
 

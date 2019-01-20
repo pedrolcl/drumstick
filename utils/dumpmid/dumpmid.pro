@@ -14,6 +14,6 @@ HEADERS += dumpmid.h
 SOURCES += dumpmid.cpp
 
 LIBS = -L$$OUT_PWD/../../build/lib \
-    -l$$qtLibraryTarget(drumstick-alsa)
+    -ldrumstick-alsa
 
 PKGCONFIG += alsa

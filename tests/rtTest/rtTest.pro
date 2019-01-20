@@ -4,6 +4,7 @@ TARGET = rtTest
 CONFIG   += console
 CONFIG   -= app_bundle
 TEMPLATE = app
+include (../../global.pri)
 SOURCES += rttest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 INCLUDEPATH += . ../../library/include
@@ -13,5 +14,5 @@ macx:!static {
     LIBS += -framework drumstick-rt
 } else {
     LIBS += -L$$OUT_PWD/../../build/lib \
-            -l$$qtLibraryTarget(drumstick-rt)
+            -l$$drumstickLib(drumstick-rt)
 }

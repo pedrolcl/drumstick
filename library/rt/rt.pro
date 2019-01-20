@@ -1,5 +1,5 @@
 TEMPLATE = lib
-TARGET = $$qtLibraryTarget(drumstick-rt)
+TARGET = drumstick-rt
 DESTDIR = ../../build/lib
 DEPENDPATH += . ../include
 INCLUDEPATH += . ../include
@@ -21,10 +21,6 @@ HEADERS += \
 SOURCES += \
     backendmanager.cpp
 
-win32 {
-    TARGET_EXT = .dll
-}
-
 macx:!static {
     TARGET = drumstick-rt
     CONFIG += lib_bundle
@@ -45,18 +41,18 @@ static {
 
     #dummy {
     #    DEFINES += DUMMY_BACKEND
-    #    LIBS += -l$$qtLibraryTarget(drumstick-rt-dummy-in) \
-    #            -l$$qtLibraryTarget(drumstick-rt-dummy-out)
+    #    LIBS += -ldrumstick-rt-dummy-in \
+    #            -ldrumstick-rt-dummy-out
     #}
 
     linux* {
         DEFINES += LINUX_BACKEND
-        LIBS += -l$$qtLibraryTarget(drumstick-rt-alsa-in) \
-                -l$$qtLibraryTarget(drumstick-rt-alsa-out) \
-                -l$$qtLibraryTarget(drumstick-alsa) \
+        LIBS += -ldrumstick-rt-alsa-in \
+                -ldrumstick-rt-alsa-out \
+                -ldrumstick-alsa \
                 -lasound
         packagesExist(libpulse-simple) {
-            LIBS += -l$$qtLibraryTarget(drumstick-rt-eassynth)
+            LIBS += -ldrumstick-rt-eassynth
             CONFIG += link_pkgconfig
             PKGCONFIG += libpulse-simple
         }
@@ -64,15 +60,15 @@ static {
 
     unix:!macx {
         DEFINES += OSS_BACKEND
-        LIBS += -l$$qtLibraryTarget(drumstick-rt-oss-in) \
-                -l$$qtLibraryTarget(drumstick-rt-oss-out)
+        LIBS += -ldrumstick-rt-oss-in \
+                -ldrumstick-rt-oss-out
     }
 
     macx {
         DEFINES += MAC_BACKEND
-        LIBS += -l$$qtLibraryTarget(drumstick-rt-mac-in) \
-                -l$$qtLibraryTarget(drumstick-rt-mac-out) \
-                -l$$qtLibraryTarget(drumstick-rt-macsynth) \
+        LIBS += -ldrumstick-rt-mac-in \
+                -ldrumstick-rt-mac-out \
+                -ldrumstick-rt-macsynth \
                 -framework CoreMidi \
                 -framework CoreFoundation \
                 -framework CoreServices \
@@ -83,19 +79,19 @@ static {
 
     win32 {
         DEFINES += WIN_BACKEND
-        LIBS += -l$$qtLibraryTarget(drumstick-rt-win-in) \
-                -l$$qtLibraryTarget(drumstick-rt-win-out) \
+        LIBS += -ldrumstick-rt-win-in \
+                -ldrumstick-rt-win-out \
                 -lwinmm
     }
 
     DEFINES += NET_BACKEND
     QT += network
-    LIBS += -l$$qtLibraryTarget(drumstick-rt-net-in) \
-            -l$$qtLibraryTarget(drumstick-rt-net-out)
+    LIBS += -ldrumstick-rt-net-in \
+            -ldrumstick-rt-net-out
 
     packagesExist(fluidsynth) {
         DEFINES += SYNTH_BACKEND
-        LIBS += -l$$qtLibraryTarget(drumstick-rt-synth)
+        LIBS += -ldrumstick-rt-synth
         macx {
             LIBS += -framework FluidSynth
         } else {

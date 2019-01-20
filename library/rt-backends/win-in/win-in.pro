@@ -3,7 +3,7 @@ CONFIG += plugin
 static {
     CONFIG += staticlib create_prl
 }
-TARGET = $$qtLibraryTarget(drumstick-rt-win-in)
+TARGET = drumstick-rt-win-in
 DESTDIR = ../../../build/lib/drumstick
 DEPENDPATH += . ../../include
 INCLUDEPATH += . ../../include
@@ -20,7 +20,3 @@ SOURCES += \
            winmidiinput.cpp
 
 LIBS += -lwinmm
-
-win32 {
-    TARGET_EXT = .dll
-}

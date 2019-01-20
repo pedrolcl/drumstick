@@ -1,5 +1,5 @@
 TEMPLATE = lib
-TARGET = $$qtLibraryTarget(drumstick-file)
+TARGET = drumstick-file
 DESTDIR = ../../build/lib
 DEPENDPATH += . ../include
 INCLUDEPATH += . ../include
@@ -16,9 +16,6 @@ HEADERS += ../include/macros.h \
 SOURCES += qsmf.cpp \
            qwrk.cpp \
            qove.cpp
-win32 {
-    TARGET_EXT = .dll
-}
 
 static {
     CONFIG += staticlib create_prl

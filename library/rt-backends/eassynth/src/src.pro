@@ -1,5 +1,5 @@
 TEMPLATE = lib
-TARGET = $$qtLibraryTarget(drumstick-rt-eassynth)
+TARGET = drumstick-rt-eassynth
 DESTDIR = ../../../../build/lib/drumstick
 include (../../../../global.pri)
 CONFIG += plugin link_prl

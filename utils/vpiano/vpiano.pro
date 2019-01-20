@@ -34,19 +34,19 @@ macx:!static {
     QMAKE_INFO_PLIST = ../Info.plist.app
 } else {
     LIBS += -L$$OUT_PWD/../../build/lib/
-    LIBS += -l$$qtLibraryTarget(drumstick-rt)
+    LIBS += -l$$drumstickLib(drumstick-rt)
 }
 
 static {
     CONFIG += link_prl
 
     LIBS += -L$$OUT_PWD/../../build/lib/drumstick/
-    LIBS += -l$$qtLibraryTarget(drumstick-rt-net-in) \
-            -l$$qtLibraryTarget(drumstick-rt-net-out)
+    LIBS += -ldrumstick-rt-net-in \
+            -ldrumstick-rt-net-out
 
     packagesExist(fluidsynth) {
         DEFINES += SYNTH_BACKEND
-        LIBS += -l$$qtLibraryTarget(drumstick-rt-synth)
+        LIBS += -ldrumstick-rt-synth
         macx {
             QMAKE_LFLAGS += -F/Library/Frameworks
             LIBS += -framework FluidSynth
@@ -57,29 +57,29 @@ static {
     }
 
     linux* {
-        LIBS += -l$$qtLibraryTarget(drumstick-rt-alsa-in) \
-                -l$$qtLibraryTarget(drumstick-rt-alsa-out) \
-                -l$$qtLibraryTarget(drumstick-rt-eassynth) \
-                -l$$qtLibraryTarget(drumstick-alsa) \
+        LIBS += -ldrumstick-rt-alsa-in \
+                -ldrumstick-rt-alsa-out \
+                -ldrumstick-rt-eassynth \
+                -ldrumstick-alsa \
                 -lasound
     }
 
     unix:!macx {
-        LIBS += -l$$qtLibraryTarget(drumstick-rt-oss-in) \
-                -l$$qtLibraryTarget(drumstick-rt-oss-out)
+        LIBS += -ldrumstick-rt-oss-in \
+                -ldrumstick-rt-oss-out
     }
 
     macx {
-        LIBS += -l$$qtLibraryTarget(drumstick-rt-mac-in) \
-                -l$$qtLibraryTarget(drumstick-rt-mac-out) \
-                -l$$qtLibraryTarget(drumstick-rt-macsynth) \
+        LIBS += -ldrumstick-rt-mac-in \
+                -ldrumstick-rt-mac-out \
+                -ldrumstick-rt-macsynth \
                 -framework CoreMIDI \
                 -framework CoreFoundation
     }
 
     win32 {
-        LIBS += -l$$qtLibraryTarget(drumstick-rt-win-in) \
-                -l$$qtLibraryTarget(drumstick-rt-win-out) \
+        LIBS += -ldrumstick-rt-win-in \
+                -ldrumstick-rt-win-out \
                 -lwinmm
     }
 }

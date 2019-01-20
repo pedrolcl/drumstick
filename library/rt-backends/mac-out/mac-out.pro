@@ -3,7 +3,7 @@ CONFIG += plugin
 static {
     CONFIG += staticlib create_prl
 }
-TARGET = $$qtLibraryTarget(drumstick-rt-mac-out)
+TARGET = drumstick-rt-mac-out
 DESTDIR = ../../../build/lib/drumstick
 DEPENDPATH += . ../../include ../common
 INCLUDEPATH += . ../../include ../common
