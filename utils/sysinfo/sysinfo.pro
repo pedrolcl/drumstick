@@ -1,7 +1,10 @@
 TEMPLATE = app
 TARGET = drumstick-sysinfo
 #QT += dbus
-CONFIG += qt console thread exceptions link_prl
+CONFIG += qt console thread exceptions
+static {
+    CONFIG += link_prl
+}
 DESTDIR = ../../build/bin
 INCLUDEPATH += . ../../library/include ../common 
 DEPENDPATH += . ../../library ../../library/include

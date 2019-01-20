@@ -14,6 +14,7 @@ TEMPLATE = lib
 DESTDIR = ../../../../build/lib
 VERSION = 3.6.10
 CONFIG += staticlib \
+    create_prl \
     stdlib \
     warn_on
 

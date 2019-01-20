@@ -1,6 +1,9 @@
 TEMPLATE = app
 TARGET = drumstick-dumpwrk
-CONFIG += qt console link_prl
+CONFIG += qt console
+static {
+    CONFIG += link_prl
+}
 DESTDIR = ../../build/bin
 INCLUDEPATH += . ../../library/include ../common 
 include (../../global.pri)

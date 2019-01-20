@@ -1,7 +1,10 @@
 TEMPLATE = app
 TARGET = drumstick-guiplayer
 QT += gui widgets #dbus
-CONFIG += qt thread exceptions link_prl
+CONFIG += qt thread exceptions
+static {
+    CONFIG += link_prl
+}
 DESTDIR = ../../build/bin
 INCLUDEPATH += . ../../library/include ../common 
 LIBS = -L../../build/lib -ldrumstick-file -ldrumstick-alsa -lasound

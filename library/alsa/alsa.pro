@@ -6,7 +6,10 @@ INCLUDEPATH += . ../include
 include (../../global.pri)
 QT -= gui
 #QT += dbus
-CONFIG += qt thread create_prl link_pkgconfig
+CONFIG += qt thread link_pkgconfig
+static {
+    CONFIG += staticlib create_prl
+}
 DEFINES += drumstick_alsa_EXPORTS #RTKIT_SUPPORT
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
 # Input

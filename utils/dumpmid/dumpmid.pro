@@ -1,7 +1,10 @@
 TEMPLATE = app
 TARGET = drumstick-dumpmid
 #QT += dbus
-CONFIG += qt console thread exceptions link_prl link_pkgconfig
+CONFIG += qt console thread exceptions link_pkgconfig
+static {
+    CONFIG += link_prl
+}
 DESTDIR = ../../build/bin
 INCLUDEPATH += . ../../library/include ../common 
 DEPENDPATH += . ../../library ../../library/include

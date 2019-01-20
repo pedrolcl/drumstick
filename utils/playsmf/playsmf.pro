@@ -1,7 +1,10 @@
 TEMPLATE = app
 TARGET = drumstick-playsmf
 #QT += dbus
-CONFIG += qt console thread exceptions link_prl
+CONFIG += qt console thread exceptions
+static {
+    CONFIG += link_prl
+}
 DESTDIR = ../../build/bin
 INCLUDEPATH += . ../../library/include ../common 
 LIBS = -L../../build/lib -ldrumstick-alsa -ldrumstick-file -lasound

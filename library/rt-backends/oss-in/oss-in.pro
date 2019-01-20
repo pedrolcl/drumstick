@@ -2,7 +2,10 @@ TEMPLATE = lib
 TARGET = $$qtLibraryTarget(drumstick-rt-oss-in)
 DESTDIR = ../../../build/lib/drumstick
 include (../../../global.pri)
-CONFIG += plugin create_prl #static
+CONFIG += plugin
+static {
+    CONFIG += staticlib create_prl
+}
 DEPENDPATH += ../../include ../common
 INCLUDEPATH += ../../include ../common
 QT -= gui

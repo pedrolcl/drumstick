@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = drumstick-vpiano
 QT += gui widgets svg network
-CONFIG += qt thread exceptions link_prl
+CONFIG += qt thread exceptions
 DESTDIR = ../../build/bin
 include (../../global.pri)
 INCLUDEPATH += . ../../library/include ../common
@@ -38,6 +38,8 @@ macx:!static {
 }
 
 static {
+    CONFIG += link_prl
+
     LIBS += -L$$OUT_PWD/../../build/lib/drumstick/
     LIBS += -l$$qtLibraryTarget(drumstick-rt-net-in) \
             -l$$qtLibraryTarget(drumstick-rt-net-out)

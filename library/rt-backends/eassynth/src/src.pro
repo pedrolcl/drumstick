@@ -2,7 +2,10 @@ TEMPLATE = lib
 TARGET = $$qtLibraryTarget(drumstick-rt-eassynth)
 DESTDIR = ../../../../build/lib/drumstick
 include (../../../../global.pri)
-CONFIG += plugin create_prl #static
+CONFIG += plugin link_prl
+static {
+    CONFIG += staticlib create_prl
+}
 DEPENDPATH += ../sonivox
 DEPENDPATH += ../../../include
 INCLUDEPATH += ../sonivox/host_src
