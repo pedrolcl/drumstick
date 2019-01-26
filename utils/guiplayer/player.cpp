@@ -16,9 +16,9 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <drumstick/alsaqueue.h>
 #include "player.h"
 #include "song.h"
-#include "alsaqueue.h"
 #include <cmath>
 
 Player::Player(MidiClient *seq, int portId) 

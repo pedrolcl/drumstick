@@ -20,7 +20,7 @@
 #define MIDIPARSER_H
 
 #include <QObject>
-#include "rtmidiinput.h"
+#include <drumstick/rtmidiinput.h>
 
 namespace drumstick {
 namespace rt {

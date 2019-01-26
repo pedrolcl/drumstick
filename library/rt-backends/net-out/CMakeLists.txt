@@ -19,7 +19,7 @@ find_package(Qt5Network REQUIRED)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(drumstick-rt-net-out_QTOBJ_SRCS
-    ../../include/rtmidioutput.h
+    ../../include/drumstick/rtmidioutput.h
     netmidioutput.h
 )
 

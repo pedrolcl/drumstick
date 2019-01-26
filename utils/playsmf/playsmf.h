@@ -24,11 +24,11 @@
 #include <QList>
 #include <QReadWriteLock>
 
-#include "qsmf.h"
-#include "alsaevent.h"
-#include "alsaclient.h"
-#include "alsaqueue.h"
-#include "alsaport.h"
+#include <drumstick/qsmf.h>
+#include <drumstick/alsaevent.h>
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaqueue.h>
+#include <drumstick/alsaport.h>
 
 using namespace drumstick;
 

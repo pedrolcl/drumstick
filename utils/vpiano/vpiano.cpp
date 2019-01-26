@@ -17,8 +17,8 @@
 */
 
 #include <QDebug>
+#include <drumstick/backendmanager.h>
 #include "vpiano.h"
-#include "backendmanager.h"
 
 VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     : QMainWindow(parent, flags),
@@ -55,11 +55,17 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     findInput(m_lastInputBackend, inputs);
     if (m_midiIn == nullptr) {
         findInput(m_nativeInput, inputs);
+        if (m_midiIn == nullptr) {
+            qFatal("Unable to find a suitable input backend.");
+        }
     }
 
     findOutput(m_lastOutputBackend, outputs);
     if (m_midiOut == nullptr) {
         findOutput(m_nativeOutput, outputs);
+        if (m_midiOut == nullptr) {
+            qFatal("Unable to find a suitable output backend");
+        }
     }
 
     connect(ui.actionExit, SIGNAL(triggered()), SLOT(close()));
@@ -262,20 +268,32 @@ void VPiano::readSettings()
 
 void VPiano::findInput(QString name, QList<MIDIInput *> &inputs)
 {
+    if (name.isEmpty()) {
+        return;
+    }
     foreach(MIDIInput* input, inputs) {
         if (m_midiIn == nullptr && (input->backendName() == name))  {
             m_midiIn = input;
             break;
         }
     }
+    if (m_midiIn == nullptr) {
+        qWarning() << "Input backend not found: " << name;
+    }
 }
 
 void VPiano::findOutput(QString name, QList<MIDIOutput *> &outputs)
 {
+    if (name.isEmpty()) {
+        return;
+    }
     foreach(MIDIOutput* output, outputs) {
         if (m_midiOut == nullptr && (output->backendName() == name))  {
             m_midiOut = output;
             break;
         }
+    }
+    if (m_midiOut == nullptr) {
+        qWarning() << "Output backend not found: " << name;
     }
 }

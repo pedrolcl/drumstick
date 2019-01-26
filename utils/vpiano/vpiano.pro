@@ -16,7 +16,7 @@ HEADERS += pianokey.h pianokeybd.h pianoscene.h vpiano.h \
     fluidsettingsdialog.h networksettingsdialog.h \
     macsynthsettingsdialog.h \
     sonivoxsettingsdialog.h \
-    ../../library/include/rtmidiinput.h
+    ../../library/include/drumstick/rtmidiinput.h
 SOURCES += pianokey.cpp pianokeybd.cpp pianoscene.cpp vpiano.cpp \
     keylabel.cpp connections.cpp vpianoabout.cpp preferences.cpp vpianomain.cpp \
     fluidsettingsdialog.cpp networksettingsdialog.cpp \

@@ -19,8 +19,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(../common)
 
 set(drumstick-rt-oss-in_QTOBJ_SRCS
-    ../../include/rtmidiinput.h
-    ../../include/rtmidioutput.h
+    ../../include/drumstick/rtmidiinput.h
+    ../../include/drumstick/rtmidioutput.h
     ../common/midiparser.h
     ossinput_p.h
     ossinput.h

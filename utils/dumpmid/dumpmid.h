@@ -24,18 +24,18 @@
 #undef USE_QEVENTS
 //#define USE_QEVENTS
 
-/* Tp get timestamped events from ALSA, you need a running queue */
+/* To get timestamped events from ALSA, you need a running queue */
 //#undef WANT_TIMESTAMPS
 #define WANT_TIMESTAMPS
 
 #include <QObject>
 #include <QReadWriteLock>
 
-#include "alsaevent.h"
-#include "alsaclient.h"
-#include "alsaport.h"
-#include "alsaqueue.h"
-#include "subscription.h"
+#include <drumstick/alsaevent.h>
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaport.h>
+#include <drumstick/alsaqueue.h>
+#include <drumstick/subscription.h>
 
 using namespace drumstick;
 

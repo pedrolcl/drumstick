@@ -16,11 +16,11 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "alsatimer.h"
-#include <QReadLocker>
-#include <QWriteLocker>
 #include <cmath>
 #include <cstdio>
+#include <QReadLocker>
+#include <QWriteLocker>
+#include <drumstick/alsatimer.h>
 
 /**
  * @file alsatimer.cpp

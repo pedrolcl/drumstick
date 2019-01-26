@@ -1,6 +1,6 @@
 #include <QString>
 #include <QtTest>
-#include "alsatimer.h"
+#include <drumstick/alsatimer.h>
 
 using namespace drumstick;
 

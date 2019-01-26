@@ -16,7 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "qwrk.h"
 #include <cmath>
 #include <QDataStream>
 #include <QFile>
@@ -24,6 +23,7 @@
 #include <QTextStream>
 #include <QTextCodec>
 #include <QStringList>
+#include <drumstick/qwrk.h>
 
 /**
  * @file qwrk.cpp

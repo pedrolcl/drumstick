@@ -19,7 +19,7 @@
 #ifndef INCLUDED_PLAYER_H
 #define INCLUDED_PLAYER_H
 
-#include "playthread.h" 
+#include <drumstick/playthread.h>
 #include "song.h"
 
 using namespace drumstick;

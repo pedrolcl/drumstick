@@ -1,7 +1,7 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(drumstick-rt-dummy-out_QTOBJ_SRCS
-    ../../include/rtmidioutput.h
+    ../../include/drumstick/rtmidioutput.h
     dummyoutput.h
 )
 

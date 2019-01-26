@@ -21,7 +21,7 @@
 #include <QPluginLoader>
 #include <QCoreApplication>
 #include <QLibraryInfo>
-#include "backendmanager.h"
+#include <drumstick/backendmanager.h>
 
 #if defined(LINUX_BACKEND)
 Q_IMPORT_PLUGIN(ALSAMIDIInput)
@@ -59,8 +59,8 @@ Q_IMPORT_PLUGIN(OSSInput)
 Q_IMPORT_PLUGIN(OSSOutput)
 #endif
 
-#define _MKSTR(x) #x
-#define MKSTR(x) _MKSTR(x)
+#define MKSTR_A(x) #x
+#define MKSTR(x) MKSTR_A(x)
 
 /**
  * @file backendmanager.cpp
@@ -175,7 +175,7 @@ namespace rt {
         QStringList names;
         QStringList paths;
 
-        if (settings != 0) {
+        if (settings != nullptr) {
             settings->beginGroup(QSTR_DRUMSTICKRT_GROUP);
             d->appendDir(settings->value(QSTR_DRUMSTICKRT_PATH).toString(), paths);
             name_in = settings->value(QSTR_DRUMSTICKRT_PUBLICNAMEIN).toString();
@@ -195,9 +195,9 @@ namespace rt {
                 if (QLibrary::isLibrary(fileName)) {
                     QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
                     QObject *obj = loader.instance();
-                    if (obj != 0) {
+                    if (obj != nullptr) {
                         MIDIInput *input = qobject_cast<MIDIInput*>(obj);
-                        if (input != 0 && !d->m_inputsList.contains(input)) {
+                        if (input != nullptr && !d->m_inputsList.contains(input)) {
                             if (!name_in.isEmpty()) {
                                 input->setPublicName(name_in);
                             }
@@ -205,7 +205,7 @@ namespace rt {
                             d->m_inputsList << input;
                         } else {
                             MIDIOutput *output = qobject_cast<MIDIOutput*>(obj);
-                            if (output != 0 && !d->m_outputsList.contains(output)) {
+                            if (output != nullptr && !d->m_outputsList.contains(output)) {
                                 if (!name_out.isEmpty()) {
                                     output->setPublicName(name_out);
                                 }
@@ -220,15 +220,15 @@ namespace rt {
 
         // Static backends
         foreach(QObject* obj, QPluginLoader::staticInstances()) {
-            if (obj != 0) {
+            if (obj != nullptr) {
                 MIDIInput *input = qobject_cast<MIDIInput*>(obj);
-                if (input != 0 && !d->m_inputsList.contains(input)) {
+                if (input != nullptr && !d->m_inputsList.contains(input)) {
                     input->setPublicName(name_in);
                     input->setExcludedConnections(names);
                     d->m_inputsList << input;
                 } else {
                     MIDIOutput *output = qobject_cast<MIDIOutput*>(obj);
-                    if (output != 0 && !d->m_outputsList.contains(output)) {
+                    if (output != nullptr && !d->m_outputsList.contains(output)) {
                         output->setPublicName(name_out);
                         output->setExcludedConnections(names);
                         d->m_outputsList << output;
@@ -255,7 +255,7 @@ namespace rt {
                 return i;
             }
         }
-        return 0;
+        return nullptr;
     }
 
     MIDIOutput* BackendManager::outputBackendByName(const QString name)
@@ -265,7 +265,7 @@ namespace rt {
                 return i;
             }
         }
-        return 0;
+        return nullptr;
     }
 
 }}

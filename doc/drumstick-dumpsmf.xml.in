@@ -104,9 +104,6 @@
         <title>See also</title>
         <para>
            <citerefentry>
-               <refentrytitle>drumstick-buildsmf</refentrytitle>
-               <manvolnum>1</manvolnum>
-           </citerefentry>, <citerefentry>
                <refentrytitle>drumstick-playsmf</refentrytitle>
                <manvolnum>1</manvolnum>
            </citerefentry>, <citerefentry>

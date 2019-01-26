@@ -11,8 +11,8 @@ include (../../../global.pri)
 QT -= gui
 QT += concurrent
 
-HEADERS += ../../include/rtmidiinput.h \
-           ../../include/rtmidioutput.h \
+HEADERS += ../../include/drumstick/rtmidiinput.h \
+           ../../include/drumstick/rtmidioutput.h \
            macmidiinput.h \
            ../common/maccommon.h
 

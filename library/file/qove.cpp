@@ -16,7 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "qove.h"
 #include <QFile>
 #include <QIODevice>
 #include <QMap>
@@ -26,6 +25,7 @@
 #include <QStringList>
 #include <cmath>
 #include <cstdlib>
+#include <drumstick/qove.h>
 
 /**
  * @file qove.cpp

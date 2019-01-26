@@ -21,7 +21,7 @@
 
 #include <QObject>
 #include <QHostAddress>
-#include "rtmidioutput.h"
+#include <drumstick/rtmidioutput.h>
 
 namespace drumstick {
 namespace rt {

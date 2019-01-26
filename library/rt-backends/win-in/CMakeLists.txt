@@ -17,8 +17,8 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(drumstick-rt-win-in_QTOBJ_SRCS
-    ../../include/rtmidiinput.h
-    ../../include/rtmidioutput.h
+    ../../include/drumstick/rtmidiinput.h
+    ../../include/drumstick/rtmidioutput.h
     winmidiinput.h
 )
 

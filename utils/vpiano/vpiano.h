@@ -21,14 +21,13 @@
 
 #include <QMainWindow>
 #include <QCloseEvent>
+#include <drumstick/rtmidiinput.h>
+#include <drumstick/rtmidioutput.h>
 
 #include "ui_vpiano.h"
 #include "vpianoabout.h"
 #include "connections.h"
 #include "preferences.h"
-
-#include "rtmidiinput.h"
-#include "rtmidioutput.h"
 
 using namespace drumstick::rt;
 

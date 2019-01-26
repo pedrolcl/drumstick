@@ -1,6 +1,6 @@
 #include <QString>
 #include <QtTest>
-#include "alsaevent.h"
+#include <drumstick/alsaevent.h>
 
 using namespace drumstick;
 

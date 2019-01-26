@@ -16,9 +16,9 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "alsaclient.h"
-#include "alsaqueue.h"
-#include "alsaevent.h"
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaqueue.h>
+#include <drumstick/alsaevent.h>
 #include <QFile>
 #include <QRegExp>
 #include <QThread>

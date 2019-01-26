@@ -22,8 +22,8 @@
 #include <QObject>
 #include <QDialog>
 #include <QShowEvent>
-#include "rtmidiinput.h"
-#include "rtmidioutput.h"
+#include <drumstick/rtmidiinput.h>
+#include <drumstick/rtmidioutput.h>
 #include "ui_connections.h"
 
 using namespace drumstick::rt;

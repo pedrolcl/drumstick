@@ -9,10 +9,10 @@ DEFINES += drumstick_file_EXPORTS
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
 QT -= gui
 # Input
-HEADERS += ../include/macros.h \
-           ../include/qsmf.h \
-           ../include/qwrk.h \
-           ../include/qove.h
+HEADERS += ../include/drumstick/macros.h \
+           ../include/drumstick/qsmf.h \
+           ../include/drumstick/qwrk.h \
+           ../include/drumstick/qove.h
 SOURCES += qsmf.cpp \
            qwrk.cpp \
            qove.cpp

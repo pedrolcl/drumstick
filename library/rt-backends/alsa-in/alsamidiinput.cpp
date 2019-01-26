@@ -18,11 +18,11 @@
 
 #include <QMutexLocker>
 #include <cmath>
-#include "alsaclient.h"
-#include "alsaport.h"
-#include "alsaevent.h"
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaport.h>
+#include <drumstick/alsaevent.h>
+#include <drumstick/rtmidioutput.h>
 #include "alsamidiinput.h"
-#include "rtmidioutput.h"
 
 namespace drumstick {
 namespace rt {

@@ -16,21 +16,20 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "drumgrid.h"
-#include "drumgridmodel.h"
-#include "ui_drumgrid.h"
-#include "drumgridabout.h"
-
 #include <QInputDialog>
 #include <QShortcut>
 #include <QToolTip>
 #include <QSignalMapper>
 #include <QSettings>
 #include <qmath.h>
-#include "alsaclient.h"
-#include "alsaport.h"
-#include "alsaqueue.h"
-#include "alsaevent.h"
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaport.h>
+#include <drumstick/alsaqueue.h>
+#include <drumstick/alsaevent.h>
+#include "drumgrid.h"
+#include "drumgridmodel.h"
+#include "ui_drumgrid.h"
+#include "drumgridabout.h"
 
 DrumGrid::DrumGrid(QWidget *parent)
     : QMainWindow(parent),

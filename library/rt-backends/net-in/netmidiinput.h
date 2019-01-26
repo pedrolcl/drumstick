@@ -22,7 +22,7 @@
 #include <QObject>
 #include <QHostAddress>
 #include <QtPlugin>
-#include "rtmidiinput.h"
+#include <drumstick/rtmidiinput.h>
 
 namespace drumstick {
 namespace rt {

@@ -25,15 +25,15 @@ if (APPLE)
 endif()
 
 set(drumstick-rt_QOBJ_SRCS
-    ../include/rtmidiinput.h
-    ../include/rtmidioutput.h
+    ../include/drumstick/rtmidiinput.h
+    ../include/drumstick/rtmidioutput.h
 )
 
 set(drumstick-rt_HEADERS
-	../include/macros.h
-    ../include/rtmidiinput.h
-    ../include/rtmidioutput.h
-    ../include/backendmanager.h
+    ../include/drumstick/macros.h
+    ../include/drumstick/rtmidiinput.h
+    ../include/drumstick/rtmidioutput.h
+    ../include/drumstick/backendmanager.h
 )
 
 set(drumstick-rt_SRCS

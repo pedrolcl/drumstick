@@ -16,14 +16,16 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "alsatimer.h"
-#include "alsaqueue.h"
-#include "alsaclient.h"
-#include "subscription.h"
-#include "cmdversion.h"
 #include <QTextStream>
 #include <QStringList>
 #include <QCommandLineParser>
+
+#include <drumstick/alsatimer.h>
+#include <drumstick/alsaqueue.h>
+#include <drumstick/alsaclient.h>
+#include <drumstick/subscription.h>
+
+#include "cmdversion.h"
 
 const QString PGM_NAME("drumstick-sysinfo");
 const QString PGM_DESCRIPTION("ALSA Sequencer System Info");

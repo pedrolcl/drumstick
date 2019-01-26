@@ -18,12 +18,12 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "qsmf.h"
 #include <limits>
 #include <QList>
 #include <QFile>
 #include <QDataStream>
 #include <QTextCodec>
+#include <drumstick/qsmf.h>
 
 /**
  * @file qsmf.cpp

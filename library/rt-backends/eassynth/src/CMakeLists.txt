@@ -3,7 +3,7 @@ link_directories(
 )
 
 set( HEADERS
-    ../../../include/rtmidioutput.h
+    ../../../include/drumstick/rtmidioutput.h
     synthcontroller.h
     synthrenderer.h
 )

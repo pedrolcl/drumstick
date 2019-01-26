@@ -10,7 +10,7 @@ INCLUDEPATH += . ../../include
 include (../../../global.pri)
 QT -= gui
 
-HEADERS += ../../include/rtmidioutput.h \
+HEADERS += ../../include/drumstick/rtmidioutput.h \
            alsamidioutput.h
 SOURCES += alsamidioutput.cpp
 

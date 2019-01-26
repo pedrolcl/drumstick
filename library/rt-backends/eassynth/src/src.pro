@@ -14,8 +14,8 @@ QT -= gui
 LIBS += -L../../../../build/lib \
         -lsonivox
 
-HEADERS += ../../../include/rtmidiinput.h \
-           ../../../include/rtmidioutput.h \
+HEADERS += ../../../include/drumstick/rtmidiinput.h \
+           ../../../include/drumstick/rtmidioutput.h \
            synthcontroller.h \
            synthrenderer.h
 

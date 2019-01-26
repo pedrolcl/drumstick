@@ -2,7 +2,7 @@
 #include <QDataStream>
 #include <QByteArray>
 #include <QtTest>
-#include "qsmf.h"
+#include <drumstick/qsmf.h>
 
 const unsigned char test_mid[] = {
   0x4d, 0x54, 0x68, 0x64, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x01,

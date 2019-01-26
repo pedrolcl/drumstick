@@ -16,10 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "dumpove.h"
-#include "qove.h"
-#include "cmdversion.h"
-
 #include <cstdlib>
 #include <QObject>
 #include <QString>
@@ -30,6 +26,9 @@
 #include <QFileInfo>
 #include <QVariant>
 #include <QCommandLineParser>
+#include <drumstick/qove.h>
+#include "cmdversion.h"
+#include "dumpove.h"
 
 const QString NO_CHANNEL("--");
 const QString PGM_NAME("drumstick-dumpove");

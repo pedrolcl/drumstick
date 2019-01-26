@@ -24,9 +24,9 @@
 #include <QReadLocker>
 #include <QWriteLocker>
 #include <QCommandLineParser>
+#include <drumstick/alsatimer.h>
 
 #include "metronome.h"
-#include "alsatimer.h"
 #include "cmdversion.h"
 
 const QString PGM_NAME("drumstick-metronome");

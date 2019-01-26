@@ -23,16 +23,16 @@ if (APPLE)
 endif()
 
 set(drumstick-file_QTOBJ_SRCS
-    ../include/qsmf.h
-    ../include/qwrk.h
-    ../include/qove.h
+    ../include/drumstick/qsmf.h
+    ../include/drumstick/qwrk.h
+    ../include/drumstick/qove.h
 )
 
 set(drumstick-file_HEADERS
-    ../include/macros.h
-    ../include/qsmf.h
-    ../include/qwrk.h
-    ../include/qove.h
+    ../include/drumstick/macros.h
+    ../include/drumstick/qsmf.h
+    ../include/drumstick/qwrk.h
+    ../include/drumstick/qove.h
 )
 
 set(drumstick-file_SRCS

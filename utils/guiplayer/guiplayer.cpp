@@ -16,20 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "guiplayer.h"
-#include "ui_guiplayer.h"
-#include "playerabout.h"
-#include "player.h"
-#include "song.h"
-
-#include "qsmf.h"
-#include "qwrk.h"
-#include "qove.h"
-#include "alsaevent.h"
-#include "alsaclient.h"
-#include "alsaqueue.h"
-#include "alsaport.h"
-
 #include <QApplication>
 #include <QFileDialog>
 #include <QInputDialog>
@@ -45,6 +31,20 @@
 #include <QTextCodec>
 #include <QMimeData>
 #include <qmath.h>
+
+#include <drumstick/qsmf.h>
+#include <drumstick/qwrk.h>
+#include <drumstick/qove.h>
+#include <drumstick/alsaevent.h>
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaqueue.h>
+#include <drumstick/alsaport.h>
+
+#include "guiplayer.h"
+#include "ui_guiplayer.h"
+#include "playerabout.h"
+#include "player.h"
+#include "song.h"
 
 GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags),

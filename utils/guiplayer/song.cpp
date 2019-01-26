@@ -16,8 +16,8 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <drumstick/alsaevent.h>
 #include "song.h"
-#include "alsaevent.h"
 
 static inline bool eventLessThan(const SequencerEvent* s1, const SequencerEvent* s2)
 {

@@ -16,11 +16,11 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "playthread.h"
-#include "alsaclient.h"
-#include "alsaqueue.h"
 #include <QReadLocker>
 #include <QWriteLocker>
+#include <drumstick/playthread.h>
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaqueue.h>
 
 /**
  * @file playthread.cpp

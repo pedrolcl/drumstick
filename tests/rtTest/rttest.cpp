@@ -1,9 +1,9 @@
 #include <QString>
 #include <QStringList>
 #include <QtTest>
-#include "rtmidiinput.h"
-#include "rtmidioutput.h"
-#include "backendmanager.h"
+#include <drumstick/rtmidiinput.h>
+#include <drumstick/rtmidioutput.h>
+#include <drumstick/backendmanager.h>
 
 using namespace drumstick::rt;
 

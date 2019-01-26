@@ -87,17 +87,4 @@
         </para>
     </refsect1>
 
-    <refsect1 id="drumstick-sysinfo.seealso">
-        <title>See also</title>
-        <para>
-           <citerefentry>
-               <refentrytitle>drumstick-timertest</refentrytitle>
-               <manvolnum>1</manvolnum>
-           </citerefentry>, <citerefentry>
-               <refentrytitle>drumstick-testevents</refentrytitle>
-               <manvolnum>1</manvolnum>
-           </citerefentry>
-        </para>
-    </refsect1>
-
 </refentry>

@@ -10,8 +10,8 @@ INCLUDEPATH += . ../../include ../common
 include (../../../global.pri)
 QT -= gui
 
-HEADERS += ../../include/rtmidiinput.h \
-           ../../include/rtmidioutput.h \
+HEADERS += ../../include/drumstick/rtmidiinput.h \
+           ../../include/drumstick/rtmidioutput.h \
            ../common/midiparser.h \
            netmidiinput.h \
            netmidiinput_p.h

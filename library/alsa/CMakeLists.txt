@@ -19,23 +19,23 @@ include_directories(${ALSA_INC_DIR})
 link_directories(${ALSA_LIB_DIR})
 
 set(drumstick-alsa_QTOBJ_SRCS
-    ../include/alsaclient.h
-    ../include/alsaevent.h
-    ../include/alsaport.h
-    ../include/alsaqueue.h
-    ../include/alsatimer.h
-    ../include/playthread.h
+    ../include/drumstick/alsaclient.h
+    ../include/drumstick/alsaevent.h
+    ../include/drumstick/alsaport.h
+    ../include/drumstick/alsaqueue.h
+    ../include/drumstick/alsatimer.h
+    ../include/drumstick/playthread.h
 )
 
 set(drumstick-alsa_HEADERS
-    ../include/alsaclient.h
-    ../include/alsaevent.h
-    ../include/alsaport.h
-    ../include/alsaqueue.h
-    ../include/alsatimer.h
-    ../include/drumstickcommon.h
-    ../include/playthread.h
-    ../include/subscription.h
+    ../include/drumstick/alsaclient.h
+    ../include/drumstick/alsaevent.h
+    ../include/drumstick/alsaport.h
+    ../include/drumstick/alsaqueue.h
+    ../include/drumstick/alsatimer.h
+    ../include/drumstick/drumstickcommon.h
+    ../include/drumstick/playthread.h
+    ../include/drumstick/subscription.h
 )
 
 SET(drumstick-alsa_SRCS
@@ -84,5 +84,5 @@ install(TARGETS drumstick-alsa
         LIBRARY DESTINATION lib${LIB_SUFFIX})
 install(FILES ${drumstick-alsa_HEADERS}
         DESTINATION include/drumstick)
-install(FILES ../include/drumstick.h
+install(FILES ../include/drumstick/drumstick.h
         DESTINATION include)

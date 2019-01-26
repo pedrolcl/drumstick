@@ -18,10 +18,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "dumpsmf.h"
-#include "qsmf.h"
-#include "cmdversion.h"
-
 #include <cstdlib>
 #include <QObject>
 #include <QString>
@@ -30,6 +26,9 @@
 #include <QTextCodec>
 #include <QFileInfo>
 #include <QCommandLineParser>
+#include <drumstick/qsmf.h>
+#include "cmdversion.h"
+#include "dumpsmf.h"
 
 const QString PGM_NAME("drumstick-dumpsmf");
 const QString PGM_DESCRIPTION("Drumstick command line utility for decoding SMF (Standard MIDI) files");

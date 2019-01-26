@@ -21,7 +21,7 @@ include_directories(${FLUIDSYNTH_INCLUDEDIR})
 link_directories(${FLUIDSYNTH_LIBDIR})
 
 set(drumstick-rt-synth_QTOBJ_SRCS
-    ../../include/rtmidioutput.h
+    ../../include/drumstick/rtmidioutput.h
     synthengine.h
     synthoutput.h
 )

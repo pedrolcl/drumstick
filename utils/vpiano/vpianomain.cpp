@@ -21,10 +21,10 @@
 #include <QSettings>
 #include <QTextStream>
 #include <QCommandLineParser>
+#include <drumstick/backendmanager.h>
 
 #include "cmdversion.h"
 #include "vpiano.h"
-#include "backendmanager.h"
 
 const QString PGM_DESCRIPTION("Drumstick Simple Virtual Piano");
 

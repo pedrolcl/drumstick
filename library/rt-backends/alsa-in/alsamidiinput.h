@@ -21,7 +21,7 @@
 
 #include <QObject>
 #include <QtPlugin>
-#include "rtmidiinput.h"
+#include <drumstick/rtmidiinput.h>
 
 namespace drumstick {
 namespace rt {

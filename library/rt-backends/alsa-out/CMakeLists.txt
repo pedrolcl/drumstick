@@ -17,7 +17,7 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(drumstick-rt-alsa-out_QTOBJ_SRCS
-    ../../include/rtmidioutput.h
+    ../../include/drumstick/rtmidioutput.h
     alsamidioutput.h
 )
 

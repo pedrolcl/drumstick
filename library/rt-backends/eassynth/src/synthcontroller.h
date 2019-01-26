@@ -21,7 +21,7 @@
 
 #include <QObject>
 #include <QThread>
-#include "rtmidioutput.h"
+#include <drumstick/rtmidioutput.h>
 #include "synthrenderer.h"
 
 namespace drumstick {

@@ -19,9 +19,9 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QCommandLineParser>
+#include <drumstick/drumstickcommon.h>
 
 #include "cmdversion.h"
-#include "drumstickcommon.h"
 #include "drumgrid.h"
 
 const QString QSTR_APPNAME("DrumGrid");

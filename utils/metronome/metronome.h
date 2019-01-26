@@ -19,15 +19,15 @@
 #ifndef METRONOME_H
 #define METRONOME_H
 
-#include "alsaevent.h"
-#include "alsaclient.h"
-#include "alsaqueue.h"
-#include "alsaport.h"
-
 #include <QObject>
 #include <QString>
 #include <QList>
 #include <QReadWriteLock>
+
+#include <drumstick/alsaevent.h>
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaqueue.h>
+#include <drumstick/alsaport.h>
 
 const int TEMPO_DEFAULT(120);
 const int NOTE_DURATION(10);

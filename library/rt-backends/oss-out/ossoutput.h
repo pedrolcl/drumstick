@@ -20,7 +20,7 @@
 #define ossOUTPUT_H
 
 #include <QObject>
-#include "rtmidioutput.h"
+#include <drumstick/rtmidioutput.h>
 
 namespace drumstick {
 namespace rt {

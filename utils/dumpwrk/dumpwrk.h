@@ -18,7 +18,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "qwrk.h"
+#include <drumstick/qwrk.h>
 
 using namespace drumstick;
 

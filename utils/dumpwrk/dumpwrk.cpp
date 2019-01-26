@@ -28,9 +28,9 @@
 #include <QFileInfo>
 #include <QVariant>
 #include <QCommandLineParser>
+#include <drumstick/qwrk.h>
 
 #include "dumpwrk.h"
-#include "qwrk.h"
 #include "cmdversion.h"
 
 const QString NO_CHANNEL("--");

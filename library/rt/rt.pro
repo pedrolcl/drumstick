@@ -13,10 +13,10 @@ QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
 QT -= gui
 # Input
 HEADERS += \
-    ../include/rtmidiinput.h \
-    ../include/rtmidioutput.h \
-    ../include/backendmanager.h \
-    ../include/macros.h
+    ../include/drumstick/rtmidiinput.h \
+    ../include/drumstick/rtmidioutput.h \
+    ../include/drumstick/backendmanager.h \
+    ../include/drumstick/macros.h
 
 SOURCES += \
     backendmanager.cpp

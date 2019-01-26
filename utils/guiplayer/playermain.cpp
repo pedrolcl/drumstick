@@ -20,10 +20,10 @@
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QCommandLineParser>
+#include <drumstick/drumstickcommon.h>
 
 #include "guiplayer.h"
 #include "cmdversion.h"
-#include "drumstickcommon.h"
 
 const QString PGM_DESCRIPTION("ALSA Sequencer based MIDI file player");
 

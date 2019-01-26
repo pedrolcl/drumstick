@@ -16,8 +16,8 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "alsaqueue.h"
-#include "alsaclient.h"
+#include <drumstick/alsaqueue.h>
+#include <drumstick/alsaclient.h>
 
 /**
  * @file alsaport.cpp

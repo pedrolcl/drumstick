@@ -16,11 +16,11 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "alsaqueue.h"
-#include "alsaclient.h"
-#include "alsaevent.h"
-#include "alsatimer.h"
 #include <cmath>
+#include <drumstick/alsaqueue.h>
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaevent.h>
+#include <drumstick/alsatimer.h>
 
 /**
  * @file alsaqueue.cpp
