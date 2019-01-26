@@ -19,7 +19,7 @@
 #ifndef MACMIDIOUTPUT_H
 #define MACMIDIOUTPUT_H
 
-#include "rtmidioutput.h"
+#include <drumstick/rtmidioutput.h>
 
 namespace drumstick {
 namespace rt {

@@ -21,7 +21,7 @@
 
 #include <QObject>
 #include <QStringList>
-#include "rtmidioutput.h"
+#include <drumstick/rtmidioutput.h>
 
 namespace drumstick { 
 namespace rt {

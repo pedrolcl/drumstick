@@ -16,8 +16,8 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <drumstick/rtmidioutput.h>
 #include "macmidiinput.h"
-#include "rtmidioutput.h"
 #include "maccommon.h"
 
 #include <QDebug>

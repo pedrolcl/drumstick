@@ -19,7 +19,7 @@
 #ifndef MACMIDIOBJECT_H
 #define MACMIDIOBJECT_H
 
-#include "rtmidiinput.h"
+#include <drumstick/rtmidiinput.h>
 
 namespace drumstick {
 namespace rt {
