@@ -19,7 +19,7 @@
 #include <QString>
 #include <QMap>
 #include <QDebug>
-#include <windows.h>
+#include <Windows.h>
 #include <mmsystem.h>
 
 #include "winmidiinput.h"
@@ -50,10 +50,10 @@ namespace rt {
 
         WinMIDIInputPrivate(WinMIDIInput *inp):
             m_inp(inp),
-            m_out(0),
+            m_out(nullptr),
             m_thruEnabled(false),
             m_clientFilter(true),
-            m_handle(0),
+            m_handle(nullptr),
             m_publicName(DEFAULT_PUBLIC_NAME)
         {
             reloadDeviceList(true);
@@ -76,7 +76,7 @@ namespace rt {
         void open(QString name) {
             MMRESULT res;
             if (name != m_currentInput) {
-                if (m_handle != 0)
+                if (m_handle != nullptr)
                     close();
                 reloadDeviceList(!m_clientFilter);
                 int dev = deviceIndex(name);
@@ -94,7 +94,7 @@ namespace rt {
 
         void close() {
             MMRESULT res;
-            if (m_handle != 0) {
+            if (m_handle != nullptr) {
                 res = midiInStop(m_handle);
                 if (res != MMSYSERR_NOERROR)
                     qDebug() << "midiInStop() err:" << mmErrorString(res);
@@ -104,7 +104,7 @@ namespace rt {
                 res = midiInClose( m_handle );
                 if (res != MMSYSERR_NOERROR)
                     qDebug() << "midiInClose() err:" << mmErrorString(res);
-                m_handle = 0;
+                m_handle = nullptr;
             }
             m_currentInput.clear();
         }
@@ -150,38 +150,38 @@ namespace rt {
         {
             switch (status) {
             case MIDI_STATUS_NOTEOFF:
-                if(m_out != 0 && m_thruEnabled)
+                if(m_out != nullptr && m_thruEnabled)
                     m_out->sendNoteOff(channel, data1, data2);
                 emit m_inp->midiNoteOff(channel, data1, data2);
                 break;
             case MIDI_STATUS_NOTEON:
-                if(m_out != 0 && m_thruEnabled)
+                if(m_out != nullptr && m_thruEnabled)
                     m_out->sendNoteOn(channel, data1, data2);
                 emit m_inp->midiNoteOn(channel, data1, data2);
                 break;
             case MIDI_STATUS_KEYPRESURE:
-                if(m_out != 0 && m_thruEnabled)
+                if(m_out != nullptr && m_thruEnabled)
                     m_out->sendKeyPressure(channel, data1, data2);
                 emit m_inp->midiKeyPressure(channel, data1, data2);
                 break;
             case MIDI_STATUS_CONTROLCHANGE:
-                if(m_out != 0 && m_thruEnabled)
+                if(m_out != nullptr && m_thruEnabled)
                     m_out->sendController(channel, data1, data2);
                 emit m_inp->midiController(channel, data1, data2);
                 break;
             case MIDI_STATUS_PROGRAMCHANGE:
-                if(m_out != 0 && m_thruEnabled)
+                if(m_out != nullptr && m_thruEnabled)
                     m_out->sendProgram(channel, data1);
                 emit m_inp->midiProgram(channel, data1);
                 break;
             case MIDI_STATUS_CHANNELPRESSURE:
-                if(m_out != 0 && m_thruEnabled)
+                if(m_out != nullptr && m_thruEnabled)
                     m_out->sendChannelPressure(channel, data1);
                 emit m_inp->midiChannelPressure(channel, data1);
                 break;
             case MIDI_STATUS_PITCHBEND: {
                     int value = (data1 + data2 * 0x80) - 8192;
-                    if(m_out != 0 && m_thruEnabled)
+                    if(m_out != nullptr && m_thruEnabled)
                         m_out->sendPitchBend(channel, value);
                     emit m_inp->midiPitchBend(channel, value);
                 }
@@ -193,7 +193,7 @@ namespace rt {
 
         void emitSysex(QByteArray data)
         {
-            if(m_out != 0 && m_thruEnabled)
+            if(m_out != nullptr && m_thruEnabled)
                 m_out->sendSysex(data);
             emit m_inp->midiSysex(data);
         }
@@ -320,7 +320,7 @@ namespace rt {
 
     bool WinMIDIInput::isEnabledMIDIThru()
     {
-        return d->m_thruEnabled && d->m_out != 0;
+        return d->m_thruEnabled && d->m_out != nullptr;
     }
 
 }} // namespace drumstick::rt

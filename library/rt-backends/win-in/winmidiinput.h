@@ -21,7 +21,7 @@
 
 #include <QObject>
 #include <QtPlugin>
-#include "rtmidiinput.h"
+#include <drumstick/rtmidiinput.h>
 
 namespace drumstick {
 namespace rt {
@@ -37,7 +37,7 @@ namespace rt {
     public:
         class WinMIDIInputPrivate;
 
-        explicit WinMIDIInput(QObject *parent = 0);
+        explicit WinMIDIInput(QObject *parent = nullptr);
         virtual ~WinMIDIInput();
 
         // MIDIInput interface

@@ -21,7 +21,7 @@
 #include <QByteArray>
 #include <QVarLengthArray>
 #include <qmath.h>
-#include <windows.h>
+#include <Windows.h>
 #include <mmsystem.h>
 #include "winmidioutput.h"
 
@@ -54,7 +54,7 @@ namespace rt {
         QStringList m_excludedNames;
 
         WinMIDIOutputPrivate():
-            m_handle(0),
+            m_handle(nullptr),
             m_clientFilter(true),
             m_publicName(DEFAULT_PUBLIC_NAME)
         {
@@ -123,7 +123,7 @@ namespace rt {
             MMRESULT res;
             int dev = -1;
 
-            if (m_handle != 0)
+            if (m_handle != nullptr)
                 close();
             reloadDeviceList(!m_clientFilter);
             dev = deviceIndex(name);
@@ -139,7 +139,7 @@ namespace rt {
         void close()
         {
             MMRESULT res;
-            if (m_handle != 0) {
+            if (m_handle != nullptr) {
                 res = midiOutReset( m_handle );
                 if (res != MMSYSERR_NOERROR)
                     qDebug() << "midiOutReset() err:" << mmErrorString(res);
@@ -148,7 +148,7 @@ namespace rt {
                     m_currentOutput.clear();
                 else
                     qDebug() << "midiStreamClose() err:" << mmErrorString(res);
-                m_handle = 0;
+                m_handle = nullptr;
             }
         }
 

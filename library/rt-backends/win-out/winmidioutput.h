@@ -20,9 +20,9 @@
 #define WINMIDIOUTPUT_H
 
 #include <QObject>
-#include <windows.h>
+#include <Windows.h>
 #include <mmsystem.h>
-#include "rtmidioutput.h"
+#include <drumstick/rtmidioutput.h>
 
 namespace drumstick {
 namespace rt {
@@ -38,7 +38,7 @@ namespace rt {
     public:
         class WinMIDIOutputPrivate;
 
-        explicit WinMIDIOutput(QObject *parent = 0);
+        explicit WinMIDIOutput(QObject *parent = nullptr);
         virtual ~WinMIDIOutput();
 
         // MIDIOutput interface
