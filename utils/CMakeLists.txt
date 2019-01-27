@@ -14,11 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/common
-)
+#include_directories(
+#    ${CMAKE_CURRENT_SOURCE_DIR}
+#    ${CMAKE_CURRENT_BINARY_DIR}
+#    ${CMAKE_CURRENT_SOURCE_DIR}/common
+#)
 
 add_subdirectory(dumpsmf)
 add_subdirectory(dumpwrk)

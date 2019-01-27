@@ -47,6 +47,10 @@ ADD_EXECUTABLE(drumstick-drumgrid
     ${drumgrid_SRCS}
 )
 
+target_include_directories(drumstick-drumgrid PRIVATE
+    ../common
+)
+
 TARGET_LINK_LIBRARIES(drumstick-drumgrid
     ${ALSA_LIBS} 
     drumstick-alsa
@@ -54,7 +58,7 @@ TARGET_LINK_LIBRARIES(drumstick-drumgrid
 )
 
 INSTALL(TARGETS drumstick-drumgrid 
-        RUNTIME DESTINATION bin)
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 INSTALL(FILES drumstick-drumgrid.desktop
         DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")

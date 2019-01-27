@@ -27,22 +27,29 @@ set(drumstick-rt-net-out_SRCS
     netmidioutput.cpp
 )
 
-add_definitions(-DQT_PLUGIN)
-
-qt5_wrap_cpp(drumstick-rt-net-out_MOC_SRCS ${drumstick-rt-net-out_QTOBJ_SRCS})
+qt5_wrap_cpp(drumstick-rt-net-out_MOC_SRCS ${drumstick-rt-net-out_QTOBJ_SRCS}
+    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+)
 
 if(STATIC_DRUMSTICK)
-    add_definitions(-DQT_STATICPLUGIN)
     add_library(drumstick-rt-net-out STATIC
         ${drumstick-rt-net-out_MOC_SRCS}
         ${drumstick-rt-net-out_SRCS})
+    target_compile_definitions(drumstick-rt-net-out
+        PRIVATE QT_STATICPLUGIN)
     set_target_properties(drumstick-rt-net-out PROPERTIES
-         STATIC_LIB "libdrumstick-rt-net-out")
+        STATIC_LIB "libdrumstick-rt-net-out")
 else()
     add_library(drumstick-rt-net-out MODULE
         ${drumstick-rt-net-out_MOC_SRCS}
         ${drumstick-rt-net-out_SRCS})
+    target_compile_definitions(drumstick-rt-net-out
+        PRIVATE QT_PLUGIN)
 endif()
+
+target_include_directories(drumstick-rt-net-out PRIVATE
+    ${DRUMSTICK_SOURCE_DIR}/library/include
+)
 
 target_link_libraries(drumstick-rt-net-out
     Qt5::Network)
@@ -51,6 +58,6 @@ set_target_properties(drumstick-rt-net-out PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
 install(TARGETS drumstick-rt-net-out
-        RUNTIME DESTINATION bin
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}/drumstick
-        LIBRARY DESTINATION lib${LIB_SUFFIX}/drumstick)
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick)

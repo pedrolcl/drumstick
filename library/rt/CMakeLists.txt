@@ -14,8 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-add_definitions(-DLIBSUFFIX=${LIB_SUFFIX})
-
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 if (APPLE)
     set(CMAKE_MACOSX_RPATH 1)
@@ -48,19 +46,29 @@ add_library(drumstick-rt
     ${drumstick-rt_HEADERS}
 )
 
+add_library(Drumstick::RT ALIAS drumstick-rt)
+
+target_include_directories(drumstick-rt PUBLIC
+    $<BUILD_INTERFACE:${DRUMSTICK_SOURCE_DIR}/library/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDE}>
+)
+
+target_compile_definitions(drumstick-rt
+    PRIVATE LIBSUFFIX=${CMAKE_INSTALL_LIBDIR})
+
 target_link_libraries(drumstick-rt Qt5::Core)
 
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-rt PROPERTIES
         STATIC_LIB "libdrumstick-rt")
     #
-    #    add_definitions(-DDUMMY_BACKEND)
-    #    target_link_libraries(drumstick-rt-dummy-in)
-    #    target_link_libraries(drumstick-rt-dummy-out)
+    #    target_compile_definitions(drumstick-rt DUMMY_BACKEND)
+    #    target_link_libraries(drumstick-rt drumstick-rt-dummy-in)
+    #    target_link_libraries(drumstick-rt drumstick-rt-dummy-out)
     #
 
     if(ALSA_FOUND)
-        add_definitions(-DLINUX_BACKEND)
+        target_compile_definitions(drumstick-rt LINUX_BACKEND)
         target_link_libraries(drumstick-rt
             drumstick-rt-alsa-in
             drumstick-rt-alsa-out
@@ -69,7 +77,7 @@ if(STATIC_DRUMSTICK)
     endif()
 
     if(UNIX AND NOT APPLE)
-        add_definitions(-DOSS_BACKEND)
+        target_compile_definitions(drumstick-rt OSS_BACKEND)
         target_link_libraries(drumstick-rt
             drumstick-rt-oss-in
             drumstick-rt-oss-out)
@@ -77,7 +85,7 @@ if(STATIC_DRUMSTICK)
 
 
     if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-        add_definitions(-DMAC_BACKEND)
+        target_compile_definitions(drumstick-rt MAC_BACKEND)
         target_link_libraries(drumstick-rt
             drumstick-rt-mac-in
             drumstick-rt-mac-out
@@ -87,7 +95,7 @@ if(STATIC_DRUMSTICK)
 
 
     if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-        add_definitions(-DWIN_BACKEND)
+        target_compile_definitions(drumstick-rt WIN_BACKEND)
         target_link_libraries(drumstick-rt
             drumstick-rt-win-in
             drumstick-rt-win-out
@@ -97,7 +105,7 @@ if(STATIC_DRUMSTICK)
 
     find_package(Qt5Network)
     if(Qt5Network_FOUND)
-        add_definitions(-DNET_BACKEND)
+        target_compile_definitions(drumstick-rt NET_BACKEND)
         target_link_libraries(drumstick-rt
             drumstick-rt-net-in
             drumstick-rt-net-out)
@@ -105,7 +113,7 @@ if(STATIC_DRUMSTICK)
 
     pkg_check_modules(FLUIDSYNTH fluidsynth>=1.1.1)
     if(FLUIDSYNTH_FOUND)
-        add_definitions(-DSYNTH_BACKEND)
+        target_compile_definitions(drumstick-rt SYNTH_BACKEND)
         target_link_libraries(drumstick-rt drumstick-rt-synth)
     endif()
 
@@ -117,12 +125,17 @@ else() # STATIC_DRUMSTICK
         SOVERSION ${VERSION_MAJOR})
 endif()
 
-install(TARGETS drumstick-rt
-	RUNTIME DESTINATION bin
-	ARCHIVE DESTINATION lib${LIB_SUFFIX}
-	LIBRARY DESTINATION lib${LIB_SUFFIX}
-	FRAMEWORK DESTINATION lib${LIB_SUFFIX}
+install(TARGETS drumstick-rt EXPORT drumstick-rt-config
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    FRAMEWORK DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
 install(FILES ${drumstick-rt_HEADERS}
-        DESTINATION include/drumstick)
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/drumstick)
+
+install(EXPORT drumstick-rt-config
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/drumstick/cmake)
+
+export(TARGETS drumstick-rt FILE drumstick-rt-config.cmake)

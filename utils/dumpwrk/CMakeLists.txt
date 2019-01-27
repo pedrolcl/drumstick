@@ -30,6 +30,10 @@ ADD_EXECUTABLE(drumstick-dumpwrk
     ${dumpwrk_SRCS}
 )
 
+target_include_directories(drumstick-dumpwrk PRIVATE
+    ../common
+)
+
 TARGET_LINK_LIBRARIES(drumstick-dumpwrk
     drumstick-file
     Qt5::Core
@@ -37,4 +41,4 @@ TARGET_LINK_LIBRARIES(drumstick-dumpwrk
 
 # we should install some files...
 INSTALL(TARGETS drumstick-dumpwrk 
-        RUNTIME DESTINATION bin)
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

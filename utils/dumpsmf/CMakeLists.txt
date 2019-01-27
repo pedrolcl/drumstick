@@ -14,27 +14,31 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-SET(dumpsmf_SRCS
+set(dumpsmf_SRCS
     dumpsmf.cpp
     dumpsmf.h
 )
 
-SET(dumpsmf_qtobject_SRCS
+set(dumpsmf_qtobject_SRCS
     dumpsmf.h
 )
 
-QT5_WRAP_CPP(dumpsmf_moc_SRCS ${dumpsmf_qtobject_SRCS})
+qt5_wrap_cpp(dumpsmf_moc_SRCS ${dumpsmf_qtobject_SRCS})
 
-ADD_EXECUTABLE(drumstick-dumpsmf 
+add_executable(drumstick-dumpsmf
     ${dumpsmf_moc_SRCS}
     ${dumpsmf_SRCS}
 )
 
-TARGET_LINK_LIBRARIES(drumstick-dumpsmf
+target_include_directories(drumstick-dumpsmf PRIVATE
+    ../common
+)
+
+target_link_libraries(drumstick-dumpsmf
     drumstick-file
     Qt5::Core
 )
 
 # we should install some files...
-INSTALL(TARGETS drumstick-dumpsmf 
-        RUNTIME DESTINATION bin)
+install(TARGETS drumstick-dumpsmf
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

@@ -14,27 +14,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.1)
-if (POLICY CMP0063)
-    cmake_policy(SET CMP0063 OLD)
-endif()
-if (POLICY CMP0028)
-    cmake_policy(SET CMP0028 NEW)
-endif()
+cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+
+#if (POLICY CMP0063)
+#    cmake_policy(SET CMP0063 OLD)
+#endif()
+#if (POLICY CMP0028)
+#    cmake_policy(SET CMP0028 NEW)
+#endif()
 
 project(DRUMSTICK)
 
-if(CMAKE_SIZEOF_VOID_P MATCHES "8")
-    set(_INIT_LIB_SUFFIX "64")
-else()
-    set(_INIT_LIB_SUFFIX "")
-endif()
-set(LIB_SUFFIX ${_INIT_LIB_SUFFIX} CACHE STRING "optional library install directory suffix: 32, 64, none")
+#if(CMAKE_SIZEOF_VOID_P MATCHES "8")
+#    set(_INIT_LIB_SUFFIX "64")
+#else()
+#    set(_INIT_LIB_SUFFIX "")
+#endif()
+#set(LIB_SUFFIX ${_INIT_LIB_SUFFIX} CACHE STRING "optional library install directory suffix: 32, 64, none")
 
 set(CMAKE_COLOR_MAKEFILE ON)
 #set(CMAKE_VERBOSE_MAKEFILE ON)
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
+#set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+#set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
@@ -44,6 +45,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_admin")
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(GNUInstallDirs)
 
@@ -124,9 +126,9 @@ if(${CMAKE_SYSTEM} MATCHES "Darwin")
 endif()
 
 link_directories(${DRUMSTICK_BINARY_DIR}/lib)
-include_directories( BEFORE
-    ${DRUMSTICK_SOURCE_DIR}/library
-    ${DRUMSTICK_SOURCE_DIR}/library/include)
+#include_directories( BEFORE
+#    ${DRUMSTICK_SOURCE_DIR}/library
+#    ${DRUMSTICK_SOURCE_DIR}/library/include)
 
 add_subdirectory(library)
 add_subdirectory(utils)
@@ -153,7 +155,7 @@ if(${CMAKE_SYSTEM} MATCHES "Linux")
     configure_file(drumstick.spec.in drumstick.spec IMMEDIATE @ONLY)
     install(FILES
 	${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
-	DESTINATION lib${LIB_SUFFIX}/pkgconfig )
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig )
     # XML mime types
     set( SHARED_MIME_INFO_MINIMUM_VERSION "0.30" )
     set( XDG_MIME_INSTALL_DIR "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages" )
@@ -167,12 +169,12 @@ endif()
 configure_file(drumstick-file.pc.in drumstick-file.pc IMMEDIATE @ONLY)
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/drumstick-file.pc
-    DESTINATION lib${LIB_SUFFIX}/pkgconfig )
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig )
 
 configure_file(drumstick-rt.pc.in drumstick-rt.pc IMMEDIATE @ONLY)
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/drumstick-rt.pc
-    DESTINATION lib${LIB_SUFFIX}/pkgconfig )
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig )
 
 # uninstall custom target
 configure_file(

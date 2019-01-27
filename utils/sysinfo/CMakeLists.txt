@@ -22,6 +22,10 @@ ADD_EXECUTABLE(drumstick-sysinfo
     ${sysinfo_SRCS}
 )
 
+target_include_directories(drumstick-sysinfo PRIVATE
+    ../common
+)
+
 TARGET_LINK_LIBRARIES(drumstick-sysinfo
     ${ALSA_LIBS} 
     drumstick-alsa
@@ -29,4 +33,4 @@ TARGET_LINK_LIBRARIES(drumstick-sysinfo
 )
 
 INSTALL(TARGETS drumstick-sysinfo 
-        RUNTIME DESTINATION bin)
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

@@ -52,6 +52,10 @@ ADD_EXECUTABLE(drumstick-guiplayer
     ${guiplayer_SRCS}
 )
 
+target_include_directories(drumstick-guiplayer PRIVATE
+    ../common
+)
+
 TARGET_LINK_LIBRARIES(drumstick-guiplayer
     ${ALSA_LIBS} 
     drumstick-file
@@ -60,7 +64,7 @@ TARGET_LINK_LIBRARIES(drumstick-guiplayer
 )
 
 INSTALL(TARGETS drumstick-guiplayer
-        RUNTIME DESTINATION bin)
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 INSTALL(FILES drumstick-guiplayer.desktop
         DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")

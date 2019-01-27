@@ -30,6 +30,10 @@ ADD_EXECUTABLE(drumstick-playsmf
     ${playsmf_SRCS}
 )
 
+target_include_directories(drumstick-playsmf PRIVATE
+    ../common
+)
+
 TARGET_LINK_LIBRARIES(drumstick-playsmf
     ${ALSA_LIBS} 
     drumstick-alsa
@@ -39,4 +43,4 @@ TARGET_LINK_LIBRARIES(drumstick-playsmf
 
 # we should install some files...
 INSTALL(TARGETS drumstick-playsmf
-        RUNTIME DESTINATION bin)
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

@@ -15,7 +15,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-include_directories(${ALSA_INC_DIR})
+#include_directories(${ALSA_INC_DIR})
 link_directories(${ALSA_LIB_DIR})
 
 set(drumstick-alsa_QTOBJ_SRCS
@@ -57,6 +57,14 @@ add_library(drumstick-alsa
     ${drumstick-alsa_HEADERS}
 )
 
+add_library(Drumstick::ALSA ALIAS drumstick-alsa)
+
+target_include_directories(drumstick-alsa
+    PUBLIC  $<BUILD_INTERFACE:${DRUMSTICK_SOURCE_DIR}/library/include>
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDE}>
+    PRIVATE ${ALSA_INC_DIR}
+)
+
 target_link_libraries(drumstick-alsa
     ${ALSA_LIBS}
     Qt5::Core
@@ -78,11 +86,16 @@ else()
     )
 endif()
 
-install(TARGETS drumstick-alsa
-        RUNTIME DESTINATION bin
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}
-        LIBRARY DESTINATION lib${LIB_SUFFIX})
+install(TARGETS drumstick-alsa EXPORT drumstick-alsa-config
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(FILES ${drumstick-alsa_HEADERS}
-        DESTINATION include/drumstick)
-install(FILES ../include/drumstick/drumstick.h
-        DESTINATION include)
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/drumstick)
+install(FILES ../include/drumstick.h
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+install(EXPORT drumstick-alsa-config
+        DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/drumstick/cmake)
+
+export(TARGETS drumstick-alsa FILE drumstick-alsa-config.cmake)

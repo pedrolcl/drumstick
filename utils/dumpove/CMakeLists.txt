@@ -30,6 +30,10 @@ ADD_EXECUTABLE(drumstick-dumpove
     ${dumpove_SRCS}
 )
 
+target_include_directories(drumstick-dumpove PRIVATE
+    ../common
+)
+
 TARGET_LINK_LIBRARIES(drumstick-dumpove
     drumstick-file
     Qt5::Core
@@ -37,4 +41,4 @@ TARGET_LINK_LIBRARIES(drumstick-dumpove
 
 # we should install some files...
 INSTALL(TARGETS drumstick-dumpove 
-        RUNTIME DESTINATION bin)
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

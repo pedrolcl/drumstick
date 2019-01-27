@@ -30,6 +30,10 @@ ADD_EXECUTABLE(drumstick-dumpmid
     ${dumpmid_SRCS}
 )
 
+target_include_directories(drumstick-dumpmid PRIVATE
+    ../common
+)
+
 TARGET_LINK_LIBRARIES(drumstick-dumpmid
     ${ALSA_LIBS} 
     drumstick-alsa
@@ -38,4 +42,4 @@ TARGET_LINK_LIBRARIES(drumstick-dumpmid
 
 # we should install some files...
 INSTALL(TARGETS drumstick-dumpmid 
-        RUNTIME DESTINATION bin)
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

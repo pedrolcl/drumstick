@@ -85,6 +85,10 @@ add_executable(drumstick-vpiano
     ${vpiano_SRCS}
 )
 
+target_include_directories(drumstick-vpiano PRIVATE
+    ../common
+)
+
 target_link_libraries(drumstick-vpiano
     drumstick-rt
     Qt5::Widgets
@@ -93,7 +97,7 @@ target_link_libraries(drumstick-vpiano
 )
 
 install(TARGETS drumstick-vpiano
-        RUNTIME DESTINATION bin)
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 install(FILES drumstick-vpiano.desktop
         DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")

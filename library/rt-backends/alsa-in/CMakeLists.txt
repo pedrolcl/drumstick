@@ -26,21 +26,24 @@ set(drumstick-rt-alsa-in_SRCS
     alsamidiinput.cpp
 )
 
-add_definitions(-DQT_PLUGIN)
-
-qt5_wrap_cpp(drumstick-rt-alsa-in_MOC_SRCS ${drumstick-rt-alsa-in_QTOBJ_SRCS})
+qt5_wrap_cpp(drumstick-rt-alsa-in_MOC_SRCS ${drumstick-rt-alsa-in_QTOBJ_SRCS}
+    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+)
 
 if(STATIC_DRUMSTICK)
-    add_definitions(-DQT_STATICPLUGIN)
     add_library(drumstick-rt-alsa-in STATIC
         ${drumstick-rt-alsa-in_MOC_SRCS}
         ${drumstick-rt-alsa-in_SRCS})
+    target_compile_definitions(drumstick-rt-alsa-in
+        PRIVATE QT_STATICPLUGIN)
     set_target_properties(drumstick-rt-alsa-in PROPERTIES
-         STATIC_LIB "libdrumstick-rt-alsa-in")
+        STATIC_LIB "libdrumstick-rt-alsa-in")
 else()
     add_library(drumstick-rt-alsa-in MODULE
         ${drumstick-rt-alsa-in_MOC_SRCS}
         ${drumstick-rt-alsa-in_SRCS})
+    target_compile_definitions(drumstick-rt-alsa-in
+        PRIVATE QT_PLUGIN)
 endif()
 
 target_link_libraries(drumstick-rt-alsa-in
@@ -51,6 +54,6 @@ set_target_properties(drumstick-rt-alsa-in PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
 install(TARGETS drumstick-rt-alsa-in
-        RUNTIME DESTINATION bin
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}/drumstick
-        LIBRARY DESTINATION lib${LIB_SUFFIX}/drumstick)
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick)

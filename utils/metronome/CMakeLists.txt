@@ -30,6 +30,10 @@ ADD_EXECUTABLE(drumstick-metronome
     ${metronome_SRCS}
 )
 
+target_include_directories(drumstick-metronome PRIVATE
+    ../common
+)
+
 TARGET_LINK_LIBRARIES(drumstick-metronome
     ${ALSA_LIBS} 
     drumstick-alsa
@@ -38,4 +42,4 @@ TARGET_LINK_LIBRARIES(drumstick-metronome
 
 # we should install some files...
 INSTALL(TARGETS drumstick-metronome
-        RUNTIME DESTINATION bin)
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

@@ -144,7 +144,7 @@ namespace rt {
         QStringList libs;
         libs << "../lib/";
     #if defined(LIBSUFFIX)
-        libs << QString("../lib%1/").arg(MKSTR(LIBSUFFIX));
+        libs << QString("../%1/").arg(MKSTR(LIBSUFFIX));
     #endif
         foreach(const QString& lib, libs) {
             d->appendDir( appPath + lib + QSTR_DRUMSTICK, result );

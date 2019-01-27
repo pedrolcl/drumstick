@@ -49,6 +49,13 @@ add_library(drumstick-file
     ${drumstick-file_HEADERS} 
 )
 
+add_library(Drumstick::File ALIAS drumstick-file)
+
+target_include_directories(drumstick-file PUBLIC
+    $<BUILD_INTERFACE:${DRUMSTICK_SOURCE_DIR}/library/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDE}>
+)
+
 target_link_libraries(drumstick-file Qt5::Core)
 
 if(STATIC_DRUMSTICK)
@@ -62,12 +69,17 @@ else()
 
 endif()
 
-install(TARGETS drumstick-file
-	RUNTIME DESTINATION bin
-	ARCHIVE DESTINATION lib${LIB_SUFFIX}
-	LIBRARY DESTINATION lib${LIB_SUFFIX}
-	FRAMEWORK DESTINATION lib${LIB_SUFFIX}
+install(TARGETS drumstick-file EXPORT drumstick-file-config
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        FRAMEWORK DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
 install(FILES ${drumstick-file_HEADERS}
-        DESTINATION include/drumstick)
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/drumstick)
+
+install(EXPORT drumstick-file-config
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/drumstick/cmake)
+
+export(TARGETS drumstick-file FILE drumstick-file-config.cmake)
