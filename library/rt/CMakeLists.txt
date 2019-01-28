@@ -111,10 +111,12 @@ if(STATIC_DRUMSTICK)
             drumstick-rt-net-out)
     endif()
 
-    pkg_check_modules(FLUIDSYNTH fluidsynth>=1.1.1)
-    if(FLUIDSYNTH_FOUND)
-        target_compile_definitions(drumstick-rt SYNTH_BACKEND)
-        target_link_libraries(drumstick-rt drumstick-rt-synth)
+    if(PKG_CONFIG_FOUND)
+        pkg_check_modules(FLUIDSYNTH fluidsynth>=1.1.1)
+        if(FLUIDSYNTH_FOUND)
+            target_compile_definitions(drumstick-rt SYNTH_BACKEND)
+            target_link_libraries(drumstick-rt drumstick-rt-synth)
+        endif()
     endif()
 
 else() # STATIC_DRUMSTICK

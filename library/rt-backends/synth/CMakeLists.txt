@@ -16,9 +16,11 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-pkg_check_modules(FLUIDSYNTH REQUIRED fluidsynth>=1.1.1)
-include_directories(${FLUIDSYNTH_INCLUDEDIR})
-link_directories(${FLUIDSYNTH_LIBDIR})
+if (PKG_CONFIG_FOUND)
+    pkg_check_modules(FLUIDSYNTH REQUIRED fluidsynth>=1.1.1)
+    include_directories(${FLUIDSYNTH_INCLUDEDIR})
+    link_directories(${FLUIDSYNTH_LIBDIR})
+endif()
 
 set(drumstick-rt-synth_QTOBJ_SRCS
     ../../include/drumstick/rtmidioutput.h

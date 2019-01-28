@@ -26,31 +26,38 @@ set(drumstick-rt-win-in_SRCS
     winmidiinput.cpp
 )
 
-add_definitions(-DQT_PLUGIN)
-
-qt5_wrap_cpp(drumstick-rt-win-in_MOC_SRCS ${drumstick-rt-win-in_QTOBJ_SRCS})
+qt5_wrap_cpp(drumstick-rt-win-in_MOC_SRCS ${drumstick-rt-win-in_QTOBJ_SRCS}
+    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+)
 
 if(STATIC_DRUMSTICK)
     add_definitions(-DQT_STATICPLUGIN)
     add_library(drumstick-rt-win-in STATIC
         ${drumstick-rt-win-in_MOC_SRCS}
         ${drumstick-rt-win-in_SRCS})
+    target_compile_definitions(drumstick-rt-win-in
+        PRIVATE QT_STATICPLUGIN)
     set_target_properties(drumstick-rt-win-in PROPERTIES
          STATIC_LIB "libdrumstick-rt-win-in")
 else()
     add_library(drumstick-rt-win-in MODULE
         ${drumstick-rt-win-in_MOC_SRCS}
         ${drumstick-rt-win-in_SRCS})
+    target_compile_definitions(drumstick-rt-win-in
+        PRIVATE QT_PLUGIN)
 endif()
 
 target_link_libraries(drumstick-rt-win-in
     Qt5::Core
     winmm)
 
+target_include_directories(drumstick-rt-win-in PRIVATE
+    ${DRUMSTICK_SOURCE_DIR}/library/include)
+
 set_target_properties(drumstick-rt-win-in PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
 install(TARGETS drumstick-rt-win-in
-        RUNTIME DESTINATION bin
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}/drumstick
-        LIBRARY DESTINATION lib${LIB_SUFFIX}/drumstick)
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick)
