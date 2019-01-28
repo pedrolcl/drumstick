@@ -16,7 +16,7 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-include_directories(../common)
+#include_directories(../common)
 
 set(drumstick-rt-mac-out_QTOBJ_SRCS
     ../../include/drumstick/rtmidioutput.h
@@ -31,7 +31,9 @@ set(drumstick-rt-mac-out_SRCS
 
 add_definitions(-DQT_PLUGIN)
 
-qt5_wrap_cpp(drumstick-rt-mac-out_MOC_SRCS ${drumstick-rt-mac-out_QTOBJ_SRCS})
+qt5_wrap_cpp(drumstick-rt-mac-out_MOC_SRCS ${drumstick-rt-mac-out_QTOBJ_SRCS}
+    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+)
 
 if(STATIC_DRUMSTICK)
     add_definitions(-DQT_STATICPLUGIN)
@@ -49,6 +51,11 @@ endif()
 target_link_libraries(drumstick-rt-mac-out
     Qt5::Core
     "-framework CoreMidi -framework CoreFoundation"
+)
+
+target_include_directories(drumstick-rt-mac-out PRIVATE
+    ${DRUMSTICK_SOURCE_DIR}/library/include
+    ../common
 )
 
 set_target_properties(drumstick-rt-mac-out PROPERTIES
