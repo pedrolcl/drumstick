@@ -16,21 +16,7 @@
 
 cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 
-#if (POLICY CMP0063)
-#    cmake_policy(SET CMP0063 OLD)
-#endif()
-#if (POLICY CMP0028)
-#    cmake_policy(SET CMP0028 NEW)
-#endif()
-
 project(DRUMSTICK)
-
-#if(CMAKE_SIZEOF_VOID_P MATCHES "8")
-#    set(_INIT_LIB_SUFFIX "64")
-#else()
-#    set(_INIT_LIB_SUFFIX "")
-#endif()
-#set(LIB_SUFFIX ${_INIT_LIB_SUFFIX} CACHE STRING "optional library install directory suffix: 32, 64, none")
 
 set(CMAKE_COLOR_MAKEFILE ON)
 #set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -47,16 +33,9 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-#include(CheckCXXCompilerFlag)
-#CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-#if(COMPILER_SUPPORTS_CXX11)
-#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 if(APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()
-#else()
-#    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
-#endif()
 
 include(GNUInstallDirs)
 
@@ -68,12 +47,9 @@ set(VERSION_SUFFIX "svn")
 set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
 add_definitions(-DVERSION=${VERSION})
 
-message(STATUS "drumstick ${VERSION} prefix: ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "drumstick ${VERSION} prefix ${CMAKE_INSTALL_PREFIX}")
 
 set(_DBUS_INIT OFF)
-#if(${CMAKE_SYSTEM} MATCHES "Linux")
-#	set(_DBUS_INIT ON)
-#endif()
 
 # User options
 option(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)
@@ -130,9 +106,6 @@ if(${CMAKE_SYSTEM} MATCHES "Darwin")
 endif()
 
 link_directories(${DRUMSTICK_BINARY_DIR}/lib)
-#include_directories( BEFORE
-#    ${DRUMSTICK_SOURCE_DIR}/library
-#    ${DRUMSTICK_SOURCE_DIR}/library/include)
 
 add_subdirectory(library)
 add_subdirectory(utils)
@@ -189,7 +162,7 @@ configure_file(
 add_custom_target( uninstall
     "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
 
-if(${CMAKE_SYSTEM} MATCHES "Linux")
+if(UNIX)
     # tarball target
     add_custom_target( tarball
         COMMAND mkdir -p drumstick-${VERSION}

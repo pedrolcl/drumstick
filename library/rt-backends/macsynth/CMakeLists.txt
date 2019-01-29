@@ -27,23 +27,24 @@ set(drumstick-rt-macsynth_SRCS
     macsynth.cpp
 )
 
-add_definitions(-DQT_PLUGIN)
-
 qt5_wrap_cpp(drumstick-rt-macsynth_MOC_SRCS ${drumstick-rt-macsynth_QTOBJ_SRCS}
     OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
 )
 
 if(STATIC_DRUMSTICK)
-    add_definitions(-DQT_STATICPLUGIN)
     add_library(drumstick-rt-macsynth STATIC
         ${drumstick-rt-macsynth_MOC_SRCS}
         ${drumstick-rt-macsynth_SRCS})
+    target_compile_definitions(drumstick-rt-macsynth
+        PRIVATE QT_STATICPLUGIN)
     set_target_properties(drumstick-rt-macsynth PROPERTIES
          STATIC_LIB "libdrumstick-rt-macsynth")
 else()
     add_library(drumstick-rt-macsynth MODULE
         ${drumstick-rt-macsynth_MOC_SRCS}
         ${drumstick-rt-macsynth_SRCS})
+    target_compile_definitions(drumstick-rt-macsynth
+        PRIVATE QT_PLUGIN)
 endif()
 
 target_link_libraries(drumstick-rt-macsynth
@@ -61,6 +62,6 @@ set_target_properties(drumstick-rt-macsynth PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
 install(TARGETS drumstick-rt-macsynth
-        RUNTIME DESTINATION bin
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}/drumstick
-        LIBRARY DESTINATION lib${LIB_SUFFIX}/drumstick)
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick)

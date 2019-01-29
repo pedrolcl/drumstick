@@ -20,7 +20,7 @@
 #define SynthOUTPUT_H
 
 #include <QObject>
-#include "rtmidioutput.h"
+#include <drumstick/rtmidioutput.h>
 #include "synthengine.h"
 
 namespace drumstick {

@@ -16,8 +16,6 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-#include_directories(../common)
-
 set(drumstick-rt-mac-out_QTOBJ_SRCS
     ../../include/drumstick/rtmidioutput.h
     macmidioutput.h
@@ -29,23 +27,24 @@ set(drumstick-rt-mac-out_SRCS
     macmidioutput.cpp
 )
 
-add_definitions(-DQT_PLUGIN)
-
 qt5_wrap_cpp(drumstick-rt-mac-out_MOC_SRCS ${drumstick-rt-mac-out_QTOBJ_SRCS}
     OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
 )
 
 if(STATIC_DRUMSTICK)
-    add_definitions(-DQT_STATICPLUGIN)
     add_library(drumstick-rt-mac-out STATIC
         ${drumstick-rt-mac-out_MOC_SRCS}
         ${drumstick-rt-mac-out_SRCS})
+    target_compile_definitions(drumstick-rt-mac-out
+        PRIVATE QT_STATICPLUGIN)
     set_target_properties(drumstick-rt-mac-out PROPERTIES
          STATIC_LIB "libdrumstick-rt-mac-out")
 else()
     add_library(drumstick-rt-mac-out MODULE
         ${drumstick-rt-mac-out_MOC_SRCS}
         ${drumstick-rt-mac-out_SRCS})
+    target_compile_definitions(drumstick-rt-mac-out
+        PRIVATE QT_PLUGIN)
 endif()
 
 target_link_libraries(drumstick-rt-mac-out
@@ -62,6 +61,6 @@ set_target_properties(drumstick-rt-mac-out PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
 install(TARGETS drumstick-rt-mac-out
-        RUNTIME DESTINATION bin
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}/drumstick
-        LIBRARY DESTINATION lib${LIB_SUFFIX}/drumstick)
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick)

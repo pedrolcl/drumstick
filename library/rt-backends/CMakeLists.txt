@@ -14,14 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#add_subdirectory(dummy-in)
-#add_subdirectory(dummy-out)
+if(FALSE)
+    add_subdirectory(dummy-in)
+    add_subdirectory(dummy-out)
+endif()
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    if(ALSA_FOUND)
-	add_subdirectory(alsa-in)
-	add_subdirectory(alsa-out)
-    endif()
+if(ALSA_FOUND)
+    add_subdirectory(alsa-in)
+    add_subdirectory(alsa-out)
 endif()
 
 if (PULSE_FOUND)
@@ -50,9 +50,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     add_subdirectory(win-out)
 endif()
 
-#if (PKG_CONFIG_FOUND)
-#    pkg_check_modules(FLUIDSYNTH fluidsynth>=1.1.1)
-#    if(FLUIDSYNTH_FOUND)
-#        add_subdirectory(synth)
-#    endif()
-#endif()
+if (PKG_CONFIG_FOUND)
+    pkg_check_modules(FLUIDSYNTH fluidsynth>=1.1.1 fluidsynth<=1.1.11)
+    if(FLUIDSYNTH_FOUND)
+        add_subdirectory(fluidsynth)
+    endif()
+endif()

@@ -16,55 +16,53 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-#include_directories(../common)
+#pkg_check_modules(FLUIDSYNTH fluidsynth>=1.1.1 fluidsynth<=1.1.11)
+link_directories(${FLUIDSYNTH_LIBDIR})
 
-set(drumstick-rt-mac-in_QTOBJ_SRCS
-    ../../include/drumstick/rtmidiinput.h
+set(drumstick-rt-fluidsynth_QTOBJ_SRCS
     ../../include/drumstick/rtmidioutput.h
-    macmidiinput.h
+    synthengine.h
+    synthoutput.h
 )
 
-set(drumstick-rt-mac-in_SRCS
-    ../common/maccommon.h
-    ../common/maccommon.cpp
-    macmidiinput.cpp
+set(drumstick-rt-fluidsynth_SRCS
+    synthengine.cpp
+    synthoutput.cpp
 )
 
-qt5_wrap_cpp(drumstick-rt-mac-in_MOC_SRCS ${drumstick-rt-mac-in_QTOBJ_SRCS}
+qt5_wrap_cpp(drumstick-rt-fluidsynth_MOC_SRCS ${drumstick-rt-fluidsynth_QTOBJ_SRCS}
     OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
 )
 
 if(STATIC_DRUMSTICK)
-    add_library(drumstick-rt-mac-in STATIC
-        ${drumstick-rt-mac-in_MOC_SRCS}
-        ${drumstick-rt-mac-in_SRCS})
-    target_compile_definitions(drumstick-rt-mac-in
+    add_library(drumstick-rt-fluidsynth STATIC
+        ${drumstick-rt-fluidsynth_MOC_SRCS}
+        ${drumstick-rt-fluidsynth_SRCS})
+    target_compile_definitions(drumstick-rt-fluidsynth
         PRIVATE QT_STATICPLUGIN)
-    set_target_properties(drumstick-rt-mac-in PROPERTIES
-        STATIC_LIB "libdrumstick-rt-mac-in")
+    set_target_properties(drumstick-rt-fluidsynth PROPERTIES
+         STATIC_LIB "libdrumstick-rt-fluidsynth")
 else()
-    add_library(drumstick-rt-mac-in MODULE
-        ${drumstick-rt-mac-in_MOC_SRCS}
-        ${drumstick-rt-mac-in_SRCS})
-    target_compile_definitions(drumstick-rt-mac-in
+    add_library(drumstick-rt-fluidsynth MODULE
+        ${drumstick-rt-fluidsynth_MOC_SRCS}
+        ${drumstick-rt-fluidsynth_SRCS})
+    target_compile_definitions(drumstick-rt-fluidsynth
         PRIVATE QT_PLUGIN)
 endif()
 
-target_include_directories(drumstick-rt-mac-in PRIVATE
+target_include_directories(drumstick-rt-fluidsynth PRIVATE
     ${DRUMSTICK_SOURCE_DIR}/library/include
-    ../common
+    ${FLUIDSYNTH_INCLUDEDIR}
 )
 
-target_link_libraries(drumstick-rt-mac-in
+target_link_libraries(drumstick-rt-fluidsynth
     Qt5::Core
-    Qt5::Concurrent
-    "-framework CoreMidi -framework CoreFoundation"
-)
+    ${FLUIDSYNTH_LIBRARIES})
 
-set_target_properties(drumstick-rt-mac-in PROPERTIES
+set_target_properties(drumstick-rt-fluidsynth PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
-install(TARGETS drumstick-rt-mac-in
+install(TARGETS drumstick-rt-fluidsynth
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick)

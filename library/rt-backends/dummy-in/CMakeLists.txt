@@ -13,6 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(drumstick-rt-dummy-in_QTOBJ_SRCS
@@ -25,22 +26,28 @@ set(drumstick-rt-dummy-in_SRCS
     dummyinput.cpp
 )
 
-add_definitions(-DQT_PLUGIN)
-
-qt5_wrap_cpp(drumstick-rt-dummy-in_MOC_SRCS ${drumstick-rt-dummy-in_QTOBJ_SRCS})
+qt5_wrap_cpp(drumstick-rt-dummy-in_MOC_SRCS ${drumstick-rt-dummy-in_QTOBJ_SRCS}
+    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+)
 
 add_library(drumstick-rt-dummy-in MODULE
     ${drumstick-rt-dummy-in_MOC_SRCS}
     ${drumstick-rt-dummy-in_SRCS}
 )
 
+target_compile_definitions(drumstick-rt-dummy-in
+    PRIVATE QT_PLUGIN)
+
 target_link_libraries(drumstick-rt-dummy-in Qt5::Core)
+
+target_include_directories(drumstick-rt-dummy-in PRIVATE
+    ${DRUMSTICK_SOURCE_DIR}/library/include
+)
 
 set_target_properties(drumstick-rt-dummy-in PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
-
 install(TARGETS drumstick-rt-dummy-in
-        RUNTIME DESTINATION bin
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}/drumstick
-        LIBRARY DESTINATION lib${LIB_SUFFIX}/drumstick)
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick)

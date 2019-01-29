@@ -31,7 +31,6 @@ qt5_wrap_cpp(drumstick-rt-win-in_MOC_SRCS ${drumstick-rt-win-in_QTOBJ_SRCS}
 )
 
 if(STATIC_DRUMSTICK)
-    add_definitions(-DQT_STATICPLUGIN)
     add_library(drumstick-rt-win-in STATIC
         ${drumstick-rt-win-in_MOC_SRCS}
         ${drumstick-rt-win-in_SRCS})
