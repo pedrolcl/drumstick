@@ -99,9 +99,7 @@ namespace rt {
         {
             OSStatus result;
             AudioComponentDescription cd;
-            FSRef fsRef;
             UInt32 usesReverb;
-            QString fileName;
             AUNode synthNode = 0;
             AUNode outputNode = 0;
             AUNode limiterNode = 0;
@@ -147,14 +145,17 @@ namespace rt {
                 registerStatus( "AUGraphNodeInfo", result);
 
                 if (!m_default_dls && !m_soundfont_dls.isEmpty()) {
-                    fileName = m_soundfont_dls;
-                    result = FSPathMakeRef ( (const UInt8*) fileName.toUtf8().data(),
-                                             &fsRef, 0);
-                    registerStatus( "FSPathMakeRef(" + fileName + ')', result);
-                    result = AudioUnitSetProperty ( m_synthUnit,
-                        kMusicDeviceProperty_SoundBankFSRef, kAudioUnitScope_Global,
-                        0, &fsRef, sizeof (fsRef) );
-                    registerStatus( "AudioUnitSetProperty(SoundBankFSSpec)", result);
+                    QByteArray utf8file = m_soundfont_dls.toUtf8();
+                    CFURLRef url = CFURLCreateFromFileSystemRepresentation(kCFAllocatorDefault,
+                                                                           reinterpret_cast<const UInt8*>(utf8file.data()),
+                                                                           utf8file.length(), false);
+                    if (url) {
+                        // kMusicDeviceProperty_SoundBankURL since 10.5
+                        result = AudioUnitSetProperty(m_synthUnit, kMusicDeviceProperty_SoundBankURL, kAudioUnitScope_Global,
+                                                      0, &url, sizeof(url));
+                        registerStatus( "AudioUnitSetProperty(SoundBankURL)", result);
+                        CFRelease(url);
+                    }
                 }
 
                 usesReverb = (m_reverb_dls ? 1 : 0);
