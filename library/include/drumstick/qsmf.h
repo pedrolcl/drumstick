@@ -84,7 +84,7 @@ class DRUMSTICK_EXPORT QSmf : public QObject
     Q_OBJECT
 
 public:
-    QSmf(QObject * parent = 0);
+    QSmf(QObject * parent = nullptr);
     virtual ~QSmf();
 
     void readFromStream(QDataStream *stream);

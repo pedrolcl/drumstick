@@ -64,8 +64,8 @@ public:
         m_Tracks(0),
         m_fileFormat(0),
         m_LastStatus(0),
-        m_codec(0),
-        m_IOStream(0)
+        m_codec(nullptr),
+        m_IOStream(nullptr)
     { }
 
     bool m_Interactive;     /**< file and track headers are not required */
@@ -125,7 +125,7 @@ bool QSmf::endOfSmf()
 quint8 QSmf::getByte()
 {
     quint8 b = 0;
-    if (!d->m_IOStream->atEnd())
+    if (!endOfSmf())
     {
         *d->m_IOStream >> b;
         d->m_ToBeRead--;
@@ -239,7 +239,7 @@ void QSmf::readTrack()
         }
         else
         {
-            delta_ticks = readVarLen();
+            delta_ticks = unsigned(readVarLen());
             d->m_RevisedTime = d->m_CurrTime;
             d->m_CurrTime += delta_ticks;
             while (d->m_RevisedTime < d->m_CurrTime)
@@ -257,9 +257,9 @@ void QSmf::readTrack()
                         d->m_OldCurrTime = save_time;
                     }
                     delta_secs = ticksToSecs(d->m_RevisedTime - d->m_OldCurrTime,
-                            d->m_Division, save_tempo);
+                            quint16(d->m_Division), save_tempo);
                     d->m_DblRealTime = d->m_DblOldRealtime + delta_secs * 1600.0;
-                    d->m_RealTime = static_cast<quint64>(0.5 + d->m_DblRealTime);
+                    d->m_RealTime = quint64(0.5 + d->m_DblRealTime);
                     if (d->m_RevisedTime == d->m_TempoChangeTime)
                     {
                         d->m_OldCurrTime = d->m_RevisedTime;
@@ -269,9 +269,9 @@ void QSmf::readTrack()
                 else
                 {
                     delta_secs = ticksToSecs(d->m_RevisedTime - d->m_OldCurrTime,
-                            d->m_Division, d->m_CurrTempo);
+                            quint16(d->m_Division), d->m_CurrTempo);
                     d->m_DblRealTime = d->m_DblOldRealtime + delta_secs * 1600.0;
-                    d->m_RealTime = static_cast<quint64>(0.5 + d->m_DblRealTime);
+                    d->m_RealTime = quint64(0.5 + d->m_DblRealTime);
                 }
             }
         }
@@ -323,21 +323,25 @@ void QSmf::readTrack()
         {
         case meta_event:
             type = getByte();
-            lookfor = readVarLen();
+            lookfor = quint64(readVarLen());
             lookfor = d->m_ToBeRead - lookfor;
             msgInit();
-            while (d->m_ToBeRead > lookfor)
+            while ((d->m_ToBeRead > lookfor) && !endOfSmf())
             {
                 msgAdd(getByte());
             }
             metaEvent(type);
+            if (d->m_ToBeRead > lookfor)
+            {
+                SMFError("Unexpected end of input");
+            }
             break;
         case system_exclusive:
-            lookfor = readVarLen();
+            lookfor = quint64(readVarLen());
             lookfor = d->m_ToBeRead - lookfor;
             msgInit();
             msgAdd(system_exclusive);
-            while (d->m_ToBeRead > lookfor)
+            while ((d->m_ToBeRead > lookfor) && !endOfSmf())
             {
                 c = getByte();
                 msgAdd(c);
@@ -350,6 +354,10 @@ void QSmf::readTrack()
             {
                 sysexcontinue = true;
             }
+            if (d->m_ToBeRead > lookfor)
+            {
+                SMFError("Unexpected end of input");
+            }
             break;
         case end_of_sysex:
             lookfor = readVarLen();
@@ -358,7 +366,7 @@ void QSmf::readTrack()
             {
                 msgInit();
             }
-            while (d->m_ToBeRead > lookfor)
+            while ((d->m_ToBeRead > lookfor) && !endOfSmf())
             {
                 c = getByte();
                 msgAdd(c);
@@ -370,6 +378,10 @@ void QSmf::readTrack()
                     sysEx();
                     sysexcontinue = false;
                 }
+            }
+            if (d->m_ToBeRead > lookfor)
+            {
+                SMFError("Unexpected end of input");
             }
             break;
         default:
@@ -472,9 +484,9 @@ void QSmf::writeHeaderChunk(int format, int ntracks, int division)
 {
     write32bit(MThd);
     write32bit(6);
-    write16bit(format);
-    write16bit(ntracks);
-    write16bit(division);
+    write16bit(quint16(format));
+    write16bit(quint16(ntracks));
+    write16bit(quint16(division));
 }
 
 /**
@@ -535,7 +547,7 @@ void QSmf::writeMetaEvent(long deltaTime, int type, const QString& data)
     putByte(d->m_LastStatus = meta_event);
     putByte(type);
     QByteArray lcldata;
-    if (d->m_codec == NULL)
+    if (d->m_codec == nullptr)
         lcldata = data.toLatin1();
     else
         lcldata = d->m_codec->fromUnicode(data);
@@ -687,23 +699,23 @@ void QSmf::writeMidiEvent(long deltaTime, int type, long len, char* data)
 {
     unsigned int i, j, size;
     quint8 c;
-    writeVarLen(deltaTime);
+    writeVarLen(quint64(deltaTime));
     if ((type != system_exclusive) && (type != end_of_sysex))
     {
         SMFError("error: type should be system exclusive");
     }
     d->m_LastStatus = 0;
-    c = type;
+    c = quint8(type);
     putByte(c);
-    size = len;
-    c = (unsigned)data[0];
+    size = unsigned(len);
+    c = quint8(data[0]);
     if (c == type)
         --size;
     writeVarLen(size);
     j = (c == type ? 1 : 0);
-    for (i = j; i < (unsigned)len; ++i)
+    for (i = j; i < unsigned(len); ++i)
     {
-        putByte(data[i]);
+        putByte(quint8(data[i]));
     }
 }
 
@@ -778,11 +790,11 @@ void QSmf::writeTimeSignature(long deltaTime, int num, int den, int cc, int bb)
  */
 void QSmf::writeKeySignature(long deltaTime, int tone, int mode)
 {
-    writeVarLen(deltaTime);
+    writeVarLen(quint64(deltaTime));
     putByte(d->m_LastStatus = meta_event);
     putByte(key_signature);
     putByte(2);
-    putByte((char)tone);
+    putByte(quint8(tone));
     putByte(mode & 0x01);
 }
 
@@ -830,7 +842,7 @@ void QSmf::write16bit(quint16 data)
 quint16 QSmf::to16bit(quint8 c1, quint8 c2)
 {
     quint16 value;
-    value = (c1 << 8);
+    value = quint16(c1 << 8);
     value += c2;
     return value;
 }
@@ -838,9 +850,9 @@ quint16 QSmf::to16bit(quint8 c1, quint8 c2)
 quint32 QSmf::to32bit(quint8 c1, quint8 c2, quint8 c3, quint8 c4)
 {
     quint32 value;
-    value = (c1 << 24);
-    value += (c2 << 16);
-    value += (c3 << 8);
+    value = unsigned(c1 << 24);
+    value += unsigned(c2 << 16);
+    value += unsigned(c3 << 8);
     value += c4;
     return value;
 }
@@ -865,7 +877,7 @@ quint32 QSmf::read32bit()
 
 long QSmf::readVarLen()
 {
-    long value;
+    quint64 value;
     quint8 c;
 
     c = getByte();
@@ -879,7 +891,7 @@ long QSmf::readVarLen()
             value = (value << 7) + (c & 0x7f);
         } while ((c & 0x80) != 0);
     }
-    return value;
+    return long(value);
 }
 
 void QSmf::readExpected(const QString& s)
@@ -942,13 +954,13 @@ double QSmf::ticksToSecs(quint64 ticks, quint16 division, quint64 tempo)
 
     if (division > 0)
     {
-        result = static_cast<double>(ticks * tempo)/(division * 1000000.0);
+        result = double(ticks * tempo)/(division * 1000000.0);
     }
     else
     {
         smpte_format = upperByte(division);
         smpte_resolution = lowerByte(division);
-        result = static_cast<double>(ticks)/(smpte_format * smpte_resolution
+        result = double(ticks)/(smpte_format * smpte_resolution
                 * 1000000.0);
     }
     return result;
@@ -1022,7 +1034,7 @@ void QSmf::metaEvent(quint8 b)
     case marker:
     case cue_point: {
             QString s;
-            if (d->m_codec == NULL)
+            if (d->m_codec == nullptr)
                 s = QString(m);
             else
                 s = d->m_codec->toUnicode(m);
@@ -1193,7 +1205,7 @@ void QSmf::setFileFormat(int fileFormat)
  */
 long QSmf::getFilePos()
 {
-    return (long) d->m_IOStream->device()->pos();
+    return long(d->m_IOStream->device()->pos());
 }
 
 /**
