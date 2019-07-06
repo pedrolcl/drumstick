@@ -31,6 +31,7 @@ using namespace drumstick;
     void run(QString fileName);
     void dump(const QString& chan, const QString& event, const QString& data);
     void dumpStr(const QString& event, const QString& data);
+    int  numErrors();
 
   public slots:
     void headerEvent(int format, int ntrks, int division);
@@ -61,4 +62,5 @@ using namespace drumstick;
   private:
     int m_currentTrack;
     QSmf *m_engine;
+    int m_rc;
   };

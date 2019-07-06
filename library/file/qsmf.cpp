@@ -188,6 +188,10 @@ void QSmf::readHeader()
     {
         getByte();
     }
+    if (d->m_ToBeRead > 0)
+    {
+        SMFError("Unexpected end of input");
+    }
 }
 
 /**
@@ -233,6 +237,7 @@ void QSmf::readTrack()
 
     while (!endOfSmf() && (d->m_Interactive || d->m_ToBeRead > 0))
     {
+        lookfor = 0;
         if (d->m_Interactive)
         {
             d->m_CurrTime++;
@@ -331,10 +336,6 @@ void QSmf::readTrack()
                 msgAdd(getByte());
             }
             metaEvent(type);
-            if (d->m_ToBeRead > lookfor)
-            {
-                SMFError("Unexpected end of input");
-            }
             break;
         case system_exclusive:
             lookfor = quint64(readVarLen());
@@ -353,10 +354,6 @@ void QSmf::readTrack()
             else
             {
                 sysexcontinue = true;
-            }
-            if (d->m_ToBeRead > lookfor)
-            {
-                SMFError("Unexpected end of input");
             }
             break;
         case end_of_sysex:
@@ -379,14 +376,14 @@ void QSmf::readTrack()
                     sysexcontinue = false;
                 }
             }
-            if (d->m_ToBeRead > lookfor)
-            {
-                SMFError("Unexpected end of input");
-            }
             break;
         default:
             badByte(c, d->m_IOStream->device()->pos() - 1);
             break;
+        }
+        if ((d->m_ToBeRead > lookfor) && endOfSmf())
+        {
+            SMFError("Unexpected end of input");
         }
     }
     emit signalSMFTrackEnd();

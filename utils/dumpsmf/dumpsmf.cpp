@@ -36,7 +36,7 @@ static QTextStream cout(stdout, QIODevice::WriteOnly);
 static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
 QSpySMF::QSpySMF():
-    m_currentTrack(0)
+    m_currentTrack(0), m_engine(nullptr), m_rc(0)
 {
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
     m_engine = new QSmf(this);
@@ -226,15 +226,22 @@ void QSpySMF::tempoEvent(int tempo)
 
 void QSpySMF::errorHandler(const QString& errorStr)
 {
-    cout << "*** Warning! " << errorStr
+    m_rc++;
+    cerr << "*** Warning! " << errorStr
          << " at file offset " << m_engine->getFilePos()
          << endl;
 }
 
 void QSpySMF::run(QString fileName)
 {
+    m_currentTrack = 0;
     cout << "__ticks __seconds ch event__________ data____" << endl;
     m_engine->readFromFile(fileName);
+}
+
+int QSpySMF::numErrors()
+{
+    return m_rc;
 }
 
 int main(int argc, char **argv)
@@ -273,5 +280,6 @@ int main(int argc, char **argv)
     foreach(const QString& file, fileNames) {
         spy.run(file);
     }
+    return spy.numErrors();
 }
 
