@@ -90,7 +90,7 @@ if(STATIC_DRUMSTICK)
             drumstick-rt-mac-in
             drumstick-rt-mac-out
             drumstick-rt-macsynth
-            "-framework CoreMidi -framework CoreFoundation")
+            "-framework CoreMIDI -framework CoreFoundation")
     endif()
 
 

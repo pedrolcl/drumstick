@@ -19,6 +19,6 @@ HEADERS += ../../include/drumstick/rtmidiinput.h \
 SOURCES += macmidiinput.cpp \
            ../common/maccommon.cpp
 
-LIBS += -framework CoreMidi -framework CoreFoundation
+LIBS += -framework CoreMIDI -framework CoreFoundation
 
 #-framework CoreAudio -framework AudioToolbox -framework AudioUnit

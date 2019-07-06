@@ -58,7 +58,7 @@ target_include_directories(drumstick-rt-mac-in PRIVATE
 target_link_libraries(drumstick-rt-mac-in
     Qt5::Core
     Qt5::Concurrent
-    "-framework CoreMidi -framework CoreFoundation"
+    "-framework CoreMIDI -framework CoreFoundation"
 )
 
 set_target_properties(drumstick-rt-mac-in PROPERTIES

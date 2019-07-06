@@ -49,7 +49,7 @@ endif()
 
 target_link_libraries(drumstick-rt-macsynth
     Qt5::Core
-    "-framework CoreMidi -framework CoreFoundation -framework CoreServices"
+    "-framework CoreMIDI -framework CoreFoundation -framework CoreServices"
     "-framework CoreAudio -framework AudioToolbox -framework AudioUnit"
 )
 

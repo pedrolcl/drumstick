@@ -15,5 +15,5 @@ HEADERS += ../../include/drumstick/rtmidioutput.h \
 
 SOURCES += macsynth.cpp
 
-LIBS += -framework CoreMidi -framework CoreFoundation -framework CoreServices
+LIBS += -framework CoreMIDI -framework CoreFoundation -framework CoreServices
 LIBS += -framework CoreAudio -framework AudioToolbox -framework AudioUnit

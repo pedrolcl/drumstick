@@ -69,7 +69,7 @@ static {
         LIBS += -ldrumstick-rt-mac-in \
                 -ldrumstick-rt-mac-out \
                 -ldrumstick-rt-macsynth \
-                -framework CoreMidi \
+                -framework CoreMIDI \
                 -framework CoreFoundation \
                 -framework CoreServices \
                 -framework CoreAudio \
