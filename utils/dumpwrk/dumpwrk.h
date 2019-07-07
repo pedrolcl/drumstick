@@ -37,6 +37,7 @@ using namespace drumstick;
     void dumpVar(const QString& name, unsigned int value);
     void setVerbosity(bool enable);
     bool verbosityEnabled() const;
+    int returnCode() const { return m_rc; }
 
   public slots:
     void unknownChunk(int type, const QByteArray& data);
@@ -86,4 +87,5 @@ using namespace drumstick;
   private:
     bool m_verbosity;
     QWrk *m_engine;
+    int m_rc;
   };

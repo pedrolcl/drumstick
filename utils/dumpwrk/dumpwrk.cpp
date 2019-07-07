@@ -41,10 +41,11 @@ static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
 QSpyWrk::QSpyWrk():
     m_verbosity(false),
-    m_engine(nullptr)
+    m_engine(nullptr),
+    m_rc(0)
 {
     m_engine = new QWrk(this);
-    m_engine->setTextCodec(QTextCodec::codecForName("WIN1252"));
+    m_engine->setTextCodec(QTextCodec::codecForName("Windows-1252"));
 
     connect(m_engine, SIGNAL(signalWRKError(const QString&)),
                       SLOT(errorHandler(const QString&)));
@@ -193,7 +194,8 @@ bool QSpyWrk::verbosityEnabled() const
 
 void QSpyWrk::errorHandler(const QString& errorStr)
 {
-    cout << "*** Warning! " << errorStr << endl;
+    m_rc++;
+    cerr << "*** Warning! " << errorStr << endl;
 }
 
 void QSpyWrk::fileHeader(int verh, int verl)
@@ -488,5 +490,5 @@ int main(int argc, char *argv[])
     foreach(const QString& file, fileNames) {
         spy.run(file);
     }
-    return 0;
+    return spy.returnCode();
 }

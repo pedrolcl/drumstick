@@ -554,7 +554,7 @@ QString QWrk::readString(int len)
     if ( len > 0 ) {
         quint8 c = 0xff;
         QByteArray data;
-        for ( int i = 0; i < len && c != 0; ++i ) {
+        for ( int i = 0; i < len && c != 0 && !atEnd(); ++i ) {
             c = readByte();
             if ( c != 0)
                 data += c;
@@ -580,7 +580,7 @@ QString QWrk::readVarString()
         b = readByte();
         if (b != 0)
             data += b;
-    } while (b != 0);
+    } while (b != 0 && !atEnd());
     if (d->m_codec == NULL)
         s = QString(data);
     else
@@ -729,12 +729,12 @@ void QWrk::processTimebaseChunk()
 void QWrk::processNoteArray(int track, int events)
 {
     quint32 time = 0;
-    quint8  status = 0, data1 = 0, data2 = 0;
+    quint8  status = 0, data1 = 0, data2 = 0, i = 0;
     quint16 dur = 0;
     int value = 0, type = 0, channel = 0, len = 0;
     QString text;
     QByteArray data;
-    for ( int i = 0; i < events; ++i ) {
+    for ( i = 0; (i < events) && !atEnd(); ++i ) {
         time = read24bit();
         status = readByte();
         dur = 0;
@@ -803,17 +803,20 @@ void QWrk::processNoteArray(int track, int events)
             Q_EMIT signalWRKText(track, time, status, text);
         }
     }
+    if ((i < events) && atEnd()) {
+        Q_EMIT signalWRKError("Corrupted file");
+    }
     Q_EMIT signalWRKStreamEnd(time + dur);
 }
 
 void QWrk::processStreamChunk()
 {
     long time = 0;
-    int dur = 0, value = 0, type = 0, channel = 0;
+    int dur = 0, value = 0, type = 0, channel = 0, i = 0;
     quint8 status = 0, data1 = 0, data2 = 0;
     quint16 track = read16bit();
     int events = read16bit();
-    for ( int i = 0; i < events; ++i ) {
+    for ( i = 0; (i < events) && !atEnd(); ++i ) {
         time = read24bit();
         status = readByte();
         data1 = readByte();
@@ -845,6 +848,9 @@ void QWrk::processStreamChunk()
                 Q_EMIT signalWRKSysexEvent(track, time, data1);
                 break;
         }
+    }
+    if ((i < events) && atEnd()) {
+        Q_EMIT signalWRKError("Corrupted file");
     }
     Q_EMIT signalWRKStreamEnd(time + dur);
 }
