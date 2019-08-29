@@ -1,5 +1,48 @@
+2019-08-29
+    * release preparations
+
+2019-07-07
+    * Avoid endless loops on unexpected end of input.
+
+2019-07-06
+    * Fix for ticket #17: CoreMIDI.framework using wrong name-case
+
+2019-07-06
+    * Generate SMFError when the parser finds unexpected end of input. Fix for ticket #16
+
+2019-07-05
+    * Fix for ticket #16: bad MIDI files (drumstick-file)
+
+2019-07-02
+    * Fixed macOS deprecation warnings
+
+2019-01-29
+    * general cleanups and bringing back the fluidsynth backend
+
+2019-01-28
+    * Fix for ticket #14: migration to full GNUInstallDirs support
+
+2019-01-27
+    * modernization started of the CMake build system
+
+2019-01-26
+    * Library includes reorganization
+
+2019-01-20
+    * Fixed drumstick-file unit test
+    * Tweaks on qmake build system
+
+2019-01-15
+    * Custom commandline parser replaced by standard Qt5 QCommandLineParser
+
 2019-01-13
     * Removed custom commanline parser class, replaced by standard Qt5 QCommandLineParser
+
+2019-01-08
+    * fixed spurious error message for ALSA input
+
+2019-01-07
+    * Fixed differences between unix and windows semantics
 
 2019-01-06
     * Network backend: support for IPv6
@@ -134,10 +177,10 @@
     * guiplayer simplified, and optimizations
     * compile with -fvisibility=hidden if it is available
     * compile always with -fexceptions
-    * fixes in both buildsystems, cmake and qmake  
+    * fixes in both buildsystems, cmake and qmake
 
 2010-09-02 
-    * Use RealtimeKit support for the MIDI input thread. 
+    * Use RealtimeKit support for the MIDI input thread.
 
 2010-08-31
     * OVE file format support, by Rui Fan <vanferry@gmail.com>
@@ -151,11 +194,11 @@
     * release 0.4.1
     
 2010-07-11
-    * Fixed bug in class SequencerInputThread: realtime priority must be applied 
+    * Fixed bug in class SequencerInputThread: realtime priority must be applied
       in run() instead of start() to avoid changing the scheduling policy of the
-      parent. This is a problem when running FluidSynth in systems affected by a  
+      parent. This is a problem when running FluidSynth in systems affected by a
       glib-2.22 bug that has not yet been fixed.
-      Reference: https://bugzilla.gnome.org/show_bug.cgi?id=599079  
+      Reference: https://bugzilla.gnome.org/show_bug.cgi?id=599079
 
 2010-07-07
     * smfplayer renamed as guiplayer, with a new windows layout and
@@ -174,8 +217,8 @@
     * Command line arguments for all the utilities/test programs.
 
 2010-05-28
-    * fix a crash in drumstick-sysinfo when a timer module is not loaded. 
-    
+    * fix a crash in drumstick-sysinfo when a timer module is not loaded.
+
 2010-05-13
     * Man pages for the utilities/test programs.
 
