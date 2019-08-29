@@ -102,7 +102,6 @@ namespace rt {
         }
         void appendDir(const QString& candidate, QStringList& result)
         {
-            //qDebug() << "testing " << candidate;
             QDir checked(candidate);
             if (checked.exists() && !result.contains(checked.absolutePath())) {
                 result << checked.absolutePath();
