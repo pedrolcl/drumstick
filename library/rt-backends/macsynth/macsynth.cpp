@@ -34,21 +34,21 @@ namespace rt {
     private:
         AUGraph m_graph;
         AudioUnit m_synthUnit;
-        bool m_default_dls;
-        bool m_reverb_dls;
         QString m_connection;
         QString m_soundfont_dls;
+        bool m_default_dls;
+        bool m_reverb_dls;
 
     public:
         explicit MacSynthOutputPrivate():
-            m_graph(0),
-            m_synthUnit(0)
+            m_graph(nullptr),
+            m_synthUnit(nullptr)
         {
             //qDebug() << Q_FUNC_INFO;
             m_connection.clear();
         }
 
-        virtual ~MacSynthOutputPrivate()
+        ~MacSynthOutputPrivate()
         {
             //qDebug() << Q_FUNC_INFO;
             stop();
@@ -105,7 +105,7 @@ namespace rt {
             AUNode limiterNode = 0;
 
             //qDebug() << Q_FUNC_INFO;
-            if (m_graph == 0) {
+            if (m_graph == nullptr) {
                 cd.componentManufacturer = kAudioUnitManufacturer_Apple;
                 cd.componentFlags = 0;
                 cd.componentFlagsMask = 0;
@@ -141,7 +141,7 @@ namespace rt {
                 result = AUGraphConnectNodeInput (m_graph, limiterNode, 0, outputNode, 0);
                 registerStatus( "AUGraphConnectNodeInput", result);
 
-                result = AUGraphNodeInfo (m_graph, synthNode, 0, &m_synthUnit);
+                result = AUGraphNodeInfo (m_graph, synthNode, nullptr, &m_synthUnit);
                 registerStatus( "AUGraphNodeInfo", result);
 
                 if (!m_default_dls && !m_soundfont_dls.isEmpty()) {
@@ -159,26 +159,34 @@ namespace rt {
                 }
 
                 usesReverb = (m_reverb_dls ? 1 : 0);
+                //qDebug() << "usesReverb =" << usesReverb;
                 result = AudioUnitSetProperty ( m_synthUnit,
                     kMusicDeviceProperty_UsesInternalReverb, kAudioUnitScope_Global,
                     0, &usesReverb, sizeof (usesReverb) );
                 registerStatus( "AudioUnitSetProperty(UsesInternalReverb)", result);
 
                 result = AUGraphInitialize (m_graph);
+                registerStatus( "AUGraphInitialize", result);
                 if (result != noErr) {
-                    registerStatus( "AUGraphInitialize", result);
                     return;
                 }
 
-                for (int i = 0; i < 16; ++i) {
-                    MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_CONTROLCHANGE+i, MIDI_CTL_MSB_MAIN_VOLUME,100,0);
-                    MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_CONTROLCHANGE+i, 0,0,0);
-                    MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_PROGRAMCHANGE+i, 0,0,0);
+                for (uint i = 0; i < 16; ++i) {
+                    result = MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_CONTROLCHANGE+i, MIDI_CTL_MSB_MAIN_VOLUME,100,0);
+                    registerStatus( "MusicDeviceMIDIEvent", result );
+                    result = MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_CONTROLCHANGE+i, MIDI_CTL_REVERB_SEND,100,0);
+                    registerStatus( "MusicDeviceMIDIEvent", result );
+                    result = MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_CONTROLCHANGE+i, MIDI_CTL_MSB_BANK_SELECT,0,0);
+                    registerStatus( "MusicDeviceMIDIEvent", result );
+                    result = MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_CONTROLCHANGE+i, MIDI_CTL_LSB_BANK_SELECT,0,0);
+                    registerStatus( "MusicDeviceMIDIEvent", result );
+                    result = MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_PROGRAMCHANGE+i, 0,0,0);
+                    registerStatus( "MusicDeviceMIDIEvent", result );
                 }
 
                 result = AUGraphStart (m_graph);
+                registerStatus( "AUGraphStart", result);
                 if (result != noErr) {
-                    registerStatus( "AUGraphStart", result);
                     return;
                 }
             }
@@ -189,7 +197,7 @@ namespace rt {
         {
             OSStatus result;
             //qDebug() << Q_FUNC_INFO;
-            if (m_graph != 0) {
+            if (m_graph != nullptr) {
                 result = AUGraphStop(m_graph);
                 if (result != noErr)
                     qWarning() << "AUGraphStop() err:" << result;
@@ -199,7 +207,7 @@ namespace rt {
                 result = DisposeAUGraph(m_graph);
                 if (result != noErr)
                     qWarning() << "DisposeAUGraph() err:" << result;
-                m_graph = 0;
+                m_graph = nullptr;
             }
             m_connection.clear();
         }
@@ -221,15 +229,17 @@ namespace rt {
         {
             if (status != noErr) {
                 qWarning() << context << "err:" << status;
-            }
+            } //else {
+            //    qDebug() << context;
+            //}
         }
 
-        void sendStatusEvent(int status, int data1, int data2)
+        void sendStatusEvent(uint status, uint data1, uint data2)
         {
             MusicDeviceMIDIEvent ( m_synthUnit, status, data1, data2, 0 );
         }
 
-        void sendSysexEvent(Byte *msg, int msglen)
+        void sendSysexEvent(Byte *msg, uint msglen)
         {
             MusicDeviceSysEx ( m_synthUnit, msg, msglen );
         }
@@ -280,11 +290,13 @@ namespace rt {
     void MacSynthOutput::open(QString name)
     {
         Q_UNUSED(name)
+        //qDebug() << Q_FUNC_INFO;
         d->start();
     }
 
     void MacSynthOutput::close()
     {
+        //qDebug() << Q_FUNC_INFO;
         d->stop();
     }
 
@@ -295,62 +307,62 @@ namespace rt {
 
     void MacSynthOutput::sendNoteOn(int chan, int note, int vel)
     {
-        int status, data1, data2;
+        uint status, data1, data2;
         status = MIDI_STATUS_NOTEON | (chan & 0x0f);
-        data1 = note;
-        data2 = vel;
+        data1 = static_cast<unsigned>(note);
+        data2 = static_cast<unsigned>(vel);
         d->sendStatusEvent(status, data1, data2);
     }
 
     void MacSynthOutput::sendNoteOff(int chan, int note, int vel)
     {
-        int status, data1, data2;
+        uint status, data1, data2;
         status = MIDI_STATUS_NOTEOFF | (chan & 0x0f);
-        data1 = note;
-        data2 = vel;
+        data1 = static_cast<unsigned>(note);
+        data2 = static_cast<unsigned>(vel);
         d->sendStatusEvent(status, data1, data2);
     }
 
     void MacSynthOutput::sendController(int chan, int control, int value)
     {
-        int status, data1, data2;
+        uint status, data1, data2;
         status = MIDI_STATUS_CONTROLCHANGE | (chan & 0x0f);
-        data1 = control;
-        data2 = value;
+        data1 = static_cast<unsigned>(control);
+        data2 = static_cast<unsigned>(value);
         d->sendStatusEvent(status, data1, data2);
     }
 
     void MacSynthOutput::sendKeyPressure(int chan, int note, int value)
     {
-        int status, data1, data2;
+        uint status, data1, data2;
         status = MIDI_STATUS_KEYPRESURE | (chan & 0x0f);
-        data1 = note;
-        data2 = value;
+        data1 = static_cast<unsigned>(note);
+        data2 = static_cast<unsigned>(value);
         d->sendStatusEvent(status, data1, data2);
     }
 
     void MacSynthOutput::sendProgram(int chan, int program)
     {
-        int status, data1, data2;
+        uint status, data1, data2;
         status = MIDI_STATUS_PROGRAMCHANGE | (chan & 0x0f);
-        data1 = program;
+        data1 = static_cast<unsigned>(program);
         data2 = 0;
         d->sendStatusEvent(status, data1, data2);
     }
 
     void MacSynthOutput::sendChannelPressure(int chan, int value)
     {
-        int status, data1, data2;
+        uint status, data1, data2;
         status = MIDI_STATUS_CHANNELPRESSURE | (chan & 0x0f);
-        data1 = value;
+        data1 = static_cast<unsigned>(value);
         data2 = 0;
         d->sendStatusEvent(status, data1, data2);
     }
 
     void MacSynthOutput::sendPitchBend(int chan, int value)
     {
-        int status, data1, data2;
-        quint16 val = value + 8192; // value between -8192 and +8191
+        uint status, data1, data2;
+        quint16 val = static_cast<uint16>(value + 8192); // value between -8192 and +8191
         status = MIDI_STATUS_PITCHBEND | (chan & 0x0f);
         data1 = MIDI_LSB(val); // LSB
         data2 = MIDI_MSB(val); // MSB
@@ -359,12 +371,12 @@ namespace rt {
 
     void MacSynthOutput::sendSysex(const QByteArray& data)
     {
-        d->sendSysexEvent((Byte *) data.data(), data.length());
+        d->sendSysexEvent(reinterpret_cast<unsigned char *>(const_cast<char*>(data.data())), static_cast<unsigned>(data.length()));
     }
 
     void MacSynthOutput::sendSystemMsg(const int status)
     {
-        d->sendStatusEvent(status, 0, 0);
+        d->sendStatusEvent(static_cast<unsigned>(status), 0, 0);
     }
 
 }}

@@ -27,7 +27,10 @@
 
 #define MIDI_CHANNELS               16
 #define MIDI_GM_DRUM_CHANNEL        (10-1)
+#define MIDI_CTL_MSB_BANK_SELECT    0x00
 #define MIDI_CTL_MSB_MAIN_VOLUME    0x07
+#define MIDI_CTL_LSB_BANK_SELECT    0x20
+#define MIDI_CTL_REVERB_SEND        0x5b
 #define MIDI_CTL_ALL_SOUNDS_OFF     0x78
 #define MIDI_CTL_ALL_NOTES_OFF      0x7b
 #define MIDI_CTL_RESET_CONTROLLERS  0x79

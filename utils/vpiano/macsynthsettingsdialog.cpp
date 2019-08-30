@@ -54,9 +54,9 @@ void MacSynthSettingsDialog::readSettings()
 
     QSettings settings;
     settings.beginGroup("DLS Synth");
-    bool reverb = settings.value("reverb", false).toBool();
-    bool def = settings.value("defaultdls", true).toBool();
-    QString soundfont = settings.value("soundfont").toString();
+    bool reverb = settings.value("reverb_dls", false).toBool();
+    bool def = settings.value("default_dls", true).toBool();
+    QString soundfont = settings.value("soundfont_dls").toString();
     settings.endGroup();
 
     ui->reverb_dls->setChecked(reverb);
@@ -73,9 +73,9 @@ void MacSynthSettingsDialog::writeSettings()
     bool def = ui->default_dls->isChecked();
 
     settings.beginGroup("DLS Synth");
-    settings.setValue("soundfont", soundfont);
-    settings.setValue("reverb", reverb);
-    settings.setValue("defaultdls", def);
+    settings.setValue("soundfont_dls", soundfont);
+    settings.setValue("reverb_dls", reverb);
+    settings.setValue("default_dls", def);
     settings.endGroup();
     settings.sync();
 }
