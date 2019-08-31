@@ -217,7 +217,7 @@ namespace rt {
             //qDebug() << Q_FUNC_INFO;
             settings->beginGroup(PRETTY_NAME);
             m_default_dls = settings->value("default_dls", true).toBool();
-            m_reverb_dls = settings->value("reverb_dls", true).toBool();
+            m_reverb_dls = settings->value("reverb_dls", false).toBool();
             m_soundfont_dls = settings->value("soundfont_dls").toString();
             //qDebug() << "default_dls:" << m_default_dls;
             //qDebug() << "reverb_dls:" << m_reverb_dls;
