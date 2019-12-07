@@ -1,5 +1,4 @@
 TEMPLATE = subdirs
-CONFIG += ordered
 include (../global.pri)
 DEFINES += VERSION=$$VERSION
 

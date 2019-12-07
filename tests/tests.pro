@@ -1,8 +1,9 @@
 TEMPLATE = subdirs
-CONFIG += ordered
+SUBDIRS += \
+    fileTest \
+    rtTest
 linux* {
-    SUBDIRS += alsaTest1
-    SUBDIRS += alsaTest2
+    SUBDIRS += \
+        alsaTest1 \
+        alsaTest2
 }
-SUBDIRS += fileTest
-SUBDIRS += rtTest

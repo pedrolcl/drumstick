@@ -1,5 +1,7 @@
 TEMPLATE = subdirs
-CONFIG += ordered
-SUBDIRS += library \
-           utils \
-           tests
+SUBDIRS += \
+    library \
+    utils \
+    tests
+utils.depends = library
+tests.depends = library

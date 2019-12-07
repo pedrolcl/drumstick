@@ -1,11 +1,13 @@
 TEMPLATE = subdirs
-CONFIG += ordered
+SUBDIRS += \
+    file \
+    rt-backends \
+    rt
+
 linux* {
     SUBDIRS += alsa
+    rt-backends.depends = alsa
 }
-SUBDIRS += file
-SUBDIRS += rt-backends
-SUBDIRS += rt
 
 macx {
     OTHER_FILES += Info.plist.lib

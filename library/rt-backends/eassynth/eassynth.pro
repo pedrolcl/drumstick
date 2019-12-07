@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
-CONFIG += ordered
-SUBDIRS += sonivox \
-           src
-
+SUBDIRS += \
+    sonivox \
+    src
+src.depends = sonivox
