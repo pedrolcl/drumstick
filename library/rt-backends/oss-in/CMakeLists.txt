@@ -16,8 +16,6 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-#include_directories(../common)
-
 set(drumstick-rt-oss-in_QTOBJ_SRCS
     ../../include/drumstick/rtmidiinput.h
     ../../include/drumstick/rtmidioutput.h
@@ -33,7 +31,7 @@ set(drumstick-rt-oss-in_SRCS
 )
 
 qt5_wrap_cpp(drumstick-rt-oss-in_MOC_SRCS ${drumstick-rt-oss-in_QTOBJ_SRCS}
-    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
 )
 
 if(STATIC_DRUMSTICK)
@@ -53,12 +51,13 @@ else()
 endif()
 
 target_include_directories(drumstick-rt-oss-in PRIVATE
-    ${DRUMSTICK_SOURCE_DIR}/library/include
+    ${Drumstick_SOURCE_DIR}/library/include
     ../common
 )
 
-target_link_libraries(drumstick-rt-oss-in
-    Qt5::Core)
+target_link_libraries(drumstick-rt-oss-in PUBLIC
+    Qt5::Core
+)
 
 set_target_properties(drumstick-rt-oss-in PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)

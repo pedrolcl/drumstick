@@ -18,8 +18,6 @@ find_package(Qt5Network REQUIRED)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-#include_directories(../common)
-
 set(drumstick-rt-net-in_QTOBJ_SRCS
     ../../include/drumstick/rtmidiinput.h
     ../../include/drumstick/rtmidioutput.h
@@ -35,7 +33,7 @@ set(drumstick-rt-net-in_SRCS
 )
 
 qt5_wrap_cpp(drumstick-rt-net-in_MOC_SRCS ${drumstick-rt-net-in_QTOBJ_SRCS}
-    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
 )
 
 if(STATIC_DRUMSTICK)
@@ -55,11 +53,12 @@ else()
 endif()
 
 target_include_directories(drumstick-rt-net-in PRIVATE
-    ${DRUMSTICK_SOURCE_DIR}/library/include
+    ${Drumstick_SOURCE_DIR}/library/include
     ../common )
 
-target_link_libraries(drumstick-rt-net-in
-    Qt5::Network)
+target_link_libraries(drumstick-rt-net-in PUBLIC
+    Qt5::Network
+)
 
 set_target_properties(drumstick-rt-net-in PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)

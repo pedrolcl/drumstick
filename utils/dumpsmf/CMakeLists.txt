@@ -34,11 +34,10 @@ target_include_directories(drumstick-dumpsmf PRIVATE
     ../common
 )
 
-target_link_libraries(drumstick-dumpsmf
-    drumstick-file
+target_link_libraries(drumstick-dumpsmf PUBLIC
+    Drumstick::File
     Qt5::Core
 )
 
-# we should install some files...
 install(TARGETS drumstick-dumpsmf
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

@@ -28,7 +28,7 @@ set(drumstick-rt-net-out_SRCS
 )
 
 qt5_wrap_cpp(drumstick-rt-net-out_MOC_SRCS ${drumstick-rt-net-out_QTOBJ_SRCS}
-    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
 )
 
 if(STATIC_DRUMSTICK)
@@ -48,11 +48,12 @@ else()
 endif()
 
 target_include_directories(drumstick-rt-net-out PRIVATE
-    ${DRUMSTICK_SOURCE_DIR}/library/include
+    ${Drumstick_SOURCE_DIR}/library/include
 )
 
-target_link_libraries(drumstick-rt-net-out
-    Qt5::Network)
+target_link_libraries(drumstick-rt-net-out PUBLIC
+    Qt5::Network
+)
 
 set_target_properties(drumstick-rt-net-out PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)

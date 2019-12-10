@@ -14,11 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-SET(sysinfo_SRCS
+set(sysinfo_SRCS
     sysinfo.cpp
 )
 
-ADD_EXECUTABLE(drumstick-sysinfo
+add_executable(drumstick-sysinfo
     ${sysinfo_SRCS}
 )
 
@@ -26,11 +26,11 @@ target_include_directories(drumstick-sysinfo PRIVATE
     ../common
 )
 
-TARGET_LINK_LIBRARIES(drumstick-sysinfo
+target_link_libraries(drumstick-sysinfo PUBLIC
     ${ALSA_LIBS} 
-    drumstick-alsa
+    Drumstick::ALSA
     Qt5::Core
 )
 
-INSTALL(TARGETS drumstick-sysinfo 
+install(TARGETS drumstick-sysinfo
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

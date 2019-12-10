@@ -14,14 +14,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
+
 find_package(Qt5Widgets REQUIRED)
 
-SET(guiplayer_forms_SRCS
+set(guiplayer_forms_SRCS
     guiplayer.ui
     playerabout.ui
 )
 
-SET(guiplayer_SRCS
+set(guiplayer_SRCS
     guiplayer.cpp
     guiplayer.h
     player.cpp
@@ -33,19 +35,19 @@ SET(guiplayer_SRCS
     playermain.cpp
 )
 
-SET(guiplayer_qtobject_SRCS
+set(guiplayer_qtobject_SRCS
     player.h
     playerabout.h
     guiplayer.h
 )
 
-QT5_WRAP_UI(guiplayer_ui_SRCS ${guiplayer_forms_SRCS})
+qt5_wrap_ui(guiplayer_ui_SRCS ${guiplayer_forms_SRCS})
 
-QT5_WRAP_CPP(guiplayer_moc_SRCS ${guiplayer_qtobject_SRCS})
+qt5_wrap_cpp(guiplayer_moc_SRCS ${guiplayer_qtobject_SRCS})
 
-QT5_ADD_RESOURCES(guiplayer_resources guiplayer.qrc)
+qt5_add_resources(guiplayer_resources guiplayer.qrc)
 
-ADD_EXECUTABLE(drumstick-guiplayer
+add_executable(drumstick-guiplayer
     ${guiplayer_resources}
     ${guiplayer_ui_SRCS}
     ${guiplayer_moc_SRCS}
@@ -56,15 +58,15 @@ target_include_directories(drumstick-guiplayer PRIVATE
     ../common
 )
 
-TARGET_LINK_LIBRARIES(drumstick-guiplayer
+target_link_libraries(drumstick-guiplayer PUBLIC
     ${ALSA_LIBS} 
-    drumstick-file
-    drumstick-alsa
+    Drumstick::File
+    Drumstick::ALSA
     Qt5::Widgets
 )
 
-INSTALL(TARGETS drumstick-guiplayer
+install(TARGETS drumstick-guiplayer
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-INSTALL(FILES drumstick-guiplayer.desktop
+install(FILES drumstick-guiplayer.desktop
         DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")

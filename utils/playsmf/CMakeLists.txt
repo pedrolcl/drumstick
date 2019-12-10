@@ -14,18 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-SET(playsmf_SRCS
+set(playsmf_SRCS
     playsmf.cpp
     playsmf.h
 )
 
-SET(playsmf_qtobject_SRCS
+set(playsmf_qtobject_SRCS
     playsmf.h
 )
 
-QT5_WRAP_CPP(playsmf_moc_SRCS ${playsmf_qtobject_SRCS})
+qt5_wrap_cpp(playsmf_moc_SRCS ${playsmf_qtobject_SRCS})
 
-ADD_EXECUTABLE(drumstick-playsmf
+add_executable(drumstick-playsmf
     ${playsmf_moc_SRCS}
     ${playsmf_SRCS}
 )
@@ -34,13 +34,12 @@ target_include_directories(drumstick-playsmf PRIVATE
     ../common
 )
 
-TARGET_LINK_LIBRARIES(drumstick-playsmf
+target_link_libraries(drumstick-playsmf PUBLIC
     ${ALSA_LIBS} 
-    drumstick-alsa
-    drumstick-file
+    Drumstick::ALSA
+    Drumstick::File
     Qt5::Core
 )
 
-# we should install some files...
-INSTALL(TARGETS drumstick-playsmf
+install(TARGETS drumstick-playsmf
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

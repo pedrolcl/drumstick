@@ -27,7 +27,7 @@ set(drumstick-rt-dummy-in_SRCS
 )
 
 qt5_wrap_cpp(drumstick-rt-dummy-in_MOC_SRCS ${drumstick-rt-dummy-in_QTOBJ_SRCS}
-    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
 )
 
 add_library(drumstick-rt-dummy-in MODULE
@@ -38,10 +38,12 @@ add_library(drumstick-rt-dummy-in MODULE
 target_compile_definitions(drumstick-rt-dummy-in
     PRIVATE QT_PLUGIN)
 
-target_link_libraries(drumstick-rt-dummy-in Qt5::Core)
+target_link_libraries(drumstick-rt-dummy-in PUBLIC
+    Qt5::Core
+)
 
 target_include_directories(drumstick-rt-dummy-in PRIVATE
-    ${DRUMSTICK_SOURCE_DIR}/library/include
+    ${Drumstick_SOURCE_DIR}/library/include
 )
 
 set_target_properties(drumstick-rt-dummy-in PROPERTIES

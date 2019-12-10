@@ -26,7 +26,7 @@ set(drumstick-rt-win-out_SRCS
 )
 
 qt5_wrap_cpp(drumstick-rt-win-out_MOC_SRCS ${drumstick-rt-win-out_QTOBJ_SRCS}
-    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
 )
 
 if(STATIC_DRUMSTICK)
@@ -46,11 +46,12 @@ else()
 endif()
 
 target_include_directories(drumstick-rt-win-out PRIVATE
-    ${DRUMSTICK_SOURCE_DIR}/library/include)
+    ${Drumstick_SOURCE_DIR}/library/include)
 
 target_link_libraries(drumstick-rt-win-out
-    Qt5::Core
-    winmm)
+    PUBLIC Qt5::Core
+    PRIVATE winmm
+)
 
 set_target_properties(drumstick-rt-win-out PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)

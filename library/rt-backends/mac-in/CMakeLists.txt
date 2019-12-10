@@ -16,8 +16,6 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-#include_directories(../common)
-
 set(drumstick-rt-mac-in_QTOBJ_SRCS
     ../../include/drumstick/rtmidiinput.h
     ../../include/drumstick/rtmidioutput.h
@@ -31,7 +29,7 @@ set(drumstick-rt-mac-in_SRCS
 )
 
 qt5_wrap_cpp(drumstick-rt-mac-in_MOC_SRCS ${drumstick-rt-mac-in_QTOBJ_SRCS}
-    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
 )
 
 if(STATIC_DRUMSTICK)
@@ -51,14 +49,15 @@ else()
 endif()
 
 target_include_directories(drumstick-rt-mac-in PRIVATE
-    ${DRUMSTICK_SOURCE_DIR}/library/include
+    ${Drumstick_SOURCE_DIR}/library/include
     ../common
 )
 
-target_link_libraries(drumstick-rt-mac-in
+target_link_libraries(drumstick-rt-mac-in PUBLIC
     Qt5::Core
     Qt5::Concurrent
-    "-framework CoreMIDI -framework CoreFoundation"
+    -framework CoreMIDI
+    -framework CoreFoundation
 )
 
 set_target_properties(drumstick-rt-mac-in PROPERTIES

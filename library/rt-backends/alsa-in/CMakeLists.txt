@@ -27,7 +27,7 @@ set(drumstick-rt-alsa-in_SRCS
 )
 
 qt5_wrap_cpp(drumstick-rt-alsa-in_MOC_SRCS ${drumstick-rt-alsa-in_QTOBJ_SRCS}
-    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
 )
 
 if(STATIC_DRUMSTICK)
@@ -46,9 +46,10 @@ else()
         PRIVATE QT_PLUGIN)
 endif()
 
-target_link_libraries(drumstick-rt-alsa-in
-    drumstick-alsa
-    Qt5::Core)
+target_link_libraries(drumstick-rt-alsa-in PUBLIC
+    Drumstick::ALSA
+    Qt5::Core
+)
 
 set_target_properties(drumstick-rt-alsa-in PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)

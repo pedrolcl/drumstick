@@ -28,7 +28,7 @@ set(drumstick-rt-mac-out_SRCS
 )
 
 qt5_wrap_cpp(drumstick-rt-mac-out_MOC_SRCS ${drumstick-rt-mac-out_QTOBJ_SRCS}
-    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
 )
 
 if(STATIC_DRUMSTICK)
@@ -47,13 +47,14 @@ else()
         PRIVATE QT_PLUGIN)
 endif()
 
-target_link_libraries(drumstick-rt-mac-out
+target_link_libraries(drumstick-rt-mac-out PUBLIC
     Qt5::Core
-    "-framework CoreMIDI -framework CoreFoundation"
+    -framework CoreMIDI
+    -framework CoreFoundation
 )
 
 target_include_directories(drumstick-rt-mac-out PRIVATE
-    ${DRUMSTICK_SOURCE_DIR}/library/include
+    ${Drumstick_SOURCE_DIR}/library/include
     ../common
 )
 

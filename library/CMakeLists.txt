@@ -20,3 +20,20 @@ endif()
 add_subdirectory(file)
 add_subdirectory(rt)
 add_subdirectory(rt-backends)
+
+configure_file( drumstick-config.cmake
+  ${CMAKE_BINARY_DIR}/drumstick-config.cmake
+  @ONLY
+)
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file( ${CMAKE_BINARY_DIR}/drumstick-config-version.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+
+install( FILES
+    ${CMAKE_BINARY_DIR}/drumstick-config.cmake
+    ${CMAKE_BINARY_DIR}/drumstick-config-version.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick
+)

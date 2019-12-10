@@ -14,18 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-SET(dumpmid_SRCS
+set(dumpmid_SRCS
     dumpmid.cpp
     dumpmid.h
 )
 
-SET(dumpmid_qtobject_SRCS
+set(dumpmid_qtobject_SRCS
     dumpmid.h
 )
 
-QT5_WRAP_CPP(dumpmid_moc_SRCS ${dumpmid_qtobject_SRCS})
+qt5_wrap_cpp(dumpmid_moc_SRCS ${dumpmid_qtobject_SRCS})
 
-ADD_EXECUTABLE(drumstick-dumpmid
+add_executable(drumstick-dumpmid
     ${dumpmid_moc_SRCS}
     ${dumpmid_SRCS}
 )
@@ -34,12 +34,11 @@ target_include_directories(drumstick-dumpmid PRIVATE
     ../common
 )
 
-TARGET_LINK_LIBRARIES(drumstick-dumpmid
+target_link_libraries(drumstick-dumpmid PUBLIC
     ${ALSA_LIBS} 
-    drumstick-alsa
+    Drumstick::ALSA
     Qt5::Core
 )
 
-# we should install some files...
-INSTALL(TARGETS drumstick-dumpmid 
+install(TARGETS drumstick-dumpmid
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

@@ -52,11 +52,13 @@ add_library(drumstick-file
 add_library(Drumstick::File ALIAS drumstick-file)
 
 target_include_directories(drumstick-file PUBLIC
-    $<BUILD_INTERFACE:${DRUMSTICK_SOURCE_DIR}/library/include>
+    $<BUILD_INTERFACE:${Drumstick_SOURCE_DIR}/library/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDE}>
 )
 
-target_link_libraries(drumstick-file Qt5::Core)
+target_link_libraries(drumstick-file
+    PUBLIC Qt5::Core
+)
 
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-file PROPERTIES
@@ -64,22 +66,38 @@ if(STATIC_DRUMSTICK)
 else()
     set_target_properties(drumstick-file PROPERTIES
         FRAMEWORK TRUE
-        VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
-        SOVERSION ${VERSION_MAJOR})
-
+        VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
+        SOVERSION ${PROJECT_VERSION_MAJOR}
+        EXPORT_NAME File
+    )
 endif()
 
-install(TARGETS drumstick-file EXPORT drumstick-file-config
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        FRAMEWORK DESTINATION ${CMAKE_INSTALL_LIBDIR}
+install(TARGETS drumstick-file
+    EXPORT drumstick-file-targets
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    FRAMEWORK DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
 install(FILES ${drumstick-file_HEADERS}
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/drumstick)
 
-install(EXPORT drumstick-file-config
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/drumstick/cmake)
+install(EXPORT drumstick-file-targets
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick
+    NAMESPACE Drumstick::
+    COMPONENT File
+)
 
-export(TARGETS drumstick-file FILE drumstick-file-config.cmake)
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(${CMAKE_BINARY_DIR}/drumstick-file-config-version.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+
+install(FILES
+    ${CMAKE_BINARY_DIR}/drumstick-file-config-version.cmake
+    drumstick-file-config.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick
+    COMPONENT File
+)

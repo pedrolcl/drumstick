@@ -14,18 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-SET(dumpwrk_SRCS
+set(dumpwrk_SRCS
     dumpwrk.cpp
     dumpwrk.h
 )
 
-SET(dumpwrk_qtobject_SRCS
+set(dumpwrk_qtobject_SRCS
     dumpwrk.h
 )
 
-QT5_WRAP_CPP(dumpwrk_moc_SRCS ${dumpwrk_qtobject_SRCS})
+qt5_wrap_cpp(dumpwrk_moc_SRCS ${dumpwrk_qtobject_SRCS})
 
-ADD_EXECUTABLE(drumstick-dumpwrk 
+add_executable(drumstick-dumpwrk
     ${dumpwrk_moc_SRCS}
     ${dumpwrk_SRCS}
 )
@@ -34,11 +34,10 @@ target_include_directories(drumstick-dumpwrk PRIVATE
     ../common
 )
 
-TARGET_LINK_LIBRARIES(drumstick-dumpwrk
-    drumstick-file
+target_link_libraries(drumstick-dumpwrk PUBLIC
+    Drumstick::File
     Qt5::Core
 )
 
-# we should install some files...
-INSTALL(TARGETS drumstick-dumpwrk 
+install(TARGETS drumstick-dumpwrk
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

@@ -16,8 +16,8 @@
 
 add_executable (alsaTest1 alsatest1.cpp)
 
-target_link_libraries (alsaTest1
-    drumstick-alsa
+target_link_libraries (alsaTest1 PUBLIC
+    Drumstick::ALSA
     Qt5::Core
     Qt5::Test
 )

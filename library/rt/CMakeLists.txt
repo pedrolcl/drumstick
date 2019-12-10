@@ -49,14 +49,16 @@ add_library(drumstick-rt
 add_library(Drumstick::RT ALIAS drumstick-rt)
 
 target_include_directories(drumstick-rt PUBLIC
-    $<BUILD_INTERFACE:${DRUMSTICK_SOURCE_DIR}/library/include>
+    $<BUILD_INTERFACE:${Drumstick_SOURCE_DIR}/library/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDE}>
 )
 
 target_compile_definitions(drumstick-rt
     PRIVATE LIBSUFFIX=${CMAKE_INSTALL_LIBDIR})
 
-target_link_libraries(drumstick-rt Qt5::Core)
+target_link_libraries(drumstick-rt
+    PUBLIC Qt5::Core
+)
 
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-rt PROPERTIES
@@ -123,11 +125,14 @@ else() # STATIC_DRUMSTICK
 
     set_target_properties(drumstick-rt PROPERTIES
         FRAMEWORK TRUE
-        VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
-        SOVERSION ${VERSION_MAJOR})
+        VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
+        SOVERSION ${PROJECT_VERSION_MAJOR}
+        EXPORT_NAME RT
+    )
 endif()
 
-install(TARGETS drumstick-rt EXPORT drumstick-rt-config
+install(TARGETS drumstick-rt
+    EXPORT drumstick-rt-targets
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -137,7 +142,21 @@ install(TARGETS drumstick-rt EXPORT drumstick-rt-config
 install(FILES ${drumstick-rt_HEADERS}
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/drumstick)
 
-install(EXPORT drumstick-rt-config
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/drumstick/cmake)
+install(EXPORT drumstick-rt-targets
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick
+    NAMESPACE Drumstick::
+    COMPONENT RT
+)
 
-export(TARGETS drumstick-rt FILE drumstick-rt-config.cmake)
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(${CMAKE_BINARY_DIR}/drumstick-rt-config-version.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+
+install(FILES
+    ${CMAKE_BINARY_DIR}/drumstick-rt-config-version.cmake
+    drumstick-rt-config.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick
+    COMPONENT RT
+)

@@ -14,18 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-SET(metronome_SRCS
+set(metronome_SRCS
     metronome.cpp
     metronome.h
 )
 
-SET(metronome_qtobject_SRCS
+set(metronome_qtobject_SRCS
     metronome.h
 )
 
-QT5_WRAP_CPP(metronome_moc_SRCS ${metronome_qtobject_SRCS})
+qt5_wrap_cpp(metronome_moc_SRCS ${metronome_qtobject_SRCS})
 
-ADD_EXECUTABLE(drumstick-metronome
+add_executable(drumstick-metronome
     ${metronome_moc_SRCS}
     ${metronome_SRCS}
 )
@@ -34,12 +34,11 @@ target_include_directories(drumstick-metronome PRIVATE
     ../common
 )
 
-TARGET_LINK_LIBRARIES(drumstick-metronome
+target_link_libraries(drumstick-metronome PUBLIC
     ${ALSA_LIBS} 
-    drumstick-alsa
+    Drumstick::ALSA
     Qt5::Core
 )
 
-# we should install some files...
-INSTALL(TARGETS drumstick-metronome
+install(TARGETS drumstick-metronome
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

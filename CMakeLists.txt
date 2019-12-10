@@ -14,45 +14,35 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.9)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
 
-project(DRUMSTICK)
+project(Drumstick
+        VERSION 1.1.3.99
+        DESCRIPTION "MIDI C++ Libraries for Qt")
 
-set(CMAKE_COLOR_MAKEFILE ON)
-#set(CMAKE_VERBOSE_MAKEFILE ON)
-#set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-#set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
-set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_admin)
+
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
-
-# Additional CMake modules for 3rd party library checks reside here
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_admin")
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if(APPLE)
+# cmake bug https://gitlab.kitware.com/cmake/cmake/issues/18396 closed in cmake 3.14
+if(APPLE AND ${CMAKE_VERSION} VERSION_LESS 3.14)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()
 
 include(GNUInstallDirs)
 
-# DRUMSTICK version string
-set(VERSION_MAJOR "1")
-set(VERSION_MINOR "1")
-set(VERSION_PATCH "3")
-set(VERSION_SUFFIX "")
-set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX})
-add_definitions(-DVERSION=${VERSION})
+add_definitions(-DVERSION=${PROJECT_VERSION})
 
-message(STATUS "drumstick ${VERSION} prefix ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "${PROJECT_NAME} v${PROJECT_VERSION} prefix ${CMAKE_INSTALL_PREFIX}")
 
 set(_DBUS_INIT OFF)
 
-# User options
 option(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)
 option(USE_DBUS "Include DBus support (required for RealtimeKit)" ${_DBUS_INIT})
 
@@ -73,12 +63,13 @@ message(STATUS "Found Qt5 version = ${Qt5Core_VERSION_STRING}")
 if(USE_DBUS)
     find_package(Qt5DBus REQUIRED)
     add_definitions(-DRTKIT_SUPPORT)
+    message(STATUS "Found Qt5DBus version = ${Qt5DBus_VERSION_STRING}")
 endif()
 
 if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     find_package(PkgConfig REQUIRED)
     if(PKG_CONFIG_FOUND)
-        message(STATUS "Program pkg-config found (${PKG_CONFIG_EXECUTABLE})")
+        message(STATUS "Program pkg-config ${PKG_CONFIG_VERSION_STRING} found (${PKG_CONFIG_EXECUTABLE})")
     else()
         message(FATAL_ERROR "Program pkg-config not found")
     endif()
@@ -87,9 +78,7 @@ endif()
 if(${CMAKE_SYSTEM} MATCHES "Linux")
     pkg_check_modules(ALSA alsa>=1.0.0)
     if(ALSA_FOUND)
-        set(ALSA_LIBS ${ALSA_LIBRARIES})
-        list(APPEND ALSA_LIB_DIR ${ALSA_LIBRARY_DIRS} ${ALSA_LIBDIR})
-        list(APPEND ALSA_INC_DIR ${ALSA_INCLUDE_DIRS} ${ALSA_INCLUDEDIR})
+        message(STATUS "ALSA library ${ALSA_VERSION} found")
     else()
         message(STATUS "Warning: ALSA library not found.")
     endif()
@@ -97,16 +86,19 @@ endif()
 
 if(PKG_CONFIG_FOUND)
     pkg_check_modules(PULSE libpulse-simple)
-    if(NOT PULSE_FOUND)
+    if(PULSE_FOUND)
+        message(STATUS "PulseAudio library ${PULSE_VERSION} found")
+    else()
         message(STATUS "Warning: PulseAudio library not found.")
     endif()
 endif()
 
 if(${CMAKE_SYSTEM} MATCHES "Darwin")
     find_package(Qt5Concurrent REQUIRED)
+    if(Qt5Concurrent_FOUND)
+        message(STATUS "Found Qt5Concurrent version = ${Qt5Concurrent_VERSION_STRING}")
+    endif()
 endif()
-
-link_directories(${DRUMSTICK_BINARY_DIR}/lib)
 
 add_subdirectory(library)
 add_subdirectory(utils)
@@ -132,7 +124,7 @@ if(${CMAKE_SYSTEM} MATCHES "Linux")
     configure_file(drumstick-alsa.pc.in drumstick-alsa.pc IMMEDIATE @ONLY)
     configure_file(drumstick.spec.in drumstick.spec IMMEDIATE @ONLY)
     install(FILES
-	${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig )
     # XML mime types
     set( SHARED_MIME_INFO_MINIMUM_VERSION "0.30" )
@@ -166,18 +158,18 @@ add_custom_target( uninstall
 if(UNIX)
     # tarball target
     add_custom_target( tarball
-        COMMAND mkdir -p drumstick-${VERSION}
-        COMMAND cp -r cmake_admin drumstick-${VERSION}
-        COMMAND cp -r library drumstick-${VERSION}
-        COMMAND cp -r utils drumstick-${VERSION}
-        COMMAND cp -r doc drumstick-${VERSION}
-        COMMAND cp -r icons drumstick-${VERSION}
-        COMMAND cp -r tests drumstick-${VERSION}
-        COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog INSTALL NEWS README TODO drumstick*.in drumstick.pro drumstick.xml configure* Doxyfile.in chkcoverage global.pri drumstick-${VERSION}
-        COMMAND tar -cj --exclude=.[a-z]* -f drumstick-${VERSION}.tar.bz2 drumstick-${VERSION}
-        COMMAND tar -cz --exclude=.[a-z]* -f drumstick-${VERSION}.tar.gz  drumstick-${VERSION}
-        COMMAND zip -qr drumstick-${VERSION}.zip drumstick-${VERSION} -x '.[a-z]*'
-        COMMAND rm -rf drumstick-${VERSION}
+        COMMAND mkdir -p drumstick-${PROJECT_VERSION}
+        COMMAND cp -r cmake_admin drumstick-${PROJECT_VERSION}
+        COMMAND cp -r library drumstick-${PROJECT_VERSION}
+        COMMAND cp -r utils drumstick-${PROJECT_VERSION}
+        COMMAND cp -r doc drumstick-${PROJECT_VERSION}
+        COMMAND cp -r icons drumstick-${PROJECT_VERSION}
+        COMMAND cp -r tests drumstick-${PROJECT_VERSION}
+        COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog install NEWS README TODO drumstick*.in drumstick.pro drumstick.xml configure* Doxyfile.in chkcoverage global.pri drumstick-${PROJECT_VERSION}
+        COMMAND tar -cj --exclude=.[a-z]* -f drumstick-${PROJECT_VERSION}.tar.bz2 drumstick-${PROJECT_VERSION}
+        COMMAND tar -cz --exclude=.[a-z]* -f drumstick-${PROJECT_VERSION}.tar.gz  drumstick-${PROJECT_VERSION}
+        COMMAND zip -qr drumstick-${PROJECT_VERSION}.zip drumstick-${PROJECT_VERSION} -x '.[a-z]*'
+        COMMAND rm -rf drumstick-${PROJECT_VERSION}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
 endif()

@@ -14,13 +14,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
+
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Svg REQUIRED)
 find_package(Qt5Network REQUIRED)
 
 if(STATIC_DRUMSTICK AND PKG_CONFIG_FOUND)
   pkg_check_modules(FLUIDSYNTH REQUIRED fluidsynth>=1.1.1)
-  link_directories(${FLUIDSYNTH_LIBDIR})
+  #link_directories(${FLUIDSYNTH_LIBDIR})
 endif()
 
 set(vpiano_forms_SRCS
@@ -84,12 +86,12 @@ add_executable(drumstick-vpiano
     ${vpiano_SRCS}
 )
 
-target_include_directories(drumstick-vpiano PRIVATE
-    ../common
+target_include_directories(drumstick-vpiano
+    PRIVATE ../common
 )
 
-target_link_libraries(drumstick-vpiano
-    drumstick-rt
+target_link_libraries(drumstick-vpiano PUBLIC
+    Drumstick::RT
     Qt5::Widgets
     Qt5::Svg
     Qt5::Network

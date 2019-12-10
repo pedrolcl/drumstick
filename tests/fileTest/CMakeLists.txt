@@ -16,8 +16,8 @@
 
 add_executable (fileTest filetest.cpp)
 
-target_link_libraries (fileTest
-    drumstick-file
+target_link_libraries (fileTest PUBLIC
+    Drumstick::File
     Qt5::Core
     Qt5::Test    
 )

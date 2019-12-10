@@ -16,8 +16,8 @@
 
 add_executable (rtTest rttest.cpp)
 
-target_link_libraries (rtTest
-    drumstick-rt
+target_link_libraries (rtTest PUBLIC
+    Drumstick::RT
     Qt5::Core
     Qt5::Test
 )

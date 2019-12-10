@@ -16,9 +16,6 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-#pkg_check_modules(FLUIDSYNTH fluidsynth>=1.1.1 fluidsynth<=1.1.11)
-link_directories(${FLUIDSYNTH_LIBDIR})
-
 set(drumstick-rt-fluidsynth_QTOBJ_SRCS
     ../../include/drumstick/rtmidioutput.h
     synthengine.h
@@ -31,7 +28,7 @@ set(drumstick-rt-fluidsynth_SRCS
 )
 
 qt5_wrap_cpp(drumstick-rt-fluidsynth_MOC_SRCS ${drumstick-rt-fluidsynth_QTOBJ_SRCS}
-    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
 )
 
 if(STATIC_DRUMSTICK)
@@ -51,13 +48,14 @@ else()
 endif()
 
 target_include_directories(drumstick-rt-fluidsynth PRIVATE
-    ${DRUMSTICK_SOURCE_DIR}/library/include
+    ${Drumstick_SOURCE_DIR}/library/include
     ${FLUIDSYNTH_INCLUDEDIR}
 )
 
 target_link_libraries(drumstick-rt-fluidsynth
-    Qt5::Core
-    ${FLUIDSYNTH_LIBRARIES})
+    PUBLIC Qt5::Core
+    PRIVATE ${FLUIDSYNTH_LIBRARIES}
+)
 
 set_target_properties(drumstick-rt-fluidsynth PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)

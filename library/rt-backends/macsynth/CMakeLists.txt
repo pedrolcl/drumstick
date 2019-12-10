@@ -16,8 +16,6 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-#include_directories(../common)
-
 set(drumstick-rt-macsynth_QTOBJ_SRCS
     ../../include/drumstick/rtmidioutput.h
     macsynth.h
@@ -28,7 +26,7 @@ set(drumstick-rt-macsynth_SRCS
 )
 
 qt5_wrap_cpp(drumstick-rt-macsynth_MOC_SRCS ${drumstick-rt-macsynth_QTOBJ_SRCS}
-    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
 )
 
 if(STATIC_DRUMSTICK)
@@ -47,14 +45,18 @@ else()
         PRIVATE QT_PLUGIN)
 endif()
 
-target_link_libraries(drumstick-rt-macsynth
+target_link_libraries(drumstick-rt-macsynth PUBLIC
     Qt5::Core
-    "-framework CoreMIDI -framework CoreFoundation -framework CoreServices"
-    "-framework CoreAudio -framework AudioToolbox -framework AudioUnit"
+    -framework CoreMIDI
+    -framework CoreFoundation
+    -framework CoreServices
+    -framework CoreAudio
+    -framework AudioToolbox
+    -framework AudioUnit
 )
 
 target_include_directories(drumstick-rt-macsynth PRIVATE
-    ${DRUMSTICK_SOURCE_DIR}/library/include
+    ${Drumstick_SOURCE_DIR}/library/include
     ../common
 )
 

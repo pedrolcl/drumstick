@@ -1,7 +1,3 @@
-link_directories(
-    ${PULSE_LIBRARY_DIRS}
-)
-
 set( HEADERS
     ../../../include/drumstick/rtmidioutput.h
     synthcontroller.h
@@ -14,7 +10,7 @@ set( SOURCES
 )
 
 qt5_wrap_cpp( MOC_SRCS ${HEADERS}
-    OPTIONS -I ${DRUMSTICK_SOURCE_DIR}/library/include
+    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
 )
 
 if(STATIC_DRUMSTICK)
@@ -29,15 +25,15 @@ else()
         PRIVATE QT_PLUGIN)
 endif()
 
-target_link_libraries( drumstick-rt-eassynth
-    sonivox 
-    Qt5::Core 
+target_link_libraries( drumstick-rt-eassynth PUBLIC
+    Qt5::Core
+    PRIVATE sonivox
     ${PULSE_LIBRARIES}
 )
 
-target_include_directories( drumstick-rt-eassynth PRIVATE
-    ${PULSE_INCLUDE_DIRS}
-    ${DRUMSTICK_SOURCE_DIR}/library/include
+target_include_directories(drumstick-rt-eassynth
+    PRIVATE ${PULSE_INCLUDE_DIRS}
+            ${Drumstick_SOURCE_DIR}/library/include
 )
 
 set_target_properties(drumstick-rt-eassynth PROPERTIES

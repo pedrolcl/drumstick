@@ -14,18 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-SET(dumpove_SRCS
+set(dumpove_SRCS
     dumpove.cpp
     dumpove.h
 )
 
-SET(dumpove_qtobject_SRCS
+set(dumpove_qtobject_SRCS
     dumpove.h
 )
 
-QT5_WRAP_CPP(dumpove_moc_SRCS ${dumpove_qtobject_SRCS})
+qt5_wrap_cpp(dumpove_moc_SRCS ${dumpove_qtobject_SRCS})
 
-ADD_EXECUTABLE(drumstick-dumpove 
+add_executable(drumstick-dumpove
     ${dumpove_moc_SRCS}
     ${dumpove_SRCS}
 )
@@ -34,11 +34,10 @@ target_include_directories(drumstick-dumpove PRIVATE
     ../common
 )
 
-TARGET_LINK_LIBRARIES(drumstick-dumpove
-    drumstick-file
+target_link_libraries(drumstick-dumpove PUBLIC
+    Drumstick::File
     Qt5::Core
 )
 
-# we should install some files...
-INSTALL(TARGETS drumstick-dumpove 
+install(TARGETS drumstick-dumpove
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

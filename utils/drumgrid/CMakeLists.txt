@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
+
 find_package(Qt5Widgets REQUIRED)
 
 set(drumgrid_forms_SRCS
@@ -37,11 +39,11 @@ set(drumgrid_qtobject_SRCS
     drumgrid.h
 )
 
-QT5_WRAP_UI(drumgrid_ui_SRCS ${drumgrid_forms_SRCS})
+qt5_wrap_ui(drumgrid_ui_SRCS ${drumgrid_forms_SRCS})
 
-QT5_WRAP_CPP(drumgrid_moc_SRCS ${drumgrid_qtobject_SRCS})
+qt5_wrap_cpp(drumgrid_moc_SRCS ${drumgrid_qtobject_SRCS})
 
-ADD_EXECUTABLE(drumstick-drumgrid
+add_executable(drumstick-drumgrid
     ${drumgrid_ui_SRCS}
     ${drumgrid_moc_SRCS}
     ${drumgrid_SRCS}
@@ -51,15 +53,15 @@ target_include_directories(drumstick-drumgrid PRIVATE
     ../common
 )
 
-TARGET_LINK_LIBRARIES(drumstick-drumgrid
+target_link_libraries(drumstick-drumgrid PUBLIC
     ${ALSA_LIBS} 
-    drumstick-alsa
+    Drumstick::ALSA
     Qt5::Widgets
 )
 
-INSTALL(TARGETS drumstick-drumgrid 
+install(TARGETS drumstick-drumgrid
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-INSTALL(FILES drumstick-drumgrid.desktop
+install(FILES drumstick-drumgrid.desktop
         DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
         
