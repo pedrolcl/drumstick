@@ -148,15 +148,25 @@ install(EXPORT drumstick-rt-targets
     COMPONENT RT
 )
 
+export(EXPORT drumstick-rt-targets
+    NAMESPACE Drumstick::
+    FILE ${CMAKE_BINARY_DIR}/drumstick-rt-targets.cmake
+)
+
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(${CMAKE_BINARY_DIR}/drumstick-rt-config-version.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
 )
 
+configure_file( drumstick-rt-config.cmake
+  ${CMAKE_BINARY_DIR}/drumstick-rt-config.cmake
+  @ONLY
+)
+
 install(FILES
     ${CMAKE_BINARY_DIR}/drumstick-rt-config-version.cmake
-    drumstick-rt-config.cmake
+    ${CMAKE_BINARY_DIR}/drumstick-rt-config.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick
     COMPONENT RT
 )

@@ -104,15 +104,25 @@ install(EXPORT drumstick-alsa-targets
     COMPONENT ALSA
 )
 
+export(EXPORT drumstick-alsa-targets
+    NAMESPACE Drumstick::
+    FILE ${CMAKE_BINARY_DIR}/drumstick-alsa-targets.cmake
+)
+
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file( ${CMAKE_BINARY_DIR}/drumstick-alsa-config-version.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
 )
 
+configure_file( drumstick-alsa-config.cmake
+  ${CMAKE_BINARY_DIR}/drumstick-alsa-config.cmake
+  @ONLY
+)
+
 install(FILES
     ${CMAKE_BINARY_DIR}/drumstick-alsa-config-version.cmake
-    drumstick-alsa-config.cmake
+    ${CMAKE_BINARY_DIR}/drumstick-alsa-config.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick
     COMPONENT ALSA
 )

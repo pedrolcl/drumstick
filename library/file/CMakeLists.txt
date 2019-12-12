@@ -89,15 +89,25 @@ install(EXPORT drumstick-file-targets
     COMPONENT File
 )
 
+export(EXPORT drumstick-file-targets
+    NAMESPACE Drumstick::
+    FILE ${CMAKE_BINARY_DIR}/drumstick-file-targets.cmake
+)
+
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(${CMAKE_BINARY_DIR}/drumstick-file-config-version.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
 )
 
+configure_file( drumstick-file-config.cmake
+  ${CMAKE_BINARY_DIR}/drumstick-file-config.cmake
+  @ONLY
+)
+
 install(FILES
     ${CMAKE_BINARY_DIR}/drumstick-file-config-version.cmake
-    drumstick-file-config.cmake
+    ${CMAKE_BINARY_DIR}/drumstick-file-config.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick
     COMPONENT File
 )
