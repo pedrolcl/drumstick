@@ -1,8 +1,8 @@
 /**
 @mainpage drumstick Documentation
-@author Copyright &copy; 2009-2017 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
-@date 2017-08-15
-@version 1.1.1
+@author Copyright &copy; 2009-2019 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
+@date 2019-12-31
+@version 1.1.3
 
 This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/
@@ -12,10 +12,10 @@ To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/
 This is the reference documentation for drumstick. These libraries are a set of C++ MIDI related classes,
 using Qt5 objects, idioms and style.
 
-Currently, there are three libraries:
-- \b drumstick-alsa is a C++/Qt wrapper around the ALSA Sequencer API. ALSA sequencer provides software support for MIDI technology on Linux.
-- \b drumstick-file provides easy multiplatform file I/O for Standard MIDI Files (.mid), Cakewalk (.wrk) and Overture (.ove) file formats.
-- \b drumstick-rt is a realtime MIDI I/O library with pluggable backends. It uses drumstick-alsa on Linux, and other frameworks on Mac and Windows.
+Currently, there are three independent libraries designed to work together when needed:
+- \b Drumstick::ALSA is a Linux only C++/Qt wrapper around the ALSA Sequencer API. ALSA sequencer provides software support for MIDI technology on Linux.
+- \b Drumstick::File provides easy multiplatform file I/O for Standard MIDI Files (.mid), Cakewalk (.wrk) and Overture (.ove) file formats.
+- \b Drumstick::RT is a realtime MIDI I/O library with pluggable backends. It uses Drumstick::ALSA on Linux, and other frameworks on Mac and Windows.
 
 @see http://qt-project.org/doc/qt-5/index.html
 @see http://www.alsa-project.org/alsa-doc/alsa-lib/seq.html
@@ -36,7 +36,7 @@ For an introduction to design and programming with C++ and Qt, see the book
 Ezust. It is available published on dead trees, and also
 <a href="http://www.ics.com/design-patterns"> online</a>.
 
-Here is how a simple program playing notes using drumstick-alsa looks like:
+Here is how a simple program playing notes using Drumstick::ALSA looks like:
 
 @code
 #include <QApplication>
@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
 }
 @endcode
 
-A similar example can also be implemented using the drumstick-rt library:
+A similar example can also be implemented using the Drumstick::RT library:
 
 @code
 #include <QApplication>
@@ -118,7 +118,7 @@ int main(int argc, char **argv) {
 
 A common pattern on both implementations is QThread::msleep(250) to do the rhythm.
 If you are targeting only Linux, you may be interested on another (better) way to do the same,
-using drumstick-alsa again, because ALSA Sequencer is capable of event sacheduling
+using Drumstick::ALSA again, because ALSA Sequencer is capable of event sacheduling
 (that is why it is called a Sequencer).
 
 @code
@@ -171,6 +171,54 @@ int main(int argc, char **argv) {
     return 0;
 }
 @endcode
+
+To build a program using Drumstick, you may use CMake or Qmake. Using CMake you need
+first to build or install Drumstick on your development machine, and create a project
+file like the following, with the name: "CMakeLists.txt"
+
+@code
+cmake_minimum_required(VERSION 3.9)
+project(example LANGUAGES CXX)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(Qt5 COMPONENTS Core REQUIRED)
+find_package(Drumstick COMPONENTS ALSA REQUIRED)
+
+add_executable(example main.cpp)
+
+target_link_libraries( example
+    Qt5::Core
+    Drumstick::ALSA
+)
+@endcode
+
+Assuming that you have Qt 5.12.6 installed at your $HOME/Qt directory, and Drumstick is
+installed at $HOME/Drumstick, then you can configure and build your project with these commands:
+(your current directory is your project's)
+
+@code
+mkdir build
+cd build
+cmake .. -DCMAKE_PREFIX_PATH="$HOME/Qt/5.12.6/gcc_64;$HOME/Drumstick"
+cmake --build .
+@endcode
+
+If you prefer to download the Drumstick sources and build it, you can also build your project 
+without needing to install Drumstick. In this case:
+
+@code
+mkdir build
+cd build
+cmake .. -DCMAKE_PREFIX_PATH=$HOME/Qt/5.12.6/gcc_64 -DDrumstick_DIR=$HOME/Source/Drumstick/build"
+cmake --build .
+@endcode
+
 
 There are more examples in the source tree, under the utils/ directory, and
 you can also see applications using this library, like kmetronome, kmidimon and VMPK.
