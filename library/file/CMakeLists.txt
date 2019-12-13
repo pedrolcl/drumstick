@@ -52,8 +52,8 @@ add_library(drumstick-file
 add_library(Drumstick::File ALIAS drumstick-file)
 
 target_include_directories(drumstick-file PUBLIC
-    $<BUILD_INTERFACE:${Drumstick_SOURCE_DIR}/library/include>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDE}>
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/library/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 target_link_libraries(drumstick-file
@@ -86,7 +86,6 @@ install(FILES ${drumstick-file_HEADERS}
 install(EXPORT drumstick-file-targets
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick
     NAMESPACE Drumstick::
-    COMPONENT File
 )
 
 export(EXPORT drumstick-file-targets
@@ -109,5 +108,4 @@ install(FILES
     ${CMAKE_BINARY_DIR}/drumstick-file-config-version.cmake
     ${CMAKE_BINARY_DIR}/drumstick-file-config.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick
-    COMPONENT File
 )

@@ -58,7 +58,7 @@ add_library(Drumstick::ALSA ALIAS drumstick-alsa)
 
 target_include_directories(drumstick-alsa PUBLIC
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/library/include>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDE}>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     ${ALSA_INCLUDE_DIRS}
 )
 
@@ -86,11 +86,9 @@ endif()
 
 install(TARGETS drumstick-alsa
     EXPORT drumstick-alsa-targets
-    COMPONENT ALSA
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 install(FILES ${drumstick-alsa_HEADERS}
@@ -101,7 +99,6 @@ install(FILES ../include/drumstick.h
 install(EXPORT drumstick-alsa-targets
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick
     NAMESPACE Drumstick::
-    COMPONENT ALSA
 )
 
 export(EXPORT drumstick-alsa-targets
@@ -124,5 +121,4 @@ install(FILES
     ${CMAKE_BINARY_DIR}/drumstick-alsa-config-version.cmake
     ${CMAKE_BINARY_DIR}/drumstick-alsa-config.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick
-    COMPONENT ALSA
 )

@@ -49,12 +49,13 @@ add_library(drumstick-rt
 add_library(Drumstick::RT ALIAS drumstick-rt)
 
 target_include_directories(drumstick-rt PUBLIC
-    $<BUILD_INTERFACE:${Drumstick_SOURCE_DIR}/library/include>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDE}>
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/library/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 target_compile_definitions(drumstick-rt
-    PRIVATE LIBSUFFIX=${CMAKE_INSTALL_LIBDIR})
+    PRIVATE LIBSUFFIX=${CMAKE_INSTALL_LIBDIR}
+)
 
 target_link_libraries(drumstick-rt
     PUBLIC Qt5::Core
@@ -145,7 +146,6 @@ install(FILES ${drumstick-rt_HEADERS}
 install(EXPORT drumstick-rt-targets
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick
     NAMESPACE Drumstick::
-    COMPONENT RT
 )
 
 export(EXPORT drumstick-rt-targets
@@ -168,5 +168,4 @@ install(FILES
     ${CMAKE_BINARY_DIR}/drumstick-rt-config-version.cmake
     ${CMAKE_BINARY_DIR}/drumstick-rt-config.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick
-    COMPONENT RT
 )
