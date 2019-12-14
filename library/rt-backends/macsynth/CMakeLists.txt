@@ -47,12 +47,7 @@ endif()
 
 target_link_libraries(drumstick-rt-macsynth PUBLIC
     Qt5::Core
-    -framework CoreMIDI
-    -framework CoreFoundation
-    -framework CoreServices
-    -framework CoreAudio
-    -framework AudioToolbox
-    -framework AudioUnit
+    "-framework CoreMIDI -framework CoreFoundation -framework CoreServices -framework CoreAudio -framework AudioToolbox -framework AudioUnit"
 )
 
 target_include_directories(drumstick-rt-macsynth PRIVATE

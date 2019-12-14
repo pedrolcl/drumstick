@@ -49,8 +49,7 @@ endif()
 
 target_link_libraries(drumstick-rt-mac-out PUBLIC
     Qt5::Core
-    -framework CoreMIDI
-    -framework CoreFoundation
+    "-framework CoreMIDI -framework CoreFoundation"
 )
 
 target_include_directories(drumstick-rt-mac-out PRIVATE

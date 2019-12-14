@@ -15,12 +15,12 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-if (APPLE)
-    set(CMAKE_MACOSX_RPATH 1)
-    set(MACOSX_FRAMEWORK_IDENTIFIER “net.sourceforge”)
-    set(MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
-    set(MACOSX_FRAMEWORK_BUNDLE_VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
-endif()
+#if (APPLE)
+#    set(CMAKE_MACOSX_RPATH 1)
+#    set(MACOSX_FRAMEWORK_IDENTIFIER “net.sourceforge”)
+#    set(MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
+#    set(MACOSX_FRAMEWORK_BUNDLE_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
+#endif()
 
 set(drumstick-file_QTOBJ_SRCS
     ../include/drumstick/qsmf.h
@@ -34,6 +34,12 @@ set(drumstick-file_HEADERS
     ../include/drumstick/qwrk.h
     ../include/drumstick/qove.h
 )
+
+if(APPLE)
+    set_source_files_properties(${drumstick-file_HEADERS}
+        PROPERTIES MACOSX_PACKAGE_LOCATION Headers/drumstick
+)
+endif()
 
 set(drumstick-file_SRCS
     qsmf.cpp
@@ -68,6 +74,9 @@ else()
         FRAMEWORK TRUE
         VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
         SOVERSION ${PROJECT_VERSION_MAJOR}
+        FRAMEWORK_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
+        MACOSX_FRAMEWORK_IDENTIFIER "net.sourceforge.drumstick-file"
+        MACOSX_RPATH TRUE
         EXPORT_NAME File
     )
 endif()

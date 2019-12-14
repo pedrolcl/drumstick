@@ -25,7 +25,7 @@
         <key>CFBundleShortVersionString</key>
         <string>@FULL_VERSION@</string>
         <key>NSHumanReadableCopyright</key>
-        <string>© 2006-2018, Pedro López-Cabanillas and others</string>
+        <string>© 2006-2019, Pedro López-Cabanillas and others</string>
         <key>NSHighResolutionCapable</key>
         <string>True</string>
         <key>NOTE</key>
