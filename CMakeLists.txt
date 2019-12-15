@@ -77,18 +77,11 @@ endif()
 
 if(${CMAKE_SYSTEM} MATCHES "Linux")
     pkg_check_modules(ALSA alsa>=1.0.0)
-    if(ALSA_FOUND)
-        message(STATUS "ALSA library ${ALSA_VERSION} found")
-    else()
-        message(STATUS "Warning: ALSA library not found.")
-    endif()
 endif()
 
 if(PKG_CONFIG_FOUND)
     pkg_check_modules(PULSE libpulse-simple)
-    if(PULSE_FOUND)
-        message(STATUS "PulseAudio library ${PULSE_VERSION} found")
-    else()
+    if(NOT PULSE_FOUND)
         message(STATUS "Warning: PulseAudio library not found.")
     endif()
 endif()
@@ -109,7 +102,7 @@ if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
 
-if(${CMAKE_SYSTEM} MATCHES "Linux")
+if(UNIX)
     find_package(Doxygen)
     if(DOXYGEN_FOUND)
         configure_file(
@@ -136,22 +129,22 @@ if(${CMAKE_SYSTEM} MATCHES "Linux")
     endif()
 endif()
 
-configure_file(drumstick-file.pc.in drumstick-file.pc IMMEDIATE @ONLY)
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/drumstick-file.pc
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig )
-
-configure_file(drumstick-rt.pc.in drumstick-rt.pc IMMEDIATE @ONLY)
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/drumstick-rt.pc
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig )
+if(PKG_CONFIG_FOUND)
+    configure_file(drumstick-file.pc.in drumstick-file.pc IMMEDIATE @ONLY)
+    install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-file.pc
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig )
+    configure_file(drumstick-rt.pc.in drumstick-rt.pc IMMEDIATE @ONLY)
+    install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-rt.pc
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig )
+endif()
 
 # uninstall custom target
 configure_file(
     "${CMAKE_SOURCE_DIR}/cmake_admin/cmake_uninstall.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
     IMMEDIATE @ONLY)
-
 add_custom_target( uninstall
     "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
 

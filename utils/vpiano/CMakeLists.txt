@@ -20,10 +20,10 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Svg REQUIRED)
 find_package(Qt5Network REQUIRED)
 
-if(STATIC_DRUMSTICK AND PKG_CONFIG_FOUND)
-  pkg_check_modules(FLUIDSYNTH REQUIRED fluidsynth>=1.1.1)
-  #link_directories(${FLUIDSYNTH_LIBDIR})
-endif()
+#if(STATIC_DRUMSTICK AND PKG_CONFIG_FOUND)
+#  pkg_check_modules(FLUIDSYNTH REQUIRED fluidsynth>=1.1.1)
+#  #link_directories(${FLUIDSYNTH_LIBDIR})
+#endif()
 
 set(vpiano_forms_SRCS
     networksettingsdialog.ui

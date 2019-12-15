@@ -15,12 +15,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-#if (APPLE)
-#    set(CMAKE_MACOSX_RPATH ON)
-#    set(MACOSX_FRAMEWORK_IDENTIFIER “net.sourceforge”)
-#    set(MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
-#    set(MACOSX_FRAMEWORK_BUNDLE_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
-#endif()
 
 set(drumstick-rt_QOBJ_SRCS
     ../include/drumstick/rtmidiinput.h
@@ -37,7 +31,7 @@ set(drumstick-rt_HEADERS
 if(APPLE)
     set_source_files_properties(${drumstick-rt_HEADERS}
         PROPERTIES MACOSX_PACKAGE_LOCATION Headers/drumstick
-)
+    )
 endif()
 
 set(drumstick-rt_SRCS
@@ -111,7 +105,6 @@ if(STATIC_DRUMSTICK)
             winmm)
     endif()
 
-
     find_package(Qt5Network)
     if(Qt5Network_FOUND)
         target_compile_definitions(drumstick-rt NET_BACKEND)
@@ -120,24 +113,22 @@ if(STATIC_DRUMSTICK)
             drumstick-rt-net-out)
     endif()
 
-    if(PKG_CONFIG_FOUND)
-        pkg_check_modules(FLUIDSYNTH fluidsynth>=1.1.1)
-        if(FLUIDSYNTH_FOUND)
-            target_compile_definitions(drumstick-rt SYNTH_BACKEND)
-            target_link_libraries(drumstick-rt drumstick-rt-synth)
-        endif()
+    if(FLUIDSYNTH_FOUND)
+        target_compile_definitions(drumstick-rt SYNTH_BACKEND)
+        target_link_libraries(drumstick-rt drumstick-rt-synth)
     endif()
 
 else() # STATIC_DRUMSTICK
 
     set_target_properties(drumstick-rt PROPERTIES
-        FRAMEWORK TRUE
         VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
         SOVERSION ${PROJECT_VERSION_MAJOR}
+        EXPORT_NAME RT
+      # macOS:
+        FRAMEWORK TRUE
         FRAMEWORK_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
         MACOSX_FRAMEWORK_IDENTIFIER "net.sourceforge.drumstick-rt"
         MACOSX_RPATH TRUE
-        EXPORT_NAME RT
     )
 
 endif()
