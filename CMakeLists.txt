@@ -102,7 +102,7 @@ if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
 
-if(UNIX)
+if(UNIX AND NOT APPLE)
     find_package(Doxygen)
     if(DOXYGEN_FOUND)
         configure_file(
