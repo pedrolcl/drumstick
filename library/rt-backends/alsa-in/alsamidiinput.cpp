@@ -46,40 +46,63 @@ namespace rt {
         QStringList m_inputDevices;
         QStringList m_excludedNames;
         QMutex m_openMutex;
+        bool m_initialized;
 
         ALSAMIDIInputPrivate(ALSAMIDIInput *inp) :
             m_inp(inp),
-            m_out(0),
-            m_client(0),
-            m_port(0),
+            m_out(nullptr),
+            m_client(nullptr),
+            m_port(nullptr),
             m_portId(-1),
             m_clientId(-1),
             m_thruEnabled(false),
-            m_publicName(DEFAULT_PUBLIC_NAME)
+            m_publicName(DEFAULT_PUBLIC_NAME),
+            m_initialized(false)
         {
             m_runtimeAlsaNum = getRuntimeALSALibraryNumber();
-            m_client = new MidiClient(m_inp);
-            m_client->open();
-            m_client->setClientName(m_publicName);
-            m_port = m_client->createPort();
-            m_port->setPortName("in");
-            m_port->setCapability( SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE );
-            m_port->setPortType( SND_SEQ_PORT_TYPE_APPLICATION | SND_SEQ_PORT_TYPE_MIDI_GENERIC );
-            m_clientId = m_client->getClientId();
-            m_portId = m_port->getPortId();
-            m_port->setTimestamping(false);
-            m_port->setTimestampReal(false);
-            m_client->setHandler(this);
         }
 
         virtual ~ALSAMIDIInputPrivate()
         {
-            if (m_client != NULL) {
+            if (m_initialized) {
                 clearSubscription();
-                if (m_port != NULL)
+                uninitialize();
+            }
+        }
+
+        void initialize() {
+            qDebug() << Q_FUNC_INFO << m_initialized;
+            if (!m_initialized) {
+                m_client = new MidiClient(m_inp);
+                m_client->open();
+                m_client->setClientName(m_publicName);
+                m_port = m_client->createPort();
+                m_port->setPortName("in");
+                m_port->setCapability( SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE );
+                m_port->setPortType( SND_SEQ_PORT_TYPE_APPLICATION | SND_SEQ_PORT_TYPE_MIDI_GENERIC );
+                m_clientId = m_client->getClientId();
+                m_portId = m_port->getPortId();
+                m_port->setTimestamping(false);
+                m_port->setTimestampReal(false);
+                m_client->setHandler(this);
+                m_initialized = true;
+            }
+        }
+
+        void uninitialize() {
+            qDebug() << Q_FUNC_INFO << m_initialized;
+            if (m_initialized) {
+                if (m_port != nullptr) {
                     m_port->detach();
-                m_client->close();
-                delete m_client;
+                    delete m_port;
+                    m_port = nullptr;
+                }
+                if (m_client != nullptr) {
+                    m_client->close();
+                    delete m_client;
+                    m_client = nullptr;
+                }
+                m_initialized = false;
             }
         }
 
@@ -96,6 +119,9 @@ namespace rt {
 
         void reloadDeviceList(bool advanced)
         {
+            if (!m_initialized) {
+                initialize();
+            }
             m_clientFilter = !advanced;
             m_inputDevices.clear();
             QListIterator<PortInfo> it(m_client->getAvailableInputs());
@@ -125,7 +151,9 @@ namespace rt {
 
         bool setSubscription(const QString &newDevice)
         {
-            //qDebug() << Q_FUNC_INFO << newDevice;
+            if (!m_initialized) {
+                initialize();
+            }
             if (m_inputDevices.contains(newDevice)) {
                 m_currentInput = newDevice;
                 m_port->unsubscribeAll();
@@ -138,7 +166,7 @@ namespace rt {
 
         void clearSubscription()
         {
-            if (!m_currentInput.isEmpty()) {
+            if (!m_currentInput.isEmpty() && m_initialized) {
                 m_client->stopSequencerInput();
                 m_port->unsubscribeAll();
                 m_currentInput.clear();
@@ -148,14 +176,16 @@ namespace rt {
         void setPublicName(QString newName)
         {
             if (newName != m_publicName) {
-                m_client->setClientName(newName);
                 m_publicName = newName;
+                if(m_initialized) {
+                    m_client->setClientName(newName);
+                }
             }
         }
 
         void handleSequencerEvent(SequencerEvent* ev)
         {
-            if ( !SequencerEvent::isConnectionChange(ev) )
+            if ( !SequencerEvent::isConnectionChange(ev) && m_initialized)
                 switch(ev->getSequencerType()) {
                 case SND_SEQ_EVENT_NOTEOFF: {
                         const NoteOffEvent* n = static_cast<const NoteOffEvent*>(ev);
@@ -254,6 +284,7 @@ namespace rt {
     void ALSAMIDIInput::initialize(QSettings* settings)
     {
         Q_UNUSED(settings)
+        d->initialize();
     }
 
     QString ALSAMIDIInput::backendName()
@@ -290,6 +321,7 @@ namespace rt {
     void ALSAMIDIInput::close()
     {
         d->clearSubscription();
+        d->uninitialize();
     }
 
     QString ALSAMIDIInput::currentConnection()
