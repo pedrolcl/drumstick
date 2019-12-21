@@ -31,7 +31,7 @@ Song::~Song()
 
 void Song::sort() 
 {
-    qStableSort(begin(), end(), eventLessThan);
+    std::sort(begin(), end(), eventLessThan);
 }
 
 void Song::clear()

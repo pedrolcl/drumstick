@@ -24,7 +24,6 @@
 #include <QMainWindow>
 #include <QShortcut>
 #include <QCloseEvent>
-#include <QSignalMapper>
 
 const QString QSTR_WINDOW("Window");
 const QString QSTR_GEOMETRY("Geometry");
@@ -121,7 +120,6 @@ private:
     MidiQueue* m_Queue;
     DrumGridModel* m_model;
     QString m_subscription;
-    QSignalMapper* m_mapper;
     QVector<QShortcut*> m_shortcuts;
     About dlgAbout;
 

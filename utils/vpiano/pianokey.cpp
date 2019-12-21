@@ -16,11 +16,12 @@
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "pianokey.h"
 #include <QApplication>
 #include <QPainter>
 #include <QPalette>
-#include <QtSvg/QSvgRenderer>
+#include <QSvgRenderer>
+#include <QDebug>
+#include "pianokey.h"
 
 static const QBrush blackBrush = QBrush(Qt::black);
 static const QBrush whiteBrush = QBrush(Qt::white);
@@ -33,6 +34,7 @@ PianoKey::PianoKey(const QRectF &rect, const QBrush &brush, const int note)
     m_black(brush == blackBrush)
 {
     setAcceptedMouseButtons(Qt::NoButton);
+    qDebug() << Q_FUNC_INFO << rect;
 }
 
 PianoKey::PianoKey(const QRectF &rect, const bool black, const int note)
@@ -43,6 +45,7 @@ PianoKey::PianoKey(const QRectF &rect, const bool black, const int note)
     m_black(black)
 {
     setAcceptedMouseButtons(Qt::NoButton);
+    qDebug() << Q_FUNC_INFO << rect;
 }
 
 void PianoKey::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -60,10 +63,11 @@ void PianoKey::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidge
         painter->setBrush(m_brush);
     }
     painter->setPen(blackPen);
-    painter->drawRoundRect(rect(), 15, 15);
-    if (m_black)
+    painter->drawRoundedRect(rect(), 15, 15, Qt::RelativeSize);
+    if (m_black) {
+        qDebug() << Q_FUNC_INFO << rect();
         keyRenderer.render(painter, rect());
-    else {
+    } else {
         QPointF points[3] = {
              QPointF(rect().left()+1.5, rect().bottom()-1),
              QPointF(rect().right()-1, rect().bottom()-1),

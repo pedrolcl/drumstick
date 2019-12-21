@@ -35,44 +35,44 @@ class QDataStream;
 
 namespace drumstick {
 
-#define MThd 0x4d546864 /**< SMF Header prefix */
-#define MTrk 0x4d54726b /**< SMF Track prefix */
+const quint32 MThd = 0x4d546864; /**< SMF Header prefix */
+const quint32 MTrk = 0x4d54726b; /**< SMF Track prefix */
 
 /* Standard MIDI Files meta event definitions */
-#define meta_event          0xff /**< SMF Meta Event prefix */
-#define sequence_number     0x00 /**< SMF Sequence number */
-#define text_event          0x01 /**< SMF Text event */
-#define copyright_notice    0x02 /**< SMF Copyright notice */
-#define sequence_name       0x03 /**< SMF Sequence name */
-#define instrument_name     0x04 /**< SMF Instrument name */
-#define lyric               0x05 /**< SMF Lyric */
-#define marker              0x06 /**< SMF Marker */
-#define cue_point           0x07 /**< SMF Cue point */
-#define forced_channel      0x20 /**< SMF Forced MIDI channel */
-#define forced_port         0x21 /**< SMF Forced MIDI port */
-#define end_of_track        0x2f /**< SMF End of track */
-#define set_tempo           0x51 /**< SMF Tempo change */
-#define smpte_offset        0x54 /**< SMF SMPTE offset */
-#define time_signature      0x58 /**< SMF Time signature */
-#define key_signature       0x59 /**< SMF Key signature */
-#define sequencer_specific  0x7f /**< SMF Sequencer specific */
+const quint8 meta_event =         0xff; /**< SMF Meta Event prefix */
+const quint8 sequence_number =    0x00; /**< SMF Sequence number */
+const quint8 text_event =         0x01; /**< SMF Text event */
+const quint8 copyright_notice =   0x02; /**< SMF Copyright notice */
+const quint8 sequence_name =      0x03; /**< SMF Sequence name */
+const quint8 instrument_name =    0x04; /**< SMF Instrument name */
+const quint8 lyric =              0x05; /**< SMF Lyric */
+const quint8 marker =             0x06; /**< SMF Marker */
+const quint8 cue_point =          0x07; /**< SMF Cue point */
+const quint8 forced_channel =     0x20; /**< SMF Forced MIDI channel */
+const quint8 forced_port =        0x21; /**< SMF Forced MIDI port */
+const quint8 end_of_track =       0x2f; /**< SMF End of track */
+const quint8 set_tempo =          0x51; /**< SMF Tempo change */
+const quint8 smpte_offset =       0x54; /**< SMF SMPTE offset */
+const quint8 time_signature =     0x58; /**< SMF Time signature */
+const quint8 key_signature =      0x59; /**< SMF Key signature */
+const quint8 sequencer_specific = 0x7f; /**< SMF Sequencer specific */
 
 /* MIDI status commands most significant bit is 1 */
-#define note_off            0x80 /**< MIDI event Note Off */
-#define note_on             0x90 /**< MIDI event Note On */
-#define poly_aftertouch     0xa0 /**< MIDI event Polyphonic pressure */
-#define control_change      0xb0 /**< MIDI event Control change */
-#define program_chng        0xc0 /**< MIDI event Program change */
-#define channel_aftertouch  0xd0 /**< MIDI event Channel after-touch */
-#define pitch_wheel         0xe0 /**< MIDI event Bender */
-#define system_exclusive    0xf0 /**< MIDI event System Exclusive begin */
-#define end_of_sysex        0xf7 /**< MIDI event System Exclusive end */
+const quint8 note_off =           0x80; /**< MIDI event Note Off */
+const quint8 note_on =            0x90; /**< MIDI event Note On */
+const quint8 poly_aftertouch =    0xa0; /**< MIDI event Polyphonic pressure */
+const quint8 control_change =     0xb0; /**< MIDI event Control change */
+const quint8 program_chng =       0xc0; /**< MIDI event Program change */
+const quint8 channel_aftertouch = 0xd0; /**< MIDI event Channel after-touch */
+const quint8 pitch_wheel =        0xe0; /**< MIDI event Bender */
+const quint8 system_exclusive =   0xf0; /**< MIDI event System Exclusive begin */
+const quint8 end_of_sysex =       0xf7; /**< MIDI event System Exclusive end */
 
-#define midi_command_mask   0xf0 /**< Mask to extract the command from the status byte */
-#define midi_channel_mask   0x0f /**< Mask to extract the channel from the status byte */
+const quint8 midi_command_mask =  0xf0; /**< Mask to extract the command from the status byte */
+const quint8 midi_channel_mask =  0x0f; /**< Mask to extract the channel from the status byte */
 
-#define major_mode          0 /**< Major mode scale */
-#define minor_mode          1 /**< Minor mode scale */
+const quint8 major_mode =         0; /**< Major mode scale */
+const quint8 minor_mode =         1; /**< Minor mode scale */
 
 /**
  * Standard MIDI Files input/output

@@ -83,9 +83,9 @@ class MidiProgramChange;
 class MidiChannelPressure;
 class MidiPitchWheel;
 
-const int TWELVE_TONE = 12 ;
-const int INVALID_NOTE = -1 ;
-const int OCTAVE = 7 ;
+//const int TWELVE_TONE = 12 ;
+//const int INVALID_NOTE = -1 ;
+//const int OCTAVE = 7 ;
 
 enum CondType {
 	Cond_Time_Parameters	= 0x09,	// size - 7, TimeSignature
@@ -1772,7 +1772,7 @@ public:
 
 private:
 	OctaveShiftType octaveShiftType_;
-	OctaveShiftPosition octaveShiftPosition_;
+//    OctaveShiftPosition octaveShiftPosition_;
 	int endTick_;
 };
 
@@ -3277,7 +3277,7 @@ int OveSong::getPartBarCount() const {
 }
 
 QPair<int, int> OveSong::trackToPartStaff(int track) const {
-	QPair<int, int> partStaff;
+//	QPair<int, int> partStaff;
 	int i;
 	int staffCount = 0;
 
@@ -5151,7 +5151,7 @@ int HarpPedal::getShowCharFlag() const {
 ///////////////////////////////////////////////////////////////////////////////
 OctaveShift::OctaveShift() :
 	octaveShiftType_(OctaveShift_8),
-	octaveShiftPosition_(OctavePosition_Start),
+    //octaveShiftPosition_(OctavePosition_Start),
 	endTick_(0) {
 	musicDataType_ = MusicData_OctaveShift;
 }
@@ -7006,7 +7006,7 @@ bool BarsParse::parse() {
 
 		// MEAS
 		if( !parseMeas(measure, measureChunks_[i]) ) {
-			QString ss = "failed in parse MEAS " + i;
+            QString ss = QString("failed in parse MEAS %1").arg(i);
 			messageOut(ss);
 
 			return false;
@@ -7016,7 +7016,7 @@ bool BarsParse::parse() {
 	for( i=0; i<(int)conductChunks_.size(); ++i ) {
 		// COND
 		if( !parseCond(measures[i], measureDatas[i], conductChunks_[i]) ) {
-			QString ss = "failed in parse COND " + i;
+            QString ss = QString("failed in parse COND %1").arg(i);
 			messageOut(ss);
 
 			return false;
@@ -7028,7 +7028,7 @@ bool BarsParse::parse() {
 
 		// BDAT
 		if( !parseBdat(measures[measId], measureDatas[i], bdatChunks_[i]) ) {
-			QString ss = "failed in parse BDAT " + i;
+            QString ss = QString("failed in parse BDAT %1").arg(i);
 			messageOut(ss);
 
 			return false;
@@ -10194,7 +10194,7 @@ void OveOrganizer::organizeContainers(int /*part*/, int /*track*/,
 	}
 
 	// shift voices
-	qSort(voices.begin(), voices.end());
+    std::sort(voices.begin(), voices.end());
 
 	for (i = 0; i < voices.size(); ++i) {
 		int voice = voices[i];
@@ -11412,7 +11412,7 @@ void QOve::convertSignatures() {
 }
 
 void QOve::convertTrackHeader(OVE::Track* track, int trackNo) {
-	int i;
+    int i;
 	const QList<OVE::Voice*> voices = track->getVoices();
 	QMap<int, int> patches;	// channel, patch
 	QMap<int, int> pans;	// channel, pan
@@ -11426,7 +11426,7 @@ void QOve::convertTrackHeader(OVE::Track* track, int trackNo) {
 	QString trackName = track->getName();
 
 	// patch, pan(control 10), volume(control 7)
-	for (i = 0; i < voices.size() && i < (unsigned int)track->getVoiceCount(); ++i) {
+    for (i = 0; i < voices.size() && i < track->getVoiceCount(); ++i) {
 		int patch = voices[i]->getPatch();
 		int channel = voices[i]->getChannel();
 		int volume = voices[i]->getVolume();

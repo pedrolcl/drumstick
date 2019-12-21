@@ -45,7 +45,7 @@ void Connections::setInputs(QList<MIDIInput *> ins)
     ui.m_inputBackends->disconnect();
     ui.m_inputBackends->clear();
     foreach(MIDIInput *i, ins) {
-        ui.m_inputBackends->addItem(i->backendName(), qVariantFromValue((void *) i));
+        ui.m_inputBackends->addItem(i->backendName(), QVariant::fromValue(i));
     }
     connect(ui.m_inputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshInputs(QString)));
 }
@@ -54,7 +54,7 @@ void Connections::setOutputs(QList<MIDIOutput *> outs)
 {
     ui.m_outputBackends->disconnect();
     foreach(MIDIOutput *o, outs) {
-        ui.m_outputBackends->addItem(o->backendName(), qVariantFromValue((void *) o));
+        ui.m_outputBackends->addItem(o->backendName(), QVariant::fromValue(o));
     }
     connect(ui.m_outputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshOutputs(QString)));
 }

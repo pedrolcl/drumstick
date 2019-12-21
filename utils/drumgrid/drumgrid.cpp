@@ -19,7 +19,6 @@
 #include <QInputDialog>
 #include <QShortcut>
 #include <QToolTip>
-#include <QSignalMapper>
 #include <QSettings>
 #include <qmath.h>
 #include <drumstick/alsaclient.h>
@@ -74,21 +73,19 @@ DrumGrid::DrumGrid(QWidget *parent)
     m_ui->tableView->setModel(m_model);
     connect ( this, SIGNAL(signalUpdate(int,int)), SLOT(updateDisplay(int,int)) );
 
-    m_mapper = new QSignalMapper(this);
-    addShortcut(QKeySequence("f"), "f");
-    addShortcut(QKeySequence("p"), "p");
-    addShortcut(QKeySequence("1"), "1");
-    addShortcut(QKeySequence("2"), "2");
-    addShortcut(QKeySequence("3"), "3");
-    addShortcut(QKeySequence("4"), "4");
-    addShortcut(QKeySequence("5"), "5");
-    addShortcut(QKeySequence("6"), "6");
-    addShortcut(QKeySequence("7"), "7");
-    addShortcut(QKeySequence("8"), "8");
-    addShortcut(QKeySequence("9"), "9");
-    addShortcut(QKeySequence("0"), QString());
+    addShortcut(QKeySequence(Qt::Key_F), "f");
+    addShortcut(QKeySequence(Qt::Key_P), "p");
+    addShortcut(QKeySequence(Qt::Key_1), "1");
+    addShortcut(QKeySequence(Qt::Key_2), "2");
+    addShortcut(QKeySequence(Qt::Key_3), "3");
+    addShortcut(QKeySequence(Qt::Key_4), "4");
+    addShortcut(QKeySequence(Qt::Key_5), "5");
+    addShortcut(QKeySequence(Qt::Key_6), "6");
+    addShortcut(QKeySequence(Qt::Key_7), "7");
+    addShortcut(QKeySequence(Qt::Key_8), "8");
+    addShortcut(QKeySequence(Qt::Key_9), "9");
+    addShortcut(QKeySequence(Qt::Key_0), QString());
     addShortcut(QKeySequence::Delete, QString());
-    connect( m_mapper, SIGNAL(mapped(QString)), SLOT(shortcutPressed(QString)));
     connect ( m_ui->tableView, SIGNAL(doubleClicked(const QModelIndex&)),
               m_model, SLOT(changeCell(const QModelIndex &)) );
 
@@ -214,8 +211,7 @@ void DrumGrid::shortcutPressed(const QString& value)
 void DrumGrid::addShortcut(const QKeySequence& key, const QString& value)
 {
     QShortcut* shortcut = new QShortcut(key, m_ui->tableView);
-    connect (shortcut, SIGNAL(activated()), m_mapper, SLOT(map()));
-    m_mapper->setMapping(shortcut, value);
+    connect(shortcut, &QShortcut::activated, [=]{ shortcutPressed(value); });
     m_shortcuts.append(shortcut);
 }
 

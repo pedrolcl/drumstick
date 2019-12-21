@@ -44,7 +44,7 @@ static inline bool eventLessThan(const SequencerEvent* s1, const SequencerEvent 
 
 void Song::sort()
 {
-    qStableSort(begin(), end(), eventLessThan);
+    std::sort(begin(), end(), eventLessThan);
 }
 
 void Song::clear()
