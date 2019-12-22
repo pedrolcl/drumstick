@@ -247,14 +247,14 @@ namespace rt {
         quint8 buf[2048];
         MIDIPacketList* pktlist = (MIDIPacketList*) &buf;
         MIDIPacket* packet = MIDIPacketListInit(pktlist);
-        for(int chan = 0; chan < MIDI_CHANNELS && packet != NULL; ++chan) {
+        for(int chan = 0; chan < MIDI_STD_CHANNELS && packet != NULL; ++chan) {
             data[0] = MIDI_STATUS_CONTROLCHANGE | (chan & 0x0f);
-            data[1] = MIDI_CTL_ALL_NOTES_OFF;
+            data[1] = MIDI_CONTROL_ALL_NOTES_OFF;
             data[2] = 0;
             packet = MIDIPacketListAdd(pktlist, sizeof(buf), packet, 0,
                       sizeof(data), data);
             if (packet != NULL) {
-                data[1] = MIDI_CTL_ALL_SOUNDS_OFF;
+                data[1] = MIDI_CONTROL_ALL_SOUNDS_OFF;
                 packet = MIDIPacketListAdd(pktlist, sizeof(buf), packet, 0,
                            sizeof(data), data);
             }
@@ -269,14 +269,14 @@ namespace rt {
         quint8 buf[2048];
         MIDIPacketList* pktlist = (MIDIPacketList*) &buf;
         MIDIPacket* packet = MIDIPacketListInit(pktlist);
-        for(int chan = 0; chan < MIDI_CHANNELS && packet != NULL; ++chan) {
+        for(int chan = 0; chan < MIDI_STD_CHANNELS && packet != NULL; ++chan) {
             data[0] = MIDI_STATUS_CONTROLCHANGE | (chan & 0x0f);
-            data[1] = MIDI_CTL_RESET_CONTROLLERS;
+            data[1] = MIDI_CONTROL_RESET_CONTROLLERS;
             data[2] = 0;
             packet = MIDIPacketListAdd(pktlist, sizeof(buf), packet, 0,
                       sizeof(data), data);
             if (packet != NULL) {
-                data[1] = MIDI_CTL_MSB_MAIN_VOLUME;
+                data[1] = MIDI_CONTROL_MSB_MAIN_VOLUME;
                 data[2] = 100;
                 packet = MIDIPacketListAdd(pktlist, sizeof(buf), packet, 0,
                            sizeof(data), data);

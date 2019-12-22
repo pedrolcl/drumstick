@@ -1,5 +1,4 @@
 set( HEADERS
-    ../../../include/drumstick/rtmidioutput.h
     synthcontroller.h
     synthrenderer.h
 )

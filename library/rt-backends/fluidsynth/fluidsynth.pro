@@ -7,9 +7,7 @@ DEPENDPATH += ../../include
 INCLUDEPATH += ../../include
 QT -= gui
 
-HEADERS += ../../include/drumstick/rtmidiinput.h \
-           ../../include/drumstick/rtmidioutput.h \
-           synthengine.h \
+HEADERS += synthengine.h \
            synthoutput.h
 
 SOURCES += synthoutput.cpp synthengine.cpp

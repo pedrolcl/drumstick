@@ -25,6 +25,7 @@
 #include <QtPlugin>
 #include <QSettings>
 
+#include "macros.h"
 #include "rtmidioutput.h"
 
 /**
@@ -40,7 +41,7 @@ namespace rt {
     /**
      * @brief MIDI IN interface
      */
-    class MIDIInput : public QObject
+    class DRUMSTICK_EXPORT MIDIInput : public QObject
     {
         Q_OBJECT
 

@@ -10,13 +10,5 @@ DEPENDPATH += ../../include
 INCLUDEPATH += ../../include
 QT -= gui
 
-HEADERS += ../../include/drumstick/rtmidiinput.h \
-           ../../include/drumstick/rtmidioutput.h \
-           dummyoutput.h
-
-SOURCES += \
-           dummyoutput.cpp
-
-OTHER_FILES += \
-    CMakeLists.txt
-
+HEADERS += dummyoutput.h
+SOURCES += dummyoutput.cpp

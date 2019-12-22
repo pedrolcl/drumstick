@@ -10,14 +10,10 @@ DEPENDPATH += ../../include ../common
 INCLUDEPATH += ../../include ../common
 QT -= gui
 
-HEADERS += ../../include/drumstick/rtmidiinput.h \
-           ../../include/drumstick/rtmidioutput.h \
-           ../common/midiparser.h \
+HEADERS += ../common/midiparser.h \
            ossinput_p.h \
            ossinput.h
 
 SOURCES += ossinput.cpp \
            ossinput_p.cpp \
            ../common/midiparser.cpp
-
-

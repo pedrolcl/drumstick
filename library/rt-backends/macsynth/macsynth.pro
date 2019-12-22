@@ -10,9 +10,7 @@ INCLUDEPATH += . ../../include
 include (../../../global.pri)
 QT -= gui
 
-HEADERS += ../../include/drumstick/rtmidioutput.h \
-           macsynth.h
-
+HEADERS += macsynth.h
 SOURCES += macsynth.cpp
 
 LIBS += -framework CoreMIDI -framework CoreFoundation -framework CoreServices

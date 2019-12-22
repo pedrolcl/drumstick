@@ -69,7 +69,7 @@ namespace rt {
 
         void initialize()
         {
-            qDebug() << Q_FUNC_INFO << m_initialized;
+            //qDebug() << Q_FUNC_INFO << m_initialized;
             if (!m_initialized) {
                 m_client = new MidiClient(m_out);
                 m_client->open();
@@ -85,7 +85,7 @@ namespace rt {
 
         void uninitialize()
         {
-            qDebug() << Q_FUNC_INFO << m_initialized;
+            //qDebug() << Q_FUNC_INFO << m_initialized;
             if (m_initialized) {
                 if (m_port != nullptr) {
                     m_port->detach();

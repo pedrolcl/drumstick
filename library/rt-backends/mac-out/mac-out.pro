@@ -10,15 +10,10 @@ INCLUDEPATH += . ../../include ../common
 include (../../../global.pri)
 QT -= gui
 
-HEADERS += ../../include/drumstick/rtmidiinput.h \
-           ../../include/drumstick/rtmidioutput.h \
-           macmidioutput.h \
+HEADERS += macmidioutput.h \
            ../common/maccommon.h
 
-SOURCES += \
-           macmidioutput.cpp \
+SOURCES += macmidioutput.cpp \
            ../common/maccommon.cpp
 
 LIBS += -framework CoreMIDI -framework CoreFoundation
-
-#-framework CoreAudio -framework AudioToolbox -framework AudioUnit

@@ -113,7 +113,7 @@ void Connections::refreshInputs(QString id)
         m_midiIn->close();
         int idx = ui.m_inputBackends->findText(id, Qt::MatchStartsWith);
         if (idx > -1) {
-            m_midiIn = (MIDIInput *) ui.m_inputBackends->itemData(idx).value<void *>();
+            m_midiIn = ui.m_inputBackends->itemData(idx).value<MIDIInput*>();
         } else {
             m_midiIn = 0;
         }
@@ -136,7 +136,7 @@ void Connections::refreshOutputs(QString id)
         m_midiOut->close();
         int idx = ui.m_outputBackends->findText(id, Qt::MatchStartsWith);
         if (idx > -1) {
-            m_midiOut = (MIDIOutput *) ui.m_outputBackends->itemData(idx).value<void *>();
+            m_midiOut = ui.m_outputBackends->itemData(idx).value<MIDIOutput*>();
         } else {
             m_midiOut = 0;
         }

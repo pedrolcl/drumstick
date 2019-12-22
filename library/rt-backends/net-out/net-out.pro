@@ -12,10 +12,7 @@ DEPENDPATH += ../../include
 INCLUDEPATH += ../../include
 QT -= gui
 
-HEADERS += ../../include/drumstick/rtmidiinput.h \
-           ../../include/drumstick/rtmidioutput.h \
-           netmidioutput.h
-SOURCES += \
-           netmidioutput.cpp
+HEADERS += netmidioutput.h
+SOURCES += netmidioutput.cpp
 
 QT += network

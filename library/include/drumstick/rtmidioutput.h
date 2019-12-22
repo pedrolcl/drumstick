@@ -24,45 +24,7 @@
 #include <QStringList>
 #include <QtPlugin>
 #include <QSettings>
-
-#define MIDI_CHANNELS               16
-#define MIDI_GM_DRUM_CHANNEL        (10-1)
-#define MIDI_CTL_MSB_BANK_SELECT    0x00
-#define MIDI_CTL_MSB_MAIN_VOLUME    0x07
-#define MIDI_CTL_LSB_BANK_SELECT    0x20
-#define MIDI_CTL_REVERB_SEND        0x5b
-#define MIDI_CTL_ALL_SOUNDS_OFF     0x78
-#define MIDI_CTL_ALL_NOTES_OFF      0x7b
-#define MIDI_CTL_RESET_CONTROLLERS  0x79
-
-#define MIDI_STATUS_NOTEOFF         0x80
-#define MIDI_STATUS_NOTEON          0x90
-#define MIDI_STATUS_KEYPRESURE      0xa0
-#define MIDI_STATUS_CONTROLCHANGE   0xb0
-#define MIDI_STATUS_PROGRAMCHANGE   0xc0
-#define MIDI_STATUS_CHANNELPRESSURE 0xd0
-#define MIDI_STATUS_PITCHBEND       0xe0
-#define MIDI_STATUS_SYSEX           0xf0
-#define MIDI_STATUS_ENDSYSEX        0xf7
-#define MIDI_STATUS_REALTIME        0xf8
-
-#define MIDI_STATUS_MASK            0xf0
-#define MIDI_CHANNEL_MASK           0x0f
-
-#define MIDI_COMMON_QTRFRAME        0xF1
-#define MIDI_COMMON_SONGPP          0xF2
-#define MIDI_COMMON_SONSELECT       0xF3
-#define MIDI_COMMON_TUNEREQ         0xF6
-
-#define MIDI_REALTIME_CLOCK         0xF8
-#define MIDI_REALTIME_START         0xFA
-#define MIDI_REALTIME_CONTINUE      0xFB
-#define MIDI_REALTIME_STOP          0xFC
-#define MIDI_REALTIME_SENSING       0xFE
-#define MIDI_REALTIME_RESET         0xFF
-
-#define MIDI_LSB(x) (x % 0x80)
-#define MIDI_MSB(x) (x / 0x80)
+#include "macros.h"
 
 /**
  * @file rtmidioutput.h
@@ -74,10 +36,56 @@
 namespace drumstick {
 namespace rt {
 
+const quint8 MIDI_STD_CHANNELS        = 16;
+const quint8 MIDI_GM_STD_DRUM_CHANNEL = (10-1);
+const quint8 MIDI_CONTROL_MSB_BANK_SELECT   = 0x00;
+const quint8 MIDI_CONTROL_MSB_MAIN_VOLUME   = 0x07;
+const quint8 MIDI_CONTROL_LSB_BANK_SELECT   = 0x20;
+const quint8 MIDI_CONTROL_REVERB_SEND       = 0x5b;
+const quint8 MIDI_CONTROL_ALL_SOUNDS_OFF    = 0x78;
+const quint8 MIDI_CONTROL_ALL_NOTES_OFF     = 0x7b;
+const quint8 MIDI_CONTROL_RESET_CONTROLLERS = 0x79;
+
+const quint8 MIDI_STATUS_NOTEOFF         = 0x80;
+const quint8 MIDI_STATUS_NOTEON          = 0x90;
+const quint8 MIDI_STATUS_KEYPRESURE      = 0xa0;
+const quint8 MIDI_STATUS_CONTROLCHANGE   = 0xb0;
+const quint8 MIDI_STATUS_PROGRAMCHANGE   = 0xc0;
+const quint8 MIDI_STATUS_CHANNELPRESSURE = 0xd0;
+const quint8 MIDI_STATUS_PITCHBEND       = 0xe0;
+const quint8 MIDI_STATUS_SYSEX           = 0xf0;
+const quint8 MIDI_STATUS_ENDSYSEX        = 0xf7;
+const quint8 MIDI_STATUS_REALTIME        = 0xf8;
+
+const quint8 MIDI_STATUS_MASK            = 0xf0;
+const quint8 MIDI_CHANNEL_MASK           = 0x0f;
+
+const quint8 MIDI_COMMON_QTRFRAME        = 0xF1;
+const quint8 MIDI_COMMON_SONGPP          = 0xF2;
+const quint8 MIDI_COMMON_SONSELECT       = 0xF3;
+const quint8 MIDI_COMMON_TUNEREQ         = 0xF6;
+
+const quint8 MIDI_REALTIME_CLOCK         = 0xF8;
+const quint8 MIDI_REALTIME_START         = 0xFA;
+const quint8 MIDI_REALTIME_CONTINUE      = 0xFB;
+const quint8 MIDI_REALTIME_STOP          = 0xFC;
+const quint8 MIDI_REALTIME_SENSING       = 0xFE;
+const quint8 MIDI_REALTIME_RESET         = 0xFF;
+
+inline int MIDI_LSB(int x)
+{
+    return (x % 0x80);
+}
+
+inline int MIDI_MSB(int x)
+{
+    return (x / 0x80);
+}
+
     /**
      * @brief MIDI OUT interface
      */
-    class MIDIOutput : public QObject
+    class DRUMSTICK_EXPORT MIDIOutput : public QObject
     {
         Q_OBJECT
 

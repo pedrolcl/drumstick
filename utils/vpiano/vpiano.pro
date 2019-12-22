@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-vpiano
-QT += gui widgets svg network
+QT += gui widgets network
 CONFIG += qt thread exceptions
 DESTDIR = ../../build/bin
 include (../../global.pri)
@@ -15,8 +15,7 @@ HEADERS += pianokey.h pianokeybd.h pianoscene.h vpiano.h \
     connections.h vpianoabout.h preferences.h \
     fluidsettingsdialog.h networksettingsdialog.h \
     macsynthsettingsdialog.h \
-    sonivoxsettingsdialog.h \
-    ../../library/include/drumstick/rtmidiinput.h
+    sonivoxsettingsdialog.h
 SOURCES += pianokey.cpp pianokeybd.cpp pianoscene.cpp vpiano.cpp \
     keylabel.cpp connections.cpp vpianoabout.cpp preferences.cpp vpianomain.cpp \
     fluidsettingsdialog.cpp networksettingsdialog.cpp \

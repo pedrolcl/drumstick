@@ -172,13 +172,13 @@ namespace rt {
                 }
 
                 for (uint i = 0; i < 16; ++i) {
-                    result = MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_CONTROLCHANGE+i, MIDI_CTL_MSB_MAIN_VOLUME,100,0);
+                    result = MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_CONTROLCHANGE+i, MIDI_CONTROL_MSB_MAIN_VOLUME,100,0);
                     registerStatus( "MusicDeviceMIDIEvent", result );
-                    result = MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_CONTROLCHANGE+i, MIDI_CTL_REVERB_SEND,100,0);
+                    result = MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_CONTROLCHANGE+i, MIDI_CONTROL_REVERB_SEND,100,0);
                     registerStatus( "MusicDeviceMIDIEvent", result );
-                    result = MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_CONTROLCHANGE+i, MIDI_CTL_MSB_BANK_SELECT,0,0);
+                    result = MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_CONTROLCHANGE+i, MIDI_CONTROL_MSB_BANK_SELECT,0,0);
                     registerStatus( "MusicDeviceMIDIEvent", result );
-                    result = MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_CONTROLCHANGE+i, MIDI_CTL_LSB_BANK_SELECT,0,0);
+                    result = MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_CONTROLCHANGE+i, MIDI_CONTROL_LSB_BANK_SELECT,0,0);
                     registerStatus( "MusicDeviceMIDIEvent", result );
                     result = MusicDeviceMIDIEvent(m_synthUnit, MIDI_STATUS_PROGRAMCHANGE+i, 0,0,0);
                     registerStatus( "MusicDeviceMIDIEvent", result );

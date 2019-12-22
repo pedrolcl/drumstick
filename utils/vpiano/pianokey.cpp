@@ -19,7 +19,6 @@
 #include <QApplication>
 #include <QPainter>
 #include <QPalette>
-#include <QSvgRenderer>
 #include <QDebug>
 #include "pianokey.h"
 
@@ -34,7 +33,6 @@ PianoKey::PianoKey(const QRectF &rect, const QBrush &brush, const int note)
     m_black(brush == blackBrush)
 {
     setAcceptedMouseButtons(Qt::NoButton);
-    qDebug() << Q_FUNC_INFO << rect;
 }
 
 PianoKey::PianoKey(const QRectF &rect, const bool black, const int note)
@@ -45,14 +43,15 @@ PianoKey::PianoKey(const QRectF &rect, const bool black, const int note)
     m_black(black)
 {
     setAcceptedMouseButtons(Qt::NoButton);
-    qDebug() << Q_FUNC_INFO << rect;
 }
 
 void PianoKey::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    static QSvgRenderer keyRenderer(QString(":/vpiano/blkey.svg"));
+    static QPixmap pixmap(QLatin1String(":/vpiano/blkey.png"));
     static const QPen blackPen(Qt::black, 1);
     static const QPen grayPen(QBrush(Qt::gray), 1, Qt::SolidLine,  Qt::RoundCap, Qt::RoundJoin);
+    painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+
     if (m_pressed) {
         if (m_selectedBrush.style() != Qt::NoBrush) {
             painter->setBrush(m_selectedBrush);
@@ -65,8 +64,7 @@ void PianoKey::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidge
     painter->setPen(blackPen);
     painter->drawRoundedRect(rect(), 15, 15, Qt::RelativeSize);
     if (m_black) {
-        qDebug() << Q_FUNC_INFO << rect();
-        keyRenderer.render(painter, rect());
+        painter->drawPixmap(rect(), pixmap, pixmap.rect());
     } else {
         QPointF points[3] = {
              QPointF(rect().left()+1.5, rect().bottom()-1),

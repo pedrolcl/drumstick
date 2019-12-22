@@ -11,14 +11,10 @@ include (../../../global.pri)
 QT -= gui
 QT += concurrent
 
-HEADERS += ../../include/drumstick/rtmidiinput.h \
-           ../../include/drumstick/rtmidioutput.h \
-           macmidiinput.h \
+HEADERS += macmidiinput.h \
            ../common/maccommon.h
 
 SOURCES += macmidiinput.cpp \
            ../common/maccommon.cpp
 
 LIBS += -framework CoreMIDI -framework CoreFoundation
-
-#-framework CoreAudio -framework AudioToolbox -framework AudioUnit

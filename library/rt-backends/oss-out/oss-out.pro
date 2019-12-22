@@ -10,10 +10,5 @@ DEPENDPATH += ../../include
 INCLUDEPATH += ../../include
 QT -= gui
 
-HEADERS += ../../include/drumstick/rtmidiinput.h \
-           ../../include/drumstick/rtmidioutput.h \
-           ossoutput.h
-
-SOURCES += \
-           ossoutput.cpp
-
+HEADERS += ossoutput.h
+SOURCES += ossoutput.cpp

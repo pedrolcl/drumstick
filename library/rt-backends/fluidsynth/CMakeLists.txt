@@ -17,7 +17,6 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(drumstick-rt-fluidsynth_QTOBJ_SRCS
-    ../../include/drumstick/rtmidioutput.h
     synthengine.h
     synthoutput.h
 )

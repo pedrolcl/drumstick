@@ -12,11 +12,6 @@ DEPENDPATH += ../../include
 INCLUDEPATH += ../../include
 QT -= gui
 
-HEADERS += ../../include/drumstick/rtmidiinput.h \
-           ../../include/drumstick/rtmidioutput.h \
-           winmidiinput.h
-
-SOURCES += \
-           winmidiinput.cpp
-
+HEADERS += winmidiinput.h
+SOURCES += winmidiinput.cpp
 LIBS += -lwinmm
