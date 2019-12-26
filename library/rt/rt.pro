@@ -4,12 +4,13 @@ DESTDIR = ../../build/lib
 DEPENDPATH += . ../include
 INCLUDEPATH += . ../include
 include (../../global.pri)
-CONFIG += qt
+CONFIG += qt create_pc create_prl no_install_prl
 static {
-    CONFIG += staticlib create_prl
+    CONFIG += staticlib
 }
 DEFINES += drumstick_rt_EXPORTS
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
+QMAKE_PKGCONFIG_PREFIX = $$INSTALLBASE
 QT -= gui
 # Input
 HEADERS += \

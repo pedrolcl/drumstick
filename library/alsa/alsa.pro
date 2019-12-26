@@ -6,12 +6,13 @@ INCLUDEPATH += . ../include
 include (../../global.pri)
 QT -= gui
 #QT += dbus
-CONFIG += qt thread link_pkgconfig
+CONFIG += qt thread link_pkgconfig create_pc create_prl no_install_prl
 static {
-    CONFIG += staticlib create_prl
+    CONFIG += staticlib
 }
 DEFINES += drumstick_alsa_EXPORTS #RTKIT_SUPPORT
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
+QMAKE_PKGCONFIG_PREFIX = $$INSTALLBASE
 # Input
 HEADERS += \
     ../include/drumstick.h \
