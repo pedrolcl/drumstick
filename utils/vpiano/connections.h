@@ -26,20 +26,18 @@
 #include <drumstick/rtmidioutput.h>
 #include "ui_connections.h"
 
-using namespace drumstick::rt;
-
 class Connections : public QDialog
 {
     Q_OBJECT
 
 public:
     Connections(QWidget *parent = 0);
-    void setInput(MIDIInput *in) { m_midiIn = in; }
-    void setOutput(MIDIOutput *out) { m_midiOut = out; }
-    void setInputs(QList<MIDIInput *> ins);
-    void setOutputs(QList<MIDIOutput *> outs);
-    MIDIInput *getInput() { return m_midiIn; }
-    MIDIOutput *getOutput() { return m_midiOut; }
+    void setInput(drumstick::rt::MIDIInput *in) { m_midiIn = in; }
+    void setOutput(drumstick::rt::MIDIOutput *out) { m_midiOut = out; }
+    void setInputs(QList<drumstick::rt::MIDIInput *> ins);
+    void setOutputs(QList<drumstick::rt::MIDIOutput *> outs);
+    drumstick::rt::MIDIInput *getInput() { return m_midiIn; }
+    drumstick::rt::MIDIOutput *getOutput() { return m_midiOut; }
     void setAdvanced(bool value);
     bool advanced();
     bool midiThru();
@@ -58,8 +56,8 @@ private:
     bool m_advanced;
     bool m_thru;
     bool m_settingsChanged;
-    MIDIInput* m_midiIn;
-    MIDIOutput* m_midiOut;
+    drumstick::rt::MIDIInput* m_midiIn;
+    drumstick::rt::MIDIOutput* m_midiOut;
     Ui::ConnectionsClass ui;
 };
 

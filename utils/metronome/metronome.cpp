@@ -34,6 +34,8 @@ const QString PGM_DESCRIPTION("ALSA based command line metronome");
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
+using namespace drumstick::ALSA;
+
 /* *************** *
  * Metronome class *
  * *************** */

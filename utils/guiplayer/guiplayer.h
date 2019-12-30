@@ -28,13 +28,18 @@
 #include <QPointer>
 
 namespace drumstick {
-    class QSmf;
-    class QWrk;
-    class QOve;
-    class MidiClient;
-    class MidiPort;
-    class MidiQueue;
-    class SequencerEvent;
+    namespace ALSA {
+        class MidiClient;
+        class MidiPort;
+        class MidiQueue;
+        class SequencerEvent;
+    }
+
+    namespace File {
+        class QSmf;
+        class QWrk;
+        class QOve;
+    }
 }
 
 namespace Ui {
@@ -44,8 +49,6 @@ namespace Ui {
 class Player;
 class About;
 class Song;
-
-using namespace drumstick;
 
 const QString QSTR_DOMAIN("drumstick.sourceforge.net");
 const QString QSTR_APPNAME("GUIPlayer");
@@ -66,9 +69,9 @@ public:
     GUIPlayer(QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
     ~GUIPlayer();
 
-    void appendSMFEvent(SequencerEvent* ev);
-    void appendWRKEvent(unsigned long ticks, SequencerEvent* ev);
-    void appendOVEEvent(unsigned long ticks, SequencerEvent* ev);
+    void appendSMFEvent(drumstick::ALSA::SequencerEvent* ev);
+    void appendWRKEvent(unsigned long ticks, drumstick::ALSA::SequencerEvent* ev);
+    void appendOVEEvent(unsigned long ticks, drumstick::ALSA::SequencerEvent* ev);
 
     void subscribe(const QString& portName);
     void updateTimeLabel(int mins, int secs, int cnts);
@@ -76,7 +79,6 @@ public:
     void dragEnterEvent(QDragEnterEvent* event);
     void dropEvent(QDropEvent* event);
     void closeEvent(QCloseEvent* event);
-    //bool event(QEvent* event);
     void openFile(const QString& fileName);
     void readSettings();
     void writeSettings();
@@ -101,7 +103,7 @@ public slots:
     void pitchShift(int value);
     void songFinished();
     void playerStopped();
-    void sequencerEvent(SequencerEvent* ev);
+    void sequencerEvent(drumstick::ALSA::SequencerEvent* ev);
 
     /* SMF slots */
     void smfHeaderEvent(int format, int ntrks, int division);
@@ -162,12 +164,12 @@ private:
     unsigned long m_tick;
     PlayerState m_state;
 
-    QSmf* m_smf;
-    QWrk* m_wrk;
-    QOve* m_ove;
-    MidiClient* m_Client;
-    MidiPort* m_Port;
-    MidiQueue* m_Queue;
+    drumstick::File::QSmf* m_smf;
+    drumstick::File::QWrk* m_wrk;
+    drumstick::File::QOve* m_ove;
+    drumstick::ALSA::MidiClient* m_Client;
+    drumstick::ALSA::MidiPort* m_Port;
+    drumstick::ALSA::MidiQueue* m_Queue;
     Player* m_player;
     Ui::GUIPlayerClass* m_ui;
     QPointer<QProgressDialog> m_pd;

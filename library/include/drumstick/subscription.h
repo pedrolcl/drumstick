@@ -31,6 +31,7 @@
  */
 
 namespace drumstick {
+namespace ALSA {
 
 class MidiClient;
 
@@ -122,7 +123,7 @@ typedef QList<Subscription> SubscriptionsList;
  */
 typedef QList<Subscriber> SubscribersList;
 
-}
+}} /* namespace drumstick::ALSA */
 
 /** @} */
 

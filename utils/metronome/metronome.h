@@ -42,9 +42,7 @@ const int METRONOME_RESOLUTION(240);
 const int METRONOME_VOLUME(100);
 const int METRONOME_PAN(64);
 
-using namespace drumstick;
-
-class Metronome : public QObject, public SequencerEventHandler
+class Metronome : public QObject, public drumstick::ALSA::SequencerEventHandler
 {
     Q_OBJECT
 
@@ -62,14 +60,14 @@ public:
     void metronome_note(int note, int tick);
     void metronome_echo(int tick);
     void metronome_pattern(int tick);
-    void metronome_event_output(SequencerEvent* ev);
-    void metronome_schedule_event(SequencerEvent* ev, int tick, bool lb);
+    void metronome_event_output(drumstick::ALSA::SequencerEvent* ev);
+    void metronome_schedule_event(drumstick::ALSA::SequencerEvent* ev, int tick, bool lb);
     void metronome_set_program();
     void metronome_set_tempo();
     void metronome_set_controls();
 
     // SequencerEventHandler interface
-    void handleSequencerEvent( SequencerEvent* ev );
+    void handleSequencerEvent( drumstick::ALSA::SequencerEvent* ev );
 
 private:
     int m_weak_note;
@@ -92,9 +90,9 @@ private:
     int m_clientId;
     bool m_Stopped;
     QReadWriteLock m_mutex;
-    MidiClient* m_Client;
-    MidiPort* m_Port;
-    MidiQueue* m_Queue;
+    drumstick::ALSA::MidiClient* m_Client;
+    drumstick::ALSA::MidiPort* m_Port;
+    drumstick::ALSA::MidiQueue* m_Queue;
 };
 
 #endif /*METRONOME_H*/

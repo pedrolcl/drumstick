@@ -20,8 +20,6 @@
 
 #include <drumstick/qwrk.h>
 
-using namespace drumstick;
-
   class QSpyWrk : public QObject
   {
     Q_OBJECT
@@ -86,6 +84,6 @@ using namespace drumstick;
 
   private:
     bool m_verbosity;
-    QWrk *m_engine;
+    drumstick::File::QWrk *m_engine;
     int m_rc;
   };

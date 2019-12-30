@@ -31,7 +31,7 @@ const QString COPYRIGHT( "Copyright (C) 2006-2019 Pedro López-Cabanillas" );
 const QByteArray GSRESET( "f04110421240007f0041f7" );
 const QList<int> NOTES({ 60, 62, 64, 65, 67, 69, 71, 72 });
 
-using namespace drumstick;
+using namespace drumstick::File;
 
 class FileTest : public QObject
 {

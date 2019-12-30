@@ -22,15 +22,14 @@
 #include <QStringList>
 
 namespace drumstick {
+namespace ALSA {
     class SequencerEvent;
-}
+}}
 
-using namespace drumstick;
-
-class Song : public QList<SequencerEvent*>
+class Song : public QList<drumstick::ALSA::SequencerEvent*>
 {
 public:
-    Song() : QList<SequencerEvent*>(),
+    Song() : QList<drumstick::ALSA::SequencerEvent*>(),
         m_format(0),
         m_ntrks(0),
         m_division(0)
@@ -55,6 +54,6 @@ private:
     QString m_fileName;
 };
 
-typedef QListIterator<SequencerEvent*> SongIterator;
+typedef QListIterator<drumstick::ALSA::SequencerEvent*> SongIterator;
 
 #endif /*INCLUDED_SONG_H*/

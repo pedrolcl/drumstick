@@ -36,6 +36,8 @@ const QString PGM_DESCRIPTION("Drumstick command line utility for decoding OVE (
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
+using drumstick::File::QOve;
+
 QSpyOve::QSpyOve():
     m_verbosity(false),
     m_engine(nullptr)

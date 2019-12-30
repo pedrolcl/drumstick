@@ -46,6 +46,10 @@
 #include "player.h"
 #include "song.h"
 
+using namespace drumstick;
+using namespace ALSA;
+using namespace File;
+
 GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags),
     m_portId(-1),
@@ -91,8 +95,7 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     m_Client->open();
     m_Client->setPoolOutput(50); // small size, for near real-time pitchShift
     m_Client->setClientName("MIDI Player");
-    connect( m_Client, SIGNAL(eventReceived(SequencerEvent*)),
-             SLOT(sequencerEvent(SequencerEvent*)), Qt::QueuedConnection );
+    connect( m_Client, &MidiClient::eventReceived, this, &GUIPlayer::sequencerEvent, Qt::QueuedConnection );
 
     m_Port = new MidiPort(this);
     m_Port->attach( m_Client );
@@ -246,6 +249,7 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     tempoReset();
     volumeReset();
     updateState(EmptyState);
+    readSettings();
 }
 
 GUIPlayer::~GUIPlayer()
@@ -575,22 +579,6 @@ void GUIPlayer::dropEvent( QDropEvent * event )
             QString("Dropped file %1 is not supported").arg(fileName));
     }
 }
-
-//bool GUIPlayer::event( QEvent * event )
-//{
-//    if(event->type() == QEvent::Polish) {
-//        readSettings();
-//        /* Process the command line arguments.
-//           The first argument should be a MIDI file name */
-//        QStringList args = QCoreApplication::arguments();
-//        if (args.size() > 1) {
-//            QString first = args.at(1);
-//            openFile(first);
-//        }
-//        event->accept();
-//    }
-//    return QMainWindow::event(event);
-//}
 
 void GUIPlayer::readSettings()
 {

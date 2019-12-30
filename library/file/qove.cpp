@@ -10325,7 +10325,7 @@ void OveOrganizer::organizeOctaveShift(
 bool getMiddleUnit(
 			OveSong* ove, int /*part*/, int /*track*/,
 			Measure* measure1, Measure* measure2, int unit1, int /*unit2*/,
-			Measure* middleMeasure, int& middleUnit) {
+            Measure* middleMeasure, int& middleUnit) {
 	QList<int> barUnits;
 	int i;
 	int bar1Index = measure1->getBarNumber()->getIndex();
@@ -11102,6 +11102,7 @@ IOVEStreamLoader* createOveStreamLoader() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 namespace drumstick {
+namespace File {
 
 /**
  * @addtogroup OVE
@@ -11762,4 +11763,4 @@ void QOve::convertNotes(int trackNo, int measureTick, OVE::NoteContainer* contai
 	return;
 }
 
-} // namespace drumstick
+}} // namespace drumstick::File

@@ -2,7 +2,7 @@
 #include <QtTest>
 #include <drumstick/alsaevent.h>
 
-using namespace drumstick;
+using namespace drumstick::ALSA;
 
 class AlsaTest1 : public QObject
 {

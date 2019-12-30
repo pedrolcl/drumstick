@@ -51,17 +51,15 @@ namespace Ui
     class DrumGrid;
 }
 
-namespace drumstick
-{
+namespace drumstick {
+namespace ALSA {
     class MidiClient;
     class MidiPort;
     class MidiQueue;
     class SequencerEvent;
-}
+}}
 
 class DrumGridModel;
-
-using namespace drumstick;
 
 class DrumGrid : public QMainWindow
 {
@@ -89,15 +87,15 @@ public:
     void metronome_pattern(int tick);
     void metronome_echo(int tick, int ev_type);
     void metronome_note(int note, int vel, int tick);
-    void metronome_schedule_event(SequencerEvent* ev, int tick);
-    void metronome_event_output(SequencerEvent* ev);
+    void metronome_schedule_event(drumstick::ALSA::SequencerEvent* ev, int tick);
+    void metronome_event_output(drumstick::ALSA::SequencerEvent* ev);
     int decodeVelocity(const QString drumVel);
 
 public slots:
     void slotAbout();
     void slotAboutQt();
     void updateView();
-    void sequencerEvent(SequencerEvent *ev);
+    void sequencerEvent(drumstick::ALSA::SequencerEvent *ev);
     void connectMidi();
     void play();
     void stop();
@@ -115,9 +113,9 @@ private:
     int m_portId;
     int m_queueId;
     unsigned long m_tick;
-    MidiClient* m_Client;
-    MidiPort* m_Port;
-    MidiQueue* m_Queue;
+    drumstick::ALSA::MidiClient* m_Client;
+    drumstick::ALSA::MidiPort* m_Port;
+    drumstick::ALSA::MidiQueue* m_Queue;
     DrumGridModel* m_model;
     QString m_subscription;
     QVector<QShortcut*> m_shortcuts;

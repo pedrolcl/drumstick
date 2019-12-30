@@ -31,6 +31,7 @@
  */
 
 namespace drumstick {
+namespace File {
 
 /**
  * @addtogroup SMF
@@ -1227,4 +1228,4 @@ void QSmf::setTextCodec(QTextCodec *codec)
     d->m_codec = codec;
 }
 
-}
+}} // namespace drumstick::File

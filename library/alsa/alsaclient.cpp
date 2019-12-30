@@ -63,6 +63,7 @@
  */
 
 namespace drumstick {
+namespace ALSA {
 
 /**
  * @addtogroup ALSAClient
@@ -389,9 +390,9 @@ MidiClient::open( const QString deviceName,
                   const int openMode,
                   const bool blockMode)
 {
-    CHECK_ERROR( snd_seq_open( &d->m_SeqHandle, deviceName.toLocal8Bit().data(),
+    DRUMSTICK_ALSA_CHECK_ERROR( snd_seq_open( &d->m_SeqHandle, deviceName.toLocal8Bit().data(),
                               openMode, blockMode ? 0 : SND_SEQ_NONBLOCK ) );
-    CHECK_WARNING( snd_seq_get_client_info( d->m_SeqHandle, d->m_Info.m_Info ) );
+    DRUMSTICK_ALSA_CHECK_WARNING( snd_seq_get_client_info( d->m_SeqHandle, d->m_Info.m_Info ) );
     d->m_DeviceName = deviceName;
     d->m_OpenMode = openMode;
     d->m_BlockMode = blockMode;
@@ -423,12 +424,12 @@ MidiClient::open( snd_config_t* conf,
                   const int openMode,
                   const bool blockMode )
 {
-    CHECK_ERROR( snd_seq_open_lconf( &d->m_SeqHandle,
+    DRUMSTICK_ALSA_CHECK_ERROR( snd_seq_open_lconf( &d->m_SeqHandle,
                                      deviceName.toLocal8Bit().data(),
                                      openMode,
                                      blockMode ? 0 : SND_SEQ_NONBLOCK,
                                      conf ));
-    CHECK_WARNING( snd_seq_get_client_info(d->m_SeqHandle, d->m_Info.m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING( snd_seq_get_client_info(d->m_SeqHandle, d->m_Info.m_Info));
     d->m_DeviceName = deviceName;
     d->m_OpenMode = openMode;
     d->m_BlockMode = blockMode;
@@ -446,7 +447,7 @@ MidiClient::close()
 {
     if (d->m_SeqHandle != NULL) {
         stopSequencerInput();
-        CHECK_WARNING(snd_seq_close(d->m_SeqHandle));
+        DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_close(d->m_SeqHandle));
         d->m_SeqHandle = NULL;
     }
 }
@@ -477,7 +478,7 @@ void
 MidiClient::setOutputBufferSize(size_t newSize)
 {
     if (getOutputBufferSize() != newSize) {
-        CHECK_WARNING(snd_seq_set_output_buffer_size(d->m_SeqHandle, newSize));
+        DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_set_output_buffer_size(d->m_SeqHandle, newSize));
     }
 }
 
@@ -507,7 +508,7 @@ void
 MidiClient::setInputBufferSize(size_t newSize)
 {
     if (getInputBufferSize() != newSize) {
-        CHECK_WARNING(snd_seq_set_input_buffer_size(d->m_SeqHandle, newSize));
+        DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_set_input_buffer_size(d->m_SeqHandle, newSize));
     }
 }
 
@@ -528,7 +529,7 @@ MidiClient::setBlockMode(bool newValue)
         d->m_BlockMode = newValue;
         if (d->m_SeqHandle != NULL)
         {
-            CHECK_WARNING(snd_seq_nonblock(d->m_SeqHandle, d->m_BlockMode ? 0 : 1));
+            DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_nonblock(d->m_SeqHandle, d->m_BlockMode ? 0 : 1));
         }
     }
 }
@@ -544,7 +545,7 @@ MidiClient::setBlockMode(bool newValue)
 int
 MidiClient::getClientId()
 {
-    return CHECK_WARNING(snd_seq_client_id(d->m_SeqHandle));
+    return DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_client_id(d->m_SeqHandle));
 }
 
 /**
@@ -870,7 +871,7 @@ void
 MidiClient::portAttach(MidiPort* port)
 {
     if (d->m_SeqHandle != NULL) {
-        CHECK_ERROR(snd_seq_create_port(d->m_SeqHandle, port->m_Info.m_Info));
+        DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_create_port(d->m_SeqHandle, port->m_Info.m_Info));
         d->m_Ports.push_back(port);
     }
 }
@@ -887,7 +888,7 @@ MidiClient::portDetach(MidiPort* port)
         {
             return;
         }
-        CHECK_ERROR(snd_seq_delete_port(d->m_SeqHandle, port->getPortInfo()->getPort()));
+        DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_delete_port(d->m_SeqHandle, port->getPortInfo()->getPort()));
         port->setMidiClient(NULL);
 
         MidiPortList::iterator it;
@@ -910,7 +911,7 @@ void MidiClient::detachAllPorts()
     if (d->m_SeqHandle != NULL) {
         MidiPortList::iterator it;
         for (it = d->m_Ports.begin(); it != d->m_Ports.end(); ++it) {
-            CHECK_ERROR(snd_seq_delete_port(d->m_SeqHandle, (*it)->getPortInfo()->getPort()));
+            DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_delete_port(d->m_SeqHandle, (*it)->getPortInfo()->getPort()));
             (*it)->setMidiClient(NULL);
             d->m_Ports.erase(it);
         }
@@ -990,7 +991,7 @@ MidiClient::output(SequencerEvent* ev, bool async, int timeout)
     int npfds;
     pollfd* pfds;
     if (async) {
-        CHECK_WARNING(snd_seq_event_output(d->m_SeqHandle, ev->getHandle()));
+        DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_event_output(d->m_SeqHandle, ev->getHandle()));
     } else {
         npfds = snd_seq_poll_descriptors_count(d->m_SeqHandle, POLLOUT);
         pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
@@ -1018,7 +1019,7 @@ void MidiClient::outputDirect(SequencerEvent* ev, bool async, int timeout)
     int npfds;
     pollfd* pfds;
     if (async) {
-        CHECK_WARNING(snd_seq_event_output_direct(d->m_SeqHandle, ev->getHandle()));
+        DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_event_output_direct(d->m_SeqHandle, ev->getHandle()));
     } else {
         npfds = snd_seq_poll_descriptors_count(d->m_SeqHandle, POLLOUT);
         pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
@@ -1041,7 +1042,7 @@ void MidiClient::outputDirect(SequencerEvent* ev, bool async, int timeout)
 void
 MidiClient::outputBuffer(SequencerEvent* ev)
 {
-    CHECK_WARNING(snd_seq_event_output_buffer(d->m_SeqHandle, ev->getHandle()));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_event_output_buffer(d->m_SeqHandle, ev->getHandle()));
 }
 
 /**
@@ -1060,7 +1061,7 @@ void MidiClient::drainOutput(bool async, int timeout)
     int npfds;
     pollfd* pfds;
     if (async) {
-        CHECK_WARNING(snd_seq_drain_output(d->m_SeqHandle));
+        DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_drain_output(d->m_SeqHandle));
     } else {
         npfds = snd_seq_poll_descriptors_count(d->m_SeqHandle, POLLOUT);
         pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
@@ -1342,7 +1343,7 @@ void
 MidiClient::setPoolInfo(const PoolInfo& info)
 {
     d->m_poolInfo = info;
-    CHECK_WARNING(snd_seq_set_client_pool(d->m_SeqHandle, d->m_poolInfo.m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_set_client_pool(d->m_SeqHandle, d->m_poolInfo.m_Info));
 }
 
 /**
@@ -1352,7 +1353,7 @@ MidiClient::setPoolInfo(const PoolInfo& info)
 void
 MidiClient::resetPoolInput()
 {
-    CHECK_WARNING(snd_seq_reset_pool_input(d->m_SeqHandle));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_reset_pool_input(d->m_SeqHandle));
 }
 
 /**
@@ -1362,7 +1363,7 @@ MidiClient::resetPoolInput()
 void
 MidiClient::resetPoolOutput()
 {
-    CHECK_WARNING(snd_seq_reset_pool_output(d->m_SeqHandle));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_reset_pool_output(d->m_SeqHandle));
 }
 
 /**
@@ -1372,7 +1373,7 @@ MidiClient::resetPoolOutput()
 void
 MidiClient::setPoolInput(int size)
 {
-    CHECK_WARNING(snd_seq_set_client_pool_input(d->m_SeqHandle, size));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_set_client_pool_input(d->m_SeqHandle, size));
 }
 
 /**
@@ -1382,7 +1383,7 @@ MidiClient::setPoolInput(int size)
 void
 MidiClient::setPoolOutput(int size)
 {
-    CHECK_WARNING(snd_seq_set_client_pool_output(d->m_SeqHandle, size));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_set_client_pool_output(d->m_SeqHandle, size));
 }
 
 /**
@@ -1392,7 +1393,7 @@ MidiClient::setPoolOutput(int size)
 void
 MidiClient::setPoolOutputRoom(int size)
 {
-    CHECK_WARNING(snd_seq_set_client_pool_output_room(d->m_SeqHandle, size));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_set_client_pool_output_room(d->m_SeqHandle, size));
 }
 
 /**
@@ -1402,7 +1403,7 @@ MidiClient::setPoolOutputRoom(int size)
 void
 MidiClient::dropInput()
 {
-    CHECK_WARNING(snd_seq_drop_input(d->m_SeqHandle));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_drop_input(d->m_SeqHandle));
 }
 
 /**
@@ -1412,7 +1413,7 @@ MidiClient::dropInput()
 void
 MidiClient::dropInputBuffer()
 {
-    CHECK_WARNING(snd_seq_drop_input_buffer(d->m_SeqHandle));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_drop_input_buffer(d->m_SeqHandle));
 }
 
 /**
@@ -1425,7 +1426,7 @@ MidiClient::dropInputBuffer()
 void
 MidiClient::dropOutput()
 {
-    CHECK_WARNING(snd_seq_drop_output(d->m_SeqHandle));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_drop_output(d->m_SeqHandle));
 }
 
 /**
@@ -1438,7 +1439,7 @@ MidiClient::dropOutput()
 void
 MidiClient::dropOutputBuffer()
 {
-    CHECK_WARNING(snd_seq_drop_output_buffer(d->m_SeqHandle));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_drop_output_buffer(d->m_SeqHandle));
 }
 
 /**
@@ -1450,7 +1451,7 @@ MidiClient::dropOutputBuffer()
 void
 MidiClient::removeEvents(const RemoveEvents* spec)
 {
-    CHECK_WARNING(snd_seq_remove_events(d->m_SeqHandle, spec->m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_remove_events(d->m_SeqHandle, spec->m_Info));
 }
 
 /**
@@ -1461,7 +1462,7 @@ SequencerEvent*
 MidiClient::extractOutput()
 {
     snd_seq_event_t* ev;
-    if (CHECK_WARNING(snd_seq_extract_output(d->m_SeqHandle, &ev) == 0)) {
+    if (DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_extract_output(d->m_SeqHandle, &ev) == 0)) {
         return new SequencerEvent(ev);
     }
     return NULL;
@@ -1550,7 +1551,7 @@ unsigned short
 MidiClient::pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds)
 {
     unsigned short revents;
-    CHECK_WARNING( snd_seq_poll_descriptors_revents( d->m_SeqHandle,
+    DRUMSTICK_ALSA_CHECK_WARNING( snd_seq_poll_descriptors_revents( d->m_SeqHandle,
                                                      pfds, nfds,
                                                      &revents ));
     return revents;
@@ -1573,7 +1574,7 @@ MidiClient::_getDeviceName()
 void
 MidiClient::_setClientName(const char *name)
 {
-    CHECK_WARNING(snd_seq_set_client_name(d->m_SeqHandle, name));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_set_client_name(d->m_SeqHandle, name));
 }
 
 /**
@@ -1588,7 +1589,7 @@ MidiClient::createSimplePort( const char *name,
                               unsigned int caps,
                               unsigned int type )
 {
-    return CHECK_WARNING( snd_seq_create_simple_port( d->m_SeqHandle,
+    return DRUMSTICK_ALSA_CHECK_WARNING( snd_seq_create_simple_port( d->m_SeqHandle,
                                                       name, caps, type ));
 }
 
@@ -1599,7 +1600,7 @@ MidiClient::createSimplePort( const char *name,
 void
 MidiClient::deleteSimplePort(int port)
 {
-    CHECK_WARNING( snd_seq_delete_simple_port( d->m_SeqHandle, port ));
+    DRUMSTICK_ALSA_CHECK_WARNING( snd_seq_delete_simple_port( d->m_SeqHandle, port ));
 }
 
 /**
@@ -1611,7 +1612,7 @@ MidiClient::deleteSimplePort(int port)
 void
 MidiClient::connectFrom(int myport, int client, int port)
 {
-    CHECK_WARNING( snd_seq_connect_from(d->m_SeqHandle, myport, client, port ));
+    DRUMSTICK_ALSA_CHECK_WARNING( snd_seq_connect_from(d->m_SeqHandle, myport, client, port ));
 }
 
 /**
@@ -1623,7 +1624,7 @@ MidiClient::connectFrom(int myport, int client, int port)
 void
 MidiClient::connectTo(int myport, int client, int port)
 {
-    CHECK_WARNING( snd_seq_connect_to(d->m_SeqHandle, myport, client, port ));
+    DRUMSTICK_ALSA_CHECK_WARNING( snd_seq_connect_to(d->m_SeqHandle, myport, client, port ));
 }
 
 /**
@@ -1635,7 +1636,7 @@ MidiClient::connectTo(int myport, int client, int port)
 void
 MidiClient::disconnectFrom(int myport, int client, int port)
 {
-    CHECK_WARNING( snd_seq_disconnect_from(d->m_SeqHandle, myport, client, port ));
+    DRUMSTICK_ALSA_CHECK_WARNING( snd_seq_disconnect_from(d->m_SeqHandle, myport, client, port ));
 }
 
 /**
@@ -1647,7 +1648,7 @@ MidiClient::disconnectFrom(int myport, int client, int port)
 void
 MidiClient::disconnectTo(int myport, int client, int port)
 {
-    CHECK_WARNING( snd_seq_disconnect_to(d->m_SeqHandle, myport, client, port ));
+    DRUMSTICK_ALSA_CHECK_WARNING( snd_seq_disconnect_to(d->m_SeqHandle, myport, client, port ));
 }
 
 /**
@@ -2492,4 +2493,4 @@ getRuntimeALSADriverNumber()
     return result;
 }
 
-} /* namespace drumstick */
+}} /* namespace drumstick::ALSA */

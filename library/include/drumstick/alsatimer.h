@@ -33,6 +33,7 @@
  */
 
 namespace drumstick {
+namespace ALSA {
 
 class TimerQuery;
 class TimerId;
@@ -352,7 +353,7 @@ private:
     snd_htimestamp_t m_last_time;
 };
 
-} /* namespace drumstick */
+}} /* namespace drumstick::ALSA */
 
 /** @} */
 

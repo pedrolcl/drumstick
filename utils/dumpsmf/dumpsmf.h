@@ -20,8 +20,6 @@
 
 #include <drumstick/qsmf.h>
 
-using namespace drumstick;
-
   class QSpySMF : public QObject
   {
     Q_OBJECT
@@ -61,6 +59,6 @@ using namespace drumstick;
 
   private:
     int m_currentTrack;
-    QSmf *m_engine;
+    drumstick::File::QSmf *m_engine;
     int m_rc;
   };

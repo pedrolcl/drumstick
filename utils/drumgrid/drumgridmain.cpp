@@ -53,6 +53,8 @@ int main(int argc, char *argv[])
         return 0;
     }
 
+    using drumstick::ALSA::SequencerError;
+
     try {
         DrumGrid w;
         if (parser.isSet(portOption)) {

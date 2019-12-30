@@ -20,6 +20,8 @@
 #include <drumstick/backendmanager.h>
 #include "vpiano.h"
 
+using namespace drumstick::rt;
+
 VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     : QMainWindow(parent, flags),
     m_midiIn(nullptr),

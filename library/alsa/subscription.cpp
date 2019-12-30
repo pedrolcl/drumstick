@@ -24,6 +24,7 @@
  */
 
 namespace drumstick {
+namespace ALSA {
 
 /**
  * @addtogroup ALSASubscription
@@ -315,7 +316,7 @@ Subscription::Subscription(snd_seq_port_subscribe_t* other)
 Subscription::Subscription(MidiClient* seq)
 {
     snd_seq_port_subscribe_malloc(&m_Info);
-    CHECK_WARNING(snd_seq_get_port_subscription(seq->getHandle(), m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_get_port_subscription(seq->getHandle(), m_Info));
 }
 
 /**
@@ -510,7 +511,7 @@ Subscription::subscribe(MidiClient* seq)
     {
         return;
     }
-    CHECK_WARNING(snd_seq_subscribe_port(seq->getHandle(), m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_subscribe_port(seq->getHandle(), m_Info));
 }
 
 /**
@@ -526,7 +527,7 @@ Subscription::unsubscribe(MidiClient* seq)
     {
         return;
     }
-    CHECK_WARNING(snd_seq_unsubscribe_port(seq->getHandle(), m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_unsubscribe_port(seq->getHandle(), m_Info));
 }
 
 /**
@@ -539,5 +540,4 @@ Subscription::getSizeOfInfo() const
     return snd_seq_port_subscribe_sizeof();
 }
 
-} /* namespace drumstick */
-
+}} /* namespace drumstick::ALSA */

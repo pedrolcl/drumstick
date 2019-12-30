@@ -30,6 +30,7 @@
  */
 
 namespace drumstick {
+namespace ALSA {
 
 class MidiClient;
 
@@ -213,7 +214,7 @@ private:
  */
 typedef QList<MidiPort*> MidiPortList;
 
-}
+}} /* namespace drumstick::ALSA */
 
 /** @} */
 

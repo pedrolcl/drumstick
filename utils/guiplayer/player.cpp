@@ -21,6 +21,8 @@
 #include "song.h"
 #include <cmath>
 
+using namespace drumstick::ALSA;
+
 Player::Player(MidiClient *seq, int portId) 
     : SequencerOutputThread(seq, portId),
     m_song(0),

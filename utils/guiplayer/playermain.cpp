@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
         }
         w.show();
         return app.exec();
-    } catch (const SequencerError& ex) {
+    } catch (const drumstick::ALSA::SequencerError& ex) {
         QMessageBox::critical(nullptr, "Error",
             errorstr + " Returned error was: " + ex.qstrError() );
     } catch (...) {

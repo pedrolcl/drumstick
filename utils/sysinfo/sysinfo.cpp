@@ -32,7 +32,7 @@ const QString PGM_DESCRIPTION("ALSA Sequencer System Info");
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
-using namespace drumstick;
+using namespace drumstick::ALSA;
 
 void queryTimers()
 {

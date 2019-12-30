@@ -35,6 +35,8 @@ const QString PGM_DESCRIPTION("Drumstick command line utility for decoding SMF (
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
+using drumstick::File::QSmf;
+
 QSpySMF::QSpySMF():
     m_currentTrack(0), m_engine(nullptr), m_rc(0)
 {

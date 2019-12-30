@@ -19,6 +19,8 @@
 #include <drumstick/alsaevent.h>
 #include "song.h"
 
+using namespace drumstick::ALSA;
+
 static inline bool eventLessThan(const SequencerEvent* s1, const SequencerEvent* s2)
 {
     return s1->getTick() < s2->getTick();

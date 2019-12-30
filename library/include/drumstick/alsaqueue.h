@@ -28,12 +28,7 @@
  */
 
 namespace drumstick {
-
-/**
- * This is the value for the base skew used in ALSA. It is not possible
- * to assign an arbitrary value (ALSA version <= 1.0.20).
- */
-#define SKEW_BASE 0x10000
+namespace ALSA {
 
 class MidiClient;
 class TimerId;
@@ -221,7 +216,7 @@ private:
     QueueStatus m_Status;
 };
 
-} /* namespace drumstick */
+}} /* namespace drumstick::ALSA */
 
 /** @} */
 

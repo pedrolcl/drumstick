@@ -28,6 +28,7 @@
  */
 
 namespace drumstick {
+namespace ALSA {
 
 /**
  * @addtogroup ALSATimer
@@ -442,7 +443,7 @@ TimerId::getSizeOfInfo() const
  */
 TimerQuery::TimerQuery(const QString& deviceName, int openMode)
 {
-    CHECK_WARNING( snd_timer_query_open( &m_Info,
+    DRUMSTICK_ALSA_CHECK_WARNING( snd_timer_query_open( &m_Info,
                                          deviceName.toLocal8Bit().data(),
                                          openMode ));
     readTimers();
@@ -457,7 +458,7 @@ TimerQuery::TimerQuery(const QString& deviceName, int openMode)
 TimerQuery::TimerQuery( const QString& deviceName, int openMode,
                         snd_config_t* conf )
 {
-    CHECK_WARNING( snd_timer_query_open_lconf( &m_Info,
+    DRUMSTICK_ALSA_CHECK_WARNING( snd_timer_query_open_lconf( &m_Info,
                                                deviceName.toLocal8Bit().data(),
                                                openMode, conf ));
     readTimers();
@@ -1035,7 +1036,7 @@ Timer::Timer( const QString& deviceName, int openMode, QObject* parent )
     m_thread(NULL),
     m_deviceName(deviceName)
 {
-    CHECK_ERROR( snd_timer_open( &m_Info, m_deviceName.toLocal8Bit().data(),
+    DRUMSTICK_ALSA_CHECK_ERROR( snd_timer_open( &m_Info, m_deviceName.toLocal8Bit().data(),
                                  openMode ));
 }
 
@@ -1059,7 +1060,7 @@ Timer::Timer( const QString& deviceName, int openMode, snd_config_t* conf,
     m_thread(NULL),
     m_deviceName(deviceName)
 {
-    CHECK_ERROR( snd_timer_open_lconf( &m_Info,
+    DRUMSTICK_ALSA_CHECK_ERROR( snd_timer_open_lconf( &m_Info,
                                        m_deviceName.toLocal8Bit().data(),
                                        openMode, conf ));
 }
@@ -1087,7 +1088,7 @@ Timer::Timer( TimerId& id, int openMode, QObject* parent )
     .arg(id.getCard())
     .arg(id.getDevice())
     .arg(id.getSubdevice());
-    CHECK_ERROR( snd_timer_open( &m_Info,
+    DRUMSTICK_ALSA_CHECK_ERROR( snd_timer_open( &m_Info,
                                  m_deviceName.toLocal8Bit().data(),
                                  openMode ));
 }
@@ -1120,7 +1121,7 @@ Timer::Timer( int cls, int scls, int card, int dev, int sdev,
         .arg(card)
         .arg(dev)
         .arg(sdev);
-    CHECK_ERROR( snd_timer_open( &m_Info,
+    DRUMSTICK_ALSA_CHECK_ERROR( snd_timer_open( &m_Info,
                                  m_deviceName.toLocal8Bit().data(),
                                  openMode ));
 }
@@ -1133,7 +1134,7 @@ Timer::~Timer()
     stopEvents();
     if (m_thread != NULL)
         delete m_thread;
-    CHECK_WARNING(snd_timer_close(m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_timer_close(m_Info));
 }
 
 /**
@@ -1144,7 +1145,7 @@ Timer::~Timer()
 void
 Timer::addAsyncTimerHandler(snd_async_callback_t callback, void *private_data)
 {
-    CHECK_WARNING(snd_async_add_timer_handler(&m_asyncHandler, m_Info, callback, private_data));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_async_add_timer_handler(&m_asyncHandler, m_Info, callback, private_data));
 }
 
 /**
@@ -1175,7 +1176,7 @@ Timer::getPollDescriptorsCount()
 void
 Timer::pollDescriptors(struct pollfd *pfds, unsigned int space)
 {
-    CHECK_WARNING(snd_timer_poll_descriptors(m_Info, pfds, space));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_timer_poll_descriptors(m_Info, pfds, space));
 }
 
 /**
@@ -1187,7 +1188,7 @@ Timer::pollDescriptors(struct pollfd *pfds, unsigned int space)
 void
 Timer::pollDescriptorsRevents(struct pollfd *pfds, unsigned int nfds, unsigned short *revents)
 {
-    CHECK_WARNING(snd_timer_poll_descriptors_revents(m_Info, pfds, nfds, revents));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_timer_poll_descriptors_revents(m_Info, pfds, nfds, revents));
 }
 
 /**
@@ -1208,7 +1209,7 @@ Timer::getTimerInfo()
 void
 Timer::setTimerParams(const TimerParams& params)
 {
-    CHECK_WARNING( snd_timer_params(m_Info, params.m_Info) );
+    DRUMSTICK_ALSA_CHECK_WARNING( snd_timer_params(m_Info, params.m_Info) );
 }
 
 /**
@@ -1218,7 +1219,7 @@ Timer::setTimerParams(const TimerParams& params)
 TimerStatus&
 Timer::getTimerStatus()
 {
-    CHECK_WARNING( snd_timer_status(m_Info, m_TimerStatus.m_Info) );
+    DRUMSTICK_ALSA_CHECK_WARNING( snd_timer_status(m_Info, m_TimerStatus.m_Info) );
     return m_TimerStatus;
 }
 
@@ -1228,7 +1229,7 @@ Timer::getTimerStatus()
 void
 Timer::start()
 {
-    CHECK_WARNING(snd_timer_start(m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_timer_start(m_Info));
 }
 
 /**
@@ -1237,7 +1238,7 @@ Timer::start()
 void
 Timer::stop()
 {
-    CHECK_WARNING(snd_timer_stop(m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_timer_stop(m_Info));
 }
 
 /**
@@ -1246,7 +1247,7 @@ Timer::stop()
 void
 Timer::continueRunning()
 {
-    CHECK_WARNING(snd_timer_continue(m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_timer_continue(m_Info));
 }
 
 /**
@@ -1449,4 +1450,4 @@ Timer::TimerInputThread::stop()
     m_Stopped = true;
 }
 
-} /* namespace drumstick */
+}} /* namespace drumstick::ALSA */

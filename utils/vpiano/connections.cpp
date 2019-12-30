@@ -22,6 +22,8 @@
 #include "sonivoxsettingsdialog.h"
 #include "macsynthsettingsdialog.h"
 
+using namespace drumstick::rt;
+
 Connections::Connections(QWidget *parent)
     : QDialog(parent),
       m_advanced(false),

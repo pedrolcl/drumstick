@@ -30,6 +30,8 @@
 #include "ui_drumgrid.h"
 #include "drumgridabout.h"
 
+using namespace drumstick::ALSA;
+
 DrumGrid::DrumGrid(QWidget *parent)
     : QMainWindow(parent),
     m_ui(new Ui::DrumGrid),
@@ -92,8 +94,7 @@ DrumGrid::DrumGrid(QWidget *parent)
     m_Client = new MidiClient(this);
     m_Client->open();
     m_Client->setClientName("DrumGrid");
-    connect( m_Client, SIGNAL(eventReceived(SequencerEvent*)),
-             SLOT(sequencerEvent(SequencerEvent*)), Qt::QueuedConnection );
+    connect( m_Client, &MidiClient::eventReceived, this, &DrumGrid::sequencerEvent, Qt::QueuedConnection );
     m_Port = new MidiPort(this);
     m_Port->attach( m_Client );
     m_Port->setPortName("DrumGrid Output Port");

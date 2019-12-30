@@ -37,37 +37,34 @@
 #include <drumstick/alsaqueue.h>
 #include <drumstick/subscription.h>
 
-using namespace drumstick;
-
 class QDumpMIDI : public QObject
 {
     Q_OBJECT
-
 public:
     QDumpMIDI();
     virtual ~QDumpMIDI();
 
-    void dumpEvent(SequencerEvent* ev);
+    void dumpEvent(drumstick::ALSA::SequencerEvent* ev);
     void subscribe(const QString& portName);
     void stop();
     bool stopped();
     void run();
 
 public slots:
-    void subscription(MidiPort* port, Subscription* subs);
+    void subscription(drumstick::ALSA::MidiPort* port, drumstick::ALSA::Subscription* subs);
 
 #ifdef USE_QEVENTS
 protected:
     virtual void customEvent( QEvent *ev );
 #else
-    void sequencerEvent( SequencerEvent* ev );
+    void sequencerEvent( drumstick::ALSA::SequencerEvent* ev );
 #endif
 
 private:
-    MidiClient* m_Client;
-    MidiPort* m_Port;
+    drumstick::ALSA::MidiClient* m_Client;
+    drumstick::ALSA::MidiPort* m_Port;
 #ifdef WANT_TIMESTAMPS
-    MidiQueue* m_Queue;
+    drumstick::ALSA::MidiQueue* m_Queue;
 #endif
     bool m_Stopped;
     QReadWriteLock m_mutex;

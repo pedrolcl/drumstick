@@ -267,4 +267,4 @@ namespace rt {
         return nullptr;
     }
 
-}}
+}} // namespace drusmtick::rt

@@ -36,6 +36,9 @@ static QTextStream cerr(stderr, QIODevice::WriteOnly);
 /* ********** *
  * Song class
  * ********** */
+using namespace drumstick;
+using namespace ALSA;
+using namespace File;
 
 static inline bool eventLessThan(const SequencerEvent* s1, const SequencerEvent *s2)
 {

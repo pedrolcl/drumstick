@@ -38,6 +38,7 @@ namespace OVE {
  */
 
 namespace drumstick {
+namespace File {
 
 class MeasureToTick;
 
@@ -285,7 +286,7 @@ private:
 	QOvePrivate* d;
 };
 
-} // namespace drumstick
+}} // namespace drumstick::File
 
 /** @} */
 

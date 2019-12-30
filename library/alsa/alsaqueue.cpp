@@ -28,6 +28,13 @@
  */
 
 namespace drumstick {
+namespace ALSA {
+
+/**
+ * This is the value for the base skew used in ALSA. It is not possible
+ * to assign an arbitrary value (ALSA version <= 1.0.20).
+ */
+const unsigned int SKEW_BASE = 0x10000;
 
 /**
  * @addtogroup ALSAQueue
@@ -688,7 +695,7 @@ MidiQueue::MidiQueue(MidiClient* seq, QObject* parent)
     : QObject(parent)
 {
     m_MidiClient = seq;
-    m_Id = CHECK_ERROR(snd_seq_alloc_queue(m_MidiClient->getHandle()));
+    m_Id = DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_alloc_queue(m_MidiClient->getHandle()));
     m_allocated = !(m_Id < 0);
 }
 
@@ -703,7 +710,7 @@ MidiQueue::MidiQueue(MidiClient* seq, const QueueInfo& info, QObject* parent)
 {
     m_MidiClient = seq;
     m_Info = info;
-    m_Id = CHECK_ERROR(snd_seq_create_queue(m_MidiClient->getHandle(), m_Info.m_Info));
+    m_Id = DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_create_queue(m_MidiClient->getHandle(), m_Info.m_Info));
     m_allocated = !(m_Id < 0);
 }
 
@@ -717,7 +724,7 @@ MidiQueue::MidiQueue(MidiClient* seq, const QString name, QObject* parent)
     : QObject(parent)
 {
     m_MidiClient = seq;
-    m_Id = CHECK_ERROR(snd_seq_alloc_named_queue(m_MidiClient->getHandle(), name.toLocal8Bit().data()));
+    m_Id = DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_alloc_named_queue(m_MidiClient->getHandle(), name.toLocal8Bit().data()));
     m_allocated = !(m_Id < 0);
 }
 
@@ -744,7 +751,7 @@ MidiQueue::~MidiQueue()
 {
     if ( m_allocated && (m_MidiClient->getHandle() != NULL) )
     {
-        CHECK_ERROR(snd_seq_free_queue(m_MidiClient->getHandle(), m_Id));
+        DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_free_queue(m_MidiClient->getHandle(), m_Id));
     }
 }
 
@@ -754,7 +761,7 @@ MidiQueue::~MidiQueue()
  */
 QueueInfo& MidiQueue::getInfo()
 {
-    CHECK_WARNING(snd_seq_get_queue_info(m_MidiClient->getHandle(), m_Id, m_Info.m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_get_queue_info(m_MidiClient->getHandle(), m_Id, m_Info.m_Info));
     return m_Info;
 }
 
@@ -764,7 +771,7 @@ QueueInfo& MidiQueue::getInfo()
  */
 QueueStatus& MidiQueue::getStatus()
 {
-    CHECK_WARNING(snd_seq_get_queue_status(m_MidiClient->getHandle(), m_Id, m_Status.m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_get_queue_status(m_MidiClient->getHandle(), m_Id, m_Status.m_Info));
     return m_Status;
 }
 
@@ -774,7 +781,7 @@ QueueStatus& MidiQueue::getStatus()
  */
 QueueTempo& MidiQueue::getTempo()
 {
-    CHECK_WARNING(snd_seq_get_queue_tempo(m_MidiClient->getHandle(), m_Id, m_Tempo.m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_get_queue_tempo(m_MidiClient->getHandle(), m_Id, m_Tempo.m_Info));
     return m_Tempo;
 }
 
@@ -784,7 +791,7 @@ QueueTempo& MidiQueue::getTempo()
  */
 QueueTimer& MidiQueue::getTimer()
 {
-    CHECK_WARNING(snd_seq_get_queue_timer(m_MidiClient->getHandle(), m_Id, m_Timer.m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_get_queue_timer(m_MidiClient->getHandle(), m_Id, m_Timer.m_Info));
     return m_Timer;
 }
 
@@ -795,7 +802,7 @@ QueueTimer& MidiQueue::getTimer()
 void MidiQueue::setInfo(const QueueInfo& value)
 {
     m_Info = value;
-    CHECK_WARNING(snd_seq_set_queue_info(m_MidiClient->getHandle(), m_Id, m_Info.m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_set_queue_info(m_MidiClient->getHandle(), m_Id, m_Info.m_Info));
 }
 
 /**
@@ -805,7 +812,7 @@ void MidiQueue::setInfo(const QueueInfo& value)
 void MidiQueue::setTempo(const QueueTempo& value)
 {
     m_Tempo = value;
-    CHECK_WARNING(snd_seq_set_queue_tempo(m_MidiClient->getHandle(), m_Id, m_Tempo.m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_set_queue_tempo(m_MidiClient->getHandle(), m_Id, m_Tempo.m_Info));
 }
 
 /**
@@ -815,7 +822,7 @@ void MidiQueue::setTempo(const QueueTempo& value)
 void MidiQueue::setTimer(const QueueTimer& value)
 {
     m_Timer = value;
-    CHECK_WARNING(snd_seq_set_queue_timer(m_MidiClient->getHandle(), m_Id, m_Timer.m_Info));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_set_queue_timer(m_MidiClient->getHandle(), m_Id, m_Timer.m_Info));
 }
 
 /**
@@ -825,7 +832,7 @@ void MidiQueue::setTimer(const QueueTimer& value)
  */
 int MidiQueue::getUsage()
 {
-    return CHECK_WARNING(snd_seq_get_queue_usage(m_MidiClient->getHandle(), m_Id));
+    return DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_get_queue_usage(m_MidiClient->getHandle(), m_Id));
 }
 
 /**
@@ -835,7 +842,7 @@ int MidiQueue::getUsage()
  */
 void MidiQueue::setUsage(int used)
 {
-    CHECK_WARNING(snd_seq_set_queue_usage(m_MidiClient->getHandle(), m_Id, used));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_set_queue_usage(m_MidiClient->getHandle(), m_Id, used));
 }
 
 /**
@@ -845,8 +852,8 @@ void MidiQueue::setUsage(int used)
  */
 void MidiQueue::start()
 {
-    CHECK_WARNING(snd_seq_start_queue(m_MidiClient->getHandle(), m_Id, NULL));
-    CHECK_WARNING(snd_seq_drain_output(m_MidiClient->getHandle()));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_start_queue(m_MidiClient->getHandle(), m_Id, NULL));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_drain_output(m_MidiClient->getHandle()));
 }
 
 /**
@@ -857,8 +864,8 @@ void MidiQueue::start()
 void MidiQueue::stop()
 {
     if (m_MidiClient != NULL && m_MidiClient->getHandle() != NULL) {
-        CHECK_WARNING(snd_seq_stop_queue(m_MidiClient->getHandle(), m_Id, NULL));
-        CHECK_WARNING(snd_seq_drain_output(m_MidiClient->getHandle()));
+        DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_stop_queue(m_MidiClient->getHandle(), m_Id, NULL));
+        DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_drain_output(m_MidiClient->getHandle()));
     }
 }
 
@@ -869,8 +876,8 @@ void MidiQueue::stop()
  */
 void MidiQueue::continueRunning()
 {
-    CHECK_WARNING(snd_seq_continue_queue(m_MidiClient->getHandle(), m_Id, NULL));
-    CHECK_WARNING(snd_seq_drain_output(m_MidiClient->getHandle()));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_continue_queue(m_MidiClient->getHandle(), m_Id, NULL));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_drain_output(m_MidiClient->getHandle()));
 }
 
 /**
@@ -906,4 +913,4 @@ void MidiQueue::setRealTimePosition(snd_seq_real_time_t* pos)
     m_MidiClient->outputDirect(&event);
 }
 
-} /* namespace drumstick */
+}} /* namespace drumstick::ALSA */

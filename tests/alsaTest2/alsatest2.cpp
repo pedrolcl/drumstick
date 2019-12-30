@@ -2,7 +2,7 @@
 #include <QtTest>
 #include <drumstick/alsatimer.h>
 
-using namespace drumstick;
+using namespace drumstick::ALSA;
 
 class AlsaTest2 : public QObject, public TimerEventHandler
 {

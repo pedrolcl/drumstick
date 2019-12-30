@@ -31,6 +31,7 @@
  */
 
 namespace drumstick {
+namespace ALSA {
 
 class MidiClient;
 class MidiQueue;
@@ -114,7 +115,7 @@ protected:
     QReadWriteLock m_mutex;     /**< Mutex object used for synchronization */
 };
 
-} /* namespace drumstick */
+}} /* namespace drumstick::ALSA */
 
 /** @} */
 

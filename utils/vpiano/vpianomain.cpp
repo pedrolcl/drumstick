@@ -28,6 +28,8 @@
 
 const QString PGM_DESCRIPTION("Drumstick Simple Virtual Piano");
 
+using namespace drumstick::rt;
+
 int main(int argc, char *argv[])
 {
     QTextStream cerr(stderr, QIODevice::WriteOnly);

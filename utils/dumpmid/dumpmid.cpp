@@ -35,6 +35,8 @@ const QString PGM_DESCRIPTION("Drumstick command line utility for decoding MIDI 
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
+using namespace drumstick::ALSA;
+
 QDumpMIDI::QDumpMIDI()
     : QObject()
 {

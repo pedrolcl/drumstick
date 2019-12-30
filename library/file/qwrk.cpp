@@ -31,6 +31,7 @@
  */
 
 namespace drumstick {
+namespace File {
 
 /**
  * @addtogroup WRK
@@ -1297,4 +1298,4 @@ void QWrk::wrkRead()
         Q_EMIT signalWRKError("Invalid file format");
 }
 
-} // namespace drumstick
+}} // namespace drumstick::File

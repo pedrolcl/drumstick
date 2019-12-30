@@ -22,17 +22,15 @@
 #include <drumstick/playthread.h>
 #include "song.h"
 
-using namespace drumstick;
-
-class Player : public SequencerOutputThread
+class Player : public drumstick::ALSA::SequencerOutputThread
 {
     Q_OBJECT
     
 public:
-	Player(MidiClient *seq, int portId);
+    Player(drumstick::ALSA::MidiClient *seq, int portId);
 	virtual ~Player();
     virtual bool hasNext();
-    virtual SequencerEvent* nextEvent();
+    virtual drumstick::ALSA::SequencerEvent* nextEvent();
     virtual unsigned int getInitialPosition() { return m_songPosition; }
     virtual unsigned int getEchoResolution() { return m_echoResolution; }
     unsigned int getPitchShift() { return m_pitchShift; }
@@ -49,7 +47,7 @@ public:
 private:
     Song* m_song;
     SongIterator* m_songIterator;
-    SequencerEvent* m_lastEvent;
+    drumstick::ALSA::SequencerEvent* m_lastEvent;
     unsigned int m_songPosition;
     unsigned int m_echoResolution;
     unsigned int m_pitchShift;

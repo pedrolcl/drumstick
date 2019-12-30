@@ -39,6 +39,8 @@ const QString PGM_DESCRIPTION("Drumstick command line utility for decoding WRK (
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 static QTextStream cerr(stderr, QIODevice::WriteOnly);
 
+using drumstick::File::QWrk;
+
 QSpyWrk::QSpyWrk():
     m_verbosity(false),
     m_engine(nullptr),

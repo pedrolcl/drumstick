@@ -32,6 +32,7 @@ class QDataStream;
  */
 
 namespace drumstick {
+namespace File {
 
 /**
  * Record types within a WRK file
@@ -534,7 +535,7 @@ private:
     QWrkPrivate *d;
 };
 
-} // namespace drumstick;
+}} // namespace drumstick::File
 
 /** @} */
 

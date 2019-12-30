@@ -28,6 +28,7 @@
  */
 
 namespace drumstick {
+namespace ALSA {
 
 /**
  * @addtogroup PlayThread
@@ -218,5 +219,5 @@ void SequencerOutputThread::start( Priority priority )
     QThread::start( priority );
 }
 
-} /* namespace drumstick */
+}} /* namespace drumstick::ALSA */
 

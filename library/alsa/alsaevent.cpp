@@ -30,6 +30,7 @@
  */
 
 namespace drumstick {
+namespace ALSA {
 
 /**
  * @addtogroup ALSAEvent
@@ -105,7 +106,7 @@ SequencerEvent::SequencerEvent() : QEvent(SequencerEventType)
  * Constructor from an ALSA event record
  * @param event ALSA event record
  */
-SequencerEvent::SequencerEvent(snd_seq_event_t* event) : QEvent(SequencerEventType)
+SequencerEvent::SequencerEvent(const snd_seq_event_t* event) : QEvent(SequencerEventType)
 {
     snd_seq_ev_clear( &m_event );
     m_event = *event;
@@ -382,6 +383,21 @@ int SequencerEvent::getEncodedLength()
     return snd_seq_event_length(&m_event);
 }
 
+SequencerEvent* SequencerEvent::clone() const
+{
+    return new SequencerEvent(&m_event);
+}
+
+ChannelEvent* ChannelEvent::clone() const
+{
+    return new ChannelEvent(&m_event);
+}
+
+KeyEvent* KeyEvent::clone() const
+{
+    return new KeyEvent(&m_event);
+}
+
 /**
  * Constructor using proper attribute values.
  * @param ch MIDI Channel.
@@ -392,6 +408,11 @@ int SequencerEvent::getEncodedLength()
 NoteEvent::NoteEvent(int ch, int key, int vel, int dur) : KeyEvent()
 {
     snd_seq_ev_set_note(&m_event, ch, key, vel, dur);
+}
+
+NoteEvent* NoteEvent::clone() const
+{
+    return new NoteEvent(&m_event);
 }
 
 /**
@@ -405,6 +426,11 @@ NoteOnEvent::NoteOnEvent(int ch, int key, int vel) : KeyEvent()
     snd_seq_ev_set_noteon(&m_event, ch, key, vel);
 }
 
+NoteOnEvent* NoteOnEvent::clone() const
+{
+    return new NoteOnEvent(&m_event);
+}
+
 /**
  * Constructor using proper attribute values.
  * @param ch MIDI Channel.
@@ -414,6 +440,11 @@ NoteOnEvent::NoteOnEvent(int ch, int key, int vel) : KeyEvent()
 NoteOffEvent::NoteOffEvent(int ch, int key, int vel) : KeyEvent()
 {
     snd_seq_ev_set_noteoff(&m_event, ch, key, vel);
+}
+
+NoteOffEvent* NoteOffEvent::clone() const
+{
+    return new NoteOffEvent(&m_event);
 }
 
 /**
@@ -427,6 +458,11 @@ KeyPressEvent::KeyPressEvent(int ch, int key, int vel) : KeyEvent()
     snd_seq_ev_set_keypress(&m_event, ch, key, vel);
 }
 
+KeyPressEvent* KeyPressEvent::clone() const
+{
+    return new KeyPressEvent(&m_event);
+}
+
 /**
  * Constructor using proper attribute values.
  * @param ch MIDI Channel.
@@ -436,6 +472,11 @@ KeyPressEvent::KeyPressEvent(int ch, int key, int vel) : KeyEvent()
 ControllerEvent::ControllerEvent(int ch, int cc, int val) : ChannelEvent()
 {
     snd_seq_ev_set_controller(&m_event, ch, cc, val);
+}
+
+ControllerEvent* ControllerEvent::clone() const
+{
+    return new ControllerEvent(&m_event);
 }
 
 /**
@@ -448,6 +489,11 @@ ProgramChangeEvent::ProgramChangeEvent(int ch, int val) : ChannelEvent()
     snd_seq_ev_set_pgmchange(&m_event, ch, val);
 }
 
+ProgramChangeEvent* ProgramChangeEvent::clone() const
+{
+    return new ProgramChangeEvent(&m_event);
+}
+
 /**
  * Constructor using proper attribute values.
  * @param ch MIDI Channel.
@@ -458,6 +504,11 @@ PitchBendEvent::PitchBendEvent(int ch, int val) : ChannelEvent()
     snd_seq_ev_set_pitchbend(&m_event, ch, val);
 }
 
+PitchBendEvent* PitchBendEvent::clone() const
+{
+    return new PitchBendEvent(&m_event);
+}
+
 /**
  * Constructor using proper attribute values.
  * @param ch MIDI Channel.
@@ -466,6 +517,11 @@ PitchBendEvent::PitchBendEvent(int ch, int val) : ChannelEvent()
 ChanPressEvent::ChanPressEvent(int ch, int val) : ChannelEvent()
 {
     snd_seq_ev_set_chanpress(&m_event, ch, val);
+}
+
+ChanPressEvent* ChanPressEvent::clone() const
+{
+    return new ChanPressEvent(&m_event);
 }
 
 /**
@@ -482,7 +538,7 @@ VariableEvent::VariableEvent()
  * Constructor from an ALSA event record.
  * @param event ALSA event record.
  */
-VariableEvent::VariableEvent(snd_seq_event_t* event)
+VariableEvent::VariableEvent(const snd_seq_event_t* event)
     : SequencerEvent(event)
 {
     m_data = QByteArray((char *) event->data.ext.ptr,
@@ -537,6 +593,11 @@ VariableEvent& VariableEvent::operator=(const VariableEvent& other)
     return *this;
 }
 
+VariableEvent* VariableEvent::clone() const
+{
+    return new VariableEvent(&m_event);
+}
+
 /**
  * Default constructor.
  */
@@ -550,7 +611,7 @@ SysExEvent::SysExEvent()
  * Constructor from an ALSA event record.
  * @param event ALSA event record.
  */
-SysExEvent::SysExEvent(snd_seq_event_t* event)
+SysExEvent::SysExEvent(const snd_seq_event_t* event)
     : VariableEvent(event)
 {
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
@@ -587,6 +648,11 @@ SysExEvent::SysExEvent(const unsigned int datalen, char* dataptr)
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
 }
 
+SysExEvent* SysExEvent::clone() const
+{
+    return new SysExEvent(&m_event);
+}
+
 /**
  * Default constructor
  */
@@ -600,7 +666,7 @@ TextEvent::TextEvent()
  * Constructor from an ALSA sequencer record.
  * @param event ALSA sequencer record.
  */
-TextEvent::TextEvent(snd_seq_event_t* event)
+TextEvent::TextEvent(const snd_seq_event_t* event)
     : VariableEvent(event), m_textType(1)
 {
     setSequencerType(SND_SEQ_EVENT_USR_VAR0);
@@ -657,6 +723,11 @@ int TextEvent::getTextType() const
     return m_textType;
 }
 
+TextEvent* TextEvent::clone() const
+{
+    return new TextEvent(&m_event);
+}
+
 /**
  * Constructor
  * @param type The event's type
@@ -665,6 +736,11 @@ SystemEvent::SystemEvent(const snd_seq_event_type_t type) : SequencerEvent()
 {
     snd_seq_ev_set_fixed(&m_event);
     setSequencerType(type);
+}
+
+SystemEvent* SystemEvent::clone() const
+{
+    return new SystemEvent(&m_event);
 }
 
 /**
@@ -679,6 +755,11 @@ QueueControlEvent::QueueControlEvent(snd_seq_event_type_t type, int queue, int v
     snd_seq_ev_set_queue_control(&m_event, type, queue, value);
 }
 
+QueueControlEvent* QueueControlEvent::clone() const
+{
+    return new QueueControlEvent(&m_event);
+}
+
 /**
  * Constructor
  * @param type The event's type
@@ -691,6 +772,11 @@ ValueEvent::ValueEvent(const snd_seq_event_type_t type, int val) : SequencerEven
     setValue(val);
 }
 
+ValueEvent* ValueEvent::clone() const
+{
+    return new ValueEvent(&m_event);
+}
+
 /**
  * Constructor
  * @param queue Queue number.
@@ -699,6 +785,26 @@ ValueEvent::ValueEvent(const snd_seq_event_type_t type, int val) : SequencerEven
 TempoEvent::TempoEvent(int queue, int tempo) : QueueControlEvent()
 {
     snd_seq_ev_set_queue_tempo(&m_event, queue, tempo);
+}
+
+TempoEvent* TempoEvent::clone() const
+{
+    return new TempoEvent(&m_event);
+}
+
+ClientEvent* ClientEvent::clone() const
+{
+    return new ClientEvent(&m_event);
+}
+
+PortEvent* PortEvent::clone() const
+{
+    return new PortEvent(&m_event);
+}
+
+SubscriptionEvent* SubscriptionEvent::clone() const
+{
+    return new SubscriptionEvent(&m_event);
 }
 
 /**
@@ -943,7 +1049,7 @@ RemoveEvents::setTime(const snd_seq_timestamp_t* time)
  */
 MidiCodec::MidiCodec( int bufsize, QObject* parent ) : QObject(parent)
 {
-    CHECK_ERROR(snd_midi_event_new(bufsize, &m_Info));
+    DRUMSTICK_ALSA_CHECK_ERROR(snd_midi_event_new(bufsize, &m_Info));
 }
 
 /**
@@ -975,7 +1081,7 @@ MidiCodec::decode(unsigned char *buf,
                   long count,
                   const snd_seq_event_t *ev)
 {
-    return CHECK_WARNING(snd_midi_event_decode(m_Info, buf, count, ev));
+    return DRUMSTICK_ALSA_CHECK_WARNING(snd_midi_event_decode(m_Info, buf, count, ev));
 }
 
 /**
@@ -990,7 +1096,7 @@ MidiCodec::encode(const unsigned char *buf,
                   long count,
                   snd_seq_event_t *ev)
 {
-    return CHECK_WARNING(snd_midi_event_encode(m_Info, buf, count, ev));
+    return DRUMSTICK_ALSA_CHECK_WARNING(snd_midi_event_encode(m_Info, buf, count, ev));
 }
 
 /**
@@ -1003,7 +1109,7 @@ long
 MidiCodec::encode(int c,
                   snd_seq_event_t *ev)
 {
-    return CHECK_WARNING(snd_midi_event_encode_byte(m_Info, c, ev));
+    return DRUMSTICK_ALSA_CHECK_WARNING(snd_midi_event_encode_byte(m_Info, c, ev));
 }
 
 /**
@@ -1041,7 +1147,7 @@ MidiCodec::resetEncoder()
 void
 MidiCodec::resizeBuffer(int bufsize)
 {
-    CHECK_WARNING(snd_midi_event_resize_buffer(m_Info, bufsize));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_midi_event_resize_buffer(m_Info, bufsize));
 }
 
-} /* namespace drumstick */
+}} /* namespace drumstick::ALSA */

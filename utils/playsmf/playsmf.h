@@ -30,9 +30,7 @@
 #include <drumstick/alsaqueue.h>
 #include <drumstick/alsaport.h>
 
-using namespace drumstick;
-
-class Song : public QList<SequencerEvent*>
+class Song : public QList<drumstick::ALSA::SequencerEvent*>
 {
 public:
     virtual ~Song();
@@ -50,7 +48,7 @@ public:
     void play(QString fileName);
     bool stopped();
     void stop();
-    void appendEvent(SequencerEvent* ev);
+    void appendEvent(drumstick::ALSA::SequencerEvent* ev);
     void subscribe(const QString& portName);
     void dump(const QString& chan, const QString& event, const QString& data);
     void dumpStr(const QString& event, const QString& data);
@@ -80,10 +78,10 @@ private:
     bool m_Stopped;
     QReadWriteLock m_mutex;
     Song m_song;
-    QSmf* m_engine;
-    MidiClient* m_Client;
-    MidiPort* m_Port;
-    MidiQueue* m_Queue;
+    drumstick::File::QSmf* m_engine;
+    drumstick::ALSA::MidiClient* m_Client;
+    drumstick::ALSA::MidiPort* m_Port;
+    drumstick::ALSA::MidiQueue* m_Queue;
 };
 
 #endif /*PLAYSMF_H_*/

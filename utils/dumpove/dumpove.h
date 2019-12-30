@@ -18,8 +18,6 @@
 
 #include <drumstick/qove.h>
 
-using namespace drumstick;
-
   class QSpyOve : public QObject
   {
     Q_OBJECT
@@ -75,5 +73,5 @@ using namespace drumstick;
 
   private:
     bool m_verbosity;
-    QOve *m_engine;
+    drumstick::File::QOve *m_engine;
   };

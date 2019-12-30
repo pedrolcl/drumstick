@@ -29,8 +29,6 @@
 #include "connections.h"
 #include "preferences.h"
 
-using namespace drumstick::rt;
-
 class VPiano : public QMainWindow
 {
     Q_OBJECT
@@ -38,8 +36,8 @@ public:
     VPiano( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
     virtual ~VPiano();
     void closeEvent(QCloseEvent *event);
-    void findInput(QString name, QList<MIDIInput*> &inputs);
-    void findOutput(QString name, QList<MIDIOutput*> &outputs);
+    void findInput(QString name, QList<drumstick::rt::MIDIInput*> &inputs);
+    void findOutput(QString name, QList<drumstick::rt::MIDIOutput*> &outputs);
 
 public slots:
     void readSettings();
@@ -56,8 +54,8 @@ public slots:
     void slotNoteOff(const int chan, const int note, const int vel);
 
 private:
-    MIDIInput * m_midiIn;
-    MIDIOutput* m_midiOut;
+    drumstick::rt::MIDIInput * m_midiIn;
+    drumstick::rt::MIDIOutput* m_midiOut;
     QString m_lastInputBackend;
     QString m_lastOutputBackend;
     QString m_lastInputConnection;

@@ -29,6 +29,8 @@
 namespace drumstick {
 namespace rt {
 
+    using namespace ALSA;
+
     static QString DEFAULT_PUBLIC_NAME(QLatin1String("MIDI Out"));
 
     class ALSAMIDIOutput::ALSAMIDIOutputPrivate {

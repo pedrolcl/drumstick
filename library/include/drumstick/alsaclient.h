@@ -33,6 +33,7 @@
  */
 
 namespace drumstick {
+namespace ALSA {
 
 class MidiQueue;
 class MidiClient;
@@ -326,7 +327,7 @@ DRUMSTICK_EXPORT int getRuntimeALSALibraryNumber();
 DRUMSTICK_EXPORT QString getRuntimeALSADriverVersion();
 DRUMSTICK_EXPORT int getRuntimeALSADriverNumber();
 
-} /* namespace drumstick */
+}} /* namespace drumstick::ALSA */
 
 /** @} */
 

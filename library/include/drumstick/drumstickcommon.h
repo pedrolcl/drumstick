@@ -38,6 +38,7 @@ extern "C" {
  */
 
 namespace drumstick {
+namespace ALSA {
 
 /**
  * 8-bit unsigned number to be used as a MIDI message parameter
@@ -136,13 +137,13 @@ inline int checkWarning(int rc, const char *where)
  * This macro calls the check error function.
  * @param x Error code
  */
-#define CHECK_ERROR(x)   (checkErrorAndThrow((x),__PRETTY_FUNCTION__))
+#define DRUMSTICK_ALSA_CHECK_ERROR(x)   (checkErrorAndThrow((x),__PRETTY_FUNCTION__))
 
 /**
  * This macro calls the check warning function.
  * @param x Error code
  */
-#define CHECK_WARNING(x) (checkWarning((x),__PRETTY_FUNCTION__))
+#define DRUMSTICK_ALSA_CHECK_WARNING(x) (checkWarning((x),__PRETTY_FUNCTION__))
 
 /**
  * ALSA library version as a constant string.
@@ -153,7 +154,7 @@ inline int checkWarning(int rc, const char *where)
  */
 const QString LIBRARY_VERSION(SND_LIB_VERSION_STR);
 
-} /* namespace drumstick */
+}} /* namespace drumstick::ALSA */
 
 /** @} */
 

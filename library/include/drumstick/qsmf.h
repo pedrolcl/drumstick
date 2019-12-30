@@ -34,6 +34,7 @@ class QDataStream;
  */
 
 namespace drumstick {
+namespace File {
 
 const quint32 MThd = 0x4d546864; /**< SMF Header prefix */
 const quint32 MTrk = 0x4d54726b; /**< SMF Track prefix */
@@ -320,7 +321,7 @@ private:
     void writeTrackChunk(int track);
 };
 
-} /* namespace drumstick */
+}} /* namespace drumstick::File */
 
 /** @} */
 

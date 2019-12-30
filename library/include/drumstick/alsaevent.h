@@ -31,17 +31,13 @@
  */
 
 namespace drumstick {
+namespace ALSA {
 
 /**
  * Constant SequencerEventType is the QEvent::type() of any SequencerEvent
  * object to be used to check the argument in QObject::customEvent().
  */
 const QEvent::Type SequencerEventType = QEvent::Type(QEvent::User + 4154); // :-)
-
-/**
- * Macro to declare a virtual clone() method for SequencerEvent and derived classes.
- */
-#define CLONE_EVENT_DECLARATION(T) virtual T* clone() { return new T(&m_event); }
 
 /**
  * Base class for the event's hierarchy
@@ -54,7 +50,7 @@ class DRUMSTICK_EXPORT SequencerEvent : public QEvent
 public:
     SequencerEvent();
     SequencerEvent(const SequencerEvent& other);
-    SequencerEvent(snd_seq_event_t* event);
+    SequencerEvent(const snd_seq_event_t* event);
     /** Destructor */
     virtual ~SequencerEvent() {}
 
@@ -129,7 +125,7 @@ public:
     static bool isChannel(const SequencerEvent* event);
 
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(SequencerEvent);
+    virtual SequencerEvent* clone() const;
 
 protected:
     void free() __attribute__((deprecated));
@@ -150,7 +146,7 @@ public:
     /** Default constructor */
     ChannelEvent() : SequencerEvent() {}
     /** Constructor from an ALSA event record */
-    ChannelEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
+    ChannelEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     /**
      * Sets the channel of the event
      * @param c A channel, between 0 and 15.
@@ -163,6 +159,9 @@ public:
      * @see setChannel()
      */
     int getChannel() const { return m_event.data.note.channel; }
+
+    /** Clone this object returning a pointer to the new object */
+    virtual ChannelEvent* clone() const override;
 };
 
 /**
@@ -174,7 +173,7 @@ public:
     /** Default constructor */
     KeyEvent() : ChannelEvent() {}
     /** Constructor from an ALSA event record */
-    KeyEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
+    KeyEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
     /**
      * Gets the MIDI note of this event.
      * @return The event's MIDI note.
@@ -199,6 +198,9 @@ public:
      * @see getVelocity()
      */
     void setVelocity(const MidiByte b) { m_event.data.note.velocity = b; }
+
+    /** Clone this object returning a pointer to the new object */
+    virtual KeyEvent* clone() const override;
 };
 
 /**
@@ -213,7 +215,7 @@ public:
     /** Default constructor */
     NoteEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_NOTE; }
     /** Constructor from an ALSA event record */
-    NoteEvent(snd_seq_event_t* event) : KeyEvent(event) {}
+    NoteEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
     NoteEvent(const int ch, const int key, const int vel, const int dur);
     /**
      * Gets the note's duration
@@ -227,8 +229,9 @@ public:
      * @see getDuration()
      */
     void setDuration(const ulong d) { m_event.data.note.duration = d; }
+
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(NoteEvent)
+    virtual NoteEvent* clone() const override;
 };
 
 /**
@@ -240,10 +243,11 @@ public:
     /** Default constructor */
     NoteOnEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_NOTEON; }
     /** Constructor from an ALSA event record */
-    NoteOnEvent(snd_seq_event_t* event) : KeyEvent(event) {}
+    NoteOnEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
     NoteOnEvent(const int ch, const int key, const int vel);
+
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(NoteOnEvent)
+    virtual NoteOnEvent* clone() const override;
 };
 
 /**
@@ -255,10 +259,10 @@ public:
     /** Default constructor */
     NoteOffEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_NOTEOFF; }
     /** Constructor from an ALSA event record */
-    NoteOffEvent(snd_seq_event_t* event) : KeyEvent(event) {}
+    NoteOffEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
     NoteOffEvent(const int ch, const int key, const int vel);
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(NoteOffEvent)
+    virtual NoteOffEvent* clone() const override;
 };
 
 /**
@@ -270,10 +274,10 @@ public:
     /** Default constructor */
     KeyPressEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_KEYPRESS; }
     /** Constructor from an ALSA event record */
-    KeyPressEvent(snd_seq_event_t* event) : KeyEvent(event) {}
+    KeyPressEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
     KeyPressEvent(const int ch, const int key, const int vel);
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(KeyPressEvent)
+    virtual KeyPressEvent* clone() const override;
 };
 
 /**
@@ -285,7 +289,7 @@ public:
     /** Default constructor */
     ControllerEvent() : ChannelEvent() {}
     /** Constructor from an ALSA event record */
-    ControllerEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
+    ControllerEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
     ControllerEvent(const int ch, const int cc, const int val);
     /**
      * Gets the controller event's parameter.
@@ -312,7 +316,7 @@ public:
      */
     void setValue( const int v ) { m_event.data.control.value = v; }
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(ControllerEvent)
+    virtual ControllerEvent* clone() const override;
 };
 
 /**
@@ -324,14 +328,14 @@ public:
     /** Default constructor */
     ProgramChangeEvent() : ChannelEvent() { m_event.type = SND_SEQ_EVENT_PGMCHANGE; }
     /** Constructor from an ALSA event record */
-    ProgramChangeEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
+    ProgramChangeEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
     ProgramChangeEvent(const int ch, const int val);
     /** Gets the MIDI program number */
     int getValue() const { return m_event.data.control.value; }
     /** Sets the MIDI program number */
     void setValue( const int v ) { m_event.data.control.value = v; }
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(ProgramChangeEvent)
+    virtual ProgramChangeEvent* clone() const override;
 };
 
 /**
@@ -343,14 +347,14 @@ public:
     /** Default constructor */
     PitchBendEvent() : ChannelEvent() { m_event.type = SND_SEQ_EVENT_PITCHBEND; }
     /** Constructor from an ALSA event record */
-    PitchBendEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
+    PitchBendEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
     PitchBendEvent(const int ch, const int val);
     /** Gets the MIDI pitch bend value, zero centered from -8192 to 8191 */
     int getValue() const { return m_event.data.control.value; }
     /** Sets the MIDI pitch bend value, zero centered from -8192 to 8191  */
     void setValue( const int v ) { m_event.data.control.value = v; }
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(PitchBendEvent)
+    virtual PitchBendEvent* clone() const override;
 };
 
 /**
@@ -362,14 +366,14 @@ public:
     /** Default constructor */
     ChanPressEvent() : ChannelEvent() { m_event.type = SND_SEQ_EVENT_CHANPRESS; }
     /** Constructor from an ALSA event record */
-    ChanPressEvent(snd_seq_event_t* event) : ChannelEvent(event) {}
-    ChanPressEvent( const int ch, const int val);
+    ChanPressEvent( const snd_seq_event_t* event ) : ChannelEvent(event) {}
+    ChanPressEvent( const int ch, const int val );
     /** Gets the channel aftertouch value */
     int getValue() const { return m_event.data.control.value; }
     /** Sets the channel aftertouch value */
     void setValue( const int v ) { m_event.data.control.value = v; }
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(ChanPressEvent)
+    virtual ChanPressEvent* clone() const override;
 };
 
 /**
@@ -379,7 +383,7 @@ class DRUMSTICK_EXPORT VariableEvent : public SequencerEvent
 {
 public:
     VariableEvent();
-    VariableEvent(snd_seq_event_t* event);
+    VariableEvent(const snd_seq_event_t* event);
     VariableEvent(const QByteArray& data);
     VariableEvent(const VariableEvent& other);
     VariableEvent(const unsigned int datalen, char* dataptr);
@@ -389,7 +393,7 @@ public:
     /** Gets the data pointer */
     const char* getData() const { return static_cast<const char*>(m_event.data.ext.ptr); }
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(VariableEvent)
+    virtual VariableEvent* clone() const override;
 protected:
     QByteArray m_data;
 };
@@ -401,12 +405,12 @@ class DRUMSTICK_EXPORT SysExEvent : public VariableEvent
 {
 public:
     SysExEvent();
-    SysExEvent(snd_seq_event_t* event);
+    SysExEvent(const snd_seq_event_t* event);
     SysExEvent(const QByteArray& data);
     SysExEvent(const SysExEvent& other);
     SysExEvent(const unsigned int datalen, char* dataptr);
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(SysExEvent)
+    virtual SysExEvent* clone() const override;
 };
 
 /**
@@ -419,14 +423,14 @@ class DRUMSTICK_EXPORT TextEvent : public VariableEvent
 {
 public:
     TextEvent();
-    TextEvent(snd_seq_event_t* event);
+    TextEvent(const snd_seq_event_t* event);
     explicit TextEvent(const QString& text, const int textType = 1);
     TextEvent(const TextEvent& other);
     TextEvent(const unsigned int datalen, char* dataptr);
     QString getText() const;
     int getTextType() const;
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(TextEvent)
+    virtual TextEvent* clone() const override;
 protected:
     int m_textType;
 };
@@ -440,10 +444,10 @@ public:
     /** Default constructor */
     SystemEvent() : SequencerEvent() {}
     /** Constructor from an ALSA event record */
-    SystemEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
+    SystemEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     SystemEvent(const snd_seq_event_type_t type);
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(SystemEvent)
+    virtual SystemEvent* clone() const override;
 };
 
 /**
@@ -457,7 +461,7 @@ public:
     /** Default constructor */
     QueueControlEvent() : SequencerEvent() {}
     /** Constructor from an ALSA event record */
-    QueueControlEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
+    QueueControlEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     QueueControlEvent(const snd_seq_event_type_t type, const int queue, const int value);
     /** Gets the queue number */
     int getQueue() const { return m_event.data.queue.queue; }
@@ -484,7 +488,7 @@ public:
     /** Sets the skew value */
     void setSkewValue(const uint val) {m_event.data.queue.param.skew.value = val; }
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(QueueControlEvent)
+    virtual QueueControlEvent* clone() const override;
 };
 
 /**
@@ -496,14 +500,14 @@ public:
     /** Default constructor */
     ValueEvent() : SequencerEvent() {}
     /** Constructor from an ALSA event record */
-    ValueEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
+    ValueEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     ValueEvent(const snd_seq_event_type_t type, const int val);
     /** Gets the event's value */
     int getValue() const { return m_event.data.control.value; }
     /** Sets the event's value */
     void setValue( const int v ) { m_event.data.control.value = v; }
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(ValueEvent)
+    virtual ValueEvent* clone() const override;
 };
 
 /**
@@ -515,10 +519,10 @@ public:
     /** Default constructor */
     TempoEvent() : QueueControlEvent() {}
     /** Constructor from an ALSA event record */
-    TempoEvent(snd_seq_event_t* event) : QueueControlEvent(event) {}
+    TempoEvent(const snd_seq_event_t* event) : QueueControlEvent(event) {}
     TempoEvent(const int queue, const int tempo);
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(TempoEvent)
+    virtual TempoEvent* clone() const override;
 };
 
 /**
@@ -530,7 +534,7 @@ public:
     /** Default constructor */
     SubscriptionEvent() : SequencerEvent() {}
     /** Constructor from an ALSA event record */
-    SubscriptionEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
+    SubscriptionEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     /** Returns true if the event was a subscribed port */
     bool subscribed() const { return (m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED); }
     /** Returns true if the event was an unsubscribed port */
@@ -544,7 +548,7 @@ public:
     /** Gets the destination port number */
     int getDestPort() const { return m_event.data.connect.dest.port; }
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(SubscriptionEvent)
+    virtual SubscriptionEvent* clone() const override;
 };
 
 /**
@@ -556,10 +560,10 @@ public:
     /** Default constructor */
     ClientEvent() : SequencerEvent() {}
     /** Constructor from an ALSA event record */
-    ClientEvent(snd_seq_event_t* event) : SequencerEvent(event) {}
+    ClientEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     int getClient() const { return m_event.data.addr.client; }
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(ClientEvent)
+    virtual ClientEvent* clone() const override;
 };
 
 /**
@@ -571,11 +575,11 @@ public:
     /** Default constructor */
     PortEvent() : ClientEvent() {}
     /** Constructor from an ALSA event record */
-    PortEvent(snd_seq_event_t* event) : ClientEvent(event) {}
+    PortEvent(const snd_seq_event_t* event) : ClientEvent(event) {}
     /** Gets the port number */
     int getPort() const { return m_event.data.addr.port; }
     /** Clone this object returning a pointer to the new object */
-    CLONE_EVENT_DECLARATION(PortEvent)
+    virtual PortEvent* clone() const override;
 };
 
 /**
@@ -643,7 +647,7 @@ private:
     snd_midi_event_t* m_Info;
 };
 
-} /* namespace drumstick */
+}} /* namespace drumstick::ALSA */
 
 /** @} */
 
