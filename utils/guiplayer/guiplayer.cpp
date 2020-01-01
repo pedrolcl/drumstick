@@ -557,26 +557,30 @@ void GUIPlayer::volumeSlider(int value)
 
 void GUIPlayer::dragEnterEvent( QDragEnterEvent * event )
 {
-    if (event->mimeData()->hasFormat("text/uri-list"))
+    if (event->mimeData()->hasUrls()) {
         event->acceptProposedAction();
+    }
 }
 
 void GUIPlayer::dropEvent( QDropEvent * event )
 {
-    QString data = event->mimeData()->text();
-    QString fileName = QUrl(data).path().trimmed();
-    while (fileName.endsWith(QChar::Null)) fileName.chop(1);
-    if ( fileName.endsWith(".ove", Qt::CaseInsensitive) ||
-    	 fileName.endsWith(".mid", Qt::CaseInsensitive) ||
-         fileName.endsWith(".midi", Qt::CaseInsensitive) ||
-         fileName.endsWith(".kar", Qt::CaseInsensitive) ||
-         fileName.endsWith(".wrk", Qt::CaseInsensitive) ) {
-        stop();
-        openFile(fileName);
-        event->accept();
-    } else {
-        QMessageBox::warning(this, QSTR_APPNAME,
-            QString("Dropped file %1 is not supported").arg(fileName));
+    if ( event->mimeData()->hasUrls() ) {
+        QList<QUrl> urls = event->mimeData()->urls();
+        if (!urls.empty()) {
+            QString fileName = urls.first().toLocalFile();
+            if ( fileName.endsWith(".ove", Qt::CaseInsensitive) ||
+                 fileName.endsWith(".mid", Qt::CaseInsensitive) ||
+                 fileName.endsWith(".midi", Qt::CaseInsensitive) ||
+                 fileName.endsWith(".kar", Qt::CaseInsensitive) ||
+                 fileName.endsWith(".wrk", Qt::CaseInsensitive) ) {
+                stop();
+                event->accept();
+                openFile(fileName);
+            } else {
+                QMessageBox::warning(this, QSTR_APPNAME,
+                    QString("Dropped file %1 is not supported").arg(fileName));
+            }
+        }
     }
 }
 
