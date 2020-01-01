@@ -1,6 +1,6 @@
 /*
     Cakewalk WRK file dump program
-    Copyright (C) 2006-2019, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2020, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     Based on midifile.c by Tim Thompson, M.Czeiszperger and Greg Lee
 
