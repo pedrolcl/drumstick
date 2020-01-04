@@ -21,7 +21,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  cmake
 BuildRequires:  alsa-lib-devel
 BuildRequires:  qt5-qtbase-devel
-BuildRequires:  qt5-qtsvg-devel
 BuildRequires:  doxygen
 BuildRequires:  graphviz
 BuildRequires:  libxslt

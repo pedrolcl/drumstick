@@ -76,8 +76,7 @@ if(STATIC_DRUMSTICK)
         target_link_libraries(drumstick-rt PUBLIC
             drumstick-rt-alsa-in
             drumstick-rt-alsa-out
-            drumstick-rt-eassynth
-            drumstick-alsa)
+            drumstick-rt-eassynth)
     endif()
 
     if(UNIX AND NOT APPLE)
@@ -96,7 +95,6 @@ if(STATIC_DRUMSTICK)
             drumstick-rt-macsynth
             "-framework CoreMIDI -framework CoreFoundation")
     endif()
-
 
     if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
         target_compile_definitions(drumstick-rt PUBLIC WIN_BACKEND)

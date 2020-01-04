@@ -14,20 +14,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-add_executable (rtTest
-#    ${CMAKE_SOURCE_DIR}/library/include/drumstick/rtmidiinput.h
-#    ${CMAKE_SOURCE_DIR}/library/include/drumstick/rtmidioutput.h
-    rttest.cpp
-)
+set ( SOURCES rttest.cpp )
+
+if (STATIC_DRUMSTICK)
+    list(APPEND SOURCES
+        ${CMAKE_SOURCE_DIR}/library/include/drumstick/rtmidiinput.h
+        ${CMAKE_SOURCE_DIR}/library/include/drumstick/rtmidioutput.h )
+endif()
+
+add_executable ( rtTest ${SOURCES} )
 
 target_include_directories (rtTest PUBLIC
-    ${CMAKE_SOURCE_DIR}/library/include
-)
+    ${CMAKE_SOURCE_DIR}/library/include )
 
 target_link_libraries (rtTest PUBLIC
-    Drumstick::RT
     Qt5::Core
     Qt5::Test
-)
+    Drumstick::RT )
 
 add_test (rtTest ${PROJECT_BINARY_DIR}/bin/rtTest)

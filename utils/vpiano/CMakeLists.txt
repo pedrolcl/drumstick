@@ -15,17 +15,14 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Svg REQUIRED)
 find_package(Qt5Network REQUIRED)
 
-#if(STATIC_DRUMSTICK AND PKG_CONFIG_FOUND)
-#  pkg_check_modules(FLUIDSYNTH REQUIRED fluidsynth>=1.1.1)
-#  #link_directories(${FLUIDSYNTH_LIBDIR})
-#endif()
-
-set(vpiano_forms_SRCS
+set(vpiano_SRCS
     networksettingsdialog.ui
     fluidsettingsdialog.ui
     macsynthsettingsdialog.ui
@@ -34,11 +31,6 @@ set(vpiano_forms_SRCS
     connections.ui
     preferences.ui
     vpiano.ui
-)
-
-qt5_wrap_ui(vpiano_ui_SRCS ${vpiano_forms_SRCS})
-
-set(vpiano_SRCS
     pianokey.cpp
     pianokey.h
     pianoscene.cpp
@@ -60,28 +52,10 @@ set(vpiano_SRCS
     fluidsettingsdialog.cpp
     macsynthsettingsdialog.cpp
     sonivoxsettingsdialog.cpp
+    pianokeybd.qrc
 )
-
-set(vpiano_qtobject_SRCS
-    pianoscene.h
-    pianokeybd.h
-    vpianoabout.h
-    connections.h
-    preferences.h
-    vpiano.h
-    networksettingsdialog.h
-    fluidsettingsdialog.h
-    macsynthsettingsdialog.h
-    sonivoxsettingsdialog.h
-)
-
-qt5_wrap_cpp(vpiano_moc_SRCS ${vpiano_qtobject_SRCS})
-
-qt5_add_resources(vpiano_SRCS pianokeybd.qrc)
 
 add_executable(drumstick-vpiano
-    ${vpiano_ui_SRCS}
-    ${vpiano_moc_SRCS}
     ${vpiano_SRCS}
 )
 
@@ -92,7 +66,6 @@ target_include_directories(drumstick-vpiano
 target_link_libraries(drumstick-vpiano PUBLIC
     Drumstick::RT
     Qt5::Widgets
-    Qt5::Svg
     Qt5::Network
 )
 

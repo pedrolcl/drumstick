@@ -44,9 +44,9 @@ else()
         PRIVATE QT_PLUGIN)
 endif()
 
-target_link_libraries(drumstick-rt-alsa-in PUBLIC
-    Drumstick::ALSA
-    Qt5::Core
+target_link_libraries(drumstick-rt-alsa-in
+    PUBLIC Qt5::Core
+    PRIVATE Drumstick::ALSA
 )
 
 set_target_properties(drumstick-rt-alsa-in PROPERTIES

@@ -222,13 +222,17 @@ namespace rt {
             if (obj != nullptr) {
                 MIDIInput *input = qobject_cast<MIDIInput*>(obj);
                 if (input != nullptr && !d->m_inputsList.contains(input)) {
-                    input->setPublicName(name_in);
+                    if (!name_in.isEmpty()) {
+                        input->setPublicName(name_in);
+                    }
                     input->setExcludedConnections(names);
                     d->m_inputsList << input;
                 } else {
                     MIDIOutput *output = qobject_cast<MIDIOutput*>(obj);
                     if (output != nullptr && !d->m_outputsList.contains(output)) {
-                        output->setPublicName(name_out);
+                        if (!name_out.isEmpty()) {
+                            output->setPublicName(name_out);
+                        }
                         output->setExcludedConnections(names);
                         d->m_outputsList << output;
                     }

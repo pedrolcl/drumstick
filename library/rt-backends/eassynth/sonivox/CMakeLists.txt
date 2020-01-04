@@ -73,6 +73,8 @@ set_target_properties( sonivox PROPERTIES
   VERSION 3.6.10 
 )
 
-install ( TARGETS sonivox
+install( TARGETS sonivox
     EXPORT drumstick-rt-targets
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} )
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick )

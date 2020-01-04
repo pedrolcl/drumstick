@@ -76,7 +76,7 @@ if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 endif()
 
 if(${CMAKE_SYSTEM} MATCHES "Linux")
-    pkg_check_modules(ALSA alsa>=1.0.0)
+    pkg_check_modules(ALSA alsa>=1.0.0 REQUIRED)
 endif()
 
 if(PKG_CONFIG_FOUND)

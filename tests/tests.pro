@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
-SUBDIRS += \
-    fileTest \
-    rtTest
+SUBDIRS += fileTest
+!static:SUBDIRS += rtTest
+
 linux* {
     SUBDIRS += \
         alsaTest1 \
