@@ -33,7 +33,7 @@ QString DummyOutput::backendName()
 
 QString DummyOutput::publicName()
 {
-    return QString();
+    return QLatin1String("DUMMY Out");
 }
 
 void DummyOutput::setPublicName(QString name)

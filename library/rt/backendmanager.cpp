@@ -50,7 +50,7 @@ Q_IMPORT_PLUGIN(DummyInput)
 Q_IMPORT_PLUGIN(DummyOutput)
 #endif
 
-#if defined(SYNTH_BACKEND)
+#if defined(FLUIDSYNTH_BACKEND)
 Q_IMPORT_PLUGIN(SynthOutput)
 #endif
 

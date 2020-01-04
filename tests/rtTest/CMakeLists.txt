@@ -14,7 +14,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-add_executable (rtTest rttest.cpp)
+add_executable (rtTest
+#    ${CMAKE_SOURCE_DIR}/library/include/drumstick/rtmidiinput.h
+#    ${CMAKE_SOURCE_DIR}/library/include/drumstick/rtmidioutput.h
+    rttest.cpp
+)
+
+target_include_directories (rtTest PUBLIC
+    ${CMAKE_SOURCE_DIR}/library/include
+)
 
 target_link_libraries (rtTest PUBLIC
     Drumstick::RT

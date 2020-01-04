@@ -58,6 +58,7 @@ set_target_properties(drumstick-rt-net-out PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
 install(TARGETS drumstick-rt-net-out
+    EXPORT drumstick-rt-targets
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick)

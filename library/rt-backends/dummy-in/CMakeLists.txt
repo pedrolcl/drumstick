@@ -17,8 +17,6 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(drumstick-rt-dummy-in_QTOBJ_SRCS
-    ../../include/drumstick/rtmidiinput.h
-    ../../include/drumstick/rtmidioutput.h
     dummyinput.h
 )
 
@@ -30,13 +28,23 @@ qt5_wrap_cpp(drumstick-rt-dummy-in_MOC_SRCS ${drumstick-rt-dummy-in_QTOBJ_SRCS}
     OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
 )
 
-add_library(drumstick-rt-dummy-in MODULE
-    ${drumstick-rt-dummy-in_MOC_SRCS}
-    ${drumstick-rt-dummy-in_SRCS}
-)
-
-target_compile_definitions(drumstick-rt-dummy-in
-    PRIVATE QT_PLUGIN)
+if(STATIC_DRUMSTICK)
+    add_library(drumstick-rt-dummy-in STATIC
+        ${drumstick-rt-dummy-in_MOC_SRCS}
+        ${drumstick-rt-dummy-in_SRCS}
+    )
+    target_compile_definitions(drumstick-rt-dummy-in
+        PRIVATE QT_STATICPLUGIN)
+    set_target_properties(drumstick-rt-dummy-in PROPERTIES
+        STATIC_LIB "libdrumstick-rt-dummy-in")
+else()
+    add_library(drumstick-rt-dummy-in MODULE
+        ${drumstick-rt-dummy-in_MOC_SRCS}
+        ${drumstick-rt-dummy-in_SRCS}
+    )
+    target_compile_definitions(drumstick-rt-dummy-in
+        PRIVATE QT_PLUGIN)
+endif()
 
 target_link_libraries(drumstick-rt-dummy-in PUBLIC
     Qt5::Core
@@ -50,6 +58,7 @@ set_target_properties(drumstick-rt-dummy-in PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
 install(TARGETS drumstick-rt-dummy-in
+    EXPORT drumstick-rt-targets
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick)

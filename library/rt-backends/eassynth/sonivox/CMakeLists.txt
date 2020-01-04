@@ -63,9 +63,9 @@ target_compile_definitions( sonivox PRIVATE
   _CHORUS_ENABLED
 )
 
-target_include_directories( sonivox 
-  PUBLIC host_src
-  PRIVATE lib_src
+target_include_directories( sonivox PRIVATE
+    host_src
+    lib_src
 )
 
 set_target_properties( sonivox PROPERTIES 
@@ -73,3 +73,6 @@ set_target_properties( sonivox PROPERTIES
   VERSION 3.6.10 
 )
 
+install ( TARGETS sonivox
+    EXPORT drumstick-rt-targets
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} )

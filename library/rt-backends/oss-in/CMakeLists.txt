@@ -61,6 +61,7 @@ set_target_properties(drumstick-rt-oss-in PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
 install(TARGETS drumstick-rt-oss-in
+    EXPORT drumstick-rt-targets
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick)

@@ -91,8 +91,8 @@ static {
             -ldrumstick-rt-net-out
 
     packagesExist(fluidsynth) {
-        DEFINES += SYNTH_BACKEND
-        LIBS += -ldrumstick-rt-synth
+        DEFINES += FLUIDSYNTH_BACKEND
+        LIBS += -ldrumstick-rt-fluidsynth
         macx {
             LIBS += -framework FluidSynth
         } else {
