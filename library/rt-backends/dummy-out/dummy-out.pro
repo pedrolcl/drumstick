@@ -12,3 +12,4 @@ QT -= gui
 
 HEADERS += dummyoutput.h
 SOURCES += dummyoutput.cpp
+LIBS += -L$$OUT_PWD/../../../build/lib -l$$drumstickLib(drumstick-rt)

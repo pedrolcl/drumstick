@@ -6,6 +6,6 @@ VER_PAT = 0
 
 defineReplace(drumstickLib) {
     LIBRARY_NAME = $$1
-    win32: LIBRARY_NAME = $$LIBRARY_NAME$$VER_MAJ
+    !static:win32: LIBRARY_NAME = $$LIBRARY_NAME$$VER_MAJ
     return($$LIBRARY_NAME)
 }

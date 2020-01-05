@@ -40,11 +40,11 @@ static {
     LIBS += -L$$OUT_PWD/../../build/lib/drumstick
     LIBS += -L$$OUT_PWD/../../build/lib
 
-    #dummy {
-    #    DEFINES += DUMMY_BACKEND
-    #    LIBS += -ldrumstick-rt-dummy-in \
-    #            -ldrumstick-rt-dummy-out
-    #}
+    dummy {
+        DEFINES += DUMMY_BACKEND
+        LIBS += -ldrumstick-rt-dummy-in \
+                -ldrumstick-rt-dummy-out
+    }
 
     linux* {
         DEFINES += LINUX_BACKEND

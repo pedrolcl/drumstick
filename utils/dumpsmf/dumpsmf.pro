@@ -3,6 +3,7 @@ TARGET = drumstick-dumpsmf
 CONFIG += qt console
 static {
     CONFIG += link_prl
+    DEFINES += DRUMSTICK_STATIC
 }
 DESTDIR = ../../build/bin
 INCLUDEPATH += . ../../library/include ../common 

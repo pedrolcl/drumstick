@@ -52,6 +52,7 @@ target_include_directories(drumstick-rt-net-out PRIVATE
 
 target_link_libraries(drumstick-rt-net-out PUBLIC
     Qt5::Network
+    Drumstick::RT
 )
 
 set_target_properties(drumstick-rt-net-out PROPERTIES

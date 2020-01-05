@@ -67,8 +67,9 @@ if(STATIC_DRUMSTICK)
 
     if (FALSE)
         target_compile_definitions(drumstick-rt PUBLIC DUMMY_BACKEND)
-        target_link_libraries(drumstick-rt PUBLIC drumstick-rt-dummy-in)
-        target_link_libraries(drumstick-rt PUBLIC drumstick-rt-dummy-out)
+        target_link_libraries(drumstick-rt PUBLIC
+            drumstick-rt-dummy-in
+            drumstick-rt-dummy-out)
     endif()
 
     if(ALSA_FOUND)

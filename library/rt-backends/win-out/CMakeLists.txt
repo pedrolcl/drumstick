@@ -17,7 +17,6 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(drumstick-rt-win-out_QTOBJ_SRCS
-    ../../include/drumstick/rtmidioutput.h
     winmidioutput.h
 )
 
@@ -50,6 +49,7 @@ target_include_directories(drumstick-rt-win-out PRIVATE
 
 target_link_libraries(drumstick-rt-win-out
     PUBLIC Qt5::Core
+           Drumstick::RT
     PRIVATE winmm
 )
 
@@ -57,6 +57,7 @@ set_target_properties(drumstick-rt-win-out PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
 install(TARGETS drumstick-rt-win-out
+        EXPORT drumstick-rt-targets
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick)

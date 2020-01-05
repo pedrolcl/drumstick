@@ -19,3 +19,4 @@ SOURCES += netmidiinput.cpp \
            ../common/midiparser.cpp
 
 QT += network
+LIBS += -L$$OUT_PWD/../../../build/lib -l$$drumstickLib(drumstick-rt)

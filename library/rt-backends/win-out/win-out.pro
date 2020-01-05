@@ -15,3 +15,4 @@ QT -= gui
 HEADERS += winmidioutput.h
 SOURCES += winmidioutput.cpp
 LIBS += -lwinmm
+LIBS += -L$$OUT_PWD/../../../build/lib -l$$drumstickLib(drumstick-rt)

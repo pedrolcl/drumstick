@@ -38,6 +38,7 @@ macx:!static {
 
 static {
     CONFIG += link_prl
+    DEFINES += DRUMSTICK_STATIC
 
     LIBS += -L$$OUT_PWD/../../build/lib/drumstick/
     LIBS += -ldrumstick-rt-net-in \

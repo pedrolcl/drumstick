@@ -46,6 +46,7 @@ endif()
 
 target_link_libraries(drumstick-rt-dummy-out PUBLIC
     Qt5::Core
+    Drumstick::RT
 )
 
 target_include_directories(drumstick-rt-dummy-out PRIVATE
