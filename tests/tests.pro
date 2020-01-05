@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS += fileTest
-!static:SUBDIRS += rtTest
+SUBDIRS += rtTest
 
 linux* {
     SUBDIRS += \

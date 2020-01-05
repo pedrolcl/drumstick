@@ -17,8 +17,6 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(drumstick-rt-mac-in_QTOBJ_SRCS
-    ../../include/drumstick/rtmidiinput.h
-    ../../include/drumstick/rtmidioutput.h
     macmidiinput.h
 )
 
@@ -54,6 +52,7 @@ target_include_directories(drumstick-rt-mac-in PRIVATE
 )
 
 target_link_libraries(drumstick-rt-mac-in PUBLIC
+    Drumstick::RT
     Qt5::Core
     Qt5::Concurrent
     "-framework CoreMIDI -framework CoreFoundation"
@@ -63,6 +62,7 @@ set_target_properties(drumstick-rt-mac-in PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
 
 install(TARGETS drumstick-rt-mac-in
+    EXPORT drumstick-rt-targets
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick)

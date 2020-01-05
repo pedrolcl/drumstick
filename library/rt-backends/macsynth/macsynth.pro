@@ -13,5 +13,6 @@ QT -= gui
 HEADERS += macsynth.h
 SOURCES += macsynth.cpp
 
+!static:LIBS += -F$$OUT_PWD/../../../build/lib -framework drumstick-rt
 LIBS += -framework CoreMIDI -framework CoreFoundation -framework CoreServices
 LIBS += -framework CoreAudio -framework AudioToolbox -framework AudioUnit

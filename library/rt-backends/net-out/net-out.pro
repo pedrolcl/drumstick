@@ -16,4 +16,5 @@ HEADERS += netmidioutput.h
 SOURCES += netmidioutput.cpp
 
 QT += network
-LIBS += -L$$OUT_PWD/../../../build/lib -l$$drumstickLib(drumstick-rt)
+macx:!static:LIBS += -F$$OUT_PWD/../../../build/lib -framework drumstick-rt
+else:LIBS += -L$$OUT_PWD/../../../build/lib -l$$drumstickLib(drumstick-rt)

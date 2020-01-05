@@ -65,7 +65,7 @@ if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-rt PROPERTIES
         STATIC_LIB "libdrumstick-rt")
 
-    if (FALSE)
+    if (TRUE)
         target_compile_definitions(drumstick-rt PUBLIC DUMMY_BACKEND)
         target_link_libraries(drumstick-rt PUBLIC
             drumstick-rt-dummy-in

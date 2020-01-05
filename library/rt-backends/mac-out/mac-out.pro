@@ -16,4 +16,5 @@ HEADERS += macmidioutput.h \
 SOURCES += macmidioutput.cpp \
            ../common/maccommon.cpp
 
+!static:LIBS += -F$$OUT_PWD/../../../build/lib -framework drumstick-rt
 LIBS += -framework CoreMIDI -framework CoreFoundation
