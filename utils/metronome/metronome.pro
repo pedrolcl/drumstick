@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = drumstick-metronome
 #QT += dbus
-CONFIG += qt console thread exceptions
+CONFIG += c++11 cmdline qt thread exceptions
 static {
     CONFIG += link_prl
 }

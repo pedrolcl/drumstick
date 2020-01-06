@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = drumstick-dumpwrk
-CONFIG += qt console
+CONFIG += c++11 cmdline qt
 static {
     CONFIG += link_prl
     DEFINES += DRUMSTICK_STATIC

@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = drumstick-guiplayer
 QT += gui widgets #dbus
-CONFIG += qt thread exceptions
+CONFIG += qt c++11 thread exceptions
 static {
     CONFIG += link_prl
 }

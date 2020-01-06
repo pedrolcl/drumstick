@@ -2,7 +2,7 @@ TEMPLATE = lib
 TARGET = drumstick-rt-eassynth
 DESTDIR = ../../../../build/lib/drumstick
 include (../../../../global.pri)
-CONFIG += plugin link_prl
+CONFIG += c++11 plugin link_prl
 static {
     CONFIG += staticlib create_prl
 }

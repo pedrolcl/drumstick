@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = drumstick-vpiano
 QT += gui widgets network
-CONFIG += qt thread exceptions
+CONFIG += qt c++11 thread exceptions
 DESTDIR = ../../build/bin
 include (../../global.pri)
 INCLUDEPATH += . ../../library/include ../common

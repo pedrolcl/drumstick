@@ -1,8 +1,7 @@
 QT       += testlib
 QT       -= gui
 TARGET = alsatest1
-CONFIG   += console
-CONFIG   -= app_bundle
+CONFIG   += c++11 cmdline
 TEMPLATE = app
 SOURCES += \
     alsatest1.cpp

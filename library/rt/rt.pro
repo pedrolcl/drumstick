@@ -4,7 +4,7 @@ DESTDIR = ../../build/lib
 DEPENDPATH += . ../include
 INCLUDEPATH += . ../include
 include (../../global.pri)
-CONFIG += qt create_pc create_prl no_install_prl
+CONFIG += c++11 qt create_pc create_prl no_install_prl
 static {
     CONFIG += staticlib
 }

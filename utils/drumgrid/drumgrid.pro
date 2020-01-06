@@ -1,6 +1,7 @@
 TEMPLATE = app
 TARGET = drumstick-drumgrid
 QT += gui widgets #dbus
+CONFIG += c++11
 CONFIG += qt thread exceptions
 static {
     CONFIG += link_prl

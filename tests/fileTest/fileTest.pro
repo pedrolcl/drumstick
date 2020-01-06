@@ -1,8 +1,7 @@
 QT       += testlib
 QT       -= gui
 TARGET = fileTest
-CONFIG   += console
-CONFIG   -= app_bundle
+CONFIG   += c++11 cmdline
 TEMPLATE = app
 include (../../global.pri)
 SOURCES += filetest.cpp

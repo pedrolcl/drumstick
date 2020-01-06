@@ -2,8 +2,7 @@ TEMPLATE  = app
 TARGET    = rtTest
 QT       += testlib
 QT       -= gui
-CONFIG   += console
-CONFIG   -= app_bundle
+CONFIG   += c++11 cmdline
 include (../../global.pri)
 SOURCES += rttest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"

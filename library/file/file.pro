@@ -4,7 +4,7 @@ DESTDIR = ../../build/lib
 DEPENDPATH += . ../include
 INCLUDEPATH += . ../include
 include (../../global.pri)
-CONFIG += qt create_pc create_prl no_install_prl
+CONFIG += c++11 qt create_pc create_prl no_install_prl
 DEFINES += drumstick_file_EXPORTS
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
 QMAKE_PKGCONFIG_PREFIX = $$INSTALLBASE

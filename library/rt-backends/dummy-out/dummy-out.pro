@@ -2,7 +2,7 @@ TEMPLATE = lib
 TARGET = drumstick-rt-dummy-out
 DESTDIR = ../../../build/lib/drumstick
 include (../../../global.pri)
-CONFIG += plugin
+CONFIG += c++11 plugin
 static {
     CONFIG += staticlib create_prl
 }

@@ -2,7 +2,7 @@ TEMPLATE = lib
 TARGET = $$qtLibraryTarget(drumstick-rt-fluidsynth)
 DESTDIR = ../../../build/lib/drumstick
 include (../../../global.pri)
-CONFIG += plugin #create_prl static
+CONFIG += c++11 plugin #create_prl
 DEPENDPATH += ../../include
 INCLUDEPATH += ../../include
 QT -= gui

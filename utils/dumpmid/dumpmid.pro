@@ -1,6 +1,7 @@
 TEMPLATE = app
 TARGET = drumstick-dumpmid
 #QT += dbus
+CONFIG += c++11 cmdline
 CONFIG += qt console thread exceptions link_pkgconfig
 static {
     CONFIG += link_prl

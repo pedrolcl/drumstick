@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG += plugin
+CONFIG += c++11 plugin
 static {
     CONFIG += staticlib create_prl
 }
