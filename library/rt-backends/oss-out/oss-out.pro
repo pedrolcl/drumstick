@@ -12,3 +12,5 @@ QT -= gui
 
 HEADERS += ossoutput.h
 SOURCES += ossoutput.cpp
+
+LIBS += -L$$OUT_PWD/../../../build/lib -ldrumstick-rt

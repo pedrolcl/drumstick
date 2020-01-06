@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-if(TRUE)
+if(FALSE)
     add_subdirectory(dummy-in)
     add_subdirectory(dummy-out)
 endif()

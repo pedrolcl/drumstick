@@ -14,5 +14,6 @@ HEADERS += alsamidiinput.h
 SOURCES += alsamidiinput.cpp
 
 LIBS += -L../../../build/lib \
+        -ldrumstick-rt \
         -ldrumstick-alsa \
         -lasound

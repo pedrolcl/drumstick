@@ -39,6 +39,7 @@ macx:!static {
 static {
     CONFIG += link_prl
     DEFINES += DRUMSTICK_STATIC
+    DEFINES += NET_BACKEND
 
     LIBS += -L$$OUT_PWD/../../build/lib/drumstick/
     LIBS += -ldrumstick-rt-net-in \
@@ -57,19 +58,23 @@ static {
     }
 
     linux* {
+        DEFINES += LINUX_BACKEND
         LIBS += -ldrumstick-rt-alsa-in \
                 -ldrumstick-rt-alsa-out \
                 -ldrumstick-rt-eassynth \
                 -ldrumstick-alsa \
-                -lasound
+                -lasound \
+                -lsonivox
     }
 
     unix:!macx {
+        DEFINES += OSS_BACKEND
         LIBS += -ldrumstick-rt-oss-in \
                 -ldrumstick-rt-oss-out
     }
 
     macx {
+        DEFINES += MAC_BACKEND
         LIBS += -ldrumstick-rt-mac-in \
                 -ldrumstick-rt-mac-out \
                 -ldrumstick-rt-macsynth \
@@ -78,6 +83,7 @@ static {
     }
 
     win32 {
+        DEFINES += WIN_BACKEND
         LIBS += -ldrumstick-rt-win-in \
                 -ldrumstick-rt-win-out \
                 -lwinmm

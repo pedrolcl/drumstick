@@ -17,3 +17,5 @@ HEADERS += ../common/midiparser.h \
 SOURCES += ossinput.cpp \
            ossinput_p.cpp \
            ../common/midiparser.cpp
+
+LIBS += -L$$OUT_PWD/../../../build/lib -ldrumstick-rt

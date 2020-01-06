@@ -12,6 +12,7 @@ INCLUDEPATH += ../sonivox/host_src
 INCLUDEPATH += ../../../include
 QT -= gui
 LIBS += -L../../../../build/lib \
+        -ldrumstick-rt \
         -lsonivox
 
 HEADERS += synthcontroller.h \

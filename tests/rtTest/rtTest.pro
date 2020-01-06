@@ -1,21 +1,14 @@
+TEMPLATE  = app
+TARGET    = rtTest
 QT       += testlib
 QT       -= gui
-TARGET = rtTest
 CONFIG   += console
 CONFIG   -= app_bundle
-TEMPLATE = app
 include (../../global.pri)
 SOURCES += rttest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
-INCLUDEPATH += . ../../library/include
+INCLUDEPATH += . ../../library/include/
 DESTDIR = ../../build/bin
-macx:!static {
-    QMAKE_LFLAGS += -F$$OUT_PWD/../../build/lib -L$$OUT_PWD/../../build/lib
-    LIBS += -framework drumstick-rt
-} else {
-    LIBS += -L$$OUT_PWD/../../build/lib \
-            -l$$drumstickLib(drumstick-rt)
-}
 
 static {
     CONFIG += link_prl
@@ -43,6 +36,7 @@ static {
         LIBS += -ldrumstick-rt-alsa-in \
                 -ldrumstick-rt-alsa-out \
                 -ldrumstick-rt-eassynth \
+                -lsonivox \
                 -ldrumstick-alsa \
                 -lasound
     }
@@ -69,3 +63,12 @@ static {
                 -lwinmm
     }
 }
+
+macx:!static {
+    QMAKE_LFLAGS += -F$$OUT_PWD/../../build/lib -L$$OUT_PWD/../../build/lib
+    LIBS += -framework drumstick-rt
+} else {
+    LIBS += -L$$OUT_PWD/../../build/lib \
+            -l$$drumstickLib(drumstick-rt)
+}
+

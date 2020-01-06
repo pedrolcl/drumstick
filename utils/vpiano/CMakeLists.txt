@@ -69,6 +69,61 @@ target_link_libraries(drumstick-vpiano PUBLIC
     Qt5::Network
 )
 
+if(STATIC_DRUMSTICK)
+    if (FALSE)
+        target_compile_definitions(drumstick-vpiano PUBLIC DUMMY_BACKEND)
+        target_link_libraries(drumstick-vpiano PUBLIC
+            drumstick-rt-dummy-in
+            drumstick-rt-dummy-out)
+    endif()
+
+    if(ALSA_FOUND)
+        target_compile_definitions(drumstick-vpiano PUBLIC LINUX_BACKEND)
+        target_link_libraries(drumstick-vpiano PUBLIC
+            drumstick-rt-alsa-in
+            drumstick-rt-alsa-out
+            drumstick-rt-eassynth)
+    endif()
+
+    if(UNIX AND NOT APPLE)
+        target_compile_definitions(drumstick-vpiano PUBLIC OSS_BACKEND)
+        target_link_libraries(drumstick-vpiano PUBLIC
+            drumstick-rt-oss-in
+            drumstick-rt-oss-out)
+    endif()
+
+
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+        target_compile_definitions(drumstick-vpiano PUBLIC MAC_BACKEND)
+        target_link_libraries(drumstick-vpiano PUBLIC
+            drumstick-rt-mac-in
+            drumstick-rt-mac-out
+            drumstick-rt-macsynth
+            "-framework CoreMIDI -framework CoreFoundation")
+    endif()
+
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+        target_compile_definitions(drumstick-vpiano PUBLIC WIN_BACKEND)
+        target_link_libraries(drumstick-vpiano PUBLIC
+            drumstick-rt-win-in
+            drumstick-rt-win-out
+            winmm)
+    endif()
+
+    find_package(Qt5Network)
+    if(Qt5Network_FOUND)
+        target_compile_definitions(drumstick-vpiano PUBLIC NET_BACKEND)
+        target_link_libraries(drumstick-vpiano PUBLIC
+            drumstick-rt-net-in
+            drumstick-rt-net-out)
+    endif()
+
+    if(FLUIDSYNTH_FOUND)
+        target_compile_definitions(drumstick-vpiano PUBLIC FLUIDSYNTH_BACKEND)
+        target_link_libraries(drumstick-vpiano PUBLIC drumstick-rt-fluidsynth)
+    endif()
+endif()
+
 install(TARGETS drumstick-vpiano
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 

@@ -12,6 +12,8 @@ HEADERS += synthengine.h \
 
 SOURCES += synthoutput.cpp synthengine.cpp
 
+LIBS += -L$$OUT_PWD/../../../build/lib -ldrumstick-rt
+
 macx {
     INCLUDEPATH += /Library/Frameworks/FluidSynth.framework/Headers
     QMAKE_LFLAGS += -F/Library/Frameworks

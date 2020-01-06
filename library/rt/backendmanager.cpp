@@ -23,42 +23,6 @@
 #include <QLibraryInfo>
 #include <drumstick/backendmanager.h>
 
-#if defined(LINUX_BACKEND)
-Q_IMPORT_PLUGIN(ALSAMIDIInput)
-Q_IMPORT_PLUGIN(ALSAMIDIOutput)
-Q_IMPORT_PLUGIN(SynthController)
-#endif
-
-#if defined(MAC_BACKEND)
-Q_IMPORT_PLUGIN(MacMIDIInput)
-Q_IMPORT_PLUGIN(MacMIDIOutput)
-Q_IMPORT_PLUGIN(MacSynthOutput)
-#endif
-
-#if defined(WIN_BACKEND)
-Q_IMPORT_PLUGIN(WinMIDIInput)
-Q_IMPORT_PLUGIN(WinMIDIOutput)
-#endif
-
-#if defined(NET_BACKEND)
-Q_IMPORT_PLUGIN(NetMIDIInput)
-Q_IMPORT_PLUGIN(NetMIDIOutput)
-#endif
-
-#if defined(DUMMY_BACKEND)
-Q_IMPORT_PLUGIN(DummyInput)
-Q_IMPORT_PLUGIN(DummyOutput)
-#endif
-
-#if defined(FLUIDSYNTH_BACKEND)
-Q_IMPORT_PLUGIN(SynthOutput)
-#endif
-
-#if defined(OSS_BACKEND)
-Q_IMPORT_PLUGIN(OSSInput)
-Q_IMPORT_PLUGIN(OSSOutput)
-#endif
-
 #define MKSTR_A(x) #x
 #define MKSTR(x) MKSTR_A(x)
 

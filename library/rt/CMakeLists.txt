@@ -64,62 +64,7 @@ target_link_libraries(drumstick-rt
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-rt PROPERTIES
         STATIC_LIB "libdrumstick-rt")
-
-    if (TRUE)
-        target_compile_definitions(drumstick-rt PUBLIC DUMMY_BACKEND)
-        target_link_libraries(drumstick-rt PUBLIC
-            drumstick-rt-dummy-in
-            drumstick-rt-dummy-out)
-    endif()
-
-    if(ALSA_FOUND)
-        target_compile_definitions(drumstick-rt PUBLIC LINUX_BACKEND)
-        target_link_libraries(drumstick-rt PUBLIC
-            drumstick-rt-alsa-in
-            drumstick-rt-alsa-out
-            drumstick-rt-eassynth)
-    endif()
-
-    if(UNIX AND NOT APPLE)
-        target_compile_definitions(drumstick-rt PUBLIC OSS_BACKEND)
-        target_link_libraries(drumstick-rt PUBLIC
-            drumstick-rt-oss-in
-            drumstick-rt-oss-out)
-    endif()
-
-
-    if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-        target_compile_definitions(drumstick-rt PUBLIC MAC_BACKEND)
-        target_link_libraries(drumstick-rt PUBLIC
-            drumstick-rt-mac-in
-            drumstick-rt-mac-out
-            drumstick-rt-macsynth
-            "-framework CoreMIDI -framework CoreFoundation")
-    endif()
-
-    if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-        target_compile_definitions(drumstick-rt PUBLIC WIN_BACKEND)
-        target_link_libraries(drumstick-rt PUBLIC
-            drumstick-rt-win-in
-            drumstick-rt-win-out
-            winmm)
-    endif()
-
-    find_package(Qt5Network)
-    if(Qt5Network_FOUND)
-        target_compile_definitions(drumstick-rt PUBLIC NET_BACKEND)
-        target_link_libraries(drumstick-rt PUBLIC
-            drumstick-rt-net-in
-            drumstick-rt-net-out)
-    endif()
-
-    if(FLUIDSYNTH_FOUND)
-        target_compile_definitions(drumstick-rt PUBLIC FLUIDSYNTH_BACKEND)
-        target_link_libraries(drumstick-rt PUBLIC drumstick-rt-fluidsynth)
-    endif()
-
 else() # STATIC_DRUMSTICK
-
     set_target_properties(drumstick-rt PROPERTIES
         VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
         SOVERSION ${PROJECT_VERSION_MAJOR}
@@ -130,8 +75,7 @@ else() # STATIC_DRUMSTICK
         MACOSX_FRAMEWORK_IDENTIFIER "net.sourceforge.drumstick-rt"
         MACOSX_RPATH TRUE
     )
-
-endif()
+endif() # STATIC_DRUMSTICK
 
 install(TARGETS drumstick-rt
     EXPORT drumstick-rt-targets

@@ -16,12 +16,6 @@
 
 set ( SOURCES rttest.cpp )
 
-if (STATIC_DRUMSTICK)
-    list(APPEND SOURCES
-        ${CMAKE_SOURCE_DIR}/library/include/drumstick/rtmidiinput.h
-        ${CMAKE_SOURCE_DIR}/library/include/drumstick/rtmidioutput.h )
-endif()
-
 add_executable ( rtTest ${SOURCES} )
 
 target_include_directories (rtTest PUBLIC
@@ -33,3 +27,58 @@ target_link_libraries (rtTest PUBLIC
     Drumstick::RT )
 
 add_test (rtTest ${PROJECT_BINARY_DIR}/bin/rtTest)
+
+if(STATIC_DRUMSTICK)
+    if (FALSE)
+        target_compile_definitions(rtTest PUBLIC DUMMY_BACKEND)
+        target_link_libraries(rtTest PUBLIC
+            drumstick-rt-dummy-in
+            drumstick-rt-dummy-out)
+    endif()
+
+    if(ALSA_FOUND)
+        target_compile_definitions(rtTest PUBLIC LINUX_BACKEND)
+        target_link_libraries(rtTest PUBLIC
+            drumstick-rt-alsa-in
+            drumstick-rt-alsa-out
+            drumstick-rt-eassynth)
+    endif()
+
+    if(UNIX AND NOT APPLE)
+        target_compile_definitions(rtTest PUBLIC OSS_BACKEND)
+        target_link_libraries(rtTest PUBLIC
+            drumstick-rt-oss-in
+            drumstick-rt-oss-out)
+    endif()
+
+
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+        target_compile_definitions(rtTest PUBLIC MAC_BACKEND)
+        target_link_libraries(rtTest PUBLIC
+            drumstick-rt-mac-in
+            drumstick-rt-mac-out
+            drumstick-rt-macsynth
+            "-framework CoreMIDI -framework CoreFoundation")
+    endif()
+
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+        target_compile_definitions(rtTest PUBLIC WIN_BACKEND)
+        target_link_libraries(rtTest PUBLIC
+            drumstick-rt-win-in
+            drumstick-rt-win-out
+            winmm)
+    endif()
+
+    find_package(Qt5Network)
+    if(Qt5Network_FOUND)
+        target_compile_definitions(rtTest PUBLIC NET_BACKEND)
+        target_link_libraries(rtTest PUBLIC
+            drumstick-rt-net-in
+            drumstick-rt-net-out)
+    endif()
+
+    if(FLUIDSYNTH_FOUND)
+        target_compile_definitions(rtTest PUBLIC FLUIDSYNTH_BACKEND)
+        target_link_libraries(rtTest PUBLIC drumstick-rt-fluidsynth)
+    endif()
+endif()

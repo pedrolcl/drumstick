@@ -1,14 +1,14 @@
 TEMPLATE = subdirs
 SUBDIRS += \
     file \
-    rt-backends \
-    rt
+    rt \
+    rt-backends
 
-rt-backends.depends = rt
+rt-backends.depends += rt
 
 linux* {
     SUBDIRS += alsa
-    rt-backends.depends = alsa
+    rt-backends.depends += alsa
 }
 
 macx {
