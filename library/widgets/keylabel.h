@@ -4,7 +4,7 @@
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation; either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -16,14 +16,23 @@
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEYBOARDMAP_H
-#define KEYBOARDMAP_H
+#ifndef KEYLABEL_H
+#define KEYLABEL_H
 
-typedef QHash<int, int> KeyboardMap;
+#include <QGraphicsTextItem>
+#include "pianodefs.h"
 
-const int DEFAULTSTARTINGKEY = 9;
-const int DEFAULTBASEOCTAVE = 1;
-const int DEFAULTNUMBEROFKEYS = 88;
-const int KEYLABELFONTSIZE = 7;
+namespace drumstick {
+namespace widgets {
 
-#endif // KEYBOARDMAP_H
+class VPIANO_EXPORT KeyLabel : public QGraphicsTextItem
+{
+public:
+    KeyLabel(QGraphicsItem *parent = 0);
+    virtual ~KeyLabel() {}
+    virtual QRectF boundingRect() const;
+};
+
+}} // namespace drumstick::widgets
+
+#endif // KEYLABEL_H

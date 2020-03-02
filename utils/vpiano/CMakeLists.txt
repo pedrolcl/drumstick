@@ -20,39 +20,21 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Network REQUIRED)
 
 set(vpiano_SRCS
-    networksettingsdialog.ui
-    fluidsettingsdialog.ui
-    macsynthsettingsdialog.ui
-    sonivoxsettingsdialog.ui
-    vpianoabout.ui
-    connections.ui
-    preferences.ui
-    vpiano.ui
-    pianokey.cpp
-    pianokey.h
-    pianoscene.cpp
-    pianoscene.h
-    pianokeybd.cpp
-    pianokeybd.h
-    keylabel.cpp
-    keylabel.h
-    vpianoabout.cpp
-    vpianoabout.h
     connections.cpp
     connections.h
+    connections.ui
     preferences.cpp
     preferences.h
+    preferences.ui
     vpiano.cpp
     vpiano.h
+    vpiano.ui
+    vpianoabout.cpp
+    vpianoabout.h
+    vpianoabout.ui
     vpianomain.cpp
-    networksettingsdialog.cpp
-    fluidsettingsdialog.cpp
-    macsynthsettingsdialog.cpp
-    sonivoxsettingsdialog.cpp
-    pianokeybd.qrc
 )
 
 add_executable(drumstick-vpiano
@@ -65,8 +47,8 @@ target_include_directories(drumstick-vpiano
 
 target_link_libraries(drumstick-vpiano PUBLIC
     Drumstick::RT
+    Drumstick::Widgets
     Qt5::Widgets
-    Qt5::Network
 )
 
 if(STATIC_DRUMSTICK)

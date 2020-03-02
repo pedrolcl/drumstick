@@ -22,28 +22,33 @@
 #include <QDialog>
 #include <QShowEvent>
 
-namespace Ui {
-    class NetworkSettingsDialog;
-}
+namespace drumstick {
+namespace widgets {
 
-class NetworkSettingsDialog : public QDialog
-{
-    Q_OBJECT
+    namespace Ui {
+        class NetworkSettingsDialog;
+    }
 
-public:
-    explicit NetworkSettingsDialog(QWidget *parent = nullptr);
-    ~NetworkSettingsDialog();
-    void readSettings();
-    void writeSettings();
+    class NetworkSettingsDialog : public QDialog
+    {
+        Q_OBJECT
 
-public slots:
-    void accept();
-    void showEvent(QShowEvent *event);
-    void restoreDefaults();
-    void toggledIPv6(bool checked);
+    public:
+        explicit NetworkSettingsDialog(QWidget *parent = nullptr);
+        ~NetworkSettingsDialog();
+        void readSettings();
+        void writeSettings();
 
-private:
-    Ui::NetworkSettingsDialog *ui;
-};
+    public slots:
+        void accept();
+        void showEvent(QShowEvent *event);
+        void restoreDefaults();
+        void toggledIPv6(bool checked);
+
+    private:
+        Ui::NetworkSettingsDialog *ui;
+    };
+
+}} // namespace drumstick::widgets
 
 #endif // NETWORKSETTINGSDIALOG_H

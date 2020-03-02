@@ -16,11 +16,8 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <drumstick/configurationdialogs.h>
 #include "connections.h"
-#include "networksettingsdialog.h"
-#include "fluidsettingsdialog.h"
-#include "sonivoxsettingsdialog.h"
-#include "macsynthsettingsdialog.h"
 
 using namespace drumstick::rt;
 
@@ -182,25 +179,17 @@ void Connections::configureInputDriver()
 {
     QString driver = ui.m_inputBackends->currentText();
     if (driver == "Network") {
-        NetworkSettingsDialog dlg(this);
-        m_settingsChanged |= (dlg.exec() == QDialog::Accepted);
+        m_settingsChanged |= drumstick::widgets::configureInputDriver(driver, this);
     }
 }
 
 void Connections::configureOutputDriver()
 {
     QString driver = ui.m_outputBackends->currentText();
-    if (driver == "Network") {
-        NetworkSettingsDialog dlg(this);
-        m_settingsChanged |= (dlg.exec() == QDialog::Accepted);
-    } else if (driver == "FluidSynth") {
-        FluidSettingsDialog dlg(this);
-        m_settingsChanged |= (dlg.exec() == QDialog::Accepted);
-    } else if (driver == "SonivoxEAS") {
-        SonivoxSettingsDialog dlg(this);
-        m_settingsChanged |= (dlg.exec() == QDialog::Accepted);
-    } else if (driver == "DLS Synth") {
-        MacSynthSettingsDialog dlg(this);
-        m_settingsChanged |= (dlg.exec() == QDialog::Accepted);
+    if (driver == "Network" ||
+        driver == "FluidSynth" ||
+        driver == "SonivoxEAS" ||
+        driver == "DLS Synth") {
+        m_settingsChanged |= drumstick::widgets::configureOutputDriver(driver, this);
     }
 }

@@ -22,6 +22,9 @@
 #include <QDialog>
 #include <QShowEvent>
 
+namespace drumstick {
+namespace widgets {
+
 namespace Ui {
     class FluidSettingsDialog;
 }
@@ -46,5 +49,7 @@ private:
     QString defaultAudioDriver() const;
     Ui::FluidSettingsDialog *ui;
 };
+
+}} // namespace drumstick::widgets
 
 #endif // FLUIDSETTINGSDIALOG_H

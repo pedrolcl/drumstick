@@ -1,5 +1,5 @@
 /*
-    Virtual Piano test using the MIDI Sequencer C++ library
+    Drumstick MIDI Sequencer C++ library
     Copyright (C) 2006-2020, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
@@ -26,6 +26,10 @@
 
 #include "fluidsettingsdialog.h"
 #include "ui_fluidsettingsdialog.h"
+
+
+namespace drumstick {
+namespace widgets {
 
 const QString QSTR_PREFERENCES("FluidSynth");
 const QString QSTR_INSTRUMENTSDEFINITION("InstrumentsDefinition");
@@ -200,3 +204,5 @@ void FluidSettingsDialog::showFileDialog()
         ui->soundFont->setText(fileName);
     }
 }
+
+}} // namespace drumstick::widgets

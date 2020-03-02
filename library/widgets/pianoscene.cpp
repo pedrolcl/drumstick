@@ -16,16 +16,17 @@
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "pianoscene.h"
-#if defined(RAWKBD_SUPPORT)
-#include "nativefilter.h"
-#endif
 #include <QApplication>
 #include <QPalette>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <qmath.h>
 #include <QDebug>
+#include <drumstick/pianokeybd.h>
+#include "pianoscene.h"
+
+namespace drumstick {
+namespace widgets {
 
 #define KEYWIDTH  18
 #define KEYHEIGHT 72
@@ -58,11 +59,9 @@ PianoScene::PianoScene ( const int baseOctave,
     m_channel( 0 ),
     m_velocityTint( true ),
     m_handler( 0 )
-#if defined(PALETTE_SUPPORT)
     ,m_showColorScale( false )
     ,m_palette( 0 )
     ,m_scalePalette( 0 )
-#endif
 {
     QBrush hilightBrush(m_keyPressedColor.isValid() ? m_keyPressedColor : QApplication::palette().highlight());
     QFont lblFont(QApplication::font());
@@ -185,7 +184,6 @@ void PianoScene::triggerNoteOff( const int note, const int vel )
 void PianoScene::setColorFromPolicy(PianoKey* key, int vel)
 {
     QColor c;
-#if defined(PALETTE_SUPPORT)
     switch (m_palette->paletteId()) {
     case PAL_SINGLE:
         c = m_palette->getColor(0);
@@ -199,9 +197,6 @@ void PianoScene::setColorFromPolicy(PianoKey* key, int vel)
     case PAL_SCALE:
         c = m_palette->getColor(key->getDegree());
     }
-#else
-    c = QApplication::palette().highlight().color();
-#endif
     if (m_velocityTint && c.isValid()) {
         QBrush h(c.lighter(200 - vel));
         key->setPressedBrush(h);
@@ -507,14 +502,12 @@ void PianoScene::refreshLabels()
 void PianoScene::refreshKeys()
 {
     foreach(PianoKey* key, m_keys) {
-#if defined(PALETTE_SUPPORT)
         if (m_showColorScale && m_scalePalette != 0) {
             int degree = key->getNote() % 12;
             key->setBrush(m_scalePalette->getColor(degree));
         } else {
             key->resetBrush();
         }
-#endif
         key->setPressed(false);
     }
 }
@@ -615,7 +608,6 @@ void PianoScene::retranslate()
     refreshLabels();
 }
 
-#if defined(PALETTE_SUPPORT)
 void PianoScene::setShowColorScale(const bool show)
 {
     if (m_showColorScale != show && m_scalePalette != 0 ) {
@@ -631,4 +623,6 @@ void PianoScene::setPianoPalette(PianoPalette *p)
     resetKeyPressedColor();
     m_palette = p;
 }
-#endif
+
+}} // namespace drumstick::widgets
+

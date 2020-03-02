@@ -22,6 +22,9 @@
 #include <QDebug>
 #include "pianokey.h"
 
+namespace drumstick {
+namespace widgets {
+
 static const QBrush blackBrush = QBrush(Qt::black);
 static const QBrush whiteBrush = QBrush(Qt::white);
 
@@ -91,3 +94,5 @@ void PianoKey::resetBrush()
     else
         m_brush = whiteBrush;
 }
+
+}} // namespace drumstick::widgets

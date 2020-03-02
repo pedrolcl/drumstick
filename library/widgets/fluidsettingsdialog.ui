@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FluidSettingsDialog</class>
- <widget class="QDialog" name="FluidSettingsDialog">
+ <class>drumstick::widgets::FluidSettingsDialog</class>
+ <widget class="QDialog" name="drumstick::widgets::FluidSettingsDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>316</width>
-    <height>318</height>
+    <width>319</width>
+    <height>348</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -164,7 +164,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>FluidSettingsDialog</receiver>
+   <receiver>drumstick::widgets::FluidSettingsDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -180,7 +180,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>FluidSettingsDialog</receiver>
+   <receiver>drumstick::widgets::FluidSettingsDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

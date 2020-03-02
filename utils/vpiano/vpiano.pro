@@ -7,33 +7,36 @@ include (../../global.pri)
 INCLUDEPATH += . ../../library/include ../common
 
 # Input
-FORMS += vpiano.ui connections.ui vpianoabout.ui preferences.ui fluidsettingsdialog.ui networksettingsdialog.ui \
-    sonivoxsettingsdialog.ui \
-    macsynthsettingsdialog.ui
-HEADERS += pianokey.h pianokeybd.h pianoscene.h vpiano.h \
-    keyboardmap.h keylabel.h pianodefs.h \
-    connections.h vpianoabout.h preferences.h \
-    fluidsettingsdialog.h networksettingsdialog.h \
-    macsynthsettingsdialog.h \
-    sonivoxsettingsdialog.h
-SOURCES += pianokey.cpp pianokeybd.cpp pianoscene.cpp vpiano.cpp \
-    keylabel.cpp connections.cpp vpianoabout.cpp preferences.cpp vpianomain.cpp \
-    fluidsettingsdialog.cpp networksettingsdialog.cpp \
-    macsynthsettingsdialog.cpp \
-    sonivoxsettingsdialog.cpp
-RESOURCES += pianokeybd.qrc
+FORMS += \
+    vpiano.ui \
+    connections.ui \
+    vpianoabout.ui \
+    preferences.ui
+
+HEADERS += \
+    vpiano.h \
+    connections.h \
+    vpianoabout.h \
+    preferences.h
+
+SOURCES += \
+    vpiano.cpp \
+    connections.cpp \
+    vpianoabout.cpp \
+    preferences.cpp \
+    vpianomain.cpp
 
 # libs
 macx:!static {
     QMAKE_LFLAGS += -F$$OUT_PWD/../../build/lib -L$$OUT_PWD/../../build/lib
-    LIBS += -framework drumstick-rt
+    LIBS += -framework drumstick-rt -framework drumstick-widgets
     ICON = ../../icons/drumstick.icns
     QMAKE_TARGET_BUNDLE_PREFIX = net.sourceforge
     QMAKE_BUNDLE = drumstick-vpiano
     QMAKE_INFO_PLIST = ../Info.plist.app
 } else {
     LIBS += -L$$OUT_PWD/../../build/lib/
-    LIBS += -l$$drumstickLib(drumstick-rt)
+    LIBS += -l$$drumstickLib(drumstick-rt) -l$$drumstickLib(drumstick-widgets)
 }
 
 static {

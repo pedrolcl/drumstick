@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>NetworkSettingsDialog</class>
- <widget class="QDialog" name="NetworkSettingsDialog">
+ <class>drumstick::widgets::NetworkSettingsDialog</class>
+ <widget class="QDialog" name="drumstick::widgets::NetworkSettingsDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>325</width>
-    <height>181</height>
+    <height>186</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -61,7 +61,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>NetworkSettingsDialog</receiver>
+   <receiver>drumstick::widgets::NetworkSettingsDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -77,7 +77,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>NetworkSettingsDialog</receiver>
+   <receiver>drumstick::widgets::NetworkSettingsDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

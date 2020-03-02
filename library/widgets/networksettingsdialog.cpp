@@ -23,6 +23,9 @@
 #include "networksettingsdialog.h"
 #include "ui_networksettingsdialog.h"
 
+namespace drumstick {
+namespace widgets {
+
 const QString QSTR_ADDRESS_IPV4(QLatin1Literal("225.0.0.37"));
 const QString QSTR_ADDRESS_IPV6(QLatin1Literal("ff12::37"));
 
@@ -112,3 +115,5 @@ void NetworkSettingsDialog::toggledIPv6(bool checked)
 {
     ui->txtAddress->setText(checked ? QSTR_ADDRESS_IPV6 : QSTR_ADDRESS_IPV4);
 }
+
+}} // namespace drumstick::widgets

@@ -20,6 +20,7 @@ endif()
 add_subdirectory(file)
 add_subdirectory(rt)
 add_subdirectory(rt-backends)
+add_subdirectory(widgets)
 
 configure_file( drumstick-config.cmake
   ${CMAKE_BINARY_DIR}/drumstick-config.cmake

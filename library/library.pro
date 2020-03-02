@@ -2,7 +2,8 @@ TEMPLATE = subdirs
 SUBDIRS += \
     file \
     rt \
-    rt-backends
+    rt-backends \
+    widgets
 
 rt-backends.depends += rt
 

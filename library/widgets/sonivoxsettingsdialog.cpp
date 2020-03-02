@@ -17,11 +17,13 @@
 */
 
 #include <QSettings>
-#include <QNetworkInterface>
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include "sonivoxsettingsdialog.h"
 #include "ui_sonivoxsettingsdialog.h"
+
+namespace drumstick {
+namespace widgets {
 
 const QString QSTR_PREFERENCES("SonivoxEAS");
 const QString QSTR_BUFFERTIME("BufferTime");
@@ -111,3 +113,6 @@ void SonivoxSettingsDialog::restoreDefaults()
     ui->combo_Chorus->setCurrentIndex(4);
     ui->dial_Chorus->setValue(0);
 }
+
+}} // namespace drumstick::widgets
+

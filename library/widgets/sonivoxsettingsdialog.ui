@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SonivoxSettingsDialog</class>
- <widget class="QDialog" name="SonivoxSettingsDialog">
+ <class>drumstick::widgets::SonivoxSettingsDialog</class>
+ <widget class="QDialog" name="drumstick::widgets::SonivoxSettingsDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>304</width>
+    <width>319</width>
     <height>280</height>
    </rect>
   </property>
@@ -136,7 +136,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>SonivoxSettingsDialog</receiver>
+   <receiver>drumstick::widgets::SonivoxSettingsDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -152,7 +152,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>SonivoxSettingsDialog</receiver>
+   <receiver>drumstick::widgets::SonivoxSettingsDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

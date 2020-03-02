@@ -18,6 +18,7 @@
 
 #include <QDebug>
 #include <drumstick/backendmanager.h>
+#include <drumstick/pianokeybd.h>
 #include "vpiano.h"
 
 using namespace drumstick::rt;
@@ -141,9 +142,9 @@ void VPiano::slotNoteOn(const int chan, const int note, const int vel)
 {
     if (dlgPreferences.getInChannel() == chan) {
         if (vel > 0)
-            ui.pianokeybd->getPianoScene()->showNoteOn(note);
+            ui.pianokeybd->showNoteOn(note);
         else
-            ui.pianokeybd->getPianoScene()->showNoteOff(note);
+            ui.pianokeybd->showNoteOff(note);
     }
 }
 
@@ -151,7 +152,7 @@ void VPiano::slotNoteOff(const int chan, const int note, const int vel)
 {
     Q_UNUSED(vel)
     if (dlgPreferences.getInChannel() == chan) {
-        ui.pianokeybd->getPianoScene()->showNoteOff(note);
+        ui.pianokeybd->showNoteOff(note);
     }
 }
 

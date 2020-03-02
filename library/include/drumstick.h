@@ -1,5 +1,5 @@
 /*
-    MIDI Sequencer C++ library 
+    Drumstick MIDI C++ library 
     Copyright (C) 2006-2020, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
@@ -45,5 +45,9 @@
 #include <drumstick/rtmidiinput.h>
 #include <drumstick/rtmidioutput.h>
 #include <drumstick/backendmanager.h>
+
+// Widgets
+#include <drumstick/pianokeybd.h>
+#include <drumstick/configurationdialogs.h>
 
 #endif /*DRUMSTICK_H*/

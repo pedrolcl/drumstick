@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MacSynthSettingsDialog</class>
- <widget class="QDialog" name="MacSynthSettingsDialog">
+ <class>drumstick::widgets::MacSynthSettingsDialog</class>
+ <widget class="QDialog" name="drumstick::widgets::MacSynthSettingsDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>304</width>
+    <width>319</width>
     <height>182</height>
    </rect>
   </property>
@@ -142,7 +142,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>MacSynthSettingsDialog</receiver>
+   <receiver>drumstick::widgets::MacSynthSettingsDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -158,7 +158,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>MacSynthSettingsDialog</receiver>
+   <receiver>drumstick::widgets::MacSynthSettingsDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

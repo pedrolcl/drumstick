@@ -16,23 +16,26 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef SonivoxSettingsDialog_H
-#define SonivoxSettingsDialog_H
+#ifndef MacSynthSettingsDialog_H
+#define MacSynthSettingsDialog_H
 
 #include <QDialog>
 #include <QShowEvent>
 
+namespace drumstick {
+namespace widgets {
+
 namespace Ui {
-    class SonivoxSettingsDialog;
+    class MacSynthSettingsDialog;
 }
 
-class SonivoxSettingsDialog : public QDialog
+class MacSynthSettingsDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit SonivoxSettingsDialog(QWidget *parent = 0);
-    ~SonivoxSettingsDialog();
+    explicit MacSynthSettingsDialog(QWidget *parent = 0);
+    ~MacSynthSettingsDialog();
     void readSettings();
     void writeSettings();
 
@@ -42,7 +45,9 @@ public slots:
     void restoreDefaults();
 
 private:
-    Ui::SonivoxSettingsDialog *ui;
+    Ui::MacSynthSettingsDialog *ui;
 };
 
-#endif // SonivoxSettingsDialog_H
+}} // namespace drumstick::widgets
+
+#endif // MacSynthSettingsDialog_H

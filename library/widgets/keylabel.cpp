@@ -20,6 +20,9 @@
 #include "pianokey.h"
 #include <QFont>
 
+namespace drumstick {
+namespace widgets {
+
 KeyLabel::KeyLabel(QGraphicsItem *parent) : QGraphicsTextItem(parent)
 {
     setAcceptedMouseButtons(Qt::NoButton);
@@ -32,3 +35,5 @@ QRectF KeyLabel::boundingRect() const
     PianoKey* key = static_cast<PianoKey*>(parentItem());
     return mapRectFromScene(key->rect());
 }
+
+}} // namespace drumstick::widgets

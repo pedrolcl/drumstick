@@ -23,6 +23,9 @@
 #include "macsynthsettingsdialog.h"
 #include "ui_macsynthsettingsdialog.h"
 
+namespace drumstick {
+namespace widgets {
+
 MacSynthSettingsDialog::MacSynthSettingsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::MacSynthSettingsDialog)
@@ -86,3 +89,5 @@ void MacSynthSettingsDialog::restoreDefaults()
     ui->default_dls->setChecked(true);
     ui->soundfont_dls->clear();
 }
+
+}} // namespace drumstick::widgets
