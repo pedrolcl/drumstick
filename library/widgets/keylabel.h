@@ -20,12 +20,11 @@
 #define KEYLABEL_H
 
 #include <QGraphicsTextItem>
-#include "pianodefs.h"
 
 namespace drumstick {
 namespace widgets {
 
-class VPIANO_EXPORT KeyLabel : public QGraphicsTextItem
+class KeyLabel : public QGraphicsTextItem
 {
 public:
     KeyLabel(QGraphicsItem *parent = 0);

@@ -22,13 +22,10 @@
 #include <QSettings>
 #include <QColor>
 #include <QList>
+#include "macros.h"
 
 namespace drumstick {
 namespace widgets {
-
-const QString QSTR_PALETTEPREFIX("Palette_");
-const QString QSTR_CURRENTPALETTE("CurrentPalette");
-const QString QSTR_SHOWCOLORSCALE("ShowColorScale");
 
 enum PalettePolicy {
     PAL_SINGLE = 0,
@@ -37,7 +34,7 @@ enum PalettePolicy {
     PAL_SCALE = 3
 };
 
-class PianoPalette
+class DRUMSTICK_EXPORT PianoPalette
 {
 public:
     PianoPalette(int maxcolors, int id);

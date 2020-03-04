@@ -38,11 +38,13 @@ public:
     ~MacSynthSettingsDialog();
     void readSettings();
     void writeSettings();
+    void changeSoundFont(const QString& fileName);
 
 public slots:
     void accept();
     void showEvent(QShowEvent *event);
     void restoreDefaults();
+    void showFileDialog();
 
 private:
     Ui::MacSynthSettingsDialog *ui;

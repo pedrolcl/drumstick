@@ -212,8 +212,63 @@ PianoKeybd::PianoKeybd(const int baseOctave, const int numKeys, const int startK
 PianoKeybd::~PianoKeybd()
 {
     d->m_scene->setRawKeyboardMode(false);
-    setRawKeyboardMap(0);
+    setKeyboardMap(0);
     delete d;
+}
+
+PianoHandler *PianoKeybd::getPianoHandler() const
+{
+    return d->m_scene->getPianoHandler();
+}
+
+void PianoKeybd::setPianoHandler(PianoHandler *handler)
+{
+    d->m_scene->setPianoHandler(handler);
+}
+
+PianoPalette *PianoKeybd::getPianoPalette() const
+{
+    return d->m_scene->getPianoPalette();
+}
+
+void PianoKeybd::setPianoPalette(PianoPalette *p)
+{
+    d->m_scene->setPianoPalette(p);
+}
+
+void PianoKeybd::setColorScalePalette(PianoPalette *p)
+{
+    d->m_scene->setColorScalePalette(p);
+}
+
+bool PianoKeybd::showColorScale() const
+{
+    return d->m_scene->showColorScale();
+}
+
+void PianoKeybd::setShowColorScale(const bool show)
+{
+    d->m_scene->setShowColorScale(show);
+}
+
+void PianoKeybd::useCustomNoteNames(const QStringList &names)
+{
+    d->m_scene->useCustomNoteNames(names);
+}
+
+void PianoKeybd::useStandardNoteNames()
+{
+    d->m_scene->useStandardNoteNames();
+}
+
+QStringList PianoKeybd::noteNames() const
+{
+    return d->m_scene->noteNames();
+}
+
+void PianoKeybd::retranslate()
+{
+    d->m_scene->retranslate();
 }
 
 void PianoKeybd::initScene(int base, int num, int strt, const QColor& c)
@@ -349,6 +404,11 @@ void PianoKeybd::setKeyPressedColor(const QColor& c)
     d->m_scene->setKeyPressedColor(c);
 }
 
+void PianoKeybd::resetKeyPressedColor()
+{
+    d->m_scene->resetKeyPressedColor();
+}
+
 bool PianoKeybd::showLabels() const
 {
     return d->m_scene->showLabels();
@@ -379,19 +439,79 @@ void PianoKeybd::setTranspose(int t)
     d->m_scene->setTranspose(t);
 }
 
-QGraphicsScene* PianoKeybd::getPianoScene()
+int PianoKeybd::getChannel() const
 {
-    return d->m_scene;
+    return d->m_scene->getChannel();
 }
 
-void PianoKeybd::setRawKeyboardMap(KeyboardMap* m)
+void PianoKeybd::setChannel(const int c)
 {
-    d->m_rawMap = m;
+    d->m_scene->setChannel(c);
 }
 
-KeyboardMap* PianoKeybd::getRawKeyboardMap()
+int PianoKeybd::getVelocity() const
 {
-    return d->m_rawMap;
+    return d->m_scene->getVelocity();
+}
+
+void PianoKeybd::setVelocity(const int v)
+{
+    d->m_scene->setVelocity(v);
+}
+
+bool PianoKeybd::isKeyboardEnabled() const
+{
+    return d->m_scene->isKeyboardEnabled();
+}
+
+void PianoKeybd::setKeyboardEnabled(const bool enable)
+{
+    d->m_scene->setKeyboardEnabled(enable);
+}
+
+bool PianoKeybd::isMouseEnabled() const
+{
+    return d->m_scene->isMouseEnabled();
+}
+
+void PianoKeybd::setMouseEnabled(const bool enable)
+{
+    d->m_scene->setMouseEnabled(enable);
+}
+
+bool PianoKeybd::isTouchEnabled() const
+{
+    return d->m_scene->isTouchEnabled();
+}
+
+void PianoKeybd::setTouchEnabled(const bool enable)
+{
+    d->m_scene->setTouchEnabled(enable);
+}
+
+bool PianoKeybd::velocityTint() const
+{
+    return d->m_scene->velocityTint();
+}
+
+void PianoKeybd::setVelocityTint(const bool enable)
+{
+    d->m_scene->setVelocityTint(enable);
+}
+
+void PianoKeybd::allKeysOff()
+{
+    d->m_scene->allKeysOff();
+}
+
+void PianoKeybd::setKeyboardMap(KeyboardMap* m)
+{
+    d->m_scene->setKeyboardMap(m);
+}
+
+KeyboardMap* PianoKeybd::getKeyboardMap()
+{
+    return d->m_scene->getKeyboardMap();
 }
 
 void PianoKeybd::resetRawKeyboardMap()
@@ -399,19 +519,44 @@ void PianoKeybd::resetRawKeyboardMap()
     d->m_rawMap = &d->m_defaultRawMap;
 }
 
+bool PianoKeybd::getRawKeyboardMode() const
+{
+    return d->m_scene->getRawKeyboardMode();
+}
+
+void PianoKeybd::setRawKeyboardMode(const bool b)
+{
+    d->m_scene->setRawKeyboardMode(b);
+}
+
 void PianoKeybd::resetKeyboardMap()
 {
     d->m_scene->setKeyboardMap(&d->m_defaultMap);
 }
 
-void PianoKeybd::showNoteOn(const int note)
+void PianoKeybd::setRawKeyboardMap(KeyboardMap *m)
 {
-    d->m_scene->showNoteOn(note);
+    d->m_rawMap = m;
 }
 
-void PianoKeybd::showNoteOff(const int note)
+KeyboardMap *PianoKeybd::getRawKeyboardMap()
 {
-    d->m_scene->showNoteOff(note);
+    return d->m_rawMap;
+}
+
+void PianoKeybd::showNoteOn(const int note, QColor color, int vel)
+{
+    d->m_scene->showNoteOn(note, color, vel);
+}
+
+void PianoKeybd::showNoteOn(const int note, int vel)
+{
+    d->m_scene->showNoteOn(note, vel);
+}
+
+void PianoKeybd::showNoteOff(const int note, int vel)
+{
+    d->m_scene->showNoteOff(note, vel);
 }
 
 }} // namespace drumstick::widgets

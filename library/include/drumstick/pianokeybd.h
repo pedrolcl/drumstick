@@ -22,6 +22,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include "macros.h"
+#include "pianopalette.h"
 
 #if defined(VPIANO_PLUGIN)
 #include <QtDesigner/QDesignerExportWidget>
@@ -74,6 +75,18 @@ namespace widgets {
         PianoKeybd(const int baseOctave, const int numKeys, const int startKey, QWidget *parent = nullptr);
         virtual ~PianoKeybd();
 
+        PianoHandler* getPianoHandler() const;
+        void setPianoHandler(PianoHandler* handler);
+        PianoPalette* getPianoPalette() const;
+        void setPianoPalette( PianoPalette* p );
+        void setColorScalePalette( PianoPalette* p );
+        bool showColorScale() const;
+        void setShowColorScale(const bool show);
+        void useCustomNoteNames(const QStringList& names);
+        void useStandardNoteNames();
+        QStringList noteNames() const;
+        void retranslate();
+
         int baseOctave() const;
         void setBaseOctave(const int baseOctave);
         int numKeys() const;
@@ -83,21 +96,41 @@ namespace widgets {
         void setRotation(int r);
         QColor getKeyPressedColor() const;
         void setKeyPressedColor(const QColor& c);
+        void resetKeyPressedColor();
         bool showLabels() const;
         void setShowLabels(bool show);
         bool useFlats() const;
         void setUseFlats(bool use);
         int getTranspose() const;
         void setTranspose(int t);
+        int getChannel() const;
+        void setChannel(const int c);
+        int getVelocity() const;
+        void setVelocity(const int v);
+
+        bool isKeyboardEnabled() const;
+        void setKeyboardEnabled( const bool enable );
+        bool isMouseEnabled() const;
+        void setMouseEnabled( const bool enable );
+        bool isTouchEnabled() const;
+        void setTouchEnabled( const bool enable );
+        bool velocityTint() const ;
+        void setVelocityTint( const bool enable );
+        void allKeysOff();
 
         QSize sizeHint() const;
-        QGraphicsScene* getPianoScene();
+        void setKeyboardMap(KeyboardMap* m);
+        KeyboardMap* getKeyboardMap();
+        void resetKeyboardMap();
         void setRawKeyboardMap(KeyboardMap* m);
         KeyboardMap* getRawKeyboardMap();
         void resetRawKeyboardMap();
-        void resetKeyboardMap();
-        void showNoteOn(const int note);
-        void showNoteOff(const int note);
+        bool getRawKeyboardMode() const;
+        void setRawKeyboardMode(const bool b);
+
+        void showNoteOn( const int note, QColor color, int vel = -1 );
+        void showNoteOn( const int note, int vel = -1 );
+        void showNoteOff( const int note, int vel = -1 );
 
         // RawKbdHandler methods
         bool handleKeyPressed(int keycode);

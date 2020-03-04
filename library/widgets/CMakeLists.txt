@@ -21,6 +21,7 @@ find_package(Qt5Network REQUIRED)
 
 set(drumstick-widgets_HEADERS
     ../include/drumstick/pianokeybd.h
+    ../include/drumstick/pianopalette.h
     ../include/drumstick/configurationdialogs.h
 )
 
@@ -43,19 +44,16 @@ set(drumstick-widgets_SRCS
     configurationdialogs.cpp
     fluidsettingsdialog.cpp
     fluidsettingsdialog.h
-    keyboardmap.h
     keylabel.cpp
     keylabel.h
     macsynthsettingsdialog.cpp
     macsynthsettingsdialog.h
     networksettingsdialog.cpp
     networksettingsdialog.h
-    pianodefs.h
     pianokey.cpp
     pianokey.h
     pianokeybd.cpp
     pianopalette.cpp
-    pianopalette.h
     pianoscene.cpp
     pianoscene.h
     sonivoxsettingsdialog.cpp
@@ -93,7 +91,8 @@ target_compile_definitions(drumstick-widgets
 )
 
 target_link_libraries(drumstick-widgets
-    PUBLIC Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network
+    PUBLIC Qt5::Core Qt5::Gui Qt5::Widgets
+    PRIVATE Qt5::Network
 )
 
 if(STATIC_DRUMSTICK)

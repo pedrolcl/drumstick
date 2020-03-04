@@ -28,6 +28,7 @@ namespace widgets {
 
 bool DRUMSTICK_EXPORT configureInputDriver(const QString driver, QWidget* parent = nullptr);
 bool DRUMSTICK_EXPORT configureOutputDriver(const QString driver, QWidget* parent = nullptr);
+void DRUMSTICK_EXPORT changeSoundFont(const QString driver, const QString fileName, QWidget* parent = nullptr);
 
 }}
 

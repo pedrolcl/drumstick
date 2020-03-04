@@ -18,10 +18,12 @@
 
 #include <QApplication>
 #include <QPalette>
-#include "pianopalette.h"
+#include <drumstick/pianopalette.h>
 
 namespace drumstick {
 namespace widgets {
+
+const QString QSTR_PALETTEPREFIX("Palette_");
 
 PianoPalette::PianoPalette(int maxcolors, int id) :
     m_paletteId(id)

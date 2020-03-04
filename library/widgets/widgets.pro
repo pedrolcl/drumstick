@@ -21,13 +21,12 @@ FORMS += \
 
 HEADERS += \
     ../include/drumstick/pianokeybd.h \
+    ../include/drumstick/pianopalette.h \
     ../include/drumstick/configurationdialogs.h \
     pianokey.h \
     pianoscene.h \
     keyboardmap.h \
     keylabel.h \
-    pianodefs.h \
-    pianopalette.h \
     fluidsettingsdialog.h \
     networksettingsdialog.h \
     macsynthsettingsdialog.h \

@@ -52,5 +52,17 @@ bool configureOutputDriver(const QString driver, QWidget* parent)
     return false;
 }
 
+void changeSoundFont(const QString driver, const QString fileName, QWidget* parent)
+{
+    if (driver == "FluidSynth") {
+        FluidSettingsDialog dlg(parent);
+        dlg.changeSoundFont(fileName);
+    } else if (driver == "DLS Synth") {
+        MacSynthSettingsDialog dlg(parent);
+        dlg.changeSoundFont(fileName);
+    }
+}
+
+
 }}
 

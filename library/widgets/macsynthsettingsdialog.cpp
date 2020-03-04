@@ -20,6 +20,9 @@
 #include <QNetworkInterface>
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <QDir>
+#include <QStandardPaths>
+#include <QFileDialog>
 #include "macsynthsettingsdialog.h"
 #include "ui_macsynthsettingsdialog.h"
 
@@ -33,6 +36,7 @@ MacSynthSettingsDialog::MacSynthSettingsDialog(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::pressed,
             this, &MacSynthSettingsDialog::restoreDefaults);
+    connect(ui->btn_soundfont, &QToolButton::pressed, this, &MacSynthSettingsDialog::showFileDialog);
 }
 
 MacSynthSettingsDialog::~MacSynthSettingsDialog()
@@ -88,6 +92,22 @@ void MacSynthSettingsDialog::restoreDefaults()
     ui->reverb_dls->setChecked(false);
     ui->default_dls->setChecked(true);
     ui->soundfont_dls->clear();
+}
+
+void MacSynthSettingsDialog::changeSoundFont(const QString& fileName)
+{
+    readSettings();
+    ui->soundfont_dls->setText(fileName);
+    writeSettings();
+}
+
+void MacSynthSettingsDialog::showFileDialog()
+{
+    QDir dir = (QDir::homePath() + "/Library/Audio/Sounds/Banks/");
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Select SoundFont"), dir.absolutePath(), tr("SoundFont Files (*.sf2 *.dls)"));
+    if (!fileName.isEmpty()) {
+        ui->soundfont_dls->setText(fileName);
+    }
 }
 
 }} // namespace drumstick::widgets

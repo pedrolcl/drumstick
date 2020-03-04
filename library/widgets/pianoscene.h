@@ -22,10 +22,9 @@
 #include <QGraphicsScene>
 #include <QHash>
 #include <drumstick/pianokeybd.h>
+#include <drumstick/pianopalette.h>
 #include "pianokey.h"
 #include "keylabel.h"
-#include "keyboardmap.h"
-#include "pianopalette.h"
 
 namespace drumstick {
 namespace widgets {

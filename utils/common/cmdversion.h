@@ -3,8 +3,6 @@
 
 #include <QString>
 
-#define LITERAL(s) #s
-#define STRINGIFY(s) LITERAL(s)
-const QString PGM_VERSION(STRINGIFY(VERSION));
+const QString PGM_VERSION(QT_STRINGIFY(VERSION));
 
 #endif // CMDVERSION_H

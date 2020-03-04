@@ -205,4 +205,11 @@ void FluidSettingsDialog::showFileDialog()
     }
 }
 
+void FluidSettingsDialog::changeSoundFont(const QString& fileName)
+{
+    readSettings();
+    ui->soundFont->setText(fileName);
+    writeSettings();
+}
+
 }} // namespace drumstick::widgets
