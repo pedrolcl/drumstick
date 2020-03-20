@@ -16,6 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QDebug>
 #include <QString>
 #include <QStringList>
 #include <QMutex>
@@ -297,7 +298,8 @@ namespace rt {
 
     void ALSAMIDIOutput::open(QString name)
     {
-        d->setSubscription(name);
+        auto b = d->setSubscription(name);
+        if (!b) qWarning() << "failed subscription to" << name;
     }
 
     void ALSAMIDIOutput::close()

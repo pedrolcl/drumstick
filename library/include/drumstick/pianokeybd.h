@@ -30,8 +30,7 @@
 #define QDESIGNER_WIDGET_EXPORT DRUMSTICK_EXPORT
 #endif
 
-namespace drumstick {
-namespace widgets {
+namespace drumstick { namespace widgets {
 
     class RawKbdHandler {
     public:

@@ -17,26 +17,36 @@
 */
 
 #include <drumstick/configurationdialogs.h>
+#include <drumstick/settingsfactory.h>
+#include "vpianosettings.h"
 #include "connections.h"
 
 using namespace drumstick::rt;
 
 Connections::Connections(QWidget *parent)
     : QDialog(parent),
-      m_advanced(false),
-      m_thru(false),
       m_settingsChanged(false),
       m_midiIn(0),
       m_midiOut(0)
 {
     ui.setupUi(this);
+    ui.m_advanced->setChecked(VPianoSettings::instance()->advanced());
+    ui.m_thru->setChecked(VPianoSettings::instance()->midiThru());
     connect(ui.m_advanced, SIGNAL(clicked(bool)), SLOT(clickedAdvanced(bool)));
     connect(ui.m_inputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshInputs(QString)));
     connect(ui.m_outputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshOutputs(QString)));
     connect(ui.btnInputDriverCfg, &QToolButton::clicked, this, &Connections::configureInputDriver);
     connect(ui.btnOutputDriverCfg, &QToolButton::clicked, this, &Connections::configureOutputDriver);
-    ui.m_advanced->setChecked(m_advanced);
-    ui.m_thru->setChecked(m_thru);
+}
+
+void Connections::setInput(MIDIInput *in)
+{
+    m_midiIn = in;
+}
+
+void Connections::setOutput(MIDIOutput *out)
+{
+    m_midiOut = out;
 }
 
 void Connections::setInputs(QList<MIDIInput *> ins)
@@ -58,18 +68,28 @@ void Connections::setOutputs(QList<MIDIOutput *> outs)
     connect(ui.m_outputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshOutputs(QString)));
 }
 
+MIDIInput *Connections::getInput()
+{
+    return m_midiIn;
+}
+
+MIDIOutput *Connections::getOutput()
+{
+    return m_midiOut;
+}
+
 void Connections::accept()
 {
     QString conn;
-    QSettings settings;
-    m_advanced = ui.m_advanced->isChecked();
-    m_thru = ui.m_thru->isChecked();
+    drumstick::widgets::SettingsFactory settings;
+    VPianoSettings::instance()->setAdvanced(ui.m_advanced->isChecked());
+    VPianoSettings::instance()->setMidiThru(ui.m_thru->isChecked());
     if (m_midiOut != 0) {
         conn = ui.m_outputPorts->currentText();
         if (conn != m_midiOut->currentConnection() || m_settingsChanged) {
             m_midiOut->close();
             if (!conn.isEmpty()) {
-                m_midiOut->initialize(&settings);
+                m_midiOut->initialize(settings.getQSettings());
                 m_midiOut->open(conn);
             }
         }
@@ -79,22 +99,26 @@ void Connections::accept()
         if (conn != m_midiIn->currentConnection() || m_settingsChanged) {
             m_midiIn->close();
             if (!conn.isEmpty()) {
-                m_midiIn->initialize(&settings);
+                m_midiIn->initialize(settings.getQSettings());
                 m_midiIn->open(conn);
             }
         }
         if (m_midiOut != 0) {
             m_midiIn->setMIDIThruDevice(m_midiOut);
-            m_midiIn->enableMIDIThru(m_thru);
+            m_midiIn->enableMIDIThru(VPianoSettings::instance()->midiThru());
         }
     }
+    VPianoSettings::instance()->setLastInputBackend(m_midiIn->backendName());
+    VPianoSettings::instance()->setLastOutputBackend(m_midiOut->backendName());
+    VPianoSettings::instance()->setLastInputConnection(m_midiIn->currentConnection());
+    VPianoSettings::instance()->setLastOutputConnection(m_midiOut->currentConnection());
+    VPianoSettings::instance()->SaveSettings();
     m_settingsChanged = false;
     QDialog::accept();
 }
 
 void Connections::refresh()
 {
-    m_advanced = ui.m_advanced->isChecked();
     if (m_midiIn != 0) {
         ui.m_inputBackends->setCurrentText(m_midiIn->backendName());
         refreshInputs(m_midiIn->backendName());
@@ -120,7 +144,7 @@ void Connections::refreshInputs(QString id)
     ui.m_inputPorts->clear();
     if (m_midiIn != 0) {
         ui.m_inputPorts->addItem(QString());
-        ui.m_inputPorts->addItems(m_midiIn->connections(m_advanced));
+        ui.m_inputPorts->addItems(m_midiIn->connections(ui.m_advanced->isChecked()));
         ui.m_inputPorts->setCurrentText(m_midiIn->currentConnection());
     }
 }
@@ -142,37 +166,15 @@ void Connections::refreshOutputs(QString id)
     }
     ui.m_outputPorts->clear();
     if (m_midiOut != 0) {
-        ui.m_outputPorts->addItems(m_midiOut->connections(m_advanced));
+        ui.m_outputPorts->addItems(m_midiOut->connections(ui.m_advanced->isChecked()));
         ui.m_outputPorts->setCurrentText(m_midiOut->currentConnection());
     }
 }
 
-void Connections::setAdvanced(bool value)
-{
-    ui.m_advanced->setChecked(value);
-    refresh();
-}
-
 void Connections::clickedAdvanced(bool value)
 {
-    m_advanced = value;
+    Q_UNUSED(value)
     refresh();
-}
-
-void Connections::setMidiThru(bool value)
-{
-    m_thru = value;
-    ui.m_thru->setChecked(value);
-}
-
-bool Connections::advanced()
-{
-    return ui.m_advanced->isChecked();
-}
-
-bool Connections::midiThru()
-{
-    return ui.m_thru->isChecked();
 }
 
 void Connections::configureInputDriver()

@@ -19,13 +19,11 @@
 #ifndef PIANOPALETTE_H
 #define PIANOPALETTE_H
 
-#include <QSettings>
 #include <QColor>
 #include <QList>
 #include "macros.h"
 
-namespace drumstick {
-namespace widgets {
+namespace drumstick { namespace widgets {
 
 enum PalettePolicy {
     PAL_SINGLE = 0,

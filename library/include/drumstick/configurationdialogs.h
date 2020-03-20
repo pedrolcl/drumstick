@@ -23,8 +23,7 @@
 #include <QWidget>
 #include "macros.h"
 
-namespace drumstick {
-namespace widgets {
+namespace drumstick { namespace widgets {
 
 bool DRUMSTICK_EXPORT configureInputDriver(const QString driver, QWidget* parent = nullptr);
 bool DRUMSTICK_EXPORT configureOutputDriver(const QString driver, QWidget* parent = nullptr);

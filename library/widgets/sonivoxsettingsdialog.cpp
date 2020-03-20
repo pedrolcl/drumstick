@@ -16,14 +16,14 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QSettings>
 #include <QDialogButtonBox>
 #include <QPushButton>
+
+#include <drumstick/settingsfactory.h>
 #include "sonivoxsettingsdialog.h"
 #include "ui_sonivoxsettingsdialog.h"
 
-namespace drumstick {
-namespace widgets {
+namespace drumstick { namespace widgets {
 
 const QString QSTR_PREFERENCES("SonivoxEAS");
 const QString QSTR_BUFFERTIME("BufferTime");
@@ -74,14 +74,14 @@ void SonivoxSettingsDialog::showEvent(QShowEvent *event)
 void SonivoxSettingsDialog::readSettings()
 {
 
-    QSettings settings;
-    settings.beginGroup(QSTR_PREFERENCES);
-    int bufferTime = settings.value(QSTR_BUFFERTIME, 60).toInt();
-    int reverbType = settings.value(QSTR_REVERBTYPE, 1).toInt();
-    int reverbAmt = settings.value(QSTR_REVERBAMT, 25800).toInt();
-    int chorusType = settings.value(QSTR_CHORUSTYPE, -1).toInt();
-    int chorusAmt = settings.value(QSTR_CHORUSAMT, 0).toInt();
-    settings.endGroup();
+    SettingsFactory settings;
+    settings->beginGroup(QSTR_PREFERENCES);
+    int bufferTime = settings->value(QSTR_BUFFERTIME, 60).toInt();
+    int reverbType = settings->value(QSTR_REVERBTYPE, 1).toInt();
+    int reverbAmt = settings->value(QSTR_REVERBAMT, 25800).toInt();
+    int chorusType = settings->value(QSTR_CHORUSTYPE, -1).toInt();
+    int chorusAmt = settings->value(QSTR_CHORUSAMT, 0).toInt();
+    settings->endGroup();
 
     ui->spnTime->setValue(bufferTime);
     ui->dial_Reverb->setValue(reverbAmt);
@@ -94,15 +94,15 @@ void SonivoxSettingsDialog::readSettings()
 
 void SonivoxSettingsDialog::writeSettings()
 {
-    QSettings settings;
-    settings.beginGroup(QSTR_PREFERENCES);
-    settings.setValue(QSTR_BUFFERTIME, ui->spnTime->value());
-    settings.setValue(QSTR_REVERBTYPE, ui->combo_Reverb->currentData());
-    settings.setValue(QSTR_CHORUSTYPE, ui->combo_Chorus->currentData());
-    settings.setValue(QSTR_REVERBAMT, ui->dial_Reverb->value());
-    settings.setValue(QSTR_CHORUSAMT, ui->dial_Chorus->value());
-    settings.endGroup();
-    settings.sync();
+    SettingsFactory settings;
+    settings->beginGroup(QSTR_PREFERENCES);
+    settings->setValue(QSTR_BUFFERTIME, ui->spnTime->value());
+    settings->setValue(QSTR_REVERBTYPE, ui->combo_Reverb->currentData());
+    settings->setValue(QSTR_CHORUSTYPE, ui->combo_Chorus->currentData());
+    settings->setValue(QSTR_REVERBAMT, ui->dial_Reverb->value());
+    settings->setValue(QSTR_CHORUSAMT, ui->dial_Chorus->value());
+    settings->endGroup();
+    settings->sync();
 }
 
 void SonivoxSettingsDialog::restoreDefaults()

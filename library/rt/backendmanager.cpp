@@ -31,8 +31,7 @@
  * Implementation of a class managing realtime MIDI input/output backends
  */
 
-namespace drumstick {
-namespace rt {
+namespace drumstick { namespace rt {
 
 /**
  * @addtogroup RT
@@ -78,7 +77,11 @@ namespace rt {
      */
     BackendManager::BackendManager(): d(new BackendManagerPrivate)
     {
-        refresh();
+        QVariantMap defaultSettings {
+            { QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("MIDI In")},
+            { QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("MIDI Out")}
+        };
+        refresh(defaultSettings);
     }
 
     /**
@@ -127,27 +130,39 @@ namespace rt {
     }
 
     /**
-     * @brief BackendManager::refresh finds the installed backends searching the list of paths
-     * provided by the function defaultPaths() applying the optional settings as well.
-     * @param settings (optional)
+     * @brief BackendManager::refresh finds the installed backends applying the provided settings.
+     * @param settings
      */
     void BackendManager::refresh(QSettings *settings)
+    {
+        QVariantMap tmpMap;
+        settings->beginGroup(QSTR_DRUMSTICKRT_GROUP);
+        for(auto k : settings->allKeys()) {
+            tmpMap.insert(k, settings->value(k));
+        }
+        settings->endGroup();
+        refresh(tmpMap);
+    }
+
+    /**
+     * @brief BackendManager::refresh finds the installed backends searching the list of paths
+     * provided by the function defaultPaths() applying the provided settings map as well.
+     * @param map
+     */
+    void BackendManager::refresh(const QVariantMap &map)
     {
         QString name_in;
         QString name_out;
         QStringList names;
         QStringList paths;
 
-        if (settings != nullptr) {
-            settings->beginGroup(QSTR_DRUMSTICKRT_GROUP);
-            d->appendDir(settings->value(QSTR_DRUMSTICKRT_PATH).toString(), paths);
-            name_in = settings->value(QSTR_DRUMSTICKRT_PUBLICNAMEIN).toString();
-            name_out = settings->value(QSTR_DRUMSTICKRT_PUBLICNAMEOUT).toString();
-            names << settings->value(QSTR_DRUMSTICKRT_EXCLUDED).toStringList();
-            names << (name_in.isEmpty() ? QLatin1String("MIDI In") : name_in);
-            names << (name_out.isEmpty() ? QLatin1String("MIDI Out") : name_out);
-            settings->endGroup();
-        }
+        d->appendDir(map.value(QSTR_DRUMSTICKRT_PATH).toString(), paths);
+        name_in = map.value(QSTR_DRUMSTICKRT_PUBLICNAMEIN).toString();
+        name_out = map.value(QSTR_DRUMSTICKRT_PUBLICNAMEOUT).toString();
+        names << map.value(QSTR_DRUMSTICKRT_EXCLUDED).toStringList();
+        names << (name_in.isEmpty() ? QLatin1String("MIDI In") : name_in);
+        names << (name_out.isEmpty() ? QLatin1String("MIDI Out") : name_out);
+
         paths << defaultPaths();
         d->clearLists();
 

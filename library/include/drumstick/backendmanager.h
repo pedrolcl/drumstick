@@ -31,8 +31,7 @@
  * @{
  */
 
-namespace drumstick {
-namespace rt {
+namespace drumstick { namespace rt {
 
     const QString QSTR_DRUMSTICK(QLatin1Literal("drumstick"));
     const QString QSTR_DRUMSTICKRT(QLatin1Literal("DRUMSTICKRT"));
@@ -64,6 +63,12 @@ namespace rt {
          * @param settings Program settings
          */
         void refresh(QSettings* settings = 0);
+
+        /**
+         * @brief refresh the list of backends
+         * @param map Program settings relevant section
+         */
+        void refresh(const QVariantMap& map);
 
         /**
          * @brief availableInputs

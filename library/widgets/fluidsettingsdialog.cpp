@@ -16,7 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QSettings>
 #include <QFileInfo>
 #include <QDir>
 #include <QStandardPaths>
@@ -24,12 +23,11 @@
 #include <QToolButton>
 #include <QPushButton>
 
+#include <drumstick/settingsfactory.h>
 #include "fluidsettingsdialog.h"
 #include "ui_fluidsettingsdialog.h"
 
-
-namespace drumstick {
-namespace widgets {
+namespace drumstick { namespace widgets {
 
 const QString QSTR_PREFERENCES("FluidSynth");
 const QString QSTR_INSTRUMENTSDEFINITION("InstrumentsDefinition");
@@ -102,7 +100,7 @@ QString FluidSettingsDialog::defaultAudioDriver() const
 
 void FluidSettingsDialog::readSettings()
 {
-    QSettings settings;
+    SettingsFactory settings;
     QStringList drivers;
     QString fs_defSoundFont = QSTR_SOUNDFONT;
 #if defined(Q_OS_LINUX)
@@ -126,22 +124,22 @@ void FluidSettingsDialog::readSettings()
 
     ui->audioDriver->addItems(drivers);
 
-    settings.beginGroup(QSTR_PREFERENCES);
-    ui->audioDriver->setCurrentText( settings.value(QSTR_AUDIODRIVER, defaultAudioDriver()).toString() );
-    ui->periodSize->setText( settings.value(QSTR_PERIODSIZE, DEFAULT_PERIODSIZE).toString() );
-    ui->periods->setText( settings.value(QSTR_PERIODS, DEFAULT_PERIODS).toString() );
-    ui->sampleRate->setText( settings.value(QSTR_SAMPLERATE, DEFAULT_SAMPLERATE).toString() );
-    ui->chorus->setChecked( settings.value(QSTR_CHORUS, DEFAULT_CHORUS).toInt() != 0 );
-    ui->reverb->setChecked( settings.value(QSTR_REVERB, DEFAULT_REVERB).toInt() != 0 );
-    ui->gain->setText( settings.value(QSTR_GAIN, DEFAULT_GAIN).toString() );
-    ui->polyphony->setText( settings.value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toString() );
-    ui->soundFont->setText( settings.value(QSTR_INSTRUMENTSDEFINITION, fs_defSoundFont).toString() );
-    settings.endGroup();
+    settings->beginGroup(QSTR_PREFERENCES);
+    ui->audioDriver->setCurrentText( settings->value(QSTR_AUDIODRIVER, defaultAudioDriver()).toString() );
+    ui->periodSize->setText( settings->value(QSTR_PERIODSIZE, DEFAULT_PERIODSIZE).toString() );
+    ui->periods->setText( settings->value(QSTR_PERIODS, DEFAULT_PERIODS).toString() );
+    ui->sampleRate->setText( settings->value(QSTR_SAMPLERATE, DEFAULT_SAMPLERATE).toString() );
+    ui->chorus->setChecked( settings->value(QSTR_CHORUS, DEFAULT_CHORUS).toInt() != 0 );
+    ui->reverb->setChecked( settings->value(QSTR_REVERB, DEFAULT_REVERB).toInt() != 0 );
+    ui->gain->setText( settings->value(QSTR_GAIN, DEFAULT_GAIN).toString() );
+    ui->polyphony->setText( settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toString() );
+    ui->soundFont->setText( settings->value(QSTR_INSTRUMENTSDEFINITION, fs_defSoundFont).toString() );
+    settings->endGroup();
 }
 
 void FluidSettingsDialog::writeSettings()
 {
-    QSettings settings;
+    SettingsFactory settings;
     QString audioDriver;
     QString soundFont(QSTR_SOUNDFONT);
     int     periodSize(DEFAULT_PERIODSIZE);
@@ -165,19 +163,18 @@ void FluidSettingsDialog::writeSettings()
     gain = ui->gain->text().toDouble();
     polyphony = ui->polyphony->text().toInt();
 
-    settings.beginGroup(QSTR_PREFERENCES);
-    settings.setValue(QSTR_INSTRUMENTSDEFINITION, soundFont);
-    settings.setValue(QSTR_AUDIODRIVER, audioDriver);
-    settings.setValue(QSTR_PERIODSIZE, periodSize);
-    settings.setValue(QSTR_PERIODS, periods);
-    settings.setValue(QSTR_SAMPLERATE, sampleRate);
-    settings.setValue(QSTR_CHORUS, chorus);
-    settings.setValue(QSTR_REVERB, reverb);
-    settings.setValue(QSTR_GAIN, gain);
-    settings.setValue(QSTR_POLYPHONY, polyphony);
-    settings.endGroup();
-
-    settings.sync();
+    settings->beginGroup(QSTR_PREFERENCES);
+    settings->setValue(QSTR_INSTRUMENTSDEFINITION, soundFont);
+    settings->setValue(QSTR_AUDIODRIVER, audioDriver);
+    settings->setValue(QSTR_PERIODSIZE, periodSize);
+    settings->setValue(QSTR_PERIODS, periods);
+    settings->setValue(QSTR_SAMPLERATE, sampleRate);
+    settings->setValue(QSTR_CHORUS, chorus);
+    settings->setValue(QSTR_REVERB, reverb);
+    settings->setValue(QSTR_GAIN, gain);
+    settings->setValue(QSTR_POLYPHONY, polyphony);
+    settings->endGroup();
+    settings->sync();
 }
 
 void FluidSettingsDialog::restoreDefaults()

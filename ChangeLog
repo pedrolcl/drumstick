@@ -1,3 +1,18 @@
+2020-03-20
+    * New library drumstick-gui, applied to drumstick-vpiano
+
+2020-01-02
+    * Synchronization of EAS Synth code with upstream AOSP repository ('android10' branch)
+
+2019-12-30
+    * Code and namespaces reorganization. drumstick-alsa classes placed in the new 'drumstick::ALSA' namespace
+
+2019-12-19
+    * Revised ALSA RT plugins. ALSA Client is now created only when needed
+
+2019-12-16 
+    * Modernization of the cmake buildsystem, producing cmake configuration scripts
+
 2019-09-01
     * release 1.1.3
 

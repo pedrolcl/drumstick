@@ -16,10 +16,20 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QDir>
+#include <QFileInfo>
 #include <QDebug>
+#if defined(Q_OS_MACOS)
+#include <CoreFoundation/CoreFoundation.h>
+#endif
 #include <drumstick/backendmanager.h>
 #include <drumstick/pianokeybd.h>
+#include <drumstick/settingsfactory.h>
 #include "vpiano.h"
+#include "vpianosettings.h"
+#include "vpianoabout.h"
+#include "connections.h"
+#include "preferences.h"
 
 using namespace drumstick::rt;
 
@@ -28,44 +38,36 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     m_midiIn(nullptr),
     m_midiOut(nullptr)
 {
-    m_nativeInput = QLatin1Literal("Network");
-    m_defaultInput = QLatin1Literal("21928");
-#if defined(Q_OS_LINUX)
-    m_nativeOutput = QLatin1Literal("SonivoxEAS");
-    m_defaultOutput = QLatin1Literal("SonivoxEAS");
-#elif defined(Q_OS_OSX)
-    m_nativeOutput = QLatin1Literal("DLS Synth");
-    m_defaultOutput = QLatin1Literal("DLS Synth");
-#elif defined(Q_OS_WIN)
-    m_nativeOutput = QLatin1Literal("Windows MM");
-    m_defaultOutput = QLatin1Literal("Microsoft GS Wavetable Synth");
-#else
-    m_nativeOutput = m_nativeInput;
-    m_defaultOutput = m_defaultInput;
-#endif
-
     ui.setupUi(this);
     ui.statusBar->hide();
+}
 
+VPiano::~VPiano()
+{
+    m_midiIn->close();
+    m_midiOut->close();
+}
+
+void VPiano::initialize()
+{
     readSettings();
 
-    QSettings settings;
     BackendManager man;
-    man.refresh(&settings);
-    QList<MIDIInput*> inputs = man.availableInputs();
-    QList<MIDIOutput*> outputs = man.availableOutputs();
+    man.refresh(VPianoSettings::instance()->settingsMap());
+    m_inputs = man.availableInputs();
+    m_outputs = man.availableOutputs();
 
-    findInput(m_lastInputBackend, inputs);
+    findInput(VPianoSettings::instance()->lastInputBackend());
     if (m_midiIn == nullptr) {
-        findInput(m_nativeInput, inputs);
+        findInput(VPianoSettings::instance()->nativeInput());
         if (m_midiIn == nullptr) {
             qFatal("Unable to find a suitable input backend.");
         }
     }
 
-    findOutput(m_lastOutputBackend, outputs);
+    findOutput(VPianoSettings::instance()->lastOutputBackend());
     if (m_midiOut == nullptr) {
-        findOutput(m_nativeOutput, outputs);
+        findOutput(VPianoSettings::instance()->nativeOutput());
         if (m_midiOut == nullptr) {
             qFatal("Unable to find a suitable output backend");
         }
@@ -79,13 +81,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
     connect(ui.pianokeybd, SIGNAL(noteOn(int,int)), SLOT(slotNoteOn(int,int)));
     connect(ui.pianokeybd, SIGNAL(noteOff(int,int)), SLOT(slotNoteOff(int,int)));
 
-    dlgConnections.setInputs(inputs);
-    dlgConnections.setOutputs(outputs);
-    dlgConnections.setInput(m_midiIn);
-    dlgConnections.setOutput(m_midiOut);
-    dlgConnections.setMidiThru(m_midiThru);
-    dlgConnections.setAdvanced(m_advanced);
-
+    drumstick::widgets::SettingsFactory settings;
     if (m_midiIn != nullptr) {
 #if QT_VERSION < 0x050700
         connect(m_midiIn, SIGNAL(midiNoteOn(int,int,int)),
@@ -102,45 +98,53 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
                 this, QOverload<int,int,int>::of(&VPiano::slotNoteOff),
                 Qt::QueuedConnection);
 #endif
-        if (!m_lastInputConnection.isEmpty()) {
-            m_midiIn->initialize(&settings);
-            m_midiIn->open(m_lastInputConnection);
+        if (!VPianoSettings::instance()->lastInputConnection().isEmpty()) {
+            m_midiIn->initialize(settings.getQSettings());
+            auto conin = m_midiIn->connections(VPianoSettings::instance()->advanced());
+            Q_ASSERT(conin.contains(VPianoSettings::instance()->lastInputConnection()));
+            m_midiIn->open(VPianoSettings::instance()->lastInputConnection());
         }
     }
 
-    if (m_midiOut != nullptr && !m_lastOutputConnection.isEmpty()) {
-        m_midiOut->initialize(&settings);
-        m_midiOut->open(m_lastOutputConnection);
+    if (m_midiOut != nullptr && !VPianoSettings::instance()->lastOutputConnection().isEmpty()) {
+        m_midiOut->initialize(settings.getQSettings());
+        auto conout = m_midiOut->connections(VPianoSettings::instance()->advanced());
+        Q_ASSERT(conout.contains(VPianoSettings::instance()->lastOutputConnection()));
+        m_midiOut->open(VPianoSettings::instance()->lastOutputConnection());
         if (m_midiIn != nullptr) {
             m_midiIn->setMIDIThruDevice(m_midiOut);
-            m_midiIn->enableMIDIThru(m_midiThru);
+            m_midiIn->enableMIDIThru(VPianoSettings::instance()->midiThru());
         }
     }
 }
 
-VPiano::~VPiano()
+void VPiano::showEvent(QShowEvent *event)
 {
-    //qDebug() << Q_FUNC_INFO;
-    m_midiIn->close();
-    m_midiOut->close();
-    //qDebug() << "Cheers!";
+    initialize();
+    event->accept();
+}
+
+void VPiano::closeEvent(QCloseEvent *event)
+{
+    writeSettings();
+    event->accept();
 }
 
 void VPiano::slotNoteOn(const int midiNote, const int vel)
 {
-    int chan = dlgPreferences.getOutChannel();
+    int chan = VPianoSettings::instance()->outChannel();
     m_midiOut->sendNoteOn(chan, midiNote, vel);
 }
 
 void VPiano::slotNoteOff(const int midiNote, const int vel)
 {
-    int chan = dlgPreferences.getOutChannel();
+    int chan = VPianoSettings::instance()->outChannel();
     m_midiOut->sendNoteOff(chan, midiNote, vel);
 }
 
 void VPiano::slotNoteOn(const int chan, const int note, const int vel)
 {
-    if (dlgPreferences.getInChannel() == chan) {
+    if (VPianoSettings::instance()->inChannel() == chan) {
         if (vel > 0)
             ui.pianokeybd->showNoteOn(note);
         else
@@ -151,13 +155,14 @@ void VPiano::slotNoteOn(const int chan, const int note, const int vel)
 void VPiano::slotNoteOff(const int chan, const int note, const int vel)
 {
     Q_UNUSED(vel)
-    if (dlgPreferences.getInChannel() == chan) {
+    if (VPianoSettings::instance()->inChannel() == chan) {
         ui.pianokeybd->showNoteOff(note);
     }
 }
 
 void VPiano::slotAbout()
 {
+    About dlgAbout(this);
     dlgAbout.exec();
 }
 
@@ -168,6 +173,11 @@ void VPiano::slotAboutQt()
 
 void VPiano::slotConnections()
 {
+    Connections dlgConnections(this);
+    dlgConnections.setInputs(m_inputs);
+    dlgConnections.setOutputs(m_outputs);
+    dlgConnections.setInput(m_midiIn);
+    dlgConnections.setOutput(m_midiOut);
     dlgConnections.refresh();
     if (dlgConnections.exec() == QDialog::Accepted) {
         if (m_midiIn != nullptr) {
@@ -182,99 +192,47 @@ void VPiano::slotConnections()
             connect(m_midiIn, SIGNAL(midiNoteOn(int,int,int)), SLOT(slotNoteOn(int,int,int)));
             connect(m_midiIn, SIGNAL(midiNoteOff(int,int,int)), SLOT(slotNoteOff(int,int,int)));
         }
-        m_midiThru = dlgConnections.midiThru();
-        m_advanced = dlgConnections.advanced();
     }
 }
 
 void VPiano::slotPreferences()
 {
+    Preferences dlgPreferences(this);
     if (dlgPreferences.exec() == QDialog::Accepted) {
-        if (ui.pianokeybd->baseOctave() != dlgPreferences.getBaseOctave()) {
-            ui.pianokeybd->setBaseOctave(dlgPreferences.getBaseOctave());
+        if (ui.pianokeybd->baseOctave() != VPianoSettings::instance()->baseOctave()) {
+            ui.pianokeybd->setBaseOctave(VPianoSettings::instance()->baseOctave());
         }
-        if (ui.pianokeybd->numKeys() != dlgPreferences.getNumKeys()) {
-            ui.pianokeybd->setNumKeys(dlgPreferences.getNumKeys());
+        if (ui.pianokeybd->numKeys() != VPianoSettings::instance()->numKeys()) {
+            ui.pianokeybd->setNumKeys(VPianoSettings::instance()->numKeys());
         }
-        if (ui.pianokeybd->startKey() != dlgPreferences.getStartingKey()) {
-            ui.pianokeybd->setNumKeys(dlgPreferences.getNumKeys(), dlgPreferences.getStartingKey());
+        if (ui.pianokeybd->startKey() != VPianoSettings::instance()->startingKey()) {
+            ui.pianokeybd->setNumKeys(VPianoSettings::instance()->numKeys(), VPianoSettings::instance()->startingKey());
         }
     }
-}
-
-void VPiano::closeEvent(QCloseEvent *event)
-{
-    //qDebug() << Q_FUNC_INFO;
-    writeSettings();
-    event->accept();
 }
 
 void VPiano::writeSettings()
 {
-    QSettings settings;
-
-    settings.beginGroup("Window");
-    settings.setValue("Geometry", saveGeometry());
-    settings.setValue("State", saveState());
-    settings.endGroup();
-
-    settings.beginGroup("Connections");
-    settings.setValue("inputBackend", m_midiIn->backendName());
-    settings.setValue("outputBackend", m_midiOut->backendName());
-    settings.setValue("inputConnection", m_midiIn->currentConnection());
-    settings.setValue("outputConnection", m_midiOut->currentConnection());
-    settings.setValue("midiThru", m_midiThru);
-    settings.setValue("advanced", m_advanced);
-    settings.endGroup();
-
-    settings.beginGroup("Preferences");
-    settings.setValue("inputChannel", dlgPreferences.getInChannel());
-    settings.setValue("outputChannel",dlgPreferences.getOutChannel());
-    settings.setValue("velocity", dlgPreferences. getVelocity());
-    settings.setValue("baseOctave", dlgPreferences.getBaseOctave());
-    settings.setValue("numKeys", dlgPreferences.getNumKeys());
-    settings.setValue("startingKey", dlgPreferences.getStartingKey());
-    settings.endGroup();
-
-    settings.sync();
+    VPianoSettings::instance()->setGeometry(saveGeometry());
+    VPianoSettings::instance()->setState(saveState());
+    VPianoSettings::instance()->SaveSettings();
 }
 
 void VPiano::readSettings()
 {
-    QSettings settings;
-
-    settings.beginGroup("Window");
-    restoreGeometry(settings.value("Geometry").toByteArray());
-    restoreState(settings.value("State").toByteArray());
-    settings.endGroup();
-
-    settings.beginGroup("Connections");
-    m_lastInputBackend = settings.value("inputBackend", m_nativeInput).toString();
-    m_lastOutputBackend = settings.value("outputBackend", m_nativeOutput).toString();
-    m_lastInputConnection = settings.value("inputConnection", m_defaultInput).toString();
-    m_lastOutputConnection = settings.value("outputConnection", m_defaultOutput).toString();
-    m_midiThru = settings.value("midiThru", false).toBool();
-    m_advanced = settings.value("advanced", false).toBool();
-    settings.endGroup();
-
-    settings.beginGroup("Preferences");
-    dlgPreferences.setInChannel(settings.value("inputChannel", 0).toInt());
-    dlgPreferences.setOutChannel(settings.value("outputChannel", 0).toInt());
-    dlgPreferences.setVelocity(settings.value("velocity", 100).toInt());
-    dlgPreferences.setBaseOctave(settings.value("baseOctave", 1).toInt());
-    dlgPreferences.setNumKeys(settings.value("numKeys", 88).toInt());
-    dlgPreferences.setStartingKey(settings.value("startingKey", 9).toInt());
-    ui.pianokeybd->setBaseOctave(settings.value("baseOctave", 1).toInt());
-    ui.pianokeybd->setNumKeys(settings.value("numKeys", 88).toInt(), settings.value("startingKey", 9).toInt());
-    settings.endGroup();
+    VPianoSettings::instance()->ReadSettings();
+    restoreGeometry(VPianoSettings::instance()->geometry());
+    restoreState(VPianoSettings::instance()->state());
+    ui.pianokeybd->setBaseOctave(VPianoSettings::instance()->baseOctave());
+    ui.pianokeybd->setNumKeys(VPianoSettings::instance()->numKeys(), VPianoSettings::instance()->startingKey());
 }
 
-void VPiano::findInput(QString name, QList<MIDIInput *> &inputs)
+void VPiano::findInput(QString name)
 {
     if (name.isEmpty()) {
         return;
     }
-    foreach(MIDIInput* input, inputs) {
+    foreach(MIDIInput* input, m_inputs) {
         if (m_midiIn == nullptr && (input->backendName() == name))  {
             m_midiIn = input;
             break;
@@ -285,12 +243,12 @@ void VPiano::findInput(QString name, QList<MIDIInput *> &inputs)
     }
 }
 
-void VPiano::findOutput(QString name, QList<MIDIOutput *> &outputs)
+void VPiano::findOutput(QString name)
 {
     if (name.isEmpty()) {
         return;
     }
-    foreach(MIDIOutput* output, outputs) {
+    foreach(MIDIOutput* output, m_outputs) {
         if (m_midiOut == nullptr && (output->backendName() == name))  {
             m_midiOut = output;
             break;
@@ -298,5 +256,22 @@ void VPiano::findOutput(QString name, QList<MIDIOutput *> &outputs)
     }
     if (m_midiOut == nullptr) {
         qWarning() << "Output backend not found: " << name;
+    }
+}
+
+void VPiano::setPortableConfig(const QString fileName)
+{
+    if (fileName.isEmpty()) {
+        QFileInfo appInfo(QCoreApplication::applicationFilePath());
+#if defined(Q_OS_MACOS)
+        CFURLRef url = static_cast<CFURLRef>(CFAutorelease(static_cast<CFURLRef>(CFBundleCopyBundleURL(CFBundleGetMainBundle()))));
+        QString path = QUrl::fromCFURL(url).path() + "../";
+        QFileInfo cfgInfo(path, appInfo.baseName() + ".conf");
+#else
+        QFileInfo cfgInfo(appInfo.absoluteDir(), appInfo.baseName() + ".conf");
+#endif
+        drumstick::widgets::SettingsFactory::setFileName(cfgInfo.absoluteFilePath());
+    } else {
+        drumstick::widgets::SettingsFactory::setFileName(fileName);
     }
 }

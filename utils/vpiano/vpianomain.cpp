@@ -18,15 +18,19 @@
 
 #include <QApplication>
 #include <QFileInfo>
-#include <QSettings>
 #include <QTextStream>
 #include <QCommandLineParser>
 #include <drumstick/backendmanager.h>
+#include <drumstick/settingsfactory.h>
 
 #include "cmdversion.h"
 #include "vpiano.h"
 
-const QString PGM_DESCRIPTION("Drumstick Simple Virtual Piano");
+const QString PGM_DESCRIPTION("Drumstick Simple Virtual Piano\n"
+     "Copyright (C) 2006-2020 Pedro López-Cabanillas\n"
+     "This program comes with ABSOLUTELY NO WARRANTY;\n"
+     "This is free software, and you are welcome to redistribute it\n"
+     "under certain conditions; see the LICENSE file for details.");
 
 #if defined(LINUX_BACKEND)
 Q_IMPORT_PLUGIN(ALSAMIDIInput)
@@ -76,23 +80,28 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     QCommandLineParser parser;
-    parser.setApplicationDescription(PGM_DESCRIPTION);
+    parser.setApplicationDescription(
+        QString("%1 v.%2\n\n%3")
+        .arg(QCoreApplication::applicationName())
+        .arg(QCoreApplication::applicationVersion())
+        .arg(PGM_DESCRIPTION)
+    );
     auto helpOption = parser.addHelpOption();
     auto versionOption = parser.addVersionOption();
+    QCommandLineOption portableOption({"p", "portable"}, "Portable settings format file (.ini)");
+    parser.addOption(portableOption);
     parser.process(app);
     if (parser.isSet(versionOption) || parser.isSet(helpOption)) {
         return 0;
     }
 
-    QSettings settings;
-    settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
-    settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("Virtual Piano IN"));
-    settings.setValue(QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("Virtual Piano OUT"));
-    settings.endGroup();
-    settings.sync();
-
     try {
         VPiano w;
+        if (parser.isSet(portableOption)) {
+            w.setPortableConfig();
+        } else {
+            QSettings::setDefaultFormat(QSettings::NativeFormat);
+        }
         w.show();
         return app.exec();
     } catch (...) {

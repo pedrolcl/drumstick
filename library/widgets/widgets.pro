@@ -15,21 +15,18 @@ QT += widgets network
 
 FORMS += \
     fluidsettingsdialog.ui \
-    networksettingsdialog.ui \
-    sonivoxsettingsdialog.ui \
-    macsynthsettingsdialog.ui
+    networksettingsdialog.ui
 
 HEADERS += \
     ../include/drumstick/pianokeybd.h \
     ../include/drumstick/pianopalette.h \
     ../include/drumstick/configurationdialogs.h \
+    ../include/drumstick/settingsfactory.h \
     pianokey.h \
     pianoscene.h \
     keylabel.h \
     fluidsettingsdialog.h \
-    networksettingsdialog.h \
-    macsynthsettingsdialog.h \
-    sonivoxsettingsdialog.h
+    networksettingsdialog.h
 
 SOURCES += \
     configurationdialogs.cpp \
@@ -40,10 +37,21 @@ SOURCES += \
     keylabel.cpp \
     fluidsettingsdialog.cpp \
     networksettingsdialog.cpp \
-    macsynthsettingsdialog.cpp \
-    sonivoxsettingsdialog.cpp
+    settingsfactory.cpp
 
 RESOURCES += pianokeybd.qrc
+
+macx {
+    FORMS += macsynthsettingsdialog.ui
+    HEADERS += macsynthsettingsdialog.h
+    SOURCES += macsynthsettingsdialog.cpp
+}
+
+linux* {
+    FORMS += sonivoxsettingsdialog.ui
+    HEADERS += sonivoxsettingsdialog.h
+    SOURCES += sonivoxsettingsdialog.cpp
+}
 
 macx:!static {
     TARGET = drumstick-widgets

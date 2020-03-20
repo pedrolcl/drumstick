@@ -19,11 +19,14 @@
 #include <drumstick/configurationdialogs.h>
 #include "networksettingsdialog.h"
 #include "fluidsettingsdialog.h"
+#if defined(Q_OS_LINUX)
 #include "sonivoxsettingsdialog.h"
+#endif
+#if defined(Q_OS_MACOS)
 #include "macsynthsettingsdialog.h"
+#endif
 
-namespace drumstick {
-namespace widgets {
+namespace drumstick { namespace widgets {
 
 bool configureInputDriver(const QString driver, QWidget* parent)
 {
@@ -42,12 +45,16 @@ bool configureOutputDriver(const QString driver, QWidget* parent)
     } else if (driver == "FluidSynth") {
         FluidSettingsDialog dlg(parent);
         return (dlg.exec() == QDialog::Accepted);
+#if defined(Q_OS_LINUX)
     } else if (driver == "SonivoxEAS") {
         SonivoxSettingsDialog dlg(parent);
         return (dlg.exec() == QDialog::Accepted);
+#endif
+#if defined(Q_OS_MACOS)
     } else if (driver == "DLS Synth") {
         MacSynthSettingsDialog dlg(parent);
         return (dlg.exec() == QDialog::Accepted);
+#endif
     }
     return false;
 }
@@ -57,12 +64,13 @@ void changeSoundFont(const QString driver, const QString fileName, QWidget* pare
     if (driver == "FluidSynth") {
         FluidSettingsDialog dlg(parent);
         dlg.changeSoundFont(fileName);
+#if defined(Q_OS_MACOS)
     } else if (driver == "DLS Synth") {
         MacSynthSettingsDialog dlg(parent);
         dlg.changeSoundFont(fileName);
+#endif
     }
 }
-
 
 }}
 

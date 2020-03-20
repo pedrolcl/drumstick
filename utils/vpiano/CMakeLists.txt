@@ -35,6 +35,8 @@ set(vpiano_SRCS
     vpianoabout.h
     vpianoabout.ui
     vpianomain.cpp
+    vpianosettings.cpp
+    vpianosettings.h
 )
 
 add_executable(drumstick-vpiano

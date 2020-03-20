@@ -16,10 +16,11 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QSettings>
 #include <QNetworkInterface>
 #include <QDialogButtonBox>
 #include <QPushButton>
+
+#include <drumstick/settingsfactory.h>
 #include "networksettingsdialog.h"
 #include "ui_networksettingsdialog.h"
 
@@ -58,12 +59,12 @@ void NetworkSettingsDialog::showEvent(QShowEvent *event)
 
 void NetworkSettingsDialog::readSettings()
 {
-    QSettings settings;
-    settings.beginGroup("Network");
-    QString ifaceName = settings.value("interface", QString()).toString();
-    bool ipv6 = settings.value("ipv6", false).toBool();
-    QString address = settings.value("address", ipv6 ? QSTR_ADDRESS_IPV6 : QSTR_ADDRESS_IPV4).toString();
-    settings.endGroup();
+    SettingsFactory settings;
+    settings->beginGroup("Network");
+    QString ifaceName = settings->value("interface", QString()).toString();
+    bool ipv6 = settings->value("ipv6", false).toBool();
+    QString address = settings->value("address", ipv6 ? QSTR_ADDRESS_IPV6 : QSTR_ADDRESS_IPV4).toString();
+    settings->endGroup();
 
     ui->txtAddress->setText(address);
     ui->checkIPv6->setChecked(ipv6);
@@ -82,12 +83,11 @@ void NetworkSettingsDialog::readSettings()
             }
         }
     }
-
 }
 
 void NetworkSettingsDialog::writeSettings()
 {
-    QSettings settings;
+    SettingsFactory settings;
     QString networkAddr = QSTR_ADDRESS_IPV4;
     QString networkIface;
     bool ipv6 = false;
@@ -96,12 +96,12 @@ void NetworkSettingsDialog::writeSettings()
     networkIface = ui->comboInterface->currentData().toString();
     ipv6 = ui->checkIPv6->isChecked();
 
-    settings.beginGroup("Network");
-    settings.setValue("address", networkAddr);
-    settings.setValue("interface", networkIface);
-    settings.setValue("ipv6", ipv6);
-    settings.endGroup();
-    settings.sync();
+    settings->beginGroup("Network");
+    settings->setValue("address", networkAddr);
+    settings->setValue("interface", networkIface);
+    settings->setValue("ipv6", ipv6);
+    settings->endGroup();
+    settings->sync();
 }
 
 void NetworkSettingsDialog::restoreDefaults()

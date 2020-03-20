@@ -18,6 +18,8 @@
 
 #include <QApplication>
 #include <QPalette>
+
+#include <drumstick/settingsfactory.h>
 #include <drumstick/pianopalette.h>
 
 namespace drumstick {
@@ -96,28 +98,29 @@ PianoPalette::setPaletteText(const QString help)
 void
 PianoPalette::saveColors()
 {
-    QSettings settings;
-    settings.beginWriteArray(QSTR_PALETTEPREFIX + QString::number(m_paletteId));
+    SettingsFactory settings;
+    settings->beginWriteArray(QSTR_PALETTEPREFIX + QString::number(m_paletteId));
     for(int i=0; i<m_colors.size(); ++i) {
-        settings.setArrayIndex(i);
-        settings.setValue("color", m_colors[i]);
+        settings->setArrayIndex(i);
+        settings->setValue("color", m_colors[i]);
     }
-    settings.endArray();
+    settings->endArray();
+    settings->sync();
 }
 
 void
 PianoPalette::loadColors()
 {
-    QSettings settings;
-    int size = settings.beginReadArray(QSTR_PALETTEPREFIX + QString::number(m_paletteId));
+    SettingsFactory settings;
+    int size = settings->beginReadArray(QSTR_PALETTEPREFIX + QString::number(m_paletteId));
     if (size > m_colors.size())
         size = m_colors.size();
     for(int i=0; i<size; ++i) {
-        settings.setArrayIndex(i);
-        QColor c = settings.value("color", QColor()).value<QColor>();
+        settings->setArrayIndex(i);
+        QColor c = settings->value("color", QColor()).value<QColor>();
         setColor(i, c);
     }
-    settings.endArray();
+    settings->endArray();
 }
 
 }} // namespace drumstick::widgets

@@ -16,6 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QDebug>
 #include <QMutexLocker>
 #include <cmath>
 #include <drumstick/alsaclient.h>
@@ -317,7 +318,8 @@ namespace rt {
 
     void ALSAMIDIInput::open(QString name)
     {
-        d->setSubscription(name);
+        auto b = d->setSubscription(name);
+        if (!b) qWarning() << "failed subscription to" << name;
     }
 
     void ALSAMIDIInput::close()

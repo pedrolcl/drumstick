@@ -32,29 +32,23 @@ class Connections : public QDialog
 
 public:
     Connections(QWidget *parent = 0);
-    void setInput(drumstick::rt::MIDIInput *in) { m_midiIn = in; }
-    void setOutput(drumstick::rt::MIDIOutput *out) { m_midiOut = out; }
+    void setInput(drumstick::rt::MIDIInput *in);
+    void setOutput(drumstick::rt::MIDIOutput *out);
     void setInputs(QList<drumstick::rt::MIDIInput *> ins);
     void setOutputs(QList<drumstick::rt::MIDIOutput *> outs);
-    drumstick::rt::MIDIInput *getInput() { return m_midiIn; }
-    drumstick::rt::MIDIOutput *getOutput() { return m_midiOut; }
-    void setAdvanced(bool value);
-    bool advanced();
-    bool midiThru();
+    drumstick::rt::MIDIInput *getInput();
+    drumstick::rt::MIDIOutput *getOutput();
 
 public slots:
     void configureInputDriver();
     void configureOutputDriver();
     void clickedAdvanced(bool value);
-    void setMidiThru(bool value);
     void refreshInputs(QString id);
     void refreshOutputs(QString id);
     void refresh();
     void accept();
 
 private:
-    bool m_advanced;
-    bool m_thru;
     bool m_settingsChanged;
     drumstick::rt::MIDIInput* m_midiIn;
     drumstick::rt::MIDIOutput* m_midiOut;

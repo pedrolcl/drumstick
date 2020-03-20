@@ -23,11 +23,7 @@
 #include <QCloseEvent>
 #include <drumstick/rtmidiinput.h>
 #include <drumstick/rtmidioutput.h>
-
 #include "ui_vpiano.h"
-#include "vpianoabout.h"
-#include "connections.h"
-#include "preferences.h"
 
 class VPiano : public QMainWindow
 {
@@ -35,9 +31,12 @@ class VPiano : public QMainWindow
 public:
     VPiano( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
     virtual ~VPiano();
-    void closeEvent(QCloseEvent *event);
-    void findInput(QString name, QList<drumstick::rt::MIDIInput*> &inputs);
-    void findOutput(QString name, QList<drumstick::rt::MIDIOutput*> &outputs);
+    void showEvent(QShowEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
+
+    void findInput(QString name);
+    void findOutput(QString name);
+    void setPortableConfig(const QString fileName = QString());
 
 public slots:
     void readSettings();
@@ -54,22 +53,13 @@ public slots:
     void slotNoteOff(const int chan, const int note, const int vel);
 
 private:
+    void initialize();
+
+    QList<drumstick::rt::MIDIInput*> m_inputs;
+    QList<drumstick::rt::MIDIOutput*> m_outputs;
     drumstick::rt::MIDIInput * m_midiIn;
     drumstick::rt::MIDIOutput* m_midiOut;
-    QString m_lastInputBackend;
-    QString m_lastOutputBackend;
-    QString m_lastInputConnection;
-    QString m_lastOutputConnection;
-    bool m_midiThru;
-    bool m_advanced;
     Ui::VPiano ui;
-    About dlgAbout;
-    Connections dlgConnections;
-    Preferences dlgPreferences;
-    QString m_nativeInput;
-    QString m_nativeOutput;
-    QString m_defaultInput;
-    QString m_defaultOutput;
 };
 
 #endif // VPIANO_H

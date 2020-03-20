@@ -19,15 +19,10 @@
 #include "preferences.h"
 #include <QPushButton>
 #include <QShowEvent>
+#include "vpianosettings.h"
 
 Preferences::Preferences(QWidget *parent)
-    : QDialog(parent),
-    m_inChannel(0),
-    m_outChannel(0),
-    m_velocity(100),
-    m_baseOctave(1),
-    m_numKeys(88),
-    m_startingKey(9)
+    : QDialog(parent)
 {
     ui.setupUi( this );
     connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(slotButtonClicked(QAbstractButton*)));
@@ -43,63 +38,28 @@ void Preferences::slotButtonClicked(QAbstractButton *button)
 void Preferences::showEvent ( QShowEvent *event )
 {
     if (event->type() == QEvent::Show) {
-        ui.spinInChan->setValue( m_inChannel );
-        ui.spinOutChan->setValue( m_outChannel );
-        ui.spinVelocity->setValue( m_velocity );
-        ui.spinBaseOctave->setValue( m_baseOctave );
-        ui.spinNumKeys->setValue( m_numKeys );
-        ui.comboNotes->setCurrentIndex( m_startingKey );
+        ui.spinInChan->setValue( VPianoSettings::instance()->inChannel() );
+        ui.spinOutChan->setValue( VPianoSettings::instance()->outChannel() );
+        ui.spinVelocity->setValue( VPianoSettings::instance()->velocity() );
+        ui.spinBaseOctave->setValue( VPianoSettings::instance()->baseOctave() );
+        ui.spinNumKeys->setValue( VPianoSettings::instance()->numKeys() );
+        ui.comboNotes->setCurrentIndex( VPianoSettings::instance()->startingKey() );
     }
 }
 
 void Preferences::apply()
 {
-    m_inChannel = ui.spinInChan->value();
-    m_outChannel = ui.spinOutChan->value();
-    m_velocity = ui.spinVelocity->value();
-    m_baseOctave = ui.spinBaseOctave->value();
-    m_numKeys = ui.spinNumKeys->value();
-    m_startingKey = ui.comboNotes->currentIndex();
+    VPianoSettings::instance()->setInChannel(ui.spinInChan->value());
+    VPianoSettings::instance()->setOutChannel(ui.spinOutChan->value());
+    VPianoSettings::instance()->setVelocity(ui.spinVelocity->value());
+    VPianoSettings::instance()->setBaseOctave(ui.spinBaseOctave->value());
+    VPianoSettings::instance()->setNumKeys(ui.spinNumKeys->value());
+    VPianoSettings::instance()->setStartingKey(ui.comboNotes->currentIndex());
+    VPianoSettings::instance()->SaveSettings();
 }
 
 void Preferences::accept()
 {
     apply();
     QDialog::accept();
-}
-
-void Preferences::setInChannel(const int chan)
-{
-    m_inChannel = chan;
-    ui.spinInChan->setValue(m_inChannel);
-}
-
-void Preferences::setOutChannel(const int chan)
-{
-    m_outChannel = chan;
-    ui.spinOutChan->setValue(m_outChannel);
-}
-
-void Preferences::setVelocity(const int vel)
-{
-    m_velocity = vel;
-    ui.spinVelocity->setValue(m_velocity);
-}
-
-void Preferences::setBaseOctave(const int octave)
-{
-    m_baseOctave = octave;
-    ui.spinBaseOctave->setValue(m_baseOctave);
-}
-
-void Preferences::setNumKeys(const int keys)
-{
-    m_numKeys = keys;
-    ui.spinNumKeys->setValue(m_numKeys);
-}
-
-void Preferences::setStartingKey(const int key)
-{
-    m_startingKey = key;
-    ui.comboNotes->setCurrentIndex(m_startingKey);
 }

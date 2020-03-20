@@ -26,9 +26,6 @@
 #include <QSettings>
 #include <fluidsynth.h>
 
-#define cvtstr(s) #s
-#define stringify(s) cvtstr(s)
-
 const QString QSTR_FLUIDSYNTH(QLatin1String("FluidSynth"));
 
 class SynthEngine : public QObject
@@ -52,7 +49,7 @@ public:
     Q_INVOKABLE void noteOff(const int channel, const int midiNote, const int velocity);
     Q_INVOKABLE void controlChange(const int channel, const int ctl, const int value);
     Q_INVOKABLE void bender(const int channel, const int value);
-    Q_INVOKABLE QString version() const { return stringify(VERSION); }
+    Q_INVOKABLE QString version() const { return QT_STRINGIFY(VERSION); }
 
     QString currentConnection() const { return m_currentConnection; }
     void close();

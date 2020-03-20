@@ -17,14 +17,16 @@ HEADERS += \
     vpiano.h \
     connections.h \
     vpianoabout.h \
-    preferences.h
+    preferences.h \
+    vpianosettings.h
 
 SOURCES += \
     vpiano.cpp \
     connections.cpp \
     vpianoabout.cpp \
     preferences.cpp \
-    vpianomain.cpp
+    vpianomain.cpp \
+    vpianosettings.cpp
 
 # libs
 macx:!static {

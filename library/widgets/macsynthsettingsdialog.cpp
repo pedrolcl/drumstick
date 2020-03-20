@@ -16,13 +16,14 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QSettings>
 #include <QNetworkInterface>
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QDir>
 #include <QStandardPaths>
 #include <QFileDialog>
+
+#include <drumstick/settingsfactory.h>
 #include "macsynthsettingsdialog.h"
 #include "ui_macsynthsettingsdialog.h"
 
@@ -59,12 +60,12 @@ void MacSynthSettingsDialog::showEvent(QShowEvent *event)
 void MacSynthSettingsDialog::readSettings()
 {
 
-    QSettings settings;
-    settings.beginGroup("DLS Synth");
-    bool reverb = settings.value("reverb_dls", false).toBool();
-    bool def = settings.value("default_dls", true).toBool();
-    QString soundfont = settings.value("soundfont_dls").toString();
-    settings.endGroup();
+    SettingsFactory settings;
+    settings->beginGroup("DLS Synth");
+    bool reverb = settings->value("reverb_dls", false).toBool();
+    bool def = settings->value("default_dls", true).toBool();
+    QString soundfont = settings->value("soundfont_dls").toString();
+    settings->endGroup();
 
     ui->reverb_dls->setChecked(reverb);
     ui->default_dls->setChecked(def);
@@ -73,18 +74,18 @@ void MacSynthSettingsDialog::readSettings()
 
 void MacSynthSettingsDialog::writeSettings()
 {
-    QSettings settings;
+    SettingsFactory settings;
 
     QString soundfont = ui->soundfont_dls->text();
     bool reverb = ui->reverb_dls->isChecked();
     bool def = ui->default_dls->isChecked();
 
-    settings.beginGroup("DLS Synth");
-    settings.setValue("soundfont_dls", soundfont);
-    settings.setValue("reverb_dls", reverb);
-    settings.setValue("default_dls", def);
-    settings.endGroup();
-    settings.sync();
+    settings->beginGroup("DLS Synth");
+    settings->setValue("soundfont_dls", soundfont);
+    settings->setValue("reverb_dls", reverb);
+    settings->setValue("default_dls", def);
+    settings->endGroup();
+    settings->sync();
 }
 
 void MacSynthSettingsDialog::restoreDefaults()
