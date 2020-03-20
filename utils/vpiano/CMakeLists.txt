@@ -20,6 +20,11 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5Widgets REQUIRED)
+set(EXTRA_LIBS)
+if(APPLE)
+    find_library(CORELIBS CoreFoundation)
+    set(EXTRA_LIBS ${CORELIBS})
+endif()
 
 set(vpiano_SRCS
     connections.cpp
@@ -51,6 +56,7 @@ target_link_libraries(drumstick-vpiano PUBLIC
     Drumstick::RT
     Drumstick::Widgets
     Qt5::Widgets
+    ${EXTRA_LIBS}
 )
 
 if(STATIC_DRUMSTICK)
