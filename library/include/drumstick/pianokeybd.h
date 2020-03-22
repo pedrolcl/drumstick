@@ -24,6 +24,13 @@
 #include "macros.h"
 #include "pianopalette.h"
 
+/**
+ * @file pianokeybd.h
+ * MIDI Widgets
+ * @addtogroup Widgets MIDI Widgets
+ * @{
+ */
+
 #if defined(VPIANO_PLUGIN)
 #include <QtDesigner/QDesignerExportWidget>
 #else
@@ -32,6 +39,9 @@
 
 namespace drumstick { namespace widgets {
 
+    /**
+     * @brief The RawKbdHandler class callbacks
+     */
     class RawKbdHandler {
     public:
         virtual ~RawKbdHandler() {}
@@ -39,6 +49,9 @@ namespace drumstick { namespace widgets {
         virtual bool handleKeyReleased(int keycode) = 0;
     };
 
+    /**
+     * @brief The PianoHandler class callbacks
+     */
     class PianoHandler
     {
     public:
@@ -47,13 +60,19 @@ namespace drumstick { namespace widgets {
         virtual void noteOff( const int note, const int vel ) = 0;
     };
 
+    /**
+     * @brief KeyboardMap
+     */
     typedef QHash<int, int> KeyboardMap;
 
-    const int DEFAULTSTARTINGKEY = 9;
-    const int DEFAULTBASEOCTAVE = 1;
-    const int DEFAULTNUMBEROFKEYS = 88;
-    const int KEYLABELFONTSIZE = 7;
+    const int DEFAULTSTARTINGKEY = 9;   ///< Default starting key (A)
+    const int DEFAULTBASEOCTAVE = 1;    ///< Default base octave
+    const int DEFAULTNUMBEROFKEYS = 88; ///< Default number of piano keys
+    const int KEYLABELFONTSIZE = 7;     ///< Default piano key label font size
 
+    /**
+     * @brief The PianoKeybd class
+     */
     class QDESIGNER_WIDGET_EXPORT PianoKeybd : public QGraphicsView, public RawKbdHandler
     {
         Q_OBJECT
@@ -153,5 +172,7 @@ namespace drumstick { namespace widgets {
 
 } // namespace widgets
 } // namespace drumstick
+
+/** @} */
 
 #endif // PIANOKEYBD_H

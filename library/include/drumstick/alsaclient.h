@@ -32,7 +32,10 @@
  * @{
  */
 
+//! Drumstick common
 namespace drumstick {
+
+//! Drumstick ALSA library wrapper
 namespace ALSA {
 
 class MidiQueue;

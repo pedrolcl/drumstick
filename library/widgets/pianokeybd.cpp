@@ -18,7 +18,7 @@
 
 #include <QApplication>
 #include <drumstick/pianokeybd.h>
-#include "pianoscene.h"
+#include <drumstick/pianoscene.h>
 
 namespace drumstick {
 namespace widgets {

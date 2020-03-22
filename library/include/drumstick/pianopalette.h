@@ -23,15 +23,28 @@
 #include <QList>
 #include "macros.h"
 
+/**
+ * @file pianopalette.h
+ * MIDI Widgets
+ * @addtogroup Widgets MIDI Widgets
+ * @{
+ */
+
 namespace drumstick { namespace widgets {
 
+/**
+ * @brief The PalettePolicy enum
+ */
 enum PalettePolicy {
-    PAL_SINGLE = 0,
-    PAL_DOUBLE = 1,
-    PAL_CHANNELS = 2,
-    PAL_SCALE = 3
+    PAL_SINGLE = 0,    ///< Single highlihgting color for all keys
+    PAL_DOUBLE = 1,    ///< Two highlihgting colors (naturals/alterations)
+    PAL_CHANNELS = 2,  ///< Different highlihgting colors for each channel
+    PAL_SCALE = 3      ///< Different highlihgting colors for each chromatic scale note
 };
 
+/**
+ * @brief The PianoPalette class
+ */
 class DRUMSTICK_EXPORT PianoPalette
 {
 public:
@@ -65,5 +78,7 @@ protected:
 };
 
 }} // namespace drumstick::widgets
+
+/** @} */
 
 #endif // PIANOPALETTE_H

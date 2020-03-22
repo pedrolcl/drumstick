@@ -31,7 +31,10 @@
  * @{
  */
 
-namespace drumstick { namespace rt {
+namespace drumstick {
+
+//! Drumstick Real-Time library
+namespace rt {
 
     const QString QSTR_DRUMSTICK(QLatin1Literal("drumstick"));
     const QString QSTR_DRUMSTICKRT(QLatin1Literal("DRUMSTICKRT"));

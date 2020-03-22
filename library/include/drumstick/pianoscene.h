@@ -26,10 +26,19 @@
 #include "pianokey.h"
 #include "keylabel.h"
 
-namespace drumstick {
-namespace widgets {
+/**
+ * @file pianoscene.h
+ * MIDI Widgets
+ * @addtogroup Widgets MIDI Widgets
+ * @{
+ */
 
-    class PianoScene : public QGraphicsScene
+namespace drumstick { namespace widgets {
+
+    /**
+     * @brief The PianoScene class
+     */
+    class DRUMSTICK_EXPORT PianoScene : public QGraphicsScene
     {
         Q_OBJECT
 
@@ -156,5 +165,7 @@ namespace widgets {
     };
 
 }} // namespace drumstick::widgets
+
+/** @} */
 
 #endif /*PIANOSCENE_H_*/

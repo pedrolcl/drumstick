@@ -23,10 +23,9 @@
 #include <qmath.h>
 #include <QDebug>
 #include <drumstick/pianokeybd.h>
-#include "pianoscene.h"
+#include <drumstick/pianoscene.h>
 
-namespace drumstick {
-namespace widgets {
+namespace drumstick { namespace widgets {
 
 #define KEYWIDTH  18
 #define KEYHEIGHT 72

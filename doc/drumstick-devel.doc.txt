@@ -1,8 +1,8 @@
 /**
 @mainpage drumstick Documentation
-@author Copyright &copy; 2009-2019 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
-@date 2019-12-31
-@version 1.1.3
+@author Copyright &copy; 2009-2020 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
+@date 2020-03-20
+@version 2.0.0
 
 This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/
@@ -12,10 +12,11 @@ To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/
 This is the reference documentation for drumstick. These libraries are a set of C++ MIDI related classes,
 using Qt5 objects, idioms and style.
 
-Currently, there are three independent libraries designed to work together when needed:
+Currently, there are four libraries designed to work together when needed:
 - \b Drumstick::ALSA is a Linux only C++/Qt wrapper around the ALSA Sequencer API. ALSA sequencer provides software support for MIDI technology on Linux.
 - \b Drumstick::File provides easy multiplatform file I/O for Standard MIDI Files (.mid), Cakewalk (.wrk) and Overture (.ove) file formats.
 - \b Drumstick::RT is a realtime MIDI I/O library with pluggable backends. It uses Drumstick::ALSA on Linux, and other frameworks on Mac and Windows.
+- \b Drumstick::Widgets is a library of MIDI widgets, including a Virtual Piano used by VMPK among other programs
 
 @see http://qt-project.org/doc/qt-5/index.html
 @see http://www.alsa-project.org/alsa-doc/alsa-lib/seq.html
@@ -46,12 +47,12 @@ int main(int argc, char **argv) {
     QApplication app(argc, argv, false);
 
     // create a client object on the heap
-    drumstick::MidiClient *client = new drumstick::MidiClient;
+    drumstick::ALSA::MidiClient *client = new drumstick::ALSA::MidiClient;
     client->open();
     client->setClientName( "MyClient" );
 
     // create the port. Pointer is owned by the client instance
-    drumstick::MidiPort *port = client->createPort();
+    drumstick::ALSA::MidiPort *port = client->createPort();
     port->setPortName( "MyPort" );
     port->setCapability( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ );
     port->setPortType( SND_SEQ_PORT_TYPE_MIDI_GENERIC );
@@ -62,7 +63,7 @@ int main(int argc, char **argv) {
     for(int i = 0; i < notes.length(); ++i)
     {
         // create event objects on the stack, to send note on/off messages
-        drumstick::NoteOnEvent ev1( 0, notes[i], 100 ); // (channel, note number, velocity)
+        drumstick::ALSA::NoteOnEvent ev1( 0, notes[i], 100 ); // (channel, note number, velocity)
         ev1.setSource( port->getPortId() );
         ev1.setSubscribers();   // deliver to all the connected ports
         ev1.setDirect();        // not scheduled, deliver immediately
@@ -71,7 +72,7 @@ int main(int argc, char **argv) {
 
         QThread::msleep(250);   // wait a quarter second
 
-        drumstick::NoteOffEvent ev2( 0, notes[i], 0 ); // (channel, note number, velocity)
+        drumstick::ALSA::NoteOffEvent ev2( 0, notes[i], 0 ); // (channel, note number, velocity)
         ev2.setSource( port->getPortId() );
         ev2.setSubscribers();   // deliver to all the connected ports
         ev2.setDirect();        // not scheduled, deliver immediately
@@ -118,7 +119,7 @@ int main(int argc, char **argv) {
 
 A common pattern on both implementations is QThread::msleep(250) to do the rhythm.
 If you are targeting only Linux, you may be interested on another (better) way to do the same,
-using Drumstick::ALSA again, because ALSA Sequencer is capable of event sacheduling
+using Drumstick::ALSA again, because ALSA Sequencer is capable of event scheduling
 (that is why it is called a Sequencer).
 
 @code
@@ -127,18 +128,18 @@ using Drumstick::ALSA again, because ALSA Sequencer is capable of event sachedul
 
 int main(int argc, char **argv) {
     QApplication app(argc, argv, false);
-    drumstick::MidiClient *client = new drumstick::MidiClient;
+    drumstick::ALSA::MidiClient *client = new drumstick::ALSA::MidiClient;
     client->open();
     client->setClientName( "MyClient" );
 
-    drumstick::MidiPort *port = client->createPort();
+    drumstick::ALSA::MidiPort *port = client->createPort();
     port->setPortName( "MyPort" );
     port->setCapability( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ );
     port->setPortType( SND_SEQ_PORT_TYPE_MIDI_GENERIC );
     port->subscribeTo( "FLUID Synth (qsynth):0" );
 
-    drumstick::MidiQueue *queue = client->createQueue( "MyQueue" );
-    drumstick::QueueTempo tempo = queue->getTempo();
+    drumstick::ALSA::MidiQueue *queue = client->createQueue( "MyQueue" );
+    drumstick::ALSA::QueueTempo tempo = queue->getTempo();
     tempo.setNominalBPM( 120 );
     queue->setTempo(tempo);
     client->drainOutput();
@@ -148,14 +149,14 @@ int main(int argc, char **argv) {
     QList<int> notes = { 60, 62, 64, 65, 67, 69, 71, 72 };
     for(int i = 0; i < notes.length(); ++i)
     {
-        drumstick::NoteOnEvent ev1( 0, notes[i], 100 );
+        drumstick::ALSA::NoteOnEvent ev1( 0, notes[i], 100 );
         ev1.setSource( port->getPortId() );
         ev1.setSubscribers();
         ev1.scheduleTick(queue->getId(), tick, false);
         client->output( &ev1 );
 
         tick += 60;
-        drumstick::NoteOffEvent ev2( 0, notes[i], 0 );
+        drumstick::ALSA::NoteOffEvent ev2( 0, notes[i], 0 );
         ev2.setSource( port->getPortId() );
         ev2.setSubscribers();
         ev2.scheduleTick(queue->getId(), tick, false);
@@ -274,7 +275,7 @@ Simple command line MIDI metronome
 Prints information about the ALSA sequencer subsystem
 
 @example vpiano.cpp
-A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sf.net
+A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sourceforge.io
 @include vpiano.h
 
 */

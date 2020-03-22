@@ -23,21 +23,33 @@
 #include <QScopedPointer>
 #include "macros.h"
 
+/**
+ * @file settingsfactory.h
+ * MIDI Widgets
+ * @addtogroup Widgets MIDI Widgets
+ * @{
+ */
+
 namespace drumstick { namespace widgets {
 
-class DRUMSTICK_EXPORT SettingsFactory
-{
-public:
-    QSettings* getQSettings();
-    QSettings& operator*();
-    QSettings* operator->();
-    static void setFileName(const QString name);
+    /**
+     * @brief The SettingsFactory class
+     */
+    class DRUMSTICK_EXPORT SettingsFactory
+    {
+    public:
+        QSettings* getQSettings();
+        QSettings& operator*();
+        QSettings* operator->();
+        static void setFileName(const QString name);
 
-private:
-    QScopedPointer<QSettings> m_settings{nullptr};
-    static QString s_fileName;
-};
+    private:
+        QScopedPointer<QSettings> m_settings{nullptr};
+        static QString s_fileName;
+    };
 
 }} // namespace drumstick::widgets
+
+/** @} */
 
 #endif // SETTINGS_H

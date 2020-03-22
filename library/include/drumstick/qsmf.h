@@ -34,6 +34,8 @@ class QDataStream;
  */
 
 namespace drumstick {
+
+//! Drumstick File library
 namespace File {
 
 const quint32 MThd = 0x4d546864; /**< SMF Header prefix */

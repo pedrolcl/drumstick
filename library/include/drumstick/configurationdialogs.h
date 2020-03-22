@@ -23,12 +23,45 @@
 #include <QWidget>
 #include "macros.h"
 
-namespace drumstick { namespace widgets {
+/**
+ * @file configurationdialogs.h
+ * MIDI Widgets
+ * @defgroup Widgets MIDI Widgets
+ * @{
+ */
 
+namespace drumstick {
+
+//! Drumstick Widgets library
+namespace widgets {
+
+/**
+ * @brief Input Driver configuration dialog
+ * @param driver name of the driver
+ * @param parent optional parent widget
+ * @return true if configuration has changed
+ */
 bool DRUMSTICK_EXPORT configureInputDriver(const QString driver, QWidget* parent = nullptr);
+
+/**
+ * @brief Output Driver configuration dialog
+ * @param driver name of the driver
+ * @param parent optional parent widget
+ * @return true if configuration has changed
+ */
 bool DRUMSTICK_EXPORT configureOutputDriver(const QString driver, QWidget* parent = nullptr);
+
+/**
+ * @brief Changes the sound font configuration
+ * @param driver name of the driver
+ * @param fileName name of the soundfont file
+ * @param parent optional parent widget
+ * @return true if configuration has changed
+ */
 void DRUMSTICK_EXPORT changeSoundFont(const QString driver, const QString fileName, QWidget* parent = nullptr);
 
 }}
+
+/** @} */
 
 #endif // CONFIGURATIONDIALOGS_H

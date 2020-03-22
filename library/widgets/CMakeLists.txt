@@ -22,13 +22,14 @@ find_package(Qt5Network REQUIRED)
 set(drumstick-widgets_HEADERS
     ../include/drumstick/pianokeybd.h
     ../include/drumstick/pianopalette.h
+    ../include/drumstick/pianoscene.h
     ../include/drumstick/settingsfactory.h
     ../include/drumstick/configurationdialogs.h
 )
 
 set(drumstick-widgets_OBJ_SRCS
     ../include/drumstick/pianokeybd.h
-    pianoscene.h
+    ../include/drumstick/pianoscene.h
     fluidsettingsdialog.h
     networksettingsdialog.h
     macsynthsettingsdialog.h
@@ -56,7 +57,6 @@ set(drumstick-widgets_SRCS
     pianokeybd.cpp
     pianopalette.cpp
     pianoscene.cpp
-    pianoscene.h
     settingsfactory.cpp
     sonivoxsettingsdialog.cpp
     sonivoxsettingsdialog.h
