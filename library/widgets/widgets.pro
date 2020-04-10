@@ -20,10 +20,10 @@ FORMS += \
 HEADERS += \
     ../include/drumstick/pianokeybd.h \
     ../include/drumstick/pianopalette.h \
+    ../include/drumstick/pianoscene.h \
     ../include/drumstick/configurationdialogs.h \
     ../include/drumstick/settingsfactory.h \
     pianokey.h \
-    pianoscene.h \
     keylabel.h \
     fluidsettingsdialog.h \
     networksettingsdialog.h
