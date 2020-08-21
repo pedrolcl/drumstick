@@ -65,6 +65,9 @@ namespace drumstick { namespace widgets {
      */
     typedef QHash<int, int> KeyboardMap;
 
+    extern DRUMSTICK_EXPORT KeyboardMap g_DefaultKeyMap;
+    extern DRUMSTICK_EXPORT KeyboardMap g_DefaultRawKeyMap;
+
     const int DEFAULTSTARTINGKEY = 9;   ///< Default starting key (A)
     const int DEFAULTBASEOCTAVE = 1;    ///< Default base octave
     const int DEFAULTNUMBEROFKEYS = 88; ///< Default number of piano keys

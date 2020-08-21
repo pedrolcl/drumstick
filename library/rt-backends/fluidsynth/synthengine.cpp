@@ -21,7 +21,6 @@
 #include <QSettings>
 #include <QStandardPaths>
 #include <QCoreApplication>
-#include <QDebug>
 #include "synthengine.h"
 
 const QString QSTR_PREFERENCES("FluidSynth");
@@ -235,7 +234,7 @@ void SynthEngine::readSettings(QSettings *settings)
         m_defSoundFont = sf2.absoluteFilePath();
     }
     m_sfid = -1;
-    qDebug() << "defSoundFont:" << m_defSoundFont;
+    //qDebug() << "defSoundFont:" << m_defSoundFont;
     settings->beginGroup(QSTR_PREFERENCES);
     m_soundFont = settings->value(QSTR_INSTRUMENTSDEFINITION, m_defSoundFont).toString();
     settings->endGroup();

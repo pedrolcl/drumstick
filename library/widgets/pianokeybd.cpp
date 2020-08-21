@@ -23,181 +23,188 @@
 namespace drumstick {
 namespace widgets {
 
+KeyboardMap g_DefaultKeyMap {
+    {Qt::Key_Z, 12},
+    {Qt::Key_S, 13},
+    {Qt::Key_X, 14},
+    {Qt::Key_D, 15},
+    {Qt::Key_C, 16},
+    {Qt::Key_V, 17},
+    {Qt::Key_G, 18},
+    {Qt::Key_B, 19},
+    {Qt::Key_H, 20},
+    {Qt::Key_N, 21},
+    {Qt::Key_J, 22},
+    {Qt::Key_M, 23},
+    {Qt::Key_Q, 24},
+    {Qt::Key_2, 25},
+    {Qt::Key_W, 26},
+    {Qt::Key_3, 27},
+    {Qt::Key_E, 28},
+    {Qt::Key_R, 29},
+    {Qt::Key_5, 30},
+    {Qt::Key_T, 31},
+    {Qt::Key_6, 32},
+    {Qt::Key_Y, 33},
+    {Qt::Key_7, 34},
+    {Qt::Key_U, 35},
+    {Qt::Key_I, 36},
+    {Qt::Key_9, 37},
+    {Qt::Key_O, 38},
+    {Qt::Key_0, 39},
+    {Qt::Key_P, 40}
+};
+
+KeyboardMap g_DefaultRawKeyMap {
+#if defined(Q_OS_LINUX)
+    {94, 11},
+    {52, 12},
+    {39, 13},
+    {53, 14},
+    {40, 15},
+    {54, 16},
+    {55, 17},
+    {42, 18},
+    {56, 19},
+    {43, 20},
+    {57, 21},
+    {44, 22},
+    {58, 23},
+    {59, 24},
+    {46, 25},
+    {60, 26},
+    {47, 27},
+    {61, 28},
+
+    {24, 29},
+    {11, 30},
+    {25, 31},
+    {12, 32},
+    {26, 33},
+    {13, 34},
+    {27, 35},
+    {28, 36},
+    {15, 37},
+    {29, 38},
+    {16, 39},
+    {30, 40},
+    {31, 41},
+    {18, 42},
+    {32, 43},
+    {19, 44},
+    {33, 45},
+    {20, 46},
+    {34, 47},
+    {35, 48}
+#endif
+
+#if defined(Q_OS_WIN)
+    {86, 11},
+    {44, 12},
+    {31, 13},
+    {45, 14},
+    {32, 15},
+    {46, 16},
+    {47, 17},
+    {34, 18},
+    {48, 19},
+    {35, 20},
+    {49, 21},
+    {36, 22},
+    {50, 23},
+    {51, 24},
+    {38, 25},
+    {52, 26},
+    {39, 27},
+    {53, 28},
+
+    {16, 29},
+    {3, 30},
+    {17, 31},
+    {4, 32},
+    {18, 33},
+    {5, 34},
+    {19, 35},
+    {20, 36},
+    {7, 37},
+    {21, 38},
+    {8, 39},
+    {22, 40},
+    {23, 41},
+    {10, 42},
+    {24, 43},
+    {11, 44},
+    {25, 45},
+    {12, 46},
+    {26, 47},
+    {27, 48}
+#endif
+
+#if defined(Q_OS_MAC)
+    {50, 11},
+    {6, 12},
+    {1, 13},
+    {7, 14},
+    {2, 15},
+    {8, 16},
+    {9, 17},
+    {5, 18},
+    {11, 19},
+    {4, 20},
+    {45, 21},
+    {38, 22},
+    {46, 23},
+    {43, 24},
+    {37, 25},
+    {47, 26},
+    {41, 27},
+    {44, 28},
+
+    {12, 29},
+    {19, 30},
+    {13, 31},
+    {20, 32},
+    {14, 33},
+    {21, 34},
+    {15, 35},
+    {17, 36},
+    {22, 37},
+    {16, 38},
+    {26, 39},
+    {32, 40},
+    {34, 41},
+    {25, 42},
+    {31, 43},
+    {29, 44},
+    {35, 45},
+    {27, 46},
+    {33, 47},
+    {30, 48}
+#endif
+};
+
 class PianoKeybd::PianoKeybdPrivate {
 public:
-    PianoKeybdPrivate(): m_rotation(0), m_scene(nullptr), m_rawMap(nullptr) {}
+    PianoKeybdPrivate(): m_rotation(0), m_scene(nullptr), m_rawMap(nullptr)
+    {
+        //qDebug() << Q_FUNC_INFO;
+    }
+
+    ~PianoKeybdPrivate()
+    {
+        m_rawMap = nullptr;
+        //qDebug() << Q_FUNC_INFO;
+    }
+
     int m_rotation;
     PianoScene *m_scene;
     KeyboardMap *m_rawMap;
-    KeyboardMap m_defaultMap;
-    KeyboardMap m_defaultRawMap;
-
-    void initDefaultMap()
-    {
-        // Default translated Keyboard Map
-        m_defaultMap.insert(Qt::Key_Z, 12);
-        m_defaultMap.insert(Qt::Key_S, 13);
-        m_defaultMap.insert(Qt::Key_X, 14);
-        m_defaultMap.insert(Qt::Key_D, 15);
-        m_defaultMap.insert(Qt::Key_C, 16);
-        m_defaultMap.insert(Qt::Key_V, 17);
-        m_defaultMap.insert(Qt::Key_G, 18);
-        m_defaultMap.insert(Qt::Key_B, 19);
-        m_defaultMap.insert(Qt::Key_H, 20);
-        m_defaultMap.insert(Qt::Key_N, 21);
-        m_defaultMap.insert(Qt::Key_J, 22);
-        m_defaultMap.insert(Qt::Key_M, 23);
-        m_defaultMap.insert(Qt::Key_Q, 24);
-        m_defaultMap.insert(Qt::Key_2, 25);
-        m_defaultMap.insert(Qt::Key_W, 26);
-        m_defaultMap.insert(Qt::Key_3, 27);
-        m_defaultMap.insert(Qt::Key_E, 28);
-        m_defaultMap.insert(Qt::Key_R, 29);
-        m_defaultMap.insert(Qt::Key_5, 30);
-        m_defaultMap.insert(Qt::Key_T, 31);
-        m_defaultMap.insert(Qt::Key_6, 32);
-        m_defaultMap.insert(Qt::Key_Y, 33);
-        m_defaultMap.insert(Qt::Key_7, 34);
-        m_defaultMap.insert(Qt::Key_U, 35);
-        m_defaultMap.insert(Qt::Key_I, 36);
-        m_defaultMap.insert(Qt::Key_9, 37);
-        m_defaultMap.insert(Qt::Key_O, 38);
-        m_defaultMap.insert(Qt::Key_0, 39);
-        m_defaultMap.insert(Qt::Key_P, 40);
-
-        // Default Raw Keyboard Map
-    #if defined(Q_OS_LINUX)
-        m_defaultRawMap.insert(94, 11);
-        m_defaultRawMap.insert(52, 12);
-        m_defaultRawMap.insert(39, 13);
-        m_defaultRawMap.insert(53, 14);
-        m_defaultRawMap.insert(40, 15);
-        m_defaultRawMap.insert(54, 16);
-        m_defaultRawMap.insert(55, 17);
-        m_defaultRawMap.insert(42, 18);
-        m_defaultRawMap.insert(56, 19);
-        m_defaultRawMap.insert(43, 20);
-        m_defaultRawMap.insert(57, 21);
-        m_defaultRawMap.insert(44, 22);
-        m_defaultRawMap.insert(58, 23);
-        m_defaultRawMap.insert(59, 24);
-        m_defaultRawMap.insert(46, 25);
-        m_defaultRawMap.insert(60, 26);
-        m_defaultRawMap.insert(47, 27);
-        m_defaultRawMap.insert(61, 28);
-
-        m_defaultRawMap.insert(24, 29);
-        m_defaultRawMap.insert(11, 30);
-        m_defaultRawMap.insert(25, 31);
-        m_defaultRawMap.insert(12, 32);
-        m_defaultRawMap.insert(26, 33);
-        m_defaultRawMap.insert(13, 34);
-        m_defaultRawMap.insert(27, 35);
-        m_defaultRawMap.insert(28, 36);
-        m_defaultRawMap.insert(15, 37);
-        m_defaultRawMap.insert(29, 38);
-        m_defaultRawMap.insert(16, 39);
-        m_defaultRawMap.insert(30, 40);
-        m_defaultRawMap.insert(31, 41);
-        m_defaultRawMap.insert(18, 42);
-        m_defaultRawMap.insert(32, 43);
-        m_defaultRawMap.insert(19, 44);
-        m_defaultRawMap.insert(33, 45);
-        m_defaultRawMap.insert(20, 46);
-        m_defaultRawMap.insert(34, 47);
-        m_defaultRawMap.insert(35, 48);
-    #endif
-
-    #if defined(Q_OS_WIN)
-        m_defaultRawMap.insert(86, 11);
-        m_defaultRawMap.insert(44, 12);
-        m_defaultRawMap.insert(31, 13);
-        m_defaultRawMap.insert(45, 14);
-        m_defaultRawMap.insert(32, 15);
-        m_defaultRawMap.insert(46, 16);
-        m_defaultRawMap.insert(47, 17);
-        m_defaultRawMap.insert(34, 18);
-        m_defaultRawMap.insert(48, 19);
-        m_defaultRawMap.insert(35, 20);
-        m_defaultRawMap.insert(49, 21);
-        m_defaultRawMap.insert(36, 22);
-        m_defaultRawMap.insert(50, 23);
-        m_defaultRawMap.insert(51, 24);
-        m_defaultRawMap.insert(38, 25);
-        m_defaultRawMap.insert(52, 26);
-        m_defaultRawMap.insert(39, 27);
-        m_defaultRawMap.insert(53, 28);
-
-        m_defaultRawMap.insert(16, 29);
-        m_defaultRawMap.insert(3, 30);
-        m_defaultRawMap.insert(17, 31);
-        m_defaultRawMap.insert(4, 32);
-        m_defaultRawMap.insert(18, 33);
-        m_defaultRawMap.insert(5, 34);
-        m_defaultRawMap.insert(19, 35);
-        m_defaultRawMap.insert(20, 36);
-        m_defaultRawMap.insert(7, 37);
-        m_defaultRawMap.insert(21, 38);
-        m_defaultRawMap.insert(8, 39);
-        m_defaultRawMap.insert(22, 40);
-        m_defaultRawMap.insert(23, 41);
-        m_defaultRawMap.insert(10, 42);
-        m_defaultRawMap.insert(24, 43);
-        m_defaultRawMap.insert(11, 44);
-        m_defaultRawMap.insert(25, 45);
-        m_defaultRawMap.insert(12, 46);
-        m_defaultRawMap.insert(26, 47);
-        m_defaultRawMap.insert(27, 48);
-    #endif
-
-    #if defined(Q_OS_MAC)
-        m_defaultRawMap.insert(50, 11);
-        m_defaultRawMap.insert(6, 12);
-        m_defaultRawMap.insert(1, 13);
-        m_defaultRawMap.insert(7, 14);
-        m_defaultRawMap.insert(2, 15);
-        m_defaultRawMap.insert(8, 16);
-        m_defaultRawMap.insert(9, 17);
-        m_defaultRawMap.insert(5, 18);
-        m_defaultRawMap.insert(11, 19);
-        m_defaultRawMap.insert(4, 20);
-        m_defaultRawMap.insert(45, 21);
-        m_defaultRawMap.insert(38, 22);
-        m_defaultRawMap.insert(46, 23);
-        m_defaultRawMap.insert(43, 24);
-        m_defaultRawMap.insert(37, 25);
-        m_defaultRawMap.insert(47, 26);
-        m_defaultRawMap.insert(41, 27);
-        m_defaultRawMap.insert(44, 28);
-
-        m_defaultRawMap.insert(12, 29);
-        m_defaultRawMap.insert(19, 30);
-        m_defaultRawMap.insert(13, 31);
-        m_defaultRawMap.insert(20, 32);
-        m_defaultRawMap.insert(14, 33);
-        m_defaultRawMap.insert(21, 34);
-        m_defaultRawMap.insert(15, 35);
-        m_defaultRawMap.insert(17, 36);
-        m_defaultRawMap.insert(22, 37);
-        m_defaultRawMap.insert(16, 38);
-        m_defaultRawMap.insert(26, 39);
-        m_defaultRawMap.insert(32, 40);
-        m_defaultRawMap.insert(34, 41);
-        m_defaultRawMap.insert(25, 42);
-        m_defaultRawMap.insert(31, 43);
-        m_defaultRawMap.insert(29, 44);
-        m_defaultRawMap.insert(35, 45);
-        m_defaultRawMap.insert(27, 46);
-        m_defaultRawMap.insert(33, 47);
-        m_defaultRawMap.insert(30, 48);
-    #endif
-        m_rawMap = &m_defaultRawMap;
-    }
 };
 
 PianoKeybd::PianoKeybd(QWidget *parent) 
     : QGraphicsView(parent), d(new PianoKeybdPrivate())
 {
+    //qDebug() << Q_FUNC_INFO;
     initialize();
     initScene(DEFAULTBASEOCTAVE, DEFAULTNUMBEROFKEYS, DEFAULTSTARTINGKEY);
 }
@@ -205,14 +212,16 @@ PianoKeybd::PianoKeybd(QWidget *parent)
 PianoKeybd::PianoKeybd(const int baseOctave, const int numKeys, const int startKey, QWidget *parent)
     : QGraphicsView(parent), d(new PianoKeybdPrivate)
 {
+    //qDebug() << Q_FUNC_INFO;
     initialize();
     initScene(baseOctave, numKeys, startKey);
 }
 
 PianoKeybd::~PianoKeybd()
 {
+    //qDebug() << Q_FUNC_INFO;
     d->m_scene->setRawKeyboardMode(false);
-    setKeyboardMap(0);
+    setKeyboardMap(nullptr);
     delete d;
 }
 
@@ -274,7 +283,7 @@ void PianoKeybd::retranslate()
 void PianoKeybd::initScene(int base, int num, int strt, const QColor& c)
 {
     d->m_scene = new PianoScene(base, num, strt, c, this);
-    d->m_scene->setKeyboardMap(&d->m_defaultMap);
+    d->m_scene->setKeyboardMap(&g_DefaultKeyMap);
     connect(d->m_scene, SIGNAL(noteOn(int,int)), SIGNAL(noteOn(int,int)));
     connect(d->m_scene, SIGNAL(noteOff(int,int)), SIGNAL(noteOff(int,int)));
     setScene(d->m_scene);
@@ -303,7 +312,7 @@ void PianoKeybd::initialize()
     setOptimizationFlag(DontSavePainterState, true);
     setOptimizationFlag(DontAdjustForAntialiasing, true);
     setBackgroundBrush(QApplication::palette().window());
-    d->initDefaultMap();
+    resetRawKeyboardMap();
 }
 
 void PianoKeybd::resizeEvent(QResizeEvent *event)
@@ -516,7 +525,7 @@ KeyboardMap* PianoKeybd::getKeyboardMap()
 
 void PianoKeybd::resetRawKeyboardMap()
 {
-    d->m_rawMap = &d->m_defaultRawMap;
+    d->m_rawMap = &g_DefaultRawKeyMap;
 }
 
 bool PianoKeybd::getRawKeyboardMode() const
@@ -531,7 +540,7 @@ void PianoKeybd::setRawKeyboardMode(const bool b)
 
 void PianoKeybd::resetKeyboardMap()
 {
-    d->m_scene->setKeyboardMap(&d->m_defaultMap);
+    d->m_scene->setKeyboardMap(&g_DefaultKeyMap);
 }
 
 void PianoKeybd::setRawKeyboardMap(KeyboardMap *m)
@@ -560,4 +569,3 @@ void PianoKeybd::showNoteOff(const int note, int vel)
 }
 
 }} // namespace drumstick::widgets
-

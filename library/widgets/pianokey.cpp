@@ -19,7 +19,7 @@
 #include <QApplication>
 #include <QPainter>
 #include <QPalette>
-#include <QDebug>
+//#include <QDebug>
 #include "pianokey.h"
 
 namespace drumstick {

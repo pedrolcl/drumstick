@@ -21,7 +21,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <qmath.h>
-#include <QDebug>
+//#include <QDebug>
 #include <drumstick/pianokeybd.h>
 #include <drumstick/pianoscene.h>
 
