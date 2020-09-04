@@ -70,10 +70,16 @@ namespace drumstick { namespace widgets {
         void setMaxNote(const int note);
         int getTranspose() const { return m_transpose; }
         void setTranspose(const int transpose);
-        bool showLabels() const { return m_showLabels; }
-        void setShowLabels(const bool show);
-        bool useFlats() const { return m_useFlats; }
-        void setUseFlats(const bool use);
+
+        PianoKeybd::LabelVisibility showLabels() const { return m_showLabels; }
+        void setShowLabels(const PianoKeybd::LabelVisibility show);
+        PianoKeybd::LabelAlteration alterations() const { return m_alterations; }
+        void setAlterations(const PianoKeybd::LabelAlteration use);
+        PianoKeybd::LabelCentralOctave getOctave() const { return m_octave; }
+        void setOctave(const PianoKeybd::LabelCentralOctave &octave);
+        PianoKeybd::LabelOrientation getOrientation() const { return m_orientation; }
+        void setOrientation(const PianoKeybd::LabelOrientation &orientation);
+
         bool isKeyboardEnabled() const { return m_keyboardEnabled; }
         void setKeyboardEnabled( const bool enable );
         bool isMouseEnabled() const { return m_mouseEnabled; }
@@ -82,6 +88,7 @@ namespace drumstick { namespace widgets {
         void setTouchEnabled( const bool enable );
         bool velocityTint() const { return m_velocityTint; }
         void setVelocityTint( const bool enable ) { m_velocityTint = enable; }
+        bool isOctaveStart( const int note );
 
         void showNoteOn( const int note, QColor color, int vel = -1 );
         void showNoteOn( const int note, int vel = -1 );
@@ -103,22 +110,25 @@ namespace drumstick { namespace widgets {
         void setChannel(const int channel) { m_channel = channel; }
         void retranslate();
         QStringList noteNames() const { return m_names_s; }
+        void refreshLabels();
 
     signals:
         void noteOn(int n, int v);
         void noteOff(int n, int v);
+        void signalName(const QString& name);
 
     protected:
         void showKeyOn( PianoKey* key, QColor color, int vel );
         void showKeyOn( PianoKey* key, int vel );
         void showKeyOff( PianoKey* key, int vel );
+        void displayKeyOn(PianoKey* key);
         void keyOn( PianoKey* key );
         void keyOff( PianoKey* key );
         void keyOn( PianoKey* key, qreal pressure );
         void keyOff( PianoKey* key, qreal pressure );
         PianoKey* getKeyForPos( const QPointF& p ) const;
         PianoKey* getPianoKey( const int key ) const;
-        QString noteName(const int note);
+        QString noteName( PianoKey* key );
         void mouseMoveEvent ( QGraphicsSceneMouseEvent * mouseEvent );
         void mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent );
         void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
@@ -127,13 +137,12 @@ namespace drumstick { namespace widgets {
         bool event(QEvent *event);
 
     private:
-        void hideOrShowKeys();
-        void refreshLabels();
-        void refreshKeys();
         void triggerNoteOn( const int note, const int vel );
         void triggerNoteOff( const int note, const int vel );
         int getNoteFromKey( const int key ) const;
         void setColorFromPolicy(PianoKey* key, const int vel);
+        void hideOrShowKeys();
+        void refreshKeys();
 
         int m_baseOctave;
         int m_numKeys;
@@ -141,8 +150,10 @@ namespace drumstick { namespace widgets {
         int m_minNote;
         int m_maxNote;
         int m_transpose;
-        bool m_showLabels;
-        bool m_useFlats;
+        PianoKeybd::LabelVisibility m_showLabels;
+        PianoKeybd::LabelAlteration m_alterations;
+        PianoKeybd::LabelCentralOctave m_octave;
+        PianoKeybd::LabelOrientation m_orientation;
         bool m_rawkbd;
         bool m_keyboardEnabled;
         bool m_mouseEnabled;

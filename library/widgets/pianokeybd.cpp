@@ -186,15 +186,10 @@ KeyboardMap g_DefaultRawKeyMap {
 class PianoKeybd::PianoKeybdPrivate {
 public:
     PianoKeybdPrivate(): m_rotation(0), m_scene(nullptr), m_rawMap(nullptr)
-    {
-        //qDebug() << Q_FUNC_INFO;
-    }
+    { }
 
     ~PianoKeybdPrivate()
-    {
-        m_rawMap = nullptr;
-        //qDebug() << Q_FUNC_INFO;
-    }
+    { }
 
     int m_rotation;
     PianoScene *m_scene;
@@ -204,7 +199,6 @@ public:
 PianoKeybd::PianoKeybd(QWidget *parent) 
     : QGraphicsView(parent), d(new PianoKeybdPrivate())
 {
-    //qDebug() << Q_FUNC_INFO;
     initialize();
     initScene(DEFAULTBASEOCTAVE, DEFAULTNUMBEROFKEYS, DEFAULTSTARTINGKEY);
 }
@@ -212,14 +206,12 @@ PianoKeybd::PianoKeybd(QWidget *parent)
 PianoKeybd::PianoKeybd(const int baseOctave, const int numKeys, const int startKey, QWidget *parent)
     : QGraphicsView(parent), d(new PianoKeybdPrivate)
 {
-    //qDebug() << Q_FUNC_INFO;
     initialize();
     initScene(baseOctave, numKeys, startKey);
 }
 
 PianoKeybd::~PianoKeybd()
 {
-    //qDebug() << Q_FUNC_INFO;
     d->m_scene->setRawKeyboardMode(false);
     setKeyboardMap(nullptr);
     delete d;
@@ -284,8 +276,9 @@ void PianoKeybd::initScene(int base, int num, int strt, const QColor& c)
 {
     d->m_scene = new PianoScene(base, num, strt, c, this);
     d->m_scene->setKeyboardMap(&g_DefaultKeyMap);
-    connect(d->m_scene, SIGNAL(noteOn(int,int)), SIGNAL(noteOn(int,int)));
-    connect(d->m_scene, SIGNAL(noteOff(int,int)), SIGNAL(noteOff(int,int)));
+    connect(d->m_scene, &PianoScene::noteOn, this, &PianoKeybd::noteOn);
+    connect(d->m_scene, &PianoScene::noteOff, this, &PianoKeybd::noteOff);
+    connect(d->m_scene, &PianoScene::signalName, this, &PianoKeybd::signalName);
     setScene(d->m_scene);
     initSinglePalette();
 }
@@ -333,6 +326,10 @@ void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
         bool keyboardEnabled = d->m_scene->isKeyboardEnabled();
         bool mouseEnabled = d->m_scene->isMouseEnabled();
         bool touchEnabled = d->m_scene->isTouchEnabled();
+        PianoKeybd::LabelVisibility showLabels = d->m_scene->showLabels();
+        PianoKeybd::LabelAlteration alteration = d->m_scene->alterations();
+        PianoKeybd::LabelCentralOctave octave  = d->m_scene->getOctave();
+        PianoKeybd::LabelOrientation orientation = d->m_scene->getOrientation();
         delete d->m_scene;
         initScene(baseOctave, numKeys, startKey, color);
         d->m_scene->setPianoHandler(handler);
@@ -340,6 +337,10 @@ void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
         d->m_scene->setKeyboardEnabled(keyboardEnabled);
         d->m_scene->setMouseEnabled(mouseEnabled);
         d->m_scene->setTouchEnabled(touchEnabled);
+        d->m_scene->setShowLabels(showLabels);
+        d->m_scene->setAlterations(alteration);
+        d->m_scene->setOctave(octave);
+        d->m_scene->setOrientation(orientation);
         fitInView(d->m_scene->sceneRect(), Qt::KeepAspectRatio);
     }
 }
@@ -418,24 +419,44 @@ void PianoKeybd::resetKeyPressedColor()
     d->m_scene->resetKeyPressedColor();
 }
 
-bool PianoKeybd::showLabels() const
+PianoKeybd::LabelVisibility PianoKeybd::showLabels() const
 {
     return d->m_scene->showLabels();
 }
 
-void PianoKeybd::setShowLabels(bool show)
+void PianoKeybd::setShowLabels(PianoKeybd::LabelVisibility show)
 {
     d->m_scene->setShowLabels(show);
 }
 
-bool PianoKeybd::useFlats() const
+PianoKeybd::LabelAlteration PianoKeybd::labelAlterations() const
 {
-    return d->m_scene->useFlats();
+    return d->m_scene->alterations();
 }
 
-void PianoKeybd::setUseFlats(bool use)
+void PianoKeybd::setLabelAlterations(PianoKeybd::LabelAlteration use)
 {
-    d->m_scene->setUseFlats(use);
+    d->m_scene->setAlterations(use);
+}
+
+PianoKeybd::LabelOrientation PianoKeybd::labelOrientation() const
+{
+    return d->m_scene->getOrientation();
+}
+
+void PianoKeybd::setLabelOrientation(PianoKeybd::LabelOrientation orientation)
+{
+    d->m_scene->setOrientation(orientation);
+}
+
+PianoKeybd::LabelCentralOctave PianoKeybd::labelOctave() const
+{
+    return d->m_scene->getOctave();
+}
+
+void PianoKeybd::setLabelOctave(PianoKeybd::LabelCentralOctave octave)
+{
+    d->m_scene->setOctave(octave);
 }
 
 int PianoKeybd::getTranspose() const
@@ -566,6 +587,13 @@ void PianoKeybd::showNoteOn(const int note, int vel)
 void PianoKeybd::showNoteOff(const int note, int vel)
 {
     d->m_scene->showNoteOff(note, vel);
+}
+
+void PianoKeybd::setFont(const QFont &font)
+{
+    QWidget::setFont(font);
+    d->m_scene->setFont(font);
+    d->m_scene->refreshLabels();
 }
 
 }} // namespace drumstick::widgets

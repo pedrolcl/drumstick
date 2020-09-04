@@ -71,7 +71,6 @@ namespace drumstick { namespace widgets {
     const int DEFAULTSTARTINGKEY = 9;   ///< Default starting key (A)
     const int DEFAULTBASEOCTAVE = 1;    ///< Default base octave
     const int DEFAULTNUMBEROFKEYS = 88; ///< Default number of piano keys
-    const int KEYLABELFONTSIZE = 7;     ///< Default piano key label font size
 
     /**
      * @brief The PianoKeybd class
@@ -83,19 +82,36 @@ namespace drumstick { namespace widgets {
         Q_PROPERTY( int numKeys READ numKeys WRITE setNumKeys )
         Q_PROPERTY( int rotation READ getRotation WRITE setRotation )
         Q_PROPERTY( QColor keyPressedColor READ getKeyPressedColor WRITE setKeyPressedColor )
-        Q_PROPERTY( bool showLabels READ showLabels WRITE setShowLabels )
-        Q_PROPERTY( bool useFlats READ useFlats WRITE setUseFlats )
+        Q_PROPERTY( LabelVisibility showLabels READ showLabels WRITE setShowLabels )
+        Q_PROPERTY( LabelAlteration alterations READ labelAlterations WRITE setLabelAlterations )
+        Q_PROPERTY( LabelOrientation labelOrientation READ labelOrientation WRITE setLabelOrientation )
+        Q_PROPERTY( LabelCentralOctave labelOctave READ labelOctave WRITE setLabelOctave )
         Q_PROPERTY( int transpose READ getTranspose WRITE setTranspose )
-    #if defined(VPIANO_PLUGIN)
+
         Q_CLASSINFO("Author", "Pedro Lopez-Cabanillas <plcl@users.sf.net>")
         Q_CLASSINFO("URL", "http://sourceforge.net/projects/vmpk")
-        Q_CLASSINFO("Version", "1.0")
-    #endif
+        Q_CLASSINFO("Version", QT_STRINGIFY(VERSION))
     public:
         PianoKeybd(QWidget *parent = nullptr);
         PianoKeybd(const int baseOctave, const int numKeys, const int startKey, QWidget *parent = nullptr);
         virtual ~PianoKeybd();
 
+        enum LabelVisibility { ShowNever, ShowMinimum, ShowActivated, ShowAlways };
+        Q_ENUM(LabelVisibility);
+
+        enum LabelAlteration { ShowSharps, ShowFlats, ShowNothing };
+        Q_ENUM(LabelAlteration);
+
+        enum LabelOrientation { HorizontalOrientation, VerticalOrientation, AutomaticOrientation };
+        Q_ENUM(LabelOrientation);
+
+        enum LabelNaming { StandardNames, CustomNamesWithSharps, CustomNamesWithFlats };
+        Q_ENUM(LabelNaming);
+
+        enum LabelCentralOctave { OctaveC3, OctaveC4, OctaveC5 };
+        Q_ENUM(LabelCentralOctave);
+
+        void setFont(const QFont &font);
         PianoHandler* getPianoHandler() const;
         void setPianoHandler(PianoHandler* handler);
         PianoPalette* getPianoPalette() const;
@@ -118,10 +134,14 @@ namespace drumstick { namespace widgets {
         QColor getKeyPressedColor() const;
         void setKeyPressedColor(const QColor& c);
         void resetKeyPressedColor();
-        bool showLabels() const;
-        void setShowLabels(bool show);
-        bool useFlats() const;
-        void setUseFlats(bool use);
+        LabelVisibility showLabels() const;
+        void setShowLabels(LabelVisibility show);
+        PianoKeybd::LabelAlteration labelAlterations() const;
+        void setLabelAlterations(PianoKeybd::LabelAlteration use);
+        PianoKeybd::LabelOrientation labelOrientation() const;
+        void setLabelOrientation(PianoKeybd::LabelOrientation orientation);
+        PianoKeybd::LabelCentralOctave labelOctave() const;
+        void setLabelOctave(PianoKeybd::LabelCentralOctave octave);
         int getTranspose() const;
         void setTranspose(int t);
         int getChannel() const;
@@ -160,6 +180,7 @@ namespace drumstick { namespace widgets {
     signals:
         void noteOn( int midiNote, int vel );
         void noteOff( int midiNote, int vel );
+        void signalName( const QString& name );
 
     protected:
         void initialize();

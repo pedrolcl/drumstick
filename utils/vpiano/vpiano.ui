@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>664</width>
-     <height>19</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -49,8 +49,61 @@
     <addaction name="actionAbout"/>
     <addaction name="actionAbout_Qt"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menuNames">
+     <property name="title">
+      <string>Show Note Names</string>
+     </property>
+     <addaction name="actionNever"/>
+     <addaction name="actionMinimal"/>
+     <addaction name="actionWhen_Activated"/>
+     <addaction name="actionAlways"/>
+    </widget>
+    <widget class="QMenu" name="menuBlack_Keys_Names">
+     <property name="title">
+      <string>Black Keys Names</string>
+     </property>
+     <addaction name="actionSharps"/>
+     <addaction name="actionFlats"/>
+     <addaction name="actionNothing"/>
+    </widget>
+    <widget class="QMenu" name="menuNames_Orientation">
+     <property name="title">
+      <string>Names Orientation</string>
+     </property>
+     <addaction name="actionHorizontal"/>
+     <addaction name="actionVertical"/>
+     <addaction name="actionAutomatic"/>
+    </widget>
+    <widget class="QMenu" name="menuOctaves_Naming">
+     <property name="title">
+      <string>Central Octave Name</string>
+     </property>
+     <addaction name="actionC3"/>
+     <addaction name="actionC4"/>
+     <addaction name="actionC5"/>
+    </widget>
+    <widget class="QMenu" name="menuNote_Names">
+     <property name="title">
+      <string>Note Names</string>
+     </property>
+     <addaction name="actionStandard"/>
+     <addaction name="actionCustom_Sharps"/>
+     <addaction name="actionCustom_Flats"/>
+    </widget>
+    <addaction name="menuNames"/>
+    <addaction name="menuBlack_Keys_Names"/>
+    <addaction name="menuNames_Orientation"/>
+    <addaction name="menuNote_Names"/>
+    <addaction name="menuOctaves_Naming"/>
+    <addaction name="actionNames_Font"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
@@ -81,6 +134,157 @@
   <action name="actionAbout_Qt">
    <property name="text">
     <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionNever">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Never</string>
+   </property>
+  </action>
+  <action name="actionWhen_Activated">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>When Activated</string>
+   </property>
+  </action>
+  <action name="actionAlways">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Always</string>
+   </property>
+  </action>
+  <action name="actionSharps">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Sharps</string>
+   </property>
+  </action>
+  <action name="actionFlats">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Flats</string>
+   </property>
+  </action>
+  <action name="actionNothing">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Nothing</string>
+   </property>
+  </action>
+  <action name="actionHorizontal">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Horizontal</string>
+   </property>
+  </action>
+  <action name="actionVertical">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Vertical</string>
+   </property>
+  </action>
+  <action name="actionAutomatic">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Automatic</string>
+   </property>
+  </action>
+  <action name="actionNames_Font">
+   <property name="text">
+    <string>Names Font</string>
+   </property>
+  </action>
+  <action name="actionMinimal">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Minimal</string>
+   </property>
+  </action>
+  <action name="actionC3">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>C3</string>
+   </property>
+  </action>
+  <action name="actionC4">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>C4</string>
+   </property>
+  </action>
+  <action name="actionC5">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>C5</string>
+   </property>
+  </action>
+  <action name="actionStandard">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Standard</string>
+   </property>
+  </action>
+  <action name="actionCustom_Sharps">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Custom with Sharps</string>
+   </property>
+  </action>
+  <action name="actionCustom_Flats">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Custom with Flats</string>
    </property>
   </action>
  </widget>

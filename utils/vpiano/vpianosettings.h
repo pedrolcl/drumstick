@@ -21,8 +21,13 @@
 
 #include <QObject>
 #include <QString>
+#include <QFont>
 #include <QSettings>
 #include <drumstick/backendmanager.h>
+#include <drumstick/pianokeybd.h>
+
+const QStringList STD_NAMES_S{"do", "do♯", "re", "re♯", "mi", "fa", "fa♯", "sol", "sol♯", "la", "la♯", "si"};
+const QStringList STD_NAMES_F{"do", "re♭", "re", "mi♭", "mi", "fa", "sol♭", "sol", "la♭", "la", "si♭", "si"};
 
 class VPianoSettings : public QObject
 {
@@ -78,6 +83,30 @@ public:
 
     QVariantMap settingsMap() const;
 
+    drumstick::widgets::PianoKeybd::LabelOrientation namesOrientation() const;
+    void setNamesOrientation(drumstick::widgets::PianoKeybd::LabelOrientation namesOrientation);
+
+    drumstick::widgets::PianoKeybd::LabelVisibility namesVisibility() const;
+    void setNamesVisibility(drumstick::widgets::PianoKeybd::LabelVisibility namesVisibility);
+
+    drumstick::widgets::PianoKeybd::LabelAlteration alterations() const;
+    void setNamesAlterations(drumstick::widgets::PianoKeybd::LabelAlteration alterations);
+
+    QFont namesFont() const;
+    void setNamesFont(const QFont &namesFont);
+
+    drumstick::widgets::PianoKeybd::LabelCentralOctave namesOctave() const;
+    void setNamesOctave(drumstick::widgets::PianoKeybd::LabelCentralOctave namesOctave);
+
+    drumstick::widgets::PianoKeybd::LabelNaming namingPolicy() const;
+    void setNamingPolicy(drumstick::widgets::PianoKeybd::LabelNaming namingPolicy);
+
+    QStringList names_sharps() const;
+    void setNames_sharps(const QStringList &names_sharps);
+
+    QStringList names_flats() const;
+    void setNames_flats(const QStringList &names_flats);
+
 signals:
     void ValuesChanged();
 
@@ -113,6 +142,14 @@ private:
     QString m_defaultOutput;
     QVariantMap m_settingsMap;
     QVariantMap m_defaultsMap;
+    drumstick::widgets::PianoKeybd::LabelVisibility m_namesVisibility;
+    drumstick::widgets::PianoKeybd::LabelAlteration m_namesAlteration;
+    drumstick::widgets::PianoKeybd::LabelCentralOctave m_namesOctave;
+    drumstick::widgets::PianoKeybd::LabelOrientation m_namesOrientation;
+    drumstick::widgets::PianoKeybd::LabelNaming m_namingPolicy;
+    QStringList m_names_sharps;
+    QStringList m_names_flats;
+    QFont m_namesFont;
 };
 
 #endif // PORTABLESETTINGS_H

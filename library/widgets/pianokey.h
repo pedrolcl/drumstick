@@ -41,6 +41,9 @@ namespace widgets {
         void setPressed(bool p);
         int getDegree() const { return m_note % 12; }
         int getType() const { return (m_black ? 1 : 0); }
+        bool isBlack() const { return m_black; }
+        QPixmap& getPixmap() const;
+        QRectF pixmapRect() const;
 
     private:
         bool m_pressed;

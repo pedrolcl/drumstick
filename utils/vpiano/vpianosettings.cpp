@@ -19,7 +19,6 @@
 #include <QFileInfo>
 #include <QDir>
 #include <drumstick/settingsfactory.h>
-#include <drumstick/backendmanager.h>
 #include "vpianosettings.h"
 
 using namespace drumstick::rt;
@@ -133,6 +132,20 @@ void VPianoSettings::internalRead(QSettings &settings)
     setStartingKey(settings.value("startingKey", 9).toInt());
     settings.endGroup();
 
+    settings.beginGroup("Experimental");
+    QFont f;
+    if (f.fromString(settings.value("namesFont", "Helvetica, 50").toString())) {
+        setNamesFont(f);
+    }
+    setNamesOrientation(static_cast<PianoKeybd::LabelOrientation>(settings.value("namesOrientation", PianoKeybd::HorizontalOrientation).toInt()));
+    setNamesVisibility(static_cast<PianoKeybd::LabelVisibility>(settings.value("namesVisibility", PianoKeybd::ShowNever).toInt()));
+    setNamesAlterations(static_cast<PianoKeybd::LabelAlteration>(settings.value("namesAlteration", PianoKeybd::ShowSharps).toInt()));
+    setNamingPolicy(static_cast<PianoKeybd::LabelNaming>(settings.value("namingPolicy", PianoKeybd::StandardNames).toInt()));
+    setNamesOctave(static_cast<PianoKeybd::LabelCentralOctave>(settings.value("namesOctave", PianoKeybd::OctaveC4).toInt()));
+    setNames_sharps(settings.value("names_sharps", STD_NAMES_S).toStringList());
+    setNames_flats(settings.value("names_flats", STD_NAMES_F).toStringList());
+    settings.endGroup();
+
     emit ValuesChanged();
 }
 
@@ -166,7 +179,99 @@ void VPianoSettings::internalSave(QSettings &settings)
     settings.setValue("numKeys", m_numKeys);
     settings.setValue("startingKey", m_startingKey);
     settings.endGroup();
+
+    settings.beginGroup("Experimental");
+    settings.setValue("namesFont", m_namesFont.toString());
+    settings.setValue("namesOrientation", m_namesOrientation);
+    settings.setValue("namesVisibility", m_namesVisibility);
+    settings.setValue("namesAlteration", m_namesAlteration);
+    settings.setValue("namingPolicy", m_namingPolicy);
+    settings.setValue("namesOctave", m_namesOctave);
+    settings.setValue("names_sharps", m_names_sharps);
+    settings.setValue("names_flats", m_names_flats);
+    settings.endGroup();
+
     settings.sync();
+}
+
+QStringList VPianoSettings::names_flats() const
+{
+    return m_names_flats;
+}
+
+void VPianoSettings::setNames_flats(const QStringList &names_flats)
+{
+    m_names_flats = names_flats;
+}
+
+QStringList VPianoSettings::names_sharps() const
+{
+    return m_names_sharps;
+}
+
+void VPianoSettings::setNames_sharps(const QStringList &names_sharps)
+{
+    m_names_sharps = names_sharps;
+}
+
+PianoKeybd::LabelNaming VPianoSettings::namingPolicy() const
+{
+    return m_namingPolicy;
+}
+
+void VPianoSettings::setNamingPolicy(PianoKeybd::LabelNaming namingPolicy)
+{
+    m_namingPolicy = namingPolicy;
+}
+
+PianoKeybd::LabelCentralOctave VPianoSettings::namesOctave() const
+{
+    return m_namesOctave;
+}
+
+void VPianoSettings::setNamesOctave(PianoKeybd::LabelCentralOctave namesOctave)
+{
+    m_namesOctave = namesOctave;
+}
+
+QFont VPianoSettings::namesFont() const
+{
+    return m_namesFont;
+}
+
+void VPianoSettings::setNamesFont(const QFont &namesFont)
+{
+    m_namesFont = namesFont;
+}
+
+drumstick::widgets::PianoKeybd::LabelAlteration VPianoSettings::alterations() const
+{
+    return m_namesAlteration;
+}
+
+void VPianoSettings::setNamesAlterations(drumstick::widgets::PianoKeybd::LabelAlteration alterations)
+{
+    m_namesAlteration = alterations;
+}
+
+PianoKeybd::LabelVisibility VPianoSettings::namesVisibility() const
+{
+    return m_namesVisibility;
+}
+
+void VPianoSettings::setNamesVisibility(PianoKeybd::LabelVisibility namesVisibility)
+{
+    m_namesVisibility = namesVisibility;
+}
+
+PianoKeybd::LabelOrientation VPianoSettings::namesOrientation() const
+{
+    return m_namesOrientation;
+}
+
+void VPianoSettings::setNamesOrientation(PianoKeybd::LabelOrientation namesOrientation)
+{
+    m_namesOrientation = namesOrientation;
 }
 
 QVariantMap VPianoSettings::settingsMap() const

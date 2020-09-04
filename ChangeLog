@@ -1,3 +1,6 @@
+2020-09-04
+    * ticket #22 implementation: better rendering of note names in piano keyboard widget
+
 2020-03-20
     * New library drumstick-gui, applied to drumstick-vpiano
 

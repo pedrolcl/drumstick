@@ -52,14 +52,27 @@ public slots:
     void slotNoteOff(const int midiNote, const int vel);
     void slotNoteOff(const int chan, const int note, const int vel);
 
+    void slotChangeFont();
+    void slotNameOrientation(QAction* action);
+    void slotNameVisibility(QAction* action);
+    void slotNameVariant(QAction* action);
+    void slotCentralOctave(QAction* action);
+    void slotStandardNames();
+    void slotCustomNames(bool sharps);
+    void slotNoteName(const QString& name);
+
 private:
     void initialize();
+    void useCustomNoteNames();
 
     QList<drumstick::rt::MIDIInput*> m_inputs;
     QList<drumstick::rt::MIDIOutput*> m_outputs;
     drumstick::rt::MIDIInput * m_midiIn;
     drumstick::rt::MIDIOutput* m_midiOut;
     Ui::VPiano ui;
+
+//  QStringList m_names_s{"do", "do♯", "re", "re♯", "mi", "fa", "fa♯", "sol", "sol♯", "la", "la♯", "si"};
+//  QStringList m_names_f{"do", "re♭", "re", "mi♭", "mi", "fa", "sol♭", "sol", "la♭", "la", "si♭", "si"};
 };
 
 #endif // VPIANO_H

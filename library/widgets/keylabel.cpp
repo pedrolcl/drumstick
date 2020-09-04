@@ -16,9 +16,9 @@
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QFont>
 #include "keylabel.h"
 #include "pianokey.h"
-#include <QFont>
 
 namespace drumstick {
 namespace widgets {
@@ -26,14 +26,71 @@ namespace widgets {
 KeyLabel::KeyLabel(QGraphicsItem *parent) : QGraphicsTextItem(parent)
 {
     setAcceptedMouseButtons(Qt::NoButton);
-    //rotate(270);
-    setRotation(rotation() + 270);
 }
 
-QRectF KeyLabel::boundingRect() const
+void KeyLabel::adjust()
+{
+    qreal ax, ay;
+    QRectF kr, br;
+    PianoKey* key = static_cast<PianoKey*>(parentItem());
+    kr = key->boundingRect();
+    br = boundingRect();
+    ax = kr.x();
+    ay = kr.height() - 5;
+    if (key->isBlack()) {
+        ay -= 70;
+    }
+    if (rotation() == 0) {
+        ax += (kr.width() - br.width()) / 2;
+        ay -= br.height();
+    } else {
+        ax += (kr.width() - br.height()) / 2;
+    }
+    setPos(ax, ay);
+    m_savedColor = defaultTextColor();
+}
+
+void KeyLabel::setOrientation(PianoKeybd::LabelOrientation ori)
+{
+    if (m_orientation != ori) {
+        m_orientation = ori;
+        if (m_orientation == PianoKeybd::VerticalOrientation ) {
+            setRotation(270);
+        } else if (m_orientation == PianoKeybd::HorizontalOrientation) {
+            setRotation(0);
+        } else {
+            calculateRotation();
+        }
+    }
+}
+
+void KeyLabel::restoreColor()
+{
+    if (m_savedColor.isValid()) {
+        setDefaultTextColor(m_savedColor);
+    }
+}
+
+void drumstick::widgets::KeyLabel::calculateRotation()
 {
     PianoKey* key = static_cast<PianoKey*>(parentItem());
-    return mapRectFromScene(key->rect());
+    QRectF kr, br;
+    kr = key->boundingRect();
+    br = boundingRect();
+    if (br.width() > kr.width()) {
+        setRotation(270);
+    } else {
+        setRotation(0);
+    }
+}
+
+void KeyLabel::setPlainText(const QString &text)
+{
+    QGraphicsTextItem::setPlainText(text);
+    adjustSize();
+    if (m_orientation == PianoKeybd::AutomaticOrientation) {
+        calculateRotation();
+    }
 }
 
 }} // namespace drumstick::widgets

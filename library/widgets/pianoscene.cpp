@@ -21,14 +21,13 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <qmath.h>
-//#include <QDebug>
 #include <drumstick/pianokeybd.h>
 #include <drumstick/pianoscene.h>
 
 namespace drumstick { namespace widgets {
 
-#define KEYWIDTH  18
-#define KEYHEIGHT 72
+#define KEYWIDTH  180
+#define KEYHEIGHT 720
 
 static qreal sceneWidth(int keys) {
     return KEYWIDTH * qCeil( keys * 7.0 / 12.0 );
@@ -46,8 +45,10 @@ PianoScene::PianoScene ( const int baseOctave,
     m_minNote( 0 ),
     m_maxNote( 127 ),
     m_transpose( 0 ),
-    m_showLabels( false ),
-    m_useFlats( false ),
+    m_showLabels( PianoKeybd::ShowNever ),
+    m_alterations( PianoKeybd::ShowSharps ),
+    m_octave( PianoKeybd::OctaveC4 ),
+    m_orientation( PianoKeybd::HorizontalOrientation ),
     m_rawkbd( false ),
     m_keyboardEnabled( true ),
     m_mouseEnabled( true ),
@@ -63,8 +64,10 @@ PianoScene::PianoScene ( const int baseOctave,
     ,m_scalePalette( 0 )
 {
     QBrush hilightBrush(m_keyPressedColor.isValid() ? m_keyPressedColor : QApplication::palette().highlight());
-    QFont lblFont(QApplication::font());
-    lblFont.setPointSize(KEYLABELFONTSIZE);
+    PianoKeybd* view = dynamic_cast<PianoKeybd*>(parent);
+    if (view != nullptr) {
+        setFont(view->font());
+    }
     int upperLimit = m_numKeys + m_startKey;
     int adj = m_startKey % 12;
     if (adj >= 5) adj++;
@@ -81,22 +84,20 @@ PianoScene::PianoScene ( const int baseOctave,
             key = new PianoKey( QRectF(x, 0, KEYWIDTH, KEYHEIGHT), false, i );
             lbl = new KeyLabel(key);
             lbl->setDefaultTextColor(Qt::black);
-            lbl->setPos(x, KEYHEIGHT);
         } else {
             x = (ocs + qFloor((j-adj) / 2.0)) * KEYWIDTH + KEYWIDTH * 6/10 + 1;
             key = new PianoKey( QRectF( x, 0, KEYWIDTH * 8/10 - 1, KEYHEIGHT * 6/10 ), true, i );
             key->setZValue( 1 );
             lbl = new KeyLabel(key);
             lbl->setDefaultTextColor(Qt::white);
-            lbl->setPos(x - 3, KEYHEIGHT * 6/10 - 3);
         }
-        //qDebug() << "i=" << i << "ocs=" << ocs << "j=" << j << "x=" << x;
-        key->setAcceptTouchEvents(true);
-        if (m_keyPressedColor.isValid())
-            key->setPressedBrush(hilightBrush);
-        m_keys.insert(i, key);
         addItem( key );
-        lbl->setFont(lblFont);
+        lbl->setFont(font());
+        key->setAcceptTouchEvents(true);
+        if (m_keyPressedColor.isValid()) {
+            key->setPressedBrush(hilightBrush);
+        }
+        m_keys.insert(i, key);
         m_labels.insert(i, lbl);
     }
     hideOrShowKeys();
@@ -108,13 +109,28 @@ QSize PianoScene::sizeHint() const
     return QSize(sceneWidth(m_numKeys), KEYHEIGHT);
 }
 
+void PianoScene::displayKeyOn(PianoKey* key)
+{
+    key->setPressed(true);
+    int n = key->getNote() + m_baseOctave*12 + m_transpose;
+    QString s = QString("#%1 (%2)").arg(n).arg(noteName(key));
+    emit signalName(s);
+    KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().first());
+    if (lbl != nullptr) {
+        lbl->setDefaultTextColor(Qt::white);
+        if (m_showLabels == PianoKeybd::ShowActivated) {
+            lbl->setVisible(true);
+        }
+    }
+}
+
 void PianoScene::showKeyOn( PianoKey* key, QColor color, int vel )
 {
     if (m_velocityTint && vel >= 0 && color.isValid() ) {
         QBrush hilightBrush(color.lighter(200 - vel));
         key->setPressedBrush(hilightBrush);
     }
-    key->setPressed(true);
+    displayKeyOn(key);
 }
 
 void PianoScene::showKeyOn( PianoKey* key, int vel )
@@ -127,12 +143,20 @@ void PianoScene::showKeyOn( PianoKey* key, int vel )
             setColorFromPolicy(key, vel);
         }
     }
-    key->setPressed(true);
+    displayKeyOn(key);
 }
 
 void PianoScene::showKeyOff( PianoKey* key, int )
 {
     key->setPressed(false);
+    emit signalName(QString());
+    KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().first());
+    if (lbl != nullptr) {
+        lbl->restoreColor();
+        if (m_showLabels == PianoKeybd::ShowActivated) {
+            lbl->setVisible(false);
+        }
+    }
 }
 
 void PianoScene::showNoteOn( const int note, QColor color, int vel )
@@ -145,15 +169,17 @@ void PianoScene::showNoteOn( const int note, QColor color, int vel )
 void PianoScene::showNoteOn( const int note, int vel )
 {
     int n = note - m_baseOctave*12 - m_transpose;
-    if ((note >= m_minNote) && (note <= m_maxNote) && m_keys.contains(n))
+    if ((note >= m_minNote) && (note <= m_maxNote) && m_keys.contains(n)) {
         showKeyOn(m_keys.value(n), vel);
+    }
 }
 
 void PianoScene::showNoteOff( const int note, int vel )
 {
     int n = note - m_baseOctave*12 - m_transpose;
-    if ((note >= m_minNote) && (note <= m_maxNote) && m_keys.contains(n))
+    if ((note >= m_minNote) && (note <= m_maxNote) && m_keys.contains(n)) {
         showKeyOff(m_keys.value(n), vel);
+    }
 }
 
 void PianoScene::triggerNoteOn( const int note, const int vel )
@@ -467,23 +493,41 @@ void PianoScene::setBaseOctave(const int base)
     }
 }
 
-QString PianoScene::noteName(const int note)
+bool PianoScene::isOctaveStart(const int note)
 {
+    return (note + m_transpose + 12) % 12 == 0;
+}
+
+QString PianoScene::noteName( PianoKey* key )
+{
+    Q_ASSERT(key != nullptr);
+    int note = key->getNote();
     int num = (note + m_transpose + 12) % 12;
-    int adj = (note + m_transpose < 0) ? 2 : 1;
+    int adj = ((note + m_transpose < 0) ? 2 : 1) - m_octave + 1;
     int oct = m_baseOctave + ((note + m_transpose) / 12) - adj;
     if (m_noteNames.isEmpty()) {
         QString name;
-        if (!m_names_f.isEmpty() && !m_names_s.isEmpty())
-            name = m_useFlats ? m_names_f.value(num) : m_names_s.value(num);
-        return QString("%1<span style='vertical-align:sub;'>%2</span>").arg(name).arg(oct);
+        if (!m_names_f.isEmpty() && !m_names_s.isEmpty()) {
+            switch(m_alterations) {
+            case PianoKeybd::ShowFlats:
+                name = m_names_f.value(num);
+                break;
+            case PianoKeybd::ShowSharps:
+                name =  m_names_s.value(num);
+                break;
+            case PianoKeybd::ShowNothing:
+                if (key->isBlack()) {
+                    return QString();
+                }
+                name =  m_names_s.value(num);
+                break;
+            default:
+                break;
+            }
+        }
+        return QString("%1%2").arg(name).arg(oct);
     } else {
-        int noteIndex = note + m_transpose + 12*m_baseOctave;
-#if defined(SMALL_SCREEN)
-        return m_noteNames.value(noteIndex);
-#else
-        return QString("<span style='font-size:5pt;'>%1</span>").arg(m_noteNames.value(noteIndex));
-#endif
+        return QString("%1%2").arg(m_noteNames.value(num)).arg(oct);
     }
 }
 
@@ -491,9 +535,14 @@ void PianoScene::refreshLabels()
 {
     foreach(KeyLabel* lbl, m_labels) {
         PianoKey* key = dynamic_cast<PianoKey*>(lbl->parentItem());
-        if(key != NULL) {
-            lbl->setHtml(noteName(key->getNote()));
-            lbl->setVisible(m_showLabels);
+        if (key != nullptr) {
+            lbl->setVisible(false);
+            lbl->setFont(font());
+            lbl->setOrientation(m_orientation);
+            lbl->setPlainText(noteName(key));
+            lbl->adjust();
+            lbl->setVisible((m_showLabels == PianoKeybd::ShowAlways) ||
+                (m_showLabels == PianoKeybd::ShowMinimum && isOctaveStart(key->getNote())));
         }
     }
 }
@@ -511,7 +560,7 @@ void PianoScene::refreshKeys()
     }
 }
 
-void PianoScene::setShowLabels(bool show)
+void PianoScene::setShowLabels(PianoKeybd::LabelVisibility show)
 {
     if (m_showLabels != show) {
         m_showLabels = show;
@@ -519,10 +568,25 @@ void PianoScene::setShowLabels(bool show)
     }
 }
 
-void PianoScene::setUseFlats(bool use)
+void PianoScene::setAlterations(PianoKeybd::LabelAlteration use)
 {
-    if (m_useFlats != use) {
-        m_useFlats = use;
+    if (m_alterations != use) {
+        m_alterations = use;
+        refreshLabels();
+    }
+}
+void PianoScene::setOrientation(const PianoKeybd::LabelOrientation &orientation)
+{
+    if (m_orientation != orientation) {
+        m_orientation = orientation;
+        refreshLabels();
+    }
+}
+
+void PianoScene::setOctave(const PianoKeybd::LabelCentralOctave &octave)
+{
+    if (m_octave != octave) {
+        m_octave = octave;
         refreshLabels();
     }
 }
@@ -578,32 +642,32 @@ void PianoScene::setTouchEnabled(const bool enable)
 
 void PianoScene::retranslate()
 {
-    m_names_s.clear();
-    m_names_f.clear();
-    m_names_s << tr("C")
-              << tr("C♯")
-              << tr("D")
-              << tr("D♯")
-              << tr("E")
-              << tr("F")
-              << tr("F♯")
-              << tr("G")
-              << tr("G♯")
-              << tr("A")
-              << tr("A♯")
-              << tr("B");
-    m_names_f << tr("C")
-              << tr("D♭")
-              << tr("D")
-              << tr("E♭")
-              << tr("E")
-              << tr("F")
-              << tr("G♭")
-              << tr("G")
-              << tr("A♭")
-              << tr("A")
-              << tr("B♭")
-              << tr("B");
+    m_names_s = QStringList{
+        tr("C"),
+        tr("C♯"),
+        tr("D"),
+        tr("D♯"),
+        tr("E"),
+        tr("F"),
+        tr("F♯"),
+        tr("G"),
+        tr("G♯"),
+        tr("A"),
+        tr("A♯"),
+        tr("B")};
+    m_names_f = QStringList{
+        tr("C"),
+        tr("D♭"),
+        tr("D"),
+        tr("E♭"),
+        tr("E"),
+        tr("F"),
+        tr("G♭"),
+        tr("G"),
+        tr("A♭"),
+        tr("A"),
+        tr("B♭"),
+        tr("B")};
     refreshLabels();
 }
 
@@ -618,10 +682,8 @@ void PianoScene::setShowColorScale(const bool show)
 
 void PianoScene::setPianoPalette(PianoPalette *p)
 {
-    //qDebug() << Q_FUNC_INFO;
     resetKeyPressedColor();
     m_palette = p;
 }
 
 }} // namespace drumstick::widgets
-

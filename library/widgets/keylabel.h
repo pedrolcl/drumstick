@@ -20,16 +20,26 @@
 #define KEYLABEL_H
 
 #include <QGraphicsTextItem>
+#include <drumstick/pianokeybd.h>
 
 namespace drumstick {
 namespace widgets {
 
-class KeyLabel : public QGraphicsTextItem
+class KeyLabel : public QGraphicsTextItem //QGraphicsSimpleTextItem
 {
 public:
     KeyLabel(QGraphicsItem *parent = 0);
     virtual ~KeyLabel() {}
-    virtual QRectF boundingRect() const;
+    void setPlainText(const QString& text);
+    void adjust();
+    void setOrientation(PianoKeybd::LabelOrientation  ori);
+    void restoreColor();
+
+private:
+    PianoKeybd::LabelOrientation m_orientation = PianoKeybd::HorizontalOrientation;
+    void calculateRotation();
+
+    QColor m_savedColor;
 };
 
 }} // namespace drumstick::widgets
