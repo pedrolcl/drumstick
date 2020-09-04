@@ -32,6 +32,7 @@ SOURCES += \
 macx:!static {
     QMAKE_LFLAGS += -F$$OUT_PWD/../../build/lib -L$$OUT_PWD/../../build/lib
     LIBS += -framework drumstick-rt -framework drumstick-widgets
+    LIBS += -framework CoreFoundation
     ICON = ../../icons/drumstick.icns
     QMAKE_TARGET_BUNDLE_PREFIX = net.sourceforge
     QMAKE_BUNDLE = drumstick-vpiano
