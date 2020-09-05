@@ -31,12 +31,6 @@
  * @{
  */
 
-#if defined(VPIANO_PLUGIN)
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#define QDESIGNER_WIDGET_EXPORT DRUMSTICK_EXPORT
-#endif
-
 namespace drumstick { namespace widgets {
 
     /**
@@ -75,7 +69,7 @@ namespace drumstick { namespace widgets {
     /**
      * @brief The PianoKeybd class
      */
-    class QDESIGNER_WIDGET_EXPORT PianoKeybd : public QGraphicsView, public RawKbdHandler
+    class DRUMSTICK_EXPORT PianoKeybd : public QGraphicsView, public RawKbdHandler
     {
         Q_OBJECT
         Q_PROPERTY( int baseOctave READ baseOctave WRITE setBaseOctave )
@@ -88,9 +82,12 @@ namespace drumstick { namespace widgets {
         Q_PROPERTY( LabelCentralOctave labelOctave READ labelOctave WRITE setLabelOctave )
         Q_PROPERTY( int transpose READ getTranspose WRITE setTranspose )
 
+#ifndef Q_MOC_RUN
         Q_CLASSINFO("Author", "Pedro Lopez-Cabanillas <plcl@users.sf.net>")
         Q_CLASSINFO("URL", "http://sourceforge.net/projects/vmpk")
         Q_CLASSINFO("Version", QT_STRINGIFY(VERSION))
+#endif
+
     public:
         PianoKeybd(QWidget *parent = nullptr);
         PianoKeybd(const int baseOctave, const int numKeys, const int startKey, QWidget *parent = nullptr);
