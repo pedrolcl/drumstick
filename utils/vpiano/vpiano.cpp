@@ -246,10 +246,8 @@ void VPiano::slotPreferences()
         if (ui.pianokeybd->baseOctave() != VPianoSettings::instance()->baseOctave()) {
             ui.pianokeybd->setBaseOctave(VPianoSettings::instance()->baseOctave());
         }
-        if (ui.pianokeybd->numKeys() != VPianoSettings::instance()->numKeys()) {
-            ui.pianokeybd->setNumKeys(VPianoSettings::instance()->numKeys());
-        }
-        if (ui.pianokeybd->startKey() != VPianoSettings::instance()->startingKey()) {
+        if (ui.pianokeybd->numKeys() != VPianoSettings::instance()->numKeys() ||
+            ui.pianokeybd->startKey() != VPianoSettings::instance()->startingKey()) {
             ui.pianokeybd->setNumKeys(VPianoSettings::instance()->numKeys(), VPianoSettings::instance()->startingKey());
         }
     }

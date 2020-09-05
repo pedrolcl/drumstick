@@ -132,9 +132,9 @@ void VPianoSettings::internalRead(QSettings &settings)
     setStartingKey(settings.value("startingKey", 9).toInt());
     settings.endGroup();
 
-    settings.beginGroup("Experimental");
+    settings.beginGroup("TextSettings");
     QFont f;
-    if (f.fromString(settings.value("namesFont", "Helvetica, 50").toString())) {
+    if (f.fromString(settings.value("namesFont", "sans serif, 50").toString())) {
         setNamesFont(f);
     }
     setNamesOrientation(static_cast<PianoKeybd::LabelOrientation>(settings.value("namesOrientation", PianoKeybd::HorizontalOrientation).toInt()));
@@ -180,7 +180,7 @@ void VPianoSettings::internalSave(QSettings &settings)
     settings.setValue("startingKey", m_startingKey);
     settings.endGroup();
 
-    settings.beginGroup("Experimental");
+    settings.beginGroup("TextSettings");
     settings.setValue("namesFont", m_namesFont.toString());
     settings.setValue("namesOrientation", m_namesOrientation);
     settings.setValue("namesVisibility", m_namesVisibility);

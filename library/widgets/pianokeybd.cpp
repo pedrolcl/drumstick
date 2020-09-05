@@ -323,6 +323,7 @@ void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
         QColor color = d->m_scene->getKeyPressedColor();
         PianoHandler* handler = d->m_scene->getPianoHandler();
         KeyboardMap* keyMap = d->m_scene->getKeyboardMap();
+        PianoPalette* palette = d->m_scene->getPianoPalette();
         bool keyboardEnabled = d->m_scene->isKeyboardEnabled();
         bool mouseEnabled = d->m_scene->isMouseEnabled();
         bool touchEnabled = d->m_scene->isTouchEnabled();
@@ -334,6 +335,7 @@ void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
         initScene(baseOctave, numKeys, startKey, color);
         d->m_scene->setPianoHandler(handler);
         d->m_scene->setKeyboardMap(keyMap);
+        d->m_scene->setPianoPalette(palette);
         d->m_scene->setKeyboardEnabled(keyboardEnabled);
         d->m_scene->setMouseEnabled(mouseEnabled);
         d->m_scene->setTouchEnabled(touchEnabled);
