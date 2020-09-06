@@ -43,6 +43,18 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
 {
     ui.setupUi(this);
 
+    bool mouseInputEnabled = true;
+    bool touchInputEnabled = false;
+    for(const QTouchDevice *dev : QTouchDevice::devices()) {
+        if (dev->type() == QTouchDevice::TouchScreen) {
+            mouseInputEnabled = false;
+            touchInputEnabled = true;
+            break;
+        }
+    }
+    ui.pianokeybd->setMouseEnabled(mouseInputEnabled);
+    ui.pianokeybd->setTouchEnabled(touchInputEnabled);
+
     connect(ui.pianokeybd, &PianoKeybd::noteOn, this, QOverload<int,int>::of(&VPiano::slotNoteOn));
     connect(ui.pianokeybd, &PianoKeybd::noteOff, this, QOverload<int,int>::of(&VPiano::slotNoteOff));
     connect(ui.pianokeybd, &PianoKeybd::signalName, this, &VPiano::slotNoteName);

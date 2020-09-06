@@ -77,6 +77,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("drumstick.sourceforge.net");
     QCoreApplication::setApplicationName("VPiano");
     QCoreApplication::setApplicationVersion(PGM_VERSION);
+    QCoreApplication::setAttribute(Qt::AA_SynthesizeMouseForUnhandledTouchEvents, false);
+    QCoreApplication::setAttribute(Qt::AA_SynthesizeTouchForUnhandledMouseEvents, false);
     QApplication app(argc, argv);
 
     QCommandLineParser parser;
