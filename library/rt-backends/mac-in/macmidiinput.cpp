@@ -49,9 +49,9 @@ namespace rt {
         bool m_thruEnabled;
         bool m_clientFilter;
         QString m_publicName;
-        QString m_currentInput;
+        MIDIConnection m_currentInput;
         QStringList m_excludedNames;
-        QStringList m_inputDevices;
+        QList<MIDIConnection> m_inputDevices;
 
         MacMIDIInputPrivate(MacMIDIInput *inp) :
             m_inp(inp),
@@ -134,19 +134,20 @@ namespace rt {
                         continue;
                     if ( name.contains(m_publicName))
                         continue;
-                    foreach( const QString& n, m_excludedNames) {
+                    for (const QString& n : m_excludedNames) {
                         if (name.contains(n)) {
                             excluded = true;
                             break;
                         }
                     }
-                    if (!excluded)
-                        m_inputDevices << name;
+                    if (!excluded) {
+                        m_inputDevices << MIDIConnection(name, i);
+                    }
                 }
             }
-            if (!m_currentInput.isEmpty() && m_source != 0 &&
+            if (!m_currentInput.first.isEmpty() && m_source != 0 &&
                 !m_inputDevices.contains(m_currentInput)) {
-                m_currentInput.clear();
+                m_currentInput = MIDIConnection();
                 m_source = 0;
             }
         }
@@ -160,27 +161,16 @@ namespace rt {
             }
         }
 
-        void open(QString name)
+        void open(const MIDIConnection& conn)
         {
-            int index = -1;
             OSStatus result = noErr;
-            QStringList allInputDevices;
-            int num = MIDIGetNumberOfSources();
-            for (int i = 0; i < num; ++i) {
-                MIDIEndpointRef dest = MIDIGetSource( i );
-                if (dest != 0)
-                   allInputDevices << getEndpointName( dest );
-            }
-            index = allInputDevices.indexOf(name);
-            if (index < 0)
-                return;
-            m_source = MIDIGetSource( index );
+            m_source = MIDIGetSource( conn.second.toInt() );
             result = MIDIPortConnectSource( m_port, m_source, nullptr );
             if (result != noErr) {
                 qDebug() << "MIDIPortConnectSource() error:" << result;
                 return;
             }
-            m_currentInput = name;
+            m_currentInput = conn;
             return;
         }
 
@@ -192,7 +182,7 @@ namespace rt {
                 if (result != noErr)
                     qDebug() << "MIDIPortDisconnectSource() error:" << result;
                 m_source = 0;
-                m_currentInput.clear();
+                m_currentInput = MIDIConnection();
             }
         }
 
@@ -306,7 +296,7 @@ namespace rt {
         d->setPublicName(name);
     }
 
-    QStringList MacMIDIInput::connections(bool advanced)
+    QList<MIDIConnection> MacMIDIInput::connections(bool advanced)
     {
         d->reloadDeviceList(advanced);
         return d->m_inputDevices;
@@ -317,9 +307,9 @@ namespace rt {
         d->m_excludedNames = conns;
     }
 
-    void MacMIDIInput::open(QString name)
+    void MacMIDIInput::open(const MIDIConnection& conn)
     {
-        d->open(name);
+        d->open(conn);
     }
 
     void MacMIDIInput::close()
@@ -327,7 +317,7 @@ namespace rt {
         d->close();
     }
 
-    QString MacMIDIInput::currentConnection()
+    MIDIConnection MacMIDIInput::currentConnection()
     {
         return d->m_currentInput;
     }

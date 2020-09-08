@@ -42,10 +42,10 @@ namespace rt {
         MIDIEndpointRef m_destination;
         bool m_clientFilter;
 
-        QString m_currentOutput;
+        MIDIConnection m_currentOutput;
         QString m_publicName;
         QStringList m_excludedNames;
-        QStringList m_outputDevices;
+        QList<MIDIConnection> m_outputDevices;
 
         MacMIDIOutputPrivate():
             m_client(0),
@@ -140,13 +140,14 @@ namespace rt {
                             break;
                         }
                     }
-                    if (!excluded)
-                        m_outputDevices << name;
+                    if (!excluded) {
+                        m_outputDevices << MIDIConnection(name, i);
+                    }
                 }
             }
-            if (!m_currentOutput.isEmpty() && m_destination != 0 &&
+            if (!m_currentOutput.first.isEmpty() && m_destination != 0 &&
                 !m_outputDevices.contains(m_currentOutput)) {
-                m_currentOutput.clear();
+                m_currentOutput = MIDIConnection();
                 m_destination = 0;
             }
         }
@@ -158,28 +159,17 @@ namespace rt {
                 MIDISend(m_port, m_destination, events);
         }
 
-        bool open(const QString &name)
+        bool open(const MIDIConnection& conn)
         {
-            int index;
-            QStringList allOutputDevices;
-            int num = MIDIGetNumberOfDestinations();
-            for (int i = 0; i < num; ++i) {
-                MIDIEndpointRef dest = MIDIGetDestination( i );
-                if (dest != 0)
-                   allOutputDevices << getEndpointName( dest );
-            }
-            index = allOutputDevices.indexOf(name);
-            if (index < 0)
-                return false;
-            m_destination = MIDIGetDestination( index );
-            m_currentOutput = name;
+            m_destination = MIDIGetDestination( conn.second.toInt() );
+            m_currentOutput = conn;
             return true;
         }
 
         void close()
         {
             m_destination = 0;
-            m_currentOutput.clear();
+            m_currentOutput = MIDIConnection();
         }
     };
 
@@ -213,7 +203,7 @@ namespace rt {
         d->setPublicName(name);
     }
 
-    QStringList MacMIDIOutput::connections(bool advanced)
+    QList<MIDIConnection> MacMIDIOutput::connections(bool advanced)
     {
         d->reloadDeviceList(advanced);
         return d->m_outputDevices;
@@ -224,7 +214,7 @@ namespace rt {
         d->m_excludedNames = conns;
     }
 
-    void MacMIDIOutput::open(QString name)
+    void MacMIDIOutput::open(const MIDIConnection& name)
     {
         d->open(name);
     }
@@ -234,57 +224,12 @@ namespace rt {
         d->close();
     }
 
-    QString MacMIDIOutput::currentConnection()
+    MIDIConnection MacMIDIOutput::currentConnection()
     {
         return d->m_currentOutput;
     }
 
     /* Realtime MIDI slots */
-
-    /*void MacMIDIOutput::allNotesOff()
-    {
-        quint8 data[3];
-        quint8 buf[2048];
-        MIDIPacketList* pktlist = (MIDIPacketList*) &buf;
-        MIDIPacket* packet = MIDIPacketListInit(pktlist);
-        for(int chan = 0; chan < MIDI_STD_CHANNELS && packet != NULL; ++chan) {
-            data[0] = MIDI_STATUS_CONTROLCHANGE | (chan & 0x0f);
-            data[1] = MIDI_CONTROL_ALL_NOTES_OFF;
-            data[2] = 0;
-            packet = MIDIPacketListAdd(pktlist, sizeof(buf), packet, 0,
-                      sizeof(data), data);
-            if (packet != NULL) {
-                data[1] = MIDI_CONTROL_ALL_SOUNDS_OFF;
-                packet = MIDIPacketListAdd(pktlist, sizeof(buf), packet, 0,
-                           sizeof(data), data);
-            }
-        }
-        if (packet != NULL)
-            d->sendEvents(pktlist);
-    }*/
-
-    /*void MacMIDIOutput::resetControllers()
-    {
-        quint8 data[3];
-        quint8 buf[2048];
-        MIDIPacketList* pktlist = (MIDIPacketList*) &buf;
-        MIDIPacket* packet = MIDIPacketListInit(pktlist);
-        for(int chan = 0; chan < MIDI_STD_CHANNELS && packet != NULL; ++chan) {
-            data[0] = MIDI_STATUS_CONTROLCHANGE | (chan & 0x0f);
-            data[1] = MIDI_CONTROL_RESET_CONTROLLERS;
-            data[2] = 0;
-            packet = MIDIPacketListAdd(pktlist, sizeof(buf), packet, 0,
-                      sizeof(data), data);
-            if (packet != NULL) {
-                data[1] = MIDI_CONTROL_MSB_MAIN_VOLUME;
-                data[2] = 100;
-                packet = MIDIPacketListAdd(pktlist, sizeof(buf), packet, 0,
-                           sizeof(data), data);
-            }
-        }
-        if (packet != NULL)
-            d->sendEvents(pktlist);
-    }*/
 
     void MacMIDIOutput::sendNoteOn(int chan, int note, int vel)
     {

@@ -34,7 +34,7 @@ namespace rt {
     private:
         AUGraph m_graph;
         AudioUnit m_synthUnit;
-        QString m_connection;
+        MIDIConnection m_connection;
         QString m_soundfont_dls;
         bool m_default_dls;
         bool m_reverb_dls;
@@ -45,7 +45,7 @@ namespace rt {
             m_synthUnit(nullptr)
         {
             //qDebug() << Q_FUNC_INFO;
-            m_connection.clear();
+            m_connection = MIDIConnection();
         }
 
         ~MacSynthOutputPrivate()
@@ -90,7 +90,7 @@ namespace rt {
             }
         }
 
-        QString currentConnection()
+        MIDIConnection currentConnection()
         {
             return m_connection;
         }
@@ -190,7 +190,7 @@ namespace rt {
                     return;
                 }
             }
-            m_connection = QString(QLatin1String(PRETTY_NAME));
+            m_connection = MIDIConnection(QLatin1String(PRETTY_NAME), QLatin1String(PRETTY_NAME));
         }
 
         void stop ()
@@ -209,7 +209,7 @@ namespace rt {
                     qWarning() << "DisposeAUGraph() err:" << result;
                 m_graph = nullptr;
             }
-            m_connection.clear();
+            m_connection = MIDIConnection();
         }
 
         void initialize ( QSettings *settings )
@@ -276,10 +276,10 @@ namespace rt {
         Q_UNUSED(name)
     }
 
-    QStringList MacSynthOutput::connections(bool advanced)
+    QList<MIDIConnection> MacSynthOutput::connections(bool advanced)
     {
         Q_UNUSED(advanced)
-        return QStringList(QLatin1String(PRETTY_NAME));
+        return QList<MIDIConnection>{MIDIConnection(QLatin1String(PRETTY_NAME),QLatin1String(PRETTY_NAME))};
     }
 
     void MacSynthOutput::setExcludedConnections(QStringList conns)
@@ -287,7 +287,7 @@ namespace rt {
         Q_UNUSED(conns)
     }
 
-    void MacSynthOutput::open(QString name)
+    void MacSynthOutput::open(const MIDIConnection& name)
     {
         Q_UNUSED(name)
         //qDebug() << Q_FUNC_INFO;
@@ -300,7 +300,7 @@ namespace rt {
         d->stop();
     }
 
-    QString MacSynthOutput::currentConnection()
+    MIDIConnection MacSynthOutput::currentConnection()
     {
         return d->currentConnection();
     }
