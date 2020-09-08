@@ -57,13 +57,13 @@ void OSSInputPrivate::reloadDeviceList(bool advanced)
     m_inputDevices.clear();
     QFileInfoList listInfo = dir.entryInfoList();
     foreach(const QFileInfo &info, listInfo) {
-        m_inputDevices << info.absoluteFilePath();
+        m_inputDevices << MIDIConnection(info.baseName(), info.absoluteFilePath());
     }
 }
 
-void OSSInputPrivate::open(QString portName)
+void OSSInputPrivate::open(const MIDIConnection& portName)
 {
-    QFile *f = new QFile(portName);
+    QFile *f = new QFile(portName.second.toString());
     m_currentInput = portName;
     m_device = f;
     m_device->open( QIODevice::ReadOnly | QIODevice::Unbuffered );
@@ -84,7 +84,7 @@ void OSSInputPrivate::close()
         m_device = 0;
         m_parser = 0;
     }
-    m_currentInput.clear();
+    m_currentInput = MIDIConnection();
 }
 
 void OSSInputPrivate::setMIDIThruDevice(MIDIOutput* device)

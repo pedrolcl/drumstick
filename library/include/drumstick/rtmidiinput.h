@@ -79,7 +79,7 @@ namespace rt {
          * @brief connections
          * @return list of available MIDI ports
          */
-        virtual QStringList connections(bool advanced = false) = 0;
+        virtual QList<MIDIConnection> connections(bool advanced = false) = 0;
         /**
          * @brief setExcludedConnections
          * @param conns
@@ -89,7 +89,7 @@ namespace rt {
          * @brief open the MIDI port by name
          * @param name
          */
-        virtual void open(QString name) = 0;
+        virtual void open(const MIDIConnection& conn) = 0;
         /**
          * @brief close the MIDI port
          */
@@ -98,7 +98,7 @@ namespace rt {
          * @brief currentConnection
          * @return name of the current connection if it is opened
          */
-        virtual QString currentConnection() = 0;
+        virtual MIDIConnection currentConnection() = 0;
         /**
          * @brief setMIDIThruDevice
          * @param device

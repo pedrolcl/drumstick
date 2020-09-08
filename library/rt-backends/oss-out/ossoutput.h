@@ -43,11 +43,11 @@ namespace rt {
         virtual QString backendName();
         virtual QString publicName();
         virtual void setPublicName(QString name);
-        virtual QStringList connections(bool advanced);
+        virtual QList<MIDIConnection> connections(bool advanced);
         virtual void setExcludedConnections(QStringList conns);
-        virtual void open(QString name);
+        virtual void open(const MIDIConnection& name);
         virtual void close();
-        virtual QString currentConnection();
+        virtual MIDIConnection currentConnection();
 
     public slots:
         virtual void sendNoteOff(int chan, int note, int vel);

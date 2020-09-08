@@ -23,9 +23,6 @@
 #include <QLibraryInfo>
 #include <drumstick/backendmanager.h>
 
-#define MKSTR_A(x) #x
-#define MKSTR(x) MKSTR_A(x)
-
 /**
  * @file backendmanager.cpp
  * Implementation of a class managing realtime MIDI input/output backends
@@ -110,7 +107,7 @@ namespace drumstick { namespace rt {
         QStringList libs;
         libs << "../lib/";
     #if defined(LIBSUFFIX)
-        libs << QString("../%1/").arg(MKSTR(LIBSUFFIX));
+        libs << QString("../%1/").arg(QT_STRINGIFY(LIBSUFFIX));
     #endif
         foreach(const QString& lib, libs) {
             d->appendDir( appPath + lib + QSTR_DRUMSTICK, result );

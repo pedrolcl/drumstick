@@ -19,9 +19,9 @@
 #include <QDebug>
 #include <QString>
 #include <QStringList>
+#include <QMap>
 #include <QMutex>
 #include <QMutexLocker>
-#include <qmath.h>
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaport.h>
 #include <drumstick/alsaevent.h>
@@ -43,8 +43,8 @@ namespace rt {
         bool m_clientFilter;
         int m_runtimeAlsaNum;
         QString m_publicName;
-        QString m_currentOutput;
-        QStringList m_outputDevices;
+        MIDIConnection m_currentOutput;
+        QList<MIDIConnection> m_outputDevices;
         QStringList m_excludedNames;
         QMutex m_outMutex;
         bool m_initialized;
@@ -117,38 +117,55 @@ namespace rt {
 
         void reloadDeviceList(bool advanced)
         {
+            QStringList clientNames;
+            QMap<QString,int> namesMap;
             if (!m_initialized) {
                 initialize();
             }
+            auto outputs = m_client->getAvailableOutputs();
             m_clientFilter = !advanced;
             m_outputDevices.clear();
-            QListIterator<PortInfo> it(m_client->getAvailableOutputs());
-            while(it.hasNext()) {
+            for (const PortInfo& p : outputs) {
+                QString name = p.getClientName();
+                clientNames << name;
+                if (namesMap.contains(name)) {
+                    namesMap[name]++;
+                } else {
+                    namesMap.insert(name, 1);
+                }
+            }
+            for (PortInfo& p : outputs) {
                 bool excluded = false;
-                PortInfo p = it.next();
-                QString name = QString("%1:%2").arg(p.getClientName()).arg(p.getPort());
+                QString name = p.getClientName();
                 if (m_clientFilter && clientIsAdvanced(p.getClient()))
                     continue;
                 if ( m_clientFilter && name.startsWith(QLatin1String("Virtual Raw MIDI")) )
                     continue;
                 if ( name.startsWith(m_publicName) )
                     continue;
-                foreach(const QString& n, m_excludedNames) {
+                for (const QString& n : m_excludedNames) {
                     if ( name.startsWith(n) ) {
                         excluded = true;
                         break;
                     }
                 }
-                if (!excluded)
-                    m_outputDevices << name;
+                if (!excluded) {
+                    int k = clientNames.count(name) + 1;
+                    QString addr = QString("%1:%2").arg(p.getClient()).arg(p.getPort());
+                    if (k > 2) {
+                        m_outputDevices << MIDIConnection(QString("%1 (%2)").arg(name).arg(k - namesMap[name]--), addr);
+                    } else {
+                        m_outputDevices << MIDIConnection(name, addr);
+                    }
+                }
             }
-            if (!m_currentOutput.isEmpty() &&
+            if (!m_currentOutput.first.isEmpty() &&
                 !m_outputDevices.contains(m_currentOutput)) {
-                m_currentOutput.clear();
+                m_currentOutput = MIDIConnection();
             }
         }
 
-        bool setSubscription(const QString &newOutputDevice)
+        bool setSubscription(const MIDIConnection &newOutputDevice)
         {
             if (!m_initialized) {
                 initialize();
@@ -156,7 +173,7 @@ namespace rt {
             if (m_outputDevices.contains(newOutputDevice)) {
                 m_currentOutput = newOutputDevice;
                 m_port->unsubscribeAll();
-                m_port->subscribeTo(newOutputDevice);
+                m_port->subscribeTo(newOutputDevice.second.toString());
                 return true;
             }
             return false;
@@ -164,9 +181,9 @@ namespace rt {
 
         void clearSubscription()
         {
-            if (!m_currentOutput.isEmpty() && m_initialized) {
+            if (!m_currentOutput.first.isEmpty() && m_initialized) {
                 m_port->unsubscribeAll();
-                m_currentOutput.clear();
+                m_currentOutput = MIDIConnection();
             }
         }
 
@@ -280,7 +297,7 @@ namespace rt {
         d->setPublicName(name);
     }
 
-    QStringList ALSAMIDIOutput::connections(bool advanced)
+    QList<MIDIConnection> ALSAMIDIOutput::connections(bool advanced)
     {
         d->reloadDeviceList(advanced);
         return d->m_outputDevices;
@@ -291,15 +308,15 @@ namespace rt {
         d->m_excludedNames = conns;
     }
 
-    QString ALSAMIDIOutput::currentConnection()
+    MIDIConnection ALSAMIDIOutput::currentConnection()
     {
         return d->m_currentOutput;
     }
 
-    void ALSAMIDIOutput::open(QString name)
+    void ALSAMIDIOutput::open(const MIDIConnection& name)
     {
         auto b = d->setSubscription(name);
-        if (!b) qWarning() << "failed subscription to" << name;
+        if (!b) qWarning() << "failed subscription to" << name.first;
     }
 
     void ALSAMIDIOutput::close()

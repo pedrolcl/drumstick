@@ -33,8 +33,8 @@ public:
     QUdpSocket *m_socket;
     QString m_publicName;
     QHostAddress m_groupAddress;
-    QString m_currentOutput;
-    QStringList m_outputDevices;
+    MIDIConnection m_currentOutput;
+    QList<MIDIConnection> m_outputDevices;
     QStringList m_excludedNames;
     QNetworkInterface m_iface;
     quint16 m_port;
@@ -48,7 +48,7 @@ public:
         m_ipv6(false)
     {
         for(int i=MULTICAST_PORT; i<LAST_PORT; ++i) {
-            m_outputDevices << QString::number(i);
+            m_outputDevices << MIDIConnection(QString::number(i), i);
         }
     }
 
@@ -76,11 +76,11 @@ public:
         }
     }
 
-    void open(QString portName)
+    void open(const MIDIConnection& portName)
     {
         qDebug() << Q_FUNC_INFO << portName;
-        int p = m_outputDevices.indexOf(portName);
-        if (p > -1)
+        int p = portName.second.toInt();
+        if (p >= MULTICAST_PORT && p < LAST_PORT)
         {
             m_socket = new QUdpSocket();
             bool res = m_socket->bind(m_ipv6 ? QHostAddress::AnyIPv6 : QHostAddress::AnyIPv4, m_socket->localPort());
@@ -89,7 +89,7 @@ public:
 #ifdef Q_OS_UNIX
                 m_socket->setSocketOption(QAbstractSocket::MulticastLoopbackOption, 0);
 #endif
-                m_port = static_cast<quint16>(MULTICAST_PORT + p);
+                m_port = static_cast<quint16>(p);
                 if (m_iface.isValid()) {
                     m_socket->setMulticastInterface(m_iface);
                 }
@@ -105,7 +105,7 @@ public:
     {
         delete m_socket;
         m_socket = nullptr;
-        m_currentOutput.clear();
+        m_currentOutput = MIDIConnection();
     }
 
     void sendMessage(int m0)
@@ -182,7 +182,7 @@ void NetMIDIOutput::setPublicName(QString name)
     d->m_publicName = name;
 }
 
-QStringList NetMIDIOutput::connections(bool advanced)
+QList<MIDIConnection> NetMIDIOutput::connections(bool advanced)
 {
     Q_UNUSED(advanced)
     return d->m_outputDevices;
@@ -193,7 +193,7 @@ void NetMIDIOutput::setExcludedConnections(QStringList conns)
     Q_UNUSED(conns)
 }
 
-void NetMIDIOutput::open(QString name)
+void NetMIDIOutput::open(const MIDIConnection& name)
 {
     d->open(name);
 }
@@ -203,7 +203,7 @@ void NetMIDIOutput::close()
     d->close();
 }
 
-QString NetMIDIOutput::currentConnection()
+MIDIConnection NetMIDIOutput::currentConnection()
 {
     return d->m_currentOutput;
 }

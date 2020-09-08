@@ -41,10 +41,10 @@ void DummyInput::setPublicName(QString name)
     Q_UNUSED(name)
 }
 
-QStringList DummyInput::connections(bool advanced)
+QList<MIDIConnection> DummyInput::connections(bool advanced)
 {
     Q_UNUSED(advanced)
-    return QStringList();
+    return QList<MIDIConnection>();
 }
 
 void DummyInput::setExcludedConnections(QStringList conns)
@@ -52,14 +52,14 @@ void DummyInput::setExcludedConnections(QStringList conns)
     Q_UNUSED(conns)
 }
 
-QString DummyInput::currentConnection()
+MIDIConnection DummyInput::currentConnection()
 {
-    return QString();
+    return MIDIConnection();
 }
 
-void DummyInput::open(QString name)
+void DummyInput::open(const MIDIConnection& conn)
 {
-    Q_UNUSED(name)
+    Q_UNUSED(conn)
 }
 
 void DummyInput::close()

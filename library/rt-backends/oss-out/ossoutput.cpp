@@ -33,8 +33,8 @@ public:
     bool m_advanced;
     QIODevice *m_device;
     QString m_publicName;
-    QString m_currentOutput;
-    QStringList m_outputDevices;
+    MIDIConnection m_currentOutput;
+    QList<MIDIConnection> m_outputDevices;
     QStringList m_excludedNames;
 
     OSSOutputPrivate() :
@@ -65,14 +65,14 @@ public:
         m_outputDevices.clear();
         QFileInfoList listInfo = dir.entryInfoList();
         foreach(const QFileInfo &info, listInfo) {
-            m_outputDevices << info.absoluteFilePath();
+            m_outputDevices << MIDIConnection(info.baseName(), info.absoluteFilePath());
         }
     }
 
-    void open(QString portName)
+    void open(const MIDIConnection& portName)
     {
         //qDebug() << Q_FUNC_INFO << portName;
-        m_device = new QFile(portName);
+        m_device = new QFile(portName.second.toString());
         m_device->open(QIODevice::WriteOnly | QIODevice::Unbuffered);
         m_currentOutput = portName;
     }
@@ -84,7 +84,7 @@ public:
             delete m_device;
             m_device = 0;
         }
-        m_currentOutput.clear();
+        m_currentOutput = MIDIConnection();
     }
 
     void sendMessage(int m0)
@@ -154,7 +154,7 @@ void OSSOutput::setPublicName(QString name)
     d->m_publicName = name;
 }
 
-QStringList OSSOutput::connections(bool advanced)
+QList<MIDIConnection> OSSOutput::connections(bool advanced)
 {
     d->reloadDeviceList(advanced);
     return d->m_outputDevices;
@@ -165,7 +165,7 @@ void OSSOutput::setExcludedConnections(QStringList conns)
     Q_UNUSED(conns)
 }
 
-void OSSOutput::open(QString name)
+void OSSOutput::open(const MIDIConnection& name)
 {
     d->open(name);
 }
@@ -175,7 +175,7 @@ void OSSOutput::close()
     d->close();
 }
 
-QString OSSOutput::currentConnection()
+MIDIConnection OSSOutput::currentConnection()
 {
     return d->m_currentOutput;
 }

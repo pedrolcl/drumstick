@@ -39,19 +39,19 @@ NetMIDIInputPrivate::NetMIDIInputPrivate(QObject *parent) : QObject(parent),
     m_ipv6(false)
 {
     for(int i=MULTICAST_PORT; i<LAST_PORT; ++i) {
-        m_inputDevices << QString::number(i);
+        m_inputDevices << MIDIConnection(QString::number(i), i);
     }
 }
 
-void NetMIDIInputPrivate::open(QString portName)
+void NetMIDIInputPrivate::open(const MIDIConnection& portName)
 {
-    int p = m_inputDevices.indexOf(portName);
-    if (p > -1)
+    int p = portName.second.toInt();
+    if (p >= MULTICAST_PORT && p < LAST_PORT)
     {
         //qDebug() << Q_FUNC_INFO << portName;
         m_socket = new QUdpSocket();
         m_parser = new MIDIParser(m_inp);
-        m_port = static_cast<quint16>(MULTICAST_PORT + p);
+        m_port = static_cast<quint16>(p);
         m_currentInput = portName;
         bool res = m_socket->bind(m_ipv6 ? QHostAddress::AnyIPv6 : QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress);
         if (res) {
@@ -78,7 +78,7 @@ void NetMIDIInputPrivate::close()
     delete m_parser;
     m_socket = nullptr;
     m_parser = nullptr;
-    m_currentInput.clear();
+    m_currentInput = MIDIConnection();
 }
 
 void NetMIDIInputPrivate::initialize(QSettings *settings)

@@ -49,10 +49,10 @@ void SynthOutput::setPublicName(QString name)
     Q_UNUSED(name)
 }
 
-QStringList SynthOutput::connections(bool advanced)
+QList<MIDIConnection> SynthOutput::connections(bool advanced)
 {
     Q_UNUSED(advanced)
-    return QStringList(QSTR_FLUIDSYNTH);
+    return QList<MIDIConnection>{MIDIConnection(QSTR_FLUIDSYNTH, QSTR_FLUIDSYNTH)};
 }
 
 void SynthOutput::setExcludedConnections(QStringList conns)
@@ -60,7 +60,7 @@ void SynthOutput::setExcludedConnections(QStringList conns)
     Q_UNUSED(conns)
 }
 
-void SynthOutput::open(QString name)
+void SynthOutput::open(const MIDIConnection& name)
 {
     Q_UNUSED(name)
     m_synth->open();
@@ -71,7 +71,7 @@ void SynthOutput::close()
     m_synth->close();
 }
 
-QString SynthOutput::currentConnection()
+MIDIConnection SynthOutput::currentConnection()
 {
     return m_synth->currentConnection();
 }
@@ -124,4 +124,4 @@ void SynthOutput::sendSystemMsg(const int status)
     Q_UNUSED(status)
 }
 
-}}
+}} // namespace drumstick::rt

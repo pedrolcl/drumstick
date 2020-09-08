@@ -78,10 +78,10 @@ void SynthController::setPublicName(QString name)
     Q_UNUSED(name)
 }
 
-QStringList SynthController::connections(bool advanced)
+QList<MIDIConnection> SynthController::connections(bool advanced)
 {
     Q_UNUSED(advanced)
-    return QStringList(QSTR_SONIVOXEAS);
+    return QList<MIDIConnection>{MIDIConnection(QSTR_SONIVOXEAS, QSTR_SONIVOXEAS)};
 }
 
 void SynthController::setExcludedConnections(QStringList conns)
@@ -89,7 +89,7 @@ void SynthController::setExcludedConnections(QStringList conns)
     Q_UNUSED(conns)
 }
 
-void SynthController::open(QString name)
+void SynthController::open(const MIDIConnection& name)
 {
     Q_UNUSED(name)
     //qDebug() << Q_FUNC_INFO;
@@ -102,7 +102,7 @@ void SynthController::close()
     stop();
 }
 
-QString SynthController::currentConnection()
+MIDIConnection SynthController::currentConnection()
 {
     return m_renderer->connection();
 }

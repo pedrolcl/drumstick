@@ -42,15 +42,15 @@ public:
     quint16 m_port;
     QString m_publicName;
     QHostAddress m_groupAddress;
-    QString m_currentInput;
-    QStringList m_inputDevices;
+    MIDIConnection m_currentInput;
+    QList<MIDIConnection> m_inputDevices;
     QStringList m_excludedNames;
     QNetworkInterface m_iface;
     bool m_ipv6;
 
     NetMIDIInputPrivate(QObject *parent = nullptr);
 
-    void open(QString portName);
+    void open(const MIDIConnection& conn);
     void close();
     void initialize(QSettings* settings);
     void setMIDIThruDevice(MIDIOutput* device);

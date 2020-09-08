@@ -24,9 +24,13 @@
 #include <QList>
 #include <QDir>
 #include <QSettings>
+#include <drumstick/rtmidioutput.h>
 #include <fluidsynth.h>
 
 const QString QSTR_FLUIDSYNTH(QLatin1String("FluidSynth"));
+
+namespace drumstick {
+namespace rt {
 
 class SynthEngine : public QObject
 {
@@ -51,7 +55,7 @@ public:
     Q_INVOKABLE void bender(const int channel, const int value);
     Q_INVOKABLE QString version() const { return QT_STRINGIFY(VERSION); }
 
-    QString currentConnection() const { return m_currentConnection; }
+    MIDIConnection currentConnection() const { return m_currentConnection; }
     void close();
     void open();
     void uninitialize();
@@ -62,7 +66,7 @@ private:
     void loadSoundFont();
 
     int m_sfid;
-    QString m_currentConnection;
+    MIDIConnection m_currentConnection;
     QString m_soundFont;
     QString m_defSoundFont;
     fluid_settings_t* m_settings;
@@ -70,6 +74,8 @@ private:
     fluid_audio_driver_t* m_driver;
     QStringList m_soundFontsList;
 };
+
+}} // namespace drumstick::rt
 
 #endif // SynthEngine_H
 

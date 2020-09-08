@@ -44,14 +44,14 @@ public:
     bool m_thruEnabled;
     bool m_advanced;
     QString m_publicName;
-    QString m_currentInput;
-    QStringList m_inputDevices;
+    MIDIConnection m_currentInput;
+    QList<MIDIConnection> m_inputDevices;
     QStringList m_excludedNames;
     QByteArray m_buffer;
 
     OSSInputPrivate(QObject *parent = 0);
     void reloadDeviceList(bool advanced = false);
-    void open(QString portName);
+    void open(const MIDIConnection& portName);
     void close();
     //void parse();
     void setMIDIThruDevice(MIDIOutput* device);

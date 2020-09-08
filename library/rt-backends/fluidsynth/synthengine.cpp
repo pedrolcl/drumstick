@@ -21,6 +21,7 @@
 #include <QSettings>
 #include <QStandardPaths>
 #include <QCoreApplication>
+#include <drumstick/rtmidioutput.h>
 #include "synthengine.h"
 
 const QString QSTR_PREFERENCES("FluidSynth");
@@ -55,6 +56,9 @@ const int DEFAULT_CHORUS = 0;
 const int DEFAULT_REVERB = 0;
 const double DEFAULT_GAIN = .4;
 const int DEFAULT_POLYPHONY = 32;
+
+namespace drumstick {
+namespace rt {
 
 SynthEngine::SynthEngine(QObject *parent)
     : QObject(parent),
@@ -242,12 +246,13 @@ void SynthEngine::readSettings(QSettings *settings)
 
 void SynthEngine::close()
 {
-    m_currentConnection.clear();
+    m_currentConnection = MIDIConnection();
     uninitialize();
 }
 
 void SynthEngine::open()
 {
-    m_currentConnection = QSTR_FLUIDSYNTH;
+    m_currentConnection = MIDIConnection(QSTR_FLUIDSYNTH, QSTR_FLUIDSYNTH);
 }
 
+}} // namespace drumstick::rt

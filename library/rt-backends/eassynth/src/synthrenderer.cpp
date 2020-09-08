@@ -319,13 +319,13 @@ SynthRenderer::sendMessage(int m0, int m1, int m2)
     writeMIDIData(m);
 }
 
-QString
+MIDIConnection
 SynthRenderer::connection()
 {
     if (stopped()) {
-        return QString();
+        return MIDIConnection();
     } else {
-        return QSTR_SONIVOXEAS;
+        return MIDIConnection(QSTR_SONIVOXEAS, QSTR_SONIVOXEAS);
     }
 }
 

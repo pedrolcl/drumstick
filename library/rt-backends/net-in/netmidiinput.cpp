@@ -48,7 +48,7 @@ void NetMIDIInput::setPublicName(QString name)
     d->m_publicName = name;
 }
 
-QStringList NetMIDIInput::connections(bool advanced)
+QList<MIDIConnection> NetMIDIInput::connections(bool advanced)
 {
     Q_UNUSED(advanced)
     return d->m_inputDevices;
@@ -59,7 +59,7 @@ void NetMIDIInput::setExcludedConnections(QStringList conns)
     d->m_excludedNames = conns;
 }
 
-void NetMIDIInput::open(QString name)
+void NetMIDIInput::open(const MIDIConnection& name)
 {
     d->open(name);
 }
@@ -69,7 +69,7 @@ void NetMIDIInput::close()
     d->close();
 }
 
-QString NetMIDIInput::currentConnection()
+MIDIConnection NetMIDIInput::currentConnection()
 {
     return d->m_currentInput;
 }

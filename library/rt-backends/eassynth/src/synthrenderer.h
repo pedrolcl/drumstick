@@ -23,10 +23,11 @@
 #include <QReadWriteLock>
 #include <QSettings>
 #include <pulse/simple.h>
+#include <drumstick/rtmidioutput.h>
 #include "eas.h"
 
-#define cvtstr(s) #s
-#define stringify(s) cvtstr(s)
+//#define cvtstr(s) #s
+//#define stringify(s) cvtstr(s)
 const QString QSTR_SONIVOXEAS(QLatin1String("SonivoxEAS"));
 
 namespace drumstick {
@@ -49,7 +50,7 @@ namespace rt {
         void sendMessage(int m0);
         void sendMessage(int m0, int m1);
         void sendMessage(int m0, int m1, int m2);
-        QString connection();
+        MIDIConnection connection();
         void setBufferTime(int milliseconds);
         void initialize(QSettings* settings);
 

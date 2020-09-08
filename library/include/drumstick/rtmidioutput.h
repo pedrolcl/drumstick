@@ -82,6 +82,11 @@ inline int MIDI_MSB(int x)
     return (x / 0x80);
 }
 
+/**
+ * @brief MIDIConnection a connection identifier
+ */
+typedef QPair<QString,QVariant> MIDIConnection;
+
     /**
      * @brief MIDI OUT interface
      */
@@ -123,7 +128,7 @@ inline int MIDI_MSB(int x)
          * @brief connections
          * @return list of available MIDI ports
          */
-        virtual QStringList connections(bool advanced = false) = 0;
+        virtual QList<MIDIConnection> connections(bool advanced = false) = 0;
         /**
          * @brief setExcludedConnections
          * @param conns
@@ -133,7 +138,7 @@ inline int MIDI_MSB(int x)
          * @brief open the MIDI port by name
          * @param name
          */
-        virtual void open(QString name) = 0;
+        virtual void open(const MIDIConnection& conn) = 0;
         /**
          * @brief close the MIDI port
          */
@@ -142,7 +147,7 @@ inline int MIDI_MSB(int x)
          * @brief currentConnection
          * @return name of the current connection if it is opened
          */
-        virtual QString currentConnection() = 0;
+        virtual MIDIConnection currentConnection() = 0;
 
     public Q_SLOTS:
         /**
@@ -213,6 +218,7 @@ inline int MIDI_MSB(int x)
 }}
 
 Q_DECLARE_INTERFACE(drumstick::rt::MIDIOutput, "net.sourceforge.drumstick.rt.MIDIOutput/1.0")
+Q_DECLARE_METATYPE(drumstick::rt::MIDIConnection);
 
 /** @} */
 

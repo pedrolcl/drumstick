@@ -50,6 +50,9 @@ class RtTest : public QObject
 public:
     RtTest();
 
+private:
+    QString joinConns(QList<MIDIConnection> conns);
+
 private Q_SLOTS:
     void testRT();
 };
@@ -77,9 +80,9 @@ void RtTest::testRT()
     inputsList = man.availableInputs();
     QVERIFY2(inputsList.length() > 0, "There aren't input backends");
     foreach(MIDIInput* input, inputsList) {
-        QStringList conns = input->connections();
+        QList<MIDIConnection> conns = input->connections();
         qDebug() << "input:" << input->backendName() << input->publicName();
-        qDebug() << " connections:" << (conns.isEmpty() ? "none" : conns.join(", "));
+        qDebug() << " connections:" << (conns.isEmpty() ? "none" : joinConns(conns));
         QCOMPARE(input->backendName().isEmpty(), false );
         QCOMPARE(input->publicName().isEmpty(), false );
         /*QVERIFY2(conns.length() > 0, "Backend without any connection");
@@ -91,14 +94,23 @@ void RtTest::testRT()
     outputsList = man.availableOutputs();
     QVERIFY2(outputsList.length() > 0, "There aren't output backends");
     foreach(MIDIOutput* output, outputsList) {
-        QStringList conns = output->connections();
+        QList<MIDIConnection> conns = output->connections();
         qDebug() << "output:" << output->backendName() << output->publicName();
-        qDebug() << " connections:" << (conns.isEmpty() ? "none" : conns.join(", "));
+        qDebug() << " connections:" << (conns.isEmpty() ? "none" : joinConns(conns));
         /*QVERIFY2(conns.length() > 0, "Backend without any connection");
         QStringList avconns = output->connections(true);
         QVERIFY2(avconns.length() > 0, "Backend without any advanced connection");
         QVERIFY2(avconns.length() >= conns.length(), "unexpected connections number");*/
     }
+}
+
+QString RtTest::joinConns(QList<MIDIConnection> conns)
+{
+    QString res;
+    for(const MIDIConnection& c : conns) {
+        res += c.first + ", ";
+    }
+    return res;
 }
 
 QTEST_MAIN(RtTest)

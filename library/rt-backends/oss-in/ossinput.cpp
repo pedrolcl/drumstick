@@ -50,7 +50,7 @@ void OSSInput::setPublicName(QString name)
     d->m_publicName = name;
 }
 
-QStringList OSSInput::connections(bool advanced)
+QList<MIDIConnection> OSSInput::connections(bool advanced)
 {
     d->reloadDeviceList(advanced);
     return d->m_inputDevices;
@@ -61,14 +61,14 @@ void OSSInput::setExcludedConnections(QStringList conns)
     Q_UNUSED(conns)
 }
 
-QString OSSInput::currentConnection()
+MIDIConnection OSSInput::currentConnection()
 {
     return d->m_currentInput;
 }
 
-void OSSInput::open(QString name)
+void OSSInput::open(const MIDIConnection& conn)
 {
-    d->open(name);
+    d->open(conn);
 }
 
 void OSSInput::close()

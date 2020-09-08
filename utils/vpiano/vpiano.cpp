@@ -151,8 +151,11 @@ void VPiano::initialize()
             m_midiIn->initialize(settings.getQSettings());
             auto conin = m_midiIn->connections(VPianoSettings::instance()->advanced());
             auto lastIn = VPianoSettings::instance()->lastInputConnection();
-            if (conin.contains(lastIn)) {
-                m_midiIn->open(VPianoSettings::instance()->lastInputConnection());
+            for(const MIDIConnection& conn: conin) {
+                if (conn.first == lastIn) {
+                    m_midiIn->open(conn);
+                    break;
+                }
             }
         }
     }
@@ -161,11 +164,14 @@ void VPiano::initialize()
     if (m_midiOut != nullptr && !lastConnOut.isEmpty()) {
         m_midiOut->initialize(settings.getQSettings());
         auto connOut = m_midiOut->connections(VPianoSettings::instance()->advanced());
-        if (connOut.contains(lastConnOut)) {
-            m_midiOut->open(lastConnOut);
-            if (m_midiIn != nullptr) {
-                m_midiIn->setMIDIThruDevice(m_midiOut);
-                m_midiIn->enableMIDIThru(VPianoSettings::instance()->midiThru());
+        for(const MIDIConnection& conn : connOut) {
+            if (conn.first == lastConnOut) {
+                m_midiOut->open(conn);
+                if (m_midiIn != nullptr) {
+                    m_midiIn->setMIDIThruDevice(m_midiOut);
+                    m_midiIn->enableMIDIThru(VPianoSettings::instance()->midiThru());
+                }
+                break;
             }
         }
     }
