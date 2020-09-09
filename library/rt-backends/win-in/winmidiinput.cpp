@@ -44,9 +44,9 @@ namespace rt {
         bool m_clientFilter;
         HMIDIIN m_handle;
         QString m_publicName;
-        QString m_currentInput;
+        MIDIConnection m_currentInput;
         QStringList m_excludedNames;
-        QMap<int,QString> m_inputDevices;
+        QList<MIDIConnection> m_inputDevices;
 
         WinMIDIInputPrivate(WinMIDIInput *inp):
             m_inp(inp),
@@ -59,35 +59,20 @@ namespace rt {
             reloadDeviceList(true);
         }
 
-        int deviceIndex( const QString& newDevice )
-        {
-            int index = -1;
-            QMap<int,QString>::ConstIterator it;
-            for( it = m_inputDevices.constBegin();
-                 it != m_inputDevices.constEnd(); ++it ) {
-                if (it.value() == newDevice) {
-                    index = it.key();
-                    break;
-                }
-            }
-            return index;
-        }
-
-        void open(QString name) {
+        void open(const MIDIConnection &conn) {
             MMRESULT res;
-            if (name != m_currentInput) {
+            if (conn != m_currentInput) {
                 if (m_handle != nullptr)
                     close();
                 reloadDeviceList(!m_clientFilter);
-                int dev = deviceIndex(name);
-                if (dev > -1) {
-                    res = midiInOpen(&m_handle, dev, (DWORD_PTR) midiCallback, (DWORD_PTR) this, CALLBACK_FUNCTION | MIDI_IO_STATUS );
+                if (!conn.first.isEmpty()) {
+                    res = midiInOpen(&m_handle, conn.second.toInt(), (DWORD_PTR) midiCallback, (DWORD_PTR) this, CALLBACK_FUNCTION | MIDI_IO_STATUS );
                     if (res != MMSYSERR_NOERROR)
                         qDebug() << "midiInOpen() err:" << mmErrorString(res);
                     res = midiInStart(m_handle);
                     if (res != MMSYSERR_NOERROR)
                         qDebug() << "midiInStart() err:" << mmErrorString(res);
-                    m_currentInput = name;
+                    m_currentInput = conn;
                 }
             }
         }
@@ -106,7 +91,7 @@ namespace rt {
                     qDebug() << "midiInClose() err:" << mmErrorString(res);
                 m_handle = nullptr;
             }
-            m_currentInput.clear();
+            m_currentInput = MIDIConnection();
         }
 
         void reloadDeviceList(bool advanced)
@@ -128,14 +113,15 @@ namespace rt {
 #else
                 devName = QString::fromLocal8Bit(deviceCaps.szPname);
 #endif
-                foreach(const QString& n, m_excludedNames) {
+                for (const QString& n : m_excludedNames) {
                     if (devName.startsWith(n)) {
                         excluded = true;
                         break;
                     }
                 }
-                if (!excluded)
-                    m_inputDevices[dev] = devName;
+                if (!excluded) {
+                    m_inputDevices << MIDIConnection(devName, dev);
+                }
             }
         }
 
@@ -221,7 +207,6 @@ namespace rt {
                                 DWORD_PTR dwParam1,
                                 DWORD_PTR dwParam2 )
     {
-        //Q_UNUSED(hMidiIn)
         Q_UNUSED(dwParam2)
         WinMIDIInput::WinMIDIInputPrivate* object = (WinMIDIInput::WinMIDIInputPrivate*) dwInstance;
         switch( wMsg ) {
@@ -282,10 +267,10 @@ namespace rt {
         d->setPublicName(name);
     }
 
-    QStringList WinMIDIInput::connections(bool advanced)
+    QList<MIDIConnection> WinMIDIInput::connections(bool advanced)
     {
         d->reloadDeviceList(advanced);
-        return d->m_inputDevices.values();
+        return d->m_inputDevices;
     }
 
     void WinMIDIInput::setExcludedConnections(QStringList conns)
@@ -293,7 +278,7 @@ namespace rt {
         d->m_excludedNames = conns;
     }
 
-    void WinMIDIInput::open(QString name)
+    void WinMIDIInput::open(const MIDIConnection& name)
     {
         d->open(name);
     }
@@ -303,7 +288,7 @@ namespace rt {
         d->close();
     }
 
-    QString WinMIDIInput::currentConnection()
+    MIDIConnection WinMIDIInput::currentConnection()
     {
         return d->m_currentInput;
     }

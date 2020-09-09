@@ -47,8 +47,8 @@ namespace rt {
         HMIDIOUT m_handle;
         bool m_clientFilter;
         QString m_publicName;
-        QString m_currentOutput;
-        QMap<int,QString> m_outputDevices;
+        MIDIConnection m_currentOutput;
+        QList<MIDIConnection> m_outputDevices;
         MIDIHDR m_midiSysexHdr;
         QByteArray m_sysexBuffer;
         QStringList m_excludedNames;
@@ -71,17 +71,27 @@ namespace rt {
             m_clientFilter = !advanced;
 
             for ( dev = 0; dev < max; ++dev) {
+                bool excluded = false;
                 res = midiOutGetDevCaps( dev, &deviceCaps, sizeof(MIDIOUTCAPS));
                 if (res != MMSYSERR_NOERROR)
                     break;
-                if (m_clientFilter && (deviceCaps.wTechnology == MOD_MAPPER))
+                if (m_clientFilter && (deviceCaps.wTechnology == MOD_MAPPER || dev == MIDI_MAPPER))
                     continue;
     #if defined(UNICODE)
                 devName = QString::fromWCharArray(deviceCaps.szPname);
     #else
                 devName = QString::fromLocal8Bit(deviceCaps.szPname);
     #endif
-                m_outputDevices[dev] = devName;
+                for (const QString& n : m_excludedNames) {
+                    if (devName.startsWith(n)) {
+                        excluded = true;
+                        break;
+                    }
+                }
+
+                if (!excluded) {
+                    m_outputDevices << MIDIConnection(devName, dev);
+                }
             }
             if (!m_clientFilter) {
                 dev = MIDI_MAPPER;
@@ -92,7 +102,7 @@ namespace rt {
     #else
                     devName = QString::fromLocal8Bit(deviceCaps.szPname);
     #endif
-                    m_outputDevices[dev] = devName;
+                    m_outputDevices << MIDIConnection(devName, dev);
                 }
             }
         }
@@ -104,33 +114,16 @@ namespace rt {
             }
         }
 
-        int deviceIndex( const QString& newOutputDevice )
-        {
-            int index = -1;
-            QMap<int,QString>::ConstIterator it;
-            for( it = m_outputDevices.constBegin();
-                 it != m_outputDevices.constEnd(); ++it ) {
-                if (it.value() == newOutputDevice) {
-                    index = it.key();
-                    break;
-                }
-            }
-            return index;
-        }
-
-        void open(QString name)
+        void open(const MIDIConnection& conn)
         {
             MMRESULT res;
-            int dev = -1;
-
             if (m_handle != nullptr)
                 close();
             reloadDeviceList(!m_clientFilter);
-            dev = deviceIndex(name);
-            if (dev > -1) {
-                res = midiOutOpen( &m_handle, dev, (DWORD_PTR) midiCallback, (DWORD_PTR) this, CALLBACK_FUNCTION);
+            if (!conn.first.isEmpty()) {
+                res = midiOutOpen( &m_handle, conn.second.toInt(), (DWORD_PTR) midiCallback, (DWORD_PTR) this, CALLBACK_FUNCTION);
                 if (res == MMSYSERR_NOERROR)
-                    m_currentOutput = name;
+                    m_currentOutput = conn;
                 else
                     qDebug() << "midiStreamOpen() err:" << mmErrorString(res);
             }
@@ -145,7 +138,7 @@ namespace rt {
                     qDebug() << "midiOutReset() err:" << mmErrorString(res);
                 res = midiOutClose( m_handle );
                 if (res == MMSYSERR_NOERROR)
-                    m_currentOutput.clear();
+                    m_currentOutput = MIDIConnection();
                 else
                     qDebug() << "midiStreamClose() err:" << mmErrorString(res);
                 m_handle = nullptr;
@@ -212,7 +205,6 @@ namespace rt {
                                 DWORD_PTR dwParam1,
                                 DWORD_PTR dwParam2)
     {
-        //Q_UNUSED(hmo)
         Q_UNUSED(dwParam2)
 
         WinMIDIOutput::WinMIDIOutputPrivate* obj = (WinMIDIOutput::WinMIDIOutputPrivate*) dwInstance;
@@ -261,10 +253,10 @@ namespace rt {
         d->setPublicName(name);
     }
 
-    QStringList WinMIDIOutput::connections(bool advanced)
+    QList<MIDIConnection> WinMIDIOutput::connections(bool advanced)
     {
         d->reloadDeviceList(advanced);
-        return d->m_outputDevices.values();
+        return d->m_outputDevices;
     }
 
     void WinMIDIOutput::setExcludedConnections(QStringList conns)
@@ -272,7 +264,7 @@ namespace rt {
         d->m_excludedNames = conns;
     }
 
-    void WinMIDIOutput::open(QString name)
+    void WinMIDIOutput::open(const MIDIConnection& name)
     {
         d->open(name);
     }
@@ -282,7 +274,7 @@ namespace rt {
         d->close();
     }
 
-    QString WinMIDIOutput::currentConnection()
+    MIDIConnection WinMIDIOutput::currentConnection()
     {
         return d->m_currentOutput;
     }
