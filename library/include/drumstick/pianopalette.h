@@ -19,6 +19,7 @@
 #ifndef PIANOPALETTE_H
 #define PIANOPALETTE_H
 
+#include <QApplication>
 #include <QColor>
 #include <QList>
 #include "macros.h"
@@ -47,29 +48,47 @@ enum PalettePolicy {
  */
 class DRUMSTICK_EXPORT PianoPalette
 {
+    Q_DECLARE_TR_FUNCTIONS(PianoPalette)
+
 public:
     PianoPalette(int maxcolors, int id);
     virtual ~PianoPalette() {}
 
-    int paletteId() { return m_paletteId; }
+    void resetColors();
+    void retranslateStrings();
 
-    QString paletteName() const { return m_paletteName; }
+    int paletteId() const;
+
+    QString paletteName() const;
     void setPaletteName(const QString name);
 
-    QString paletteText() const { return m_paletteText; }
+    QString paletteText() const;
     void setPaletteText(const QString text);
 
+    QColor getColor(int i) const;
     void setColor(int n, QString s, QColor c);
     void setColor(int n, QColor c);
-    void setColorName(int n, QString s);
-    QColor getColor(int i);
-    QString getColorName(int i);
 
-    int getNumColors();
-    void saveColors();
+    QString getColorName(int i) const;
+    void setColorName(int n, QString s);
+
+    int getNumColors() const;
+    void saveColors() const;
     void loadColors();
 
+    bool operator==(const PianoPalette& other) const;
+    bool operator!=(const PianoPalette& other) const;
+
 protected:
+    void resetPaletteSingle();
+    void resetPaletteDouble();
+    void resetPaletteChannels();
+    void resetPaletteScale();
+    void retranslatePaletteSingle();
+    void retranslatePaletteDouble();
+    void retranslatePaletteChannels();
+    void retranslatePaletteScale();
+
     int m_paletteId;
     QList<QColor> m_colors;
     QList<QString> m_names;

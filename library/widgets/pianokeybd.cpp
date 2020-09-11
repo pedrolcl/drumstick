@@ -227,17 +227,17 @@ void PianoKeybd::setPianoHandler(PianoHandler *handler)
     d->m_scene->setPianoHandler(handler);
 }
 
-PianoPalette *PianoKeybd::getPianoPalette() const
+PianoPalette& PianoKeybd::getPianoPalette() const
 {
     return d->m_scene->getPianoPalette();
 }
 
-void PianoKeybd::setPianoPalette(PianoPalette *p)
+void PianoKeybd::setPianoPalette(const PianoPalette& p)
 {
     d->m_scene->setPianoPalette(p);
 }
 
-void PianoKeybd::setColorScalePalette(PianoPalette *p)
+void PianoKeybd::setColorScalePalette(const PianoPalette& p)
 {
     d->m_scene->setColorScalePalette(p);
 }
@@ -280,16 +280,6 @@ void PianoKeybd::initScene(int base, int num, int strt, const QColor& c)
     connect(d->m_scene, &PianoScene::noteOff, this, &PianoKeybd::noteOff);
     connect(d->m_scene, &PianoScene::signalName, this, &PianoKeybd::signalName);
     setScene(d->m_scene);
-    initSinglePalette();
-}
-
-void PianoKeybd::initSinglePalette()
-{
-    PianoPalette* palette = new PianoPalette(1, PAL_SINGLE);
-    palette->setColor(0, QString(), qApp->palette().highlight().color());
-    palette->setPaletteName(tr("Single color"));
-    palette->setPaletteText(tr("A single color to highlight all note events"));
-    d->m_scene->setPianoPalette(palette);
 }
 
 void PianoKeybd::initialize()
@@ -323,7 +313,7 @@ void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
         QColor color = d->m_scene->getKeyPressedColor();
         PianoHandler* handler = d->m_scene->getPianoHandler();
         KeyboardMap* keyMap = d->m_scene->getKeyboardMap();
-        PianoPalette* palette = d->m_scene->getPianoPalette();
+        PianoPalette palette = d->m_scene->getPianoPalette();
         bool keyboardEnabled = d->m_scene->isKeyboardEnabled();
         bool mouseEnabled = d->m_scene->isMouseEnabled();
         bool touchEnabled = d->m_scene->isTouchEnabled();

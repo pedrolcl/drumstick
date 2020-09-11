@@ -58,10 +58,10 @@ PianoScene::PianoScene ( const int baseOctave,
     m_velocity( 100 ),
     m_channel( 0 ),
     m_velocityTint( true ),
-    m_handler( 0 )
-    ,m_showColorScale( false )
-    ,m_palette( 0 )
-    ,m_scalePalette( 0 )
+    m_handler( 0 ),
+    m_showColorScale( false ),
+    m_palette( PianoPalette(1, PAL_SINGLE) ),
+    m_scalePalette( PianoPalette(12, PAL_SCALE) )
 {
     QBrush hilightBrush(m_keyPressedColor.isValid() ? m_keyPressedColor : QApplication::palette().highlight());
     PianoKeybd* view = dynamic_cast<PianoKeybd*>(parent);
@@ -209,22 +209,26 @@ void PianoScene::triggerNoteOff( const int note, const int vel )
 void PianoScene::setColorFromPolicy(PianoKey* key, int vel)
 {
     QColor c;
-    switch (m_palette->paletteId()) {
+    switch (m_palette.paletteId()) {
     case PAL_SINGLE:
-        c = m_palette->getColor(0);
+        c = m_palette.getColor(0);
         break;
     case PAL_DOUBLE:
-        c = m_palette->getColor(key->getType());
+        c = m_palette.getColor(key->getType());
         break;
     case PAL_CHANNELS:
-        c = m_palette->getColor(m_channel);
+        c = m_palette.getColor(m_channel);
         break;
-    case PAL_SCALE:
-        c = m_palette->getColor(key->getDegree());
+    default:
+        return;
     }
-    if (m_velocityTint && c.isValid()) {
-        QBrush h(c.lighter(200 - vel));
-        key->setPressedBrush(h);
+    if (c.isValid()) {
+        if (m_velocityTint) {
+            QBrush h(c.lighter(200 - vel));
+            key->setPressedBrush(h);
+        } else {
+            key->setPressedBrush(c);
+        }
     }
 }
 
@@ -550,9 +554,9 @@ void PianoScene::refreshLabels()
 void PianoScene::refreshKeys()
 {
     foreach(PianoKey* key, m_keys) {
-        if (m_showColorScale && m_scalePalette != 0) {
+        if (m_showColorScale) {
             int degree = key->getNote() % 12;
-            key->setBrush(m_scalePalette->getColor(degree));
+            key->setBrush(m_scalePalette.getColor(degree));
         } else {
             key->resetBrush();
         }
@@ -673,17 +677,30 @@ void PianoScene::retranslate()
 
 void PianoScene::setShowColorScale(const bool show)
 {
-    if (m_showColorScale != show && m_scalePalette != 0 ) {
+    if (m_showColorScale != show) {
         m_showColorScale = show;
         refreshKeys();
         invalidate();
     }
 }
 
-void PianoScene::setPianoPalette(PianoPalette *p)
+void PianoScene::setPianoPalette( const PianoPalette& p )
 {
-    resetKeyPressedColor();
-    m_palette = p;
+    if (m_palette != p) {
+        resetKeyPressedColor();
+        m_palette = p;
+        refreshKeys();
+        invalidate();
+    }
+}
+
+void PianoScene::setColorScalePalette(const PianoPalette& p )
+{
+    if (m_scalePalette != p) {
+        m_scalePalette = p;
+        refreshKeys();
+        invalidate();
+    }
 }
 
 }} // namespace drumstick::widgets

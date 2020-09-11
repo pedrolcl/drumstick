@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
-SUBDIRS += fileTest
-SUBDIRS += rtTest
+SUBDIRS += fileTest \
+           rtTest \
+           widgetsTest
 
 linux* {
     SUBDIRS += \

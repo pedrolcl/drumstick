@@ -374,8 +374,8 @@ void VPiano::readSettings()
     ui.pianokeybd->setBaseOctave(VPianoSettings::instance()->baseOctave());
     ui.pianokeybd->setNumKeys(VPianoSettings::instance()->numKeys(), VPianoSettings::instance()->startingKey());
 
-    PianoPalette* palette = new PianoPalette(1, PAL_SINGLE);
-    palette->setColor(0, QString(), Qt::red);
+    PianoPalette palette(1, PAL_SINGLE);
+    palette.setColor(0, QString(), Qt::red);
     ui.pianokeybd->setPianoPalette(palette);
 }
 

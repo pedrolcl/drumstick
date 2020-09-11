@@ -14,15 +14,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-find_package(Qt5Test REQUIRED)
-set (CMAKE_AUTOMOC ON)
-enable_testing()
+set ( SOURCES widgetstest.cpp )
 
-if (ALSA_FOUND)
-    add_subdirectory(alsaTest1)
-    add_subdirectory(alsaTest2)
-endif()
+add_executable ( widgetsTest ${SOURCES} )
 
-add_subdirectory(fileTest)
-add_subdirectory(rtTest)
-add_subdirectory(widgetsTest)
+target_include_directories ( widgetsTest PUBLIC
+    ${CMAKE_SOURCE_DIR}/library/include )
+
+target_link_libraries (widgetsTest PUBLIC
+    Qt5::Core
+    Qt5::Test
+    Drumstick::Widgets )
+
+add_test (widgetsTest ${PROJECT_BINARY_DIR}/bin/widgetsTest)
+

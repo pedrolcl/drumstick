@@ -55,9 +55,9 @@ namespace drumstick { namespace widgets {
         PianoHandler* getPianoHandler() const { return m_handler; }
         void setPianoHandler(PianoHandler* handler) { m_handler = handler; }
 
-        PianoPalette* getPianoPalette() const { return m_palette; }
-        void setPianoPalette( PianoPalette* p );
-        void setColorScalePalette( PianoPalette* p ) { m_scalePalette = p; }
+        PianoPalette& getPianoPalette() { return m_palette; }
+        void setPianoPalette( const PianoPalette& p );
+        void setColorScalePalette( const PianoPalette& p );
         bool showColorScale() const { return m_showColorScale; }
         void setShowColorScale(const bool show);
 
@@ -171,8 +171,8 @@ namespace drumstick { namespace widgets {
         QStringList m_names_s;
         QStringList m_names_f;
         bool m_showColorScale;
-        PianoPalette* m_palette;
-        PianoPalette* m_scalePalette;
+        PianoPalette m_palette;
+        PianoPalette m_scalePalette;
     };
 
 }} // namespace drumstick::widgets

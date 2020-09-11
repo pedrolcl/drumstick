@@ -1,5 +1,12 @@
+2020-09-11
+    * Piano palette refactoring
+    * New unit tests for the Widgets library
+
+2020-09-09
+    * fixed ticket #20 Same names for ALSA Sequencer clients of two hw USB controllers
+
 2020-09-04
-    * ticket #22 implementation: better rendering of note names in piano keyboard widget
+    * fixed ticket #22 implementation: better rendering of note names in piano keyboard widget
 
 2020-03-20
     * New library drumstick-gui, applied to drumstick-vpiano
