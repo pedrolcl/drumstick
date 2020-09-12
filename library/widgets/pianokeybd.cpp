@@ -227,19 +227,24 @@ void PianoKeybd::setPianoHandler(PianoHandler *handler)
     d->m_scene->setPianoHandler(handler);
 }
 
-PianoPalette& PianoKeybd::getPianoPalette() const
+PianoPalette& PianoKeybd::getHighlightPalette() const
 {
-    return d->m_scene->getPianoPalette();
+    return d->m_scene->getHighlightPalette();
 }
 
-void PianoKeybd::setPianoPalette(const PianoPalette& p)
+void PianoKeybd::setHighlightPalette(const PianoPalette& p)
 {
-    d->m_scene->setPianoPalette(p);
+    d->m_scene->setHighlightPalette(p);
 }
 
-void PianoKeybd::setColorScalePalette(const PianoPalette& p)
+PianoPalette& PianoKeybd::getBackgroundPalette() const
 {
-    d->m_scene->setColorScalePalette(p);
+    return d->m_scene->getBackgroundPalette();
+}
+
+void PianoKeybd::setBackgroundPalette(const PianoPalette& p)
+{
+    d->m_scene->setBackgroundPalette(p);
 }
 
 bool PianoKeybd::showColorScale() const
@@ -313,7 +318,7 @@ void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
         QColor color = d->m_scene->getKeyPressedColor();
         PianoHandler* handler = d->m_scene->getPianoHandler();
         KeyboardMap* keyMap = d->m_scene->getKeyboardMap();
-        PianoPalette palette = d->m_scene->getPianoPalette();
+        PianoPalette palette = d->m_scene->getHighlightPalette();
         bool keyboardEnabled = d->m_scene->isKeyboardEnabled();
         bool mouseEnabled = d->m_scene->isMouseEnabled();
         bool touchEnabled = d->m_scene->isTouchEnabled();
@@ -325,7 +330,7 @@ void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
         initScene(baseOctave, numKeys, startKey, color);
         d->m_scene->setPianoHandler(handler);
         d->m_scene->setKeyboardMap(keyMap);
-        d->m_scene->setPianoPalette(palette);
+        d->m_scene->setHighlightPalette(palette);
         d->m_scene->setKeyboardEnabled(keyboardEnabled);
         d->m_scene->setMouseEnabled(mouseEnabled);
         d->m_scene->setTouchEnabled(touchEnabled);

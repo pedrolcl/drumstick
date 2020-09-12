@@ -111,11 +111,14 @@ namespace drumstick { namespace widgets {
         void setFont(const QFont &font);
         PianoHandler* getPianoHandler() const;
         void setPianoHandler(PianoHandler* handler);
-        PianoPalette& getPianoPalette() const;
-        void setPianoPalette(const PianoPalette& p );
-        void setColorScalePalette(const PianoPalette& p );
+
+        PianoPalette& getHighlightPalette() const;
+        void setHighlightPalette(const PianoPalette& p );
+        PianoPalette& getBackgroundPalette() const;
+        void setBackgroundPalette(const PianoPalette& p );
         bool showColorScale() const;
         void setShowColorScale(const bool show);
+
         void useCustomNoteNames(const QStringList& names);
         void useStandardNoteNames();
         QStringList noteNames() const;

@@ -40,7 +40,9 @@ enum PalettePolicy {
     PAL_SINGLE = 0,    ///< Single highlihgting color for all keys
     PAL_DOUBLE = 1,    ///< Two highlihgting colors (naturals/alterations)
     PAL_CHANNELS = 2,  ///< Different highlihgting colors for each channel
-    PAL_SCALE = 3      ///< Different highlihgting colors for each chromatic scale note
+    PAL_SCALE = 3,     ///< Background colors for each chromatic scale note
+    PAL_KEYS = 4,      ///< Background colors (naturals=white/alterations=black)
+    PAL_FONT = 5       ///< Foreground font colors for names
 };
 
 /**
@@ -48,31 +50,36 @@ enum PalettePolicy {
  */
 class DRUMSTICK_EXPORT PianoPalette
 {
+    Q_GADGET
     Q_DECLARE_TR_FUNCTIONS(PianoPalette)
+    Q_ENUM(PalettePolicy)
 
 public:
-    PianoPalette(int maxcolors, int id);
+    PianoPalette(const int id);
     virtual ~PianoPalette() {}
 
     void resetColors();
     void retranslateStrings();
 
     int paletteId() const;
+    int getNumColors() const;
+
+    bool getIsHighLight() const;
+    void setIsHighLight(bool isHighLight);
 
     QString paletteName() const;
-    void setPaletteName(const QString name);
+    void setPaletteName(const QString& name);
 
     QString paletteText() const;
-    void setPaletteText(const QString text);
+    void setPaletteText(const QString& text);
 
-    QColor getColor(int i) const;
-    void setColor(int n, QString s, QColor c);
-    void setColor(int n, QColor c);
+    QColor getColor(const int i) const;
+    void setColor(const int n, const QString& s, const QColor& c);
+    void setColor(const int n, const QColor& c);
 
-    QString getColorName(int i) const;
-    void setColorName(int n, QString s);
+    QString getColorName(const int i) const;
+    void setColorName(const int n, const QString& s);
 
-    int getNumColors() const;
     void saveColors() const;
     void loadColors();
 
@@ -80,16 +87,22 @@ public:
     bool operator!=(const PianoPalette& other) const;
 
 protected:
+    void initialize();
     void resetPaletteSingle();
     void resetPaletteDouble();
     void resetPaletteChannels();
     void resetPaletteScale();
+    void resetPaletteKeys();
+    void resetPaletteFont();
     void retranslatePaletteSingle();
     void retranslatePaletteDouble();
     void retranslatePaletteChannels();
     void retranslatePaletteScale();
+    void retranslatePaletteKeys();
+    void retranslatePaletteFont();
 
     int m_paletteId;
+    bool m_isHighLight;
     QList<QColor> m_colors;
     QList<QString> m_names;
     QString m_paletteName;

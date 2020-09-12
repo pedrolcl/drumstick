@@ -27,17 +27,52 @@ namespace widgets {
 
 const QString QSTR_PALETTEPREFIX("Palette_");
 
-PianoPalette::PianoPalette(int maxcolors, int id) :
+PianoPalette::PianoPalette(int id) :
     m_paletteId(id)
 {
+    initialize();
+    resetColors();
+    retranslateStrings();
+}
+
+void
+PianoPalette::initialize()
+{
+    int maxcolors = 0;
+    switch(m_paletteId) {
+    case PAL_SINGLE:
+        maxcolors = 1;
+        m_isHighLight = true;
+        break;
+    case PAL_DOUBLE:
+        maxcolors = 2;
+        m_isHighLight = true;
+        break;
+    case PAL_CHANNELS:
+        maxcolors = 16;
+        m_isHighLight = true;
+        break;
+    case PAL_SCALE:
+        maxcolors = 12;
+        m_isHighLight = false;
+        break;
+    case PAL_KEYS:
+        maxcolors = 2;
+        m_isHighLight = false;
+        break;
+    case PAL_FONT:
+        maxcolors = 4;
+        m_isHighLight = false;
+        break;
+    default:
+        return;
+    }
     m_colors.reserve(maxcolors);
     m_names.reserve(maxcolors);
     for(int i=0; i<maxcolors; ++i) {
-        m_colors.insert(i, qApp->palette().highlight().color());
+        m_colors.insert(i, QColor());
         m_names.insert(i, QString());
     }
-    resetColors();
-    retranslateStrings();
 }
 
 void
@@ -55,6 +90,12 @@ PianoPalette::resetColors()
         break;
     case PAL_SCALE:
         resetPaletteScale();
+        break;
+    case PAL_KEYS:
+        resetPaletteKeys();
+        break;
+    case PAL_FONT:
+        resetPaletteFont();
         break;
     default:
         return;
@@ -86,7 +127,7 @@ PianoPalette::resetPaletteChannels()
     setColor(6, tr("7"), QColor("navy"));
     setColor(7, tr("8"), QColor("darkorange"));
     setColor(8, tr("9"), QColor("purple"));
-    setColor(9, tr("10"), QColor());
+    setColor(9, tr("10"), qApp->palette().highlight().color());
     setColor(10, tr("11"), QColor("teal"));
     setColor(11, tr("12"), QColor("chocolate"));
     setColor(12, tr("13"), QColor("fuchsia"));
@@ -127,29 +168,53 @@ PianoPalette::resetPaletteScale()
     setColor(11, tr("B"), QColor::fromRgb(0,127,255));
 }
 
+void PianoPalette::resetPaletteKeys()
+{
+    setColor(0, tr("N"), QColor("white"));
+    setColor(1, tr("#"), QColor("black"));
+}
+
+void PianoPalette::resetPaletteFont()
+{
+    setColor(0, tr("N"), QColor("black"));
+    setColor(1, tr("#"), QColor("white"));
+    setColor(2, tr("N*"), QColor("white"));
+    setColor(3, tr("#*"), QColor("white"));
+}
+
 void
 PianoPalette::retranslateStrings()
 {
     switch(m_paletteId) {
     case PAL_SINGLE:
-        setPaletteName(tr("Single color"));
+        setPaletteName(tr("Single color highlight"));
         setPaletteText(tr("A single color to highlight all note events"));
         retranslatePaletteSingle();
         break;
     case PAL_DOUBLE:
-        setPaletteName(tr("Two colors"));
+        setPaletteName(tr("Two colors highlight"));
         setPaletteText(tr("One color to highlight natural notes and a different one for accidentals"));
         retranslatePaletteDouble();
         break;
     case PAL_CHANNELS:
-        setPaletteName(tr("MIDI Channels"));
-        setPaletteText(tr("A different color for each MIDI channel. Enable Omni mode in the MIDI IN connection"));
+        setPaletteName(tr("MIDI Channels highlight"));
+        setPaletteText(tr("A different color to highlight each MIDI channel. Enable Omni mode in the MIDI IN connection"));
         retranslatePaletteChannels();
         break;
     case PAL_SCALE:
-        setPaletteName(tr("Chromatic scale"));
+        setPaletteName(tr("Chromatic scale background"));
         setPaletteText(tr("One color for each note in the chromatic scale"));
         retranslatePaletteScale();
+        break;
+    case PAL_KEYS:
+        setPaletteName(tr("Keys background"));
+        setPaletteText(tr("One color for natural notes and another for accidentals"));
+        retranslatePaletteKeys();
+        break;
+    case PAL_FONT:
+        setPaletteName(tr("Font foreground"));
+        setPaletteText(tr("Colors for note names"));
+        retranslatePaletteFont();
         break;
     default:
         return;
@@ -207,6 +272,30 @@ PianoPalette::retranslatePaletteScale()
     setColorName(11, tr("B"));
 }
 
+void PianoPalette::retranslatePaletteKeys()
+{
+    setColorName(0, tr("N"));
+    setColorName(1, tr("#"));
+}
+
+void PianoPalette::retranslatePaletteFont()
+{
+    setColorName(0, tr("N"));
+    setColorName(1, tr("#"));
+    setColorName(2, tr("N*"));
+    setColorName(3, tr("#*"));
+}
+
+bool PianoPalette::getIsHighLight() const
+{
+    return m_isHighLight;
+}
+
+void PianoPalette::setIsHighLight(bool isHighLight)
+{
+    m_isHighLight = isHighLight;
+}
+
 int
 PianoPalette::paletteId() const
 {
@@ -214,7 +303,7 @@ PianoPalette::paletteId() const
 }
 
 void
-PianoPalette::setColor(int n, QString s, QColor c)
+PianoPalette::setColor(const int n, const QString& s, const QColor& c)
 {
     if (n < m_colors.size()) {
         m_colors[n] = c;
@@ -223,21 +312,21 @@ PianoPalette::setColor(int n, QString s, QColor c)
 }
 
 void
-PianoPalette::setColor(int n, QColor c)
+PianoPalette::setColor(const int n, const QColor& c)
 {
     if (n < m_colors.size())
         m_colors[n] = c;
 }
 
 void
-PianoPalette::setColorName(int n, QString s)
+PianoPalette::setColorName(const int n, const QString& s)
 {
     if (n < m_names.size())
         m_names[n] = s;
 }
 
 QColor
-PianoPalette::getColor(int i) const
+PianoPalette::getColor(const int i) const
 {
     if (i < m_colors.size())
         return m_colors[i];
@@ -245,7 +334,7 @@ PianoPalette::getColor(int i) const
 }
 
 QString
-PianoPalette::getColorName(int i) const
+PianoPalette::getColorName(const int i) const
 {
     if (i < m_names.size())
         return m_names[i];
@@ -265,7 +354,7 @@ PianoPalette::paletteName() const
 }
 
 void
-PianoPalette::setPaletteName(const QString name)
+PianoPalette::setPaletteName(const QString& name)
 {
     if (m_paletteName != name) {
         m_paletteName = name;
@@ -279,7 +368,7 @@ PianoPalette::paletteText() const
 }
 
 void
-PianoPalette::setPaletteText(const QString help)
+PianoPalette::setPaletteText(const QString& help)
 {
     m_paletteText = help;
 }
@@ -313,12 +402,9 @@ PianoPalette::loadColors()
 }
 
 bool
-PianoPalette::operator==(const PianoPalette &other) const
+PianoPalette::operator==(const PianoPalette& other) const
 {
     return (m_paletteId == other.m_paletteId) &&
-           (m_paletteName == other.m_paletteName) &&
-           (m_paletteText == other.m_paletteText) &&
-           (m_names == other.m_names) &&
            (m_colors == other.m_colors);
 }
 

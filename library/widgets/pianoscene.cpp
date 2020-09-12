@@ -60,8 +60,8 @@ PianoScene::PianoScene ( const int baseOctave,
     m_velocityTint( true ),
     m_handler( 0 ),
     m_showColorScale( false ),
-    m_palette( PianoPalette(1, PAL_SINGLE) ),
-    m_scalePalette( PianoPalette(12, PAL_SCALE) )
+    m_hilightPalette(PianoPalette(PAL_SINGLE)),
+    m_backgroundPalette(PianoPalette(PAL_KEYS))
 {
     QBrush hilightBrush(m_keyPressedColor.isValid() ? m_keyPressedColor : QApplication::palette().highlight());
     PianoKeybd* view = dynamic_cast<PianoKeybd*>(parent);
@@ -209,15 +209,15 @@ void PianoScene::triggerNoteOff( const int note, const int vel )
 void PianoScene::setColorFromPolicy(PianoKey* key, int vel)
 {
     QColor c;
-    switch (m_palette.paletteId()) {
+    switch (m_hilightPalette.paletteId()) {
     case PAL_SINGLE:
-        c = m_palette.getColor(0);
+        c = m_hilightPalette.getColor(0);
         break;
     case PAL_DOUBLE:
-        c = m_palette.getColor(key->getType());
+        c = m_hilightPalette.getColor(key->getType());
         break;
     case PAL_CHANNELS:
-        c = m_palette.getColor(m_channel);
+        c = m_hilightPalette.getColor(m_channel);
         break;
     default:
         return;
@@ -556,7 +556,7 @@ void PianoScene::refreshKeys()
     foreach(PianoKey* key, m_keys) {
         if (m_showColorScale) {
             int degree = key->getNote() % 12;
-            key->setBrush(m_scalePalette.getColor(degree));
+            key->setBrush(m_backgroundPalette.getColor(degree));
         } else {
             key->resetBrush();
         }
@@ -684,20 +684,20 @@ void PianoScene::setShowColorScale(const bool show)
     }
 }
 
-void PianoScene::setPianoPalette( const PianoPalette& p )
+void PianoScene::setHighlightPalette( const PianoPalette& p )
 {
-    if (m_palette != p) {
+    if (m_hilightPalette != p) {
         resetKeyPressedColor();
-        m_palette = p;
+        m_hilightPalette = p;
         refreshKeys();
         invalidate();
     }
 }
 
-void PianoScene::setColorScalePalette(const PianoPalette& p )
+void PianoScene::setBackgroundPalette(const PianoPalette& p )
 {
-    if (m_scalePalette != p) {
-        m_scalePalette = p;
+    if (m_backgroundPalette != p) {
+        m_backgroundPalette = p;
         refreshKeys();
         invalidate();
     }
