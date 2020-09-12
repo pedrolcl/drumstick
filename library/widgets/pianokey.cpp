@@ -20,31 +20,21 @@
 #include <QPainter>
 #include <QPalette>
 //#include <QDebug>
+#include <drumstick/pianopalette.h>
 #include "pianokey.h"
 
 namespace drumstick {
 namespace widgets {
 
-static const QBrush blackBrush = QBrush(Qt::black);
-static const QBrush whiteBrush = QBrush(Qt::white);
-
-PianoKey::PianoKey(const QRectF &rect, const QBrush &brush, const int note)
-    : QGraphicsRectItem(rect),
-    m_pressed(false),
-    m_brush(brush), 
-    m_note(note),
-    m_black(brush == blackBrush)
-{
-    setAcceptedMouseButtons(Qt::NoButton);
-}
+const PianoPalette keyPalette(PAL_KEYS);
 
 PianoKey::PianoKey(const QRectF &rect, const bool black, const int note)
     : QGraphicsRectItem(rect),
     m_pressed(false),
-    m_brush( black ? blackBrush : whiteBrush ),
     m_note(note),
     m_black(black)
 {
+    m_brush = keyPalette.getColor(black ? 1 : 0);
     setAcceptedMouseButtons(Qt::NoButton);
 }
 
@@ -99,10 +89,7 @@ QRectF PianoKey::pixmapRect() const
 
 void PianoKey::resetBrush()
 {
-    if (m_black)
-        m_brush = blackBrush;
-    else
-        m_brush = whiteBrush;
+    m_brush = keyPalette.getColor(m_black ? 1 : 0);
 }
 
 }} // namespace drumstick::widgets

@@ -247,6 +247,16 @@ void PianoKeybd::setBackgroundPalette(const PianoPalette& p)
     d->m_scene->setBackgroundPalette(p);
 }
 
+PianoPalette &PianoKeybd::getFontPalette() const
+{
+    return d->m_scene->getFontPalette();
+}
+
+void PianoKeybd::setFontPalette(const PianoPalette &p)
+{
+    d->m_scene->setFontPalette(p);
+}
+
 bool PianoKeybd::showColorScale() const
 {
     return d->m_scene->showColorScale();
@@ -318,10 +328,13 @@ void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
         QColor color = d->m_scene->getKeyPressedColor();
         PianoHandler* handler = d->m_scene->getPianoHandler();
         KeyboardMap* keyMap = d->m_scene->getKeyboardMap();
-        PianoPalette palette = d->m_scene->getHighlightPalette();
+        PianoPalette highlighPalette = d->m_scene->getHighlightPalette();
+        PianoPalette backgroundPalette = d->m_scene->getBackgroundPalette();
+        PianoPalette foregroundPalette = d->m_scene->getFontPalette();
         bool keyboardEnabled = d->m_scene->isKeyboardEnabled();
         bool mouseEnabled = d->m_scene->isMouseEnabled();
         bool touchEnabled = d->m_scene->isTouchEnabled();
+        bool showScale = d->m_scene->showColorScale();
         PianoKeybd::LabelVisibility showLabels = d->m_scene->showLabels();
         PianoKeybd::LabelAlteration alteration = d->m_scene->alterations();
         PianoKeybd::LabelCentralOctave octave  = d->m_scene->getOctave();
@@ -330,10 +343,13 @@ void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
         initScene(baseOctave, numKeys, startKey, color);
         d->m_scene->setPianoHandler(handler);
         d->m_scene->setKeyboardMap(keyMap);
-        d->m_scene->setHighlightPalette(palette);
+        d->m_scene->setHighlightPalette(highlighPalette);
+        d->m_scene->setBackgroundPalette(backgroundPalette);
+        d->m_scene->setFontPalette(foregroundPalette);
         d->m_scene->setKeyboardEnabled(keyboardEnabled);
         d->m_scene->setMouseEnabled(mouseEnabled);
         d->m_scene->setTouchEnabled(touchEnabled);
+        d->m_scene->setShowColorScale(showScale);
         d->m_scene->setShowLabels(showLabels);
         d->m_scene->setAlterations(alteration);
         d->m_scene->setOctave(octave);

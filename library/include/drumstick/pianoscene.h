@@ -41,7 +41,6 @@ namespace drumstick { namespace widgets {
     class DRUMSTICK_EXPORT PianoScene : public QGraphicsScene
     {
         Q_OBJECT
-
     public:
         PianoScene ( const int baseOctave,
                      const int numKeys,
@@ -59,13 +58,16 @@ namespace drumstick { namespace widgets {
         void setHighlightPalette( const PianoPalette& p );
         PianoPalette& getBackgroundPalette() { return m_backgroundPalette; }
         void setBackgroundPalette( const PianoPalette& p );
+        PianoPalette& getFontPalette() { return m_fontPalette; }
+        void setFontPalette( const PianoPalette& p );
 
         bool showColorScale() const { return m_showColorScale; }
         void setShowColorScale(const bool show);
 
-        QColor getKeyPressedColor() const { return m_keyPressedColor; }
+        QColor getKeyPressedColor() const;
         void setKeyPressedColor(const QColor& color);
         void resetKeyPressedColor();
+
         int getMinNote() const { return m_minNote; }
         void setMinNote(const int note);
         int getMaxNote() const { return m_maxNote; }
@@ -142,7 +144,7 @@ namespace drumstick { namespace widgets {
         void triggerNoteOn( const int note, const int vel );
         void triggerNoteOff( const int note, const int vel );
         int getNoteFromKey( const int key ) const;
-        void setColorFromPolicy(PianoKey* key, const int vel);
+        void setHighlightColorFromPolicy(PianoKey* key, const int vel);
         void hideOrShowKeys();
         void refreshKeys();
 
@@ -160,7 +162,6 @@ namespace drumstick { namespace widgets {
         bool m_keyboardEnabled;
         bool m_mouseEnabled;
         bool m_touchEnabled;
-        QColor m_keyPressedColor;
         bool m_mousePressed;
         int m_velocity;
         int m_channel;
@@ -175,6 +176,7 @@ namespace drumstick { namespace widgets {
         bool m_showColorScale;
         PianoPalette m_hilightPalette;
         PianoPalette m_backgroundPalette;
+        PianoPalette m_fontPalette;
     };
 
 }} // namespace drumstick::widgets

@@ -45,49 +45,67 @@ WidgetsTest::WidgetsTest()
 void WidgetsTest::testPaletteSingle()
 {
     PianoPalette p(PAL_SINGLE);
-    QCOMPARE(p, m_paletteList[0]);
+    QCOMPARE(p, m_paletteList[PAL_SINGLE]);
     QCOMPARE(p.paletteId(), PAL_SINGLE);
     QCOMPARE(p.getNumColors(), 1);
+    QCOMPARE(p.isHighLight(), true);
+    QCOMPARE(p.isBackground(), false);
+    QCOMPARE(p.isForeground(), false);
 }
 
 void WidgetsTest::testPaletteDouble()
 {
     PianoPalette p(PAL_DOUBLE);
-    QCOMPARE(p, m_paletteList[1]);
+    QCOMPARE(p, m_paletteList[PAL_DOUBLE]);
     QCOMPARE(p.paletteId(), PAL_DOUBLE);
     QCOMPARE(p.getNumColors(), 2);
+    QCOMPARE(p.isHighLight(), true);
+    QCOMPARE(p.isBackground(), false);
+    QCOMPARE(p.isForeground(), false);
 }
 
 void WidgetsTest::testPaletteChannels()
 {
     PianoPalette p(PAL_CHANNELS);
-    QCOMPARE(p, m_paletteList[2]);
+    QCOMPARE(p, m_paletteList[PAL_CHANNELS]);
     QCOMPARE(p.paletteId(), PAL_CHANNELS);
     QCOMPARE(p.getNumColors(), 16);
+    QCOMPARE(p.isHighLight(), true);
+    QCOMPARE(p.isBackground(), false);
+    QCOMPARE(p.isForeground(), false);
 }
 
 void WidgetsTest::testPaletteScale()
 {
     PianoPalette p(PAL_SCALE);
-    QCOMPARE(p, m_paletteList[3]);
+    QCOMPARE(p, m_paletteList[PAL_SCALE]);
     QCOMPARE(p.paletteId(), PAL_SCALE);
     QCOMPARE(p.getNumColors(), 12);
+    QCOMPARE(p.isHighLight(), false);
+    QCOMPARE(p.isBackground(), true);
+    QCOMPARE(p.isForeground(), false);
 }
 
 void WidgetsTest::testPaletteKeys()
 {
     PianoPalette p(PAL_KEYS);
-    QCOMPARE(p, m_paletteList[4]);
+    QCOMPARE(p, m_paletteList[PAL_KEYS]);
     QCOMPARE(p.paletteId(), PAL_KEYS);
     QCOMPARE(p.getNumColors(), 2);
+    QCOMPARE(p.isHighLight(), false);
+    QCOMPARE(p.isBackground(), true);
+    QCOMPARE(p.isForeground(), false);
 }
 
 void WidgetsTest::testPaletteFont()
 {
     PianoPalette p(PAL_FONT);
-    QCOMPARE(p, m_paletteList[5]);
+    QCOMPARE(p, m_paletteList[PAL_FONT]);
     QCOMPARE(p.paletteId(), PAL_FONT);
     QCOMPARE(p.getNumColors(), 4);
+    QCOMPARE(p.isHighLight(), false);
+    QCOMPARE(p.isBackground(), false);
+    QCOMPARE(p.isForeground(), true);
 }
 
 void WidgetsTest::testPaletteAssign()
@@ -96,7 +114,7 @@ void WidgetsTest::testPaletteAssign()
     PianoPalette b(PAL_DOUBLE);
     a = b;
     QCOMPARE(a, b);
-    QCOMPARE(a, m_paletteList[1]);
+    QCOMPARE(a, m_paletteList[PAL_DOUBLE]);
     QCOMPARE(a.paletteId(), b.paletteId());
     QCOMPARE(a.getNumColors(), b.getNumColors());
 }
@@ -106,11 +124,8 @@ void WidgetsTest::testPaletteUnchanged()
     PianoPalette p(PAL_KEYS);
     p.setColor(0, Qt::white);
     p.setColor(1, Qt::black);
-    //QEXPECT_FAIL("", "Colors not matching", Continue);
-    QCOMPARE(p, m_paletteList[4]);
-    //QEXPECT_FAIL("", "Ids not matching", Continue);
+    QCOMPARE(p, m_paletteList[PAL_KEYS]);
     QCOMPARE(p.paletteId(), PAL_KEYS);
-    //QEXPECT_FAIL("", "Number of Colors not matching", Continue);
     QCOMPARE(p.getNumColors(), 2);
 }
 
@@ -119,9 +134,9 @@ void WidgetsTest::testPaletteChanged()
     PianoPalette p(PAL_KEYS);
     p.setColor(0, Qt::black);
     p.setColor(1, Qt::white);
-    QVERIFY(p != m_paletteList[4]);
+    QVERIFY(p != m_paletteList[PAL_KEYS]);
     p.resetColors();
-    QCOMPARE(p, m_paletteList[4]);
+    QCOMPARE(p, m_paletteList[PAL_KEYS]);
 }
 
 QTEST_MAIN(WidgetsTest)

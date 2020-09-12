@@ -374,9 +374,17 @@ void VPiano::readSettings()
     ui.pianokeybd->setBaseOctave(VPianoSettings::instance()->baseOctave());
     ui.pianokeybd->setNumKeys(VPianoSettings::instance()->numKeys(), VPianoSettings::instance()->startingKey());
 
-    PianoPalette palette(PAL_SINGLE);
-    palette.setColor(0, Qt::red);
-    ui.pianokeybd->setHighlightPalette(palette);
+    ui.pianokeybd->setKeyPressedColor(Qt::red);
+    /*
+     * PianoKeybd::setKeyPressedColor(red) is equivalent to:
+     *   PianoPalette hpalette(PAL_SINGLE);
+     *   hpalette.setColor(0, Qt::red);
+     *   ui.pianokeybd->setHighlightPalette(hpalette);
+     */
+    PianoPalette bgpalette(PAL_KEYS);
+    bgpalette.setColor(0, QColor("ivory"));
+    bgpalette.setColor(1, QColor("#130904"));
+    ui.pianokeybd->setBackgroundPalette(bgpalette);
 }
 
 void VPiano::findInput(QString name)

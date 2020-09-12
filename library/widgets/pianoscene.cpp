@@ -53,7 +53,6 @@ PianoScene::PianoScene ( const int baseOctave,
     m_keyboardEnabled( true ),
     m_mouseEnabled( true ),
     m_touchEnabled( true ),
-    m_keyPressedColor( keyPressedColor ),
     m_mousePressed( false ),
     m_velocity( 100 ),
     m_channel( 0 ),
@@ -61,9 +60,13 @@ PianoScene::PianoScene ( const int baseOctave,
     m_handler( 0 ),
     m_showColorScale( false ),
     m_hilightPalette(PianoPalette(PAL_SINGLE)),
-    m_backgroundPalette(PianoPalette(PAL_KEYS))
+    m_backgroundPalette(PianoPalette(PAL_KEYS)),
+    m_fontPalette(PianoPalette(PAL_FONT))
 {
-    QBrush hilightBrush(m_keyPressedColor.isValid() ? m_keyPressedColor : QApplication::palette().highlight());
+    if (keyPressedColor.isValid()) {
+        setKeyPressedColor(keyPressedColor);
+    }
+    QBrush hilightBrush(getKeyPressedColor());
     PianoKeybd* view = dynamic_cast<PianoKeybd*>(parent);
     if (view != nullptr) {
         setFont(view->font());
@@ -83,20 +86,18 @@ PianoScene::PianoScene ( const int baseOctave,
             x = (ocs + qFloor((j-adj) / 2.0)) * KEYWIDTH;
             key = new PianoKey( QRectF(x, 0, KEYWIDTH, KEYHEIGHT), false, i );
             lbl = new KeyLabel(key);
-            lbl->setDefaultTextColor(Qt::black);
+            lbl->setDefaultTextColor(m_fontPalette.getColor(0));
         } else {
             x = (ocs + qFloor((j-adj) / 2.0)) * KEYWIDTH + KEYWIDTH * 6/10 + 1;
             key = new PianoKey( QRectF( x, 0, KEYWIDTH * 8/10 - 1, KEYHEIGHT * 6/10 ), true, i );
             key->setZValue( 1 );
             lbl = new KeyLabel(key);
-            lbl->setDefaultTextColor(Qt::white);
+            lbl->setDefaultTextColor(m_fontPalette.getColor(1));
         }
         addItem( key );
         lbl->setFont(font());
         key->setAcceptTouchEvents(true);
-        if (m_keyPressedColor.isValid()) {
-            key->setPressedBrush(hilightBrush);
-        }
+        key->setPressedBrush(hilightBrush);
         m_keys.insert(i, key);
         m_labels.insert(i, lbl);
     }
@@ -117,7 +118,7 @@ void PianoScene::displayKeyOn(PianoKey* key)
     emit signalName(s);
     KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().first());
     if (lbl != nullptr) {
-        lbl->setDefaultTextColor(Qt::white);
+        lbl->setDefaultTextColor(m_fontPalette.getColor(key->isBlack() ? 3 : 2));
         if (m_showLabels == PianoKeybd::ShowActivated) {
             lbl->setVisible(true);
         }
@@ -135,14 +136,7 @@ void PianoScene::showKeyOn( PianoKey* key, QColor color, int vel )
 
 void PianoScene::showKeyOn( PianoKey* key, int vel )
 {
-    if (vel >= 0) {
-        if (m_velocityTint && m_keyPressedColor.isValid()) {
-            QBrush hilightBrush(m_keyPressedColor.lighter(200 - vel));
-            key->setPressedBrush(hilightBrush);
-        } else {
-            setColorFromPolicy(key, vel);
-        }
-    }
+    setHighlightColorFromPolicy(key, vel);
     displayKeyOn(key);
 }
 
@@ -206,7 +200,7 @@ void PianoScene::triggerNoteOff( const int note, const int vel )
     }
 }
 
-void PianoScene::setColorFromPolicy(PianoKey* key, int vel)
+void PianoScene::setHighlightColorFromPolicy(PianoKey* key, int vel)
 {
     QColor c;
     switch (m_hilightPalette.paletteId()) {
@@ -446,10 +440,11 @@ void PianoScene::allKeysOff()
 
 void PianoScene::setKeyPressedColor(const QColor& color)
 {
-    if (color.isValid() && (color != m_keyPressedColor)) {
-        m_keyPressedColor = color;
-        QBrush hilightBrush(m_keyPressedColor);
-        foreach(PianoKey* key, m_keys) {
+    if (color.isValid()) {
+        m_hilightPalette = PianoPalette(PAL_SINGLE);
+        m_hilightPalette.setColor(0, color);
+        QBrush hilightBrush(color);
+        for (PianoKey* key : m_keys) {
             key->setPressedBrush(hilightBrush);
         }
     }
@@ -457,15 +452,16 @@ void PianoScene::setKeyPressedColor(const QColor& color)
 
 void PianoScene::resetKeyPressedColor()
 {
-    QBrush hilightBrush(m_keyPressedColor.isValid() ? m_keyPressedColor : QApplication::palette().highlight());
-    foreach(PianoKey* key, m_keys) {
+    m_hilightPalette.resetColors();
+    QBrush hilightBrush(getKeyPressedColor());
+    for (PianoKey* key : m_keys) {
         key->setPressedBrush(hilightBrush);
     }
 }
 
 void PianoScene::hideOrShowKeys()
 {
-    foreach(PianoKey* key, m_keys) {
+    for (PianoKey* key : m_keys) {
         int n = m_baseOctave*12 + key->getNote() + m_transpose;
         bool b = !(n > m_maxNote) && !(n < m_minNote);
         key->setVisible(b);
@@ -537,11 +533,12 @@ QString PianoScene::noteName( PianoKey* key )
 
 void PianoScene::refreshLabels()
 {
-    foreach(KeyLabel* lbl, m_labels) {
+    for (KeyLabel* lbl : m_labels) {
         PianoKey* key = dynamic_cast<PianoKey*>(lbl->parentItem());
         if (key != nullptr) {
             lbl->setVisible(false);
             lbl->setFont(font());
+            lbl->setDefaultTextColor(m_fontPalette.getColor(key->isBlack() ? 1 : 0));
             lbl->setOrientation(m_orientation);
             lbl->setPlainText(noteName(key));
             lbl->adjust();
@@ -553,12 +550,13 @@ void PianoScene::refreshLabels()
 
 void PianoScene::refreshKeys()
 {
-    foreach(PianoKey* key, m_keys) {
-        if (m_showColorScale) {
+    for (PianoKey* key : m_keys) {
+        if (m_showColorScale && (m_backgroundPalette.paletteId() == PAL_SCALE)) {
             int degree = key->getNote() % 12;
             key->setBrush(m_backgroundPalette.getColor(degree));
         } else {
-            key->resetBrush();
+            key->setBrush(m_backgroundPalette.getColor(key->isBlack() ? 1 : 0));
+            //key->resetBrush();
         }
         key->setPressed(false);
     }
@@ -684,10 +682,14 @@ void PianoScene::setShowColorScale(const bool show)
     }
 }
 
+QColor PianoScene::getKeyPressedColor() const
+{
+    return m_hilightPalette.getColor(0);
+}
+
 void PianoScene::setHighlightPalette( const PianoPalette& p )
 {
     if (m_hilightPalette != p) {
-        resetKeyPressedColor();
         m_hilightPalette = p;
         refreshKeys();
         invalidate();
@@ -699,6 +701,15 @@ void PianoScene::setBackgroundPalette(const PianoPalette& p )
     if (m_backgroundPalette != p) {
         m_backgroundPalette = p;
         refreshKeys();
+        invalidate();
+    }
+}
+
+void PianoScene::setFontPalette(const PianoPalette &p)
+{
+    if (m_fontPalette != p) {
+        m_fontPalette = p;
+        refreshLabels();
         invalidate();
     }
 }

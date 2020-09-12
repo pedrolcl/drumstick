@@ -25,7 +25,7 @@
 namespace drumstick {
 namespace widgets {
 
-class KeyLabel : public QGraphicsTextItem //QGraphicsSimpleTextItem
+class KeyLabel : public QGraphicsTextItem
 {
 public:
     KeyLabel(QGraphicsItem *parent = 0);

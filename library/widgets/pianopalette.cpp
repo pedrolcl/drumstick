@@ -42,27 +42,21 @@ PianoPalette::initialize()
     switch(m_paletteId) {
     case PAL_SINGLE:
         maxcolors = 1;
-        m_isHighLight = true;
         break;
     case PAL_DOUBLE:
         maxcolors = 2;
-        m_isHighLight = true;
         break;
     case PAL_CHANNELS:
         maxcolors = 16;
-        m_isHighLight = true;
         break;
     case PAL_SCALE:
         maxcolors = 12;
-        m_isHighLight = false;
         break;
     case PAL_KEYS:
         maxcolors = 2;
-        m_isHighLight = false;
         break;
     case PAL_FONT:
         maxcolors = 4;
-        m_isHighLight = false;
         break;
     default:
         return;
@@ -168,13 +162,15 @@ PianoPalette::resetPaletteScale()
     setColor(11, tr("B"), QColor::fromRgb(0,127,255));
 }
 
-void PianoPalette::resetPaletteKeys()
+void
+PianoPalette::resetPaletteKeys()
 {
     setColor(0, tr("N"), QColor("white"));
     setColor(1, tr("#"), QColor("black"));
 }
 
-void PianoPalette::resetPaletteFont()
+void
+PianoPalette::resetPaletteFont()
 {
     setColor(0, tr("N"), QColor("black"));
     setColor(1, tr("#"), QColor("white"));
@@ -272,13 +268,15 @@ PianoPalette::retranslatePaletteScale()
     setColorName(11, tr("B"));
 }
 
-void PianoPalette::retranslatePaletteKeys()
+void
+PianoPalette::retranslatePaletteKeys()
 {
     setColorName(0, tr("N"));
     setColorName(1, tr("#"));
 }
 
-void PianoPalette::retranslatePaletteFont()
+void
+PianoPalette::retranslatePaletteFont()
 {
     setColorName(0, tr("N"));
     setColorName(1, tr("#"));
@@ -286,14 +284,22 @@ void PianoPalette::retranslatePaletteFont()
     setColorName(3, tr("#*"));
 }
 
-bool PianoPalette::getIsHighLight() const
+bool
+PianoPalette::isHighLight() const
 {
-    return m_isHighLight;
+    return (m_paletteId == PAL_SINGLE) || (m_paletteId == PAL_DOUBLE) || (m_paletteId == PAL_CHANNELS);
 }
 
-void PianoPalette::setIsHighLight(bool isHighLight)
+bool
+PianoPalette::isBackground() const
 {
-    m_isHighLight = isHighLight;
+    return (m_paletteId == PAL_SCALE) || (m_paletteId == PAL_KEYS);
+}
+
+bool
+PianoPalette::isForeground() const
+{
+    return (m_paletteId == PAL_FONT);
 }
 
 int

@@ -116,6 +116,9 @@ namespace drumstick { namespace widgets {
         void setHighlightPalette(const PianoPalette& p );
         PianoPalette& getBackgroundPalette() const;
         void setBackgroundPalette(const PianoPalette& p );
+        PianoPalette& getFontPalette() const;
+        void setFontPalette(const PianoPalette& p );
+
         bool showColorScale() const;
         void setShowColorScale(const bool show);
 

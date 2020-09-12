@@ -63,9 +63,9 @@ public:
 
     int paletteId() const;
     int getNumColors() const;
-
-    bool getIsHighLight() const;
-    void setIsHighLight(bool isHighLight);
+    bool isHighLight() const;
+    bool isBackground() const;
+    bool isForeground() const;
 
     QString paletteName() const;
     void setPaletteName(const QString& name);
@@ -102,7 +102,6 @@ protected:
     void retranslatePaletteFont();
 
     int m_paletteId;
-    bool m_isHighLight;
     QList<QColor> m_colors;
     QList<QString> m_names;
     QString m_paletteName;
