@@ -286,83 +286,83 @@ void VPiano::readSettings()
 
     ui.pianokeybd->setFont(VPianoSettings::instance()->namesFont());
 
-    PianoKeybd::LabelNaming namingPolicy = VPianoSettings::instance()->namingPolicy();
+    LabelNaming namingPolicy = VPianoSettings::instance()->namingPolicy();
     switch(namingPolicy) {
-    case PianoKeybd::StandardNames:
+    case StandardNames:
         ui.actionStandard->setChecked(true);
         ui.pianokeybd->useStandardNoteNames();
         break;
-    case PianoKeybd::CustomNamesWithSharps:
+    case CustomNamesWithSharps:
         ui.actionCustom_Sharps->setChecked(true);
         ui.pianokeybd->useCustomNoteNames(VPianoSettings::instance()->names_sharps());
         break;
-    case PianoKeybd::CustomNamesWithFlats:
+    case CustomNamesWithFlats:
         ui.actionCustom_Flats->setChecked(true);
         ui.pianokeybd->useCustomNoteNames(VPianoSettings::instance()->names_flats());
         break;
     }
 
-    PianoKeybd::LabelOrientation nOrientation = VPianoSettings::instance()->namesOrientation();
+    LabelOrientation nOrientation = VPianoSettings::instance()->namesOrientation();
     ui.pianokeybd->setLabelOrientation(nOrientation);
     switch(nOrientation) {
-    case PianoKeybd::HorizontalOrientation:
+    case HorizontalOrientation:
         ui.actionHorizontal->setChecked(true);
         break;
-    case PianoKeybd::VerticalOrientation:
+    case VerticalOrientation:
         ui.actionVertical->setChecked(true);
         break;
-    case PianoKeybd::AutomaticOrientation:
+    case AutomaticOrientation:
         ui.actionAutomatic->setChecked(true);
         break;
     default:
         break;
     }
 
-    PianoKeybd::LabelAlteration alteration = VPianoSettings::instance()->alterations();
+    LabelAlteration alteration = VPianoSettings::instance()->alterations();
     ui.pianokeybd->setLabelAlterations(alteration);
     switch(alteration) {
-    case PianoKeybd::ShowSharps:
+    case ShowSharps:
         ui.actionSharps->setChecked(true);
         break;
-    case PianoKeybd::ShowFlats:
+    case ShowFlats:
         ui.actionFlats->setChecked(true);
         break;
-    case PianoKeybd::ShowNothing:
+    case ShowNothing:
         ui.actionNothing->setChecked(true);
         break;
     default:
         break;
     }
 
-    PianoKeybd::LabelVisibility visibility = VPianoSettings::instance()->namesVisibility();
+    LabelVisibility visibility = VPianoSettings::instance()->namesVisibility();
     ui.pianokeybd->setShowLabels(visibility);
     switch(visibility) {
-    case PianoKeybd::ShowNever:
+    case ShowNever:
         ui.actionNever->setChecked(true);
         break;
-    case PianoKeybd::ShowMinimum:
+    case ShowMinimum:
         ui.actionMinimal->setChecked(true);
         break;
-    case PianoKeybd::ShowActivated:
+    case ShowActivated:
         ui.actionWhen_Activated->setChecked(true);
         break;
-    case PianoKeybd::ShowAlways:
+    case ShowAlways:
         ui.actionAlways->setChecked(true);
         break;
     default:
         break;
     }
 
-    PianoKeybd::LabelCentralOctave nOctave = VPianoSettings::instance()->namesOctave();
+    LabelCentralOctave nOctave = VPianoSettings::instance()->namesOctave();
     ui.pianokeybd->setLabelOctave(nOctave);
     switch(nOctave) {
-    case PianoKeybd::OctaveC3:
+    case OctaveC3:
         ui.actionC3->setChecked(true);
         break;
-    case PianoKeybd::OctaveC4:
+    case OctaveC4:
         ui.actionC4->setChecked(true);
         break;
-    case PianoKeybd::OctaveC5:
+    case OctaveC5:
         ui.actionC5->setChecked(true);
         break;
     default:
@@ -383,7 +383,7 @@ void VPiano::readSettings()
      */
     PianoPalette bgpalette(PAL_KEYS);
     bgpalette.setColor(0, QColor("ivory"));
-    bgpalette.setColor(1, QColor("#130904"));
+    bgpalette.setColor(1, QColor("#3E3131"));
     ui.pianokeybd->setBackgroundPalette(bgpalette);
 }
 
@@ -438,7 +438,7 @@ void VPiano::setPortableConfig(const QString fileName)
 
 void VPiano::useCustomNoteNames()
 {
-    if (ui.pianokeybd->labelAlterations() == PianoKeybd::ShowFlats) {
+    if (ui.pianokeybd->labelAlterations() == ShowFlats) {
         ui.pianokeybd->useCustomNoteNames(VPianoSettings::instance()->names_flats());
     } else {
         ui.pianokeybd->useCustomNoteNames(VPianoSettings::instance()->names_sharps());
@@ -461,11 +461,11 @@ void VPiano::slotChangeFont()
 void VPiano::slotNameOrientation(QAction* action)
 {
     if(action == ui.actionHorizontal) {
-        VPianoSettings::instance()->setNamesOrientation(PianoKeybd::HorizontalOrientation);
+        VPianoSettings::instance()->setNamesOrientation(HorizontalOrientation);
     } else if(action == ui.actionVertical) {
-        VPianoSettings::instance()->setNamesOrientation(PianoKeybd::VerticalOrientation);
+        VPianoSettings::instance()->setNamesOrientation(VerticalOrientation);
     } else if(action == ui.actionAutomatic) {
-        VPianoSettings::instance()->setNamesOrientation(PianoKeybd::AutomaticOrientation);
+        VPianoSettings::instance()->setNamesOrientation(AutomaticOrientation);
     }
     ui.pianokeybd->setLabelOrientation(VPianoSettings::instance()->namesOrientation());
 }
@@ -473,13 +473,13 @@ void VPiano::slotNameOrientation(QAction* action)
 void VPiano::slotNameVisibility(QAction* action)
 {
     if(action == ui.actionNever) {
-        VPianoSettings::instance()->setNamesVisibility(PianoKeybd::ShowNever);
+        VPianoSettings::instance()->setNamesVisibility(ShowNever);
     } else if(action == ui.actionMinimal) {
-        VPianoSettings::instance()->setNamesVisibility(PianoKeybd::ShowMinimum);
+        VPianoSettings::instance()->setNamesVisibility(ShowMinimum);
     } else if(action == ui.actionWhen_Activated) {
-        VPianoSettings::instance()->setNamesVisibility(PianoKeybd::ShowActivated);
+        VPianoSettings::instance()->setNamesVisibility(ShowActivated);
     } else if(action == ui.actionAlways) {
-        VPianoSettings::instance()->setNamesVisibility(PianoKeybd::ShowAlways);
+        VPianoSettings::instance()->setNamesVisibility(ShowAlways);
     }
     ui.pianokeybd->setShowLabels(VPianoSettings::instance()->namesVisibility());
 }
@@ -487,11 +487,11 @@ void VPiano::slotNameVisibility(QAction* action)
 void VPiano::slotNameVariant(QAction* action)
 {
     if(action == ui.actionSharps) {
-        VPianoSettings::instance()->setNamesAlterations(PianoKeybd::ShowSharps);
+        VPianoSettings::instance()->setNamesAlterations(ShowSharps);
     } else if(action == ui.actionFlats) {
-        VPianoSettings::instance()->setNamesAlterations(PianoKeybd::ShowFlats);
+        VPianoSettings::instance()->setNamesAlterations(ShowFlats);
     } else if(action == ui.actionNothing) {
-        VPianoSettings::instance()->setNamesAlterations(PianoKeybd::ShowNothing);
+        VPianoSettings::instance()->setNamesAlterations(ShowNothing);
     }
     ui.pianokeybd->setLabelAlterations(VPianoSettings::instance()->alterations());
 }
@@ -499,18 +499,18 @@ void VPiano::slotNameVariant(QAction* action)
 void VPiano::slotCentralOctave(QAction *action)
 {
     if (action == ui.actionC3) {
-        VPianoSettings::instance()->setNamesOctave(PianoKeybd::OctaveC3);
+        VPianoSettings::instance()->setNamesOctave(OctaveC3);
     } else if(action == ui.actionC4) {
-        VPianoSettings::instance()->setNamesOctave(PianoKeybd::OctaveC4);
+        VPianoSettings::instance()->setNamesOctave(OctaveC4);
     } else if(action == ui.actionC5) {
-        VPianoSettings::instance()->setNamesOctave(PianoKeybd::OctaveC5);
+        VPianoSettings::instance()->setNamesOctave(OctaveC5);
     }
     ui.pianokeybd->setLabelOctave(VPianoSettings::instance()->namesOctave());
 }
 
 void VPiano::slotStandardNames()
 {
-    VPianoSettings::instance()->setNamingPolicy(PianoKeybd::StandardNames);
+    VPianoSettings::instance()->setNamingPolicy(StandardNames);
     ui.pianokeybd->useStandardNoteNames();
 }
 
@@ -529,10 +529,10 @@ void VPiano::slotCustomNames(bool sharps)
         QStringList customNames = text.split('\n');
         if (sharps) {
             VPianoSettings::instance()->setNames_sharps(customNames);
-            VPianoSettings::instance()->setNamingPolicy(PianoKeybd::CustomNamesWithSharps);
+            VPianoSettings::instance()->setNamingPolicy(CustomNamesWithSharps);
         } else {
             VPianoSettings::instance()->setNames_flats(customNames);
-            VPianoSettings::instance()->setNamingPolicy(PianoKeybd::CustomNamesWithFlats);
+            VPianoSettings::instance()->setNamingPolicy(CustomNamesWithFlats);
         }
         ui.pianokeybd->useCustomNoteNames(customNames);
     } else {

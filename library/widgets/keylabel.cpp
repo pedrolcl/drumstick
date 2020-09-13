@@ -50,16 +50,21 @@ void KeyLabel::adjust()
     m_savedColor = defaultTextColor();
 }
 
-void KeyLabel::setOrientation(PianoKeybd::LabelOrientation ori)
+void KeyLabel::setOrientation(LabelOrientation ori)
 {
     if (m_orientation != ori) {
         m_orientation = ori;
-        if (m_orientation == PianoKeybd::VerticalOrientation ) {
+        switch(m_orientation) {
+        case VerticalOrientation:
             setRotation(270);
-        } else if (m_orientation == PianoKeybd::HorizontalOrientation) {
+            break;
+        case HorizontalOrientation:
             setRotation(0);
-        } else {
+            break;
+        case AutomaticOrientation:
+        default:
             calculateRotation();
+            break;
         }
     }
 }
@@ -88,7 +93,7 @@ void KeyLabel::setPlainText(const QString &text)
 {
     QGraphicsTextItem::setPlainText(text);
     adjustSize();
-    if (m_orientation == PianoKeybd::AutomaticOrientation) {
+    if (m_orientation == AutomaticOrientation) {
         calculateRotation();
     }
 }

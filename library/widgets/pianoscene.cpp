@@ -20,6 +20,7 @@
 #include <QPalette>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
+//#include <QDebug>
 #include <qmath.h>
 #include <drumstick/pianokeybd.h>
 #include <drumstick/pianoscene.h>
@@ -45,10 +46,10 @@ PianoScene::PianoScene ( const int baseOctave,
     m_minNote( 0 ),
     m_maxNote( 127 ),
     m_transpose( 0 ),
-    m_showLabels( PianoKeybd::ShowNever ),
-    m_alterations( PianoKeybd::ShowSharps ),
-    m_octave( PianoKeybd::OctaveC4 ),
-    m_orientation( PianoKeybd::HorizontalOrientation ),
+    m_showLabels( ShowNever ),
+    m_alterations( ShowSharps ),
+    m_octave( OctaveC4 ),
+    m_orientation( HorizontalOrientation ),
     m_rawkbd( false ),
     m_keyboardEnabled( true ),
     m_mouseEnabled( true ),
@@ -61,7 +62,7 @@ PianoScene::PianoScene ( const int baseOctave,
     m_showColorScale( false ),
     m_hilightPalette(PianoPalette(PAL_SINGLE)),
     m_backgroundPalette(PianoPalette(PAL_KEYS)),
-    m_fontPalette(PianoPalette(PAL_FONT))
+    m_foregroundPalette(PianoPalette(PAL_FONT))
 {
     if (keyPressedColor.isValid()) {
         setKeyPressedColor(keyPressedColor);
@@ -86,13 +87,13 @@ PianoScene::PianoScene ( const int baseOctave,
             x = (ocs + qFloor((j-adj) / 2.0)) * KEYWIDTH;
             key = new PianoKey( QRectF(x, 0, KEYWIDTH, KEYHEIGHT), false, i );
             lbl = new KeyLabel(key);
-            lbl->setDefaultTextColor(m_fontPalette.getColor(0));
+            lbl->setDefaultTextColor(m_foregroundPalette.getColor(0));
         } else {
             x = (ocs + qFloor((j-adj) / 2.0)) * KEYWIDTH + KEYWIDTH * 6/10 + 1;
             key = new PianoKey( QRectF( x, 0, KEYWIDTH * 8/10 - 1, KEYHEIGHT * 6/10 ), true, i );
             key->setZValue( 1 );
             lbl = new KeyLabel(key);
-            lbl->setDefaultTextColor(m_fontPalette.getColor(1));
+            lbl->setDefaultTextColor(m_foregroundPalette.getColor(1));
         }
         addItem( key );
         lbl->setFont(font());
@@ -118,8 +119,8 @@ void PianoScene::displayKeyOn(PianoKey* key)
     emit signalName(s);
     KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().first());
     if (lbl != nullptr) {
-        lbl->setDefaultTextColor(m_fontPalette.getColor(key->isBlack() ? 3 : 2));
-        if (m_showLabels == PianoKeybd::ShowActivated) {
+        lbl->setDefaultTextColor(m_foregroundPalette.getColor(key->isBlack() ? 3 : 2));
+        if (m_showLabels == ShowActivated) {
             lbl->setVisible(true);
         }
     }
@@ -147,7 +148,7 @@ void PianoScene::showKeyOff( PianoKey* key, int )
     KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().first());
     if (lbl != nullptr) {
         lbl->restoreColor();
-        if (m_showLabels == PianoKeybd::ShowActivated) {
+        if (m_showLabels == ShowActivated) {
             lbl->setVisible(false);
         }
     }
@@ -509,13 +510,13 @@ QString PianoScene::noteName( PianoKey* key )
         QString name;
         if (!m_names_f.isEmpty() && !m_names_s.isEmpty()) {
             switch(m_alterations) {
-            case PianoKeybd::ShowFlats:
+            case ShowFlats:
                 name = m_names_f.value(num);
                 break;
-            case PianoKeybd::ShowSharps:
+            case ShowSharps:
                 name =  m_names_s.value(num);
                 break;
-            case PianoKeybd::ShowNothing:
+            case ShowNothing:
                 if (key->isBlack()) {
                     return QString();
                 }
@@ -527,7 +528,16 @@ QString PianoScene::noteName( PianoKey* key )
         }
         return QString("%1%2").arg(name).arg(oct);
     } else {
-        return QString("%1%2").arg(m_noteNames.value(num)).arg(oct);
+        if (m_noteNames.length() == 128) {
+            int n = m_baseOctave*12 + note + m_transpose;
+            //qDebug() << Q_FUNC_INFO << n << note;
+            if (n >= 0 && n < m_noteNames.length()) {
+                return m_noteNames.value(n);
+            }
+        } else if (m_noteNames.length() >= 12) {
+            return QString("%1%2").arg(m_noteNames.value(num)).arg(oct);
+        }
+        return QString();
     }
 }
 
@@ -538,12 +548,12 @@ void PianoScene::refreshLabels()
         if (key != nullptr) {
             lbl->setVisible(false);
             lbl->setFont(font());
-            lbl->setDefaultTextColor(m_fontPalette.getColor(key->isBlack() ? 1 : 0));
+            lbl->setDefaultTextColor(m_foregroundPalette.getColor(key->isBlack() ? 1 : 0));
             lbl->setOrientation(m_orientation);
             lbl->setPlainText(noteName(key));
             lbl->adjust();
-            lbl->setVisible((m_showLabels == PianoKeybd::ShowAlways) ||
-                (m_showLabels == PianoKeybd::ShowMinimum && isOctaveStart(key->getNote())));
+            lbl->setVisible((m_showLabels == ShowAlways) ||
+                (m_showLabels == ShowMinimum && isOctaveStart(key->getNote())));
         }
     }
 }
@@ -562,22 +572,23 @@ void PianoScene::refreshKeys()
     }
 }
 
-void PianoScene::setShowLabels(PianoKeybd::LabelVisibility show)
+void PianoScene::setShowLabels(const LabelVisibility show)
 {
+    //qDebug() << Q_FUNC_INFO << show;
     if (m_showLabels != show) {
         m_showLabels = show;
         refreshLabels();
     }
 }
 
-void PianoScene::setAlterations(PianoKeybd::LabelAlteration use)
+void PianoScene::setAlterations(const LabelAlteration use)
 {
     if (m_alterations != use) {
         m_alterations = use;
         refreshLabels();
     }
 }
-void PianoScene::setOrientation(const PianoKeybd::LabelOrientation &orientation)
+void PianoScene::setOrientation(const LabelOrientation orientation)
 {
     if (m_orientation != orientation) {
         m_orientation = orientation;
@@ -585,7 +596,7 @@ void PianoScene::setOrientation(const PianoKeybd::LabelOrientation &orientation)
     }
 }
 
-void PianoScene::setOctave(const PianoKeybd::LabelCentralOctave &octave)
+void PianoScene::setOctave(const LabelCentralOctave octave)
 {
     if (m_octave != octave) {
         m_octave = octave;
@@ -609,14 +620,26 @@ void PianoScene::setRawKeyboardMode(bool b)
     }
 }
 
+QStringList PianoScene::customNoteNames() const
+{
+    return m_noteNames;
+}
+
+QStringList PianoScene::standardNoteNames() const
+{
+    return m_names_s;
+}
+
 void PianoScene::useCustomNoteNames(const QStringList& names)
 {
+    //qDebug() << Q_FUNC_INFO << names;
     m_noteNames = names;
     refreshLabels();
 }
 
 void PianoScene::useStandardNoteNames()
 {
+    //qDebug() << Q_FUNC_INFO;
     m_noteNames.clear();
     refreshLabels();
 }
@@ -705,10 +728,10 @@ void PianoScene::setBackgroundPalette(const PianoPalette& p )
     }
 }
 
-void PianoScene::setFontPalette(const PianoPalette &p)
+void PianoScene::setForegroundPalette(const PianoPalette &p)
 {
-    if (m_fontPalette != p) {
-        m_fontPalette = p;
+    if (m_foregroundPalette != p) {
+        m_foregroundPalette = p;
         refreshLabels();
         invalidate();
     }

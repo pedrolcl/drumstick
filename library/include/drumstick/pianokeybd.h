@@ -66,6 +66,33 @@ namespace drumstick { namespace widgets {
     const int DEFAULTBASEOCTAVE = 1;    ///< Default base octave
     const int DEFAULTNUMBEROFKEYS = 88; ///< Default number of piano keys
 
+    enum LabelVisibility {
+        ShowNever,          ///< Don't show note names
+        ShowMinimum,        ///< Show only note C names
+        ShowActivated,      ///< Show names when notes are activated
+        ShowAlways          ///< Show always note names
+    };
+    enum LabelAlteration {
+        ShowSharps,         ///< Show sharps on black keys
+        ShowFlats,          ///< Show flats on black keys
+        ShowNothing         ///< Do not show names on black keys
+    };
+    enum LabelOrientation {
+        HorizontalOrientation,  ///< Show horizontal names
+        VerticalOrientation,    ///< Show vertical names
+        AutomaticOrientation    ///< Show horizonal or vertical names depending on the size
+    };
+    enum LabelNaming {
+        StandardNames,          ///< Show standard names
+        CustomNamesWithSharps,  ///< Show custom names with sharps
+        CustomNamesWithFlats    ///< Show custom names with flats
+    };
+    enum LabelCentralOctave {
+        OctaveC3,           ///< Central C, MIDI note #60 is C3
+        OctaveC4,           ///< Central C, MIDI note #60 is C4
+        OctaveC5            ///< Central C, MIDI note #60 is C5
+    };
+
     /**
      * @brief The PianoKeybd class
      */
@@ -93,38 +120,30 @@ namespace drumstick { namespace widgets {
         PianoKeybd(const int baseOctave, const int numKeys, const int startKey, QWidget *parent = nullptr);
         virtual ~PianoKeybd();
 
-        enum LabelVisibility { ShowNever, ShowMinimum, ShowActivated, ShowAlways };
         Q_ENUM(LabelVisibility);
-
-        enum LabelAlteration { ShowSharps, ShowFlats, ShowNothing };
         Q_ENUM(LabelAlteration);
-
-        enum LabelOrientation { HorizontalOrientation, VerticalOrientation, AutomaticOrientation };
         Q_ENUM(LabelOrientation);
-
-        enum LabelNaming { StandardNames, CustomNamesWithSharps, CustomNamesWithFlats };
         Q_ENUM(LabelNaming);
-
-        enum LabelCentralOctave { OctaveC3, OctaveC4, OctaveC5 };
         Q_ENUM(LabelCentralOctave);
 
         void setFont(const QFont &font);
         PianoHandler* getPianoHandler() const;
         void setPianoHandler(PianoHandler* handler);
 
-        PianoPalette& getHighlightPalette() const;
+        PianoPalette getHighlightPalette() const;
         void setHighlightPalette(const PianoPalette& p );
-        PianoPalette& getBackgroundPalette() const;
+        PianoPalette getBackgroundPalette() const;
         void setBackgroundPalette(const PianoPalette& p );
-        PianoPalette& getFontPalette() const;
-        void setFontPalette(const PianoPalette& p );
+        PianoPalette getForegroundPalette() const;
+        void setForegroundPalette(const PianoPalette& p );
 
         bool showColorScale() const;
         void setShowColorScale(const bool show);
 
         void useCustomNoteNames(const QStringList& names);
         void useStandardNoteNames();
-        QStringList noteNames() const;
+        QStringList customNoteNames() const;
+        QStringList standardNoteNames() const;
         void retranslate();
 
         int baseOctave() const;
@@ -138,13 +157,13 @@ namespace drumstick { namespace widgets {
         void setKeyPressedColor(const QColor& c);
         void resetKeyPressedColor();
         LabelVisibility showLabels() const;
-        void setShowLabels(LabelVisibility show);
-        PianoKeybd::LabelAlteration labelAlterations() const;
-        void setLabelAlterations(PianoKeybd::LabelAlteration use);
-        PianoKeybd::LabelOrientation labelOrientation() const;
-        void setLabelOrientation(PianoKeybd::LabelOrientation orientation);
-        PianoKeybd::LabelCentralOctave labelOctave() const;
-        void setLabelOctave(PianoKeybd::LabelCentralOctave octave);
+        void setShowLabels(const LabelVisibility show);
+        LabelAlteration labelAlterations() const;
+        void setLabelAlterations(const LabelAlteration use);
+        LabelOrientation labelOrientation() const;
+        void setLabelOrientation(const LabelOrientation orientation);
+        LabelCentralOctave labelOctave() const;
+        void setLabelOctave(const LabelCentralOctave octave);
         int getTranspose() const;
         void setTranspose(int t);
         int getChannel() const;

@@ -83,23 +83,23 @@ public:
 
     QVariantMap settingsMap() const;
 
-    drumstick::widgets::PianoKeybd::LabelOrientation namesOrientation() const;
-    void setNamesOrientation(drumstick::widgets::PianoKeybd::LabelOrientation namesOrientation);
+    drumstick::widgets::LabelOrientation namesOrientation() const;
+    void setNamesOrientation(const drumstick::widgets::LabelOrientation namesOrientation);
 
-    drumstick::widgets::PianoKeybd::LabelVisibility namesVisibility() const;
-    void setNamesVisibility(drumstick::widgets::PianoKeybd::LabelVisibility namesVisibility);
+    drumstick::widgets::LabelVisibility namesVisibility() const;
+    void setNamesVisibility(const drumstick::widgets::LabelVisibility namesVisibility);
 
-    drumstick::widgets::PianoKeybd::LabelAlteration alterations() const;
-    void setNamesAlterations(drumstick::widgets::PianoKeybd::LabelAlteration alterations);
+    drumstick::widgets::LabelAlteration alterations() const;
+    void setNamesAlterations(const drumstick::widgets::LabelAlteration alterations);
 
     QFont namesFont() const;
     void setNamesFont(const QFont &namesFont);
 
-    drumstick::widgets::PianoKeybd::LabelCentralOctave namesOctave() const;
-    void setNamesOctave(drumstick::widgets::PianoKeybd::LabelCentralOctave namesOctave);
+    drumstick::widgets::LabelCentralOctave namesOctave() const;
+    void setNamesOctave(const drumstick::widgets::LabelCentralOctave namesOctave);
 
-    drumstick::widgets::PianoKeybd::LabelNaming namingPolicy() const;
-    void setNamingPolicy(drumstick::widgets::PianoKeybd::LabelNaming namingPolicy);
+    drumstick::widgets::LabelNaming namingPolicy() const;
+    void setNamingPolicy(const drumstick::widgets::LabelNaming namingPolicy);
 
     QStringList names_sharps() const;
     void setNames_sharps(const QStringList &names_sharps);
@@ -142,11 +142,11 @@ private:
     QString m_defaultOutput;
     QVariantMap m_settingsMap;
     QVariantMap m_defaultsMap;
-    drumstick::widgets::PianoKeybd::LabelVisibility m_namesVisibility;
-    drumstick::widgets::PianoKeybd::LabelAlteration m_namesAlteration;
-    drumstick::widgets::PianoKeybd::LabelCentralOctave m_namesOctave;
-    drumstick::widgets::PianoKeybd::LabelOrientation m_namesOrientation;
-    drumstick::widgets::PianoKeybd::LabelNaming m_namingPolicy;
+    drumstick::widgets::LabelVisibility m_namesVisibility;
+    drumstick::widgets::LabelAlteration m_namesAlteration;
+    drumstick::widgets::LabelCentralOctave m_namesOctave;
+    drumstick::widgets::LabelOrientation m_namesOrientation;
+    drumstick::widgets::LabelNaming m_namingPolicy;
     QStringList m_names_sharps;
     QStringList m_names_flats;
     QFont m_namesFont;

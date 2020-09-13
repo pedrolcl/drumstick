@@ -54,12 +54,12 @@ namespace drumstick { namespace widgets {
         PianoHandler* getPianoHandler() const { return m_handler; }
         void setPianoHandler(PianoHandler* handler) { m_handler = handler; }
 
-        PianoPalette& getHighlightPalette() { return m_hilightPalette; }
+        PianoPalette getHighlightPalette() { return m_hilightPalette; }
         void setHighlightPalette( const PianoPalette& p );
-        PianoPalette& getBackgroundPalette() { return m_backgroundPalette; }
+        PianoPalette getBackgroundPalette() { return m_backgroundPalette; }
         void setBackgroundPalette( const PianoPalette& p );
-        PianoPalette& getFontPalette() { return m_fontPalette; }
-        void setFontPalette( const PianoPalette& p );
+        PianoPalette getForegroundPalette() { return m_foregroundPalette; }
+        void setForegroundPalette( const PianoPalette& p );
 
         bool showColorScale() const { return m_showColorScale; }
         void setShowColorScale(const bool show);
@@ -75,14 +75,14 @@ namespace drumstick { namespace widgets {
         int getTranspose() const { return m_transpose; }
         void setTranspose(const int transpose);
 
-        PianoKeybd::LabelVisibility showLabels() const { return m_showLabels; }
-        void setShowLabels(const PianoKeybd::LabelVisibility show);
-        PianoKeybd::LabelAlteration alterations() const { return m_alterations; }
-        void setAlterations(const PianoKeybd::LabelAlteration use);
-        PianoKeybd::LabelCentralOctave getOctave() const { return m_octave; }
-        void setOctave(const PianoKeybd::LabelCentralOctave &octave);
-        PianoKeybd::LabelOrientation getOrientation() const { return m_orientation; }
-        void setOrientation(const PianoKeybd::LabelOrientation &orientation);
+        LabelVisibility showLabels() const { return m_showLabels; }
+        void setShowLabels(const LabelVisibility show);
+        LabelAlteration alterations() const { return m_alterations; }
+        void setAlterations(const LabelAlteration use);
+        LabelCentralOctave getOctave() const { return m_octave; }
+        void setOctave(const LabelCentralOctave octave);
+        LabelOrientation getOrientation() const { return m_orientation; }
+        void setOrientation(const LabelOrientation orientation);
 
         bool isKeyboardEnabled() const { return m_keyboardEnabled; }
         void setKeyboardEnabled( const bool enable );
@@ -108,12 +108,13 @@ namespace drumstick { namespace widgets {
         void setRawKeyboardMode(const bool b);
         void useCustomNoteNames(const QStringList& names);
         void useStandardNoteNames();
+        QStringList customNoteNames() const;
+        QStringList standardNoteNames() const;
         int getVelocity() { return m_velocity; }
         void setVelocity(const int velocity) { m_velocity = velocity; }
         int getChannel() const { return m_channel; }
         void setChannel(const int channel) { m_channel = channel; }
         void retranslate();
-        QStringList noteNames() const { return m_names_s; }
         void refreshLabels();
 
     signals:
@@ -154,10 +155,10 @@ namespace drumstick { namespace widgets {
         int m_minNote;
         int m_maxNote;
         int m_transpose;
-        PianoKeybd::LabelVisibility m_showLabels;
-        PianoKeybd::LabelAlteration m_alterations;
-        PianoKeybd::LabelCentralOctave m_octave;
-        PianoKeybd::LabelOrientation m_orientation;
+        LabelVisibility m_showLabels;
+        LabelAlteration m_alterations;
+        LabelCentralOctave m_octave;
+        LabelOrientation m_orientation;
         bool m_rawkbd;
         bool m_keyboardEnabled;
         bool m_mouseEnabled;
@@ -176,7 +177,7 @@ namespace drumstick { namespace widgets {
         bool m_showColorScale;
         PianoPalette m_hilightPalette;
         PianoPalette m_backgroundPalette;
-        PianoPalette m_fontPalette;
+        PianoPalette m_foregroundPalette;
     };
 
 }} // namespace drumstick::widgets

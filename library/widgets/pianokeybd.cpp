@@ -227,7 +227,7 @@ void PianoKeybd::setPianoHandler(PianoHandler *handler)
     d->m_scene->setPianoHandler(handler);
 }
 
-PianoPalette& PianoKeybd::getHighlightPalette() const
+PianoPalette PianoKeybd::getHighlightPalette() const
 {
     return d->m_scene->getHighlightPalette();
 }
@@ -237,7 +237,7 @@ void PianoKeybd::setHighlightPalette(const PianoPalette& p)
     d->m_scene->setHighlightPalette(p);
 }
 
-PianoPalette& PianoKeybd::getBackgroundPalette() const
+PianoPalette PianoKeybd::getBackgroundPalette() const
 {
     return d->m_scene->getBackgroundPalette();
 }
@@ -247,14 +247,14 @@ void PianoKeybd::setBackgroundPalette(const PianoPalette& p)
     d->m_scene->setBackgroundPalette(p);
 }
 
-PianoPalette &PianoKeybd::getFontPalette() const
+PianoPalette PianoKeybd::getForegroundPalette() const
 {
-    return d->m_scene->getFontPalette();
+    return d->m_scene->getForegroundPalette();
 }
 
-void PianoKeybd::setFontPalette(const PianoPalette &p)
+void PianoKeybd::setForegroundPalette(const PianoPalette &p)
 {
-    d->m_scene->setFontPalette(p);
+    d->m_scene->setForegroundPalette(p);
 }
 
 bool PianoKeybd::showColorScale() const
@@ -277,9 +277,14 @@ void PianoKeybd::useStandardNoteNames()
     d->m_scene->useStandardNoteNames();
 }
 
-QStringList PianoKeybd::noteNames() const
+QStringList PianoKeybd::customNoteNames() const
 {
-    return d->m_scene->noteNames();
+    return d->m_scene->customNoteNames();
+}
+
+QStringList PianoKeybd::standardNoteNames() const
+{
+    return d->m_scene->standardNoteNames();
 }
 
 void PianoKeybd::retranslate()
@@ -330,22 +335,23 @@ void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
         KeyboardMap* keyMap = d->m_scene->getKeyboardMap();
         PianoPalette highlighPalette = d->m_scene->getHighlightPalette();
         PianoPalette backgroundPalette = d->m_scene->getBackgroundPalette();
-        PianoPalette foregroundPalette = d->m_scene->getFontPalette();
+        PianoPalette foregroundPalette = d->m_scene->getForegroundPalette();
         bool keyboardEnabled = d->m_scene->isKeyboardEnabled();
         bool mouseEnabled = d->m_scene->isMouseEnabled();
         bool touchEnabled = d->m_scene->isTouchEnabled();
         bool showScale = d->m_scene->showColorScale();
-        PianoKeybd::LabelVisibility showLabels = d->m_scene->showLabels();
-        PianoKeybd::LabelAlteration alteration = d->m_scene->alterations();
-        PianoKeybd::LabelCentralOctave octave  = d->m_scene->getOctave();
-        PianoKeybd::LabelOrientation orientation = d->m_scene->getOrientation();
+        LabelVisibility showLabels = d->m_scene->showLabels();
+        LabelAlteration alteration = d->m_scene->alterations();
+        LabelCentralOctave octave  = d->m_scene->getOctave();
+        LabelOrientation orientation = d->m_scene->getOrientation();
+        QStringList customNames =  d->m_scene->customNoteNames();
         delete d->m_scene;
         initScene(baseOctave, numKeys, startKey, color);
         d->m_scene->setPianoHandler(handler);
         d->m_scene->setKeyboardMap(keyMap);
         d->m_scene->setHighlightPalette(highlighPalette);
         d->m_scene->setBackgroundPalette(backgroundPalette);
-        d->m_scene->setFontPalette(foregroundPalette);
+        d->m_scene->setForegroundPalette(foregroundPalette);
         d->m_scene->setKeyboardEnabled(keyboardEnabled);
         d->m_scene->setMouseEnabled(mouseEnabled);
         d->m_scene->setTouchEnabled(touchEnabled);
@@ -354,6 +360,11 @@ void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
         d->m_scene->setAlterations(alteration);
         d->m_scene->setOctave(octave);
         d->m_scene->setOrientation(orientation);
+        if (customNames.isEmpty()) {
+            d->m_scene->useStandardNoteNames();
+        } else {
+            d->m_scene->useCustomNoteNames(customNames);
+        }
         fitInView(d->m_scene->sceneRect(), Qt::KeepAspectRatio);
     }
 }
@@ -432,42 +443,42 @@ void PianoKeybd::resetKeyPressedColor()
     d->m_scene->resetKeyPressedColor();
 }
 
-PianoKeybd::LabelVisibility PianoKeybd::showLabels() const
+LabelVisibility PianoKeybd::showLabels() const
 {
     return d->m_scene->showLabels();
 }
 
-void PianoKeybd::setShowLabels(PianoKeybd::LabelVisibility show)
+void PianoKeybd::setShowLabels(const LabelVisibility show)
 {
     d->m_scene->setShowLabels(show);
 }
 
-PianoKeybd::LabelAlteration PianoKeybd::labelAlterations() const
+LabelAlteration PianoKeybd::labelAlterations() const
 {
     return d->m_scene->alterations();
 }
 
-void PianoKeybd::setLabelAlterations(PianoKeybd::LabelAlteration use)
+void PianoKeybd::setLabelAlterations(const LabelAlteration use)
 {
     d->m_scene->setAlterations(use);
 }
 
-PianoKeybd::LabelOrientation PianoKeybd::labelOrientation() const
+LabelOrientation PianoKeybd::labelOrientation() const
 {
     return d->m_scene->getOrientation();
 }
 
-void PianoKeybd::setLabelOrientation(PianoKeybd::LabelOrientation orientation)
+void PianoKeybd::setLabelOrientation(const LabelOrientation orientation)
 {
     d->m_scene->setOrientation(orientation);
 }
 
-PianoKeybd::LabelCentralOctave PianoKeybd::labelOctave() const
+LabelCentralOctave PianoKeybd::labelOctave() const
 {
     return d->m_scene->getOctave();
 }
 
-void PianoKeybd::setLabelOctave(PianoKeybd::LabelCentralOctave octave)
+void PianoKeybd::setLabelOctave(const LabelCentralOctave octave)
 {
     d->m_scene->setOctave(octave);
 }

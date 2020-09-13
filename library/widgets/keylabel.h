@@ -32,11 +32,11 @@ public:
     virtual ~KeyLabel() {}
     void setPlainText(const QString& text);
     void adjust();
-    void setOrientation(PianoKeybd::LabelOrientation  ori);
+    void setOrientation(LabelOrientation  ori);
     void restoreColor();
 
 private:
-    PianoKeybd::LabelOrientation m_orientation = PianoKeybd::HorizontalOrientation;
+    LabelOrientation m_orientation = HorizontalOrientation;
     void calculateRotation();
 
     QColor m_savedColor;
