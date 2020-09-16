@@ -1,3 +1,5 @@
+set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS}  -Wno-unused-parameter -Wno-unused-value -Wno-unused-variable -Wno-unused-function -Wno-misleading-indentation")
+
 set( SOURCES
   host_src/eas_config.c 
   host_src/eas_hostmm.c 

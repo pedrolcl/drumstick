@@ -16,7 +16,6 @@
 
 add_subdirectory(dumpsmf)
 add_subdirectory(dumpwrk)
-add_subdirectory(dumpove)
 add_subdirectory(vpiano)
 
 if(ALSA_FOUND)

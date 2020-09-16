@@ -26,8 +26,6 @@
 #include <drumstick/rtmidioutput.h>
 #include "eas.h"
 
-//#define cvtstr(s) #s
-//#define stringify(s) cvtstr(s)
 const QString QSTR_SONIVOXEAS(QLatin1String("SonivoxEAS"));
 
 namespace drumstick {

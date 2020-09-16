@@ -478,7 +478,7 @@ static void DLS_UpdateEnvelope (S_SYNTH_VOICE *pVoice, S_SYNTH_CHANNEL *pChannel
             if (*pIncrement != 0)
                 return;
             /*lint -e{825} falls through to next case */
-
+            // fall through
         case eEnvelopeStateDelay:
             if (*pIncrement)
             {
@@ -498,7 +498,7 @@ static void DLS_UpdateEnvelope (S_SYNTH_VOICE *pVoice, S_SYNTH_CHANNEL *pChannel
 
             *pValue = SYNTH_FULL_SCALE_EG1_GAIN;
             /*lint -e{825} falls through to next case */
-
+            // fall through
         case eEnvelopeStateAttack:
             if (*pValue < SYNTH_FULL_SCALE_EG1_GAIN)
             {
@@ -519,7 +519,7 @@ static void DLS_UpdateEnvelope (S_SYNTH_VOICE *pVoice, S_SYNTH_CHANNEL *pChannel
             else
                 *pIncrement = 0;
             /*lint -e{825} falls through to next case */
-
+            // fall through
         case eEnvelopeStateHold:
             if (*pIncrement)
             {
@@ -539,7 +539,7 @@ static void DLS_UpdateEnvelope (S_SYNTH_VOICE *pVoice, S_SYNTH_CHANNEL *pChannel
 
 //          *pValue = pEnvParams->sustainLevel;
             /*lint -e{825} falls through to next case */
-
+            // fall through
         case eEnvelopeStateDecay:
             if (*pValue > pEnvParams->sustainLevel)
             {
@@ -551,7 +551,7 @@ static void DLS_UpdateEnvelope (S_SYNTH_VOICE *pVoice, S_SYNTH_CHANNEL *pChannel
             *pState = eEnvelopeStateSustain;
             *pValue = pEnvParams->sustainLevel;
             /*lint -e{825} falls through to next case */
-
+            // fall through
         case eEnvelopeStateSustain:
             return;
 

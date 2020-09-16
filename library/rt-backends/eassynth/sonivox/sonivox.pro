@@ -7,7 +7,7 @@
 QT -= core gui
 QMAKE_LINK = $$QMAKE_LINK_C
 #QMAKE_LFLAGS_RPATH =
-QMAKE_CFLAGS_WARN_ON += -Wno-unused-parameter -Wno-unused-value -Wno-unused-variable -Wno-unused-function
+QMAKE_CFLAGS_WARN_ON += -Wno-unused-parameter -Wno-unused-value -Wno-unused-variable -Wno-unused-function -Wno-misleading-indentation
 
 TARGET = sonivox
 TEMPLATE = lib

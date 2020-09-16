@@ -38,7 +38,6 @@ namespace drumstick {
     namespace File {
         class QSmf;
         class QWrk;
-        class QOve;
     }
 }
 
@@ -71,7 +70,6 @@ public:
 
     void appendSMFEvent(drumstick::ALSA::SequencerEvent* ev);
     void appendWRKEvent(unsigned long ticks, drumstick::ALSA::SequencerEvent* ev);
-    void appendOVEEvent(unsigned long ticks, drumstick::ALSA::SequencerEvent* ev);
 
     void subscribe(const QString& portName);
     void updateTimeLabel(int mins, int secs, int cnts);
@@ -147,15 +145,6 @@ public slots:
     void wrkTrackVol(int track, int vol);
     void wrkTrackBank(int track, int bank);
 
-    /* OVE slots */
-    void oveErrorHandler(const QString& errorStr);
-    void oveFileHeader(int quarter, int trackCount);
-    void oveNoteOnEvent(int track, long tick, int channel, int pitch, int vol);
-    void oveNoteOffEvent(int track, long tick, int channel, int pitch, int vol);
-    void oveTrackPatch(int track, int channel, int patch);
-    void oveTrackVol(int track, int channel, int vol);
-    void oveTrackBank(int track, int channel, int bank);
-
 private:
     int m_portId;
     int m_queueId;
@@ -166,7 +155,6 @@ private:
 
     drumstick::File::QSmf* m_smf;
     drumstick::File::QWrk* m_wrk;
-    drumstick::File::QOve* m_ove;
     drumstick::ALSA::MidiClient* m_Client;
     drumstick::ALSA::MidiPort* m_Port;
     drumstick::ALSA::MidiQueue* m_Queue;

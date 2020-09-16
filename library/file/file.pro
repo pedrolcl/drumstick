@@ -12,11 +12,9 @@ QT -= gui
 # Input
 HEADERS += ../include/drumstick/macros.h \
            ../include/drumstick/qsmf.h \
-           ../include/drumstick/qwrk.h \
-           ../include/drumstick/qove.h
+           ../include/drumstick/qwrk.h
 SOURCES += qsmf.cpp \
-           qwrk.cpp \
-           qove.cpp
+           qwrk.cpp
 
 static {
     CONFIG += staticlib

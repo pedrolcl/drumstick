@@ -25,14 +25,12 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(drumstick-file_QTOBJ_SRCS
     ../include/drumstick/qsmf.h
     ../include/drumstick/qwrk.h
-    ../include/drumstick/qove.h
 )
 
 set(drumstick-file_HEADERS
     ../include/drumstick/macros.h
     ../include/drumstick/qsmf.h
     ../include/drumstick/qwrk.h
-    ../include/drumstick/qove.h
 )
 
 if(APPLE)
@@ -44,7 +42,6 @@ endif()
 set(drumstick-file_SRCS
     qsmf.cpp
     qwrk.cpp
-    qove.cpp
 )
 
 qt5_wrap_cpp(drumstick-file_MOC_SRCS ${drumstick-file_QTOBJ_SRCS})

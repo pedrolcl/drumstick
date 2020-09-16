@@ -34,7 +34,6 @@
 
 #include <drumstick/qsmf.h>
 #include <drumstick/qwrk.h>
-#include <drumstick/qove.h>
 #include <drumstick/alsaevent.h>
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaqueue.h>
@@ -60,7 +59,6 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     m_state(InvalidState),
     m_smf(0),
     m_wrk(0),
-    m_ove(0),
     m_Client(0),
     m_Port(0),
     m_Queue(0),
@@ -203,42 +201,6 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
                    SLOT(wrkUpdateLoadProgress()));
     connect(m_wrk, SIGNAL(signalWRKExpression(int,long,int,const QString&)),
                    SLOT(wrkUpdateLoadProgress()));
-
-    m_ove = new QOve(this);
-    connect(m_ove, SIGNAL(signalOVEError(const QString&)),
-                   SLOT(oveErrorHandler(const QString&)));
-    connect(m_ove, SIGNAL(signalOVEHeader(int,int)),
-                   SLOT(oveFileHeader(int,int)));
-    connect(m_ove, SIGNAL(signalOVEEnd()),
-                   SLOT(wrkEndOfFile()));
-    connect(m_ove, SIGNAL(signalOVENoteOn(int, long, int, int, int)),
-				   SLOT(oveNoteOnEvent(int, long, int, int, int)));
-    connect(m_ove, SIGNAL(signalOVENoteOff(int, long, int, int, int)),
-                   SLOT(oveNoteOffEvent(int, long, int, int, int)));
-    connect(m_ove, SIGNAL(signalOVEKeyPress(int,long,int,int,int)),
-                   SLOT(wrkKeyPressEvent(int,long,int,int,int)));
-    connect(m_ove, SIGNAL(signalOVECtlChange(int,long,int,int,int)),
-                   SLOT(wrkCtlChangeEvent(int,long,int,int,int)));
-    connect(m_ove, SIGNAL(signalOVEPitchBend(int,long,int,int)),
-                   SLOT(wrkPitchBendEvent(int,long,int,int)));
-    connect(m_ove, SIGNAL(signalOVEProgram(int,long,int,int)),
-                   SLOT(wrkProgramEvent(int,long,int,int)));
-    connect(m_ove, SIGNAL(signalOVEChanPress(int,long,int,int)),
-                   SLOT(wrkChanPressEvent(int,long,int,int)));
-    connect(m_ove, SIGNAL(signalOVESysexEvent(int,long,int)),
-                   SLOT(wrkSysexEvent(int,long,int)));
-    connect(m_ove, SIGNAL(signalOVESysex(int,const QString&,bool,int,const QByteArray&)),
-                   SLOT(wrkSysexEventBank(int,const QString&,bool,int,const QByteArray&)));
-    connect(m_ove, SIGNAL(signalOVETempo(long,int)),
-                   SLOT(wrkTempoEvent(long,int)));
-    connect(m_ove, SIGNAL(signalOVETrackPatch(int,int,int)),
-                   SLOT(oveTrackPatch(int,int,int)));
-    connect(m_ove, SIGNAL(signalOVENewTrack(const QString&,int,int,int,int,int,bool,bool,bool)),
-                   SLOT(wrkNewTrackHeader(const QString&,int,int,int,int,int,bool,bool,bool)));
-    connect(m_ove, SIGNAL(signalOVETrackVol(int,int,int)),
-                   SLOT(wrkTrackVol(int,int)));
-    connect(m_ove, SIGNAL(signalOVETrackBank(int,int,int)),
-                   SLOT(oveTrackBank(int,int,int)));
 
     m_player = new Player(m_Client, m_portId);
     connect(m_player, SIGNAL(finished()), SLOT(songFinished()));
@@ -400,9 +362,6 @@ void GUIPlayer::openFile(const QString& fileName)
             else if (ext == "mid" || ext == "midi" || ext == "kar") {
                 progressDialogInit("MIDI", finfo.size());
                 m_smf->readFromFile(fileName);
-            }
-            else if (ext == "ove") {
-            	m_ove->readFromFile(fileName);
             }
             progressDialogUpdate(finfo.size());
             if (m_song->isEmpty()) {
@@ -951,83 +910,4 @@ void GUIPlayer::wrkEndOfFile()
         m_initialTempo = 120;
     SequencerEvent* ev = new SystemEvent(SND_SEQ_EVENT_ECHO);
     appendWRKEvent(m_tick, ev);
-}
-
-/* ********************************* *
- * Overture OVE file format handling
- * ********************************* */
-
-void
-GUIPlayer::appendOVEEvent(unsigned long ticks, SequencerEvent* ev)
-{
-    ev->setSource(m_portId);
-    if (ev->getSequencerType() != SND_SEQ_EVENT_TEMPO)
-        ev->setSubscribers();
-    ev->scheduleTick(m_queueId, ticks, false);
-    m_song->append(ev);
-    if (ticks > m_tick)
-        m_tick = ticks;
-}
-
-void GUIPlayer::oveErrorHandler(const QString& errorStr)
-{
-    if (m_loadingMessages.length() < 1024)
-        m_loadingMessages.append(errorStr);
-}
-
-void GUIPlayer::oveFileHeader(int quarter, int trackCount)
-{
-	m_song->setHeader(1, trackCount, quarter);
-}
-
-void GUIPlayer::oveNoteOnEvent(int /*track*/, long tick, int channel, int pitch, int vol)
-{
-    SequencerEvent* ev = new NoteOnEvent(channel, pitch, vol);
-    appendOVEEvent(tick, ev);
-}
-
-void GUIPlayer::oveNoteOffEvent(int /*track*/, long tick, int channel, int pitch, int vol)
-{
-    SequencerEvent* ev = new NoteOffEvent(channel, pitch, vol);
-    appendOVEEvent(tick, ev);
-}
-
-void GUIPlayer::oveTrackPatch(int track, int channel, int patch)
-{
-    int ch = channel;
-    TrackMapRec rec = m_trackMap[track];
-    if (rec.channel > -1)
-        ch = rec.channel;
-    wrkProgramEvent(track, 0, ch, patch);
-}
-
-void GUIPlayer::oveTrackVol(int track, int channel, int vol)
-{
-    int ch = channel;
-    int lsb, msb;
-    TrackMapRec rec = m_trackMap[track];
-    if (rec.channel > -1)
-        ch = rec.channel;
-    if (vol < 128)
-        wrkCtlChangeEvent(track, 0, ch, MIDI_CTL_MSB_MAIN_VOLUME, vol);
-    else {
-        lsb = vol % 0x80;
-        msb = vol / 0x80;
-        wrkCtlChangeEvent(track, 0, ch, MIDI_CTL_LSB_MAIN_VOLUME, lsb);
-        wrkCtlChangeEvent(track, 0, ch, MIDI_CTL_MSB_MAIN_VOLUME, msb);
-    }
-}
-
-void GUIPlayer::oveTrackBank(int track, int channel, int bank)
-{
-    // assume GM/GS bank method
-    int ch = channel;
-    int lsb, msb;
-    TrackMapRec rec = m_trackMap[track];
-    if (rec.channel > -1)
-        ch = rec.channel;
-    lsb = bank % 0x80;
-    msb = bank / 0x80;
-    wrkCtlChangeEvent(track, 0, ch, MIDI_CTL_MSB_BANK, msb);
-    wrkCtlChangeEvent(track, 0, ch, MIDI_CTL_LSB_BANK, lsb);
 }

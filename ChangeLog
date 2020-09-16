@@ -1,3 +1,6 @@
+2020-09-16
+    * fixed ticket #2 Removed unmaintained OVE support
+
 2020-09-11
     * Piano palette refactoring
     * New unit tests for the Widgets library

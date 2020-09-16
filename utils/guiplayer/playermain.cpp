@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     auto versionOption = parser.addVersionOption();
     QCommandLineOption portOption({"p", "port"}, "MIDI Out Connection.", "client:port");
     parser.addOption(portOption);
-    parser.addPositionalArgument("file", "Input SMF/KAR/OVE/WRK file name.", "file");
+    parser.addPositionalArgument("file", "Input SMF/KAR/WRK file name.", "file");
     parser.process(app);
 
     if (parser.isSet(versionOption) || parser.isSet(helpOption)) {
