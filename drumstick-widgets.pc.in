@@ -3,9 +3,9 @@ exec_prefix=${prefix}
 libdir=${prefix}/lib@LIB_SUFFIX@
 includedir=${prefix}/include
 
-Name: drumstick-rt
+Name: drumstick-widgets
 Version: @VERSION@
-Description: MIDI Realtime C++ Library for Qt5
+Description: MIDI Widgets C++ Library for Qt5
 URL: http://sourceforge.net/projects/drumstick
-Libs: -L${libdir} -ldrumstick-rt
+Libs: -L${libdir} -ldrumstick-widgets
 Cflags: -I${includedir}

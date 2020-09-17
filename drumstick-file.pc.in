@@ -5,7 +5,7 @@ includedir=${prefix}/include
 
 Name: drumstick-file
 Version: @VERSION@
-Description: MIDI Sequencer C++ Library Bindings for Qt5
+Description: MIDI File C++ Library for Qt5
 URL: http://sourceforge.net/projects/drumstick
 Libs: -L${libdir} -ldrumstick-file
 Cflags: -I${includedir}

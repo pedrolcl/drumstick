@@ -88,10 +88,10 @@ namespace drumstick { namespace widgets {
         CustomNamesWithFlats    ///< Show custom names with flats
     };
     enum LabelCentralOctave {
-        Nothing = -1,       ///< Don't show octave numbers
-        OctaveC3,           ///< Central C, MIDI note #60 is C3
-        OctaveC4,           ///< Central C, MIDI note #60 is C4
-        OctaveC5            ///< Central C, MIDI note #60 is C5
+        OctaveNothing = -1,     ///< Don't show octave numbers
+        OctaveC3,               ///< Central C, MIDI note #60 is C3
+        OctaveC4,               ///< Central C, MIDI note #60 is C4
+        OctaveC5                ///< Central C, MIDI note #60 is C5
     };
 
     /**

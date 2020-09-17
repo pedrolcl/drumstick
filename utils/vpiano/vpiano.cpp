@@ -357,7 +357,7 @@ void VPiano::readSettings()
     LabelCentralOctave nOctave = VPianoSettings::instance()->namesOctave();
     ui.pianokeybd->setLabelOctave(nOctave);
     switch(nOctave) {
-    case Nothing:
+    case OctaveNothing:
         ui.actionNoOctaves->setChecked(true);
         break;
     case OctaveC3:
@@ -503,7 +503,7 @@ void VPiano::slotNameVariant(QAction* action)
 void VPiano::slotCentralOctave(QAction *action)
 {
     if (action == ui.actionNoOctaves) {
-        VPianoSettings::instance()->setNamesOctave(Nothing);
+        VPianoSettings::instance()->setNamesOctave(OctaveNothing);
     } else if (action == ui.actionC3) {
         VPianoSettings::instance()->setNamesOctave(OctaveC3);
     } else if(action == ui.actionC4) {

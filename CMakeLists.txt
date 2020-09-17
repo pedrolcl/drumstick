@@ -138,6 +138,10 @@ if(PKG_CONFIG_FOUND)
     install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-rt.pc
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig )
+    configure_file(drumstick-widgets.pc.in drumstick-widgets.pc IMMEDIATE @ONLY)
+    install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-widgets.pc
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig )
 endif()
 
 # uninstall custom target

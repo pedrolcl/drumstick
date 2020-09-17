@@ -99,6 +99,11 @@ int main(int argc, char *argv[])
     QString dataDir = QApplication::applicationDirPath() + "/../share/drumstick/";
 #endif
 
+    QTranslator libTranslator;
+    qDebug() << "load lib translator:" << locale.name() <<
+             libTranslator.load(locale, "drumstick-widgets", "_", dataDir);
+    QCoreApplication::installTranslator(&libTranslator);
+
     QTranslator appTranslator;
     qDebug() << "load app translator:" << locale.name() <<
              appTranslator.load(locale, "drumstick-vpiano", "_", dataDir);

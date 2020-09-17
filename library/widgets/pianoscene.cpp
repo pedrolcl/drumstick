@@ -526,7 +526,7 @@ QString PianoScene::noteName( PianoKey* key )
                 break;
             }
         }
-        if (m_octave==Nothing) {
+        if (m_octave==OctaveNothing) {
             return name;
         } else {
             return QString("%1%2").arg(name).arg(oct);
@@ -539,7 +539,7 @@ QString PianoScene::noteName( PianoKey* key )
                 return m_noteNames.value(n);
             }
         } else if (m_noteNames.length() >= 12) {
-            if (m_octave==Nothing) {
+            if (m_octave==OctaveNothing) {
                 return m_noteNames.value(num);
             } else {
                 return QString("%1%2").arg(m_noteNames.value(num)).arg(oct);
