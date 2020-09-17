@@ -16,9 +16,12 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QDebug>
 #include <QApplication>
 #include <QFileInfo>
 #include <QTextStream>
+#include <QTranslator>
+#include <QLibraryInfo>
 #include <QCommandLineParser>
 #include <drumstick/backendmanager.h>
 #include <drumstick/settingsfactory.h>
@@ -26,7 +29,8 @@
 #include "cmdversion.h"
 #include "vpiano.h"
 
-const QString PGM_DESCRIPTION("Drumstick Simple Virtual Piano\n"
+const QString PGM_DESCRIPTION = QObject::tr(
+     "Drumstick Simple Virtual Piano\n"
      "Copyright (C) 2006-2020 Pedro López-Cabanillas\n"
      "This program comes with ABSOLUTELY NO WARRANTY;\n"
      "This is free software, and you are welcome to redistribute it\n"
@@ -81,6 +85,25 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_SynthesizeTouchForUnhandledMouseEvents, false);
     QApplication app(argc, argv);
 
+    QLocale locale;
+    QTranslator qtTranslator;
+    qDebug() << "load Qt translator:" << locale.name() <<
+             qtTranslator.load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    QCoreApplication::installTranslator(&qtTranslator);
+
+#if defined(Q_OS_WIN32)
+    QString dataDir = QApplication::applicationDirPath() + "/";
+#elif defined(Q_OS_MAC)
+    QString dataDir = QApplication::applicationDirPath() + "/../Resources/";
+#else
+    QString dataDir = QApplication::applicationDirPath() + "/../share/drumstick/";
+#endif
+
+    QTranslator appTranslator;
+    qDebug() << "load app translator:" << locale.name() <<
+             appTranslator.load(locale, "drumstick-vpiano", "_", dataDir);
+    QCoreApplication::installTranslator(&appTranslator);
+
     QCommandLineParser parser;
     parser.setApplicationDescription(
         QString("%1 v.%2\n\n%3")
@@ -90,7 +113,7 @@ int main(int argc, char *argv[])
     );
     auto helpOption = parser.addHelpOption();
     auto versionOption = parser.addVersionOption();
-    QCommandLineOption portableOption({"p", "portable"}, "Portable settings format file (.ini)");
+    QCommandLineOption portableOption({"p", "portable"}, QObject::tr("Portable settings mode"));
     parser.addOption(portableOption);
     parser.process(app);
     if (parser.isSet(versionOption) || parser.isSet(helpOption)) {

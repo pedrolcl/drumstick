@@ -17,6 +17,7 @@
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 
 find_package(Qt5Widgets REQUIRED)
+find_package(Qt5LinguistTools REQUIRED)
 
 set(drumgrid_forms_SRCS
     drumgridabout.ui
@@ -58,6 +59,19 @@ target_link_libraries(drumstick-drumgrid PUBLIC
     Drumstick::ALSA
     Qt5::Widgets
 )
+
+set(TS_FILES
+    drumstick-drumgrid_en.ts
+    drumstick-drumgrid_es.ts
+)
+
+qt5_add_translation(QM_FILES ${TS_FILES})
+add_custom_target(drumstick-drumgrid-translations ALL DEPENDS ${QM_FILES})
+
+if (UNIX AND NOT APPLE)
+    install( FILES ${QM_FILES}
+             DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/drumstick )
+endif ()
 
 install(TARGETS drumstick-drumgrid
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

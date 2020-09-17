@@ -2,7 +2,9 @@ TEMPLATE = app
 TARGET = drumstick-vpiano
 QT += gui widgets network
 CONFIG += qt c++11 thread exceptions
+CONFIG += lrelease
 DESTDIR = ../../build/bin
+LRELEASE_DIR=.
 include (../../global.pri)
 INCLUDEPATH += . ../../library/include ../common
 
@@ -27,6 +29,10 @@ SOURCES += \
     preferences.cpp \
     vpianomain.cpp \
     vpianosettings.cpp
+
+TRANSLATIONS += \
+    drumstick-vpiano_en.ts \
+    drumstick-vpiano_es.ts
 
 # libs
 macx:!static {

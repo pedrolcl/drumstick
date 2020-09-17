@@ -526,7 +526,11 @@ QString PianoScene::noteName( PianoKey* key )
                 break;
             }
         }
-        return QString("%1%2").arg(name).arg(oct);
+        if (m_octave==Nothing) {
+            return name;
+        } else {
+            return QString("%1%2").arg(name).arg(oct);
+        }
     } else {
         if (m_noteNames.length() == 128) {
             int n = m_baseOctave*12 + note + m_transpose;
@@ -535,7 +539,11 @@ QString PianoScene::noteName( PianoKey* key )
                 return m_noteNames.value(n);
             }
         } else if (m_noteNames.length() >= 12) {
-            return QString("%1%2").arg(m_noteNames.value(num)).arg(oct);
+            if (m_octave==Nothing) {
+                return m_noteNames.value(num);
+            } else {
+                return QString("%1%2").arg(m_noteNames.value(num)).arg(oct);
+            }
         }
         return QString();
     }
@@ -566,7 +574,6 @@ void PianoScene::refreshKeys()
             key->setBrush(m_backgroundPalette.getColor(degree));
         } else {
             key->setBrush(m_backgroundPalette.getColor(key->isBlack() ? 1 : 0));
-            //key->resetBrush();
         }
         key->setPressed(false);
     }

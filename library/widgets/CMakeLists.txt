@@ -18,6 +18,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Network REQUIRED)
+find_package(Qt5LinguistTools REQUIRED)
 
 set(drumstick-widgets_HEADERS
     ../include/drumstick/pianokeybd.h
@@ -96,6 +97,29 @@ target_link_libraries(drumstick-widgets
     PUBLIC Qt5::Core Qt5::Gui Qt5::Widgets
     PRIVATE Qt5::Network
 )
+
+set(TS_FILES
+    translations/drumstick-widgets_cs.ts
+    translations/drumstick-widgets_de.ts
+    translations/drumstick-widgets_en.ts
+    translations/drumstick-widgets_es.ts
+    translations/drumstick-widgets_fr.ts
+    translations/drumstick-widgets_gl.ts
+    translations/drumstick-widgets_nl.ts
+    translations/drumstick-widgets_ru.ts
+    translations/drumstick-widgets_sr.ts
+    translations/drumstick-widgets_sv.ts
+    translations/drumstick-widgets_tr.ts
+    translations/drumstick-widgets_zh_CN.ts
+)
+
+qt5_add_translation(QM_FILES ${TS_FILES})
+add_custom_target(drumstick-widgets-translations ALL DEPENDS ${QM_FILES})
+
+if (UNIX AND NOT APPLE)
+    install( FILES ${QM_FILES}
+             DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/drumstick )
+endif ()
 
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-widgets PROPERTIES

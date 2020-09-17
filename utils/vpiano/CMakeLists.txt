@@ -20,6 +20,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5Widgets REQUIRED)
+find_package(Qt5LinguistTools REQUIRED)
+
 set(EXTRA_LIBS)
 if(APPLE)
     find_library(CORELIBS CoreFoundation)
@@ -58,6 +60,19 @@ target_link_libraries(drumstick-vpiano PUBLIC
     Qt5::Widgets
     ${EXTRA_LIBS}
 )
+
+set(TS_FILES
+    drumstick-vpiano_en.ts
+    drumstick-vpiano_es.ts
+)
+
+qt5_add_translation(QM_FILES ${TS_FILES})
+add_custom_target(drumstick-vpiano-translations ALL DEPENDS ${QM_FILES})
+
+if (UNIX AND NOT APPLE)
+    install( FILES ${QM_FILES}
+             DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/drumstick )
+endif ()
 
 if(STATIC_DRUMSTICK)
     if (FALSE)

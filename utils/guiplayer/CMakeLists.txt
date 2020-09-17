@@ -17,6 +17,7 @@
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 
 find_package(Qt5Widgets REQUIRED)
+find_package(Qt5LinguistTools REQUIRED)
 
 set(guiplayer_forms_SRCS
     guiplayer.ui
@@ -64,6 +65,19 @@ target_link_libraries(drumstick-guiplayer PUBLIC
     Drumstick::ALSA
     Qt5::Widgets
 )
+
+set(TS_FILES
+    drumstick-guiplayer_en.ts
+    drumstick-guiplayer_es.ts
+)
+
+qt5_add_translation(QM_FILES ${TS_FILES})
+add_custom_target(drumstick-guiplayer-translations ALL DEPENDS ${QM_FILES})
+
+if (UNIX AND NOT APPLE)
+    install( FILES ${QM_FILES}
+             DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/drumstick )
+endif ()
 
 install(TARGETS drumstick-guiplayer
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

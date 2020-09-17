@@ -82,6 +82,7 @@
      <property name="title">
       <string>Central Octave Name</string>
      </property>
+     <addaction name="actionNoOctaves"/>
      <addaction name="actionC3"/>
      <addaction name="actionC4"/>
      <addaction name="actionC5"/>
@@ -285,6 +286,14 @@
    </property>
    <property name="text">
     <string>Custom with Flats</string>
+   </property>
+  </action>
+  <action name="actionNoOctaves">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Nothing</string>
    </property>
   </action>
  </widget>

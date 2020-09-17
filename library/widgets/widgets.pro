@@ -4,10 +4,11 @@ DESTDIR = ../../build/lib
 DEPENDPATH += . ../include
 INCLUDEPATH += . ../include
 include (../../global.pri)
-CONFIG += c++11 qt create_pc create_prl no_install_prl
+CONFIG += c++11 qt create_pc create_prl no_install_prl lrelease
 static {
     CONFIG += staticlib
 }
+LRELEASE_DIR=.
 DEFINES += drumstick_widgets_EXPORTS
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
 QMAKE_PKGCONFIG_PREFIX = $$INSTALLBASE
@@ -40,6 +41,20 @@ SOURCES += \
     settingsfactory.cpp
 
 RESOURCES += pianokeybd.qrc
+
+TRANSLATIONS += \
+    translations/drumstick-widgets_en.ts \
+    translations/drumstick-widgets_cs.ts \
+    translations/drumstick-widgets_de.ts \
+    translations/drumstick-widgets_es.ts \
+    translations/drumstick-widgets_fr.ts \
+    translations/drumstick-widgets_gl.ts \
+    translations/drumstick-widgets_nl.ts \
+    translations/drumstick-widgets_ru.ts \
+    translations/drumstick-widgets_sr.ts \
+    translations/drumstick-widgets_sv.ts \
+    translations/drumstick-widgets_tr.ts \
+    translations/drumstick-widgets_zh_CN.ts
 
 macx {
     FORMS += macsynthsettingsdialog.ui

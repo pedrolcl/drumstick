@@ -98,6 +98,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
 
     QActionGroup* centralOctaveGroup = new QActionGroup(this);
     centralOctaveGroup->setExclusive(true);
+    centralOctaveGroup->addAction(ui.actionNoOctaves);
     centralOctaveGroup->addAction(ui.actionC3);
     centralOctaveGroup->addAction(ui.actionC4);
     centralOctaveGroup->addAction(ui.actionC5);
@@ -356,6 +357,9 @@ void VPiano::readSettings()
     LabelCentralOctave nOctave = VPianoSettings::instance()->namesOctave();
     ui.pianokeybd->setLabelOctave(nOctave);
     switch(nOctave) {
+    case Nothing:
+        ui.actionNoOctaves->setChecked(true);
+        break;
     case OctaveC3:
         ui.actionC3->setChecked(true);
         break;
@@ -498,7 +502,9 @@ void VPiano::slotNameVariant(QAction* action)
 
 void VPiano::slotCentralOctave(QAction *action)
 {
-    if (action == ui.actionC3) {
+    if (action == ui.actionNoOctaves) {
+        VPianoSettings::instance()->setNamesOctave(Nothing);
+    } else if (action == ui.actionC3) {
         VPianoSettings::instance()->setNamesOctave(OctaveC3);
     } else if(action == ui.actionC4) {
         VPianoSettings::instance()->setNamesOctave(OctaveC4);

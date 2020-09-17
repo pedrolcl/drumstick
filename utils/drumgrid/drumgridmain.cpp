@@ -16,9 +16,12 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QDebug>
 #include <QApplication>
 #include <QMessageBox>
 #include <QCommandLineParser>
+#include <QTranslator>
+#include <QLibraryInfo>
 #include <drumstick/drumstickcommon.h>
 
 #include "cmdversion.h"
@@ -40,6 +43,25 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName(QSTR_APPNAME);
     QCoreApplication::setApplicationVersion(PGM_VERSION);
     QApplication app(argc, argv);
+
+    QLocale locale;
+    QTranslator qtTranslator;
+    qDebug() << "load Qt translator:" << locale.name() <<
+             qtTranslator.load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    QCoreApplication::installTranslator(&qtTranslator);
+
+#if defined(Q_OS_WIN32)
+    QString dataDir = QApplication::applicationDirPath() + "/";
+#elif defined(Q_OS_MAC)
+    QString dataDir = QApplication::applicationDirPath() + "/../Resources/";
+#else
+    QString dataDir = QApplication::applicationDirPath() + "/../share/drumstick/";
+#endif
+
+    QTranslator appTranslator;
+    qDebug() << "load app translator:" << locale.name() <<
+             appTranslator.load(locale, "drumstick-drumgrid", "_", dataDir);
+    QCoreApplication::installTranslator(&appTranslator);
 
     QCommandLineParser parser;
     parser.setApplicationDescription(PGM_DESCRIPTION);
