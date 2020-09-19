@@ -6,7 +6,7 @@
     <message>
         <location filename="drumgridabout.ui" line="14"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Acerca de</translation>
     </message>
     <message>
         <location filename="drumgridabout.ui" line="26"/>
@@ -32,47 +32,47 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="drumgrid.ui" line="14"/>
         <source>Drumstick Drum Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Drumstick matriz de percusión</translation>
     </message>
     <message>
         <location filename="drumgrid.ui" line="46"/>
         <source>start</source>
-        <translation type="unfinished"></translation>
+        <translation>iniciar</translation>
     </message>
     <message>
         <location filename="drumgrid.ui" line="53"/>
         <source>stop</source>
-        <translation type="unfinished"></translation>
+        <translation>parar</translation>
     </message>
     <message>
         <location filename="drumgrid.ui" line="89"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivo</translation>
     </message>
     <message>
         <location filename="drumgrid.ui" line="97"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Ayuda</translation>
     </message>
     <message>
         <location filename="drumgrid.ui" line="108"/>
         <source>Connect...</source>
-        <translation type="unfinished"></translation>
+        <translation>Conexión...</translation>
     </message>
     <message>
         <location filename="drumgrid.ui" line="113"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminar</translation>
     </message>
     <message>
         <location filename="drumgrid.ui" line="118"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Acerca de</translation>
     </message>
     <message>
         <location filename="drumgrid.ui" line="123"/>
         <source>About Qt</source>
-        <translation type="unfinished"></translation>
+        <translation>Acerca de Qt</translation>
     </message>
 </context>
 </TS>

@@ -1,0 +1,2011 @@
+<!DOCTYPE QPH>
+<QPH language="sr">
+<phrase>
+    <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot;font-family:&apos;Sans Serif&apos;; font-size:12pt; font-style:normal;&quot;&gt;&lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Version: %1&lt;br/&gt;Build date: %2&lt;br/&gt;Build time: %3&lt;br/&gt;Compiler: %4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot;font-family:&apos;Sans Serif&apos;; font-size:12pt; font-style:normal;&quot;&gt;&lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Издање: %1&lt;br/&gt;Створено дана: %2,&lt;br/&gt;у %3 часова&lt;br/&gt;Преводилац: %4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>About</source>
+    <target>О програму</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Virtual MIDI Piano Keyboard&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Патворена миди-клавијатура&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://vmpk.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://vmpk.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://vmpk.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://vmpk.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Copyright © 2008-2020, &lt;/span&gt;&lt;a href=&quot;mailto:plcl@users.sf.net?subject=VMPK&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Pedro Lopez-Cabanillas &amp;lt;plcl@users.sf.net&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; color:#000000;&quot;&gt; and others&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License  along with this program. If not, see &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Color Palette</source>
+    <target>Палета боја</target>
+</phrase>
+<phrase>
+    <source>Colors</source>
+    <target>Боје</target>
+</phrase>
+<phrase>
+    <source>N</source>
+    <target>N</target>
+</phrase>
+<phrase>
+    <source>#</source>
+    <target>#</target>
+</phrase>
+<phrase>
+    <source>1</source>
+    <target>1</target>
+</phrase>
+<phrase>
+    <source>2</source>
+    <target>2</target>
+</phrase>
+<phrase>
+    <source>3</source>
+    <target>3</target>
+</phrase>
+<phrase>
+    <source>4</source>
+    <target>4</target>
+</phrase>
+<phrase>
+    <source>5</source>
+    <target>5</target>
+</phrase>
+<phrase>
+    <source>6</source>
+    <target>6</target>
+</phrase>
+<phrase>
+    <source>7</source>
+    <target>7</target>
+</phrase>
+<phrase>
+    <source>8</source>
+    <target>8</target>
+</phrase>
+<phrase>
+    <source>9</source>
+    <target>9</target>
+</phrase>
+<phrase>
+    <source>10</source>
+    <target>10</target>
+</phrase>
+<phrase>
+    <source>11</source>
+    <target>11</target>
+</phrase>
+<phrase>
+    <source>12</source>
+    <target>12</target>
+</phrase>
+<phrase>
+    <source>13</source>
+    <target>13</target>
+</phrase>
+<phrase>
+    <source>14</source>
+    <target>14</target>
+</phrase>
+<phrase>
+    <source>15</source>
+    <target>15</target>
+</phrase>
+<phrase>
+    <source>16</source>
+    <target>16</target>
+</phrase>
+<phrase>
+    <source>C</source>
+    <target>C</target>
+</phrase>
+<phrase>
+    <source>C#</source>
+    <target>C#</target>
+</phrase>
+<phrase>
+    <source>D</source>
+    <target>D</target>
+</phrase>
+<phrase>
+    <source>D#</source>
+    <target>D#</target>
+</phrase>
+<phrase>
+    <source>E</source>
+    <target>E</target>
+</phrase>
+<phrase>
+    <source>F</source>
+    <target>F</target>
+</phrase>
+<phrase>
+    <source>F#</source>
+    <target>F#</target>
+</phrase>
+<phrase>
+    <source>G</source>
+    <target>G</target>
+</phrase>
+<phrase>
+    <source>G#</source>
+    <target>G#</target>
+</phrase>
+<phrase>
+    <source>A</source>
+    <target>A</target>
+</phrase>
+<phrase>
+    <source>A#</source>
+    <target>A#</target>
+</phrase>
+<phrase>
+    <source>B</source>
+    <target>B</target>
+</phrase>
+<phrase>
+    <source>Single color</source>
+    <target>Једнобојно</target>
+</phrase>
+<phrase>
+    <source>A single color to highlight all note events</source>
+    <target>Једнобојно означавање догађаја свих нота</target>
+</phrase>
+<phrase>
+    <source>Two colors</source>
+    <target>Две боје</target>
+</phrase>
+<phrase>
+    <source>One color to highlight natural notes and a different one for accidentals</source>
+    <target>Прва боја означава тонове, а друга полутонове</target>
+</phrase>
+<phrase>
+    <source>MIDI Channels</source>
+    <target>Миди-канали</target>
+</phrase>
+<phrase>
+    <source>A different color for each MIDI channel. Enable Omni mode in the MIDI IN connection</source>
+    <target>Засебна боја за сваки миди-канал понаособ. За ово, омогућите „Миди-ОМНИ режим“ под „Уреди-&gt;Миди-везе“</target>
+</phrase>
+<phrase>
+    <source>Chromatic scale</source>
+    <target>Хроматска скала</target>
+</phrase>
+<phrase>
+    <source>One color for each note in the chromatic scale</source>
+    <target>Једна боја за сваку ноту хроматске скале</target>
+</phrase>
+<phrase>
+    <source>Extra Controls Editor</source>
+    <target>Уређивач посебних контрола</target>
+</phrase>
+<phrase>
+    <source>Label:</source>
+    <target>Назив:</target>
+</phrase>
+<phrase>
+    <source>MIDI Controller:</source>
+    <target>Миди-контролер:</target>
+</phrase>
+<phrase>
+    <source>Add</source>
+    <target>Додај</target>
+</phrase>
+<phrase>
+    <source>Remove</source>
+    <target>Уклони</target>
+</phrase>
+<phrase>
+    <source>Up</source>
+    <target>Горе</target>
+</phrase>
+<phrase>
+    <source>Down</source>
+    <target>Доле</target>
+</phrase>
+<phrase>
+    <source>Switch</source>
+    <target>Прекидач</target>
+</phrase>
+<phrase>
+    <source>Knob</source>
+    <target>Дугме</target>
+</phrase>
+<phrase>
+    <source>Spin box</source>
+    <target>Бројчаник</target>
+</phrase>
+<phrase>
+    <source>Slider</source>
+    <target>Клизач</target>
+</phrase>
+<phrase>
+    <source>Button Ctl</source>
+    <target>Дугме „Контрола“ (Ctl)</target>
+</phrase>
+<phrase>
+    <source>Button SysEx</source>
+    <target>Дугме „СисЕкс“ (SysEx)</target>
+</phrase>
+<phrase>
+    <source>Default ON</source>
+    <target>Подразумевано — УКЉучено</target>
+</phrase>
+<phrase>
+    <source>value ON:</source>
+    <target>Вредност УКЉ:</target>
+</phrase>
+<phrase>
+    <source>value OFF:</source>
+    <target>Вредност ИСКЉ:</target>
+</phrase>
+<phrase>
+    <source>Key:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Min. value:</source>
+    <target>Најнижа вредност:</target>
+</phrase>
+<phrase>
+    <source>Max. value:</source>
+    <target>Највиша вредност:</target>
+</phrase>
+<phrase>
+    <source>Default value:</source>
+    <target>Подразумевана вредност:</target>
+</phrase>
+<phrase>
+    <source>Display size:</source>
+    <target>Величина приказа:</target>
+</phrase>
+<phrase>
+    <source>value:</source>
+    <target>вредност:</target>
+</phrase>
+<phrase>
+    <source>File name:</source>
+    <target>Назив датотеке:</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>New Control</source>
+    <target>Нова контрола</target>
+</phrase>
+<phrase>
+    <source>System Exclusive File</source>
+    <target>СисЕкс датотека</target>
+</phrase>
+<phrase>
+    <source>System Exclusive (*.syx)</source>
+    <target>СисЕкс (*.syx)</target>
+</phrase>
+<phrase>
+    <source>FluidSynth Driver Settings</source>
+    <target>Флуид-синт — поставке</target>
+</phrase>
+<phrase>
+    <source>Sample Rate:</source>
+    <target>Учестаност узорковања:</target>
+</phrase>
+<phrase>
+    <source>Period Size:</source>
+    <target>Величина периода:</target>
+</phrase>
+<phrase>
+    <source># of Periods:</source>
+    <target># периода:</target>
+</phrase>
+<phrase>
+    <source>Audio Driver:</source>
+    <target>Зв. посредник:</target>
+</phrase>
+<phrase>
+    <source>Polyphony:</source>
+    <target>Полифонија:</target>
+</phrase>
+<phrase>
+    <source>Sound Font:</source>
+    <target>Звукотека:</target>
+</phrase>
+<phrase>
+    <source>Gain:</source>
+    <target>Јачина:</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Chorus</source>
+    <target>Хорус</target>
+</phrase>
+<phrase>
+    <source>Reverb</source>
+    <target>Јека</target>
+</phrase>
+<phrase>
+    <source>Select SoundFont</source>
+    <target>Избор звукотеке</target>
+</phrase>
+<phrase>
+    <source>SoundFont Files (*.sf2)</source>
+    <target>Звукотеке (*.sf2)</target>
+</phrase>
+<phrase>
+    <source>Open...</source>
+    <target>Отвори...</target>
+</phrase>
+<phrase>
+    <source>Save As...</source>
+    <target>Сачувај као...</target>
+</phrase>
+<phrase>
+    <source>Raw Key Map Editor</source>
+    <target>Уређивач изворне мапе тастатуре</target>
+</phrase>
+<phrase>
+    <source>Key Map Editor</source>
+    <target>Уређивач мапе дирки</target>
+</phrase>
+<phrase>
+    <source>Key Code</source>
+    <target>Кôд дирке</target>
+</phrase>
+<phrase>
+    <source>Key</source>
+    <target>Дирка</target>
+</phrase>
+<phrase>
+    <source>Open keyboard map definition</source>
+    <target>Отвори датотеку са мапом дирки</target>
+</phrase>
+<phrase>
+    <source>Keyboard map (*.xml)</source>
+    <target>Мапе дирки (*.xml)</target>
+</phrase>
+<phrase>
+    <source>Save keyboard map definition</source>
+    <target>Сачувај датотеку са мапом дирки</target>
+</phrase>
+<phrase>
+    <source>Key Map Editor</source>
+    <target>Уређивач мапе дирки</target>
+</phrase>
+<phrase>
+    <source>This box displays the name of the current mapping file</source>
+    <target>Овде је приказан назив текуће датотеке са мапом дирки</target>
+</phrase>
+<phrase>
+    <source>This is the list of the PC keyboard mappings. Each row has a number corresponding to the MIDI note number, and you can type an alphanumeric Key name that will be translated to the given note</source>
+    <target>Ово је листа за мапирање дирки у тастере рачунарске тастатуре. У сваком пољу је број који одговара броју миди-ноте. Можете унети алфанумерички назив тастера (бројчано-словни карактер) који ће бити додељен одговарајућој ноти</target>
+</phrase>
+<phrase>
+    <source>0</source>
+    <target>0</target>
+</phrase>
+<phrase>
+    <source>1</source>
+    <target>1</target>
+</phrase>
+<phrase>
+    <source>2</source>
+    <target>2</target>
+</phrase>
+<phrase>
+    <source>3</source>
+    <target>3</target>
+</phrase>
+<phrase>
+    <source>4</source>
+    <target>4</target>
+</phrase>
+<phrase>
+    <source>5</source>
+    <target>5</target>
+</phrase>
+<phrase>
+    <source>6</source>
+    <target>6</target>
+</phrase>
+<phrase>
+    <source>7</source>
+    <target>7</target>
+</phrase>
+<phrase>
+    <source>8</source>
+    <target>8</target>
+</phrase>
+<phrase>
+    <source>9</source>
+    <target>9</target>
+</phrase>
+<phrase>
+    <source>10</source>
+    <target>10</target>
+</phrase>
+<phrase>
+    <source>11</source>
+    <target>11</target>
+</phrase>
+<phrase>
+    <source>12</source>
+    <target>12</target>
+</phrase>
+<phrase>
+    <source>13</source>
+    <target>13</target>
+</phrase>
+<phrase>
+    <source>14</source>
+    <target>14</target>
+</phrase>
+<phrase>
+    <source>15</source>
+    <target>15</target>
+</phrase>
+<phrase>
+    <source>16</source>
+    <target>16</target>
+</phrase>
+<phrase>
+    <source>17</source>
+    <target>17</target>
+</phrase>
+<phrase>
+    <source>18</source>
+    <target>18</target>
+</phrase>
+<phrase>
+    <source>19</source>
+    <target>19</target>
+</phrase>
+<phrase>
+    <source>20</source>
+    <target>20</target>
+</phrase>
+<phrase>
+    <source>21</source>
+    <target>21</target>
+</phrase>
+<phrase>
+    <source>22</source>
+    <target>22</target>
+</phrase>
+<phrase>
+    <source>23</source>
+    <target>23</target>
+</phrase>
+<phrase>
+    <source>24</source>
+    <target>24</target>
+</phrase>
+<phrase>
+    <source>25</source>
+    <target>25</target>
+</phrase>
+<phrase>
+    <source>26</source>
+    <target>26</target>
+</phrase>
+<phrase>
+    <source>27</source>
+    <target>27</target>
+</phrase>
+<phrase>
+    <source>28</source>
+    <target>28</target>
+</phrase>
+<phrase>
+    <source>29</source>
+    <target>29</target>
+</phrase>
+<phrase>
+    <source>30</source>
+    <target>30</target>
+</phrase>
+<phrase>
+    <source>31</source>
+    <target>31</target>
+</phrase>
+<phrase>
+    <source>32</source>
+    <target>32</target>
+</phrase>
+<phrase>
+    <source>33</source>
+    <target>33</target>
+</phrase>
+<phrase>
+    <source>34</source>
+    <target>34</target>
+</phrase>
+<phrase>
+    <source>35</source>
+    <target>35</target>
+</phrase>
+<phrase>
+    <source>36</source>
+    <target>36</target>
+</phrase>
+<phrase>
+    <source>37</source>
+    <target>37</target>
+</phrase>
+<phrase>
+    <source>38</source>
+    <target>38</target>
+</phrase>
+<phrase>
+    <source>39</source>
+    <target>39</target>
+</phrase>
+<phrase>
+    <source>40</source>
+    <target>40</target>
+</phrase>
+<phrase>
+    <source>41</source>
+    <target>41</target>
+</phrase>
+<phrase>
+    <source>42</source>
+    <target>42</target>
+</phrase>
+<phrase>
+    <source>43</source>
+    <target>43</target>
+</phrase>
+<phrase>
+    <source>44</source>
+    <target>44</target>
+</phrase>
+<phrase>
+    <source>45</source>
+    <target>45</target>
+</phrase>
+<phrase>
+    <source>46</source>
+    <target>46</target>
+</phrase>
+<phrase>
+    <source>47</source>
+    <target>47</target>
+</phrase>
+<phrase>
+    <source>48</source>
+    <target>48</target>
+</phrase>
+<phrase>
+    <source>49</source>
+    <target>49</target>
+</phrase>
+<phrase>
+    <source>50</source>
+    <target>50</target>
+</phrase>
+<phrase>
+    <source>51</source>
+    <target>51</target>
+</phrase>
+<phrase>
+    <source>52</source>
+    <target>52</target>
+</phrase>
+<phrase>
+    <source>53</source>
+    <target>53</target>
+</phrase>
+<phrase>
+    <source>54</source>
+    <target>54</target>
+</phrase>
+<phrase>
+    <source>55</source>
+    <target>55</target>
+</phrase>
+<phrase>
+    <source>56</source>
+    <target>56</target>
+</phrase>
+<phrase>
+    <source>57</source>
+    <target>57</target>
+</phrase>
+<phrase>
+    <source>58</source>
+    <target>58</target>
+</phrase>
+<phrase>
+    <source>59</source>
+    <target>59</target>
+</phrase>
+<phrase>
+    <source>60</source>
+    <target>60</target>
+</phrase>
+<phrase>
+    <source>61</source>
+    <target>61</target>
+</phrase>
+<phrase>
+    <source>62</source>
+    <target>62</target>
+</phrase>
+<phrase>
+    <source>63</source>
+    <target>63</target>
+</phrase>
+<phrase>
+    <source>64</source>
+    <target>64</target>
+</phrase>
+<phrase>
+    <source>65</source>
+    <target>65</target>
+</phrase>
+<phrase>
+    <source>66</source>
+    <target>66</target>
+</phrase>
+<phrase>
+    <source>67</source>
+    <target>67</target>
+</phrase>
+<phrase>
+    <source>68</source>
+    <target>68</target>
+</phrase>
+<phrase>
+    <source>69</source>
+    <target>69</target>
+</phrase>
+<phrase>
+    <source>70</source>
+    <target>70</target>
+</phrase>
+<phrase>
+    <source>71</source>
+    <target>71</target>
+</phrase>
+<phrase>
+    <source>72</source>
+    <target>72</target>
+</phrase>
+<phrase>
+    <source>73</source>
+    <target>73</target>
+</phrase>
+<phrase>
+    <source>74</source>
+    <target>74</target>
+</phrase>
+<phrase>
+    <source>75</source>
+    <target>75</target>
+</phrase>
+<phrase>
+    <source>76</source>
+    <target>76</target>
+</phrase>
+<phrase>
+    <source>77</source>
+    <target>77</target>
+</phrase>
+<phrase>
+    <source>78</source>
+    <target>78</target>
+</phrase>
+<phrase>
+    <source>79</source>
+    <target>79</target>
+</phrase>
+<phrase>
+    <source>80</source>
+    <target>80</target>
+</phrase>
+<phrase>
+    <source>81</source>
+    <target>81</target>
+</phrase>
+<phrase>
+    <source>82</source>
+    <target>82</target>
+</phrase>
+<phrase>
+    <source>83</source>
+    <target>83</target>
+</phrase>
+<phrase>
+    <source>84</source>
+    <target>84</target>
+</phrase>
+<phrase>
+    <source>85</source>
+    <target>85</target>
+</phrase>
+<phrase>
+    <source>86</source>
+    <target>86</target>
+</phrase>
+<phrase>
+    <source>87</source>
+    <target>87</target>
+</phrase>
+<phrase>
+    <source>88</source>
+    <target>88</target>
+</phrase>
+<phrase>
+    <source>89</source>
+    <target>89</target>
+</phrase>
+<phrase>
+    <source>90</source>
+    <target>90</target>
+</phrase>
+<phrase>
+    <source>91</source>
+    <target>91</target>
+</phrase>
+<phrase>
+    <source>92</source>
+    <target>92</target>
+</phrase>
+<phrase>
+    <source>93</source>
+    <target>93</target>
+</phrase>
+<phrase>
+    <source>94</source>
+    <target>94</target>
+</phrase>
+<phrase>
+    <source>95</source>
+    <target>95</target>
+</phrase>
+<phrase>
+    <source>96</source>
+    <target>96</target>
+</phrase>
+<phrase>
+    <source>97</source>
+    <target>97</target>
+</phrase>
+<phrase>
+    <source>98</source>
+    <target>98</target>
+</phrase>
+<phrase>
+    <source>99</source>
+    <target>99</target>
+</phrase>
+<phrase>
+    <source>100</source>
+    <target>100</target>
+</phrase>
+<phrase>
+    <source>101</source>
+    <target>101</target>
+</phrase>
+<phrase>
+    <source>102</source>
+    <target>102</target>
+</phrase>
+<phrase>
+    <source>103</source>
+    <target>103</target>
+</phrase>
+<phrase>
+    <source>104</source>
+    <target>104</target>
+</phrase>
+<phrase>
+    <source>105</source>
+    <target>105</target>
+</phrase>
+<phrase>
+    <source>106</source>
+    <target>106</target>
+</phrase>
+<phrase>
+    <source>107</source>
+    <target>107</target>
+</phrase>
+<phrase>
+    <source>108</source>
+    <target>108</target>
+</phrase>
+<phrase>
+    <source>109</source>
+    <target>109</target>
+</phrase>
+<phrase>
+    <source>110</source>
+    <target>110</target>
+</phrase>
+<phrase>
+    <source>111</source>
+    <target>111</target>
+</phrase>
+<phrase>
+    <source>112</source>
+    <target>112</target>
+</phrase>
+<phrase>
+    <source>113</source>
+    <target>113</target>
+</phrase>
+<phrase>
+    <source>114</source>
+    <target>114</target>
+</phrase>
+<phrase>
+    <source>115</source>
+    <target>115</target>
+</phrase>
+<phrase>
+    <source>116</source>
+    <target>116</target>
+</phrase>
+<phrase>
+    <source>117</source>
+    <target>117</target>
+</phrase>
+<phrase>
+    <source>118</source>
+    <target>118</target>
+</phrase>
+<phrase>
+    <source>119</source>
+    <target>119</target>
+</phrase>
+<phrase>
+    <source>120</source>
+    <target>120</target>
+</phrase>
+<phrase>
+    <source>121</source>
+    <target>121</target>
+</phrase>
+<phrase>
+    <source>122</source>
+    <target>122</target>
+</phrase>
+<phrase>
+    <source>123</source>
+    <target>123</target>
+</phrase>
+<phrase>
+    <source>124</source>
+    <target>124</target>
+</phrase>
+<phrase>
+    <source>125</source>
+    <target>125</target>
+</phrase>
+<phrase>
+    <source>126</source>
+    <target>126</target>
+</phrase>
+<phrase>
+    <source>127</source>
+    <target>127</target>
+</phrase>
+<phrase>
+    <source>Key</source>
+    <target>Дирка</target>
+</phrase>
+<phrase>
+    <source>Error loading a file</source>
+    <target>Грешка при учитавању датотеке</target>
+</phrase>
+<phrase>
+    <source>Error saving a file</source>
+    <target>Грешка при чувању датотеке</target>
+</phrase>
+<phrase>
+    <source>Error reading XML</source>
+    <target>Грешка при читању ИксМЛ датотеке</target>
+</phrase>
+<phrase>
+    <source>File: %1
+%2</source>
+    <target>Датотека: %1
+%2</target>
+</phrase>
+<phrase>
+    <source>SoundFont:</source>
+    <target>Звукотека:</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Use Internal Reverb</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Default Apple DLS Sound Set</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Select SoundFont</source>
+    <target>Избор звукотеке</target>
+</phrase>
+<phrase>
+    <source>SoundFont Files (*.sf2 *.dls)</source>
+    <target>Звукотеке (*.sf2 *.dls)</target>
+</phrase>
+<phrase>
+    <source>MIDI Setup</source>
+    <target>Миди-повезивања</target>
+</phrase>
+<phrase>
+    <source>Check this box to enable MIDI input for the program. In Linux and Mac OSX the input port is always enabled and can&apos;t be un-ckecked</source>
+    <target>Ако је обележено ово поље, омогућава се миди-улаз за програм. Код линукс и мек ос-икс система ово је увек омогућено</target>
+</phrase>
+<phrase>
+    <source>Enable MIDI Input</source>
+    <target>Омогући МИДИ улаз</target>
+</phrase>
+<phrase>
+    <source>MIDI Omni Mode</source>
+    <target>Миди-ОМНИ режим</target>
+</phrase>
+<phrase>
+    <source>MIDI IN Driver</source>
+    <target>МИДИ-УЛ.посредник</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Input MIDI Connection</source>
+    <target>Миди-улаз</target>
+</phrase>
+<phrase>
+    <source>Use this control to change the connection for the MIDI input port, if it is enabled</source>
+    <target>Преко ове контроле мењате везу за улазног миди-прикључка, ако је омогућен</target>
+</phrase>
+<phrase>
+    <source>Check this box to enable the MIDI Thru function: any MIDI event received in the input port will be copied unchanged to the output port</source>
+    <target>Ако је обележено, покреће се миди-превоз (MIDI Thru), тј. било који миди-догађај примљен на улазном прикључку биће умножен на излазни прикључак у неизмењеном облику</target>
+</phrase>
+<phrase>
+    <source>Enable MIDI Thru on MIDI Output</source>
+    <target>Омогући миди-превоз на миди-излазу</target>
+</phrase>
+<phrase>
+    <source>MIDI OUT Driver</source>
+    <target>МИДИ-ИЗЛ.посредник</target>
+</phrase>
+<phrase>
+    <source>Output MIDI Connection</source>
+    <target>Миди-излаз</target>
+</phrase>
+<phrase>
+    <source>Use this control to change the connection for the MIDI output port</source>
+    <target>Преко ове контроле мењате везу за излазни миди-прикључак</target>
+</phrase>
+<phrase>
+    <source>Show Advanced Connections</source>
+    <target>Напредни приказ везивања</target>
+</phrase>
+<phrase>
+    <source>Network Driver Settings</source>
+    <target>Поставке мрежног посредника</target>
+</phrase>
+<phrase>
+    <source>Use IPv6</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Network Interface:</source>
+    <target>Мрежни прикључак:</target>
+</phrase>
+<phrase>
+    <source>Address</source>
+    <target>Адреса</target>
+</phrase>
+<phrase>
+    <source>Any</source>
+    <target>Било који</target>
+</phrase>
+<phrase>
+    <source>C</source>
+    <target>C</target>
+</phrase>
+<phrase>
+    <source>C♯</source>
+    <target>C♯</target>
+</phrase>
+<phrase>
+    <source>D</source>
+    <target>D</target>
+</phrase>
+<phrase>
+    <source>D♯</source>
+    <target>D♯</target>
+</phrase>
+<phrase>
+    <source>E</source>
+    <target>E</target>
+</phrase>
+<phrase>
+    <source>F</source>
+    <target>F</target>
+</phrase>
+<phrase>
+    <source>F♯</source>
+    <target>F♯</target>
+</phrase>
+<phrase>
+    <source>G</source>
+    <target>G</target>
+</phrase>
+<phrase>
+    <source>G♯</source>
+    <target>G♯</target>
+</phrase>
+<phrase>
+    <source>A</source>
+    <target>A</target>
+</phrase>
+<phrase>
+    <source>A♯</source>
+    <target>A♯</target>
+</phrase>
+<phrase>
+    <source>B</source>
+    <target>B</target>
+</phrase>
+<phrase>
+    <source>D♭</source>
+    <target>D♭</target>
+</phrase>
+<phrase>
+    <source>E♭</source>
+    <target>E♭</target>
+</phrase>
+<phrase>
+    <source>G♭</source>
+    <target>G♭</target>
+</phrase>
+<phrase>
+    <source>A♭</source>
+    <target>A♭</target>
+</phrase>
+<phrase>
+    <source>B♭</source>
+    <target>B</target>
+</phrase>
+<phrase>
+    <source>Open instruments definition</source>
+    <target>Отвори дефиниције инструмената (*.ins)</target>
+</phrase>
+<phrase>
+    <source>Instrument definitions (*.ins)</source>
+    <target>Дефиниције инструмента (*.ins)</target>
+</phrase>
+<phrase>
+    <source>Open keyboard map definition</source>
+    <target>Отвори датотеку са мапом дирки</target>
+</phrase>
+<phrase>
+    <source>Keyboard map (*.xml)</source>
+    <target>Мапа дирки (*.xml)</target>
+</phrase>
+<phrase>
+    <source>Preferences</source>
+    <target>Поставке</target>
+</phrase>
+<phrase>
+    <source>Number of keys</source>
+    <target>Број дирки</target>
+</phrase>
+<phrase>
+    <source>The number of octaves, from 1 to 10. Each octave has 12 keys: 7 white and 5 black. The MIDI standard has 128 notes, but not all instruments can play all of them.</source>
+    <target>Октава можете имати од 1-10, а свака од њих има 12 дирки (7 белих и 5 црних). МИДИ стандард дефинише 128 нота, али не могу се све и одсвирати на сваком од инструмената.</target>
+</phrase>
+<phrase>
+    <source>Starting Key</source>
+    <target>Почетна дирка</target>
+</phrase>
+<phrase>
+    <source>Note highlight color</source>
+    <target>Боја истицања ноте</target>
+</phrase>
+<phrase>
+    <source>Press this button to change the highligh color used to paint the keys that are being activated.</source>
+    <target>Притисните ово дугме за промену боје за истицање коришћене за исцртавање дирки које су притиснуте.</target>
+</phrase>
+<phrase>
+    <source>Colors...</source>
+    <target>Боје...</target>
+</phrase>
+<phrase>
+    <source>Instruments file</source>
+    <target>Датотека инструмената</target>
+</phrase>
+<phrase>
+    <source>The instruments definition file currently loaded</source>
+    <target>Датотека дефиниције инструмената која је тренутно учитана</target>
+</phrase>
+<phrase>
+    <source>default</source>
+    <target>Подразумевано</target>
+</phrase>
+<phrase>
+    <source>Press this button to load an instruments definition file from disk.</source>
+    <target>Притисните ово дугме да би сте учитали датотеку дефиниције инструмената са диска.</target>
+</phrase>
+<phrase>
+    <source>Load...</source>
+    <target>Учитај...</target>
+</phrase>
+<phrase>
+    <source>Instrument</source>
+    <target>Инструменат</target>
+</phrase>
+<phrase>
+    <source>Change the instrument definition being currently used. Each instruments definition file may hold several instruments on it.</source>
+    <target>Промените дефиницију инструмента који се сада користи. Свака датотека дефиниције инструмената може садржати неколико инструмената у себи.</target>
+</phrase>
+<phrase>
+    <source>Keyboard Map</source>
+    <target>Мапа дирки</target>
+</phrase>
+<phrase>
+    <source>Raw Keyboard Map</source>
+    <target>Изворна мапа тастатуре</target>
+</phrase>
+<phrase>
+    <source>Drums Channel</source>
+    <target>Канал са бубњевима</target>
+</phrase>
+<phrase>
+    <source>None</source>
+    <target>Ништа</target>
+</phrase>
+<phrase>
+    <source>1</source>
+    <target>1</target>
+</phrase>
+<phrase>
+    <source>2</source>
+    <target>2</target>
+</phrase>
+<phrase>
+    <source>3</source>
+    <target>3</target>
+</phrase>
+<phrase>
+    <source>4</source>
+    <target>4</target>
+</phrase>
+<phrase>
+    <source>5</source>
+    <target>5</target>
+</phrase>
+<phrase>
+    <source>6</source>
+    <target>6</target>
+</phrase>
+<phrase>
+    <source>7</source>
+    <target>7</target>
+</phrase>
+<phrase>
+    <source>8</source>
+    <target>8</target>
+</phrase>
+<phrase>
+    <source>9</source>
+    <target>9</target>
+</phrase>
+<phrase>
+    <source>10</source>
+    <target>10</target>
+</phrase>
+<phrase>
+    <source>11</source>
+    <target>11</target>
+</phrase>
+<phrase>
+    <source>12</source>
+    <target>12</target>
+</phrase>
+<phrase>
+    <source>13</source>
+    <target>13</target>
+</phrase>
+<phrase>
+    <source>14</source>
+    <target>14</target>
+</phrase>
+<phrase>
+    <source>15</source>
+    <target>15</target>
+</phrase>
+<phrase>
+    <source>MIDI channel state consistency</source>
+    <target>Доследност стања миди-канала</target>
+</phrase>
+<phrase>
+    <source>Translate MIDI velocity to key pressed color tint</source>
+    <target>Преведи миди-јачину у благо обојену притиснуту дирку</target>
+</phrase>
+<phrase>
+    <source>Check this box to keep the keyboard window always visible, on top of other windows.</source>
+    <target>Означите да би клавијатура била увек видљива, тј испред других прозора.</target>
+</phrase>
+<phrase>
+    <source>Always On Top</source>
+    <target>Увек на врху</target>
+</phrase>
+<phrase>
+    <source>Enable Computer Keyboard Input</source>
+    <target>Омогући свирање преко рачунарске тастатуре</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Check this box to use low level PC keyboard events. This system has several advantages:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;It is possible to use &quot;dead keys&quot; (accent marks, diacritics)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mapping definitions are independent of the language (but hardware and OS specific)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Faster processing&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Означите ово да бисте користили догађаје тастатуре ниског нивоа. Ово има доста предности:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Можете користити тзв. „дед киз“ (акценти, дијакритици)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Мапирање дефиниција је независно од језика (зависи једино од система који користите)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Бржа је обрада&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>Raw Computer Keyboard</source>
+    <target>Изворна рачунарска тастатура</target>
+</phrase>
+<phrase>
+    <source>Enable Mouse Input</source>
+    <target>Омогући свирање мишем</target>
+</phrase>
+<phrase>
+    <source>Enable Touch Screen Input</source>
+    <target>Омогући свирање преко осетљивог екрана (тач-скрин)</target>
+</phrase>
+<phrase>
+    <source>Cakewalk Instrument Definition File</source>
+    <target>Кејквоук датотека дефиниције инструмента</target>
+</phrase>
+<phrase>
+    <source>File</source>
+    <target>Датотека</target>
+</phrase>
+<phrase>
+    <source>Date</source>
+    <target>Датум</target>
+</phrase>
+<phrase>
+    <source>Import SoundFont instruments</source>
+    <target>Увези инструменте из звукотеке</target>
+</phrase>
+<phrase>
+    <source>Input File</source>
+    <target>Улазна датотека</target>
+</phrase>
+<phrase>
+    <source>This text box displays the path and name of the selected SoundFont to be  imported</source>
+    <target>Овде су приказани назив и путања до одабране звукотеке за увожење</target>
+</phrase>
+<phrase>
+    <source>Press this button to select a SoundFont file to be imported</source>
+    <target>Притисните ово дугме за одабир звукотеке коју желите да увезете</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Name</source>
+    <target>Име</target>
+</phrase>
+<phrase>
+    <source>Version</source>
+    <target>Издање</target>
+</phrase>
+<phrase>
+    <source>Copyright</source>
+    <target>Ауторска права</target>
+</phrase>
+<phrase>
+    <source>Output File</source>
+    <target>Излазна датотека</target>
+</phrase>
+<phrase>
+    <source>This text box displays the name of the output file in .INS format that will be created</source>
+    <target>Овде је приказано име излазне „.INS“ датотеке коју ћу створити</target>
+</phrase>
+<phrase>
+    <source>Press this button to select a path and file name for the output file</source>
+    <target>Притисните ово дугме за одабир имена и путање до излазне датотеке</target>
+</phrase>
+<phrase>
+    <source>Input SoundFont</source>
+    <target>Улазна звукотека</target>
+</phrase>
+<phrase>
+    <source>SoundFonts (*.sf2 *.sbk *.dls)</source>
+    <target>Звукотеке (*.sf2 *.sbk *.dls)</target>
+</phrase>
+<phrase>
+    <source>Output</source>
+    <target>Излаз</target>
+</phrase>
+<phrase>
+    <source>Instrument definitions (*.ins)</source>
+    <target>Дефиниције инструмента (*.ins)</target>
+</phrase>
+<phrase>
+    <source>Keyboard Shortcuts</source>
+    <target>Пречице тастатуре</target>
+</phrase>
+<phrase>
+    <source>Action</source>
+    <target>Радња</target>
+</phrase>
+<phrase>
+    <source>Description</source>
+    <target>Опис</target>
+</phrase>
+<phrase>
+    <source>Shortcut</source>
+    <target>Пречица</target>
+</phrase>
+<phrase>
+    <source>Warning</source>
+    <target>Упозорење</target>
+</phrase>
+<phrase>
+    <source>Keyboard shortcuts have been changed.
+
+Do you want to apply the changes?</source>
+    <target>Пречице тастатуре су измењене.
+
+Желите ли да примените ове измене?</target>
+</phrase>
+<phrase>
+    <source>Sonivox EAS Synth</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Chorus</source>
+    <target>Хорус</target>
+</phrase>
+<phrase>
+    <source>Reverb</source>
+    <target>Јека</target>
+</phrase>
+<phrase>
+    <source>Buffer Time:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source> ms</source>
+    <target>мс</target>
+</phrase>
+<phrase>
+    <source>Large Hall</source>
+    <target>Велика дворана</target>
+</phrase>
+<phrase>
+    <source>Hall</source>
+    <target>Дворана</target>
+</phrase>
+<phrase>
+    <source>Chamber</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Room</source>
+    <target>Соба</target>
+</phrase>
+<phrase>
+    <source>None</source>
+    <target>Ништа</target>
+</phrase>
+<phrase>
+    <source>Preset 1</source>
+    <target>1. поставка</target>
+</phrase>
+<phrase>
+    <source>Preset 2</source>
+    <target>2. поставка</target>
+</phrase>
+<phrase>
+    <source>Preset 3</source>
+    <target>3. поставка</target>
+</phrase>
+<phrase>
+    <source>Preset 4</source>
+    <target>4. поставка</target>
+</phrase>
+<phrase>
+    <source>&amp;File</source>
+    <target>&amp;Датотека</target>
+</phrase>
+<phrase>
+    <source>&amp;Edit</source>
+    <target>&amp;Уреди</target>
+</phrase>
+<phrase>
+    <source>&amp;Help</source>
+    <target>&amp;Помоћ</target>
+</phrase>
+<phrase>
+    <source>&amp;Language</source>
+    <target>&amp;Језик</target>
+</phrase>
+<phrase>
+    <source>&amp;View</source>
+    <target>П&amp;реглед</target>
+</phrase>
+<phrase>
+    <source>&amp;Tools</source>
+    <target>&amp;Алатке</target>
+</phrase>
+<phrase>
+    <source>Notes</source>
+    <target>Ноте</target>
+</phrase>
+<phrase>
+    <source>Controllers</source>
+    <target>Контролери</target>
+</phrase>
+<phrase>
+    <source>Programs</source>
+    <target>Програми</target>
+</phrase>
+<phrase>
+    <source>Note Input</source>
+    <target>Свирање нота преко</target>
+</phrase>
+<phrase>
+    <source>&amp;Notes</source>
+    <target>&amp;Ноте</target>
+</phrase>
+<phrase>
+    <source>&amp;Controllers</source>
+    <target>&amp;Контролери</target>
+</phrase>
+<phrase>
+    <source>Pitch &amp;Bender</source>
+    <target>Корак са&amp;вијача</target>
+</phrase>
+<phrase>
+    <source>&amp;Programs</source>
+    <target>&amp;Програми</target>
+</phrase>
+<phrase>
+    <source>&amp;Extra Controls</source>
+    <target>Пос&amp;ебне контроле</target>
+</phrase>
+<phrase>
+    <source>&amp;Quit</source>
+    <target>&amp;Излаз</target>
+</phrase>
+<phrase>
+    <source>Exit the program</source>
+    <target>Излаз из програма</target>
+</phrase>
+<phrase>
+    <source>&amp;Preferences</source>
+    <target>&amp;Поставке</target>
+</phrase>
+<phrase>
+    <source>Edit the program settings</source>
+    <target>Уредите поставке програма</target>
+</phrase>
+<phrase>
+    <source>MIDI &amp;Connections</source>
+    <target>Миди-&amp;везе</target>
+</phrase>
+<phrase>
+    <source>Edit the MIDI connections</source>
+    <target>Уредите миди-везе</target>
+</phrase>
+<phrase>
+    <source>&amp;About</source>
+    <target>О прогр&amp;аму</target>
+</phrase>
+<phrase>
+    <source>Show the About box</source>
+    <target>Прикажи прозорче са информацијама о програму</target>
+</phrase>
+<phrase>
+    <source>About &amp;Qt</source>
+    <target>О &amp;КјуТ</target>
+</phrase>
+<phrase>
+    <source>Show the Qt about box</source>
+    <target>Прикажи прозорче са информацијама о КјуТ библиотекама</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Notes toolbar</source>
+    <target>Прикажи/Сакриј траку са нотним алаткама</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Controller toolbar</source>
+    <target>Прикажи/Сакриј траку са алаткама контролера</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Pitch Bender toolbar</source>
+    <target>Прикажи/Сакриј траку са алаткама савијача</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Programs toolbar</source>
+    <target>Прикажи/Сакриј траку са програмским алаткама</target>
+</phrase>
+<phrase>
+    <source>&amp;Status Bar</source>
+    <target>&amp;Статусна трака</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Status Bar</source>
+    <target>Прикажи-Сакриј траку стања</target>
+</phrase>
+<phrase>
+    <source>Panic</source>
+    <target>Узбуна</target>
+</phrase>
+<phrase>
+    <source>Stops all active notes</source>
+    <target>Зауставља репродукцију свих активних нота</target>
+</phrase>
+<phrase>
+    <source>Reset All</source>
+    <target>Врати све</target>
+</phrase>
+<phrase>
+    <source>Resets all the controllers</source>
+    <target>Враћа све контролере у подразумевано стање</target>
+</phrase>
+<phrase>
+    <source>Reset</source>
+    <target>Врати</target>
+</phrase>
+<phrase>
+    <source>Resets the Bender value</source>
+    <target>Враћа све поставке савијача у подразумевано стање</target>
+</phrase>
+<phrase>
+    <source>&amp;Keyboard Map</source>
+    <target>&amp;Мапа дирки</target>
+</phrase>
+<phrase>
+    <source>Edit the current keyboard layout</source>
+    <target>Уредите текући распоред тастатуре</target>
+</phrase>
+<phrase>
+    <source>&amp;Contents</source>
+    <target>&amp;Садржај</target>
+</phrase>
+<phrase>
+    <source>Open the index of the help document</source>
+    <target>Отвори садржај датотеке помоћи</target>
+</phrase>
+<phrase>
+    <source>VMPK &amp;Web site</source>
+    <target>Интер&amp;нет адреса програма</target>
+</phrase>
+<phrase>
+    <source>Open the VMPK web site address using a web browser</source>
+    <target>Отвори интернет адресу програма у веб-прегледнику</target>
+</phrase>
+<phrase>
+    <source>&amp;Import SoundFont...</source>
+    <target>Увез&amp;и звукотеку...</target>
+</phrase>
+<phrase>
+    <source>Import SoundFont</source>
+    <target>Увоз звукотеке</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Extra Controls toolbar</source>
+    <target>Прикажи/Сакриј траку са алаткама посебних контрола</target>
+</phrase>
+<phrase>
+    <source>Edit</source>
+    <target>Уреди</target>
+</phrase>
+<phrase>
+    <source>Open the Extra Controls editor</source>
+    <target>Отвара уређивач посебних контрола</target>
+</phrase>
+<phrase>
+    <source>Open the Banks/Programs editor</source>
+    <target>Отвара уређивач програма и банки програма</target>
+</phrase>
+<phrase>
+    <source>&amp;Extra Controllers</source>
+    <target>Пос&amp;ебни контролери</target>
+</phrase>
+<phrase>
+    <source>N&amp;ote Names</source>
+    <target>Називи н&amp;ота</target>
+</phrase>
+<phrase>
+    <source>Show or hide the note names</source>
+    <target>Прикажи/Сакриј називе нота</target>
+</phrase>
+<phrase>
+    <source>&amp;Shortcuts</source>
+    <target>&amp;Пречице</target>
+</phrase>
+<phrase>
+    <source>Open the Shortcuts editor</source>
+    <target>Отвара уређивач пречица</target>
+</phrase>
+<phrase>
+    <source>Octave Up</source>
+    <target>За октаву више</target>
+</phrase>
+<phrase>
+    <source>Play one octave higher</source>
+    <target>Свирај за једну октаву више</target>
+</phrase>
+<phrase>
+    <source>Octave Down</source>
+    <target>За октаву ниже</target>
+</phrase>
+<phrase>
+    <source>Play one octave lower</source>
+    <target>Свирај за једну октаву ниже</target>
+</phrase>
+<phrase>
+    <source>Transpose Up</source>
+    <target>Транспонуј — Повиси</target>
+</phrase>
+<phrase>
+    <source>Transpose one semitone higher</source>
+    <target>Повиси за један полутон</target>
+</phrase>
+<phrase>
+    <source>Transpose Down</source>
+    <target>Транспонуј — Снизи</target>
+</phrase>
+<phrase>
+    <source>Transpose one semitone lower</source>
+    <target>Снизи за један полутон</target>
+</phrase>
+<phrase>
+    <source>Next  Channel</source>
+    <target>Наредни канал</target>
+</phrase>
+<phrase>
+    <source>Play and listen next channel</source>
+    <target>Свирај и ослушкуј наредни канал</target>
+</phrase>
+<phrase>
+    <source>Previous Channel</source>
+    <target>Претходни канал</target>
+</phrase>
+<phrase>
+    <source>Play and listen previous channel</source>
+    <target>Свирај и ослушкуј претходни канал</target>
+</phrase>
+<phrase>
+    <source>Next Controller</source>
+    <target>Наредни контролер</target>
+</phrase>
+<phrase>
+    <source>Select the next controller</source>
+    <target>Одаберите наредни контролер</target>
+</phrase>
+<phrase>
+    <source>Previous Controller</source>
+    <target>Претходни контролер</target>
+</phrase>
+<phrase>
+    <source>Select the previous controller</source>
+    <target>Одаберите претходни контролер</target>
+</phrase>
+<phrase>
+    <source>Controller Up</source>
+    <target>Контролер — увећај</target>
+</phrase>
+<phrase>
+    <source>Increment the controller value</source>
+    <target>Увећава вредност контролера</target>
+</phrase>
+<phrase>
+    <source>Alt++</source>
+    <target>Alt++</target>
+</phrase>
+<phrase>
+    <source>Controller Down</source>
+    <target>Контролер — умањи</target>
+</phrase>
+<phrase>
+    <source>Decrement the controller value</source>
+    <target>Умањује вредност контролера</target>
+</phrase>
+<phrase>
+    <source>Alt+-</source>
+    <target>Alt+-</target>
+</phrase>
+<phrase>
+    <source>Next Bank</source>
+    <target>Наредна банка</target>
+</phrase>
+<phrase>
+    <source>Select the next instrument bank</source>
+    <target>Одаберите наредну банку инструмената</target>
+</phrase>
+<phrase>
+    <source>Previous Bank</source>
+    <target>Претходна банка</target>
+</phrase>
+<phrase>
+    <source>Select the previous instrument bank</source>
+    <target>Одаберите претходну банку инструмената</target>
+</phrase>
+<phrase>
+    <source>Next Program</source>
+    <target>Наредни програм</target>
+</phrase>
+<phrase>
+    <source>Select the next instrument program</source>
+    <target>Одаберите наредни програм инструмента</target>
+</phrase>
+<phrase>
+    <source>Previous Program</source>
+    <target>Претходни програм</target>
+</phrase>
+<phrase>
+    <source>Select the previous instrument program</source>
+    <target>Одаберите претходни програм инструмента</target>
+</phrase>
+<phrase>
+    <source>Velocity Up</source>
+    <target>Јаче</target>
+</phrase>
+<phrase>
+    <source>Increment note velocity</source>
+    <target>Увећај јачину свирања ноте</target>
+</phrase>
+<phrase>
+    <source>Velocity Down</source>
+    <target>Слабије</target>
+</phrase>
+<phrase>
+    <source>Decrement note velocity</source>
+    <target>Умањи јачину свирања ноте</target>
+</phrase>
+<phrase>
+    <source>About &amp;Translation</source>
+    <target>О &amp;локализацији</target>
+</phrase>
+<phrase>
+    <source>Show information about the program language translation</source>
+    <target>Прикажи детаље о локализацији програма</target>
+</phrase>
+<phrase>
+    <source>Computer Keyboard</source>
+    <target>рач. тастатуре</target>
+</phrase>
+<phrase>
+    <source>Enable computer keyboard triggered note input</source>
+    <target>Омогући свирање нота помоћу рачунарске тастатуре</target>
+</phrase>
+<phrase>
+    <source>Mouse</source>
+    <target>рач. миша</target>
+</phrase>
+<phrase>
+    <source>Enable mouse triggered note input</source>
+    <target>Омогући свирање нота помоћу рачунарског миша</target>
+</phrase>
+<phrase>
+    <source>Touch Screen</source>
+    <target>осетљивог екрана</target>
+</phrase>
+<phrase>
+    <source>Enable screen touch triggered note input</source>
+    <target>Омогући свирање нота помоћу осетљивог екрана</target>
+</phrase>
+<phrase>
+    <source>Color Palette</source>
+    <target>Палета боја</target>
+</phrase>
+<phrase>
+    <source>Open the color palette editor</source>
+    <target>Отвара уређивач палете боја</target>
+</phrase>
+<phrase>
+    <source>Color Scale</source>
+    <target>Скала боја</target>
+</phrase>
+<phrase>
+    <source>Show or hide the colorized keys</source>
+    <target>Прикажи/Сакриј обојене дирке</target>
+</phrase>
+<phrase>
+    <source>Window frame</source>
+    <target>Оквир прозора</target>
+</phrase>
+<phrase>
+    <source>Show or hide window decorations</source>
+    <target>Прикажи/Сакриј оквир прозора</target>
+</phrase>
+<phrase>
+    <source>Alt+F</source>
+    <target>Alt+F</target>
+</phrase>
+<phrase>
+    <source>Error</source>
+    <target>Грешка</target>
+</phrase>
+<phrase>
+    <source>No help file found</source>
+    <target>Нисам нашао датотеку помоћи</target>
+</phrase>
+<phrase>
+    <source>Language Changed</source>
+    <target>Језик је промењен</target>
+</phrase>
+<phrase>
+    <source>The language for this application is going to change to %1. Do you want to continue?</source>
+    <target>Користићете %1 језик у програму. Желите ли да наставите?</target>
+</phrase>
+<phrase>
+    <source>&lt;p&gt;VMPK is developed and translated thanks to the volunteer work of many people from around the world. If you want to join the team or have any question, please visit the forums at &lt;a href=&apos;http://sourceforge.net/projects/vmpk/forums&apos;&gt;SourceForge&lt;/a&gt;&lt;/p&gt;</source>
+    <target>&lt;p&gt;Патворена миди-клавијатура, или краће ПМК, (енг. „VMPK“) се развија и локализује захваљујући несебичном залагању људи широм света. Ако желите да нам се придружите или ако имате било каква питања за нас, посетите наш форум на &lt;a href=&apos;http://sourceforge.net/projects/vmpk/forums&apos;&gt;Сорсфорџ&lt;/a&gt;-серверима&lt;/p&gt;</target>
+</phrase>
+<phrase>
+    <source>Translation</source>
+    <target>Локализација</target>
+</phrase>
+<phrase>
+    <source>&lt;p&gt;Translation by TRANSLATOR_NAME_AND_EMAIL&lt;/p&gt;%1</source>
+    <target>&lt;p&gt;Локализација на српски: Jay A. Fleming &amp;amp;lt;tito.nehru.naser@gmail.com&amp;amp;gt;&lt;/p&gt;%1</target>
+</phrase>
+<phrase>
+    <source>Translation Information</source>
+    <target>Подаци о локализацији</target>
+</phrase>
+<phrase>
+    <source>Czech</source>
+    <target>Чешки</target>
+</phrase>
+<phrase>
+    <source>German</source>
+    <target>Немачки</target>
+</phrase>
+<phrase>
+    <source>English</source>
+    <target>Енглески</target>
+</phrase>
+<phrase>
+    <source>Spanish</source>
+    <target>Шпански</target>
+</phrase>
+<phrase>
+    <source>French</source>
+    <target>Француски</target>
+</phrase>
+<phrase>
+    <source>Galician</source>
+    <target>Галицијски</target>
+</phrase>
+<phrase>
+    <source>Dutch</source>
+    <target>Холандски</target>
+</phrase>
+<phrase>
+    <source>Russian</source>
+    <target>Руски</target>
+</phrase>
+<phrase>
+    <source>Serbian</source>
+    <target>Српски</target>
+</phrase>
+<phrase>
+    <source>Swedish</source>
+    <target>Шведски</target>
+</phrase>
+<phrase>
+    <source>Chinese</source>
+    <target>Кинески</target>
+</phrase>
+<phrase>
+    <source>Chan:</source>
+    <target>Кан:</target>
+</phrase>
+<phrase>
+    <source>Channel:</source>
+    <target>Канал:</target>
+</phrase>
+<phrase>
+    <source>Oct:</source>
+    <target>Окт:</target>
+</phrase>
+<phrase>
+    <source>Base Octave:</source>
+    <target>Базна октава:</target>
+</phrase>
+<phrase>
+    <source>Trans:</source>
+    <target>Прет:</target>
+</phrase>
+<phrase>
+    <source>Transpose:</source>
+    <target>Транспонуј:</target>
+</phrase>
+<phrase>
+    <source>Vel:</source>
+    <target>Јач:</target>
+</phrase>
+<phrase>
+    <source>Velocity:</source>
+    <target>Јачина:</target>
+</phrase>
+<phrase>
+    <source>Bank:</source>
+    <target>Банка:</target>
+</phrase>
+<phrase>
+    <source>Bender:</source>
+    <target>Савијач:</target>
+</phrase>
+<phrase>
+    <source>Control:</source>
+    <target>Контрола:</target>
+</phrase>
+<phrase>
+    <source>Program:</source>
+    <target>Програм:</target>
+</phrase>
+<phrase>
+    <source>Value:</source>
+    <target>Вредност:</target>
+</phrase>
+</QPH>

@@ -1,0 +1,2011 @@
+<!DOCTYPE QPH>
+<QPH language="sv">
+<phrase>
+    <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot;font-family:&apos;Sans Serif&apos;; font-size:12pt; font-style:normal;&quot;&gt;&lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Version: %1&lt;br/&gt;Build date: %2&lt;br/&gt;Build time: %3&lt;br/&gt;Compiler: %4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot;font-family:&apos;Sans Serif&apos;; font-size:12pt; font-style:normal;&quot;&gt;&lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Version: %1&lt;br/&gt;Kompileringsdatum: %2&lt;br/&gt;Kompileringstid: %3&lt;br/&gt;Kompilator: %4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>About</source>
+    <target>Om</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Virtual MIDI Piano Keyboard&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Virtual MIDI Piano Keyboard&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://vmpk.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://vmpk.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://vmpk.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://vmpk.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Copyright © 2008-2020, &lt;/span&gt;&lt;a href=&quot;mailto:plcl@users.sf.net?subject=VMPK&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Pedro Lopez-Cabanillas &amp;lt;plcl@users.sf.net&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; color:#000000;&quot;&gt; and others&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License  along with this program. If not, see &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Color Palette</source>
+    <target>Färgpalett</target>
+</phrase>
+<phrase>
+    <source>Colors</source>
+    <target>Färger</target>
+</phrase>
+<phrase>
+    <source>N</source>
+    <target>N</target>
+</phrase>
+<phrase>
+    <source>#</source>
+    <target>#</target>
+</phrase>
+<phrase>
+    <source>1</source>
+    <target>1</target>
+</phrase>
+<phrase>
+    <source>2</source>
+    <target>2</target>
+</phrase>
+<phrase>
+    <source>3</source>
+    <target>3</target>
+</phrase>
+<phrase>
+    <source>4</source>
+    <target>4</target>
+</phrase>
+<phrase>
+    <source>5</source>
+    <target>5</target>
+</phrase>
+<phrase>
+    <source>6</source>
+    <target>6</target>
+</phrase>
+<phrase>
+    <source>7</source>
+    <target>7</target>
+</phrase>
+<phrase>
+    <source>8</source>
+    <target>8</target>
+</phrase>
+<phrase>
+    <source>9</source>
+    <target>9</target>
+</phrase>
+<phrase>
+    <source>10</source>
+    <target>10</target>
+</phrase>
+<phrase>
+    <source>11</source>
+    <target>11</target>
+</phrase>
+<phrase>
+    <source>12</source>
+    <target>12</target>
+</phrase>
+<phrase>
+    <source>13</source>
+    <target>13</target>
+</phrase>
+<phrase>
+    <source>14</source>
+    <target>14</target>
+</phrase>
+<phrase>
+    <source>15</source>
+    <target>15</target>
+</phrase>
+<phrase>
+    <source>16</source>
+    <target>16</target>
+</phrase>
+<phrase>
+    <source>C</source>
+    <target>C</target>
+</phrase>
+<phrase>
+    <source>C#</source>
+    <target>Ciss</target>
+</phrase>
+<phrase>
+    <source>D</source>
+    <target>D</target>
+</phrase>
+<phrase>
+    <source>D#</source>
+    <target>Diss</target>
+</phrase>
+<phrase>
+    <source>E</source>
+    <target>E</target>
+</phrase>
+<phrase>
+    <source>F</source>
+    <target>F</target>
+</phrase>
+<phrase>
+    <source>F#</source>
+    <target>Fiss</target>
+</phrase>
+<phrase>
+    <source>G</source>
+    <target>G</target>
+</phrase>
+<phrase>
+    <source>G#</source>
+    <target>Giss</target>
+</phrase>
+<phrase>
+    <source>A</source>
+    <target>A</target>
+</phrase>
+<phrase>
+    <source>A#</source>
+    <target>Aiss</target>
+</phrase>
+<phrase>
+    <source>B</source>
+    <target>H</target>
+</phrase>
+<phrase>
+    <source>Single color</source>
+    <target>En färg</target>
+</phrase>
+<phrase>
+    <source>A single color to highlight all note events</source>
+    <target>En färg för att markera alla tonhändelser</target>
+</phrase>
+<phrase>
+    <source>Two colors</source>
+    <target>Två färger</target>
+</phrase>
+<phrase>
+    <source>One color to highlight natural notes and a different one for accidentals</source>
+    <target>En färg för att markera stamtoner och en annan för grentoner</target>
+</phrase>
+<phrase>
+    <source>MIDI Channels</source>
+    <target>MIDI-kanaler</target>
+</phrase>
+<phrase>
+    <source>A different color for each MIDI channel. Enable Omni mode in the MIDI IN connection</source>
+    <target>Olika färger för varje MIDI-kanal. Aktivera Omni-inställning i MIDI IN-anslutningen.</target>
+</phrase>
+<phrase>
+    <source>Chromatic scale</source>
+    <target>Kromatisk skala</target>
+</phrase>
+<phrase>
+    <source>One color for each note in the chromatic scale</source>
+    <target>En färg för varje ton i den kromatiska skalan</target>
+</phrase>
+<phrase>
+    <source>Extra Controls Editor</source>
+    <target>Extra kontrolleditor</target>
+</phrase>
+<phrase>
+    <source>Label:</source>
+    <target>Etikett:</target>
+</phrase>
+<phrase>
+    <source>MIDI Controller:</source>
+    <target>MIDI-kontroll:</target>
+</phrase>
+<phrase>
+    <source>Add</source>
+    <target>Lägg till</target>
+</phrase>
+<phrase>
+    <source>Remove</source>
+    <target>Ta bort</target>
+</phrase>
+<phrase>
+    <source>Up</source>
+    <target>Upp</target>
+</phrase>
+<phrase>
+    <source>Down</source>
+    <target>Ner</target>
+</phrase>
+<phrase>
+    <source>Switch</source>
+    <target>Växel</target>
+</phrase>
+<phrase>
+    <source>Knob</source>
+    <target>Ratt</target>
+</phrase>
+<phrase>
+    <source>Spin box</source>
+    <target>Bläddringsruta</target>
+</phrase>
+<phrase>
+    <source>Slider</source>
+    <target>Skjutreglage</target>
+</phrase>
+<phrase>
+    <source>Button Ctl</source>
+    <target>Ctl-knapp</target>
+</phrase>
+<phrase>
+    <source>Button SysEx</source>
+    <target>SysEx-knapp</target>
+</phrase>
+<phrase>
+    <source>Default ON</source>
+    <target>Standard PÅ</target>
+</phrase>
+<phrase>
+    <source>value ON:</source>
+    <target>Värde PÅ:</target>
+</phrase>
+<phrase>
+    <source>value OFF:</source>
+    <target>värde AV:</target>
+</phrase>
+<phrase>
+    <source>Key:</source>
+    <target>Tangent:</target>
+</phrase>
+<phrase>
+    <source>Min. value:</source>
+    <target>Minsta värde:</target>
+</phrase>
+<phrase>
+    <source>Max. value:</source>
+    <target>Största värde:</target>
+</phrase>
+<phrase>
+    <source>Default value:</source>
+    <target>Ursprungsvärde:</target>
+</phrase>
+<phrase>
+    <source>Display size:</source>
+    <target>Visningsstorlek:</target>
+</phrase>
+<phrase>
+    <source>value:</source>
+    <target>värde:</target>
+</phrase>
+<phrase>
+    <source>File name:</source>
+    <target>Filnamn:</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>New Control</source>
+    <target>Ny kontroll</target>
+</phrase>
+<phrase>
+    <source>System Exclusive File</source>
+    <target>Systemexklusiv fil</target>
+</phrase>
+<phrase>
+    <source>System Exclusive (*.syx)</source>
+    <target>Systemexklusiv (*.syx)</target>
+</phrase>
+<phrase>
+    <source>FluidSynth Driver Settings</source>
+    <target>Drivrutinsinställningar för FluidSynth</target>
+</phrase>
+<phrase>
+    <source>Sample Rate:</source>
+    <target>Samplingsfrekvens:</target>
+</phrase>
+<phrase>
+    <source>Period Size:</source>
+    <target>Periodstorlek:</target>
+</phrase>
+<phrase>
+    <source># of Periods:</source>
+    <target>Antal perioder:</target>
+</phrase>
+<phrase>
+    <source>Audio Driver:</source>
+    <target>Ljuddrivrutin:</target>
+</phrase>
+<phrase>
+    <source>Polyphony:</source>
+    <target>Polyfoni:</target>
+</phrase>
+<phrase>
+    <source>Sound Font:</source>
+    <target>Ljudfont:</target>
+</phrase>
+<phrase>
+    <source>Gain:</source>
+    <target>Volym:</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Chorus</source>
+    <target>Korus</target>
+</phrase>
+<phrase>
+    <source>Reverb</source>
+    <target>Eko</target>
+</phrase>
+<phrase>
+    <source>Select SoundFont</source>
+    <target>Välj ljudfont</target>
+</phrase>
+<phrase>
+    <source>SoundFont Files (*.sf2)</source>
+    <target>SoundFont-filer (*.sf2)</target>
+</phrase>
+<phrase>
+    <source>Open...</source>
+    <target>Öppna...</target>
+</phrase>
+<phrase>
+    <source>Save As...</source>
+    <target>Spara som...</target>
+</phrase>
+<phrase>
+    <source>Raw Key Map Editor</source>
+    <target>Tangentbordseditor</target>
+</phrase>
+<phrase>
+    <source>Key Map Editor</source>
+    <target>Tangentbindningar</target>
+</phrase>
+<phrase>
+    <source>Key Code</source>
+    <target>Tangentkod</target>
+</phrase>
+<phrase>
+    <source>Key</source>
+    <target>Tangent</target>
+</phrase>
+<phrase>
+    <source>Open keyboard map definition</source>
+    <target>Öppna teckenutläggning</target>
+</phrase>
+<phrase>
+    <source>Keyboard map (*.xml)</source>
+    <target>Tangentbindningar (*.xml)</target>
+</phrase>
+<phrase>
+    <source>Save keyboard map definition</source>
+    <target>Spara tangentbindningar</target>
+</phrase>
+<phrase>
+    <source>Key Map Editor</source>
+    <target>Tangentbindningseditor</target>
+</phrase>
+<phrase>
+    <source>This box displays the name of the current mapping file</source>
+    <target>Denna ruta visar namnet på det aktuella tangentbindningsschemat</target>
+</phrase>
+<phrase>
+    <source>This is the list of the PC keyboard mappings. Each row has a number corresponding to the MIDI note number, and you can type an alphanumeric Key name that will be translated to the given note</source>
+    <target>Detta är listan över tangentbindningar. Varje rad har ett nummer motsvarande MIDI-tonnumret, och du kan ange en alfanumerisk tangent som kommer att bindas till den aktuella tonen.</target>
+</phrase>
+<phrase>
+    <source>0</source>
+    <target>0</target>
+</phrase>
+<phrase>
+    <source>1</source>
+    <target>1</target>
+</phrase>
+<phrase>
+    <source>2</source>
+    <target>2</target>
+</phrase>
+<phrase>
+    <source>3</source>
+    <target>3</target>
+</phrase>
+<phrase>
+    <source>4</source>
+    <target>4</target>
+</phrase>
+<phrase>
+    <source>5</source>
+    <target>5</target>
+</phrase>
+<phrase>
+    <source>6</source>
+    <target>6</target>
+</phrase>
+<phrase>
+    <source>7</source>
+    <target>7</target>
+</phrase>
+<phrase>
+    <source>8</source>
+    <target>8</target>
+</phrase>
+<phrase>
+    <source>9</source>
+    <target>9</target>
+</phrase>
+<phrase>
+    <source>10</source>
+    <target>10</target>
+</phrase>
+<phrase>
+    <source>11</source>
+    <target>11</target>
+</phrase>
+<phrase>
+    <source>12</source>
+    <target>12</target>
+</phrase>
+<phrase>
+    <source>13</source>
+    <target>13</target>
+</phrase>
+<phrase>
+    <source>14</source>
+    <target>14</target>
+</phrase>
+<phrase>
+    <source>15</source>
+    <target>15</target>
+</phrase>
+<phrase>
+    <source>16</source>
+    <target>16</target>
+</phrase>
+<phrase>
+    <source>17</source>
+    <target>17</target>
+</phrase>
+<phrase>
+    <source>18</source>
+    <target>18</target>
+</phrase>
+<phrase>
+    <source>19</source>
+    <target>19</target>
+</phrase>
+<phrase>
+    <source>20</source>
+    <target>20</target>
+</phrase>
+<phrase>
+    <source>21</source>
+    <target>21</target>
+</phrase>
+<phrase>
+    <source>22</source>
+    <target>22</target>
+</phrase>
+<phrase>
+    <source>23</source>
+    <target>23</target>
+</phrase>
+<phrase>
+    <source>24</source>
+    <target>24</target>
+</phrase>
+<phrase>
+    <source>25</source>
+    <target>25</target>
+</phrase>
+<phrase>
+    <source>26</source>
+    <target>26</target>
+</phrase>
+<phrase>
+    <source>27</source>
+    <target>27</target>
+</phrase>
+<phrase>
+    <source>28</source>
+    <target>28</target>
+</phrase>
+<phrase>
+    <source>29</source>
+    <target>29</target>
+</phrase>
+<phrase>
+    <source>30</source>
+    <target>30</target>
+</phrase>
+<phrase>
+    <source>31</source>
+    <target>31</target>
+</phrase>
+<phrase>
+    <source>32</source>
+    <target>32</target>
+</phrase>
+<phrase>
+    <source>33</source>
+    <target>33</target>
+</phrase>
+<phrase>
+    <source>34</source>
+    <target>34</target>
+</phrase>
+<phrase>
+    <source>35</source>
+    <target>35</target>
+</phrase>
+<phrase>
+    <source>36</source>
+    <target>36</target>
+</phrase>
+<phrase>
+    <source>37</source>
+    <target>37</target>
+</phrase>
+<phrase>
+    <source>38</source>
+    <target>38</target>
+</phrase>
+<phrase>
+    <source>39</source>
+    <target>39</target>
+</phrase>
+<phrase>
+    <source>40</source>
+    <target>40</target>
+</phrase>
+<phrase>
+    <source>41</source>
+    <target>41</target>
+</phrase>
+<phrase>
+    <source>42</source>
+    <target>42</target>
+</phrase>
+<phrase>
+    <source>43</source>
+    <target>43</target>
+</phrase>
+<phrase>
+    <source>44</source>
+    <target>44</target>
+</phrase>
+<phrase>
+    <source>45</source>
+    <target>45</target>
+</phrase>
+<phrase>
+    <source>46</source>
+    <target>46</target>
+</phrase>
+<phrase>
+    <source>47</source>
+    <target>47</target>
+</phrase>
+<phrase>
+    <source>48</source>
+    <target>48</target>
+</phrase>
+<phrase>
+    <source>49</source>
+    <target>49</target>
+</phrase>
+<phrase>
+    <source>50</source>
+    <target>50</target>
+</phrase>
+<phrase>
+    <source>51</source>
+    <target>51</target>
+</phrase>
+<phrase>
+    <source>52</source>
+    <target>52</target>
+</phrase>
+<phrase>
+    <source>53</source>
+    <target>53</target>
+</phrase>
+<phrase>
+    <source>54</source>
+    <target>54</target>
+</phrase>
+<phrase>
+    <source>55</source>
+    <target>55</target>
+</phrase>
+<phrase>
+    <source>56</source>
+    <target>56</target>
+</phrase>
+<phrase>
+    <source>57</source>
+    <target>57</target>
+</phrase>
+<phrase>
+    <source>58</source>
+    <target>58</target>
+</phrase>
+<phrase>
+    <source>59</source>
+    <target>59</target>
+</phrase>
+<phrase>
+    <source>60</source>
+    <target>60</target>
+</phrase>
+<phrase>
+    <source>61</source>
+    <target>61</target>
+</phrase>
+<phrase>
+    <source>62</source>
+    <target>62</target>
+</phrase>
+<phrase>
+    <source>63</source>
+    <target>63</target>
+</phrase>
+<phrase>
+    <source>64</source>
+    <target>64</target>
+</phrase>
+<phrase>
+    <source>65</source>
+    <target>65</target>
+</phrase>
+<phrase>
+    <source>66</source>
+    <target>66</target>
+</phrase>
+<phrase>
+    <source>67</source>
+    <target>67</target>
+</phrase>
+<phrase>
+    <source>68</source>
+    <target>68</target>
+</phrase>
+<phrase>
+    <source>69</source>
+    <target>69</target>
+</phrase>
+<phrase>
+    <source>70</source>
+    <target>70</target>
+</phrase>
+<phrase>
+    <source>71</source>
+    <target>71</target>
+</phrase>
+<phrase>
+    <source>72</source>
+    <target>72</target>
+</phrase>
+<phrase>
+    <source>73</source>
+    <target>73</target>
+</phrase>
+<phrase>
+    <source>74</source>
+    <target>74</target>
+</phrase>
+<phrase>
+    <source>75</source>
+    <target>75</target>
+</phrase>
+<phrase>
+    <source>76</source>
+    <target>76</target>
+</phrase>
+<phrase>
+    <source>77</source>
+    <target>77</target>
+</phrase>
+<phrase>
+    <source>78</source>
+    <target>78</target>
+</phrase>
+<phrase>
+    <source>79</source>
+    <target>79</target>
+</phrase>
+<phrase>
+    <source>80</source>
+    <target>80</target>
+</phrase>
+<phrase>
+    <source>81</source>
+    <target>81</target>
+</phrase>
+<phrase>
+    <source>82</source>
+    <target>82</target>
+</phrase>
+<phrase>
+    <source>83</source>
+    <target>83</target>
+</phrase>
+<phrase>
+    <source>84</source>
+    <target>84</target>
+</phrase>
+<phrase>
+    <source>85</source>
+    <target>85</target>
+</phrase>
+<phrase>
+    <source>86</source>
+    <target>86</target>
+</phrase>
+<phrase>
+    <source>87</source>
+    <target>87</target>
+</phrase>
+<phrase>
+    <source>88</source>
+    <target>88</target>
+</phrase>
+<phrase>
+    <source>89</source>
+    <target>89</target>
+</phrase>
+<phrase>
+    <source>90</source>
+    <target>90</target>
+</phrase>
+<phrase>
+    <source>91</source>
+    <target>91</target>
+</phrase>
+<phrase>
+    <source>92</source>
+    <target>92</target>
+</phrase>
+<phrase>
+    <source>93</source>
+    <target>93</target>
+</phrase>
+<phrase>
+    <source>94</source>
+    <target>94</target>
+</phrase>
+<phrase>
+    <source>95</source>
+    <target>95</target>
+</phrase>
+<phrase>
+    <source>96</source>
+    <target>96</target>
+</phrase>
+<phrase>
+    <source>97</source>
+    <target>97</target>
+</phrase>
+<phrase>
+    <source>98</source>
+    <target>98</target>
+</phrase>
+<phrase>
+    <source>99</source>
+    <target>99</target>
+</phrase>
+<phrase>
+    <source>100</source>
+    <target>100</target>
+</phrase>
+<phrase>
+    <source>101</source>
+    <target>101</target>
+</phrase>
+<phrase>
+    <source>102</source>
+    <target>102</target>
+</phrase>
+<phrase>
+    <source>103</source>
+    <target>103</target>
+</phrase>
+<phrase>
+    <source>104</source>
+    <target>104</target>
+</phrase>
+<phrase>
+    <source>105</source>
+    <target>105</target>
+</phrase>
+<phrase>
+    <source>106</source>
+    <target>106</target>
+</phrase>
+<phrase>
+    <source>107</source>
+    <target>107</target>
+</phrase>
+<phrase>
+    <source>108</source>
+    <target>108</target>
+</phrase>
+<phrase>
+    <source>109</source>
+    <target>109</target>
+</phrase>
+<phrase>
+    <source>110</source>
+    <target>110</target>
+</phrase>
+<phrase>
+    <source>111</source>
+    <target>111</target>
+</phrase>
+<phrase>
+    <source>112</source>
+    <target>112</target>
+</phrase>
+<phrase>
+    <source>113</source>
+    <target>113</target>
+</phrase>
+<phrase>
+    <source>114</source>
+    <target>114</target>
+</phrase>
+<phrase>
+    <source>115</source>
+    <target>115</target>
+</phrase>
+<phrase>
+    <source>116</source>
+    <target>116</target>
+</phrase>
+<phrase>
+    <source>117</source>
+    <target>117</target>
+</phrase>
+<phrase>
+    <source>118</source>
+    <target>118</target>
+</phrase>
+<phrase>
+    <source>119</source>
+    <target>119</target>
+</phrase>
+<phrase>
+    <source>120</source>
+    <target>120</target>
+</phrase>
+<phrase>
+    <source>121</source>
+    <target>121</target>
+</phrase>
+<phrase>
+    <source>122</source>
+    <target>122</target>
+</phrase>
+<phrase>
+    <source>123</source>
+    <target>123</target>
+</phrase>
+<phrase>
+    <source>124</source>
+    <target>124</target>
+</phrase>
+<phrase>
+    <source>125</source>
+    <target>125</target>
+</phrase>
+<phrase>
+    <source>126</source>
+    <target>126</target>
+</phrase>
+<phrase>
+    <source>127</source>
+    <target>127</target>
+</phrase>
+<phrase>
+    <source>Key</source>
+    <target>Tangent</target>
+</phrase>
+<phrase>
+    <source>Error loading a file</source>
+    <target>Filladdningsfel</target>
+</phrase>
+<phrase>
+    <source>Error saving a file</source>
+    <target>Filsparandefel</target>
+</phrase>
+<phrase>
+    <source>Error reading XML</source>
+    <target>XML-läsningsfel</target>
+</phrase>
+<phrase>
+    <source>File: %1
+%2</source>
+    <target>Fil: %1
+%2</target>
+</phrase>
+<phrase>
+    <source>SoundFont:</source>
+    <target>Ljudfont:</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Use Internal Reverb</source>
+    <target>Använd internt eko</target>
+</phrase>
+<phrase>
+    <source>Default Apple DLS Sound Set</source>
+    <target>Förvald Apple DLS ljuduppsättning</target>
+</phrase>
+<phrase>
+    <source>Select SoundFont</source>
+    <target>Välj ljudfont</target>
+</phrase>
+<phrase>
+    <source>SoundFont Files (*.sf2 *.dls)</source>
+    <target>SoundFont-filer (*.sf2 *.dls)</target>
+</phrase>
+<phrase>
+    <source>MIDI Setup</source>
+    <target>MIDI-inställningar</target>
+</phrase>
+<phrase>
+    <source>Check this box to enable MIDI input for the program. In Linux and Mac OSX the input port is always enabled and can&apos;t be un-ckecked</source>
+    <target>Sätt en bock i denna ruta för att aktivera MIDI-inmatning i programmet. I Linux och Mac OS X är inmatningsporten alltid aktiverad och kan ej avaktiveras.</target>
+</phrase>
+<phrase>
+    <source>Enable MIDI Input</source>
+    <target>Aktivera MIDI-inmatning</target>
+</phrase>
+<phrase>
+    <source>MIDI Omni Mode</source>
+    <target>Omniläge för MIDI</target>
+</phrase>
+<phrase>
+    <source>MIDI IN Driver</source>
+    <target>MIDI IN-drivrutin</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Input MIDI Connection</source>
+    <target>MIDI-inmatningsenhet</target>
+</phrase>
+<phrase>
+    <source>Use this control to change the connection for the MIDI input port, if it is enabled</source>
+    <target>Använd denna kontroll för att ändra enhet för MIDI-inmatningsporten, om den är aktiverad.</target>
+</phrase>
+<phrase>
+    <source>Check this box to enable the MIDI Thru function: any MIDI event received in the input port will be copied unchanged to the output port</source>
+    <target>Sätt en bock i denna ruta för att aktivera MIDI-genommatning: alla MIDI-signaler som tas emot kommer att kopieras till utmatningsporten.</target>
+</phrase>
+<phrase>
+    <source>Enable MIDI Thru on MIDI Output</source>
+    <target>Aktivera MIDI-genommatning för MIDI-utmatningen.</target>
+</phrase>
+<phrase>
+    <source>MIDI OUT Driver</source>
+    <target>MIDI UT-drivrutin</target>
+</phrase>
+<phrase>
+    <source>Output MIDI Connection</source>
+    <target>MIDI-utmatningsenhet</target>
+</phrase>
+<phrase>
+    <source>Use this control to change the connection for the MIDI output port</source>
+    <target>Använd denna kontroll för att ändra enheten för MIDI-utmatningsporten.</target>
+</phrase>
+<phrase>
+    <source>Show Advanced Connections</source>
+    <target>Visa avancerade kopplingar</target>
+</phrase>
+<phrase>
+    <source>Network Driver Settings</source>
+    <target>Drivrutinsinställningar för nätverk</target>
+</phrase>
+<phrase>
+    <source>Use IPv6</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Network Interface:</source>
+    <target>Nätverksgränssnitt:</target>
+</phrase>
+<phrase>
+    <source>Address</source>
+    <target>Adress</target>
+</phrase>
+<phrase>
+    <source>Any</source>
+    <target>Någon</target>
+</phrase>
+<phrase>
+    <source>C</source>
+    <target>C</target>
+</phrase>
+<phrase>
+    <source>C♯</source>
+    <target>Ciss</target>
+</phrase>
+<phrase>
+    <source>D</source>
+    <target>D</target>
+</phrase>
+<phrase>
+    <source>D♯</source>
+    <target>Diss</target>
+</phrase>
+<phrase>
+    <source>E</source>
+    <target>E</target>
+</phrase>
+<phrase>
+    <source>F</source>
+    <target>F</target>
+</phrase>
+<phrase>
+    <source>F♯</source>
+    <target>Fiss</target>
+</phrase>
+<phrase>
+    <source>G</source>
+    <target>G</target>
+</phrase>
+<phrase>
+    <source>G♯</source>
+    <target>Giss</target>
+</phrase>
+<phrase>
+    <source>A</source>
+    <target>A</target>
+</phrase>
+<phrase>
+    <source>A♯</source>
+    <target>Aiss</target>
+</phrase>
+<phrase>
+    <source>B</source>
+    <target>H</target>
+</phrase>
+<phrase>
+    <source>D♭</source>
+    <target>Dess</target>
+</phrase>
+<phrase>
+    <source>E♭</source>
+    <target>Ess</target>
+</phrase>
+<phrase>
+    <source>G♭</source>
+    <target>Gess</target>
+</phrase>
+<phrase>
+    <source>A♭</source>
+    <target>Ass</target>
+</phrase>
+<phrase>
+    <source>B♭</source>
+    <target>B</target>
+</phrase>
+<phrase>
+    <source>Open instruments definition</source>
+    <target>Öppna instrumentdefinitionerna</target>
+</phrase>
+<phrase>
+    <source>Instrument definitions (*.ins)</source>
+    <target>Instrumentdefinitioner (*.ins)</target>
+</phrase>
+<phrase>
+    <source>Open keyboard map definition</source>
+    <target>Öppna tangentbindningslista</target>
+</phrase>
+<phrase>
+    <source>Keyboard map (*.xml)</source>
+    <target>Teckenbindningslista (*.xml)</target>
+</phrase>
+<phrase>
+    <source>Preferences</source>
+    <target>Inställningar</target>
+</phrase>
+<phrase>
+    <source>Number of keys</source>
+    <target>Antal tangenter</target>
+</phrase>
+<phrase>
+    <source>The number of octaves, from 1 to 10. Each octave has 12 keys: 7 white and 5 black. The MIDI standard has 128 notes, but not all instruments can play all of them.</source>
+    <target>Antalet oktaver, från 1 till 10. Varje oktav har tolv tangenter: 7 vita och 5 svarta. MIDI-standarden har 128 toner, men inte alla instrument kan spela allihop.</target>
+</phrase>
+<phrase>
+    <source>Starting Key</source>
+    <target>Starttangent</target>
+</phrase>
+<phrase>
+    <source>Note highlight color</source>
+    <target>Tonmarkeringsfärg</target>
+</phrase>
+<phrase>
+    <source>Press this button to change the highligh color used to paint the keys that are being activated.</source>
+    <target>Klicka på denna knapp för att ändra markeringsfärg på nedtryckta tangenter.</target>
+</phrase>
+<phrase>
+    <source>Colors...</source>
+    <target>Färger ...</target>
+</phrase>
+<phrase>
+    <source>Instruments file</source>
+    <target>Instrumentfil</target>
+</phrase>
+<phrase>
+    <source>The instruments definition file currently loaded</source>
+    <target>Nuvarande instrumentdefinitionsfil</target>
+</phrase>
+<phrase>
+    <source>default</source>
+    <target>standard</target>
+</phrase>
+<phrase>
+    <source>Press this button to load an instruments definition file from disk.</source>
+    <target>Klicka på denna knapp för att ladda en instrumentdefinitionsfil.</target>
+</phrase>
+<phrase>
+    <source>Load...</source>
+    <target>Ladda...</target>
+</phrase>
+<phrase>
+    <source>Instrument</source>
+    <target>Instrument</target>
+</phrase>
+<phrase>
+    <source>Change the instrument definition being currently used. Each instruments definition file may hold several instruments on it.</source>
+    <target>Ändrar nuvarande instrumentdefinitionsfil. Varje sådan fil kan innehålla flera instrument.</target>
+</phrase>
+<phrase>
+    <source>Keyboard Map</source>
+    <target>Tangentbindningar</target>
+</phrase>
+<phrase>
+    <source>Raw Keyboard Map</source>
+    <target>Tangentbindningar (rådata)</target>
+</phrase>
+<phrase>
+    <source>Drums Channel</source>
+    <target>Trumsetskanal</target>
+</phrase>
+<phrase>
+    <source>None</source>
+    <target>Ingen</target>
+</phrase>
+<phrase>
+    <source>1</source>
+    <target>1</target>
+</phrase>
+<phrase>
+    <source>2</source>
+    <target>2</target>
+</phrase>
+<phrase>
+    <source>3</source>
+    <target>3</target>
+</phrase>
+<phrase>
+    <source>4</source>
+    <target>4</target>
+</phrase>
+<phrase>
+    <source>5</source>
+    <target>5</target>
+</phrase>
+<phrase>
+    <source>6</source>
+    <target>6</target>
+</phrase>
+<phrase>
+    <source>7</source>
+    <target>7</target>
+</phrase>
+<phrase>
+    <source>8</source>
+    <target>8</target>
+</phrase>
+<phrase>
+    <source>9</source>
+    <target>9</target>
+</phrase>
+<phrase>
+    <source>10</source>
+    <target>10</target>
+</phrase>
+<phrase>
+    <source>11</source>
+    <target>11</target>
+</phrase>
+<phrase>
+    <source>12</source>
+    <target>12</target>
+</phrase>
+<phrase>
+    <source>13</source>
+    <target>13</target>
+</phrase>
+<phrase>
+    <source>14</source>
+    <target>14</target>
+</phrase>
+<phrase>
+    <source>15</source>
+    <target>15</target>
+</phrase>
+<phrase>
+    <source>MIDI channel state consistency</source>
+    <target>MIDI-kanalstatus</target>
+</phrase>
+<phrase>
+    <source>Translate MIDI velocity to key pressed color tint</source>
+    <target>Översätt MIDI-anslag till markeringsfärg för tangent</target>
+</phrase>
+<phrase>
+    <source>Check this box to keep the keyboard window always visible, on top of other windows.</source>
+    <target>Markera denna bockruta för att alltid hålla klaviaturfönstret öppet ovanpå andra fönster.</target>
+</phrase>
+<phrase>
+    <source>Always On Top</source>
+    <target>Alltid ovanpå</target>
+</phrase>
+<phrase>
+    <source>Enable Computer Keyboard Input</source>
+    <target>Aktivera tangentbordsinmatning</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Check this box to use low level PC keyboard events. This system has several advantages:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;It is possible to use &quot;dead keys&quot; (accent marks, diacritics)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mapping definitions are independent of the language (but hardware and OS specific)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Faster processing&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Markera denna bockruta för att använda lågnivåtangentkommandon. Detta har flera fördelar.:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Det är då möjligt att använda &quot;döda tangenter&quot; såsom accenter och andra diakritiska tecken.&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Tangentbindningar är oberoende av språk men inte av maskinvara eller operativsystem.&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Kortare processtid&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>Raw Computer Keyboard</source>
+    <target>Använd tangentrådata</target>
+</phrase>
+<phrase>
+    <source>Enable Mouse Input</source>
+    <target>Aktivera musinmatning</target>
+</phrase>
+<phrase>
+    <source>Enable Touch Screen Input</source>
+    <target>Aktivera pekskärmsinmatning</target>
+</phrase>
+<phrase>
+    <source>Cakewalk Instrument Definition File</source>
+    <target>Instrumentdefinitionsfil för Cakewalk</target>
+</phrase>
+<phrase>
+    <source>File</source>
+    <target>Fil</target>
+</phrase>
+<phrase>
+    <source>Date</source>
+    <target>Datum</target>
+</phrase>
+<phrase>
+    <source>Import SoundFont instruments</source>
+    <target>Importera SoundFont-instrument</target>
+</phrase>
+<phrase>
+    <source>Input File</source>
+    <target>Inmatningsfil</target>
+</phrase>
+<phrase>
+    <source>This text box displays the path and name of the selected SoundFont to be  imported</source>
+    <target>Detta fält visar sökväg och namn för den valda ljudfonten som ska importeras</target>
+</phrase>
+<phrase>
+    <source>Press this button to select a SoundFont file to be imported</source>
+    <target>Klicka på denna knapp för att välja SoundFont-fil att importera</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Name</source>
+    <target>Namn</target>
+</phrase>
+<phrase>
+    <source>Version</source>
+    <target>Version</target>
+</phrase>
+<phrase>
+    <source>Copyright</source>
+    <target>Kopieringsrättighet</target>
+</phrase>
+<phrase>
+    <source>Output File</source>
+    <target>Utmatningsfil</target>
+</phrase>
+<phrase>
+    <source>This text box displays the name of the output file in .INS format that will be created</source>
+    <target>Detta fält visar namnet på utmatningsfilen i INS-format som kommer att skapas</target>
+</phrase>
+<phrase>
+    <source>Press this button to select a path and file name for the output file</source>
+    <target>Klicka på denna knapp för att välja sökväg och namn för utmatningsfilen</target>
+</phrase>
+<phrase>
+    <source>Input SoundFont</source>
+    <target>Inmatningsfil (SoundFont)</target>
+</phrase>
+<phrase>
+    <source>SoundFonts (*.sf2 *.sbk *.dls)</source>
+    <target>SoundFont-filer (*.sf2 *.sbk *.dls)</target>
+</phrase>
+<phrase>
+    <source>Output</source>
+    <target>Utmatning</target>
+</phrase>
+<phrase>
+    <source>Instrument definitions (*.ins)</source>
+    <target>Instrumentdefinitioner (*.ins)</target>
+</phrase>
+<phrase>
+    <source>Keyboard Shortcuts</source>
+    <target>Tangentkommandon</target>
+</phrase>
+<phrase>
+    <source>Action</source>
+    <target>Aktion</target>
+</phrase>
+<phrase>
+    <source>Description</source>
+    <target>Beskrivning</target>
+</phrase>
+<phrase>
+    <source>Shortcut</source>
+    <target>Tangentbordskommando</target>
+</phrase>
+<phrase>
+    <source>Warning</source>
+    <target>Varning</target>
+</phrase>
+<phrase>
+    <source>Keyboard shortcuts have been changed.
+
+Do you want to apply the changes?</source>
+    <target>Tangentkommandona har ändrats.
+
+Vill du verkställa ändringarna?</target>
+</phrase>
+<phrase>
+    <source>Sonivox EAS Synth</source>
+    <target>Sonivox EAS Synt</target>
+</phrase>
+<phrase>
+    <source>Chorus</source>
+    <target>Korus</target>
+</phrase>
+<phrase>
+    <source>Reverb</source>
+    <target>Eko</target>
+</phrase>
+<phrase>
+    <source>Buffer Time:</source>
+    <target>Buffringstid:</target>
+</phrase>
+<phrase>
+    <source> ms</source>
+    <target> ms</target>
+</phrase>
+<phrase>
+    <source>Large Hall</source>
+    <target>Stor sal</target>
+</phrase>
+<phrase>
+    <source>Hall</source>
+    <target>Sal</target>
+</phrase>
+<phrase>
+    <source>Chamber</source>
+    <target>Kammare</target>
+</phrase>
+<phrase>
+    <source>Room</source>
+    <target>Rum</target>
+</phrase>
+<phrase>
+    <source>None</source>
+    <target>Ingen</target>
+</phrase>
+<phrase>
+    <source>Preset 1</source>
+    <target>Förinställd 1</target>
+</phrase>
+<phrase>
+    <source>Preset 2</source>
+    <target>Förinställd 2</target>
+</phrase>
+<phrase>
+    <source>Preset 3</source>
+    <target>Förinställd 3</target>
+</phrase>
+<phrase>
+    <source>Preset 4</source>
+    <target>Förinställd 4</target>
+</phrase>
+<phrase>
+    <source>&amp;File</source>
+    <target>&amp;Ljudfil</target>
+</phrase>
+<phrase>
+    <source>&amp;Edit</source>
+    <target>&amp;Bearbeta</target>
+</phrase>
+<phrase>
+    <source>&amp;Help</source>
+    <target>&amp;Hjälp</target>
+</phrase>
+<phrase>
+    <source>&amp;Language</source>
+    <target>&amp;Språk</target>
+</phrase>
+<phrase>
+    <source>&amp;View</source>
+    <target>&amp;Visa</target>
+</phrase>
+<phrase>
+    <source>&amp;Tools</source>
+    <target>Verk&amp;tyg</target>
+</phrase>
+<phrase>
+    <source>Notes</source>
+    <target>Toner</target>
+</phrase>
+<phrase>
+    <source>Controllers</source>
+    <target>Kontroller</target>
+</phrase>
+<phrase>
+    <source>Programs</source>
+    <target>Program</target>
+</phrase>
+<phrase>
+    <source>Note Input</source>
+    <target>Toninmatning</target>
+</phrase>
+<phrase>
+    <source>&amp;Notes</source>
+    <target>&amp;Toner</target>
+</phrase>
+<phrase>
+    <source>&amp;Controllers</source>
+    <target>&amp;Kontroller</target>
+</phrase>
+<phrase>
+    <source>Pitch &amp;Bender</source>
+    <target>Ton&amp;bändare</target>
+</phrase>
+<phrase>
+    <source>&amp;Programs</source>
+    <target>&amp;Program</target>
+</phrase>
+<phrase>
+    <source>&amp;Extra Controls</source>
+    <target>&amp;Extrakontroller</target>
+</phrase>
+<phrase>
+    <source>&amp;Quit</source>
+    <target>&amp;Avsluta</target>
+</phrase>
+<phrase>
+    <source>Exit the program</source>
+    <target>Avsluta programmet</target>
+</phrase>
+<phrase>
+    <source>&amp;Preferences</source>
+    <target>&amp;Inställningar</target>
+</phrase>
+<phrase>
+    <source>Edit the program settings</source>
+    <target>Ändra programinställningar</target>
+</phrase>
+<phrase>
+    <source>MIDI &amp;Connections</source>
+    <target>MIDI-&amp;anslutningar</target>
+</phrase>
+<phrase>
+    <source>Edit the MIDI connections</source>
+    <target>Ändra MIDI-anslutningar</target>
+</phrase>
+<phrase>
+    <source>&amp;About</source>
+    <target>&amp;Om</target>
+</phrase>
+<phrase>
+    <source>Show the About box</source>
+    <target>Visa Om-fönstret</target>
+</phrase>
+<phrase>
+    <source>About &amp;Qt</source>
+    <target>Om &amp;Qt</target>
+</phrase>
+<phrase>
+    <source>Show the Qt about box</source>
+    <target>Visar information om QT</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Notes toolbar</source>
+    <target>Visa eller göm verktygslisten Toner</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Controller toolbar</source>
+    <target>Visa eller göm verktygslisten Kontroller</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Pitch Bender toolbar</source>
+    <target>Visa eller göm verktygslisten Tonbändning</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Programs toolbar</source>
+    <target>Visa eller göm verktygslisten Program</target>
+</phrase>
+<phrase>
+    <source>&amp;Status Bar</source>
+    <target>&amp;Statuslist</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Status Bar</source>
+    <target>Visa eller göm statuslisten</target>
+</phrase>
+<phrase>
+    <source>Panic</source>
+    <target>Panik</target>
+</phrase>
+<phrase>
+    <source>Stops all active notes</source>
+    <target>Stoppa alla aktiva toner</target>
+</phrase>
+<phrase>
+    <source>Reset All</source>
+    <target>Återställ alla</target>
+</phrase>
+<phrase>
+    <source>Resets all the controllers</source>
+    <target>Återställ alla kontroller</target>
+</phrase>
+<phrase>
+    <source>Reset</source>
+    <target>Återställ</target>
+</phrase>
+<phrase>
+    <source>Resets the Bender value</source>
+    <target>Återställ tonbändvärdet</target>
+</phrase>
+<phrase>
+    <source>&amp;Keyboard Map</source>
+    <target>&amp;Tangentbindningar</target>
+</phrase>
+<phrase>
+    <source>Edit the current keyboard layout</source>
+    <target>Ändra nuvarande tangentbindningar</target>
+</phrase>
+<phrase>
+    <source>&amp;Contents</source>
+    <target>&amp;Innehåll</target>
+</phrase>
+<phrase>
+    <source>Open the index of the help document</source>
+    <target>Öppna innehållsförteckningen i hjälpdokumentet</target>
+</phrase>
+<phrase>
+    <source>VMPK &amp;Web site</source>
+    <target>VMPK:s &amp;hemsida</target>
+</phrase>
+<phrase>
+    <source>Open the VMPK web site address using a web browser</source>
+    <target>Öppna VMPK:s hemsida med hjälp av en webbläsare</target>
+</phrase>
+<phrase>
+    <source>&amp;Import SoundFont...</source>
+    <target>&amp;Importera ljudbank ...</target>
+</phrase>
+<phrase>
+    <source>Import SoundFont</source>
+    <target>Importera ljudbank</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Extra Controls toolbar</source>
+    <target>Visa eller göm verktygslisten Extrakontroller</target>
+</phrase>
+<phrase>
+    <source>Edit</source>
+    <target>Bearbeta</target>
+</phrase>
+<phrase>
+    <source>Open the Extra Controls editor</source>
+    <target>Öppna editorn Extrakontroller</target>
+</phrase>
+<phrase>
+    <source>Open the Banks/Programs editor</source>
+    <target>Öppna editorn för ljudbank och ljudprogram</target>
+</phrase>
+<phrase>
+    <source>&amp;Extra Controllers</source>
+    <target>&amp;Extrakontroller</target>
+</phrase>
+<phrase>
+    <source>N&amp;ote Names</source>
+    <target>T&amp;onnamn</target>
+</phrase>
+<phrase>
+    <source>Show or hide the note names</source>
+    <target>Visa eller göm tonnamn</target>
+</phrase>
+<phrase>
+    <source>&amp;Shortcuts</source>
+    <target>&amp;Tangentkommandon</target>
+</phrase>
+<phrase>
+    <source>Open the Shortcuts editor</source>
+    <target>Öppna editorn för tangentkommandon</target>
+</phrase>
+<phrase>
+    <source>Octave Up</source>
+    <target>En oktav upp</target>
+</phrase>
+<phrase>
+    <source>Play one octave higher</source>
+    <target>Spela en oktav högre</target>
+</phrase>
+<phrase>
+    <source>Octave Down</source>
+    <target>En oktav ned</target>
+</phrase>
+<phrase>
+    <source>Play one octave lower</source>
+    <target>Spela en oktav lägre</target>
+</phrase>
+<phrase>
+    <source>Transpose Up</source>
+    <target>Transponera uppåt</target>
+</phrase>
+<phrase>
+    <source>Transpose one semitone higher</source>
+    <target>Transponera ett halvtonsteg uppåt</target>
+</phrase>
+<phrase>
+    <source>Transpose Down</source>
+    <target>Transponera nedåt</target>
+</phrase>
+<phrase>
+    <source>Transpose one semitone lower</source>
+    <target>Transponera ett halvtonsteg nedåt</target>
+</phrase>
+<phrase>
+    <source>Next  Channel</source>
+    <target>Nästa kanal</target>
+</phrase>
+<phrase>
+    <source>Play and listen next channel</source>
+    <target>Spela och lyssna på nästa kanal</target>
+</phrase>
+<phrase>
+    <source>Previous Channel</source>
+    <target>Föregående kanal</target>
+</phrase>
+<phrase>
+    <source>Play and listen previous channel</source>
+    <target>Spela och lyssna på föregående kanal</target>
+</phrase>
+<phrase>
+    <source>Next Controller</source>
+    <target>Nästa kontroll</target>
+</phrase>
+<phrase>
+    <source>Select the next controller</source>
+    <target>Välj nästa kontroll</target>
+</phrase>
+<phrase>
+    <source>Previous Controller</source>
+    <target>Föregående kontroll</target>
+</phrase>
+<phrase>
+    <source>Select the previous controller</source>
+    <target>Välj föregående kontroll</target>
+</phrase>
+<phrase>
+    <source>Controller Up</source>
+    <target>Kontroll upp</target>
+</phrase>
+<phrase>
+    <source>Increment the controller value</source>
+    <target>Öka kontrollvärdet</target>
+</phrase>
+<phrase>
+    <source>Alt++</source>
+    <target>Alt++</target>
+</phrase>
+<phrase>
+    <source>Controller Down</source>
+    <target>Kontroll ned</target>
+</phrase>
+<phrase>
+    <source>Decrement the controller value</source>
+    <target>Minska kontrollvärdet</target>
+</phrase>
+<phrase>
+    <source>Alt+-</source>
+    <target>Alt+-</target>
+</phrase>
+<phrase>
+    <source>Next Bank</source>
+    <target>Nästa ljudbank</target>
+</phrase>
+<phrase>
+    <source>Select the next instrument bank</source>
+    <target>Välj nästa instrumentbank</target>
+</phrase>
+<phrase>
+    <source>Previous Bank</source>
+    <target>Föregående ljudbank</target>
+</phrase>
+<phrase>
+    <source>Select the previous instrument bank</source>
+    <target>Välj föregående instrumentbank</target>
+</phrase>
+<phrase>
+    <source>Next Program</source>
+    <target>Nästa ljudprogram</target>
+</phrase>
+<phrase>
+    <source>Select the next instrument program</source>
+    <target>Välj nästa instrumentprogram</target>
+</phrase>
+<phrase>
+    <source>Previous Program</source>
+    <target>Föregående ljudprogram</target>
+</phrase>
+<phrase>
+    <source>Select the previous instrument program</source>
+    <target>Välj föregående instrumentprogram</target>
+</phrase>
+<phrase>
+    <source>Velocity Up</source>
+    <target>Anslag upp</target>
+</phrase>
+<phrase>
+    <source>Increment note velocity</source>
+    <target>Öka anslag</target>
+</phrase>
+<phrase>
+    <source>Velocity Down</source>
+    <target>Anslag ned</target>
+</phrase>
+<phrase>
+    <source>Decrement note velocity</source>
+    <target>Minska anslagsstyrka</target>
+</phrase>
+<phrase>
+    <source>About &amp;Translation</source>
+    <target>Om &amp;översättningen</target>
+</phrase>
+<phrase>
+    <source>Show information about the program language translation</source>
+    <target>Visar information om översättningen av användargränssnittet</target>
+</phrase>
+<phrase>
+    <source>Computer Keyboard</source>
+    <target>Tangentbord</target>
+</phrase>
+<phrase>
+    <source>Enable computer keyboard triggered note input</source>
+    <target>Spela med tangentbord</target>
+</phrase>
+<phrase>
+    <source>Mouse</source>
+    <target>Mus</target>
+</phrase>
+<phrase>
+    <source>Enable mouse triggered note input</source>
+    <target>Spela med pekdon</target>
+</phrase>
+<phrase>
+    <source>Touch Screen</source>
+    <target>Pekskärm</target>
+</phrase>
+<phrase>
+    <source>Enable screen touch triggered note input</source>
+    <target>Spela med pekskärm</target>
+</phrase>
+<phrase>
+    <source>Color Palette</source>
+    <target>Färgpalett</target>
+</phrase>
+<phrase>
+    <source>Open the color palette editor</source>
+    <target>Öppna färgpaletten</target>
+</phrase>
+<phrase>
+    <source>Color Scale</source>
+    <target>Färgskala</target>
+</phrase>
+<phrase>
+    <source>Show or hide the colorized keys</source>
+    <target>Visa eller göm färgade tangenter</target>
+</phrase>
+<phrase>
+    <source>Window frame</source>
+    <target>Fönsterram</target>
+</phrase>
+<phrase>
+    <source>Show or hide window decorations</source>
+    <target>Visa eller dölj fönsterdekorationer</target>
+</phrase>
+<phrase>
+    <source>Alt+F</source>
+    <target>Alt+F</target>
+</phrase>
+<phrase>
+    <source>Error</source>
+    <target>Fel</target>
+</phrase>
+<phrase>
+    <source>No help file found</source>
+    <target>Ingen hjälpfil funnen</target>
+</phrase>
+<phrase>
+    <source>Language Changed</source>
+    <target>Språket är ändrat</target>
+</phrase>
+<phrase>
+    <source>The language for this application is going to change to %1. Do you want to continue?</source>
+    <target>Användargränssnittets språk kommer att ändras till %1. Vill du fortsätta?</target>
+</phrase>
+<phrase>
+    <source>&lt;p&gt;VMPK is developed and translated thanks to the volunteer work of many people from around the world. If you want to join the team or have any question, please visit the forums at &lt;a href=&apos;http://sourceforge.net/projects/vmpk/forums&apos;&gt;SourceForge&lt;/a&gt;&lt;/p&gt;</source>
+    <target>VMPK utvecklas och översätts tack vare frivilliginsatser av många människor över hela världen. Om du vill ansluta till denna grupp eller har några frågor, var vänlig besök &lt;a href=&apos;http://sourceforge.net/projects/vmpk/forums&apos;&gt;SourceForge&lt;/a&gt;&lt;/p&gt;</target>
+</phrase>
+<phrase>
+    <source>Translation</source>
+    <target>Översättning</target>
+</phrase>
+<phrase>
+    <source>&lt;p&gt;Translation by TRANSLATOR_NAME_AND_EMAIL&lt;/p&gt;%1</source>
+    <target>&lt;p&gt;Översatt av Magnus Johansson (johanssongreppet@yahoo.se) &lt;/p&gt;%1</target>
+</phrase>
+<phrase>
+    <source>Translation Information</source>
+    <target>Om översättningarna</target>
+</phrase>
+<phrase>
+    <source>Czech</source>
+    <target>Tjeckiska</target>
+</phrase>
+<phrase>
+    <source>German</source>
+    <target>Tyska</target>
+</phrase>
+<phrase>
+    <source>English</source>
+    <target>Engelska</target>
+</phrase>
+<phrase>
+    <source>Spanish</source>
+    <target>Spanska</target>
+</phrase>
+<phrase>
+    <source>French</source>
+    <target>Franska</target>
+</phrase>
+<phrase>
+    <source>Galician</source>
+    <target>Galiciska</target>
+</phrase>
+<phrase>
+    <source>Dutch</source>
+    <target>Holländska</target>
+</phrase>
+<phrase>
+    <source>Russian</source>
+    <target>Ryska</target>
+</phrase>
+<phrase>
+    <source>Serbian</source>
+    <target>Serbiska</target>
+</phrase>
+<phrase>
+    <source>Swedish</source>
+    <target>Svenska</target>
+</phrase>
+<phrase>
+    <source>Chinese</source>
+    <target>Kinesiska</target>
+</phrase>
+<phrase>
+    <source>Chan:</source>
+    <target>Kanal:</target>
+</phrase>
+<phrase>
+    <source>Channel:</source>
+    <target>Kanal:</target>
+</phrase>
+<phrase>
+    <source>Oct:</source>
+    <target>Oktav:</target>
+</phrase>
+<phrase>
+    <source>Base Octave:</source>
+    <target>Oktav för Z-M:</target>
+</phrase>
+<phrase>
+    <source>Trans:</source>
+    <target>Transposition:</target>
+</phrase>
+<phrase>
+    <source>Transpose:</source>
+    <target>Transponera:</target>
+</phrase>
+<phrase>
+    <source>Vel:</source>
+    <target>Hastighet:</target>
+</phrase>
+<phrase>
+    <source>Velocity:</source>
+    <target>Anslag:</target>
+</phrase>
+<phrase>
+    <source>Bank:</source>
+    <target>Bank:</target>
+</phrase>
+<phrase>
+    <source>Bender:</source>
+    <target>Tonbändning:</target>
+</phrase>
+<phrase>
+    <source>Control:</source>
+    <target>Kontroll:</target>
+</phrase>
+<phrase>
+    <source>Program:</source>
+    <target>Program:</target>
+</phrase>
+<phrase>
+    <source>Value:</source>
+    <target>Värde:</target>
+</phrase>
+</QPH>

@@ -1,0 +1,2353 @@
+<!DOCTYPE QPH>
+<QPH language="zh_CN">
+<phrase>
+    <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot;font-family:&apos;Sans Serif&apos;; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Version: %1&lt;br/&gt;Build date: %2&lt;br/&gt;Build time: %3&lt;br/&gt;Compiler: %4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot;font-family:&apos;Sans Serif&apos;; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;版本: %1&lt;br/&gt;创建日期: %2&lt;br/&gt;创建时间: %3&lt;br/&gt;编译器: %4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot;font-family:&apos;Sans Serif&apos;; font-size:12pt; font-style:normal;&quot;&gt;&lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Version: %1&lt;br/&gt;Build date: %2&lt;br/&gt;Build time: %3&lt;br/&gt;Compiler: %4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>About</source>
+    <target>关于</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Copyright © 2008-2020, &lt;/span&gt;&lt;a href=&quot;mailto:plcl@users.sf.net?subject=VMPK&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Pedro Lopez-Cabanillas &amp;lt;plcl@users.sf.net&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; color:#000000;&quot;&gt; and others&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License  along with this program. If not, see &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;Copyright © 2008-2020, &lt;/span&gt;&lt;a href=&quot;mailto:plcl@users.sf.net?subject=VMPK&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; text-decoration: underline; color:#0057ae;&quot;&gt;Pedro Lopez-Cabanillas &amp;lt;plcl@users.sf.net&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License  along with this program. If not, see &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;The following copyright notice is also applicable:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;This program contains &lt;/span&gt;&lt;a href=&quot;http://www.music.mcgill.ca/~gary/rtmidi/&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; text-decoration: underline; color:#0057ae;&quot;&gt;RtMIDI&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;: realtime MIDI i/o C++ classes&lt;br /&gt;Copyright © 2003-2020 Gary P. Scavone&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;版权所有 © 2008-2010, &lt;/span&gt;&lt;a href=&quot;mailto:plcl@users.sf.net?subject=VMPK&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; text-decoration: underline; color:#0057ae;&quot;&gt;Pedro Lopez-Cabanillas &amp;lt;plcl@users.sf.net&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License  along with this program. If not, see &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;The following copyright notice is also applicable:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;This program contains &lt;/span&gt;&lt;a href=&quot;http://www.music.mcgill.ca/~gary/rtmidi/&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; text-decoration: underline; color:#0057ae;&quot;&gt;RtMIDI&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;: realtime MIDI i/o C++ classes&lt;br /&gt;Copyright © 2003-2020 Gary P. Scavone&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; {3C?} {4.0/?} {3.?} {40/?} {1&quot;?} {10p?} {400;?} {12p?} {12p?} {0p?} {0p?} {0;?} {0p?} {2008-2011,?} {9p?} {0057a?} {12p?} {12p?} {0p?} {0p?} {0;?} {0p?} {3 ?} {12p?} {12p?} {0p?} {0p?} {0;?} {0p?} {0057a?} {12p?} {12p?} {0p?} {0p?} {0;?} {0p?} {12p?} {12p?} {0p?} {0p?} {0;?} {0p?} {0057a?} {2003-2010 ?}</target>
+</phrase>
+<phrase>
+    <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Virtual MIDI Piano Keyboard&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Virtual MIDI Piano Keyboard&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Copyright © 2008, Pedro Lopez-Cabanillas &amp;lt;plcl@users.sf.net&amp;gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License  along with this program. If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;The following copyright notice is also applicable:&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;This program contains RtMIDI: realtime MIDI i/o C++ classes&lt;br /&gt;Copyright © 2003-2020 Gary P. Scavone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Copyright © 2008, Pedro Lopez-Cabanillas &amp;lt;plcl@users.sf.net&amp;gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License  along with this program. If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;The following copyright notice is also applicable:&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;This program contains RtMIDI: realtime MIDI i/o C++ classes&lt;br /&gt;Copyright © 2003-2020 Gary P. Scavone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Virtual MIDI Piano Keyboard&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Virtual MIDI Piano Keyboard&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://vmpk.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://vmpk.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://vmpk.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://vmpk.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Copyright © 2008-2020, &lt;/span&gt;&lt;a href=&quot;mailto:plcl@users.sf.net?subject=VMPK&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Pedro Lopez-Cabanillas &amp;lt;plcl@users.sf.net&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License  along with this program. If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The following copyright notice is also applicable:&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This program contains &lt;a href=&quot;http://www.music.mcgill.ca/~gary/rtmidi/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;RtMIDI&lt;/span&gt;&lt;/a&gt;: realtime MIDI i/o C++ classes&lt;br /&gt;Copyright © 2003-2020 Gary P. Scavone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;版权所有 © 2008-2009, &lt;/span&gt;&lt;a href=&quot;mailto:plcl@users.sf.net?subject=VMPK&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Pedro Lopez-Cabanillas &amp;lt;plcl@users.sf.net&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;本软件是自由软件: 您可以自由的发布或依照自由软件基金会的GNU 通用公众许可协议（版本3或之后的版本）修改它。&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;希望本程序的发布对您有用，但作者对软件的使用不作任何保证, 也没有鉴于一个特殊的目的的可买卖性或适应性. 详见 GNU 通用软件许可 .您应该随本软件收到一份 GNU 通用软件许可, 如果没有, 见 &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;下列的版权信息同样适用:&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;本程序包含 &lt;a href=&quot;http://www.music.mcgill.ca/~gary/rtmidi/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;RtMIDI&lt;/span&gt;&lt;/a&gt;: 实时 MIDI 输入/输出 C++ 类库&lt;br /&gt;版权所有 © 2003-2007 Gary P. Scavone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>Color Palette</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Colors</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>N</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>#</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>1</source>
+    <target>1</target>
+</phrase>
+<phrase>
+    <source>2</source>
+    <target>2</target>
+</phrase>
+<phrase>
+    <source>3</source>
+    <target>3</target>
+</phrase>
+<phrase>
+    <source>4</source>
+    <target>4</target>
+</phrase>
+<phrase>
+    <source>5</source>
+    <target>5</target>
+</phrase>
+<phrase>
+    <source>6</source>
+    <target>6</target>
+</phrase>
+<phrase>
+    <source>7</source>
+    <target>7</target>
+</phrase>
+<phrase>
+    <source>8</source>
+    <target>8</target>
+</phrase>
+<phrase>
+    <source>9</source>
+    <target>9</target>
+</phrase>
+<phrase>
+    <source>10</source>
+    <target>10</target>
+</phrase>
+<phrase>
+    <source>11</source>
+    <target>11</target>
+</phrase>
+<phrase>
+    <source>12</source>
+    <target>12</target>
+</phrase>
+<phrase>
+    <source>13</source>
+    <target>13</target>
+</phrase>
+<phrase>
+    <source>14</source>
+    <target>14</target>
+</phrase>
+<phrase>
+    <source>15</source>
+    <target>15</target>
+</phrase>
+<phrase>
+    <source>16</source>
+    <target>16</target>
+</phrase>
+<phrase>
+    <source>C</source>
+    <target>C</target>
+</phrase>
+<phrase>
+    <source>C#</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>D</source>
+    <target>D</target>
+</phrase>
+<phrase>
+    <source>D#</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>E</source>
+    <target>E</target>
+</phrase>
+<phrase>
+    <source>F</source>
+    <target>F</target>
+</phrase>
+<phrase>
+    <source>F#</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>G</source>
+    <target>G</target>
+</phrase>
+<phrase>
+    <source>G#</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>A</source>
+    <target>A</target>
+</phrase>
+<phrase>
+    <source>A#</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>B</source>
+    <target>B</target>
+</phrase>
+<phrase>
+    <source>Single color</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>A single color to highlight all note events</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Two colors</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>One color to highlight natural notes and a different one for accidentals</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>MIDI Channels</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>A different color for each MIDI channel. Enable Omni mode in the MIDI IN connection</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Chromatic scale</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>One color for each note in the chromatic scale</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>New Control</source>
+    <target>新控件</target>
+</phrase>
+<phrase>
+    <source>System Exclusive File</source>
+    <target>系统独有信息 文件</target>
+</phrase>
+<phrase>
+    <source>System Exclusive (*.syx)</source>
+    <target>系统独有信息 文件 (*.syx)</target>
+</phrase>
+<phrase>
+    <source>Extra Controls Editor</source>
+    <target>附加控制器</target>
+</phrase>
+<phrase>
+    <source>Label:</source>
+    <target>名称:</target>
+</phrase>
+<phrase>
+    <source>MIDI Controller:</source>
+    <target>MIDI 控制器:</target>
+</phrase>
+<phrase>
+    <source>Add</source>
+    <target>添加</target>
+</phrase>
+<phrase>
+    <source>Remove</source>
+    <target>移除</target>
+</phrase>
+<phrase>
+    <source>Up</source>
+    <target>向上</target>
+</phrase>
+<phrase>
+    <source>Down</source>
+    <target>向下</target>
+</phrase>
+<phrase>
+    <source>Switch</source>
+    <target>开关</target>
+</phrase>
+<phrase>
+    <source>Knob</source>
+    <target>旋钮</target>
+</phrase>
+<phrase>
+    <source>Spin box</source>
+    <target>数字显示框</target>
+</phrase>
+<phrase>
+    <source>Slider</source>
+    <target>滑动条</target>
+</phrase>
+<phrase>
+    <source>Button Ctl</source>
+    <target>按钮 控制器</target>
+</phrase>
+<phrase>
+    <source>Button SysEx</source>
+    <target>按钮 SysEx(系统独占消息)</target>
+</phrase>
+<phrase>
+    <source>Default ON</source>
+    <target>默认 打开</target>
+</phrase>
+<phrase>
+    <source>value ON:</source>
+    <target>打开对应值:</target>
+</phrase>
+<phrase>
+    <source>value OFF:</source>
+    <target>关闭对应值:</target>
+</phrase>
+<phrase>
+    <source>Key:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Min. value:</source>
+    <target>最小值:</target>
+</phrase>
+<phrase>
+    <source>Max. value:</source>
+    <target>最大值:</target>
+</phrase>
+<phrase>
+    <source>Default value:</source>
+    <target>默认值:</target>
+</phrase>
+<phrase>
+    <source>Display size:</source>
+    <target>控件长度:</target>
+</phrase>
+<phrase>
+    <source>value:</source>
+    <target>值:</target>
+</phrase>
+<phrase>
+    <source>File name:</source>
+    <target>文件名:</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>FluidSynth Driver Settings</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Sample Rate:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Period Size:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source># of Periods:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Audio Driver:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Polyphony:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Sound Font:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Gain:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Chorus</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Reverb</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Select SoundFont</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>SoundFont Files (*.sf2)</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Open...</source>
+    <target>打开...</target>
+</phrase>
+<phrase>
+    <source>Save As...</source>
+    <target>另存为...</target>
+</phrase>
+<phrase>
+    <source>Raw Key Map Editor</source>
+    <target>原始键盘映射编辑器</target>
+</phrase>
+<phrase>
+    <source>Key Map Editor</source>
+    <target>键盘映射编辑器</target>
+</phrase>
+<phrase>
+    <source>Key Code</source>
+    <target>键码</target>
+</phrase>
+<phrase>
+    <source>Key</source>
+    <target>键</target>
+</phrase>
+<phrase>
+    <source>Open keyboard map definition</source>
+    <target>打开键盘映射文件</target>
+</phrase>
+<phrase>
+    <source>Keyboard map (*.xml)</source>
+    <target>键盘映射文件 (*.xml)</target>
+</phrase>
+<phrase>
+    <source>Save keyboard map definition</source>
+    <target>保存键盘映射文件</target>
+</phrase>
+<phrase>
+    <source>Key Map Editor</source>
+    <target>键盘映射编辑器</target>
+</phrase>
+<phrase>
+    <source>0</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>1</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>2</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>3</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>4</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>5</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>6</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>7</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>8</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>9</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>10</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>11</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>12</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>13</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>14</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>15</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>16</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>17</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>18</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>19</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>20</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>21</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>22</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>23</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>24</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>25</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>26</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>27</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>28</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>29</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>30</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>31</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>32</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>33</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>34</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>35</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>36</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>37</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>38</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>39</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>40</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>41</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>42</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>43</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>44</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>45</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>46</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>47</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>48</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>49</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>50</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>51</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>52</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>53</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>54</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>55</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>56</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>57</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>58</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>59</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>60</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>61</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>62</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>63</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>64</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>65</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>66</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>67</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>68</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>69</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>70</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>71</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>72</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>73</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>74</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>75</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>76</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>77</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>78</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>79</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>80</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>81</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>82</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>83</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>84</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>85</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>86</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>87</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>88</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>89</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>90</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>91</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>92</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>93</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>94</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>95</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>96</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>97</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>98</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>99</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>100</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>101</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>102</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>103</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>104</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>105</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>106</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>107</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>108</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>109</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>110</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>111</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>112</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>113</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>114</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>115</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>116</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>117</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>118</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>119</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>120</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>121</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>122</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>123</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>124</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>125</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>126</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>127</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Key</source>
+    <target>键</target>
+</phrase>
+<phrase>
+    <source>This box displays the name of the current mapping file</source>
+    <target>此方框显示当前映射文件的文件名</target>
+</phrase>
+<phrase>
+    <source>This is the list of the PC keyboard mappings. Each row has a number corresponding to the MIDI note number, and you can type an alphanumeric Key name that will be translated to the given note</source>
+    <target>这是 PC 键盘的键值映射列表. 每一行包含一个对应 MIDI 音符的数字, 您可以输入键的文字名称, 程序将把它转换为对应的 MIDI 音符</target>
+</phrase>
+<phrase>
+    <source>File: %1
+%2</source>
+    <target>文件: %1\n%2</target>
+</phrase>
+<phrase>
+    <source>Error loading a file</source>
+    <target>加载文件出错</target>
+</phrase>
+<phrase>
+    <source>Error saving a file</source>
+    <target>保存文件出错</target>
+</phrase>
+<phrase>
+    <source>Error reading XML</source>
+    <target>读取XML文本出错</target>
+</phrase>
+<phrase>
+    <source>SoundFont:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Use Internal Reverb</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Default Apple DLS Sound Set</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Select SoundFont</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>SoundFont Files (*.sf2 *.dls)</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>MIDI Setup</source>
+    <target>MIDI 设置</target>
+</phrase>
+<phrase>
+    <source>Enable MIDI input</source>
+    <target>允许 MIDI 输入</target>
+</phrase>
+<phrase>
+    <source>Input MIDI Connection</source>
+    <target>MIDI 输入</target>
+</phrase>
+<phrase>
+    <source>MIDI OUT Driver</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Output MIDI Connection</source>
+    <target>MIDI 输出</target>
+</phrase>
+<phrase>
+    <source>Enable MIDI Thru on MIDI Output</source>
+    <target>允许 MIDI Thru 转发到 MIDI 输出</target>
+</phrase>
+<phrase>
+    <source>Check this box to enable MIDI input for the program. In Linux and Mac OSX the input port is always enabled and can&apos;t be un-ckecked</source>
+    <target>选中此复选框以允许程序接收 MIDI 输入.在 Linux 和 Mac OSX 系统下输入端口总是允许状态，不能被禁用</target>
+</phrase>
+<phrase>
+    <source>Enable MIDI Input</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>MIDI Omni Mode</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>MIDI IN Driver</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Check this box to enable the MIDI Thru function: any MIDI event received in the input port will be copied unchanged to the output port</source>
+    <target>选中此复选框以激活 MIDI Thru 功能: 从 MIDI 输入接收到的所有数据都会被转发到 MIDI 输出端口</target>
+</phrase>
+<phrase>
+    <source>Show Advanced Connections</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Use this control to change the connection for the MIDI input port, if it is enabled</source>
+    <target>使用此控件切换 MIDI 输入端口</target>
+</phrase>
+<phrase>
+    <source>Use this control to change the connection for the MIDI output port</source>
+    <target>使用此控件切换 MIDI 输出端口</target>
+</phrase>
+<phrase>
+    <source>Network Driver Settings</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Use IPv6</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Network Interface:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Address</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Any</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>C</source>
+    <target>C</target>
+</phrase>
+<phrase>
+    <source>C♯</source>
+    <target>C♯</target>
+</phrase>
+<phrase>
+    <source>D</source>
+    <target>D</target>
+</phrase>
+<phrase>
+    <source>D♯</source>
+    <target>D♯</target>
+</phrase>
+<phrase>
+    <source>E</source>
+    <target>E</target>
+</phrase>
+<phrase>
+    <source>F</source>
+    <target>F</target>
+</phrase>
+<phrase>
+    <source>F♯</source>
+    <target>F♯</target>
+</phrase>
+<phrase>
+    <source>G</source>
+    <target>G</target>
+</phrase>
+<phrase>
+    <source>G♯</source>
+    <target>G♯</target>
+</phrase>
+<phrase>
+    <source>A</source>
+    <target>A</target>
+</phrase>
+<phrase>
+    <source>A♯</source>
+    <target>A♯</target>
+</phrase>
+<phrase>
+    <source>B</source>
+    <target>B</target>
+</phrase>
+<phrase>
+    <source>D♭</source>
+    <target>D♭</target>
+</phrase>
+<phrase>
+    <source>E♭</source>
+    <target>E♭</target>
+</phrase>
+<phrase>
+    <source>G♭</source>
+    <target>G♭</target>
+</phrase>
+<phrase>
+    <source>A♭</source>
+    <target>A♭</target>
+</phrase>
+<phrase>
+    <source>B♭</source>
+    <target>B♭</target>
+</phrase>
+<phrase>
+    <source>Open instruments definition</source>
+    <target>打开乐器定义文件</target>
+</phrase>
+<phrase>
+    <source>Instrument definitions (*.ins)</source>
+    <target>乐器定义文件 (*.ins)</target>
+</phrase>
+<phrase>
+    <source>Open keyboard map definition</source>
+    <target>打开键盘映射文件</target>
+</phrase>
+<phrase>
+    <source>Keyboard map (*.xml)</source>
+    <target>键盘映射文件 (*.xml)</target>
+</phrase>
+<phrase>
+    <source>Preferences</source>
+    <target>首选项</target>
+</phrase>
+<phrase>
+    <source>Input Channel</source>
+    <target>Canal de Entrada</target>
+</phrase>
+<phrase>
+    <source>Output Channel</source>
+    <target>Canal de Salida</target>
+</phrase>
+<phrase>
+    <source>Velocity</source>
+    <target>Velocidad</target>
+</phrase>
+<phrase>
+    <source>Base octave</source>
+    <target>Octava base</target>
+</phrase>
+<phrase>
+    <source>Number of octaves</source>
+    <target>八度个数</target>
+</phrase>
+<phrase>
+    <source>Key pressed color</source>
+    <target>键按下时的颜色</target>
+</phrase>
+<phrase>
+    <source>color...</source>
+    <target>颜色...</target>
+</phrase>
+<phrase>
+    <source>Instruments file</source>
+    <target>乐器定义文件</target>
+</phrase>
+<phrase>
+    <source>default</source>
+    <target>默认</target>
+</phrase>
+<phrase>
+    <source>load...</source>
+    <target>加载...</target>
+</phrase>
+<phrase>
+    <source>Instrument</source>
+    <target>乐器</target>
+</phrase>
+<phrase>
+    <source>Grab keyboard</source>
+    <target>Capturar teclado</target>
+</phrase>
+<phrase>
+    <source>Styled Knobs</source>
+    <target>Aplicar estilos</target>
+</phrase>
+<phrase>
+    <source>The number of octaves, from 1 to 10. Each octave has 12 keys: 7 white and 5 black. The MIDI standard has 128 notes, but not all instruments can play all of them.</source>
+    <target>八度个数取值范围从 1 到 10. 每个八度包含 12 个键: 7 个白键和 5 个黑键. MIDI 标准包含 128 个音符, 但不是所有乐器都有128 个音.</target>
+</phrase>
+<phrase>
+    <source>This box displays the highligh color and code used to paint the keys that are being activated.</source>
+    <target>此方框显示用于绘制激活状态琴键的颜色和颜色代码.</target>
+</phrase>
+<phrase>
+    <source>Press this button to change the highligh color used to paint the keys that are being activated.</source>
+    <target>按此按钮以改变用于绘制激活状态琴键的颜色.</target>
+</phrase>
+<phrase>
+    <source>Colors...</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>The instruments definition file currently loaded</source>
+    <target>当前加载的乐器定义文件</target>
+</phrase>
+<phrase>
+    <source>Press this button to load an instruments definition file from disk.</source>
+    <target>按此按钮从磁盘中加载一个乐器定义文件.</target>
+</phrase>
+<phrase>
+    <source>MIDI channel state consistency</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Enable Touch Screen Input</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Enable Mouse Input</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Number of keys</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Starting Key</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Enable Computer Keyboard Input</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Change the instrument definition being currently used. Each instruments definition file may hold several instruments on it.</source>
+    <target>改变当前使用的乐器定义文件, 每个乐器定义文件内保存了一些乐器信息。</target>
+</phrase>
+<phrase>
+    <source>Keyboard Map</source>
+    <target>键盘映射</target>
+</phrase>
+<phrase>
+    <source>Load...</source>
+    <target>加载...</target>
+</phrase>
+<phrase>
+    <source>Raw Keyboard Map</source>
+    <target>原始键盘映射</target>
+</phrase>
+<phrase>
+    <source>Change the widget (knobs, switches) style, either using the custom look or reverting to the style selected in qtconfig.</source>
+    <target>改变小控件 (旋钮, 开关) 样式, 使用自定义的外观, 或恢复 Qt 库中设置的样式.</target>
+</phrase>
+<phrase>
+    <source>Styled Widgets</source>
+    <target>样式化界面控件</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Check this box to use low level PC keyboard events. This system has several advantages:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;It is possible to use &quot;dead keys&quot; (accent marks, diacritics)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mapping definitions are independent of the language (but hardware and OS specific)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Faster processing&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;选中此项以使用底层 PC 键盘事件. 此功能如下优势:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;可以使用&quot;无效键&quot;(dead keys), 如重音符号, 读音符号等.&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;映射定义独立于语言，但和硬件以及操作系统相关.&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;更快速的处理&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>Drums Channel</source>
+    <target>鼓通道</target>
+</phrase>
+<phrase>
+    <source>Note highlight color</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>None</source>
+    <target>无</target>
+</phrase>
+<phrase>
+    <source>1</source>
+    <target>1</target>
+</phrase>
+<phrase>
+    <source>2</source>
+    <target>2</target>
+</phrase>
+<phrase>
+    <source>3</source>
+    <target>3</target>
+</phrase>
+<phrase>
+    <source>4</source>
+    <target>4</target>
+</phrase>
+<phrase>
+    <source>5</source>
+    <target>5</target>
+</phrase>
+<phrase>
+    <source>6</source>
+    <target>6</target>
+</phrase>
+<phrase>
+    <source>7</source>
+    <target>7</target>
+</phrase>
+<phrase>
+    <source>8</source>
+    <target>8</target>
+</phrase>
+<phrase>
+    <source>9</source>
+    <target>9</target>
+</phrase>
+<phrase>
+    <source>10</source>
+    <target>10</target>
+</phrase>
+<phrase>
+    <source>11</source>
+    <target>11</target>
+</phrase>
+<phrase>
+    <source>12</source>
+    <target>12</target>
+</phrase>
+<phrase>
+    <source>13</source>
+    <target>13</target>
+</phrase>
+<phrase>
+    <source>14</source>
+    <target>14</target>
+</phrase>
+<phrase>
+    <source>15</source>
+    <target>15</target>
+</phrase>
+<phrase>
+    <source>Translate MIDI velocity to key pressed color tint</source>
+    <target>用颜色深浅表示Midi音符力度</target>
+</phrase>
+<phrase>
+    <source>Change the knob buttons style, either using the custom look or revert to the style selected in qtconfig.</source>
+    <target>Cambie el estilo de los controles, o bién usando el aspecto personalizado o volviendo al estilo seleccionado en qtconfig</target>
+</phrase>
+<phrase>
+    <source>Check this box to keep the keyboard window always visible, on top of other windows.</source>
+    <target>选中此框让键盘窗口总是可见, 并出现在其它窗口之上.</target>
+</phrase>
+<phrase>
+    <source>Always On Top</source>
+    <target>总在最前面</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Check this box to grab the PC keyboard, even when the keyboard control has not the focus. &lt;span style=&quot; font-weight:600;&quot;&gt;Note for Linux users:&lt;/span&gt; this option works well in standard KDE desktops, but fails in window managers like metacity and compiz. It is also known that using this option breaks drop down menus on GTK applications.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;选中此框以抓取 PC 键盘消息, 即使键盘控件失去焦点.&lt;span style=&quot; font-weight:600;&quot;&gt;Linux 用户注意:&lt;/span&gt; 此选项在标准 KDE 桌面环境下工作正常, 但在窗口管理器 metacity 和 compiz 不能工作. 使用此选项也会切断 GTK 程序的下拉菜单.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>Grab Computer Keyboard</source>
+    <target>抓取计算机键盘</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Check this box to use low level PC keyboard events. This system has several advantages:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;It is possible to use &quot;dead keys&quot; (accent marks, diacritics)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mapping definitions are independent of the language (but hardware and OS specific)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Faster process&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Marque esta casilla para selección el teclado de bajo nivel. Esto tiene varias ventajas:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Es posible usar &quot;teclas muertas&quot; (acentos, diacríticos)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Las definiciones de mapas son independientes del lenguage (pero dependientes del hardware/sistema operativo)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Proceso más rápido&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>Raw Computer Keyboard</source>
+    <target>原始计算机键盘</target>
+</phrase>
+<phrase>
+    <source>Check this box to display the note names over the piano keys.</source>
+    <target>Marque esta casilla para mostrar los nombres de las notas sobre las teclas del piano</target>
+</phrase>
+<phrase>
+    <source>Show Note Names</source>
+    <target>Mostrar nombres de notas</target>
+</phrase>
+<phrase>
+    <source>Cakewalk Instrument Definition File</source>
+    <target>Cakewalk 乐器定义文件</target>
+</phrase>
+<phrase>
+    <source>File</source>
+    <target>文件</target>
+</phrase>
+<phrase>
+    <source>Date</source>
+    <target>日期</target>
+</phrase>
+<phrase>
+    <source>Input SoundFont</source>
+    <target>输入音色库 SoundFont</target>
+</phrase>
+<phrase>
+    <source>SoundFonts (*.sf2 *.sbk *.dls)</source>
+    <target>音色库文件 SoundFonts (*.sf2 *.sbk *.dls)</target>
+</phrase>
+<phrase>
+    <source>Output</source>
+    <target>输出</target>
+</phrase>
+<phrase>
+    <source>Instrument File (*.ins)</source>
+    <target>Definición de instrumentos (*.ins)</target>
+</phrase>
+<phrase>
+    <source>Import Sound Font instruments</source>
+    <target>Importar instrumentos de SoundFonts</target>
+</phrase>
+<phrase>
+    <source>Input File</source>
+    <target>输入文件</target>
+</phrase>
+<phrase>
+    <source>This text box displays the path and name of the selected Sound Font to be  imported</source>
+    <target>Esta cada muestra la ruta y el nombre del archivo SoundFont seleccionado que va a ser importado</target>
+</phrase>
+<phrase>
+    <source>Press this button to select a Sound Font file to be imported</source>
+    <target>Pulse este botón para seleccionar un archivo SoundFont para ser importado</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Name</source>
+    <target>名称</target>
+</phrase>
+<phrase>
+    <source>Version</source>
+    <target>版本</target>
+</phrase>
+<phrase>
+    <source>Copyright</source>
+    <target>版权</target>
+</phrase>
+<phrase>
+    <source>Output File</source>
+    <target>输出文件</target>
+</phrase>
+<phrase>
+    <source>This text box displays the name of the output file in .INS format that will be created</source>
+    <target>此文本框显示将要创建的扩展名为 .INS 的输入文件名</target>
+</phrase>
+<phrase>
+    <source>Press this button to select a path and file name for the output file</source>
+    <target>按此按钮为输出文件选择路径和文件名</target>
+</phrase>
+<phrase>
+    <source>Instrument definitions (*.ins)</source>
+    <target>乐器定义文件 (*.ins)</target>
+</phrase>
+<phrase>
+    <source>Import SoundFont instruments</source>
+    <target>导入音色库 SoundFont 中的乐器</target>
+</phrase>
+<phrase>
+    <source>This text box displays the path and name of the selected SoundFont to be  imported</source>
+    <target>此文本框显示要导入的音色库 SoundFont 文件的路径和文件名</target>
+</phrase>
+<phrase>
+    <source>Press this button to select a SoundFont file to be imported</source>
+    <target>按此按钮选择要导入的音色库 SoundFont 文件</target>
+</phrase>
+<phrase>
+    <source>Keyboard Shortcuts</source>
+    <target>键盘快捷键</target>
+</phrase>
+<phrase>
+    <source>Action</source>
+    <target>命令</target>
+</phrase>
+<phrase>
+    <source>Description</source>
+    <target>描述</target>
+</phrase>
+<phrase>
+    <source>Shortcut</source>
+    <target>快捷键</target>
+</phrase>
+<phrase>
+    <source>Warning</source>
+    <target>警告</target>
+</phrase>
+<phrase>
+    <source>Keyboard shortcuts have been changed.
+
+Do you want to apply the changes?</source>
+    <target>键盘快捷键已经更改.
+
+希望应用这些改变吗?</target>
+</phrase>
+<phrase>
+    <source>Sonivox EAS Synth</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Chorus</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Reverb</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Buffer Time:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source> ms</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Large Hall</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Hall</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Chamber</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Room</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>None</source>
+    <target>无</target>
+</phrase>
+<phrase>
+    <source>Preset 1</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Preset 2</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Preset 3</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Preset 4</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Error</source>
+    <target>错误</target>
+</phrase>
+<phrase>
+    <source>No MIDI output ports available. Aborting</source>
+    <target>没有可用的 MIDI 输出端口. 终止</target>
+</phrase>
+<phrase>
+    <source>Error. Aborting</source>
+    <target>错误. 终止</target>
+</phrase>
+<phrase>
+    <source>Chan:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Channel:</source>
+    <target>通道: </target>
+</phrase>
+<phrase>
+    <source>Oct:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Base Octave:</source>
+    <target>基准八度: </target>
+</phrase>
+<phrase>
+    <source>Trans:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Transpose:</source>
+    <target>移调: </target>
+</phrase>
+<phrase>
+    <source>Vel:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Velocity:</source>
+    <target>力度: </target>
+</phrase>
+<phrase>
+    <source>Control:</source>
+    <target>控制器: </target>
+</phrase>
+<phrase>
+    <source>Value:</source>
+    <target>值: </target>
+</phrase>
+<phrase>
+    <source>Bender:</source>
+    <target>弯音控制器: </target>
+</phrase>
+<phrase>
+    <source>Bank:</source>
+    <target>音色库号: </target>
+</phrase>
+<phrase>
+    <source>Program:</source>
+    <target>音色: </target>
+</phrase>
+<phrase>
+    <source>The language for this application is going to change to %1. Do you want to continue?</source>
+    <target>应用程序的界面语言将要改变为 %1. 继续吗?</target>
+</phrase>
+<phrase>
+    <source>&lt;p&gt;VMPK is developed and translated thanks to the volunteer work of many people from around the world. If you want to join the team or have any question, please visit the forums at &lt;a href=&apos;http://sourceforge.net/projects/vmpk/forums&apos;&gt;SourceForge&lt;/a&gt;&lt;/p&gt;</source>
+    <target>&lt;p&gt;VMPK 由来自全球的志愿者开发并翻译. 如果您想加入我们或有任何疑问, 请访问 &lt;a href=&apos;http://sourceforge.net/projects/vmpk/forums&apos;&gt;SourceForge&lt;/a&gt;的论坛&lt;/p&gt;</target>
+</phrase>
+<phrase>
+    <source>Translation Information</source>
+    <target>翻译信息</target>
+</phrase>
+<phrase>
+    <source>Serbian</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Swedish</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Translation</source>
+    <target>翻译</target>
+</phrase>
+<phrase>
+    <source>&lt;p&gt;Translation by TRANSLATOR_NAME_AND_EMAIL&lt;/p&gt;%1</source>
+    <target>&lt;p&gt;译者 Rui Fan (&lt;a href=&apos;mailto:vanferry@gmail.com&apos;&gt;vanferry@gmail.com&lt;/a&gt;)&lt;/p&gt;%1</target>
+</phrase>
+<phrase>
+    <source>Czech</source>
+    <target>Czech</target>
+</phrase>
+<phrase>
+    <source>German</source>
+    <target>German</target>
+</phrase>
+<phrase>
+    <source>English</source>
+    <target>English</target>
+</phrase>
+<phrase>
+    <source>Spanish</source>
+    <target>Spanish</target>
+</phrase>
+<phrase>
+    <source>French</source>
+    <target>French</target>
+</phrase>
+<phrase>
+    <source>Galician</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Dutch</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Russian</source>
+    <target>Russian</target>
+</phrase>
+<phrase>
+    <source>Turkish</source>
+    <target>Turkish</target>
+</phrase>
+<phrase>
+    <source>Chinese</source>
+    <target>简体中文</target>
+</phrase>
+<phrase>
+    <source>Language Changed</source>
+    <target>语言已变更</target>
+</phrase>
+<phrase>
+    <source> Channel: </source>
+    <target> Canal: </target>
+</phrase>
+<phrase>
+    <source> Base Octave: </source>
+    <target> Octava base: </target>
+</phrase>
+<phrase>
+    <source> Transpose: </source>
+    <target> Transposición: </target>
+</phrase>
+<phrase>
+    <source> Velocity: </source>
+    <target> Velocidad: </target>
+</phrase>
+<phrase>
+    <source> Control: </source>
+    <target> Control: </target>
+</phrase>
+<phrase>
+    <source> Value: </source>
+    <target> Valor: </target>
+</phrase>
+<phrase>
+    <source> Bender: </source>
+    <target> Inflexión: </target>
+</phrase>
+<phrase>
+    <source> Bank: </source>
+    <target> Banco: </target>
+</phrase>
+<phrase>
+    <source> Program: </source>
+    <target> Programa: </target>
+</phrase>
+<phrase>
+    <source>Open keyboard map definition</source>
+    <target>Abrir definición de mapa de teclado</target>
+</phrase>
+<phrase>
+    <source>Keyboard map (*.xml)</source>
+    <target>Mapa de teclado (*.xml)</target>
+</phrase>
+<phrase>
+    <source>Save keyboard map definition</source>
+    <target>Guardar definición de mapa de teclado</target>
+</phrase>
+<phrase>
+    <source>Virtual Piano Keyboard</source>
+    <target>Teclado de Piano Virtual</target>
+</phrase>
+<phrase>
+    <source>&amp;File</source>
+    <target>(&amp;F)文件</target>
+</phrase>
+<phrase>
+    <source>&amp;Edit</source>
+    <target>(&amp;E)编辑</target>
+</phrase>
+<phrase>
+    <source>Keyboard map</source>
+    <target>Mapa de teclado</target>
+</phrase>
+<phrase>
+    <source>&amp;Help</source>
+    <target>(&amp;H)帮助</target>
+</phrase>
+<phrase>
+    <source>&amp;Language</source>
+    <target>(&amp;L)语言</target>
+</phrase>
+<phrase>
+    <source>&amp;View</source>
+    <target>(&amp;V)查看</target>
+</phrase>
+<phrase>
+    <source>&amp;Tools</source>
+    <target>(&amp;T)工具</target>
+</phrase>
+<phrase>
+    <source>Notes</source>
+    <target>音符</target>
+</phrase>
+<phrase>
+    <source>Controllers</source>
+    <target>控制器</target>
+</phrase>
+<phrase>
+    <source>Programs</source>
+    <target>音色</target>
+</phrase>
+<phrase>
+    <source>Note Input</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>&amp;Notes</source>
+    <target>(&amp;N)音符</target>
+</phrase>
+<phrase>
+    <source>&amp;Controllers</source>
+    <target>(&amp;C)控制器</target>
+</phrase>
+<phrase>
+    <source>Pitch &amp;Bender</source>
+    <target>弯音控制器</target>
+</phrase>
+<phrase>
+    <source>&amp;Programs</source>
+    <target>(&amp;P)音色</target>
+</phrase>
+<phrase>
+    <source>&amp;Extra Controls</source>
+    <target>(&amp;E)附加控制器</target>
+</phrase>
+<phrase>
+    <source>&amp;Quit</source>
+    <target>(&amp;Q)退出</target>
+</phrase>
+<phrase>
+    <source>Exit the program</source>
+    <target>退出程序</target>
+</phrase>
+<phrase>
+    <source>&amp;Preferences</source>
+    <target>(&amp;P)首选项</target>
+</phrase>
+<phrase>
+    <source>Edit the program settings</source>
+    <target>编辑程序选项</target>
+</phrase>
+<phrase>
+    <source>MIDI &amp;Connections</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Alt++</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Alt+-</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Computer Keyboard</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Enable computer keyboard triggered note input</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Mouse</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Enable mouse triggered note input</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Touch Screen</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Enable screen touch triggered note input</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Color Palette</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Open the color palette editor</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Color Scale</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Show or hide the colorized keys</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Window frame</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Show or hide window decorations</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Alt+F</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>&amp;Connections</source>
+    <target>(&amp;C)连接</target>
+</phrase>
+<phrase>
+    <source>Edit the MIDI connections</source>
+    <target>编辑 MIDI 连接</target>
+</phrase>
+<phrase>
+    <source>&amp;About</source>
+    <target>(&amp;A)关于</target>
+</phrase>
+<phrase>
+    <source>Show the About box</source>
+    <target>显示关于对话框</target>
+</phrase>
+<phrase>
+    <source>About Q&amp;t</source>
+    <target>关于 Q&amp;t</target>
+</phrase>
+<phrase>
+    <source>About &amp;Qt</source>
+    <target>关于 Q&amp;t</target>
+</phrase>
+<phrase>
+    <source>Show the Qt about box</source>
+    <target>显示关于 Qt 对话框</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Notes toolbar</source>
+    <target>显示或隐藏音符工具栏</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Controller toolbar</source>
+    <target>显示或隐藏控制器工具栏</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Pitch Bender toolbar</source>
+    <target>显示或隐藏弯音工具栏</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Programs toolbar</source>
+    <target>显示或隐藏音符工具栏</target>
+</phrase>
+<phrase>
+    <source>&amp;Status Bar</source>
+    <target>(&amp;S)状态栏</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Status Bar</source>
+    <target>显示或隐藏状态栏</target>
+</phrase>
+<phrase>
+    <source>Panic</source>
+    <target>Panic</target>
+</phrase>
+<phrase>
+    <source>Stops all active notes</source>
+    <target>停止所有发声音符</target>
+</phrase>
+<phrase>
+    <source>Esc</source>
+    <target>Esc</target>
+</phrase>
+<phrase>
+    <source>Reset All</source>
+    <target>重置所有</target>
+</phrase>
+<phrase>
+    <source>Resets all the controllers</source>
+    <target>重置所有控制器</target>
+</phrase>
+<phrase>
+    <source>Reset</source>
+    <target>重置</target>
+</phrase>
+<phrase>
+    <source>Resets the Bender value</source>
+    <target>重置弯音控制器</target>
+</phrase>
+<phrase>
+    <source>F1</source>
+    <target>F1</target>
+</phrase>
+<phrase>
+    <source>Import SoundFont</source>
+    <target>导入 SoundFont</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Extra Controls toolbar</source>
+    <target>显示或隐藏特别控制器工具条</target>
+</phrase>
+<phrase>
+    <source>Edit</source>
+    <target>编辑</target>
+</phrase>
+<phrase>
+    <source>Open the Extra Controls editor</source>
+    <target>打开附加控制器编辑器</target>
+</phrase>
+<phrase>
+    <source>Open the Banks/Programs editor</source>
+    <target>打开 音色库(Bank)/音色 编辑器</target>
+</phrase>
+<phrase>
+    <source>&amp;Extra Controllers</source>
+    <target>(&amp;E)附加控制器</target>
+</phrase>
+<phrase>
+    <source>N&amp;ote Names</source>
+    <target>(&amp;o)音符名称</target>
+</phrase>
+<phrase>
+    <source>Show or hide the note names</source>
+    <target>显示或隐藏音符名称</target>
+</phrase>
+<phrase>
+    <source>&amp;Shortcuts</source>
+    <target>(&amp;S)快捷键</target>
+</phrase>
+<phrase>
+    <source>Open the Shortcuts editor</source>
+    <target>打开快捷键编辑器</target>
+</phrase>
+<phrase>
+    <source>Octave Up</source>
+    <target>八度 向上</target>
+</phrase>
+<phrase>
+    <source>Play one octave higher</source>
+    <target>高一个八度弹奏</target>
+</phrase>
+<phrase>
+    <source>Right</source>
+    <target>Right</target>
+</phrase>
+<phrase>
+    <source>Octave Down</source>
+    <target>八度 向下</target>
+</phrase>
+<phrase>
+    <source>Play one octave lower</source>
+    <target>低一个八度弹奏</target>
+</phrase>
+<phrase>
+    <source>Left</source>
+    <target>Left</target>
+</phrase>
+<phrase>
+    <source>Transpose Up</source>
+    <target>移调 向上</target>
+</phrase>
+<phrase>
+    <source>Transpose one semitone higher</source>
+    <target>向上移调一个半音</target>
+</phrase>
+<phrase>
+    <source>Ctrl+Right</source>
+    <target>Ctrl+Right</target>
+</phrase>
+<phrase>
+    <source>Transpose Down</source>
+    <target>移调 向下</target>
+</phrase>
+<phrase>
+    <source>Transpose one semitone lower</source>
+    <target>向下移调一个半音</target>
+</phrase>
+<phrase>
+    <source>Ctrl+Left</source>
+    <target>Ctrl+Left</target>
+</phrase>
+<phrase>
+    <source>Next  Channel</source>
+    <target>下一个通道</target>
+</phrase>
+<phrase>
+    <source>Play and listen next channel</source>
+    <target>播放并监听下一个通道</target>
+</phrase>
+<phrase>
+    <source>Previous Channel</source>
+    <target>前一个通道</target>
+</phrase>
+<phrase>
+    <source>Play and listen previous channel</source>
+    <target>播放并监听前一个通道</target>
+</phrase>
+<phrase>
+    <source>Home</source>
+    <target>Home</target>
+</phrase>
+<phrase>
+    <source>About &amp;Translation</source>
+    <target>关于翻译</target>
+</phrase>
+<phrase>
+    <source>Show information about the program language translation</source>
+    <target>显示软件的翻译信息</target>
+</phrase>
+<phrase>
+    <source>Up</source>
+    <target>向上</target>
+</phrase>
+<phrase>
+    <source>Down</source>
+    <target>向下</target>
+</phrase>
+<phrase>
+    <source>Next Controller</source>
+    <target>下一个控制器</target>
+</phrase>
+<phrase>
+    <source>Select the next controller</source>
+    <target>选中下一个控制器</target>
+</phrase>
+<phrase>
+    <source>Ctrl++</source>
+    <target>Ctrl++</target>
+</phrase>
+<phrase>
+    <source>Previous Controller</source>
+    <target>前一个控制器</target>
+</phrase>
+<phrase>
+    <source>Select the previous controller</source>
+    <target>选中前一个控制器</target>
+</phrase>
+<phrase>
+    <source>Ctrl+-</source>
+    <target>Ctrl+-</target>
+</phrase>
+<phrase>
+    <source>Controller Up</source>
+    <target>控制器向上</target>
+</phrase>
+<phrase>
+    <source>Increment the controller value</source>
+    <target>增加控制器的值</target>
+</phrase>
+<phrase>
+    <source>+</source>
+    <target>+</target>
+</phrase>
+<phrase>
+    <source>Controller Down</source>
+    <target>控制器向下</target>
+</phrase>
+<phrase>
+    <source>Decrement the controller value</source>
+    <target>减少控制器的值</target>
+</phrase>
+<phrase>
+    <source>-</source>
+    <target>-</target>
+</phrase>
+<phrase>
+    <source>Next Bank</source>
+    <target>下一个库号</target>
+</phrase>
+<phrase>
+    <source>Select the next instrument bank</source>
+    <target>选中下一个乐器库号(Bank)</target>
+</phrase>
+<phrase>
+    <source>Ctrl+PgUp</source>
+    <target>Ctrl+PgUp</target>
+</phrase>
+<phrase>
+    <source>Previous Bank</source>
+    <target>前一个库号</target>
+</phrase>
+<phrase>
+    <source>Select the previous instrument bank</source>
+    <target>选中前一个乐器库号</target>
+</phrase>
+<phrase>
+    <source>Ctrl+PgDown</source>
+    <target>Ctrl+PgDown</target>
+</phrase>
+<phrase>
+    <source>Next Program</source>
+    <target>下一个音色</target>
+</phrase>
+<phrase>
+    <source>Select the next instrument program</source>
+    <target>选中下一个乐器音色</target>
+</phrase>
+<phrase>
+    <source>PgUp</source>
+    <target>PgUp</target>
+</phrase>
+<phrase>
+    <source>Previous Program</source>
+    <target>前一个音色</target>
+</phrase>
+<phrase>
+    <source>Select the previous instrument program</source>
+    <target>选中前一个乐器音色</target>
+</phrase>
+<phrase>
+    <source>PgDown</source>
+    <target>PgDown</target>
+</phrase>
+<phrase>
+    <source>Velocity Up</source>
+    <target>力度向上</target>
+</phrase>
+<phrase>
+    <source>Increment note velocity</source>
+    <target>增加音符力度</target>
+</phrase>
+<phrase>
+    <source>End</source>
+    <target>End</target>
+</phrase>
+<phrase>
+    <source>Velocity Down</source>
+    <target>力度向下</target>
+</phrase>
+<phrase>
+    <source>Decrement note velocity</source>
+    <target>减少音符力度</target>
+</phrase>
+<phrase>
+    <source>Load...</source>
+    <target>Abrir...</target>
+</phrase>
+<phrase>
+    <source>Load another keyboard layout</source>
+    <target>Abrir otra disposición de teclado</target>
+</phrase>
+<phrase>
+    <source>Save...</source>
+    <target>Guardar...</target>
+</phrase>
+<phrase>
+    <source>Save the current keyboard layout</source>
+    <target>Guardar la disposición de teclado actual</target>
+</phrase>
+<phrase>
+    <source>&amp;Keyboard Map</source>
+    <target>(&amp;K)键盘映射</target>
+</phrase>
+<phrase>
+    <source>Edit...</source>
+    <target>Editar...</target>
+</phrase>
+<phrase>
+    <source>Edit the current keyboard layout</source>
+    <target>编辑当前键盘布局</target>
+</phrase>
+<phrase>
+    <source>&amp;Contents</source>
+    <target>(&amp;C)内容</target>
+</phrase>
+<phrase>
+    <source>Open the index of the help document</source>
+    <target>打开帮助文档的索引</target>
+</phrase>
+<phrase>
+    <source>VMPK &amp;Web site</source>
+    <target>(&amp;W)VMPK 网站</target>
+</phrase>
+<phrase>
+    <source>Open the VMPK web site address using a web browser</source>
+    <target>使用网络浏览器打开 VMPK 网站</target>
+</phrase>
+<phrase>
+    <source>&amp;Import SoundFont...</source>
+    <target>(&amp;I)导入音色库(SoundFont)...</target>
+</phrase>
+<phrase>
+    <source>No help file found</source>
+    <target>未找到帮助文档</target>
+</phrase>
+</QPH>

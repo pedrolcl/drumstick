@@ -25,9 +25,16 @@ Requirements
 
 Minimum supported versions:
 
-* CMake 2.8.11
+* CMake 3.9
 * Qt5
-* For Linux: ALSA 1.0
+* For Linux: ALSA 1.x
+* RT backends for
+*    Linux: ALSA
+*    macOS: CoreMIDI
+*    Windows: WinMM
+*    Unix: OSS
+*    Synthesizers: SonivoxEAS, FluidSynth
+*    All: Network - ipMIDI (IPv4, IPv6)
 
 * shared-mime-info 0.30
 See http://freedesktop.org/wiki/Software/shared-mime-info

@@ -1,0 +1,2011 @@
+<!DOCTYPE QPH>
+<QPH language="ru">
+<phrase>
+    <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot;font-family:&apos;Sans Serif&apos;; font-size:12pt; font-style:normal;&quot;&gt;&lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Version: %1&lt;br/&gt;Build date: %2&lt;br/&gt;Build time: %3&lt;br/&gt;Compiler: %4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot;font-family:&apos;Sans Serif&apos;; font-size:12pt; font-style:normal;&quot;&gt;&lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Версия: %1&lt;br/&gt;Дата сборки: %2&lt;br/&gt;Время сборки: %3&lt;br/&gt;Компилятор: %4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>About</source>
+    <target>О программе</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Virtual MIDI Piano Keyboard&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Виртальная MIDI Клавиатура-пианино&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://vmpk.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://vmpk.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://vmpk.sourceforge.net/index.ru.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://vmpk.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Copyright © 2008-2020, &lt;/span&gt;&lt;a href=&quot;mailto:plcl@users.sf.net?subject=VMPK&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Pedro Lopez-Cabanillas &amp;lt;plcl@users.sf.net&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; color:#000000;&quot;&gt; and others&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License  along with this program. If not, see &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Color Palette</source>
+    <target>Палитра цветов</target>
+</phrase>
+<phrase>
+    <source>Colors</source>
+    <target>Цвета</target>
+</phrase>
+<phrase>
+    <source>N</source>
+    <target>N</target>
+</phrase>
+<phrase>
+    <source>#</source>
+    <target>#</target>
+</phrase>
+<phrase>
+    <source>1</source>
+    <target>1</target>
+</phrase>
+<phrase>
+    <source>2</source>
+    <target>2</target>
+</phrase>
+<phrase>
+    <source>3</source>
+    <target>3</target>
+</phrase>
+<phrase>
+    <source>4</source>
+    <target>4</target>
+</phrase>
+<phrase>
+    <source>5</source>
+    <target>5</target>
+</phrase>
+<phrase>
+    <source>6</source>
+    <target>6</target>
+</phrase>
+<phrase>
+    <source>7</source>
+    <target>7</target>
+</phrase>
+<phrase>
+    <source>8</source>
+    <target>8</target>
+</phrase>
+<phrase>
+    <source>9</source>
+    <target>9</target>
+</phrase>
+<phrase>
+    <source>10</source>
+    <target>10</target>
+</phrase>
+<phrase>
+    <source>11</source>
+    <target>11</target>
+</phrase>
+<phrase>
+    <source>12</source>
+    <target>12</target>
+</phrase>
+<phrase>
+    <source>13</source>
+    <target>13</target>
+</phrase>
+<phrase>
+    <source>14</source>
+    <target>14</target>
+</phrase>
+<phrase>
+    <source>15</source>
+    <target>15</target>
+</phrase>
+<phrase>
+    <source>16</source>
+    <target>16</target>
+</phrase>
+<phrase>
+    <source>C</source>
+    <target>До</target>
+</phrase>
+<phrase>
+    <source>C#</source>
+    <target>До #</target>
+</phrase>
+<phrase>
+    <source>D</source>
+    <target>Ре</target>
+</phrase>
+<phrase>
+    <source>D#</source>
+    <target>Ре #</target>
+</phrase>
+<phrase>
+    <source>E</source>
+    <target>Ми</target>
+</phrase>
+<phrase>
+    <source>F</source>
+    <target>Фа</target>
+</phrase>
+<phrase>
+    <source>F#</source>
+    <target>Фа #</target>
+</phrase>
+<phrase>
+    <source>G</source>
+    <target>Соль</target>
+</phrase>
+<phrase>
+    <source>G#</source>
+    <target>Соль #</target>
+</phrase>
+<phrase>
+    <source>A</source>
+    <target>Ля</target>
+</phrase>
+<phrase>
+    <source>A#</source>
+    <target>Ля #</target>
+</phrase>
+<phrase>
+    <source>B</source>
+    <target>Си</target>
+</phrase>
+<phrase>
+    <source>Single color</source>
+    <target>Один цвет</target>
+</phrase>
+<phrase>
+    <source>A single color to highlight all note events</source>
+    <target>Один цвет, чтобы подсвечивать все нотные события</target>
+</phrase>
+<phrase>
+    <source>Two colors</source>
+    <target>Два цвета</target>
+</phrase>
+<phrase>
+    <source>One color to highlight natural notes and a different one for accidentals</source>
+    <target>Один цвет, чтобы подсвечивать естественные ноты, и другой для случайных нот</target>
+</phrase>
+<phrase>
+    <source>MIDI Channels</source>
+    <target>Каналы MIDI</target>
+</phrase>
+<phrase>
+    <source>A different color for each MIDI channel. Enable Omni mode in the MIDI IN connection</source>
+    <target>Разные цвета для каждого канала MIDI. Включите режим Omni в соединении MIDI IN</target>
+</phrase>
+<phrase>
+    <source>Chromatic scale</source>
+    <target>Хроматическая шкала</target>
+</phrase>
+<phrase>
+    <source>One color for each note in the chromatic scale</source>
+    <target>Один цвет для каждой ноты в хроматической шкале</target>
+</phrase>
+<phrase>
+    <source>Extra Controls Editor</source>
+    <target>Редактор дополнительных регуляторов</target>
+</phrase>
+<phrase>
+    <source>Label:</source>
+    <target>Метка:</target>
+</phrase>
+<phrase>
+    <source>MIDI Controller:</source>
+    <target>Регулятор MIDI:</target>
+</phrase>
+<phrase>
+    <source>Add</source>
+    <target>Добавить</target>
+</phrase>
+<phrase>
+    <source>Remove</source>
+    <target>Удалить</target>
+</phrase>
+<phrase>
+    <source>Up</source>
+    <target>Вверх</target>
+</phrase>
+<phrase>
+    <source>Down</source>
+    <target>Вниз</target>
+</phrase>
+<phrase>
+    <source>Switch</source>
+    <target>Переключатель</target>
+</phrase>
+<phrase>
+    <source>Knob</source>
+    <target>Ручка</target>
+</phrase>
+<phrase>
+    <source>Spin box</source>
+    <target>Счётчик</target>
+</phrase>
+<phrase>
+    <source>Slider</source>
+    <target>Ползунок</target>
+</phrase>
+<phrase>
+    <source>Button Ctl</source>
+    <target>Ктрл. кнопка</target>
+</phrase>
+<phrase>
+    <source>Button SysEx</source>
+    <target>Кнопка SysEx</target>
+</phrase>
+<phrase>
+    <source>Default ON</source>
+    <target>По умолчанию ВКЛ</target>
+</phrase>
+<phrase>
+    <source>value ON:</source>
+    <target>значение ВКЛ:</target>
+</phrase>
+<phrase>
+    <source>value OFF:</source>
+    <target>значение ВЫКЛ:</target>
+</phrase>
+<phrase>
+    <source>Key:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Min. value:</source>
+    <target>Мин. значение:</target>
+</phrase>
+<phrase>
+    <source>Max. value:</source>
+    <target>Макс. значение:</target>
+</phrase>
+<phrase>
+    <source>Default value:</source>
+    <target>По умолчанию:</target>
+</phrase>
+<phrase>
+    <source>Display size:</source>
+    <target>Размер на экране:</target>
+</phrase>
+<phrase>
+    <source>value:</source>
+    <target>значение:</target>
+</phrase>
+<phrase>
+    <source>File name:</source>
+    <target>Имя файла:</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>New Control</source>
+    <target>Новый регулятор</target>
+</phrase>
+<phrase>
+    <source>System Exclusive File</source>
+    <target>Файл System Exclusive</target>
+</phrase>
+<phrase>
+    <source>System Exclusive (*.syx)</source>
+    <target>System Exclusive (*.syx)</target>
+</phrase>
+<phrase>
+    <source>FluidSynth Driver Settings</source>
+    <target>Настройки драйвера FluidSynth</target>
+</phrase>
+<phrase>
+    <source>Sample Rate:</source>
+    <target>Частота сэмплов:</target>
+</phrase>
+<phrase>
+    <source>Period Size:</source>
+    <target>Размер периода:</target>
+</phrase>
+<phrase>
+    <source># of Periods:</source>
+    <target>Число периодов:</target>
+</phrase>
+<phrase>
+    <source>Audio Driver:</source>
+    <target>Аудиодрайвер:</target>
+</phrase>
+<phrase>
+    <source>Polyphony:</source>
+    <target>Полифония:</target>
+</phrase>
+<phrase>
+    <source>Sound Font:</source>
+    <target>Sound Font:</target>
+</phrase>
+<phrase>
+    <source>Gain:</source>
+    <target>Усиление:</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Chorus</source>
+    <target>Хор</target>
+</phrase>
+<phrase>
+    <source>Reverb</source>
+    <target>Возврат</target>
+</phrase>
+<phrase>
+    <source>Select SoundFont</source>
+    <target>Выберите файл SoundFont</target>
+</phrase>
+<phrase>
+    <source>SoundFont Files (*.sf2)</source>
+    <target>Файлы SoundFont (*.sf2)</target>
+</phrase>
+<phrase>
+    <source>Open...</source>
+    <target>Открыть...</target>
+</phrase>
+<phrase>
+    <source>Save As...</source>
+    <target>Сохранить как...</target>
+</phrase>
+<phrase>
+    <source>Raw Key Map Editor</source>
+    <target>Редактор привязок системной клавиатуры</target>
+</phrase>
+<phrase>
+    <source>Key Map Editor</source>
+    <target>Редактор привязок клавиш</target>
+</phrase>
+<phrase>
+    <source>Key Code</source>
+    <target>Код клавиши</target>
+</phrase>
+<phrase>
+    <source>Key</source>
+    <target>Клавиша</target>
+</phrase>
+<phrase>
+    <source>Open keyboard map definition</source>
+    <target>Открыть описание привязок клавиш</target>
+</phrase>
+<phrase>
+    <source>Keyboard map (*.xml)</source>
+    <target>Привязки клавиш (*.xml)</target>
+</phrase>
+<phrase>
+    <source>Save keyboard map definition</source>
+    <target>Сохранить описание привязок клавиш</target>
+</phrase>
+<phrase>
+    <source>Key Map Editor</source>
+    <target>Редактор привязок клавиш</target>
+</phrase>
+<phrase>
+    <source>This box displays the name of the current mapping file</source>
+    <target>Это поле отображает название текущего файла привязок</target>
+</phrase>
+<phrase>
+    <source>This is the list of the PC keyboard mappings. Each row has a number corresponding to the MIDI note number, and you can type an alphanumeric Key name that will be translated to the given note</source>
+    <target>Это список привязок к клавиатуре ПК. Каждая строка имеет номер, соответствующий номеру ноты MIDI, и вы можете ввести алфавитно-цифровое название клавиши, которая будет соответствовать данной ноте</target>
+</phrase>
+<phrase>
+    <source>0</source>
+    <target>0</target>
+</phrase>
+<phrase>
+    <source>1</source>
+    <target>1</target>
+</phrase>
+<phrase>
+    <source>2</source>
+    <target>2</target>
+</phrase>
+<phrase>
+    <source>3</source>
+    <target>3</target>
+</phrase>
+<phrase>
+    <source>4</source>
+    <target>4</target>
+</phrase>
+<phrase>
+    <source>5</source>
+    <target>5</target>
+</phrase>
+<phrase>
+    <source>6</source>
+    <target>6</target>
+</phrase>
+<phrase>
+    <source>7</source>
+    <target>7</target>
+</phrase>
+<phrase>
+    <source>8</source>
+    <target>8</target>
+</phrase>
+<phrase>
+    <source>9</source>
+    <target>9</target>
+</phrase>
+<phrase>
+    <source>10</source>
+    <target>10</target>
+</phrase>
+<phrase>
+    <source>11</source>
+    <target>11</target>
+</phrase>
+<phrase>
+    <source>12</source>
+    <target>12</target>
+</phrase>
+<phrase>
+    <source>13</source>
+    <target>13</target>
+</phrase>
+<phrase>
+    <source>14</source>
+    <target>14</target>
+</phrase>
+<phrase>
+    <source>15</source>
+    <target>15</target>
+</phrase>
+<phrase>
+    <source>16</source>
+    <target>16</target>
+</phrase>
+<phrase>
+    <source>17</source>
+    <target>17</target>
+</phrase>
+<phrase>
+    <source>18</source>
+    <target>18</target>
+</phrase>
+<phrase>
+    <source>19</source>
+    <target>19</target>
+</phrase>
+<phrase>
+    <source>20</source>
+    <target>20</target>
+</phrase>
+<phrase>
+    <source>21</source>
+    <target>21</target>
+</phrase>
+<phrase>
+    <source>22</source>
+    <target>22</target>
+</phrase>
+<phrase>
+    <source>23</source>
+    <target>23</target>
+</phrase>
+<phrase>
+    <source>24</source>
+    <target>24</target>
+</phrase>
+<phrase>
+    <source>25</source>
+    <target>25</target>
+</phrase>
+<phrase>
+    <source>26</source>
+    <target>26</target>
+</phrase>
+<phrase>
+    <source>27</source>
+    <target>27</target>
+</phrase>
+<phrase>
+    <source>28</source>
+    <target>28</target>
+</phrase>
+<phrase>
+    <source>29</source>
+    <target>29</target>
+</phrase>
+<phrase>
+    <source>30</source>
+    <target>30</target>
+</phrase>
+<phrase>
+    <source>31</source>
+    <target>31</target>
+</phrase>
+<phrase>
+    <source>32</source>
+    <target>32</target>
+</phrase>
+<phrase>
+    <source>33</source>
+    <target>33</target>
+</phrase>
+<phrase>
+    <source>34</source>
+    <target>34</target>
+</phrase>
+<phrase>
+    <source>35</source>
+    <target>35</target>
+</phrase>
+<phrase>
+    <source>36</source>
+    <target>36</target>
+</phrase>
+<phrase>
+    <source>37</source>
+    <target>37</target>
+</phrase>
+<phrase>
+    <source>38</source>
+    <target>38</target>
+</phrase>
+<phrase>
+    <source>39</source>
+    <target>39</target>
+</phrase>
+<phrase>
+    <source>40</source>
+    <target>40</target>
+</phrase>
+<phrase>
+    <source>41</source>
+    <target>41</target>
+</phrase>
+<phrase>
+    <source>42</source>
+    <target>42</target>
+</phrase>
+<phrase>
+    <source>43</source>
+    <target>43</target>
+</phrase>
+<phrase>
+    <source>44</source>
+    <target>44</target>
+</phrase>
+<phrase>
+    <source>45</source>
+    <target>45</target>
+</phrase>
+<phrase>
+    <source>46</source>
+    <target>46</target>
+</phrase>
+<phrase>
+    <source>47</source>
+    <target>47</target>
+</phrase>
+<phrase>
+    <source>48</source>
+    <target>48</target>
+</phrase>
+<phrase>
+    <source>49</source>
+    <target>49</target>
+</phrase>
+<phrase>
+    <source>50</source>
+    <target>50</target>
+</phrase>
+<phrase>
+    <source>51</source>
+    <target>51</target>
+</phrase>
+<phrase>
+    <source>52</source>
+    <target>52</target>
+</phrase>
+<phrase>
+    <source>53</source>
+    <target>53</target>
+</phrase>
+<phrase>
+    <source>54</source>
+    <target>54</target>
+</phrase>
+<phrase>
+    <source>55</source>
+    <target>55</target>
+</phrase>
+<phrase>
+    <source>56</source>
+    <target>56</target>
+</phrase>
+<phrase>
+    <source>57</source>
+    <target>57</target>
+</phrase>
+<phrase>
+    <source>58</source>
+    <target>58</target>
+</phrase>
+<phrase>
+    <source>59</source>
+    <target>59</target>
+</phrase>
+<phrase>
+    <source>60</source>
+    <target>60</target>
+</phrase>
+<phrase>
+    <source>61</source>
+    <target>61</target>
+</phrase>
+<phrase>
+    <source>62</source>
+    <target>62</target>
+</phrase>
+<phrase>
+    <source>63</source>
+    <target>63</target>
+</phrase>
+<phrase>
+    <source>64</source>
+    <target>64</target>
+</phrase>
+<phrase>
+    <source>65</source>
+    <target>65</target>
+</phrase>
+<phrase>
+    <source>66</source>
+    <target>66</target>
+</phrase>
+<phrase>
+    <source>67</source>
+    <target>67</target>
+</phrase>
+<phrase>
+    <source>68</source>
+    <target>68</target>
+</phrase>
+<phrase>
+    <source>69</source>
+    <target>69</target>
+</phrase>
+<phrase>
+    <source>70</source>
+    <target>70</target>
+</phrase>
+<phrase>
+    <source>71</source>
+    <target>71</target>
+</phrase>
+<phrase>
+    <source>72</source>
+    <target>72</target>
+</phrase>
+<phrase>
+    <source>73</source>
+    <target>73</target>
+</phrase>
+<phrase>
+    <source>74</source>
+    <target>74</target>
+</phrase>
+<phrase>
+    <source>75</source>
+    <target>75</target>
+</phrase>
+<phrase>
+    <source>76</source>
+    <target>76</target>
+</phrase>
+<phrase>
+    <source>77</source>
+    <target>77</target>
+</phrase>
+<phrase>
+    <source>78</source>
+    <target>78</target>
+</phrase>
+<phrase>
+    <source>79</source>
+    <target>79</target>
+</phrase>
+<phrase>
+    <source>80</source>
+    <target>80</target>
+</phrase>
+<phrase>
+    <source>81</source>
+    <target>81</target>
+</phrase>
+<phrase>
+    <source>82</source>
+    <target>82</target>
+</phrase>
+<phrase>
+    <source>83</source>
+    <target>83</target>
+</phrase>
+<phrase>
+    <source>84</source>
+    <target>84</target>
+</phrase>
+<phrase>
+    <source>85</source>
+    <target>85</target>
+</phrase>
+<phrase>
+    <source>86</source>
+    <target>86</target>
+</phrase>
+<phrase>
+    <source>87</source>
+    <target>87</target>
+</phrase>
+<phrase>
+    <source>88</source>
+    <target>88</target>
+</phrase>
+<phrase>
+    <source>89</source>
+    <target>89</target>
+</phrase>
+<phrase>
+    <source>90</source>
+    <target>90</target>
+</phrase>
+<phrase>
+    <source>91</source>
+    <target>91</target>
+</phrase>
+<phrase>
+    <source>92</source>
+    <target>92</target>
+</phrase>
+<phrase>
+    <source>93</source>
+    <target>93</target>
+</phrase>
+<phrase>
+    <source>94</source>
+    <target>94</target>
+</phrase>
+<phrase>
+    <source>95</source>
+    <target>95</target>
+</phrase>
+<phrase>
+    <source>96</source>
+    <target>96</target>
+</phrase>
+<phrase>
+    <source>97</source>
+    <target>97</target>
+</phrase>
+<phrase>
+    <source>98</source>
+    <target>98</target>
+</phrase>
+<phrase>
+    <source>99</source>
+    <target>99</target>
+</phrase>
+<phrase>
+    <source>100</source>
+    <target>100</target>
+</phrase>
+<phrase>
+    <source>101</source>
+    <target>101</target>
+</phrase>
+<phrase>
+    <source>102</source>
+    <target>102</target>
+</phrase>
+<phrase>
+    <source>103</source>
+    <target>103</target>
+</phrase>
+<phrase>
+    <source>104</source>
+    <target>104</target>
+</phrase>
+<phrase>
+    <source>105</source>
+    <target>105</target>
+</phrase>
+<phrase>
+    <source>106</source>
+    <target>106</target>
+</phrase>
+<phrase>
+    <source>107</source>
+    <target>107</target>
+</phrase>
+<phrase>
+    <source>108</source>
+    <target>108</target>
+</phrase>
+<phrase>
+    <source>109</source>
+    <target>109</target>
+</phrase>
+<phrase>
+    <source>110</source>
+    <target>110</target>
+</phrase>
+<phrase>
+    <source>111</source>
+    <target>111</target>
+</phrase>
+<phrase>
+    <source>112</source>
+    <target>112</target>
+</phrase>
+<phrase>
+    <source>113</source>
+    <target>113</target>
+</phrase>
+<phrase>
+    <source>114</source>
+    <target>114</target>
+</phrase>
+<phrase>
+    <source>115</source>
+    <target>115</target>
+</phrase>
+<phrase>
+    <source>116</source>
+    <target>116</target>
+</phrase>
+<phrase>
+    <source>117</source>
+    <target>117</target>
+</phrase>
+<phrase>
+    <source>118</source>
+    <target>118</target>
+</phrase>
+<phrase>
+    <source>119</source>
+    <target>119</target>
+</phrase>
+<phrase>
+    <source>120</source>
+    <target>120</target>
+</phrase>
+<phrase>
+    <source>121</source>
+    <target>121</target>
+</phrase>
+<phrase>
+    <source>122</source>
+    <target>122</target>
+</phrase>
+<phrase>
+    <source>123</source>
+    <target>123</target>
+</phrase>
+<phrase>
+    <source>124</source>
+    <target>124</target>
+</phrase>
+<phrase>
+    <source>125</source>
+    <target>125</target>
+</phrase>
+<phrase>
+    <source>126</source>
+    <target>126</target>
+</phrase>
+<phrase>
+    <source>127</source>
+    <target>127</target>
+</phrase>
+<phrase>
+    <source>Key</source>
+    <target>Клавиша</target>
+</phrase>
+<phrase>
+    <source>Error loading a file</source>
+    <target>Ошибка загрузки файла</target>
+</phrase>
+<phrase>
+    <source>Error saving a file</source>
+    <target>Ошибка сохранения файла</target>
+</phrase>
+<phrase>
+    <source>Error reading XML</source>
+    <target>Ошибка чтения XML</target>
+</phrase>
+<phrase>
+    <source>File: %1
+%2</source>
+    <target>Файл: %1
+%2</target>
+</phrase>
+<phrase>
+    <source>SoundFont:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Use Internal Reverb</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Default Apple DLS Sound Set</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Select SoundFont</source>
+    <target>Выберите файл SoundFont</target>
+</phrase>
+<phrase>
+    <source>SoundFont Files (*.sf2 *.dls)</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>MIDI Setup</source>
+    <target>Настройка MIDI</target>
+</phrase>
+<phrase>
+    <source>Check this box to enable MIDI input for the program. In Linux and Mac OSX the input port is always enabled and can&apos;t be un-ckecked</source>
+    <target>Установите этот флажок, чтобы разрешить ввод MIDI для программы. В Linux и Mac OSX порт ввода всегда установлен, и флажок не может быть снят</target>
+</phrase>
+<phrase>
+    <source>Enable MIDI Input</source>
+    <target>Разрешить ввод MIDI</target>
+</phrase>
+<phrase>
+    <source>MIDI Omni Mode</source>
+    <target>Режим MIDI Omni</target>
+</phrase>
+<phrase>
+    <source>MIDI IN Driver</source>
+    <target>Драйвер ввода MIDI</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Input MIDI Connection</source>
+    <target>Соединение ввода MIDI</target>
+</phrase>
+<phrase>
+    <source>Use this control to change the connection for the MIDI input port, if it is enabled</source>
+    <target>Используйте этот элемент, чтобы изменить соединение для порта ввода MIDI, если он разрешён</target>
+</phrase>
+<phrase>
+    <source>Check this box to enable the MIDI Thru function: any MIDI event received in the input port will be copied unchanged to the output port</source>
+    <target>Установите этот флажок, чтобы разрешить функцию MIDI Thru: любое событие MIDI, полученное на порте ввода будет без изменений скопировано в порт вывода</target>
+</phrase>
+<phrase>
+    <source>Enable MIDI Thru on MIDI Output</source>
+    <target>Разрешить MIDI Thru на выводе MIDI</target>
+</phrase>
+<phrase>
+    <source>MIDI OUT Driver</source>
+    <target>Драйвер вывода MIDI</target>
+</phrase>
+<phrase>
+    <source>Output MIDI Connection</source>
+    <target>Соединение вывода MIDI</target>
+</phrase>
+<phrase>
+    <source>Use this control to change the connection for the MIDI output port</source>
+    <target>Используйте этот элемент, чтобы изменить соединение для порта вывода MIDI</target>
+</phrase>
+<phrase>
+    <source>Show Advanced Connections</source>
+    <target>Показать расширенные соединения</target>
+</phrase>
+<phrase>
+    <source>Network Driver Settings</source>
+    <target>Настройки драйвера сети</target>
+</phrase>
+<phrase>
+    <source>Use IPv6</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Network Interface:</source>
+    <target>Сетевой интерфейс:</target>
+</phrase>
+<phrase>
+    <source>Address</source>
+    <target>Адрес</target>
+</phrase>
+<phrase>
+    <source>Any</source>
+    <target>Любой</target>
+</phrase>
+<phrase>
+    <source>C</source>
+    <target>До</target>
+</phrase>
+<phrase>
+    <source>C♯</source>
+    <target>До♯</target>
+</phrase>
+<phrase>
+    <source>D</source>
+    <target>Ре</target>
+</phrase>
+<phrase>
+    <source>D♯</source>
+    <target>Ре♯</target>
+</phrase>
+<phrase>
+    <source>E</source>
+    <target>Ми</target>
+</phrase>
+<phrase>
+    <source>F</source>
+    <target>Фа</target>
+</phrase>
+<phrase>
+    <source>F♯</source>
+    <target>Фа♯</target>
+</phrase>
+<phrase>
+    <source>G</source>
+    <target>Соль</target>
+</phrase>
+<phrase>
+    <source>G♯</source>
+    <target>Соль♯</target>
+</phrase>
+<phrase>
+    <source>A</source>
+    <target>Ля</target>
+</phrase>
+<phrase>
+    <source>A♯</source>
+    <target>Ля♯</target>
+</phrase>
+<phrase>
+    <source>B</source>
+    <target>Си</target>
+</phrase>
+<phrase>
+    <source>D♭</source>
+    <target>Ре♭</target>
+</phrase>
+<phrase>
+    <source>E♭</source>
+    <target>Ми♭</target>
+</phrase>
+<phrase>
+    <source>G♭</source>
+    <target>Соль♭</target>
+</phrase>
+<phrase>
+    <source>A♭</source>
+    <target>Ля♭</target>
+</phrase>
+<phrase>
+    <source>B♭</source>
+    <target>Си♭</target>
+</phrase>
+<phrase>
+    <source>Open instruments definition</source>
+    <target>Открыть описание инструментов</target>
+</phrase>
+<phrase>
+    <source>Instrument definitions (*.ins)</source>
+    <target>Описания инструментов (*.ins)</target>
+</phrase>
+<phrase>
+    <source>Open keyboard map definition</source>
+    <target>Открыть описание привязок клавиш</target>
+</phrase>
+<phrase>
+    <source>Keyboard map (*.xml)</source>
+    <target>Привязки клавиш (*.xml)</target>
+</phrase>
+<phrase>
+    <source>Preferences</source>
+    <target>Параметры</target>
+</phrase>
+<phrase>
+    <source>Number of keys</source>
+    <target>Число клавиш</target>
+</phrase>
+<phrase>
+    <source>The number of octaves, from 1 to 10. Each octave has 12 keys: 7 white and 5 black. The MIDI standard has 128 notes, but not all instruments can play all of them.</source>
+    <target>Число октав, от 1 до 10. В каждой октаве 12 клавиш: 7 белых и 5 чёрных. Стандарт MIDI содержит 128 нот, но не все инструменты могут играть все ноты.</target>
+</phrase>
+<phrase>
+    <source>Starting Key</source>
+    <target>Начальная клавиша</target>
+</phrase>
+<phrase>
+    <source>Note highlight color</source>
+    <target>Цвет подсветки ноты</target>
+</phrase>
+<phrase>
+    <source>Press this button to change the highligh color used to paint the keys that are being activated.</source>
+    <target>Нажмите эту кнопку, чтобы изменить цвет, используемый для закрашивания клавиш, которые были активированы.</target>
+</phrase>
+<phrase>
+    <source>Colors...</source>
+    <target>Цвета...</target>
+</phrase>
+<phrase>
+    <source>Instruments file</source>
+    <target>Файл инструментов</target>
+</phrase>
+<phrase>
+    <source>The instruments definition file currently loaded</source>
+    <target>Файл описания инструментов, загруженный в данный момент</target>
+</phrase>
+<phrase>
+    <source>default</source>
+    <target>по умолчанию</target>
+</phrase>
+<phrase>
+    <source>Press this button to load an instruments definition file from disk.</source>
+    <target>Нажмите эту кнопку, чтобы загрузить файл описания инструментов с диска.</target>
+</phrase>
+<phrase>
+    <source>Load...</source>
+    <target>Загрузить...</target>
+</phrase>
+<phrase>
+    <source>Instrument</source>
+    <target>Инструмент</target>
+</phrase>
+<phrase>
+    <source>Change the instrument definition being currently used. Each instruments definition file may hold several instruments on it.</source>
+    <target>Изменить описание инструмента, используемое в данный момент. Каждый файл описания инструментов может содержать несколько инструментов.</target>
+</phrase>
+<phrase>
+    <source>Keyboard Map</source>
+    <target>Привязка клавиш</target>
+</phrase>
+<phrase>
+    <source>Raw Keyboard Map</source>
+    <target>Системная привязка клавиш</target>
+</phrase>
+<phrase>
+    <source>Drums Channel</source>
+    <target>Канал ударных</target>
+</phrase>
+<phrase>
+    <source>None</source>
+    <target>Нет</target>
+</phrase>
+<phrase>
+    <source>1</source>
+    <target>1</target>
+</phrase>
+<phrase>
+    <source>2</source>
+    <target>2</target>
+</phrase>
+<phrase>
+    <source>3</source>
+    <target>3</target>
+</phrase>
+<phrase>
+    <source>4</source>
+    <target>4</target>
+</phrase>
+<phrase>
+    <source>5</source>
+    <target>5</target>
+</phrase>
+<phrase>
+    <source>6</source>
+    <target>6</target>
+</phrase>
+<phrase>
+    <source>7</source>
+    <target>7</target>
+</phrase>
+<phrase>
+    <source>8</source>
+    <target>8</target>
+</phrase>
+<phrase>
+    <source>9</source>
+    <target>9</target>
+</phrase>
+<phrase>
+    <source>10</source>
+    <target>10</target>
+</phrase>
+<phrase>
+    <source>11</source>
+    <target>11</target>
+</phrase>
+<phrase>
+    <source>12</source>
+    <target>12</target>
+</phrase>
+<phrase>
+    <source>13</source>
+    <target>13</target>
+</phrase>
+<phrase>
+    <source>14</source>
+    <target>14</target>
+</phrase>
+<phrase>
+    <source>15</source>
+    <target>15</target>
+</phrase>
+<phrase>
+    <source>MIDI channel state consistency</source>
+    <target>Удержание состояния каналов MIDI</target>
+</phrase>
+<phrase>
+    <source>Translate MIDI velocity to key pressed color tint</source>
+    <target>Переводить громкость MIDI в оттенок цвета нажатой клавиши</target>
+</phrase>
+<phrase>
+    <source>Check this box to keep the keyboard window always visible, on top of other windows.</source>
+    <target>Установите этот флажок, чтобы окно клавиатуры было видно всегда, поверх других окон.</target>
+</phrase>
+<phrase>
+    <source>Always On Top</source>
+    <target>Поверх окон</target>
+</phrase>
+<phrase>
+    <source>Enable Computer Keyboard Input</source>
+    <target>Использовать ввод с клавиатуры компьютера</target>
+</phrase>
+<phrase>
+    <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Check this box to use low level PC keyboard events. This system has several advantages:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;It is possible to use &quot;dead keys&quot; (accent marks, diacritics)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mapping definitions are independent of the language (but hardware and OS specific)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Faster processing&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
+    <target>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Установите этот флажок, чтобы использовать низкоуровневые события клавиатуры ПК. Эта система имеет несколько преимуществ:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Возможность использовать &quot;мёртвые клавиши&quot; (знаки ударения, диакритические символы)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Описания привязок не зависят от языка (но зависят от аппаратуры и ОС)&lt;/li&gt;
+&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Более быстрая обработка&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</target>
+</phrase>
+<phrase>
+    <source>Raw Computer Keyboard</source>
+    <target>Системная клавиатура компьютера</target>
+</phrase>
+<phrase>
+    <source>Enable Mouse Input</source>
+    <target>Использовать ввод мышью</target>
+</phrase>
+<phrase>
+    <source>Enable Touch Screen Input</source>
+    <target>Использовать ввод сенсорного экрана</target>
+</phrase>
+<phrase>
+    <source>Cakewalk Instrument Definition File</source>
+    <target>Файл Определений Инструментов Cakewalk</target>
+</phrase>
+<phrase>
+    <source>File</source>
+    <target>Файл</target>
+</phrase>
+<phrase>
+    <source>Date</source>
+    <target>Дата</target>
+</phrase>
+<phrase>
+    <source>Import SoundFont instruments</source>
+    <target>Импорт инструментов SoundFont</target>
+</phrase>
+<phrase>
+    <source>Input File</source>
+    <target>Входной файл</target>
+</phrase>
+<phrase>
+    <source>This text box displays the path and name of the selected SoundFont to be  imported</source>
+    <target>Это текстовое поле отображает путь и название выбранного файла SoundFont для импорта</target>
+</phrase>
+<phrase>
+    <source>Press this button to select a SoundFont file to be imported</source>
+    <target>Нажмите эту кнопку, чтобы выбрать файл SoundFont для импорта</target>
+</phrase>
+<phrase>
+    <source>...</source>
+    <target>...</target>
+</phrase>
+<phrase>
+    <source>Name</source>
+    <target>Название</target>
+</phrase>
+<phrase>
+    <source>Version</source>
+    <target>Версия</target>
+</phrase>
+<phrase>
+    <source>Copyright</source>
+    <target>Авторское право</target>
+</phrase>
+<phrase>
+    <source>Output File</source>
+    <target>Выходной файл</target>
+</phrase>
+<phrase>
+    <source>This text box displays the name of the output file in .INS format that will be created</source>
+    <target>Это текстовое поле отображает название выходного файла в формате .INS, который будет создан</target>
+</phrase>
+<phrase>
+    <source>Press this button to select a path and file name for the output file</source>
+    <target>Нажмите эту кнопку, чтобы выбрать путь и название для выходного файла</target>
+</phrase>
+<phrase>
+    <source>Input SoundFont</source>
+    <target>Ввод SoundFont</target>
+</phrase>
+<phrase>
+    <source>SoundFonts (*.sf2 *.sbk *.dls)</source>
+    <target>Файлы SoundFont (*.sf2 *.sbk *.dls)</target>
+</phrase>
+<phrase>
+    <source>Output</source>
+    <target>Вывод</target>
+</phrase>
+<phrase>
+    <source>Instrument definitions (*.ins)</source>
+    <target>Описания инструментов (*.ins)</target>
+</phrase>
+<phrase>
+    <source>Keyboard Shortcuts</source>
+    <target>Клавиатурные сочетания</target>
+</phrase>
+<phrase>
+    <source>Action</source>
+    <target>Действие</target>
+</phrase>
+<phrase>
+    <source>Description</source>
+    <target>Описание</target>
+</phrase>
+<phrase>
+    <source>Shortcut</source>
+    <target>Клавиша</target>
+</phrase>
+<phrase>
+    <source>Warning</source>
+    <target>Предупреждение</target>
+</phrase>
+<phrase>
+    <source>Keyboard shortcuts have been changed.
+
+Do you want to apply the changes?</source>
+    <target>Клавиатурные сочетания изменились.
+
+Хотите применить изменения?</target>
+</phrase>
+<phrase>
+    <source>Sonivox EAS Synth</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Chorus</source>
+    <target>Хор</target>
+</phrase>
+<phrase>
+    <source>Reverb</source>
+    <target>Возврат</target>
+</phrase>
+<phrase>
+    <source>Buffer Time:</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source> ms</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Large Hall</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Hall</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Chamber</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Room</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>None</source>
+    <target>Нет</target>
+</phrase>
+<phrase>
+    <source>Preset 1</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Preset 2</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Preset 3</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Preset 4</source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>&amp;File</source>
+    <target>&amp;Файл</target>
+</phrase>
+<phrase>
+    <source>&amp;Edit</source>
+    <target>&amp;Правка</target>
+</phrase>
+<phrase>
+    <source>&amp;Help</source>
+    <target>&amp;Справка</target>
+</phrase>
+<phrase>
+    <source>&amp;Language</source>
+    <target>&amp;Язык</target>
+</phrase>
+<phrase>
+    <source>&amp;View</source>
+    <target>&amp;Вид</target>
+</phrase>
+<phrase>
+    <source>&amp;Tools</source>
+    <target>&amp;Инструменты</target>
+</phrase>
+<phrase>
+    <source>Notes</source>
+    <target>Ноты</target>
+</phrase>
+<phrase>
+    <source>Controllers</source>
+    <target>Регуляторы</target>
+</phrase>
+<phrase>
+    <source>Programs</source>
+    <target>Программы</target>
+</phrase>
+<phrase>
+    <source>Note Input</source>
+    <target>Ввод ноты</target>
+</phrase>
+<phrase>
+    <source>&amp;Notes</source>
+    <target>&amp;Ноты</target>
+</phrase>
+<phrase>
+    <source>&amp;Controllers</source>
+    <target>&amp;Регуляторы</target>
+</phrase>
+<phrase>
+    <source>Pitch &amp;Bender</source>
+    <target>&amp;Зажим высоты</target>
+</phrase>
+<phrase>
+    <source>&amp;Programs</source>
+    <target>&amp;Программы</target>
+</phrase>
+<phrase>
+    <source>&amp;Extra Controls</source>
+    <target>&amp;Дополнительные регуляторы</target>
+</phrase>
+<phrase>
+    <source>&amp;Quit</source>
+    <target>В&amp;ыход</target>
+</phrase>
+<phrase>
+    <source>Exit the program</source>
+    <target>Выйти из программы</target>
+</phrase>
+<phrase>
+    <source>&amp;Preferences</source>
+    <target>&amp;Параметры</target>
+</phrase>
+<phrase>
+    <source>Edit the program settings</source>
+    <target>Редактировать настройки программы</target>
+</phrase>
+<phrase>
+    <source>MIDI &amp;Connections</source>
+    <target>&amp;Соединения MIDI</target>
+</phrase>
+<phrase>
+    <source>Edit the MIDI connections</source>
+    <target>Редактировать соединения MIDI</target>
+</phrase>
+<phrase>
+    <source>&amp;About</source>
+    <target>&amp;О программе</target>
+</phrase>
+<phrase>
+    <source>Show the About box</source>
+    <target>Показать информацию об этой программе</target>
+</phrase>
+<phrase>
+    <source>About &amp;Qt</source>
+    <target>О &amp;Qt</target>
+</phrase>
+<phrase>
+    <source>Show the Qt about box</source>
+    <target>Показать информацию о Qt</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Notes toolbar</source>
+    <target>Показать или скрыть панель Ноты</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Controller toolbar</source>
+    <target>Показать или скрыть панель Регуляторы</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Pitch Bender toolbar</source>
+    <target>Показать или скрыть Зажим высоты</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Programs toolbar</source>
+    <target>Показать или скрыть панель Программы</target>
+</phrase>
+<phrase>
+    <source>&amp;Status Bar</source>
+    <target>&amp;Строка состояния</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Status Bar</source>
+    <target>Показать или скрыть строку состояния</target>
+</phrase>
+<phrase>
+    <source>Panic</source>
+    <target>Паника</target>
+</phrase>
+<phrase>
+    <source>Stops all active notes</source>
+    <target>Останавливает все активные ноты</target>
+</phrase>
+<phrase>
+    <source>Reset All</source>
+    <target>Сбросить всё</target>
+</phrase>
+<phrase>
+    <source>Resets all the controllers</source>
+    <target>Сбросить все регуляторы</target>
+</phrase>
+<phrase>
+    <source>Reset</source>
+    <target>Сбросить</target>
+</phrase>
+<phrase>
+    <source>Resets the Bender value</source>
+    <target>Сбрасывает значение Зажима</target>
+</phrase>
+<phrase>
+    <source>&amp;Keyboard Map</source>
+    <target>Привязки &amp;клавиш</target>
+</phrase>
+<phrase>
+    <source>Edit the current keyboard layout</source>
+    <target>Редактировать текущую раскладку клавиатуры</target>
+</phrase>
+<phrase>
+    <source>&amp;Contents</source>
+    <target>&amp;Содержание</target>
+</phrase>
+<phrase>
+    <source>Open the index of the help document</source>
+    <target>Открыть индекс документа справки</target>
+</phrase>
+<phrase>
+    <source>VMPK &amp;Web site</source>
+    <target>&amp;Веб-сайт VMPK</target>
+</phrase>
+<phrase>
+    <source>Open the VMPK web site address using a web browser</source>
+    <target>Открыть веб-сайт VMPK используя веб-браузер</target>
+</phrase>
+<phrase>
+    <source>&amp;Import SoundFont...</source>
+    <target>&amp;Импортировать SoundFont...</target>
+</phrase>
+<phrase>
+    <source>Import SoundFont</source>
+    <target>Импортировать SoundFont</target>
+</phrase>
+<phrase>
+    <source>Show or hide the Extra Controls toolbar</source>
+    <target>Показать или скрыть панель дополнительных регуляторов</target>
+</phrase>
+<phrase>
+    <source>Edit</source>
+    <target>Правка</target>
+</phrase>
+<phrase>
+    <source>Open the Extra Controls editor</source>
+    <target>Открыть редактор дополнительных регуляторов</target>
+</phrase>
+<phrase>
+    <source>Open the Banks/Programs editor</source>
+    <target>Открыть редактор Банков/Программ</target>
+</phrase>
+<phrase>
+    <source>&amp;Extra Controllers</source>
+    <target>&amp;Дополнительные регуляторы</target>
+</phrase>
+<phrase>
+    <source>N&amp;ote Names</source>
+    <target>Н&amp;азвания нот</target>
+</phrase>
+<phrase>
+    <source>Show or hide the note names</source>
+    <target>Показать или скрыть названия нот</target>
+</phrase>
+<phrase>
+    <source>&amp;Shortcuts</source>
+    <target>К&amp;лавиатурные сочетания</target>
+</phrase>
+<phrase>
+    <source>Open the Shortcuts editor</source>
+    <target>Открыть редактор клавиатурных сочетаний</target>
+</phrase>
+<phrase>
+    <source>Octave Up</source>
+    <target>Повысить октаву</target>
+</phrase>
+<phrase>
+    <source>Play one octave higher</source>
+    <target>Играть на одну октаву выше</target>
+</phrase>
+<phrase>
+    <source>Octave Down</source>
+    <target>Понизить октаву</target>
+</phrase>
+<phrase>
+    <source>Play one octave lower</source>
+    <target>Играть на одну октаву ниже</target>
+</phrase>
+<phrase>
+    <source>Transpose Up</source>
+    <target>Переместиться вверх</target>
+</phrase>
+<phrase>
+    <source>Transpose one semitone higher</source>
+    <target>Переместиться на полутон выше</target>
+</phrase>
+<phrase>
+    <source>Transpose Down</source>
+    <target>Переместиться вниз</target>
+</phrase>
+<phrase>
+    <source>Transpose one semitone lower</source>
+    <target>Переместиться на полутон ниже</target>
+</phrase>
+<phrase>
+    <source>Next  Channel</source>
+    <target>Следующий канал</target>
+</phrase>
+<phrase>
+    <source>Play and listen next channel</source>
+    <target>Проигрывать и прослушивать следующий канал</target>
+</phrase>
+<phrase>
+    <source>Previous Channel</source>
+    <target>Предыдущий канал</target>
+</phrase>
+<phrase>
+    <source>Play and listen previous channel</source>
+    <target>Проигрывать и прослушивать предыдущий канал</target>
+</phrase>
+<phrase>
+    <source>Next Controller</source>
+    <target>Следующий регулятор</target>
+</phrase>
+<phrase>
+    <source>Select the next controller</source>
+    <target>Выбрать следующий регулятор</target>
+</phrase>
+<phrase>
+    <source>Previous Controller</source>
+    <target>Предыдущий регулятор</target>
+</phrase>
+<phrase>
+    <source>Select the previous controller</source>
+    <target>Выбрать предыдущий регулятор</target>
+</phrase>
+<phrase>
+    <source>Controller Up</source>
+    <target>Повысить регулятор</target>
+</phrase>
+<phrase>
+    <source>Increment the controller value</source>
+    <target>Увеличить значение регулятора</target>
+</phrase>
+<phrase>
+    <source>Alt++</source>
+    <target>Alt++</target>
+</phrase>
+<phrase>
+    <source>Controller Down</source>
+    <target>Понизить регулятор</target>
+</phrase>
+<phrase>
+    <source>Decrement the controller value</source>
+    <target>Уменьшить значение регулятора</target>
+</phrase>
+<phrase>
+    <source>Alt+-</source>
+    <target>Alt+-</target>
+</phrase>
+<phrase>
+    <source>Next Bank</source>
+    <target>Следующий банк</target>
+</phrase>
+<phrase>
+    <source>Select the next instrument bank</source>
+    <target>Выбрать следующий банк инструментов</target>
+</phrase>
+<phrase>
+    <source>Previous Bank</source>
+    <target>Предыдущий банк</target>
+</phrase>
+<phrase>
+    <source>Select the previous instrument bank</source>
+    <target>Выбрать предыдущий банк инструментов</target>
+</phrase>
+<phrase>
+    <source>Next Program</source>
+    <target>Следующая программа</target>
+</phrase>
+<phrase>
+    <source>Select the next instrument program</source>
+    <target>Выбрать следующую программу инструментов</target>
+</phrase>
+<phrase>
+    <source>Previous Program</source>
+    <target>Предыдущая программа</target>
+</phrase>
+<phrase>
+    <source>Select the previous instrument program</source>
+    <target>Выбрать предыдущую программу инструментов</target>
+</phrase>
+<phrase>
+    <source>Velocity Up</source>
+    <target>Увеличить громкость</target>
+</phrase>
+<phrase>
+    <source>Increment note velocity</source>
+    <target>Увеличить громкость нот</target>
+</phrase>
+<phrase>
+    <source>Velocity Down</source>
+    <target>Уменьшить громкость</target>
+</phrase>
+<phrase>
+    <source>Decrement note velocity</source>
+    <target>Уменьшить громкость нот</target>
+</phrase>
+<phrase>
+    <source>About &amp;Translation</source>
+    <target>О &amp;переводе</target>
+</phrase>
+<phrase>
+    <source>Show information about the program language translation</source>
+    <target>Показать информацию о переводе программы</target>
+</phrase>
+<phrase>
+    <source>Computer Keyboard</source>
+    <target>Клавиатура компьютера</target>
+</phrase>
+<phrase>
+    <source>Enable computer keyboard triggered note input</source>
+    <target>Включить ввод нот клавиатурой</target>
+</phrase>
+<phrase>
+    <source>Mouse</source>
+    <target>Мышь</target>
+</phrase>
+<phrase>
+    <source>Enable mouse triggered note input</source>
+    <target>Включить ввод нот мышью</target>
+</phrase>
+<phrase>
+    <source>Touch Screen</source>
+    <target>Сенсорный экран</target>
+</phrase>
+<phrase>
+    <source>Enable screen touch triggered note input</source>
+    <target>Включить ввод нот касаниями экрана</target>
+</phrase>
+<phrase>
+    <source>Color Palette</source>
+    <target>Палитра цветов</target>
+</phrase>
+<phrase>
+    <source>Open the color palette editor</source>
+    <target>Открыть редактор палитры цветов</target>
+</phrase>
+<phrase>
+    <source>Color Scale</source>
+    <target>Шкала цветов</target>
+</phrase>
+<phrase>
+    <source>Show or hide the colorized keys</source>
+    <target>Показать или скрыть подцвеченные клавишы</target>
+</phrase>
+<phrase>
+    <source>Window frame</source>
+    <target>Рамка окна</target>
+</phrase>
+<phrase>
+    <source>Show or hide window decorations</source>
+    <target>Показать или скрыть обрамление окна</target>
+</phrase>
+<phrase>
+    <source>Alt+F</source>
+    <target>Alt+F</target>
+</phrase>
+<phrase>
+    <source>Error</source>
+    <target>Ошибка</target>
+</phrase>
+<phrase>
+    <source>No help file found</source>
+    <target>Не найден файл справки</target>
+</phrase>
+<phrase>
+    <source>Language Changed</source>
+    <target>Язык изменён</target>
+</phrase>
+<phrase>
+    <source>The language for this application is going to change to %1. Do you want to continue?</source>
+    <target>Язык этого приложения изменится на %1. Хотите продолжить?</target>
+</phrase>
+<phrase>
+    <source>&lt;p&gt;VMPK is developed and translated thanks to the volunteer work of many people from around the world. If you want to join the team or have any question, please visit the forums at &lt;a href=&apos;http://sourceforge.net/projects/vmpk/forums&apos;&gt;SourceForge&lt;/a&gt;&lt;/p&gt;</source>
+    <target>&lt;p&gt;VMPK разрабатывается и переводится благодаря работе добровольцев со всего мира. Если Вы хотите присоединиться к команде или у Вас есть какие-нибудь вопросы, посетите форумы на &lt;a href=&apos;http://sourceforge.net/projects/vmpk/forums&apos;&gt;SourceForge&lt;/a&gt;&lt;/p&gt;</target>
+</phrase>
+<phrase>
+    <source>Translation</source>
+    <target>Перевод</target>
+</phrase>
+<phrase>
+    <source>&lt;p&gt;Translation by TRANSLATOR_NAME_AND_EMAIL&lt;/p&gt;%1</source>
+    <target>&lt;p&gt;Перевёл Сергей Басалаев &amp;lt;sbasalaev@gmail.com&amp;gt;&lt;/p&gt;%1</target>
+</phrase>
+<phrase>
+    <source>Translation Information</source>
+    <target>Информация о переводе</target>
+</phrase>
+<phrase>
+    <source>Czech</source>
+    <target>Чешский</target>
+</phrase>
+<phrase>
+    <source>German</source>
+    <target>Немецкий</target>
+</phrase>
+<phrase>
+    <source>English</source>
+    <target>Английский</target>
+</phrase>
+<phrase>
+    <source>Spanish</source>
+    <target>Испанский</target>
+</phrase>
+<phrase>
+    <source>French</source>
+    <target>Французский</target>
+</phrase>
+<phrase>
+    <source>Galician</source>
+    <target>Галисийский</target>
+</phrase>
+<phrase>
+    <source>Dutch</source>
+    <target>Голландский</target>
+</phrase>
+<phrase>
+    <source>Russian</source>
+    <target>Русский</target>
+</phrase>
+<phrase>
+    <source>Serbian</source>
+    <target>Сербский</target>
+</phrase>
+<phrase>
+    <source>Swedish</source>
+    <target>Шведский</target>
+</phrase>
+<phrase>
+    <source>Chinese</source>
+    <target>Китайский</target>
+</phrase>
+<phrase>
+    <source>Chan:</source>
+    <target>Кан:</target>
+</phrase>
+<phrase>
+    <source>Channel:</source>
+    <target>Канал:</target>
+</phrase>
+<phrase>
+    <source>Oct:</source>
+    <target>Окт:</target>
+</phrase>
+<phrase>
+    <source>Base Octave:</source>
+    <target>Базовая октава:</target>
+</phrase>
+<phrase>
+    <source>Trans:</source>
+    <target>Пер:</target>
+</phrase>
+<phrase>
+    <source>Transpose:</source>
+    <target>Перенос:</target>
+</phrase>
+<phrase>
+    <source>Vel:</source>
+    <target>Громк:</target>
+</phrase>
+<phrase>
+    <source>Velocity:</source>
+    <target>Громкость:</target>
+</phrase>
+<phrase>
+    <source>Bank:</source>
+    <target>Банк:</target>
+</phrase>
+<phrase>
+    <source>Bender:</source>
+    <target>Зажим:</target>
+</phrase>
+<phrase>
+    <source>Control:</source>
+    <target>Регулятор:</target>
+</phrase>
+<phrase>
+    <source>Program:</source>
+    <target>Программа:</target>
+</phrase>
+<phrase>
+    <source>Value:</source>
+    <target>Значение:</target>
+</phrase>
+</QPH>
