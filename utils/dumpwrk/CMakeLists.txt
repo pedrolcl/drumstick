@@ -34,7 +34,7 @@ target_include_directories(drumstick-dumpwrk PRIVATE
     ../common
 )
 
-target_link_libraries(drumstick-dumpwrk PUBLIC
+target_link_libraries(drumstick-dumpwrk PRIVATE
     Drumstick::File
     Qt5::Core
 )

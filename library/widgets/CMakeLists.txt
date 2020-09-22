@@ -93,9 +93,9 @@ target_compile_definitions(drumstick-widgets
     PRIVATE LIBSUFFIX=${CMAKE_INSTALL_LIBDIR}
 )
 
-target_link_libraries(drumstick-widgets
-    PUBLIC Qt5::Core Qt5::Gui Qt5::Widgets
-    PRIVATE Qt5::Network
+target_link_libraries(drumstick-widgets PRIVATE
+    Qt5::Widgets
+    Qt5::Network
 )
 
 set(TS_FILES

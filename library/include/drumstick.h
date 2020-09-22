@@ -34,6 +34,7 @@
 #include <drumstick/drumstickcommon.h>
 #include <drumstick/playthread.h>
 #include <drumstick/subscription.h>
+#include <drumstick/sequencererror.h>
 #endif
 
 // File formats

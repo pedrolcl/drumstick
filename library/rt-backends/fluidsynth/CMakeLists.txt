@@ -48,12 +48,11 @@ endif()
 
 target_include_directories(drumstick-rt-fluidsynth PRIVATE
     ${Drumstick_SOURCE_DIR}/library/include
-    ${FLUIDSYNTH_INCLUDEDIR}
 )
 
-target_link_libraries(drumstick-rt-fluidsynth
-    PUBLIC Qt5::Core
-    PRIVATE ${FLUIDSYNTH_LIBRARIES}
+target_link_libraries(drumstick-rt-fluidsynth PRIVATE
+    Qt5::Core
+    PkgConfig::FLUIDSYNTH
 )
 
 set_target_properties(drumstick-rt-fluidsynth PROPERTIES

@@ -59,8 +59,8 @@ target_include_directories(drumstick-file PUBLIC
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_link_libraries(drumstick-file
-    PUBLIC Qt5::Core
+target_link_libraries(drumstick-file PRIVATE
+    Qt5::Core
 )
 
 if(STATIC_DRUMSTICK)

@@ -23,8 +23,7 @@
 #include <QCommandLineParser>
 #include <QTranslator>
 #include <QLibraryInfo>
-#include <drumstick/drumstickcommon.h>
-
+#include <drumstick/sequencererror.h>
 #include "guiplayer.h"
 #include "cmdversion.h"
 

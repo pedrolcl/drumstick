@@ -21,10 +21,12 @@ HEADERS += \
     ../include/drumstick/alsaport.h \
     ../include/drumstick/alsaqueue.h \
     ../include/drumstick/alsatimer.h \
-    ../include/drumstick/drumstickcommon.h \
     ../include/drumstick/macros.h \
     ../include/drumstick/playthread.h \
-    ../include/drumstick/subscription.h
+    ../include/drumstick/subscription.h \
+    ../include/drumstick/sequencererror.h \
+    errorcheck.h
+
 SOURCES += \
     alsaclient.cpp \
     alsaevent.cpp \
@@ -32,6 +34,7 @@ SOURCES += \
     alsaqueue.cpp \
     alsatimer.cpp \
     playthread.cpp \
+    sequencererror.cpp \
     subscription.cpp
 
 PKGCONFIG += alsa

@@ -17,6 +17,7 @@
 */
 
 #include <signal.h>
+#include <QDebug>
 #include <QCoreApplication>
 #include <QTextStream>
 #include <QtAlgorithms>
@@ -24,7 +25,7 @@
 #include <QReadLocker>
 #include <QWriteLocker>
 #include <QCommandLineParser>
-
+#include <drumstick/sequencererror.h>
 #include "playsmf.h"
 #include "cmdversion.h"
 

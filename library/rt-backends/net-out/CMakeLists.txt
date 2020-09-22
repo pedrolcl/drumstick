@@ -50,7 +50,7 @@ target_include_directories(drumstick-rt-net-out PRIVATE
     ${Drumstick_SOURCE_DIR}/library/include
 )
 
-target_link_libraries(drumstick-rt-net-out PUBLIC
+target_link_libraries(drumstick-rt-net-out PRIVATE
     Qt5::Network
     Drumstick::RT
 )

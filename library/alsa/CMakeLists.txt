@@ -31,8 +31,8 @@ set(drumstick-alsa_HEADERS
     ../include/drumstick/alsaport.h
     ../include/drumstick/alsaqueue.h
     ../include/drumstick/alsatimer.h
-    ../include/drumstick/drumstickcommon.h
     ../include/drumstick/playthread.h
+    ../include/drumstick/sequencererror.h
     ../include/drumstick/subscription.h
 )
 
@@ -43,6 +43,7 @@ set(drumstick-alsa_SRCS
     alsaqueue.cpp
     alsatimer.cpp
     playthread.cpp
+    sequencererror.cpp
     subscription.cpp
 )
 
@@ -59,17 +60,16 @@ add_library(Drumstick::ALSA ALIAS drumstick-alsa)
 target_include_directories(drumstick-alsa PUBLIC
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/library/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-    ${ALSA_INCLUDE_DIRS}
 )
 
-target_link_libraries(drumstick-alsa PUBLIC
+target_link_libraries(drumstick-alsa PRIVATE
     Qt5::Core
-    ${ALSA_LIBRARIES}
+    PkgConfig::ALSA
 )
 
 if(USE_DBUS)
-    target_link_libraries(drumstick-alsa
-        PRIVATE Qt5::DBus
+    target_link_libraries(drumstick-alsa PRIVATE
+        Qt5::DBus
     )
 endif()
 

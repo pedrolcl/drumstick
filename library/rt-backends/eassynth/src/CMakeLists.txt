@@ -24,15 +24,14 @@ else()
         PRIVATE QT_PLUGIN)
 endif()
 
-target_link_libraries( drumstick-rt-eassynth PUBLIC
+target_link_libraries( drumstick-rt-eassynth PRIVATE
     Qt5::Core
-    PRIVATE sonivox
-    ${PULSE_LIBRARIES}
+    PkgConfig::PULSE
+    sonivox
 )
 
 target_include_directories(drumstick-rt-eassynth PRIVATE
     ../sonivox/host_src/
-    ${PULSE_INCLUDE_DIRS}
     ${Drumstick_SOURCE_DIR}/library/include
 )
 

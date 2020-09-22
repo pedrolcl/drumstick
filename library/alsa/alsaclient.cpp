@@ -19,11 +19,14 @@
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaqueue.h>
 #include <drumstick/alsaevent.h>
+#include "errorcheck.h"
 #include <QFile>
 #include <QRegExp>
 #include <QThread>
 #include <QReadLocker>
 #include <QWriteLocker>
+#include <QCoreApplication>
+
 #if defined(RTKIT_SUPPORT)
 #include <QDBusConnection>
 #include <QDBusInterface>

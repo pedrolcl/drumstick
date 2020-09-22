@@ -54,7 +54,7 @@ target_include_directories(drumstick-vpiano
     PRIVATE ../common
 )
 
-target_link_libraries(drumstick-vpiano PUBLIC
+target_link_libraries(drumstick-vpiano PRIVATE
     Drumstick::RT
     Drumstick::Widgets
     Qt5::Widgets
@@ -77,14 +77,14 @@ endif ()
 if(STATIC_DRUMSTICK)
     if (FALSE)
         target_compile_definitions(drumstick-vpiano PUBLIC DUMMY_BACKEND)
-        target_link_libraries(drumstick-vpiano PUBLIC
+        target_link_libraries(drumstick-vpiano PRIVATE
             drumstick-rt-dummy-in
             drumstick-rt-dummy-out)
     endif()
 
     if(ALSA_FOUND)
         target_compile_definitions(drumstick-vpiano PUBLIC LINUX_BACKEND)
-        target_link_libraries(drumstick-vpiano PUBLIC
+        target_link_libraries(drumstick-vpiano PRIVATE
             drumstick-rt-alsa-in
             drumstick-rt-alsa-out
             drumstick-rt-eassynth)
@@ -92,7 +92,7 @@ if(STATIC_DRUMSTICK)
 
     if(UNIX AND NOT APPLE)
         target_compile_definitions(drumstick-vpiano PUBLIC OSS_BACKEND)
-        target_link_libraries(drumstick-vpiano PUBLIC
+        target_link_libraries(drumstick-vpiano PRIVATE
             drumstick-rt-oss-in
             drumstick-rt-oss-out)
     endif()
@@ -100,7 +100,7 @@ if(STATIC_DRUMSTICK)
 
     if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         target_compile_definitions(drumstick-vpiano PUBLIC MAC_BACKEND)
-        target_link_libraries(drumstick-vpiano PUBLIC
+        target_link_libraries(drumstick-vpiano PRIVATE
             drumstick-rt-mac-in
             drumstick-rt-mac-out
             drumstick-rt-macsynth
@@ -109,7 +109,7 @@ if(STATIC_DRUMSTICK)
 
     if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
         target_compile_definitions(drumstick-vpiano PUBLIC WIN_BACKEND)
-        target_link_libraries(drumstick-vpiano PUBLIC
+        target_link_libraries(drumstick-vpiano PRIVATE
             drumstick-rt-win-in
             drumstick-rt-win-out
             winmm)
@@ -118,14 +118,14 @@ if(STATIC_DRUMSTICK)
     find_package(Qt5Network)
     if(Qt5Network_FOUND)
         target_compile_definitions(drumstick-vpiano PUBLIC NET_BACKEND)
-        target_link_libraries(drumstick-vpiano PUBLIC
+        target_link_libraries(drumstick-vpiano PRIVATE
             drumstick-rt-net-in
             drumstick-rt-net-out)
     endif()
 
     if(FLUIDSYNTH_FOUND)
         target_compile_definitions(drumstick-vpiano PUBLIC FLUIDSYNTH_BACKEND)
-        target_link_libraries(drumstick-vpiano PUBLIC drumstick-rt-fluidsynth)
+        target_link_libraries(drumstick-vpiano PRIVATE drumstick-rt-fluidsynth)
     endif()
 endif()
 

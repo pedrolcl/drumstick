@@ -17,6 +17,7 @@
 */
 
 #include <signal.h>
+#include <QDebug>
 #include <QCoreApplication>
 #include <QTextStream>
 #include <QtAlgorithms>
@@ -25,7 +26,7 @@
 #include <QWriteLocker>
 #include <QCommandLineParser>
 #include <drumstick/alsatimer.h>
-
+#include <drumstick/sequencererror.h>
 #include "metronome.h"
 #include "cmdversion.h"
 

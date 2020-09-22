@@ -34,8 +34,7 @@ target_include_directories(drumstick-dumpmid PRIVATE
     ../common
 )
 
-target_link_libraries(drumstick-dumpmid PUBLIC
-    ${ALSA_LIBS} 
+target_link_libraries(drumstick-dumpmid PRIVATE
     Drumstick::ALSA
     Qt5::Core
 )

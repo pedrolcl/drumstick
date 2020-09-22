@@ -25,6 +25,7 @@
 #include <QReadLocker>
 #include <QWriteLocker>
 #include <QCommandLineParser>
+#include <drumstick/sequencererror.h>
 
 #include "dumpmid.h"
 #include "cmdversion.h"

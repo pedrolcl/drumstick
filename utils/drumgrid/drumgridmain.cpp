@@ -22,8 +22,7 @@
 #include <QCommandLineParser>
 #include <QTranslator>
 #include <QLibraryInfo>
-#include <drumstick/drumstickcommon.h>
-
+#include <drumstick/sequencererror.h>
 #include "cmdversion.h"
 #include "drumgrid.h"
 

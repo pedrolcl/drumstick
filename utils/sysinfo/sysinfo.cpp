@@ -24,7 +24,7 @@
 #include <drumstick/alsaqueue.h>
 #include <drumstick/alsaclient.h>
 #include <drumstick/subscription.h>
-
+#include <drumstick/sequencererror.h>
 #include "cmdversion.h"
 
 const QString PGM_NAME("drumstick-sysinfo");

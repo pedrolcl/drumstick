@@ -34,8 +34,7 @@ target_include_directories(drumstick-metronome PRIVATE
     ../common
 )
 
-target_link_libraries(drumstick-metronome PUBLIC
-    ${ALSA_LIBS} 
+target_link_libraries(drumstick-metronome PRIVATE
     Drumstick::ALSA
     Qt5::Core
 )

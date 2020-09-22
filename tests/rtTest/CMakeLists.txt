@@ -21,7 +21,7 @@ add_executable ( rtTest ${SOURCES} )
 target_include_directories (rtTest PUBLIC
     ${CMAKE_SOURCE_DIR}/library/include )
 
-target_link_libraries (rtTest PUBLIC
+target_link_libraries (rtTest PRIVATE
     Qt5::Core
     Qt5::Test
     Drumstick::RT )
@@ -31,14 +31,14 @@ add_test (rtTest ${PROJECT_BINARY_DIR}/bin/rtTest)
 if(STATIC_DRUMSTICK)
     if (FALSE)
         target_compile_definitions(rtTest PUBLIC DUMMY_BACKEND)
-        target_link_libraries(rtTest PUBLIC
+        target_link_libraries(rtTest PRIVATE
             drumstick-rt-dummy-in
             drumstick-rt-dummy-out)
     endif()
 
     if(ALSA_FOUND)
         target_compile_definitions(rtTest PUBLIC LINUX_BACKEND)
-        target_link_libraries(rtTest PUBLIC
+        target_link_libraries(rtTest PRIVATE
             drumstick-rt-alsa-in
             drumstick-rt-alsa-out
             drumstick-rt-eassynth)
@@ -46,7 +46,7 @@ if(STATIC_DRUMSTICK)
 
     if(UNIX AND NOT APPLE)
         target_compile_definitions(rtTest PUBLIC OSS_BACKEND)
-        target_link_libraries(rtTest PUBLIC
+        target_link_libraries(rtTest PRIVATE
             drumstick-rt-oss-in
             drumstick-rt-oss-out)
     endif()
@@ -54,7 +54,7 @@ if(STATIC_DRUMSTICK)
 
     if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         target_compile_definitions(rtTest PUBLIC MAC_BACKEND)
-        target_link_libraries(rtTest PUBLIC
+        target_link_libraries(rtTest PRIVATE
             drumstick-rt-mac-in
             drumstick-rt-mac-out
             drumstick-rt-macsynth
@@ -63,7 +63,7 @@ if(STATIC_DRUMSTICK)
 
     if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
         target_compile_definitions(rtTest PUBLIC WIN_BACKEND)
-        target_link_libraries(rtTest PUBLIC
+        target_link_libraries(rtTest PRIVATE
             drumstick-rt-win-in
             drumstick-rt-win-out
             winmm)
@@ -72,13 +72,13 @@ if(STATIC_DRUMSTICK)
     find_package(Qt5Network)
     if(Qt5Network_FOUND)
         target_compile_definitions(rtTest PUBLIC NET_BACKEND)
-        target_link_libraries(rtTest PUBLIC
+        target_link_libraries(rtTest PRIVATE
             drumstick-rt-net-in
             drumstick-rt-net-out)
     endif()
 
     if(FLUIDSYNTH_FOUND)
         target_compile_definitions(rtTest PUBLIC FLUIDSYNTH_BACKEND)
-        target_link_libraries(rtTest PUBLIC drumstick-rt-fluidsynth)
+        target_link_libraries(rtTest PRIVATE drumstick-rt-fluidsynth)
     endif()
 endif()

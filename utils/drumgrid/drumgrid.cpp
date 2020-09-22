@@ -16,6 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QDebug>
 #include <QInputDialog>
 #include <QShortcut>
 #include <QToolTip>
@@ -25,6 +26,7 @@
 #include <drumstick/alsaport.h>
 #include <drumstick/alsaqueue.h>
 #include <drumstick/alsaevent.h>
+#include <drumstick/sequencererror.h>
 #include "drumgrid.h"
 #include "drumgridmodel.h"
 #include "ui_drumgrid.h"

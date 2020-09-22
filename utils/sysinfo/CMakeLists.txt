@@ -26,8 +26,7 @@ target_include_directories(drumstick-sysinfo PRIVATE
     ../common
 )
 
-target_link_libraries(drumstick-sysinfo PUBLIC
-    ${ALSA_LIBS} 
+target_link_libraries(drumstick-sysinfo PRIVATE
     Drumstick::ALSA
     Qt5::Core
 )

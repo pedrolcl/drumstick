@@ -16,6 +16,10 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+extern "C" {
+    #include <alsa/asoundlib.h>
+}
+
 #include <QReadLocker>
 #include <QWriteLocker>
 #include <drumstick/playthread.h>

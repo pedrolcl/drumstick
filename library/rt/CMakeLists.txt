@@ -57,8 +57,8 @@ target_compile_definitions(drumstick-rt
     PRIVATE LIBSUFFIX=${CMAKE_INSTALL_LIBDIR}
 )
 
-target_link_libraries(drumstick-rt
-    PUBLIC Qt5::Core
+target_link_libraries(drumstick-rt PRIVATE
+    Qt5::Core
 )
 
 if(STATIC_DRUMSTICK)

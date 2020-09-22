@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+find_package(Qt5Widgets REQUIRED)
+
 set ( SOURCES widgetstest.cpp )
 
 add_executable ( widgetsTest ${SOURCES} )
@@ -21,8 +23,8 @@ add_executable ( widgetsTest ${SOURCES} )
 target_include_directories ( widgetsTest PUBLIC
     ${CMAKE_SOURCE_DIR}/library/include )
 
-target_link_libraries (widgetsTest PUBLIC
-    Qt5::Core
+target_link_libraries (widgetsTest PRIVATE
+    Qt5::Widgets
     Qt5::Test
     Drumstick::Widgets )
 

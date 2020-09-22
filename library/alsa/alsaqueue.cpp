@@ -21,6 +21,7 @@
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaevent.h>
 #include <drumstick/alsatimer.h>
+#include "errorcheck.h"
 
 /**
  * @file alsaqueue.cpp

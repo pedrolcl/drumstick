@@ -19,11 +19,16 @@
 #ifndef DRUMSTICK_ALSATIMER_H
 #define DRUMSTICK_ALSATIMER_H
 
-#include "drumstickcommon.h"
+extern "C" {
+    #include <alsa/asoundlib.h>
+}
+
+#include <QObject>
 #include <QList>
 #include <QThread>
 #include <QReadWriteLock>
 #include <QPointer>
+#include "macros.h"
 
 /**
  * @file alsatimer.h

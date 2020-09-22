@@ -21,7 +21,7 @@
 #include <QReadLocker>
 #include <QWriteLocker>
 #include <drumstick/alsatimer.h>
-
+#include "errorcheck.h"
 /**
  * @file alsatimer.cpp
  * Implementation of classes managing ALSA Timers

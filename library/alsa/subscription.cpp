@@ -17,7 +17,7 @@
 */
 
 #include <drumstick/alsaclient.h>
-
+#include "errorcheck.h"
 /**
  * @file subscription.cpp
  * Implementation of classes managing ALSA sequencer subscriptions

@@ -16,12 +16,15 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
- 
 #ifndef DRUMSTICK_SUBSCRIPTION_H
 #define DRUMSTICK_SUBSCRIPTION_H
 
-#include "drumstickcommon.h"
+extern "C" {
+    #include <alsa/asoundlib.h>
+}
+
 #include <QList>
+#include "macros.h"
 
 /**
  * @file subscription.h

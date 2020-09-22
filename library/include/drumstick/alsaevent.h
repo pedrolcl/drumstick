@@ -19,8 +19,13 @@
 #ifndef DRUMSTICK_ALSAEVENT_H
 #define DRUMSTICK_ALSAEVENT_H
 
-#include "drumstickcommon.h"
+extern "C" {
+    #include <alsa/asoundlib.h>
+}
+
+#include <QObject>
 #include <QEvent>
+#include "macros.h"
 
 /**
  * @file alsaevent.h
@@ -32,6 +37,11 @@
 
 namespace drumstick {
 namespace ALSA {
+
+/**
+ * 8-bit unsigned number to be used as a MIDI message parameter
+ */
+typedef quint8 MidiByte;
 
 /**
  * Constant SequencerEventType is the QEvent::type() of any SequencerEvent

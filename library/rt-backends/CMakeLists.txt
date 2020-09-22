@@ -51,7 +51,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 endif()
 
 if (PKG_CONFIG_FOUND)
-    pkg_check_modules(FLUIDSYNTH fluidsynth>=1.1.1)
+    pkg_check_modules(FLUIDSYNTH IMPORTED_TARGET fluidsynth>=1.1.1)
     if(FLUIDSYNTH_FOUND)
         add_subdirectory(fluidsynth)
     endif()

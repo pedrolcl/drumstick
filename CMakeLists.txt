@@ -35,18 +35,22 @@ if(APPLE AND ${CMAKE_VERSION} VERSION_LESS 3.14)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()
 
+if(UNIX)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "AppleClang")
+        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--as-needed")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--as-needed -Wl,--no-undefined")
+    endif()
+endif()
+
 include(GNUInstallDirs)
 
 add_definitions(-DVERSION=${PROJECT_VERSION})
-
-message(STATUS "${PROJECT_NAME} v${PROJECT_VERSION} prefix ${CMAKE_INSTALL_PREFIX}")
 
 set(_DBUS_INIT OFF)
 
 option(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)
 option(USE_DBUS "Include DBus support (required for RealtimeKit)" ${_DBUS_INIT})
-
-message(STATUS "Build configuration: ${CMAKE_BUILD_TYPE}")
 
 if(STATIC_DRUMSTICK)
     set(BUILD_SHARED_LIBS OFF)
@@ -76,12 +80,17 @@ if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 endif()
 
 if(${CMAKE_SYSTEM} MATCHES "Linux")
-    pkg_check_modules(ALSA alsa>=1.0.0 REQUIRED)
+    pkg_check_modules(ALSA REQUIRED IMPORTED_TARGET alsa>=1.0.0)
+    if(ALSA_FOUND)
+        message(STATUS "Found ALSA version = ${ALSA_VERSION}")
+    endif()
 endif()
 
 if(PKG_CONFIG_FOUND)
-    pkg_check_modules(PULSE libpulse-simple)
-    if(NOT PULSE_FOUND)
+    pkg_check_modules(PULSE IMPORTED_TARGET libpulse-simple)
+    if(PULSE_FOUND)
+        message(STATUS "Found PulseAudio version = ${PULSE_VERSION}")
+    else()
         message(STATUS "Warning: PulseAudio library not found.")
     endif()
 endif()
@@ -92,6 +101,13 @@ if(${CMAKE_SYSTEM} MATCHES "Darwin")
         message(STATUS "Found Qt5Concurrent version = ${Qt5Concurrent_VERSION_STRING}")
     endif()
 endif()
+
+message (STATUS "${PROJECT_NAME} v${PROJECT_VERSION}
+    install prefix: ${CMAKE_INSTALL_PREFIX}
+    Build configuration: ${CMAKE_BUILD_TYPE}
+    Processor: ${CMAKE_SYSTEM_PROCESSOR}
+    Qt5: ${Qt5Core_VERSION_STRING}
+    D-Bus support: ${USE_DBUS}")
 
 add_subdirectory(library)
 add_subdirectory(utils)

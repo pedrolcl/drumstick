@@ -34,8 +34,7 @@ target_include_directories(drumstick-playsmf PRIVATE
     ../common
 )
 
-target_link_libraries(drumstick-playsmf PUBLIC
-    ${ALSA_LIBS} 
+target_link_libraries(drumstick-playsmf PRIVATE
     Drumstick::ALSA
     Drumstick::File
     Qt5::Core

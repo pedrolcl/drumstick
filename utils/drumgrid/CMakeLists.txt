@@ -54,8 +54,7 @@ target_include_directories(drumstick-drumgrid PRIVATE
     ../common
 )
 
-target_link_libraries(drumstick-drumgrid PUBLIC
-    ${ALSA_LIBS} 
+target_link_libraries(drumstick-drumgrid PRIVATE
     Drumstick::ALSA
     Qt5::Widgets
 )
@@ -78,4 +77,4 @@ install(TARGETS drumstick-drumgrid
 
 install(FILES drumstick-drumgrid.desktop
         DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
-        
+

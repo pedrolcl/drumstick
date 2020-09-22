@@ -18,6 +18,7 @@
 
 #include <drumstick/alsaqueue.h>
 #include <drumstick/alsaclient.h>
+#include "errorcheck.h"
 
 /**
  * @file alsaport.cpp

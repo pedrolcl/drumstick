@@ -19,7 +19,14 @@
 #ifndef DRUMSTICK_ALSAQUEUE_H
 #define DRUMSTICK_ALSAQUEUE_H
 
-#include "drumstickcommon.h"
+#include <QObject>
+
+extern "C" {
+    #include <alsa/asoundlib.h>
+}
+
+#include "macros.h"
+
 /**
  * @file alsaqueue.h
  * Classes managing ALSA Sequencer queues

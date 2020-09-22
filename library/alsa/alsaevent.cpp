@@ -17,7 +17,7 @@
 */
 
 #include <drumstick/alsaevent.h>
-
+#include "errorcheck.h"
 /**
  * @file alsaevent.cpp
  * Implementation of classes managing ALSA Sequencer events.

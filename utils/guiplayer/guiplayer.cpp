@@ -16,6 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QDebug>
 #include <QApplication>
 #include <QFileDialog>
 #include <QInputDialog>
@@ -38,7 +39,7 @@
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaqueue.h>
 #include <drumstick/alsaport.h>
-
+#include <drumstick/sequencererror.h>
 #include "guiplayer.h"
 #include "ui_guiplayer.h"
 #include "playerabout.h"

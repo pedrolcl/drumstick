@@ -48,7 +48,7 @@ target_include_directories(drumstick-rt-oss-out PRIVATE
     ${Drumstick_SOURCE_DIR}/library/include
 )
 
-target_link_libraries(drumstick-rt-oss-out PUBLIC
+target_link_libraries(drumstick-rt-oss-out PRIVATE
     Qt5::Core
 )
 
