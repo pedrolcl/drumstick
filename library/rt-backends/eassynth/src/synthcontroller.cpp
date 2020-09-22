@@ -92,7 +92,7 @@ void SynthController::setExcludedConnections(QStringList conns)
 void SynthController::open(const MIDIConnection& name)
 {
     Q_UNUSED(name)
-    //qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO << name;
     start();
 }
 
