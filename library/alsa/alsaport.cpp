@@ -47,7 +47,7 @@ namespace ALSA {
  *
  * MidiPort represents an ALSA MIDI port.
  *
- * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_port.html
+ * @see https://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_port.html
  * @}
  */
 
@@ -157,6 +157,16 @@ int
 PortInfo::getPort()
 {
     return snd_seq_port_info_get_port(m_Info);
+}
+
+/**
+ * Gets the client name.
+ * @return the client name
+ * @see setClientName()
+ */
+QString PortInfo::getClientName() const
+{
+    return m_ClientName;
 }
 
 /**
@@ -467,6 +477,16 @@ PortInfo::freeSubscribers()
 }
 
 /**
+ * Sets the client name.
+ * @see getClientName()
+ * @param name Client name
+ */
+void PortInfo::setClientName(QString name)
+{
+    m_ClientName = name;
+}
+
+/**
  * Gets the size of the ALSA info object
  * @return The size of the object
  */
@@ -567,6 +587,7 @@ MidiPort::~MidiPort()
 
 /**
  * Gets the PortInfo object pointer
+ * @return the PortInfo object pointer
  */
 PortInfo*
 MidiPort::getPortInfo()

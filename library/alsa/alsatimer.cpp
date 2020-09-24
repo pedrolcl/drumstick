@@ -78,7 +78,7 @@ namespace ALSA {
  *
  * This class represents an ALSA timer object.
  *
- * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___timer.html
+ * @see https://www.alsa-project.org/alsa-doc/alsa-lib/group___timer.html
  * @}
  */
 
@@ -131,6 +131,7 @@ TimerInfo::clone()
 /**
  * Assignment operator
  * @param other Existing TimerInfo object reference
+ * @return a reference of this object
  */
 TimerInfo&
 TimerInfo::operator=(const TimerInfo& other)

@@ -26,23 +26,28 @@
 
 /**
  * @file backendmanager.h
- * Realtime MIDI input/output multiplatform classes
- * @defgroup RT Realtime MIDI (I/O)
- * @{
+ * BackendManager class declaration
  */
 
 namespace drumstick {
-
-//! Drumstick Real-Time library
+/**
+ * @ingroup RT
+ * @brief Drumstick Real-Time library
+ */
 namespace rt {
 
-    const QString QSTR_DRUMSTICK(QLatin1Literal("drumstick"));
-    const QString QSTR_DRUMSTICKRT(QLatin1Literal("DRUMSTICKRT"));
-    const QString QSTR_DRUMSTICKRT_GROUP(QLatin1Literal("DrumstickRT"));
-    const QString QSTR_DRUMSTICKRT_PUBLICNAMEIN(QLatin1Literal("PublicNameIN"));
-    const QString QSTR_DRUMSTICKRT_PUBLICNAMEOUT(QLatin1Literal("PublicNameOUT"));
-    const QString QSTR_DRUMSTICKRT_EXCLUDED(QLatin1Literal("ExcludedNames"));
-    const QString QSTR_DRUMSTICKRT_PATH(QLatin1Literal("BackendsPath"));
+    /**
+     * @addtogroup RT Realtime MIDI (I/O)
+     * @{
+     */
+
+    const QString QSTR_DRUMSTICK = QLatin1String("drumstick");
+    const QString QSTR_DRUMSTICKRT = QLatin1String("DRUMSTICKRT");
+    const QString QSTR_DRUMSTICKRT_GROUP = QLatin1String("DrumstickRT");
+    const QString QSTR_DRUMSTICKRT_PUBLICNAMEIN = QLatin1String("PublicNameIN");
+    const QString QSTR_DRUMSTICKRT_PUBLICNAMEOUT = QLatin1String("PublicNameOUT");
+    const QString QSTR_DRUMSTICKRT_EXCLUDED = QLatin1String("ExcludedNames");
+    const QString QSTR_DRUMSTICKRT_PATH = QLatin1String("BackendsPath");
 
     /**
      * @brief The BackendManager class manages lists of dynamic and static
@@ -110,8 +115,8 @@ namespace rt {
         BackendManagerPrivate *d;
     };
 
-}}
-
 /** @} */
+
+}} // namespace drumstick::rt
 
 #endif // BACKENDMANAGER_H

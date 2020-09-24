@@ -19,9 +19,13 @@
 #include <QApplication>
 #include <QPainter>
 #include <QPalette>
-//#include <QDebug>
 #include <drumstick/pianopalette.h>
 #include "pianokey.h"
+
+/**
+ * @file pianokey.cpp
+ * Implementation of the PianoKey class
+ */
 
 namespace drumstick {
 namespace widgets {

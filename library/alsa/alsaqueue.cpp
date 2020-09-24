@@ -57,7 +57,7 @@ const unsigned int SKEW_BASE = 0x10000;
  *
  * MidiQueue represents the queue object.
  *
- * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_queue.html
+ * @see https://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_queue.html
  * @}
  */
 

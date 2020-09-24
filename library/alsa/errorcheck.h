@@ -9,7 +9,17 @@ extern "C" {
 #include <QDebug>
 #include <drumstick/sequencererror.h>
 
+/**
+ * @file errorcheck.h
+ * Error checking functions and macros
+ */
+
 namespace drumstick { namespace ALSA {
+
+/**
+ * @addtogroup ALSAError
+ * @{
+ */
 
 /**
  * Checks the error code for severe errors.
@@ -56,6 +66,8 @@ inline int checkWarning(int rc, const char *where)
  * @param x Error code
  */
 #define DRUMSTICK_ALSA_CHECK_WARNING(x) (checkWarning((x),__PRETTY_FUNCTION__))
+
+/** @} */
 
 }} // namespace drumstick::ALSA
 

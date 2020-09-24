@@ -121,6 +121,7 @@ endif()
 if(UNIX AND NOT APPLE)
     find_package(Doxygen)
     if(DOXYGEN_FOUND)
+        string(REPLACE ";" " " DOXYGEN_INCLUDE_DIRS "${Qt5Core_INCLUDE_DIRS}")
         configure_file(
             "${CMAKE_SOURCE_DIR}/Doxyfile.in"
             "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"

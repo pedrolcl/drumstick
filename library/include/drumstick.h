@@ -19,6 +19,7 @@
 #ifndef DRUMSTICK_H
 #define DRUMSTICK_H
 #include <QtCore>
+
 /**
  * @file drumstick.h
  * The main header that a program can include to use all drumstick features.
@@ -31,7 +32,6 @@
 #include <drumstick/alsaport.h>
 #include <drumstick/alsaqueue.h>
 #include <drumstick/alsatimer.h>
-#include <drumstick/drumstickcommon.h>
 #include <drumstick/playthread.h>
 #include <drumstick/subscription.h>
 #include <drumstick/sequencererror.h>
@@ -48,6 +48,9 @@
 
 // Widgets
 #include <drumstick/pianokeybd.h>
+#include <drumstick/pianopalette.h>
+#include <drumstick/pianoscene.h>
+#include <drumstick/settingsfactory.h>
 #include <drumstick/configurationdialogs.h>
 
 #endif /*DRUMSTICK_H*/

@@ -24,6 +24,11 @@
 #include "networksettingsdialog.h"
 #include "ui_networksettingsdialog.h"
 
+/**
+ * @file networksettingsdialog.cpp
+ * Implementation of the Network configuration dialog
+ */
+
 namespace drumstick {
 namespace widgets {
 

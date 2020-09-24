@@ -22,19 +22,20 @@
 #include "subscription.h"
 #include <QObject>
 
+namespace drumstick { namespace ALSA {
+
 /**
  * @file alsaport.h
  * Classes managing ALSA Sequencer ports.
- * @defgroup ALSAPort ALSA Sequencer Ports
- * @{
  */
-
-namespace drumstick {
-namespace ALSA {
 
 class MidiClient;
 
 /**
+ * @addtogroup ALSAPort ALSA Sequencer Ports
+ * @{
+ *
+ * @class PortInfo
  * Port information container
  */
 class DRUMSTICK_EXPORT PortInfo
@@ -56,8 +57,7 @@ public:
 
     int getClient();
     int getPort();
-    /** Gets the client name. @see setClientName() */
-    QString getClientName() const { return m_ClientName; }
+    QString getClientName() const;
     const snd_seq_addr_t* getAddr();
     QString getName();
     unsigned int getCapability();
@@ -91,12 +91,7 @@ public:
 protected:
     void readSubscribers(MidiClient* seq);
     void freeSubscribers();
-
-    /**
-     * Sets the client name. @see getClientName()
-     * @param name Client name
-     */
-    void setClientName(QString name) { m_ClientName = name; }
+    void setClientName(QString name);
 
 private:
     snd_seq_port_info_t* m_Info;
@@ -214,8 +209,8 @@ private:
  */
 typedef QList<MidiPort*> MidiPortList;
 
-}} /* namespace drumstick::ALSA */
-
 /** @} */
+
+}} /* namespace drumstick::ALSA */
 
 #endif //DRUMSTICK_ALSAPORT_H

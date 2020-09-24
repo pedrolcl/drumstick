@@ -1,7 +1,7 @@
 /**
 @mainpage drumstick Documentation
 @author Copyright &copy; 2009-2020 Pedro López-Cabanillas &lt;plcl AT users.sf.net&gt;
-@date 2020-03-20
+@date 2020-09-99
 @version 2.0.0
 
 This document is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported License.
@@ -14,29 +14,32 @@ using Qt5 objects, idioms and style.
 
 Currently, there are four libraries designed to work together when needed:
 - \b Drumstick::ALSA is a Linux only C++/Qt wrapper around the ALSA Sequencer API. ALSA sequencer provides software support for MIDI technology on Linux.
-- \b Drumstick::File provides easy multiplatform file I/O for Standard MIDI Files (.mid), Cakewalk (.wrk) and Overture (.ove) file formats.
-- \b Drumstick::RT is a realtime MIDI I/O library with pluggable backends. It uses Drumstick::ALSA on Linux, and other frameworks on Mac and Windows.
-- \b Drumstick::Widgets is a library of MIDI widgets, including a Virtual Piano used by VMPK among other programs
+- \b Drumstick::File provides easy multiplatform file I/O for Standard MIDI Files (.mid) and Cakewalk (.wrk) file formats.
+- \b Drumstick::RT is a realtime MIDI I/O library with pluggable backends. It uses Drumstick::ALSA on Linux, and other native frameworks on macOS and Windows.
+- \b Drumstick::Widgets contains MIDI widgets, including a Virtual Piano used by VMPK among other programs
 
-@see http://qt-project.org/doc/qt-5/index.html
-@see http://www.alsa-project.org/alsa-doc/alsa-lib/seq.html
-@see http://www.ics.com/design-patterns
-@see http://www.midi.org/articles/tutorials
+@see https://doc.qt.io/qt-5/index.html
+@see https://www.alsa-project.org/alsa-doc/alsa-lib/seq.html
+@see https://www.ics.com/intro-design-patterns-c-qt-2nd-edition
+@see https://www.midi.org/articles/tutorials
 
 @section Disclaimer
 
-This document is a work in progress, in a very early state. It will be always in
-development. Please visit the drumstick web site to read the latest version.
+This document is a work in progress and it will be always in development.
+Please visit the drumstick web site to read the latest version.
 
-@see http://drumstick.sourceforge.net
+@see https://drumstick.sourceforge.io
 
 @section Introduction
 
 For an introduction to design and programming with C++ and Qt, see the book
 "An Introduction to Design Patterns in C++ with Qt" by by Alan Ezust and Paul
 Ezust. It is available published on dead trees, and also
-<a href="http://www.ics.com/design-patterns"> online</a>.
+<a href="https://www.ics.com/designpatterns/"> online</a>.
 
+Drumstick::ALSA was the first library developed under the Drumstick umbrella,
+and is available only on Linux, because ALSA Sequencer is an exclusive
+Linux technology.
 Here is how a simple program playing notes using Drumstick::ALSA looks like:
 
 @code
@@ -51,7 +54,7 @@ int main(int argc, char **argv) {
     client->open();
     client->setClientName( "MyClient" );
 
-    // create the port. Pointer is owned by the client instance
+    // create the port. The pointer is owned by the client instance
     drumstick::ALSA::MidiPort *port = client->createPort();
     port->setPortName( "MyPort" );
     port->setCapability( SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ );
@@ -81,12 +84,16 @@ int main(int argc, char **argv) {
     }
     // close and clean
     client->close();
+    // it also deletes the port and other owned objects
     delete client;
     return 0;
 }
 @endcode
 
-A similar example can also be implemented using the Drumstick::RT library:
+MIDI is a real time protocol, so it is not a surprise that many applications
+using MIDI require only real time functionality. In this case, you may use the
+Drumstick::RT library, which is multiplatform. An example equivalent to the
+former one, but implemented using the Drumstick::RT library looks like this:
 
 @code
 #include <QApplication>
@@ -199,14 +206,14 @@ target_link_libraries( example
 )
 @endcode
 
-Assuming that you have Qt 5.12.6 installed at your $HOME/Qt directory, and Drumstick is
+Assuming that you have Qt 5.12.9 installed at your $HOME/Qt directory, and Drumstick is
 installed at $HOME/Drumstick, then you can configure and build your project with these commands:
 (your current directory is your project's)
 
 @code
 mkdir build
 cd build
-cmake .. -DCMAKE_PREFIX_PATH="$HOME/Qt/5.12.6/gcc_64;$HOME/Drumstick"
+cmake .. -DCMAKE_PREFIX_PATH="$HOME/Qt/5.12.9/gcc_64;$HOME/Drumstick"
 cmake --build .
 @endcode
 
@@ -216,7 +223,7 @@ without needing to install Drumstick. In this case:
 @code
 mkdir build
 cd build
-cmake .. -DCMAKE_PREFIX_PATH=$HOME/Qt/5.12.6/gcc_64 -DDrumstick_DIR=$HOME/Source/Drumstick/build"
+cmake .. -DCMAKE_PREFIX_PATH=$HOME/Qt/5.12.9/gcc_64 -DDrumstick_DIR=$HOME/Source/Drumstick/build"
 cmake --build .
 @endcode
 
@@ -224,10 +231,10 @@ cmake --build .
 There are more examples in the source tree, under the utils/ directory, and
 you can also see applications using this library, like kmetronome, kmidimon and VMPK.
 
-@see http://kmetronome.sourceforge.net
-@see http://kmidimon.sourceforge.net
-@see http://kmid2.sourceforge.net
-@see http://vmpk.sourceforge.net
+@see https://kmetronome.sourceforge.io
+@see https://kmidimon.sourceforge.io
+@see https://kmid2.sourceforge.io
+@see https://vmpk.sourceforge.io
 
 @section Acknowledgments
 Parts of this documentation are copied from the ALSA library documentation,
@@ -238,6 +245,52 @@ whose authors are:
 <li>Takashi Iwai &lt;tiwai AT suse.de&gt;</li>
 <li>Frank van de Pol &lt;fvdpol AT coil.demon.nl&gt;</li>
 </ul>
+
+
+@defgroup ALSAGroup ALSA Sequencer Library Wrapper
+@brief Classes wrapping the ALSA Sequencer API
+@{
+    @defgroup ALSAClient ALSA Sequencer Clients
+    @brief ALSA clients are any entities using ALSA sequencer services.
+
+    @defgroup ALSAEvent  ALSA Sequencer Events
+    @brief MIDI Events are messages transmitted between MIDI devices or applications.
+
+    @defgroup ALSAPort   ALSA Sequencer Ports
+    @brief Ports are the endpoints of the MIDI connections.
+
+    @defgroup ALSAQueue  ALSA Sequencer Queues
+    @brief ALSA events are delivered to the output ports at scheduled times using queues.
+
+    @defgroup ALSASubs   ALSA Sequencer Subscriptions
+    @brief Subscriptions are virtual MIDI cables between readable and writable ports.
+
+    @defgroup PlayThread ALSA Sequencer Output
+    @brief ALSA Sequencer easy playback functionality.
+
+    @defgroup ALSAError  ALSA Sequencer Exception
+    @brief Exception class for ALSA Sequencer errors.
+
+    @defgroup ALSATimer  ALSA Timers
+    @brief Timers provide periodic time events to applications, and also to the Sequencer.
+@}
+
+@defgroup File MIDI File Formats
+@brief Support for some MIDI File Formats
+@{
+    @defgroup SMF Standard MIDI Files management (I/O)
+    @brief Provides a mechanism to parse and encode Standard MIDI Files
+
+    @defgroup WRK Cakewalk WRK File Parser (Input)
+    @brief Provides a mechanism to parse Cakewalk WRK Files.
+@}
+
+@defgroup RT Realtime MIDI (I/O)
+@brief Realtime MIDI input/output multiplatform classes.
+
+@defgroup Widgets Drumstick Widgets
+@brief MIDI related widgets and functions.
+
 
 @example drumgrid.cpp
 Simple drum patterns
@@ -262,10 +315,6 @@ SMF read and print
 @example dumpwrk.cpp
 Cakewalk WRK file parse and print
 @include dumpwrk.h
-
-@example dumpove.cpp
-Overture OVE file parse and print
-@include dumpove.h
 
 @example metronome.cpp
 Simple command line MIDI metronome

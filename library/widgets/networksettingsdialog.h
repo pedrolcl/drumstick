@@ -22,6 +22,11 @@
 #include <QDialog>
 #include <QShowEvent>
 
+/**
+ * @file networksettingsdialog.h
+ * Declaration of the Network configuration dialog
+ */
+
 namespace drumstick {
 namespace widgets {
 

@@ -27,6 +27,11 @@
 #include "macsynthsettingsdialog.h"
 #include "ui_macsynthsettingsdialog.h"
 
+/**
+ * @file macsynthsettingsdialog.cpp
+ * Implementation of the Mac Synth configuration dialog
+ */
+
 namespace drumstick {
 namespace widgets {
 

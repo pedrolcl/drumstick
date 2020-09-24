@@ -19,6 +19,11 @@
 #include <QFileInfo>
 #include <drumstick/settingsfactory.h>
 
+/**
+ * @file settingsfactory.cpp
+ * Implementation of the Settings Factory class
+ */
+
 namespace drumstick { namespace widgets {
 
 QString SettingsFactory::s_fileName;

@@ -20,6 +20,11 @@
 #include "keylabel.h"
 #include "pianokey.h"
 
+/**
+ * @file keylabel.cpp
+ * Implementation of the KeyLabel class
+ */
+
 namespace drumstick {
 namespace widgets {
 

@@ -29,12 +29,14 @@
 /**
  * @file rtmidioutput.h
  * Realtime MIDI output interface
+ */
+
+namespace drumstick { namespace rt {
+
+/**
  * @addtogroup RT
  * @{
  */
-
-namespace drumstick {
-namespace rt {
 
 const quint8 MIDI_STD_CHANNELS        = 16;
 const quint8 MIDI_GM_STD_DRUM_CHANNEL = (10-1);
@@ -82,10 +84,10 @@ inline int MIDI_MSB(int x)
     return (x / 0x80);
 }
 
-/**
- * @brief MIDIConnection a connection identifier
- */
-typedef QPair<QString,QVariant> MIDIConnection;
+    /**
+     * @brief MIDIConnection represents a connection identifier
+     */
+    typedef QPair<QString,QVariant> MIDIConnection;
 
     /**
      * @brief MIDI OUT interface
@@ -126,6 +128,7 @@ typedef QPair<QString,QVariant> MIDIConnection;
         virtual void setPublicName(QString name) = 0;
         /**
          * @brief connections
+         * @param advanced whether the advanced connections are included or not
          * @return list of available MIDI ports
          */
         virtual QList<MIDIConnection> connections(bool advanced = false) = 0;
@@ -136,7 +139,7 @@ typedef QPair<QString,QVariant> MIDIConnection;
         virtual void setExcludedConnections(QStringList conns) = 0;
         /**
          * @brief open the MIDI port by name
-         * @param name
+         * @param conn the MIDI connection to be opened
          */
         virtual void open(const MIDIConnection& conn) = 0;
         /**
@@ -215,11 +218,12 @@ typedef QPair<QString,QVariant> MIDIConnection;
          */
         virtual void sendSystemMsg(const int status) = 0;
     };
-}}
 
-Q_DECLARE_INTERFACE(drumstick::rt::MIDIOutput, "net.sourceforge.drumstick.rt.MIDIOutput/1.0")
+    /** @} */
+
+}} // namespace drumstick::rt
+
+Q_DECLARE_INTERFACE(drumstick::rt::MIDIOutput, "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
 Q_DECLARE_METATYPE(drumstick::rt::MIDIConnection);
-
-/** @} */
 
 #endif /* MIDIOUTPUT_H */

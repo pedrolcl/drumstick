@@ -17,11 +17,21 @@
 */
 
 extern "C" {
-#include <alsa/asoundlib.h>
+    #include <alsa/asoundlib.h>
 }
 #include <drumstick/sequencererror.h>
 
+/**
+ * @file sequencererror.cpp
+ * SequencerError Exception class implementation
+ */
+
 namespace drumstick { namespace ALSA {
+
+/**
+* @addtogroup ALSAError
+* @{
+*/
 
 SequencerError::SequencerError(QString const& s, int rc):
     m_location(s), m_errCode(rc) { }
@@ -45,5 +55,7 @@ const QString &SequencerError::location() const
 {
     return m_location;
 }
+
+/** @} */
 
 }} // namespace drumstick::ALSA

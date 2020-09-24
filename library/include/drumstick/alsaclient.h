@@ -27,15 +27,16 @@
 /**
  * @file alsaclient.h
  * Classes managing ALSA Sequencer clients
- *
- * @defgroup ALSAClient ALSA Sequencer Clients
- * @{
  */
 
-//! Drumstick common
+/**
+ * @brief Drumstick common
+ */
 namespace drumstick {
-
-//! Drumstick ALSA library wrapper
+/**
+ * @ingroup ALSAGroup
+ * @brief Drumstick ALSA library wrapper
+ */
 namespace ALSA {
 
 class MidiQueue;
@@ -45,6 +46,10 @@ class SequencerInputThread;
 class RemoveEvents;
 
 /**
+ * @addtogroup ALSAClient ALSA Sequencer Clients
+ * @{
+ *
+ * @class ClientInfo
  * Client information
  *
  * This class is used to retrieve, hold and set some data from
@@ -289,7 +294,9 @@ public:
     bool realTimeInputEnabled();
 
 signals:
-    /** Signal emitted when an event is received */
+    /** Signal emitted when an event is received
+     * @param ev pointer to the received event
+     */
     void eventReceived(SequencerEvent* ev);
 
 protected:
@@ -337,10 +344,10 @@ DRUMSTICK_EXPORT int getRuntimeALSADriverNumber();
  * different to the runtime library.
  * @see getRuntimeALSALibraryVersion
  */
-const QString LIBRARY_VERSION(SND_LIB_VERSION_STR);
-
-}} /* namespace drumstick::ALSA */
+const QString LIBRARY_VERSION = QLatin1String(SND_LIB_VERSION_STR);
 
 /** @} */
+
+}} /* namespace drumstick::ALSA */
 
 #endif // DRUMSTICK_ALSACLIENT_H

@@ -26,14 +26,16 @@
 
 /**
  * @file pianokeybd.h
- * MIDI Widgets
- * @addtogroup Widgets MIDI Widgets
- * @{
+ * Piano Keyboard Widget
  */
 
 namespace drumstick { namespace widgets {
 
     /**
+     * @addtogroup Widgets
+     * @{
+     *
+     * @class RawKbdHandler
      * @brief The RawKbdHandler class callbacks
      */
     class RawKbdHandler {
@@ -59,34 +61,53 @@ namespace drumstick { namespace widgets {
      */
     typedef QHash<int, int> KeyboardMap;
 
-    extern DRUMSTICK_EXPORT KeyboardMap g_DefaultKeyMap;
-    extern DRUMSTICK_EXPORT KeyboardMap g_DefaultRawKeyMap;
+    extern DRUMSTICK_EXPORT KeyboardMap g_DefaultKeyMap;    ///< Global Key Map Variable
+    extern DRUMSTICK_EXPORT KeyboardMap g_DefaultRawKeyMap; ///< Global Raw Key Map Variable
 
     const int DEFAULTSTARTINGKEY = 9;   ///< Default starting key (A)
     const int DEFAULTBASEOCTAVE = 1;    ///< Default base octave
     const int DEFAULTNUMBEROFKEYS = 88; ///< Default number of piano keys
 
+    /**
+     * @brief Labels Visibility
+     */
     enum LabelVisibility {
         ShowNever,          ///< Don't show note names
         ShowMinimum,        ///< Show only note C names
         ShowActivated,      ///< Show names when notes are activated
         ShowAlways          ///< Show always note names
     };
+
+    /**
+     * @brief Labels for Alterations
+     */
     enum LabelAlteration {
         ShowSharps,         ///< Show sharps on black keys
         ShowFlats,          ///< Show flats on black keys
         ShowNothing         ///< Do not show names on black keys
     };
+
+    /**
+     * @brief Labels Orientation
+     */
     enum LabelOrientation {
         HorizontalOrientation,  ///< Show horizontal names
         VerticalOrientation,    ///< Show vertical names
         AutomaticOrientation    ///< Show horizonal or vertical names depending on the size
     };
+
+    /**
+     * @brief Labels Naming
+     */
     enum LabelNaming {
         StandardNames,          ///< Show standard names
         CustomNamesWithSharps,  ///< Show custom names with sharps
         CustomNamesWithFlats    ///< Show custom names with flats
     };
+
+    /**
+     * @brief Labels Central Octave
+     */
     enum LabelCentralOctave {
         OctaveNothing = -1,     ///< Don't show octave numbers
         OctaveC3,               ///< Central C, MIDI note #60 is C3
@@ -112,7 +133,7 @@ namespace drumstick { namespace widgets {
 
 #ifndef Q_MOC_RUN
         Q_CLASSINFO("Author", "Pedro Lopez-Cabanillas <plcl@users.sf.net>")
-        Q_CLASSINFO("URL", "http://sourceforge.net/projects/vmpk")
+        Q_CLASSINFO("URL", "https://sourceforge.net/projects/vmpk")
         Q_CLASSINFO("Version", QT_STRINGIFY(VERSION))
 #endif
 
@@ -216,9 +237,8 @@ namespace drumstick { namespace widgets {
         PianoKeybdPrivate* d;
     };
 
-} // namespace widgets
-} // namespace drumstick
-
 /** @} */
+
+}} // namespace drumstick::widgets
 
 #endif // PIANOKEYBD_H

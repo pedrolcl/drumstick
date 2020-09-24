@@ -20,10 +20,14 @@
 #include <QPalette>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
-//#include <QDebug>
 #include <qmath.h>
 #include <drumstick/pianokeybd.h>
 #include <drumstick/pianoscene.h>
+
+/**
+ * @file pianoscene.cpp
+ * Implementation of the Piano Scene
+ */
 
 namespace drumstick { namespace widgets {
 

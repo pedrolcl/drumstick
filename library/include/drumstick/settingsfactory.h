@@ -25,14 +25,16 @@
 
 /**
  * @file settingsfactory.h
- * MIDI Widgets
- * @addtogroup Widgets MIDI Widgets
- * @{
+ * SettingsFactory class declaration
  */
 
 namespace drumstick { namespace widgets {
 
     /**
+     * @addtogroup Widgets
+     * @{
+     *
+     * @class SettingsFactory
      * @brief The SettingsFactory class
      */
     class DRUMSTICK_EXPORT SettingsFactory
@@ -48,8 +50,8 @@ namespace drumstick { namespace widgets {
         static QString s_fileName;
     };
 
-}} // namespace drumstick::widgets
+    /** @} */
 
-/** @} */
+}} // namespace drumstick::widgets
 
 #endif // SETTINGS_H

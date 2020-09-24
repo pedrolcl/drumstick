@@ -23,6 +23,11 @@
 #include "sonivoxsettingsdialog.h"
 #include "ui_sonivoxsettingsdialog.h"
 
+/**
+ * @file sonivoxsettingsdialog.cpp
+ * Implementation of the Sonivox Synth configuration dialog
+ */
+
 namespace drumstick { namespace widgets {
 
 const QString QSTR_PREFERENCES("SonivoxEAS");

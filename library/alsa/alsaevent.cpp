@@ -26,7 +26,7 @@
 /**
  * @class QEvent
  * The QEvent class is the base class of all event classes.
- * @see http://qt-project.org/doc/qt-5/qevent.html
+ * @see https://doc.qt.io/qt-5/qevent.html
  */
 
 namespace drumstick {
@@ -86,10 +86,10 @@ namespace ALSA {
  *
  * MidiCodec: Auxiliary class to translate between raw MIDI streams and ALSA events.
  *
- * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_event.html
- * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_events.html
- * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_ev_type.html
- * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___m_i_d_i___event.html
+ * @see https://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_event.html
+ * @see https://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_events.html
+ * @see https://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_ev_type.html
+ * @see https://www.alsa-project.org/alsa-doc/alsa-lib/group___m_i_d_i___event.html
  * @}
  */
 
@@ -383,16 +383,28 @@ int SequencerEvent::getEncodedLength()
     return snd_seq_event_length(&m_event);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 SequencerEvent* SequencerEvent::clone() const
 {
     return new SequencerEvent(&m_event);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 ChannelEvent* ChannelEvent::clone() const
 {
     return new ChannelEvent(&m_event);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 KeyEvent* KeyEvent::clone() const
 {
     return new KeyEvent(&m_event);
@@ -410,6 +422,10 @@ NoteEvent::NoteEvent(int ch, int key, int vel, int dur) : KeyEvent()
     snd_seq_ev_set_note(&m_event, ch, key, vel, dur);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 NoteEvent* NoteEvent::clone() const
 {
     return new NoteEvent(&m_event);
@@ -426,6 +442,10 @@ NoteOnEvent::NoteOnEvent(int ch, int key, int vel) : KeyEvent()
     snd_seq_ev_set_noteon(&m_event, ch, key, vel);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 NoteOnEvent* NoteOnEvent::clone() const
 {
     return new NoteOnEvent(&m_event);
@@ -442,6 +462,10 @@ NoteOffEvent::NoteOffEvent(int ch, int key, int vel) : KeyEvent()
     snd_seq_ev_set_noteoff(&m_event, ch, key, vel);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 NoteOffEvent* NoteOffEvent::clone() const
 {
     return new NoteOffEvent(&m_event);
@@ -458,6 +482,10 @@ KeyPressEvent::KeyPressEvent(int ch, int key, int vel) : KeyEvent()
     snd_seq_ev_set_keypress(&m_event, ch, key, vel);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 KeyPressEvent* KeyPressEvent::clone() const
 {
     return new KeyPressEvent(&m_event);
@@ -474,6 +502,10 @@ ControllerEvent::ControllerEvent(int ch, int cc, int val) : ChannelEvent()
     snd_seq_ev_set_controller(&m_event, ch, cc, val);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 ControllerEvent* ControllerEvent::clone() const
 {
     return new ControllerEvent(&m_event);
@@ -489,6 +521,10 @@ ProgramChangeEvent::ProgramChangeEvent(int ch, int val) : ChannelEvent()
     snd_seq_ev_set_pgmchange(&m_event, ch, val);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 ProgramChangeEvent* ProgramChangeEvent::clone() const
 {
     return new ProgramChangeEvent(&m_event);
@@ -504,6 +540,10 @@ PitchBendEvent::PitchBendEvent(int ch, int val) : ChannelEvent()
     snd_seq_ev_set_pitchbend(&m_event, ch, val);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 PitchBendEvent* PitchBendEvent::clone() const
 {
     return new PitchBendEvent(&m_event);
@@ -519,6 +559,10 @@ ChanPressEvent::ChanPressEvent(int ch, int val) : ChannelEvent()
     snd_seq_ev_set_chanpress(&m_event, ch, val);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 ChanPressEvent* ChanPressEvent::clone() const
 {
     return new ChanPressEvent(&m_event);
@@ -593,6 +637,10 @@ VariableEvent& VariableEvent::operator=(const VariableEvent& other)
     return *this;
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 VariableEvent* VariableEvent::clone() const
 {
     return new VariableEvent(&m_event);
@@ -648,6 +696,10 @@ SysExEvent::SysExEvent(const unsigned int datalen, char* dataptr)
     snd_seq_ev_set_sysex( &m_event, m_data.size(), m_data.data() );
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 SysExEvent* SysExEvent::clone() const
 {
     return new SysExEvent(&m_event);
@@ -723,6 +775,10 @@ int TextEvent::getTextType() const
     return m_textType;
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 TextEvent* TextEvent::clone() const
 {
     return new TextEvent(&m_event);
@@ -738,6 +794,10 @@ SystemEvent::SystemEvent(const snd_seq_event_type_t type) : SequencerEvent()
     setSequencerType(type);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 SystemEvent* SystemEvent::clone() const
 {
     return new SystemEvent(&m_event);
@@ -755,6 +815,10 @@ QueueControlEvent::QueueControlEvent(snd_seq_event_type_t type, int queue, int v
     snd_seq_ev_set_queue_control(&m_event, type, queue, value);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 QueueControlEvent* QueueControlEvent::clone() const
 {
     return new QueueControlEvent(&m_event);
@@ -772,6 +836,10 @@ ValueEvent::ValueEvent(const snd_seq_event_type_t type, int val) : SequencerEven
     setValue(val);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 ValueEvent* ValueEvent::clone() const
 {
     return new ValueEvent(&m_event);
@@ -787,21 +855,37 @@ TempoEvent::TempoEvent(int queue, int tempo) : QueueControlEvent()
     snd_seq_ev_set_queue_tempo(&m_event, queue, tempo);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 TempoEvent* TempoEvent::clone() const
 {
     return new TempoEvent(&m_event);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 ClientEvent* ClientEvent::clone() const
 {
     return new ClientEvent(&m_event);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 PortEvent* PortEvent::clone() const
 {
     return new PortEvent(&m_event);
 }
 
+/**
+ * Clone this object returning a pointer to the new object
+ * @return pointer to the new object
+ */
 SubscriptionEvent* SubscriptionEvent::clone() const
 {
     return new SubscriptionEvent(&m_event);

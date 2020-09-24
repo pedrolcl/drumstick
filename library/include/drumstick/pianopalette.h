@@ -26,22 +26,27 @@
 
 /**
  * @file pianopalette.h
- * MIDI Widgets
- * @addtogroup Widgets MIDI Widgets
- * @{
+ * Piano Palette declarations
  */
 
 namespace drumstick { namespace widgets {
 
 /**
- * @brief The PalettePolicy enum
+ * @addtogroup Widgets
+ * @{
+ *
+ * @enum PalettePolicy
+ * @brief The PalettePolicy enumeration.
+ *
+ * This enum describes the different kind of color palettes supported, which
+ * can be used for highlight, background or foreground colors.
  */
 enum PalettePolicy {
     PAL_SINGLE = 0,    ///< Single highlihgting color for all keys
     PAL_DOUBLE = 1,    ///< Two highlihgting colors (naturals/alterations)
     PAL_CHANNELS = 2,  ///< Different highlihgting colors for each channel
     PAL_SCALE = 3,     ///< Background colors for each chromatic scale note
-    PAL_KEYS = 4,      ///< Background colors (naturals=white/alterations=black)
+    PAL_KEYS = 4,      ///< Two background colors (naturals/alterations)
     PAL_FONT = 5       ///< Foreground font colors for names
 };
 
@@ -108,8 +113,8 @@ protected:
     QString m_paletteText;
 };
 
-}} // namespace drumstick::widgets
-
 /** @} */
+
+}} // namespace drumstick::widgets
 
 #endif // PIANOPALETTE_H

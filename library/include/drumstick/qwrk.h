@@ -27,14 +27,15 @@ class QDataStream;
 /**
  * @file qwrk.h
  * Cakewalk WRK Files Input
- * @defgroup WRK Cakewalk WRK File Parser (Input)
- * @{
  */
 
-namespace drumstick {
-namespace File {
+namespace drumstick { namespace File {
 
 /**
+ * @addtogroup WRK Cakewalk WRK File Parser (Input)
+ * @{
+ *
+ * @enum WrkChunkType
  * Record types within a WRK file
  */
 enum WrkChunkType {
@@ -70,7 +71,10 @@ enum WrkChunkType {
     END_CHUNK = 255      ///< Last chunk, end of file
 };
 
-const QByteArray HEADER("CAKEWALK"); ///< Cakewalk WRK File header id
+/**
+ * Cakewalk WRK file format header string id
+ */
+const QByteArray HEADER = QByteArray("CAKEWALK"); ///< Cakewalk WRK File header id
 
 /**
  * Cakewalk WRK file format (input only)
@@ -157,6 +161,7 @@ Q_SIGNALS:
 
     /**
      * Emitted after reading the last event of a event stream
+     * @param time musical time
      */
     void signalWRKStreamEnd(long time);
 
@@ -535,8 +540,8 @@ private:
     QWrkPrivate *d;
 };
 
-}} // namespace drumstick::File
-
 /** @} */
+
+}} // namespace drumstick::File
 
 #endif // DRUMSTICK_QWRK_H

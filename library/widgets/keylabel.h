@@ -22,6 +22,11 @@
 #include <QGraphicsTextItem>
 #include <drumstick/pianokeybd.h>
 
+/**
+ * @file keylabel.h
+ * Declaration of the KeyLabel class
+ */
+
 namespace drumstick {
 namespace widgets {
 

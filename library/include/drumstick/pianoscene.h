@@ -28,15 +28,17 @@
 
 /**
  * @file pianoscene.h
- * MIDI Widgets
- * @addtogroup Widgets MIDI Widgets
- * @{
+ * PianoScene class declaration
  */
 
 namespace drumstick { namespace widgets {
 
     /**
-     * @brief The PianoScene class
+     * @addtogroup Widgets
+     * @{
+     *
+     * @class PianoScene
+     * The PianoScene class
      */
     class DRUMSTICK_EXPORT PianoScene : public QGraphicsScene
     {

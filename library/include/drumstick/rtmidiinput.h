@@ -31,14 +31,15 @@
 /**
  * @file rtmidiinput.h
  * Realtime MIDI input interface
- * @addtogroup RT
- * @{
  */
 
-namespace drumstick {
-namespace rt {
+namespace drumstick { namespace rt {
 
     /**
+     * @addtogroup RT
+     * @{
+     *
+     * @class MIDIInput
      * @brief MIDI IN interface
      */
     class DRUMSTICK_EXPORT MIDIInput : public QObject
@@ -77,6 +78,7 @@ namespace rt {
         virtual void setPublicName(QString name) = 0;
         /**
          * @brief connections
+         * @param advanced whether the advanced connections are included or not
          * @return list of available MIDI ports
          */
         virtual QList<MIDIConnection> connections(bool advanced = false) = 0;
@@ -87,7 +89,7 @@ namespace rt {
         virtual void setExcludedConnections(QStringList conns) = 0;
         /**
          * @brief open the MIDI port by name
-         * @param name
+         * @param conn Connection to open
          */
         virtual void open(const MIDIConnection& conn) = 0;
         /**
@@ -111,7 +113,7 @@ namespace rt {
         virtual void enableMIDIThru(bool enable) = 0;
         /**
          * @brief isEnabledMIDIThru
-         * @return
+         * @return MIDI Thru is enabled
          */
         virtual bool isEnabledMIDIThru() = 0;
 
@@ -187,10 +189,11 @@ namespace rt {
          */
         void midiSystemRealtime(const int status);
     };
-}}
-
-Q_DECLARE_INTERFACE(drumstick::rt::MIDIInput, "net.sourceforge.drumstick.rt.MIDIInput/1.0")
 
 /** @} */
+
+}} // namespace drumstick::rt
+
+Q_DECLARE_INTERFACE(drumstick::rt::MIDIInput, "net.sourceforge.drumstick.rt.MIDIInput/2.0")
 
 #endif // MIDIINPUT_H

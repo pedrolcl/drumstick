@@ -56,17 +56,16 @@
 /**
  * @class QObject
  * The QObject class is the base class of all Qt objects.
- * @see   http://qt-project.org/doc/qt-5/qobject.html
+ * @see https://doc.qt.io/qt-5/qobject.html
  */
 
 /**
  * @class QThread
  * The QThread class provides platform-independent threads.
- * @see   http://qt-project.org/doc/qt-5/qthread.html
+ * @see https://doc.qt.io/qt-5/qthread.html
  */
 
-namespace drumstick {
-namespace ALSA {
+namespace drumstick { namespace ALSA {
 
 /**
  * @addtogroup ALSAClient
@@ -142,7 +141,7 @@ namespace ALSA {
  * is emitted. In any case, the event pointer must be deleted by the receiver
  * method.
  *
- * @see http://qt-project.org/doc/qt-5/threads-reentrancy.html
+ * @see https://doc.qt.io/qt-5/threads-reentrancy.html
  *
  * @section EventOutput Output
  *
@@ -179,8 +178,7 @@ namespace ALSA {
  * MidiClient::setOutputBufferSize() as well as MidiClient::getInputBufferSize()
  * and MidiClient::setInputBufferSize().
  *
- * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_client.html
- * @}
+ * @see https://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_client.html
  */
 
 /**
@@ -284,6 +282,7 @@ MidiClient::~MidiClient()
 
 /**
  * Returns the sequencer handler managed by ALSA
+ * @return the sequencer handler
  */
 snd_seq_t*
 MidiClient::getHandle()
@@ -293,6 +292,7 @@ MidiClient::getHandle()
 
 /**
  * Returns true if the sequencer is opened
+ * @return wheter the sequencer is opened
  */
 bool MidiClient::isOpened()
 {
@@ -301,6 +301,7 @@ bool MidiClient::isOpened()
 
 /**
  * Returns the name of the sequencer device
+ * @return the device name
  */
 QString MidiClient::getDeviceName()
 {
@@ -309,6 +310,7 @@ QString MidiClient::getDeviceName()
 
 /**
  * Returns the last open mode used in open()
+ * @return the last open mode
  */
 int MidiClient::getOpenMode()
 {
@@ -317,6 +319,7 @@ int MidiClient::getOpenMode()
 
 /**
  * Returns the last block mode used in open()
+ * @return the last block mode
  */
 bool MidiClient::getBlockMode()
 {
@@ -325,6 +328,7 @@ bool MidiClient::getBlockMode()
 
 /**
  * Returns true if the events mode of delivery has been enabled
+ * @return whether the events mode of delivery is enabled
  */
 bool MidiClient::getEventsEnabled() const
 {
@@ -333,6 +337,7 @@ bool MidiClient::getEventsEnabled() const
 
 /**
  * Sets a sequencer event handler enabling the callback delivery mode
+ * @param handler the sequencer event handler
  */
 void MidiClient::setHandler(SequencerEventHandler* handler)
 {
@@ -2495,5 +2500,7 @@ getRuntimeALSADriverNumber()
     }
     return result;
 }
+
+/** @} */
 
 }} /* namespace drumstick::ALSA */

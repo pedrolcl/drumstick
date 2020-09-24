@@ -23,10 +23,29 @@
 #include <QString>
 #include "macros.h"
 
+/**
+ * @file sequencererror.h
+ * SequencerError Exception class
+ */
+
+/**
+ * @namespace std
+ * C++ Standard Library namespace
+ *
+ * @class std::exception
+ * Provides consistent interface to handle errors.
+ * @see https://en.cppreference.com/w/cpp/error/exception
+ */
+
 namespace drumstick { namespace ALSA {
 
 /**
- * Class used to report errors from the ALSA sequencer.
+ * @addtogroup ALSAError ALSA Sequencer Exception
+ * @{
+ *
+ * @class SequencerError
+ * Exception class for ALSA Sequencer errors.
+ * This class is used to report errors from the ALSA sequencer.
  *
  * The class SequencerError represents an exception object reported when the
  * ALSA library returns an error code. It is only used for severe errors.
@@ -42,7 +61,8 @@ public:
     SequencerError(QString const& s, int rc);
 
     /**
-     * Gets a human readable error message
+     * Retrieve a human readable error message
+     * @return human readable error message
      */
     virtual const char* what() const noexcept override;
 
@@ -68,6 +88,8 @@ private:
     QString m_location;
     int     m_errCode;
 };
+
+/** @} */
 
 }} // namespace drumstick::ALSA
 

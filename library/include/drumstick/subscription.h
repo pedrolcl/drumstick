@@ -26,19 +26,20 @@ extern "C" {
 #include <QList>
 #include "macros.h"
 
+namespace drumstick { namespace ALSA {
+
 /**
  * @file subscription.h
  * Classes managing ALSA sequencer subscriptions
- * @defgroup ALSASubscription ALSA Sequencer Subscriptions
- * @{
  */
-
-namespace drumstick {
-namespace ALSA {
 
 class MidiClient;
 
 /**
+ * @addtogroup ALSASubs ALSA Sequencer Subscriptions
+ * @{
+ *
+ * @class Subscriber
  * Subscriber container class.
  *
  * This class is used to enumerate the subscribers of a given (root) port.
@@ -126,8 +127,8 @@ typedef QList<Subscription> SubscriptionsList;
  */
 typedef QList<Subscriber> SubscribersList;
 
-}} /* namespace drumstick::ALSA */
-
 /** @} */
+
+}} /* namespace drumstick::ALSA */
 
 #endif //DRUMSTICK_SUBSCRIPTION_H

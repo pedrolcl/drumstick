@@ -22,6 +22,11 @@
 #include <QGraphicsRectItem>
 #include <QBrush>
 
+/**
+ * @file pianokey.h
+ * Declaration of the PianoKey class
+ */
+
 namespace drumstick {
 namespace widgets {
 

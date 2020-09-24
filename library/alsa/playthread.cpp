@@ -31,13 +31,10 @@ extern "C" {
  * Implementation of a sequencer output thread
  */
 
-namespace drumstick {
-namespace ALSA {
-
 /**
  * @addtogroup PlayThread
  * @{
- *
+ * ALSA Sequencer easy playback functionality.
  * SequencerOutputThread provides MIDI sequence playback.
  *
  * This is an abstract class that must be extended providing
@@ -56,6 +53,9 @@ namespace ALSA {
  * sequence playback as a background task.
  * @}
  */
+
+namespace drumstick {
+namespace ALSA {
 
 const int TIMEOUT = 100;
 

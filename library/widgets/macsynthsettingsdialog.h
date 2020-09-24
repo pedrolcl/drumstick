@@ -22,6 +22,11 @@
 #include <QDialog>
 #include <QShowEvent>
 
+/**
+ * @file macsynthsettingsdialog.h
+ * Declaration of the Mac Synth configuration dialog
+ */
+
 namespace drumstick {
 namespace widgets {
 

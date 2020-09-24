@@ -20,9 +20,17 @@
 #include <drumstick/pianokeybd.h>
 #include <drumstick/pianoscene.h>
 
+/**
+ * @file pianokeybd.cpp
+ * Implementation of the PianoKeybd class
+ */
+
 namespace drumstick {
 namespace widgets {
 
+/**
+ * Global Default Alphanumeric Keyboard Map
+ */
 KeyboardMap g_DefaultKeyMap {
     {Qt::Key_Z, 12},
     {Qt::Key_S, 13},
@@ -55,6 +63,9 @@ KeyboardMap g_DefaultKeyMap {
     {Qt::Key_P, 40}
 };
 
+/**
+ * Global Default Raw Keyboard Map
+ */
 KeyboardMap g_DefaultRawKeyMap {
 #if defined(Q_OS_LINUX)
     {94, 11},

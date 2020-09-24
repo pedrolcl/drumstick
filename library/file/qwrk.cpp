@@ -121,6 +121,7 @@ public:
 
 /**
  * Constructor
+ * @param parent Object owner
  */
 QWrk::QWrk(QObject * parent) :
     QObject(parent),

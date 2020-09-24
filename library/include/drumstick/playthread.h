@@ -23,20 +23,21 @@
 #include <QThread>
 #include <QReadWriteLock>
 
+namespace drumstick { namespace ALSA {
+
 /**
  * @file playthread.h
  * Sequencer output thread
- * @defgroup PlayThread Sequencer Output
- * @{
  */
-
-namespace drumstick {
-namespace ALSA {
 
 class MidiClient;
 class MidiQueue;
 
 /**
+ * @addtogroup PlayThread ALSA Sequencer Output
+ * @{
+ *
+ * @class SequencerOutputThread
  * Sequence player auxiliary class
  *
  * This class is used to implement an asynchronous sequence player using
@@ -115,8 +116,8 @@ protected:
     QReadWriteLock m_mutex;     /**< Mutex object used for synchronization */
 };
 
-}} /* namespace drumstick::ALSA */
-
 /** @} */
+
+}} /* namespace drumstick::ALSA */
 
 #endif /*DRUMSTICK_PLAYTHREAD_H*/

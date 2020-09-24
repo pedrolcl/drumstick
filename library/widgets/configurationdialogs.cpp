@@ -26,8 +26,24 @@
 #include "macsynthsettingsdialog.h"
 #endif
 
+/**
+ * @file configurationdialogs.cpp
+ * Implementation of the configuration dialogs
+ */
+
+/**
+ * @addtogroup Widgets Drumstick Widgets
+ * @{
+ */
+
 namespace drumstick { namespace widgets {
 
+/**
+ * @brief Input Driver configuration dialog
+ * @param driver name of the driver
+ * @param parent optional parent widget
+ * @return true if configuration has changed
+ */
 bool configureInputDriver(const QString driver, QWidget* parent)
 {
     if (driver == "Network") {
@@ -37,6 +53,12 @@ bool configureInputDriver(const QString driver, QWidget* parent)
     return false;
 }
 
+/**
+ * @brief Output Driver configuration dialog
+ * @param driver name of the driver
+ * @param parent optional parent widget
+ * @return true if configuration has changed
+ */
 bool configureOutputDriver(const QString driver, QWidget* parent)
 {
     if (driver == "Network") {
@@ -59,6 +81,13 @@ bool configureOutputDriver(const QString driver, QWidget* parent)
     return false;
 }
 
+/**
+ * @brief Changes the sound font configuration
+ * @param driver name of the driver
+ * @param fileName name of the soundfont file
+ * @param parent optional parent widget
+ * @return true if configuration has changed
+ */
 void changeSoundFont(const QString driver, const QString fileName, QWidget* parent)
 {
     if (driver == "FluidSynth") {
@@ -72,5 +101,6 @@ void changeSoundFont(const QString driver, const QString fileName, QWidget* pare
     }
 }
 
-}}
+}} // namespace drumstick::widgets
 
+/** @} */

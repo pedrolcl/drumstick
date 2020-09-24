@@ -27,20 +27,21 @@ extern "C" {
 
 #include "macros.h"
 
+namespace drumstick { namespace ALSA {
+
 /**
  * @file alsaqueue.h
  * Classes managing ALSA Sequencer queues
- * @defgroup ALSAQueue ALSA Sequencer Queues
- * @{
  */
-
-namespace drumstick {
-namespace ALSA {
 
 class MidiClient;
 class TimerId;
 
 /**
+ * @addtogroup ALSAQueue ALSA Sequencer Queues
+ * @{
+ *
+ * @class QueueInfo
  * Queue information container.
  *
  * This class is used to hold some properties about an ALSA queue object.
@@ -223,8 +224,8 @@ private:
     QueueStatus m_Status;
 };
 
-}} /* namespace drumstick::ALSA */
-
 /** @} */
+
+}} /* namespace drumstick::ALSA */
 
 #endif //DRUMSTICK_ALSAQUEUE_H

@@ -22,6 +22,11 @@
 #include <QDialog>
 #include <QShowEvent>
 
+/**
+ * @file sonivoxsettingsdialog.h
+ * Definition of the Sonivox Synth configuration dialog
+ */
+
 namespace drumstick {
 namespace widgets {
 

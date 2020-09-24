@@ -27,6 +27,11 @@
 #include "fluidsettingsdialog.h"
 #include "ui_fluidsettingsdialog.h"
 
+/**
+ * @file fluidsettingsdialog.cpp
+ * Implementation of the Fluidsynth configuration dialog
+ */
+
 namespace drumstick { namespace widgets {
 
 const QString QSTR_PREFERENCES("FluidSynth");

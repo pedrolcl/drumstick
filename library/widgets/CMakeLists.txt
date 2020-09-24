@@ -89,10 +89,6 @@ target_include_directories(drumstick-widgets PUBLIC
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_compile_definitions(drumstick-widgets
-    PRIVATE LIBSUFFIX=${CMAKE_INSTALL_LIBDIR}
-)
-
 target_link_libraries(drumstick-widgets PRIVATE
     Qt5::Widgets
     Qt5::Network

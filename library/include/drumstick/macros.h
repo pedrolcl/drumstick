@@ -24,8 +24,6 @@
 /**
  * @file macros.h
  * Drumstick visibility macros
- * @defgroup Common Common Functionality
- * @{
  */
 
 #if !defined(DRUMSTICK_EXPORT) 
@@ -43,7 +41,5 @@
 #    endif
 #  endif
 #endif
-
-/** @} */
 
 #endif /* DRUMSTICK_MACROS_H */

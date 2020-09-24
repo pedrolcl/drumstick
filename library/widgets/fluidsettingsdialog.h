@@ -22,6 +22,11 @@
 #include <QDialog>
 #include <QShowEvent>
 
+/**
+ * @file fluidsettingsdialog.h
+ * Declaration of the Fluidsynth configuration dialog
+ */
+
 namespace drumstick {
 namespace widgets {
 

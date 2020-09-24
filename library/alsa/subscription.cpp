@@ -23,11 +23,12 @@
  * Implementation of classes managing ALSA sequencer subscriptions
  */
 
+/** @ingroup ALSAGroup */
 namespace drumstick {
 namespace ALSA {
 
 /**
- * @addtogroup ALSASubscription
+ * @addtogroup ALSASubs
  * @{
  *
  * Subscriptions are virtual MIDI cables between readable and writable ports.
@@ -43,7 +44,7 @@ namespace ALSA {
  *
  * Subscription: This class represents a connection between two ports.
  *
- * @see http://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_subscribe.html
+ * @see https://www.alsa-project.org/alsa-doc/alsa-lib/group___seq_subscribe.html
  * @}
  */
 

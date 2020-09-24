@@ -27,16 +27,15 @@ extern "C" {
 #include <QEvent>
 #include "macros.h"
 
+namespace drumstick { namespace ALSA {
+
 /**
  * @file alsaevent.h
  * Classes managing ALSA Sequencer events.
  *
- * @defgroup ALSAEvent ALSA Sequencer Events
+ * @addtogroup ALSAEvent ALSA Sequencer Events
  * @{
  */
-
-namespace drumstick {
-namespace ALSA {
 
 /**
  * 8-bit unsigned number to be used as a MIDI message parameter
@@ -61,8 +60,6 @@ public:
     SequencerEvent();
     SequencerEvent(const SequencerEvent& other);
     SequencerEvent(const snd_seq_event_t* event);
-    /** Destructor */
-    virtual ~SequencerEvent() {}
 
     SequencerEvent& operator=(const SequencerEvent& other);
     void setSequencerType(const snd_seq_event_type_t eventType);
@@ -133,8 +130,6 @@ public:
     static bool isClient(const SequencerEvent* event);
     static bool isConnectionChange(const SequencerEvent* event);
     static bool isChannel(const SequencerEvent* event);
-
-    /** Clone this object returning a pointer to the new object */
     virtual SequencerEvent* clone() const;
 
 protected:
@@ -142,7 +137,7 @@ protected:
 
     /**
      * ALSA sequencer event record.
-     * @see http://www.alsa-project.org/alsa-doc/alsa-lib/structsnd__seq__event.html
+     * @see https://www.alsa-project.org/alsa-doc/alsa-lib/structsnd__seq__event.html
      */
     snd_seq_event_t m_event;
 };
@@ -155,7 +150,10 @@ class DRUMSTICK_EXPORT ChannelEvent : public SequencerEvent
 public:
     /** Default constructor */
     ChannelEvent() : SequencerEvent() {}
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     ChannelEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     /**
      * Sets the channel of the event
@@ -170,7 +168,6 @@ public:
      */
     int getChannel() const { return m_event.data.note.channel; }
 
-    /** Clone this object returning a pointer to the new object */
     virtual ChannelEvent* clone() const override;
 };
 
@@ -182,7 +179,10 @@ class DRUMSTICK_EXPORT KeyEvent : public ChannelEvent
 public:
     /** Default constructor */
     KeyEvent() : ChannelEvent() {}
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     KeyEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
     /**
      * Gets the MIDI note of this event.
@@ -209,7 +209,6 @@ public:
      */
     void setVelocity(const MidiByte b) { m_event.data.note.velocity = b; }
 
-    /** Clone this object returning a pointer to the new object */
     virtual KeyEvent* clone() const override;
 };
 
@@ -224,8 +223,18 @@ class DRUMSTICK_EXPORT NoteEvent : public KeyEvent
 public:
     /** Default constructor */
     NoteEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_NOTE; }
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     NoteEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
+    /**
+     * Constructor
+     * @param ch MIDI Channel
+     * @param key a MIDI note number
+     * @param vel a MIDI velocity value
+     * @param dur duration of the note in ticks
+     */
     NoteEvent(const int ch, const int key, const int vel, const int dur);
     /**
      * Gets the note's duration
@@ -240,7 +249,6 @@ public:
      */
     void setDuration(const ulong d) { m_event.data.note.duration = d; }
 
-    /** Clone this object returning a pointer to the new object */
     virtual NoteEvent* clone() const override;
 };
 
@@ -252,11 +260,18 @@ class DRUMSTICK_EXPORT NoteOnEvent : public KeyEvent
 public:
     /** Default constructor */
     NoteOnEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_NOTEON; }
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     NoteOnEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
+    /**
+     * Constructor
+     * @param ch MIDI Channel
+     * @param key a MIDI note number
+     * @param vel a MIDI velocity value
+     */
     NoteOnEvent(const int ch, const int key, const int vel);
-
-    /** Clone this object returning a pointer to the new object */
     virtual NoteOnEvent* clone() const override;
 };
 
@@ -268,10 +283,18 @@ class DRUMSTICK_EXPORT NoteOffEvent : public KeyEvent
 public:
     /** Default constructor */
     NoteOffEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_NOTEOFF; }
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     NoteOffEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
+    /**
+     * Constructor
+     * @param ch MIDI Channel
+     * @param key a MIDI note number
+     * @param vel a MIDI velocity value
+     */
     NoteOffEvent(const int ch, const int key, const int vel);
-    /** Clone this object returning a pointer to the new object */
     virtual NoteOffEvent* clone() const override;
 };
 
@@ -283,10 +306,18 @@ class DRUMSTICK_EXPORT KeyPressEvent : public KeyEvent
 public:
     /** Default constructor */
     KeyPressEvent() : KeyEvent() { m_event.type = SND_SEQ_EVENT_KEYPRESS; }
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     KeyPressEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
+    /**
+     * Constructor
+     * @param ch MIDI Channel
+     * @param key a MIDI note number
+     * @param vel a MIDI velocity value
+     */
     KeyPressEvent(const int ch, const int key, const int vel);
-    /** Clone this object returning a pointer to the new object */
     virtual KeyPressEvent* clone() const override;
 };
 
@@ -298,8 +329,17 @@ class DRUMSTICK_EXPORT ControllerEvent : public ChannelEvent
 public:
     /** Default constructor */
     ControllerEvent() : ChannelEvent() {}
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     ControllerEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
+    /**
+     * Constructor
+     * @param ch MIDI Channel
+     * @param cc a MIDI controller
+     * @param val a value
+     */
     ControllerEvent(const int ch, const int cc, const int val);
     /**
      * Gets the controller event's parameter.
@@ -325,7 +365,6 @@ public:
      * @see getValue()
      */
     void setValue( const int v ) { m_event.data.control.value = v; }
-    /** Clone this object returning a pointer to the new object */
     virtual ControllerEvent* clone() const override;
 };
 
@@ -337,14 +376,27 @@ class DRUMSTICK_EXPORT ProgramChangeEvent : public ChannelEvent
 public:
     /** Default constructor */
     ProgramChangeEvent() : ChannelEvent() { m_event.type = SND_SEQ_EVENT_PGMCHANGE; }
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     ProgramChangeEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
+    /**
+     * Constructor
+     * @param ch MIDI Channel
+     * @param val a value
+     */
     ProgramChangeEvent(const int ch, const int val);
-    /** Gets the MIDI program number */
+    /**
+     * Gets the MIDI program number
+     * @return the MIDI program number
+     */
     int getValue() const { return m_event.data.control.value; }
-    /** Sets the MIDI program number */
+    /**
+     * Sets the MIDI program number
+     * @param v the MIDI program number
+     */
     void setValue( const int v ) { m_event.data.control.value = v; }
-    /** Clone this object returning a pointer to the new object */
     virtual ProgramChangeEvent* clone() const override;
 };
 
@@ -356,14 +408,27 @@ class DRUMSTICK_EXPORT PitchBendEvent : public ChannelEvent
 public:
     /** Default constructor */
     PitchBendEvent() : ChannelEvent() { m_event.type = SND_SEQ_EVENT_PITCHBEND; }
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     PitchBendEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
+    /**
+     * Constructor
+     * @param ch MIDI Channel
+     * @param val a value
+     */
     PitchBendEvent(const int ch, const int val);
-    /** Gets the MIDI pitch bend value, zero centered from -8192 to 8191 */
+    /**
+     * Gets the MIDI pitch bend value, zero centered from -8192 to 8191
+     * @return the MIDI pitch bend value
+     */
     int getValue() const { return m_event.data.control.value; }
-    /** Sets the MIDI pitch bend value, zero centered from -8192 to 8191  */
+    /**
+     * Sets the MIDI pitch bend value, zero centered from -8192 to 8191
+     * @param v the MIDI pitch bend value
+     */
     void setValue( const int v ) { m_event.data.control.value = v; }
-    /** Clone this object returning a pointer to the new object */
     virtual PitchBendEvent* clone() const override;
 };
 
@@ -375,14 +440,27 @@ class DRUMSTICK_EXPORT ChanPressEvent : public ChannelEvent
 public:
     /** Default constructor */
     ChanPressEvent() : ChannelEvent() { m_event.type = SND_SEQ_EVENT_CHANPRESS; }
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     ChanPressEvent( const snd_seq_event_t* event ) : ChannelEvent(event) {}
+    /**
+     * Constructor
+     * @param ch MIDI Channel
+     * @param val a value
+     */
     ChanPressEvent( const int ch, const int val );
-    /** Gets the channel aftertouch value */
+    /**
+     * Gets the channel aftertouch value
+     * @return the channel aftertouch value
+     */
     int getValue() const { return m_event.data.control.value; }
-    /** Sets the channel aftertouch value */
+    /**
+     * Sets the channel aftertouch value
+     * @param v the channel aftertouch value
+     */
     void setValue( const int v ) { m_event.data.control.value = v; }
-    /** Clone this object returning a pointer to the new object */
     virtual ChanPressEvent* clone() const override;
 };
 
@@ -398,11 +476,16 @@ public:
     VariableEvent(const VariableEvent& other);
     VariableEvent(const unsigned int datalen, char* dataptr);
     VariableEvent& operator=(const VariableEvent& other);
-    /** Gets the data length */
+    /**
+     * Gets the data length
+     * @return the data length
+     */
     unsigned int getLength() const { return m_event.data.ext.len; }
-    /** Gets the data pointer */
+    /**
+     * Gets the data pointer
+     * @return the data pointer
+     */
     const char* getData() const { return static_cast<const char*>(m_event.data.ext.ptr); }
-    /** Clone this object returning a pointer to the new object */
     virtual VariableEvent* clone() const override;
 protected:
     QByteArray m_data;
@@ -419,7 +502,6 @@ public:
     SysExEvent(const QByteArray& data);
     SysExEvent(const SysExEvent& other);
     SysExEvent(const unsigned int datalen, char* dataptr);
-    /** Clone this object returning a pointer to the new object */
     virtual SysExEvent* clone() const override;
 };
 
@@ -439,7 +521,6 @@ public:
     TextEvent(const unsigned int datalen, char* dataptr);
     QString getText() const;
     int getTextType() const;
-    /** Clone this object returning a pointer to the new object */
     virtual TextEvent* clone() const override;
 protected:
     int m_textType;
@@ -453,10 +534,12 @@ class DRUMSTICK_EXPORT SystemEvent : public SequencerEvent
 public:
     /** Default constructor */
     SystemEvent() : SequencerEvent() {}
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     SystemEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     SystemEvent(const snd_seq_event_type_t type);
-    /** Clone this object returning a pointer to the new object */
     virtual SystemEvent* clone() const override;
 };
 
@@ -470,34 +553,72 @@ class DRUMSTICK_EXPORT QueueControlEvent : public SequencerEvent
 public:
     /** Default constructor */
     QueueControlEvent() : SequencerEvent() {}
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     QueueControlEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     QueueControlEvent(const snd_seq_event_type_t type, const int queue, const int value);
-    /** Gets the queue number */
+    /**
+     * Gets the queue number
+     * @return the queue number
+     */
     int getQueue() const { return m_event.data.queue.queue; }
-    /** Sets the queue number */
+    /**
+     * Sets the queue number
+     * @param q the queue number
+     */
     void setQueue(const uchar q) { m_event.data.queue.queue = q; }
-    /** Gets the event's value */
+    /**
+     * Gets the event's value
+     * @return the event's value
+     */
     int getValue() const { return m_event.data.queue.param.value; }
-    /** Sets the event's value */
+    /**
+     * Sets the event's value
+     * @param val the event's value
+     */
     void setValue(const int val) { m_event.data.queue.param.value = val; }
-    /** Gets the queue position */
+    /**
+     * Gets the queue position
+     * @return the queue position
+     */
     uint getPosition() const { return m_event.data.queue.param.position; }
-    /** Sets the queue position */
+    /**
+     * Sets the queue position
+     * @param pos the queue position
+     */
     void setPosition(const uint pos) { m_event.data.queue.param.position = pos; }
-    /** Gets the musical time in ticks */
+    /**
+     * Gets the musical time in ticks
+     * @return the musical time in ticks
+     */
     snd_seq_tick_time_t getTickTime() const { return m_event.data.queue.param.time.tick; }
-    /** Sets the musical time in ticks */
+    /**
+     * Sets the musical time in ticks
+     * @param t the musical time in ticks
+     */
     void setTickTime(const snd_seq_tick_time_t t) { m_event.data.queue.param.time.tick = t; }
-    /** Gets the skew base */
+    /**
+     * Gets the skew base
+     * @return the skew base
+     */
     uint getSkewBase() const { return m_event.data.queue.param.skew.base;  }
-    /** Sets the skew base, should be 65536 */
+    /**
+     * Sets the skew base, should be 65536
+     * @param base the skew base, should be 65536
+     */
     void setSkewBase(const uint base) { m_event.data.queue.param.skew.base = base; }
-    /** Gets the skew value */
+    /**
+     * Gets the skew value
+     * @return the skew value
+     */
     uint getSkewValue() const { return m_event.data.queue.param.skew.value;  }
-    /** Sets the skew value */
+    /**
+     * Sets the skew value
+     * @param val the skew value
+     */
     void setSkewValue(const uint val) {m_event.data.queue.param.skew.value = val; }
-    /** Clone this object returning a pointer to the new object */
     virtual QueueControlEvent* clone() const override;
 };
 
@@ -509,14 +630,22 @@ class DRUMSTICK_EXPORT ValueEvent : public SequencerEvent
 public:
     /** Default constructor */
     ValueEvent() : SequencerEvent() {}
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     ValueEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     ValueEvent(const snd_seq_event_type_t type, const int val);
-    /** Gets the event's value */
+    /**
+     * Gets the event's value
+     * @return the event's value
+     */
     int getValue() const { return m_event.data.control.value; }
-    /** Sets the event's value */
+    /**
+     * Sets the event's value
+     * @param v the event's value
+     */
     void setValue( const int v ) { m_event.data.control.value = v; }
-    /** Clone this object returning a pointer to the new object */
     virtual ValueEvent* clone() const override;
 };
 
@@ -528,10 +657,12 @@ class DRUMSTICK_EXPORT TempoEvent : public QueueControlEvent
 public:
     /** Default constructor */
     TempoEvent() : QueueControlEvent() {}
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     TempoEvent(const snd_seq_event_t* event) : QueueControlEvent(event) {}
     TempoEvent(const int queue, const int tempo);
-    /** Clone this object returning a pointer to the new object */
     virtual TempoEvent* clone() const override;
 };
 
@@ -543,21 +674,41 @@ class DRUMSTICK_EXPORT SubscriptionEvent : public SequencerEvent
 public:
     /** Default constructor */
     SubscriptionEvent() : SequencerEvent() {}
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     SubscriptionEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
-    /** Returns true if the event was a subscribed port */
+    /**
+     * Returns true if the event was a subscribed port
+     * @return whether the event was a subscribed port
+     */
     bool subscribed() const { return (m_event.type == SND_SEQ_EVENT_PORT_SUBSCRIBED); }
-    /** Returns true if the event was an unsubscribed port */
+    /**
+     * Returns true if the event was an unsubscribed port
+     * @return whether the event was an unsubscribed port
+     */
     bool unsubscribed() const { return (m_event.type == SND_SEQ_EVENT_PORT_UNSUBSCRIBED); }
-    /** Gets the sender client number */
+    /**
+     * Gets the sender client number
+     * @return the sender client number
+     */
     int getSenderClient() const { return m_event.data.connect.sender.client; }
-    /** Gets the sender port number */
+    /**
+     * Gets the sender port number
+     * @return the sender port number
+     */
     int getSenderPort() const { return m_event.data.connect.sender.port; }
-    /** Gets the destination client number */
+    /**
+     * Gets the destination client number
+     * @return the destination client number
+     */
     int getDestClient() const { return m_event.data.connect.dest.client; }
-    /** Gets the destination port number */
+    /**
+     * Gets the destination port number
+     * @return the destination port number
+     */
     int getDestPort() const { return m_event.data.connect.dest.port; }
-    /** Clone this object returning a pointer to the new object */
     virtual SubscriptionEvent* clone() const override;
 };
 
@@ -569,10 +720,16 @@ class DRUMSTICK_EXPORT ClientEvent : public SequencerEvent
 public:
     /** Default constructor */
     ClientEvent() : SequencerEvent() {}
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     ClientEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
+    /**
+     * Gets the client number
+     * @return the client number
+     */
     int getClient() const { return m_event.data.addr.client; }
-    /** Clone this object returning a pointer to the new object */
     virtual ClientEvent* clone() const override;
 };
 
@@ -584,11 +741,16 @@ class DRUMSTICK_EXPORT PortEvent : public ClientEvent
 public:
     /** Default constructor */
     PortEvent() : ClientEvent() {}
-    /** Constructor from an ALSA event record */
+    /**
+     * Constructor from an ALSA event record
+     * @param event an ALSA event record
+     */
     PortEvent(const snd_seq_event_t* event) : ClientEvent(event) {}
-    /** Gets the port number */
+    /**
+     * Gets the port number
+     * @return the port number
+     */
     int getPort() const { return m_event.data.addr.port; }
-    /** Clone this object returning a pointer to the new object */
     virtual PortEvent* clone() const override;
 };
 
@@ -602,7 +764,6 @@ public:
     friend class MidiClient;
 
 public:
-    /** Default constructor */
     RemoveEvents();
     RemoveEvents(const RemoveEvents& other);
     RemoveEvents(snd_seq_remove_events_t* other);
@@ -657,8 +818,8 @@ private:
     snd_midi_event_t* m_Info;
 };
 
-}} /* namespace drumstick::ALSA */
-
 /** @} */
+
+}} /* namespace drumstick::ALSA */
 
 #endif //DRUMSTICK_ALSAEVENT_H

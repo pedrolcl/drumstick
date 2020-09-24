@@ -22,6 +22,11 @@
 #include <drumstick/settingsfactory.h>
 #include <drumstick/pianopalette.h>
 
+/**
+ * @file pianopalette.cpp
+ * Implementation of the Piano Palette
+ */
+
 namespace drumstick {
 namespace widgets {
 

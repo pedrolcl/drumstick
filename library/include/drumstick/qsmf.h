@@ -29,14 +29,19 @@ class QDataStream;
 /**
  * @file qsmf.h
  * Standard MIDI Files Input/Output
- * @defgroup SMF Standard MIDI Files management (I/O)
- * @{
  */
 
 namespace drumstick {
-
-//! Drumstick File library
+/**
+ * @ingroup File
+ * @brief Drumstick File library
+ */
 namespace File {
+
+/**
+ * @addtogroup SMF Standard MIDI Files management (I/O)
+ * @{
+ */
 
 const quint32 MThd = 0x4d546864; /**< SMF Header prefix */
 const quint32 MTrk = 0x4d54726b; /**< SMF Track prefix */
@@ -323,8 +328,8 @@ private:
     void writeTrackChunk(int track);
 };
 
-}} /* namespace drumstick::File */
-
 /** @} */
+
+}} /* namespace drumstick::File */
 
 #endif /* DRUMSTICK_QSMF_H */

@@ -17,16 +17,16 @@
             </author>
         </authorgroup>
         <copyright>
-            <year>2010-2019</year>
+            <year>2010-2020</year>
             <holder>Pedro Lopez-Cabanillas</holder>
         </copyright>
-        <date>Jan 13, 2019</date>
+        <date>Sep 99, 2020</date>
     </refentryinfo>
 
     <refmeta>
         <refentrytitle>&product;</refentrytitle>
         <manvolnum>1</manvolnum>
-        <refmiscinfo class="version">@VERSION@</refmiscinfo>
+        <refmiscinfo class="version">@PROJECT_VERSION@</refmiscinfo>
         <refmiscinfo class="source">drumstick</refmiscinfo>
         <refmiscinfo class="manual">User Commands</refmiscinfo>
     </refmeta>

@@ -30,21 +30,22 @@ extern "C" {
 #include <QPointer>
 #include "macros.h"
 
+namespace drumstick { namespace ALSA {
+
 /**
  * @file alsatimer.h
  * Classes managing ALSA Timers
- * @defgroup ALSATimer ALSA Timers
- * @{
  */
-
-namespace drumstick {
-namespace ALSA {
 
 class TimerQuery;
 class TimerId;
 class TimerGlobalInfo;
 
 /**
+ * @addtogroup ALSATimer ALSA Timers
+ * @{
+ *
+ * @class TimerInfo
  * ALSA Timer information container.
  *
  * This class is used to hold properties about ALSA Timers.
@@ -358,8 +359,8 @@ private:
     snd_htimestamp_t m_last_time;
 };
 
-}} /* namespace drumstick::ALSA */
-
 /** @} */
+
+}} /* namespace drumstick::ALSA */
 
 #endif /* DRUMSTICK_ALSATIMER_H */
