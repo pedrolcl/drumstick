@@ -37,9 +37,8 @@ namespace rt {
     class NetMIDIInput : public MIDIInput
     {
         Q_OBJECT
-        Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIInput")
+        Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIInput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIInput)
-
     public:
         explicit NetMIDIInput(QObject *parent = nullptr);
 

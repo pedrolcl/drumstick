@@ -4,7 +4,7 @@ static {
     CONFIG += staticlib create_prl
 }
 TARGET = drumstick-rt-alsa-out
-DESTDIR = ../../../build/lib/drumstick
+DESTDIR = ../../../build/lib/drumstick2
 DEPENDPATH += . ../../include
 INCLUDEPATH += . ../../include
 include (../../../global.pri)

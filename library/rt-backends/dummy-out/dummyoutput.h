@@ -28,11 +28,8 @@ namespace rt {
     class DummyOutput : public MIDIOutput
     {
         Q_OBJECT
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-        Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput")
-#endif
+        Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIOutput)
-
     public:
         DummyOutput(QObject *parent = 0) : MIDIOutput(parent) {}
         virtual ~DummyOutput() {}

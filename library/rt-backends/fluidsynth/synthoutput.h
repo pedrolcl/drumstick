@@ -29,9 +29,8 @@ namespace rt {
     class SynthOutput : public MIDIOutput
     {
         Q_OBJECT
-        Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput")
+        Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIOutput)
-
     public:
         SynthOutput(QObject *parent = 0);
         virtual ~SynthOutput();

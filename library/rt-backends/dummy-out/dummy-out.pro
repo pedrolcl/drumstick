@@ -1,6 +1,6 @@
 TEMPLATE = lib
 TARGET = drumstick-rt-dummy-out
-DESTDIR = ../../../build/lib/drumstick
+DESTDIR = ../../../build/lib/drumstick2
 include (../../../global.pri)
 CONFIG += c++11 plugin
 static {

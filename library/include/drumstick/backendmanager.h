@@ -41,7 +41,7 @@ namespace rt {
      * @{
      */
 
-    const QString QSTR_DRUMSTICK = QLatin1String("drumstick");
+    const QString QSTR_DRUMSTICK = QLatin1String("drumstick2");
     const QString QSTR_DRUMSTICKRT = QLatin1String("DRUMSTICKRT");
     const QString QSTR_DRUMSTICKRT_GROUP = QLatin1String("DrumstickRT");
     const QString QSTR_DRUMSTICKRT_PUBLICNAMEIN = QLatin1String("PublicNameIN");

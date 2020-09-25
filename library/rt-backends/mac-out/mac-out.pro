@@ -4,7 +4,7 @@ static {
     CONFIG += staticlib create_prl
 }
 TARGET = drumstick-rt-mac-out
-DESTDIR = ../../../build/lib/drumstick
+DESTDIR = ../../../build/lib/drumstick2
 DEPENDPATH += . ../../include ../common
 INCLUDEPATH += . ../../include ../common
 include (../../../global.pri)

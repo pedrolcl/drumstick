@@ -1,3 +1,6 @@
+2020-09-25
+    * plugins versioning, allowing runtime coexistence between plugins of drumstick-1 and drumstick-2
+
 2020-09-18
     * Enabled translations for drumstick-widgets and GUI utils
 

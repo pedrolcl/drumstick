@@ -30,9 +30,7 @@ namespace rt {
     class MacMIDIInput : public MIDIInput
     {
         Q_OBJECT
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-        Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIInput")
-#endif
+        Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIInput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIInput)
     public:
         explicit MacMIDIInput(QObject *parent = 0);

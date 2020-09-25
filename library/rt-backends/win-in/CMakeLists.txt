@@ -54,10 +54,10 @@ target_include_directories(drumstick-rt-win-in PRIVATE
     ${Drumstick_SOURCE_DIR}/library/include)
 
 set_target_properties(drumstick-rt-win-in PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/drumstick)
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/${DRUMSTICK_PLUGINS_DIR})
 
 install(TARGETS drumstick-rt-win-in
         EXPORT drumstick-rt-targets
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/drumstick)
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/${DRUMSTICK_PLUGINS_DIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/${DRUMSTICK_PLUGINS_DIR})

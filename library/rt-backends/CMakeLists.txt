@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+set(DRUMSTICK_PLUGINS_DIR "drumstick2")
+
 if(FALSE)
     add_subdirectory(dummy-in)
     add_subdirectory(dummy-out)

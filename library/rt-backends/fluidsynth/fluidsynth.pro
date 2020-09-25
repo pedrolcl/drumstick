@@ -1,6 +1,6 @@
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(drumstick-rt-fluidsynth)
-DESTDIR = ../../../build/lib/drumstick
+DESTDIR = ../../../build/lib/drumstick2
 include (../../../global.pri)
 CONFIG += c++11 plugin #create_prl
 DEPENDPATH += ../../include
