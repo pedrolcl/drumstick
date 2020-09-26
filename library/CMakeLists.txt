@@ -21,6 +21,7 @@ add_subdirectory(file)
 add_subdirectory(rt)
 add_subdirectory(rt-backends)
 add_subdirectory(widgets)
+add_subdirectory(vpiano-plugin)
 
 configure_file( drumstick-config.cmake
   ${CMAKE_BINARY_DIR}/drumstick-config.cmake

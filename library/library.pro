@@ -3,9 +3,11 @@ SUBDIRS += \
     file \
     rt \
     rt-backends \
+    vpiano-plugin \
     widgets
 
 rt-backends.depends += rt
+vpiano-plugin.depends += widgets
 
 linux* {
     SUBDIRS += alsa
