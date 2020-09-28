@@ -153,7 +153,7 @@ QDumpMIDI::customEvent(QEvent *ev)
 {
     if (ev->type() == SequencerEventType) {
         SequencerEvent* sev = static_cast<SequencerEvent*>(ev);
-        if (sev != NULL) {
+        if (sev != nullptr) {
             dumpEvent(sev);
         }
     }
@@ -188,7 +188,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     switch (sev->getSequencerType()) {
     case SND_SEQ_EVENT_NOTEON: {
         NoteOnEvent* e = static_cast<NoteOnEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(23) << left << "Note on";
             cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
             cout << qSetFieldWidth(3) << e->getKey() << " ";
@@ -198,7 +198,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_NOTEOFF: {
         NoteOffEvent* e = static_cast<NoteOffEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(23) << left << "Note off";
             cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
             cout << qSetFieldWidth(3) << e->getKey() << " ";
@@ -208,7 +208,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_KEYPRESS: {
         KeyPressEvent* e = static_cast<KeyPressEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(23) << left << "Polyphonic aftertouch";
             cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
             cout << qSetFieldWidth(3) << e->getKey() << " ";
@@ -221,7 +221,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     case SND_SEQ_EVENT_REGPARAM:
     case SND_SEQ_EVENT_CONTROLLER: {
         ControllerEvent* e = static_cast<ControllerEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(23) << left << "Control change";
             cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
             cout << qSetFieldWidth(3) << e->getParam() << " ";
@@ -231,7 +231,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_PGMCHANGE: {
         ProgramChangeEvent* e = static_cast<ProgramChangeEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(23) << left << "Program change";
             cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
             cout << qSetFieldWidth(3) << e->getValue();
@@ -240,7 +240,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_CHANPRESS: {
         ChanPressEvent* e = static_cast<ChanPressEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(23) << left << "Channel aftertouch";
             cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
             cout << qSetFieldWidth(3) << e->getValue();
@@ -249,7 +249,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_PITCHBEND: {
         PitchBendEvent* e = static_cast<PitchBendEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(23) << left << "Pitch bend";
             cout << qSetFieldWidth(2) << right << e->getChannel() << " ";
             cout << qSetFieldWidth(5) << e->getValue();
@@ -258,7 +258,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_SONGPOS: {
         ValueEvent* e = static_cast<ValueEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "Song position pointer" << qSetFieldWidth(0);
             cout << e->getValue();
         }
@@ -266,7 +266,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_SONGSEL: {
         ValueEvent* e = static_cast<ValueEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "Song select" << qSetFieldWidth(0);
             cout << e->getValue();
         }
@@ -274,7 +274,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_QFRAME: {
         ValueEvent* e = static_cast<ValueEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "MTC quarter frame" << qSetFieldWidth(0);
             cout << e->getValue();
         }
@@ -282,7 +282,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_TIMESIGN: {
         ValueEvent* e = static_cast<ValueEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "SMF time signature" << qSetFieldWidth(0);
             cout << hex << e->getValue();
             cout << dec;
@@ -291,7 +291,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_KEYSIGN: {
         ValueEvent* e = static_cast<ValueEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "SMF key signature" << qSetFieldWidth(0);
             cout << hex << e->getValue();
             cout << dec;
@@ -300,7 +300,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_SETPOS_TICK: {
         QueueControlEvent* e = static_cast<QueueControlEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "Set tick queue pos." << qSetFieldWidth(0);
             cout << e->getQueue();
         }
@@ -308,7 +308,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_SETPOS_TIME: {
         QueueControlEvent* e = static_cast<QueueControlEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "Set rt queue pos." << qSetFieldWidth(0);
             cout << e->getQueue();
         }
@@ -316,7 +316,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_TEMPO: {
         TempoEvent* e = static_cast<TempoEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "Set queue tempo";
             cout << qSetFieldWidth(3) << right << e->getQueue() << qSetFieldWidth(0) << " ";
             cout << e->getValue();
@@ -325,7 +325,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_QUEUE_SKEW: {
         QueueControlEvent* e = static_cast<QueueControlEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "Queue timer skew" << qSetFieldWidth(0);
             cout << e->getQueue();
         }
@@ -357,7 +357,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
         break;
     case SND_SEQ_EVENT_CLIENT_START: {
         ClientEvent* e = static_cast<ClientEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "Client start"
                  << qSetFieldWidth(0) << e->getClient();
         }
@@ -365,7 +365,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_CLIENT_EXIT: {
         ClientEvent* e = static_cast<ClientEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "Client exit"
                  << qSetFieldWidth(0) << e->getClient();
         }
@@ -373,7 +373,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_CLIENT_CHANGE: {
         ClientEvent* e = static_cast<ClientEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "Client changed"
                  << qSetFieldWidth(0) << e->getClient();
         }
@@ -381,7 +381,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_PORT_START: {
         PortEvent* e = static_cast<PortEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "Port start" << qSetFieldWidth(0);
             cout << e->getClient() << ":" << e->getPort();
         }
@@ -389,7 +389,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_PORT_EXIT: {
         PortEvent* e = static_cast<PortEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "Port exit" << qSetFieldWidth(0);
             cout << e->getClient() << ":" << e->getPort();
         }
@@ -397,7 +397,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_PORT_CHANGE: {
         PortEvent* e = static_cast<PortEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "Port changed" << qSetFieldWidth(0);
             cout << e->getClient() << ":" << e->getPort();
         }
@@ -405,7 +405,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_PORT_SUBSCRIBED: {
         SubscriptionEvent* e = static_cast<SubscriptionEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "Port subscribed" << qSetFieldWidth(0);
             cout << e->getSenderClient() << ":" << e->getSenderPort() << " -> ";
             cout << e->getDestClient() << ":" << e->getDestPort();
@@ -414,7 +414,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_PORT_UNSUBSCRIBED: {
         SubscriptionEvent* e = static_cast<SubscriptionEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "Port unsubscribed" << qSetFieldWidth(0);
             cout << e->getSenderClient() << ":" << e->getSenderPort() << " -> ";
             cout << e->getDestClient() << ":" << e->getDestPort();
@@ -423,7 +423,7 @@ QDumpMIDI::dumpEvent(SequencerEvent* sev)
     }
     case SND_SEQ_EVENT_SYSEX: {
         SysExEvent* e = static_cast<SysExEvent*>(sev);
-        if (e != NULL) {
+        if (e != nullptr) {
             cout << qSetFieldWidth(26) << left << "System exclusive" << qSetFieldWidth(0);
             unsigned int i;
             for (i = 0; i < e->getLength(); ++i) {

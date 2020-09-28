@@ -29,12 +29,13 @@ class Player : public drumstick::ALSA::SequencerOutputThread
 public:
     Player(drumstick::ALSA::MidiClient *seq, int portId);
 	virtual ~Player();
-    virtual bool hasNext();
-    virtual drumstick::ALSA::SequencerEvent* nextEvent();
-    virtual unsigned int getInitialPosition() { return m_songPosition; }
-    virtual unsigned int getEchoResolution() { return m_echoResolution; }
-    unsigned int getPitchShift() { return m_pitchShift; }
-    unsigned int getVolumeFactor() { return m_volumeFactor; }
+    virtual bool hasNext() override;
+    virtual drumstick::ALSA::SequencerEvent* nextEvent() override;
+    virtual unsigned int getInitialPosition() override;
+    virtual unsigned int getEchoResolution() override;
+
+    unsigned int getPitchShift();
+    unsigned int getVolumeFactor();
     void setSong(Song* s);
     void resetPosition();
     void setPosition(unsigned int pos);

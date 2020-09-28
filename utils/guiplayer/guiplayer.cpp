@@ -41,6 +41,7 @@
 #include <drumstick/alsaport.h>
 #include <drumstick/sequencererror.h>
 #include "guiplayer.h"
+#include "iconutils.h"
 #include "ui_guiplayer.h"
 #include "playerabout.h"
 #include "player.h"
@@ -55,6 +56,7 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     m_portId(-1),
     m_queueId(-1),
     m_initialTempo(0),
+    m_currentTrack(0),
     m_tempoFactor(1.0),
     m_tick(0),
     m_state(InvalidState),
@@ -87,8 +89,12 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     connect(m_ui->toolBar->toggleViewAction(), SIGNAL(toggled(bool)),
             m_ui->actionShowToolbar, SLOT(setChecked(bool)));
 
+    m_ui->actionPlay->setIcon(QIcon(IconUtils::GetPixmap(this, ":/resources/play.png")));
     m_ui->actionPlay->setShortcut( Qt::Key_MediaPlay );
+    m_ui->actionStop->setIcon(QIcon(IconUtils::GetPixmap(this, ":/resources/stop.png")));
     m_ui->actionStop->setShortcut( Qt::Key_MediaStop );
+    m_ui->actionPause->setIcon(QIcon(IconUtils::GetPixmap(this, ":/resources/pause.png")));
+    m_ui->actionMIDISetup->setIcon(QIcon(IconUtils::GetPixmap(this, ":/resources/setup.png")));
 
     m_Client = new MidiClient(this);
     m_Client->open();
@@ -134,13 +140,14 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
                    SLOT(smfTempoEvent(int)));
     connect(m_smf, SIGNAL(signalSMFTrackStart()),
                    SLOT(smfUpdateLoadProgress()));
+    connect(m_smf, SIGNAL(signalSMFTrackStart()),
+                   SLOT(smfTrackStarted()));
     connect(m_smf, SIGNAL(signalSMFTrackEnd()),
-                   SLOT(smfUpdateLoadProgress()));
+                   SLOT(smfTrackEnded()));
     connect(m_smf, SIGNAL(signalSMFendOfTrack()),
                    SLOT(smfUpdateLoadProgress()));
     connect(m_smf, SIGNAL(signalSMFError(const QString&)),
                    SLOT(smfErrorHandler(const QString&)));
-
     m_wrk = new QWrk(this);
     connect(m_wrk, SIGNAL(signalWRKError(const QString&)),
                    SLOT(wrkErrorHandler(const QString&)));
@@ -204,8 +211,7 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
                    SLOT(wrkUpdateLoadProgress()));
 
     m_player = new Player(m_Client, m_portId);
-    connect(m_player, SIGNAL(finished()), SLOT(songFinished()));
-    connect(m_player, SIGNAL(stopped()), SLOT(playerStopped()));
+    connect(m_player, &Player::stopped, this, &GUIPlayer::playerStopped, Qt::QueuedConnection);
 
     m_Client->setRealTimeInput(false);
     m_Client->startSequencerInput();
@@ -354,6 +360,7 @@ void GUIPlayer::openFile(const QString& fileName)
         m_loadingMessages.clear();
         m_tick = 0;
         m_initialTempo = 0;
+        m_currentTrack = 0;
         try {
             QString ext = finfo.suffix().toLower();
             if (ext == "wrk") {
@@ -400,10 +407,9 @@ void GUIPlayer::open()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
           "Open MIDI File", m_lastDirectory,
-          "All files (*.kar *.mid *.midi *.ove *.wrk);;"
+          "All files (*.kar *.mid *.midi *.wrk);;"
           "Karaoke files (*.kar);;"
           "MIDI Files (*.mid *.midi);;"
-          "Overture Files (*.ove);;"
           "Cakewalk files (*.wrk)" );
     if (! fileName.isEmpty() ) {
         stop();
@@ -462,7 +468,8 @@ void GUIPlayer::updateTempoLabel(float ftempo)
 void GUIPlayer::sequencerEvent(SequencerEvent *ev)
 {
     if ((ev->getSequencerType() == SND_SEQ_EVENT_ECHO) && (m_tick != 0)){
-        int pos = 100 * ev->getTick() / m_tick;
+        auto t = ev->getTick();
+        int pos = 100 * t / m_tick;
         const snd_seq_real_time_t* rt = m_Queue->getStatus().getRealtime();
         int mins = rt->tv_sec / 60;
         int secs =  rt->tv_sec % 60;
@@ -470,6 +477,9 @@ void GUIPlayer::sequencerEvent(SequencerEvent *ev)
         updateTempoLabel(m_Queue->getTempo().getRealBPM());
         updateTimeLabel(mins, secs, cnts);
         m_ui->progressBar->setValue(pos);
+        if (t >= m_tick) {
+            songFinished();
+        }
     }
     delete ev;
 }
@@ -528,8 +538,7 @@ void GUIPlayer::dropEvent( QDropEvent * event )
         QList<QUrl> urls = event->mimeData()->urls();
         if (!urls.empty()) {
             QString fileName = urls.first().toLocalFile();
-            if ( fileName.endsWith(".ove", Qt::CaseInsensitive) ||
-                 fileName.endsWith(".mid", Qt::CaseInsensitive) ||
+            if ( fileName.endsWith(".mid", Qt::CaseInsensitive) ||
                  fileName.endsWith(".midi", Qt::CaseInsensitive) ||
                  fileName.endsWith(".kar", Qt::CaseInsensitive) ||
                  fileName.endsWith(".wrk", Qt::CaseInsensitive) ) {
@@ -687,7 +696,20 @@ void GUIPlayer::smfErrorHandler(const QString& errorStr)
 {
     if (m_loadingMessages.length() < 1024)
         m_loadingMessages.append(QString("%1 at file offset %2<br>")
-            .arg(errorStr).arg(m_smf->getFilePos()));
+                                 .arg(errorStr).arg(m_smf->getFilePos()));
+}
+
+void GUIPlayer::smfTrackStarted()
+{
+    m_currentTrack++;
+}
+
+void GUIPlayer::smfTrackEnded()
+{
+    if (m_currentTrack == m_smf->getTracks()) {
+        SequencerEvent* ev = new SystemEvent(SND_SEQ_EVENT_ECHO);
+        appendSMFEvent(ev);
+    }
 }
 
 /* ********************************* *

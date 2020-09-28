@@ -21,8 +21,7 @@
 
 #include <QStringList>
 
-namespace drumstick {
-namespace ALSA {
+namespace drumstick { namespace ALSA {
     class SequencerEvent;
 }}
 

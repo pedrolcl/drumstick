@@ -34,7 +34,6 @@ namespace drumstick {
         class MidiQueue;
         class SequencerEvent;
     }
-
     namespace File {
         class QSmf;
         class QWrk;
@@ -49,22 +48,22 @@ class Player;
 class About;
 class Song;
 
-const QString QSTR_DOMAIN("drumstick.sourceforge.net");
-const QString QSTR_APPNAME("GUIPlayer");
-
-enum PlayerState {
-    InvalidState,
-    EmptyState,
-    PlayingState,
-    PausedState,
-    StoppedState
-};
+const QString QSTR_DOMAIN = QStringLiteral("drumstick.sourceforge.net");
+const QString QSTR_APPNAME = QStringLiteral("GUIPlayer");
 
 class GUIPlayer : public QMainWindow
 {
     Q_OBJECT
-
 public:
+    enum PlayerState {
+        InvalidState,
+        EmptyState,
+        PlayingState,
+        PausedState,
+        StoppedState
+    };
+    Q_ENUM(PlayerState)
+
     GUIPlayer(QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
     ~GUIPlayer();
 
@@ -115,6 +114,8 @@ public slots:
     void smfSysexEvent(const QByteArray& data);
     void smfTempoEvent(int tempo);
     void smfErrorHandler(const QString& errorStr);
+    void smfTrackStarted();
+    void smfTrackEnded();
     void smfUpdateLoadProgress();
 
     /* WRK slots */
@@ -149,6 +150,7 @@ private:
     int m_portId;
     int m_queueId;
     int m_initialTempo;
+    int m_currentTrack;
     float m_tempoFactor;
     unsigned long m_tick;
     PlayerState m_state;

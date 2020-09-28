@@ -27,13 +27,15 @@ set(guiplayer_forms_SRCS
 set(guiplayer_SRCS
     guiplayer.cpp
     guiplayer.h
+    iconutils.cpp
+    iconutils.h
     player.cpp
     player.h
-    song.cpp
-    song.h
     playerabout.cpp
     playerabout.h
     playermain.cpp
+    song.cpp
+    song.h
 )
 
 set(guiplayer_qtobject_SRCS

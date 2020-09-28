@@ -16,6 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <drumstick/alsaclient.h>
 #include <drumstick/alsaqueue.h>
 #include "player.h"
 #include "song.h"
@@ -51,8 +52,8 @@ Player::~Player()
 void Player::setSong(Song* s)
 {
     m_song = s;
-    if (m_song != NULL) {
-        if (m_songIterator != NULL) {
+    if (m_song != nullptr) {
+        if (m_songIterator != nullptr) {
             delete m_songIterator;
         }
         m_songIterator = new SongIterator(*m_song);
@@ -63,7 +64,7 @@ void Player::setSong(Song* s)
 
 void Player::resetPosition()
 {
-    if ((m_song != NULL) && (m_songIterator != NULL)) {
+    if ((m_song != nullptr) && (m_songIterator != nullptr)) {
         m_songIterator->toFront();
         m_songPosition = 0;
     }
@@ -81,7 +82,8 @@ void Player::setPosition(unsigned int pos)
 
 bool Player::hasNext()
 {
-    return m_songIterator->hasNext();
+    auto res = m_songIterator->hasNext();
+    return res;
 }
 
 SequencerEvent* Player::nextEvent()
@@ -114,6 +116,26 @@ SequencerEvent* Player::nextEvent()
         break;
     }
     return m_lastEvent;
+}
+
+unsigned int Player::getInitialPosition()
+{
+    return m_songPosition;
+}
+
+unsigned int Player::getEchoResolution()
+{
+    return m_echoResolution;
+}
+
+unsigned int Player::getPitchShift()
+{
+    return m_pitchShift;
+}
+
+unsigned int Player::getVolumeFactor()
+{
+    return m_volumeFactor;
 }
 
 void Player::setPitchShift(unsigned int pitch)
