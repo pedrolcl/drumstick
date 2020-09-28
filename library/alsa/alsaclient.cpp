@@ -296,7 +296,7 @@ MidiClient::getHandle()
  */
 bool MidiClient::isOpened()
 {
-    return (d->m_SeqHandle != NULL);
+    return (d->m_SeqHandle != nullptr);
 }
 
 /**
@@ -453,10 +453,10 @@ MidiClient::open( snd_config_t* conf,
 void
 MidiClient::close()
 {
-    if (d->m_SeqHandle != NULL) {
+    if (d->m_SeqHandle != nullptr) {
         stopSequencerInput();
         DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_close(d->m_SeqHandle));
-        d->m_SeqHandle = NULL;
+        d->m_SeqHandle = nullptr;
     }
 }
 
@@ -535,7 +535,7 @@ MidiClient::setBlockMode(bool newValue)
     if (d->m_BlockMode != newValue)
     {
         d->m_BlockMode = newValue;
-        if (d->m_SeqHandle != NULL)
+        if (d->m_SeqHandle != nullptr)
         {
             DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_nonblock(d->m_SeqHandle, d->m_BlockMode ? 0 : 1));
         }
@@ -591,10 +591,10 @@ MidiClient::doEvents()
 {
     do {
         int err = 0;
-        snd_seq_event_t* evp = NULL;
-        SequencerEvent* event = NULL;
+        snd_seq_event_t* evp = nullptr;
+        SequencerEvent* event = nullptr;
         err = snd_seq_event_input(d->m_SeqHandle, &evp);
-        if ((err >= 0) && (evp != NULL)) {
+        if ((err >= 0) && (evp != nullptr)) {
             switch (evp->type) {
 
             case SND_SEQ_EVENT_NOTE:
@@ -678,7 +678,7 @@ MidiClient::doEvents()
                 break;
             }
             // first, process the callback (if any)
-            if (d->m_handler != NULL) {
+            if (d->m_handler != nullptr) {
                 d->m_handler->handleSequencerEvent(event->clone());
             } else {
                 // second, process the event listeners
@@ -802,7 +802,7 @@ MidiClient::setThisClientInfo(const ClientInfo& val)
 void
 MidiClient::applyClientInfo()
 {
-    if (d->m_SeqHandle != NULL) {
+    if (d->m_SeqHandle != nullptr) {
         snd_seq_set_client_info(d->m_SeqHandle, d->m_Info.m_Info);
     }
 }
@@ -878,7 +878,7 @@ MidiClient::createPort()
 void
 MidiClient::portAttach(MidiPort* port)
 {
-    if (d->m_SeqHandle != NULL) {
+    if (d->m_SeqHandle != nullptr) {
         DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_create_port(d->m_SeqHandle, port->m_Info.m_Info));
         d->m_Ports.push_back(port);
     }
@@ -891,13 +891,13 @@ MidiClient::portAttach(MidiPort* port)
 void
 MidiClient::portDetach(MidiPort* port)
 {
-    if (d->m_SeqHandle != NULL) {
+    if (d->m_SeqHandle != nullptr) {
         if(port->getPortInfo()->getClient() == getClientId())
         {
             return;
         }
         DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_delete_port(d->m_SeqHandle, port->getPortInfo()->getPort()));
-        port->setMidiClient(NULL);
+        port->setMidiClient(nullptr);
 
         MidiPortList::iterator it;
         for(it = d->m_Ports.begin(); it != d->m_Ports.end(); ++it)
@@ -916,11 +916,11 @@ MidiClient::portDetach(MidiPort* port)
  */
 void MidiClient::detachAllPorts()
 {
-    if (d->m_SeqHandle != NULL) {
+    if (d->m_SeqHandle != nullptr) {
         MidiPortList::iterator it;
         for (it = d->m_Ports.begin(); it != d->m_Ports.end(); ++it) {
             DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_delete_port(d->m_SeqHandle, (*it)->getPortInfo()->getPort()));
-            (*it)->setMidiClient(NULL);
+            (*it)->setMidiClient(nullptr);
             d->m_Ports.erase(it);
         }
     }
@@ -1100,7 +1100,7 @@ MidiClient::synchronizeOutput()
 MidiQueue*
 MidiClient::getQueue()
 {
-    if (d->m_Queue == NULL) {
+    if (d->m_Queue == nullptr) {
         createQueue();
     }
     return d->m_Queue;
@@ -1113,7 +1113,7 @@ MidiClient::getQueue()
 MidiQueue*
 MidiClient::createQueue()
 {
-    if (d->m_Queue != NULL) {
+    if (d->m_Queue != nullptr) {
         delete d->m_Queue;
     }
     d->m_Queue = new MidiQueue(this, this);
@@ -1129,7 +1129,7 @@ MidiClient::createQueue()
 MidiQueue*
 MidiClient::createQueue(QString const& queueName )
 {
-    if (d->m_Queue != NULL) {
+    if (d->m_Queue != nullptr) {
         delete d->m_Queue;
     }
     d->m_Queue = new MidiQueue(this, queueName, this);
@@ -1146,7 +1146,7 @@ MidiClient::createQueue(QString const& queueName )
 MidiQueue*
 MidiClient::useQueue(int queue_id)
 {
-    if (d->m_Queue != NULL) {
+    if (d->m_Queue != nullptr) {
         delete d->m_Queue;
     }
     d->m_Queue = new MidiQueue(this, queue_id, this);
@@ -1163,7 +1163,7 @@ MidiClient::useQueue(int queue_id)
 MidiQueue*
 MidiClient::useQueue(const QString& name)
 {
-    if (d->m_Queue != NULL) {
+    if (d->m_Queue != nullptr) {
         delete d->m_Queue;
     }
     int queue_id = getQueueId(name);
@@ -1182,7 +1182,7 @@ MidiClient::useQueue(const QString& name)
 MidiQueue*
 MidiClient::useQueue(MidiQueue* queue)
 {
-    if (d->m_Queue != NULL) {
+    if (d->m_Queue != nullptr) {
         delete d->m_Queue;
     }
     queue->setParent(this);
@@ -1473,7 +1473,7 @@ MidiClient::extractOutput()
     if (DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_extract_output(d->m_SeqHandle, &ev) == 0)) {
         return new SequencerEvent(ev);
     }
-    return NULL;
+    return nullptr;
 }
 
 /**
@@ -1804,13 +1804,13 @@ MidiClient::SequencerInputThread::run()
     if ( priority() == TimeCriticalPriority )
         setRealtimePriority();
 
-    if (m_MidiClient != NULL) {
+    if (m_MidiClient != nullptr) {
         npfd = snd_seq_poll_descriptors_count(m_MidiClient->getHandle(), POLLIN);
         pfd = (pollfd *) alloca(npfd * sizeof(pollfd));
         try
         {
             snd_seq_poll_descriptors(m_MidiClient->getHandle(), pfd, npfd, POLLIN);
-            while (!stopped() && (m_MidiClient != NULL))
+            while (!stopped() && (m_MidiClient != nullptr))
             {
                 int rt = poll(pfd, npfd, m_Wait);
                 if (rt > 0) {

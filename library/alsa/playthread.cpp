@@ -74,7 +74,7 @@ SequencerOutputThread::SequencerOutputThread(MidiClient *seq, int portId)
     m_npfds(0),
     m_pfds(0)
 {
-    if (m_MidiClient != NULL) {
+    if (m_MidiClient != nullptr) {
         m_Queue = m_MidiClient->getQueue();
         m_QueueId = m_Queue->getId();
     }
@@ -101,8 +101,9 @@ SequencerOutputThread::stop()
 	QWriteLocker locker(&m_mutex);
     m_Stopped = true;
     locker.unlock();
-    while (isRunning())
+    while (isRunning()) {
         wait(TIMEOUT);
+    }
 }
 
 /**
@@ -112,7 +113,7 @@ SequencerOutputThread::stop()
 void
 SequencerOutputThread::sendEchoEvent(int tick)
 {
-    if (!stopRequested() && m_MidiClient != NULL) {
+    if (!stopRequested() && m_MidiClient != nullptr) {
         SystemEvent ev(SND_SEQ_EVENT_ECHO);
         ev.setSource(m_PortId);
         ev.setDestination(m_MidiClient->getClientId(), m_PortId);
@@ -128,10 +129,11 @@ SequencerOutputThread::sendEchoEvent(int tick)
 void
 SequencerOutputThread::sendSongEvent(SequencerEvent* ev)
 {
-    if (m_MidiClient != NULL) {
+    if (m_MidiClient != nullptr) {
         while (!stopRequested() &&
-               (snd_seq_event_output_direct(m_MidiClient->getHandle(), ev->getHandle()) < 0))
+               (snd_seq_event_output_direct(m_MidiClient->getHandle(), ev->getHandle()) < 0)) {
             poll(m_pfds, m_npfds, TIMEOUT);
+        }
     }
 }
 
@@ -141,10 +143,10 @@ SequencerOutputThread::sendSongEvent(SequencerEvent* ev)
 void
 SequencerOutputThread::drainOutput()
 {
-    if (m_MidiClient != NULL) {
-        while (!stopRequested() &&
-               (snd_seq_drain_output(m_MidiClient->getHandle()) < 0))
+    if (!stopRequested() && m_MidiClient != nullptr) {
+        while (!stopRequested() && (snd_seq_drain_output(m_MidiClient->getHandle()) < 0)) {
             poll(m_pfds, m_npfds, TIMEOUT);
+        }
     }
 }
 
@@ -154,12 +156,8 @@ SequencerOutputThread::drainOutput()
 void
 SequencerOutputThread::syncOutput()
 {
-    if (!stopRequested() && m_MidiClient != NULL) {
-        QueueStatus status = m_Queue->getStatus();
-        while (!stopRequested() && (status.getEvents() > 0)) {
-           usleep(TIMEOUT);
-           status = m_Queue->getStatus();
-        }
+    if (!stopRequested() && m_MidiClient != nullptr) {
+        m_MidiClient->synchronizeOutput();
     }
 }
 
@@ -169,7 +167,7 @@ SequencerOutputThread::syncOutput()
 void SequencerOutputThread::run()
 {
     unsigned int last_tick;
-    if (m_MidiClient != NULL) {
+    if (m_MidiClient != nullptr) {
         try  {
             m_npfds = snd_seq_poll_descriptors_count(m_MidiClient->getHandle(), POLLOUT);
             m_pfds = (pollfd*) alloca(m_npfds * sizeof(pollfd));
@@ -183,14 +181,15 @@ void SequencerOutputThread::run()
             }
             while (!stopRequested() && hasNext()) {
                 SequencerEvent* ev = nextEvent();
+                if (!stopRequested() && !SequencerEvent::isConnectionChange(ev)) {
+                    sendSongEvent(ev);
+                }
                 if (getEchoResolution() > 0) {
                     while (!stopRequested() && (last_tick < ev->getTick())) {
                         last_tick += getEchoResolution();
                         sendEchoEvent(last_tick);
                     }
                 }
-                if (!stopRequested() && !SequencerEvent::isConnectionChange(ev))
-                    sendSongEvent(ev);
             }
             if (stopRequested()) {
                 m_Queue->clear();

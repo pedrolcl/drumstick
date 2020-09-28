@@ -561,7 +561,7 @@ QString QWrk::readString(int len)
             if ( c != 0)
                 data += c;
         }
-        if (d->m_codec == NULL)
+        if (d->m_codec == nullptr)
             s = QString(data);
         else
             s = d->m_codec->toUnicode(data);
@@ -583,7 +583,7 @@ QString QWrk::readVarString()
         if (b != 0)
             data += b;
     } while (b != 0 && !atEnd());
-    if (d->m_codec == NULL)
+    if (d->m_codec == nullptr)
         s = QString(data);
     else
         s = d->m_codec->toUnicode(data);

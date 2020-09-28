@@ -65,7 +65,7 @@ SynthRenderer::initEAS()
       return;
     }
 
-    eas_res = EAS_OpenMIDIStream(dataHandle, &handle, NULL);
+    eas_res = EAS_OpenMIDIStream(dataHandle, &handle, nullptr);
     if (eas_res != EAS_SUCCESS) {
       qCritical() << "EAS_OpenMIDIStream error: " << eas_res;
       EAS_Shutdown(dataHandle);
@@ -105,7 +105,7 @@ SynthRenderer::initPulse()
 
     m_pulseHandle = pa_simple_new (server, "SonivoxEAS", PA_STREAM_PLAYBACK,
                     device, "Synthesizer output", &samplespec,
-                    NULL, /* pa_channel_map */
+                    nullptr, /* pa_channel_map */
                     &bufattr,
                     &err);
 

@@ -508,7 +508,7 @@ Subscription::setDest(unsigned char client, unsigned char port)
 void
 Subscription::subscribe(MidiClient* seq)
 {
-    if ((m_Info == NULL) || (seq == NULL) || !(seq->isOpened()))
+    if ((m_Info == nullptr) || (seq == nullptr) || !(seq->isOpened()))
     {
         return;
     }
@@ -524,7 +524,7 @@ Subscription::subscribe(MidiClient* seq)
 void
 Subscription::unsubscribe(MidiClient* seq)
 {
-    if ((m_Info == NULL) || (seq == NULL) || !(seq->isOpened()))
+    if ((m_Info == nullptr) || (seq == nullptr) || !(seq->isOpened()))
     {
         return;
     }

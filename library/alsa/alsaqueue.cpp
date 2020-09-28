@@ -750,7 +750,7 @@ MidiQueue::MidiQueue(MidiClient* seq, const int queue_id, QObject* parent)
  */
 MidiQueue::~MidiQueue()
 {
-    if ( m_allocated && (m_MidiClient->getHandle() != NULL) )
+    if ( m_allocated && (m_MidiClient->getHandle() != nullptr) )
     {
         DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_free_queue(m_MidiClient->getHandle(), m_Id));
     }
@@ -853,7 +853,7 @@ void MidiQueue::setUsage(int used)
  */
 void MidiQueue::start()
 {
-    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_start_queue(m_MidiClient->getHandle(), m_Id, NULL));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_start_queue(m_MidiClient->getHandle(), m_Id, nullptr));
     DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_drain_output(m_MidiClient->getHandle()));
 }
 
@@ -864,8 +864,8 @@ void MidiQueue::start()
  */
 void MidiQueue::stop()
 {
-    if (m_MidiClient != NULL && m_MidiClient->getHandle() != NULL) {
-        DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_stop_queue(m_MidiClient->getHandle(), m_Id, NULL));
+    if (m_MidiClient != nullptr && m_MidiClient->getHandle() != nullptr) {
+        DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_stop_queue(m_MidiClient->getHandle(), m_Id, nullptr));
         DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_drain_output(m_MidiClient->getHandle()));
     }
 }
@@ -877,7 +877,7 @@ void MidiQueue::stop()
  */
 void MidiQueue::continueRunning()
 {
-    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_continue_queue(m_MidiClient->getHandle(), m_Id, NULL));
+    DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_continue_queue(m_MidiClient->getHandle(), m_Id, nullptr));
     DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_drain_output(m_MidiClient->getHandle()));
 }
 
@@ -886,7 +886,7 @@ void MidiQueue::continueRunning()
  */
 void MidiQueue::clear()
 {
-    if (m_MidiClient != NULL && m_MidiClient->getHandle() != NULL)
+    if (m_MidiClient != nullptr && m_MidiClient->getHandle() != nullptr)
         snd_seq_drop_output(m_MidiClient->getHandle());
 }
 

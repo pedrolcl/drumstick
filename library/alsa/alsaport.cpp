@@ -569,7 +569,7 @@ PortInfo::setTimestampQueue(int queueId)
  */
 MidiPort::MidiPort( QObject* parent ) :
     QObject( parent ),
-    m_MidiClient( NULL ),
+    m_MidiClient( nullptr ),
     m_Attached( false )
 {}
 
@@ -649,7 +649,7 @@ void
 MidiPort::unsubscribe( Subscription* subs )
 {
     Subscription subs2;
-    if (m_MidiClient == NULL)
+    if (m_MidiClient == nullptr)
     {
         return;
     }
@@ -708,7 +708,7 @@ MidiPort::subscribeTo( QString const& name )
 {
     Subscription subs;
     snd_seq_addr addr;
-    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
+    if ((m_MidiClient != nullptr) && (m_MidiClient->getHandle() != nullptr))
     {
         subs.setSender(m_Info.getAddr());
         if (m_MidiClient->parseAddress(name, addr)) {
@@ -727,7 +727,7 @@ MidiPort::unsubscribeTo( QString const& name )
 {
     Subscription subs;
     snd_seq_addr addr;
-    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
+    if ((m_MidiClient != nullptr) && (m_MidiClient->getHandle() != nullptr))
     {
         subs.setSender(m_Info.getAddr());
         if (m_MidiClient->parseAddress(name, addr)) {
@@ -745,7 +745,7 @@ void
 MidiPort::unsubscribeTo( PortInfo* port )
 {
     Subscription subs;
-    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
+    if ((m_MidiClient != nullptr) && (m_MidiClient->getHandle() != nullptr))
     {
         subs.setSender(m_Info.getAddr());
         subs.setDest(port->getAddr());
@@ -761,7 +761,7 @@ void
 MidiPort::unsubscribeTo( const snd_seq_addr_t* addr )
 {
     Subscription subs;
-    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
+    if ((m_MidiClient != nullptr) && (m_MidiClient->getHandle() != nullptr))
     {
         subs.setSender(m_Info.getAddr());
         subs.setDest(addr);
@@ -808,7 +808,7 @@ MidiPort::subscribeFrom( QString const& name )
 {
     Subscription subs;
     snd_seq_addr addr;
-    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
+    if ((m_MidiClient != nullptr) && (m_MidiClient->getHandle() != nullptr))
     {
         if (m_MidiClient->parseAddress(name, addr)) {
             subs.setSender(&addr);
@@ -827,7 +827,7 @@ MidiPort::unsubscribeFrom( QString const& name )
 {
     Subscription subs;
     snd_seq_addr addr;
-    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
+    if ((m_MidiClient != nullptr) && (m_MidiClient->getHandle() != nullptr))
     {
         if (m_MidiClient->parseAddress(name, addr)) {
             subs.setSender(&addr);
@@ -845,7 +845,7 @@ void
 MidiPort::unsubscribeFrom( PortInfo* port )
 {
     Subscription subs;
-    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
+    if ((m_MidiClient != nullptr) && (m_MidiClient->getHandle() != nullptr))
     {
         subs.setSender(port->getAddr());
         subs.setDest(m_Info.getAddr());
@@ -861,7 +861,7 @@ void
 MidiPort::unsubscribeFrom( const snd_seq_addr_t* addr )
 {
     Subscription subs;
-    if ((m_MidiClient != NULL) && (m_MidiClient->getHandle() != NULL))
+    if ((m_MidiClient != nullptr) && (m_MidiClient->getHandle() != nullptr))
     {
         subs.setSender(addr);
         subs.setDest(m_Info.getAddr());
@@ -884,7 +884,7 @@ MidiPort::subscribeFromAnnounce()
 void
 MidiPort::unsubscribeAll()
 {
-    if (m_MidiClient == NULL) {
+    if (m_MidiClient == nullptr) {
         return;
     }
     SubscriptionsList::Iterator it;
@@ -901,7 +901,7 @@ MidiPort::unsubscribeAll()
 void
 MidiPort::applyPortInfo()
 {
-    if (m_Attached && (m_MidiClient != NULL) && (m_MidiClient->isOpened()))
+    if (m_Attached && (m_MidiClient != nullptr) && (m_MidiClient->isOpened()))
     {
         DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_set_port_info( m_MidiClient->getHandle(),
         		                             m_Info.getPort(), m_Info.m_Info ));
@@ -1118,7 +1118,7 @@ MidiPort::setTimestampQueue(int queueId)
 void
 MidiPort::attach( MidiClient* seq )
 {
-    if (!m_Attached && (seq != NULL)) {
+    if (!m_Attached && (seq != nullptr)) {
         m_MidiClient = seq;
         m_MidiClient->portAttach(this);
         m_Attached = true;
@@ -1132,7 +1132,7 @@ MidiPort::attach( MidiClient* seq )
 void
 MidiPort::detach()
 {
-    if (m_Attached && (m_MidiClient != NULL)) {
+    if (m_Attached && (m_MidiClient != nullptr)) {
         m_MidiClient->portDetach(this);
         m_Attached = false;
         emit detached(this);
