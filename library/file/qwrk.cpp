@@ -78,8 +78,8 @@ public:
     m_PunchOutTime(0),
     m_EndAllTime(0),
     m_division(120),
-    m_codec(0),
-    m_IOStream(0)
+    m_codec(nullptr),
+    m_IOStream(nullptr)
     { }
 
     quint32 m_Now;          ///< Now marker time

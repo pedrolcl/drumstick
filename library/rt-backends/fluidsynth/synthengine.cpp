@@ -62,9 +62,9 @@ namespace rt {
 
 SynthEngine::SynthEngine(QObject *parent)
     : QObject(parent),
-      m_settings(0),
-      m_synth(0),
-      m_driver(0)
+      m_settings(nullptr),
+      m_synth(nullptr),
+      m_driver(nullptr)
 { }
 
 SynthEngine::~SynthEngine()
@@ -74,17 +74,17 @@ SynthEngine::~SynthEngine()
 
 void SynthEngine::uninitialize()
 {
-    if (m_driver != 0) {
+    if (m_driver != nullptr) {
         ::delete_fluid_audio_driver(m_driver);
-        m_driver = 0;
+        m_driver = nullptr;
     }
-    if (m_synth != 0) {
+    if (m_synth != nullptr) {
         ::delete_fluid_synth(m_synth);
-        m_synth = 0;
+        m_synth = nullptr;
     }
-    if (m_settings != 0) {
+    if (m_settings != nullptr) {
         ::delete_fluid_settings(m_settings);
-        m_settings = 0;
+        m_settings = nullptr;
     }
 }
 
@@ -98,7 +98,7 @@ void SynthEngine::initializeSynth(QSettings* settings)
     int fs_reverb = DEFAULT_REVERB;
     double fs_gain = DEFAULT_GAIN;
     int fs_polyphony = DEFAULT_POLYPHONY;
-    if (settings != 0) {
+    if (settings != nullptr) {
         settings->beginGroup(QSTR_PREFERENCES);
         fs_audiodriver = settings->value(QSTR_AUDIODRIVER, QSTR_DEFAULT_AUDIODRIVER).toString();
         fs_periodSize = settings->value(QSTR_PERIODSIZE, DEFAULT_PERIODSIZE).toInt();

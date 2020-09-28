@@ -39,7 +39,7 @@ class MacSynthSettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit MacSynthSettingsDialog(QWidget *parent = 0);
+    explicit MacSynthSettingsDialog(QWidget *parent = nullptr);
     ~MacSynthSettingsDialog();
     void readSettings();
     void writeSettings();

@@ -12,12 +12,13 @@ INCLUDEPATH += . ../../library/include ../common
 LIBS = -L../../build/lib -ldrumstick-file -ldrumstick-alsa -lasound
 include (../../global.pri)
 # Input
-HEADERS += player.h guiplayer.h song.h playerabout.h
+HEADERS += player.h guiplayer.h song.h playerabout.h iconutils.h
 FORMS += guiplayer.ui playerabout.ui
 SOURCES += playermain.cpp \
     player.cpp \
     guiplayer.cpp \
     song.cpp \
+    iconutils.cpp \
     playerabout.cpp
 RESOURCES += guiplayer.qrc
 TRANSLATIONS += \

@@ -51,7 +51,7 @@ namespace drumstick { namespace rt {
          * @brief MIDIInput constructor
          * @param parent
          */
-        explicit MIDIInput(QObject *parent = 0) : QObject(parent) {}
+        explicit MIDIInput(QObject *parent = nullptr) : QObject(parent) {}
         /**
          * @brief ~MIDIInput destructor
          */

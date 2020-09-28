@@ -117,7 +117,7 @@ class DRUMSTICK_EXPORT MidiPort : public QObject
     friend class MidiClient;
 
 public:
-    MidiPort( QObject* parent = 0 );
+    MidiPort( QObject* parent = nullptr );
     virtual ~MidiPort();
 
     void attach( MidiClient* seq );

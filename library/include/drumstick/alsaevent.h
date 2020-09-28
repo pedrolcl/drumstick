@@ -798,7 +798,7 @@ class DRUMSTICK_EXPORT MidiCodec : public QObject
 {
     Q_OBJECT
 public:
-    explicit MidiCodec(int bufsize, QObject* parent = 0);
+    explicit MidiCodec(int bufsize, QObject* parent = nullptr);
     ~MidiCodec();
 
     void init();

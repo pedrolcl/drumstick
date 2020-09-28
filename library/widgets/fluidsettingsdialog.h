@@ -39,7 +39,7 @@ class FluidSettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit FluidSettingsDialog(QWidget *parent = 0);
+    explicit FluidSettingsDialog(QWidget *parent = nullptr);
     ~FluidSettingsDialog();
     void readSettings();
     void writeSettings();

@@ -70,7 +70,7 @@ namespace rt {
          * @brief refresh the list of backends
          * @param settings Program settings
          */
-        void refresh(QSettings* settings = 0);
+        void refresh(QSettings* settings = nullptr);
 
         /**
          * @brief refresh the list of backends

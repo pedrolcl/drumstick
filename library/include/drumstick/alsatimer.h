@@ -300,14 +300,14 @@ private:
     };
 
 public:
-    Timer(int cls, int scls, int card, int dev, int sdev, int openMode, QObject* parent = 0);
-    Timer(const QString& deviceName, int openMode, QObject* parent = 0);
-    Timer(const QString& deviceName, int openMode, snd_config_t* config, QObject* parent = 0);
-    Timer(TimerId& id, int openMode, QObject* parent = 0);
+    Timer(int cls, int scls, int card, int dev, int sdev, int openMode, QObject* parent = nullptr);
+    Timer(const QString& deviceName, int openMode, QObject* parent = nullptr);
+    Timer(const QString& deviceName, int openMode, snd_config_t* config, QObject* parent = nullptr);
+    Timer(TimerId& id, int openMode, QObject* parent = nullptr);
     virtual ~Timer();
     
     static TimerId bestGlobalTimerId();
-    static Timer* bestGlobalTimer(int openMode, QObject* parent = 0);
+    static Timer* bestGlobalTimer(int openMode, QObject* parent = nullptr);
     /**
      * Gets the ALSA timer object.
      * @return ALSA timer object pointer.

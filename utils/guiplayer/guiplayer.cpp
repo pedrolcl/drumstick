@@ -60,15 +60,15 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     m_tempoFactor(1.0),
     m_tick(0),
     m_state(InvalidState),
-    m_smf(0),
-    m_wrk(0),
-    m_Client(0),
-    m_Port(0),
-    m_Queue(0),
-    m_player(0),
+    m_smf(nullptr),
+    m_wrk(nullptr),
+    m_Client(nullptr),
+    m_Port(nullptr),
+    m_Queue(nullptr),
+    m_player(nullptr),
     m_ui(new Ui::GUIPlayerClass),
-    m_pd(0),
-    m_aboutDlg(0),
+    m_pd(nullptr),
+    m_aboutDlg(nullptr),
     m_song(new Song)
 {
     m_ui->setupUi(this);
@@ -227,6 +227,8 @@ GUIPlayer::~GUIPlayer()
     m_Port->detach();
     m_Client->close();
     delete m_player;
+    delete m_ui;
+    delete m_song;
 }
 
 void GUIPlayer::subscribe(const QString& portName)
@@ -333,7 +335,7 @@ void GUIPlayer::stop()
 
 void GUIPlayer::progressDialogInit(const QString& type, int max)
 {
-    m_pd = new QProgressDialog(0, 0, 0, max, this);
+    m_pd = new QProgressDialog("", "", 0, max, this);
     m_pd->setWindowTitle(QString("Loading %1 file...").arg(type));
     m_pd->setMinimumDuration(1000);
     m_pd->setValue(0);
@@ -341,7 +343,7 @@ void GUIPlayer::progressDialogInit(const QString& type, int max)
 
 void GUIPlayer::progressDialogUpdate(int pos)
 {
-    if (m_pd != 0) {
+    if (m_pd != nullptr) {
         m_pd->setValue(pos);
         qApp->processEvents();
     }
@@ -596,7 +598,7 @@ void GUIPlayer::closeEvent( QCloseEvent *event )
 
 void GUIPlayer::about()
 {
-    if (m_aboutDlg == 0)
+    if (m_aboutDlg == nullptr)
         m_aboutDlg = new About(this);
     m_aboutDlg->exec();
 }
@@ -718,7 +720,7 @@ void GUIPlayer::smfTrackEnded()
 
 void GUIPlayer::wrkUpdateLoadProgress()
 {
-    if (m_pd != 0)
+    if (m_pd != nullptr)
         progressDialogUpdate(m_wrk->getFilePos());
 }
 

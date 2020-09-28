@@ -31,10 +31,10 @@ static QString DEFAULT_PUBLIC_NAME(QLatin1String("MIDI In"));
 
 OSSInputPrivate::OSSInputPrivate(QObject *parent) : QObject(parent),
     m_inp(qobject_cast<OSSInput *>(parent)),
-    m_out(0),
-    m_device(0),
-    m_notifier(0),
-    m_parser(0),
+    m_out(nullptr),
+    m_device(nullptr),
+    m_notifier(nullptr),
+    m_parser(nullptr),
     m_thruEnabled(false),
     m_advanced(false),
     m_publicName(DEFAULT_PUBLIC_NAME)
@@ -76,13 +76,13 @@ void OSSInputPrivate::open(const MIDIConnection& portName)
 
 void OSSInputPrivate::close()
 {
-    if (m_device != 0) {
+    if (m_device != nullptr) {
         m_device->close();
         delete m_notifier;
         delete m_device;
         delete m_parser;
-        m_device = 0;
-        m_parser = 0;
+        m_device = nullptr;
+        m_parser = nullptr;
     }
     m_currentInput = MIDIConnection();
 }
@@ -90,7 +90,7 @@ void OSSInputPrivate::close()
 void OSSInputPrivate::setMIDIThruDevice(MIDIOutput* device)
 {
     m_out = device;
-    if (m_parser != 0) {
+    if (m_parser != nullptr) {
         m_parser->setMIDIThruDevice(device);
     }
 }
@@ -99,7 +99,7 @@ void OSSInputPrivate::processIncomingMessages(int)
 {
     char ch;
     m_device->getChar(&ch);
-    if (m_parser != 0) {
+    if (m_parser != nullptr) {
         uchar uch = static_cast<unsigned>(ch);
         m_parser->parse(uch);
     }

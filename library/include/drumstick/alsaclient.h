@@ -207,7 +207,7 @@ class DRUMSTICK_EXPORT MidiClient : public QObject
 {
     Q_OBJECT
 public:
-    MidiClient( QObject* parent = 0 );
+    MidiClient( QObject* parent = nullptr );
     virtual ~MidiClient();
 
     void open( const QString deviceName = "default",

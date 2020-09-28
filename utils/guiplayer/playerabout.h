@@ -27,7 +27,7 @@ class About : public QDialog
     Q_OBJECT
 
 public:
-    About(QWidget *parent = 0);
+    About(QWidget *parent = nullptr);
 
 public slots:
     void aboutQt();

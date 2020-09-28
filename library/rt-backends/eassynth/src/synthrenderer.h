@@ -36,7 +36,7 @@ namespace rt {
         Q_OBJECT
 
     public:
-        explicit SynthRenderer(QObject *parent = 0);
+        explicit SynthRenderer(QObject *parent = nullptr);
         virtual ~SynthRenderer();
 
         void stop();

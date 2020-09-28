@@ -29,7 +29,7 @@ class MIDIParser : public QObject
 {
     Q_OBJECT
 public:
-    explicit MIDIParser(MIDIInput *in = 0, QObject *parent = 0);
+    explicit MIDIParser(MIDIInput *in = nullptr, QObject *parent = nullptr);
     virtual ~MIDIParser();
     void setMIDIThruDevice(MIDIOutput* device);
 

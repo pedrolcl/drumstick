@@ -26,8 +26,8 @@ using namespace drumstick::rt;
 Connections::Connections(QWidget *parent)
     : QDialog(parent),
       m_settingsChanged(false),
-      m_midiIn(0),
-      m_midiOut(0)
+      m_midiIn(nullptr),
+      m_midiOut(nullptr)
 {
     ui.setupUi(this);
     ui.m_advanced->setChecked(VPianoSettings::instance()->advanced());
@@ -84,7 +84,7 @@ void Connections::accept()
     drumstick::widgets::SettingsFactory settings;
     VPianoSettings::instance()->setAdvanced(ui.m_advanced->isChecked());
     VPianoSettings::instance()->setMidiThru(ui.m_thru->isChecked());
-    if (m_midiOut != 0) {
+    if (m_midiOut != nullptr) {
         connOut = ui.m_outputPorts->currentData().value<MIDIConnection>();
         if (connOut != m_midiOut->currentConnection() || m_settingsChanged) {
             m_midiOut->close();
@@ -94,7 +94,7 @@ void Connections::accept()
             }
         }
     }
-    if (m_midiIn != 0) {
+    if (m_midiIn != nullptr) {
         connIn = ui.m_inputPorts->currentData().value<MIDIConnection>();
         if (connIn != m_midiIn->currentConnection() || m_settingsChanged) {
             m_midiIn->close();
@@ -103,7 +103,7 @@ void Connections::accept()
                 m_midiIn->open(connIn);
             }
         }
-        if (m_midiOut != 0) {
+        if (m_midiOut != nullptr) {
             m_midiIn->setMIDIThruDevice(m_midiOut);
             m_midiIn->enableMIDIThru(VPianoSettings::instance()->midiThru());
         }
@@ -118,11 +118,11 @@ void Connections::accept()
 
 void Connections::refresh()
 {
-    if (m_midiIn != 0) {
+    if (m_midiIn != nullptr) {
         ui.m_inputBackends->setCurrentText(m_midiIn->backendName());
         refreshInputs(m_midiIn->backendName());
     }
-    if (m_midiOut != 0) {
+    if (m_midiOut != nullptr) {
         ui.m_outputBackends->setCurrentText(m_midiOut->backendName());
         refreshOutputs(m_midiOut->backendName());
     }
@@ -131,17 +131,17 @@ void Connections::refresh()
 void Connections::refreshInputs(QString id)
 {
     ui.btnInputDriverCfg->setEnabled(id == "Network");
-    if (m_midiIn != 0 && m_midiIn->backendName() != id) {
+    if (m_midiIn != nullptr && m_midiIn->backendName() != id) {
         m_midiIn->close();
         int idx = ui.m_inputBackends->findText(id, Qt::MatchStartsWith);
         if (idx > -1) {
             m_midiIn = ui.m_inputBackends->itemData(idx).value<MIDIInput*>();
         } else {
-            m_midiIn = 0;
+            m_midiIn = nullptr;
         }
     }
     ui.m_inputPorts->clear();
-    if (m_midiIn != 0) {
+    if (m_midiIn != nullptr) {
         ui.m_inputPorts->addItem(QString());
         for(const MIDIConnection& conn : m_midiIn->connections(ui.m_advanced->isChecked())) {
             ui.m_inputPorts->addItem(conn.first, QVariant::fromValue(conn));
@@ -156,17 +156,17 @@ void Connections::refreshOutputs(QString id)
                                       id == "FluidSynth" ||
                                       id == "DLS Synth" ||
                                       id == "SonivoxEAS");
-    if (m_midiOut != 0 && m_midiOut->backendName() != id) {
+    if (m_midiOut != nullptr && m_midiOut->backendName() != id) {
         m_midiOut->close();
         int idx = ui.m_outputBackends->findText(id, Qt::MatchStartsWith);
         if (idx > -1) {
             m_midiOut = ui.m_outputBackends->itemData(idx).value<MIDIOutput*>();
         } else {
-            m_midiOut = 0;
+            m_midiOut = nullptr;
         }
     }
     ui.m_outputPorts->clear();
-    if (m_midiOut != 0) {
+    if (m_midiOut != nullptr) {
         for(const MIDIConnection& conn : m_midiOut->connections(ui.m_advanced->isChecked())) {
             ui.m_outputPorts->addItem(conn.first, QVariant::fromValue(conn));
         }

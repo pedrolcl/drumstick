@@ -86,7 +86,7 @@ void NetMIDIInput::enableMIDIThru(bool enable)
 
 bool NetMIDIInput::isEnabledMIDIThru()
 {
-    return d->m_thruEnabled && (d->m_out != 0);
+    return d->m_thruEnabled && (d->m_out != nullptr);
 }
 
 }}

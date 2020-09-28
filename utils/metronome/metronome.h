@@ -47,7 +47,7 @@ class Metronome : public QObject, public drumstick::ALSA::SequencerEventHandler
     Q_OBJECT
 
 public:
-    Metronome(QObject *parent = 0);
+    Metronome(QObject *parent = nullptr);
     virtual ~Metronome();
     void play(QString tempo);
     bool stopped();

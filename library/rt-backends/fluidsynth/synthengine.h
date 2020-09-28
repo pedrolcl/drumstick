@@ -38,7 +38,7 @@ class SynthEngine : public QObject
     Q_PROPERTY(QString soundFont READ soundFont WRITE setSoundFont)
 
 public:
-    SynthEngine(QObject *parent = 0);
+    SynthEngine(QObject *parent = nullptr);
     virtual ~SynthEngine();
 
     QString soundFont() const { return m_soundFont; }
@@ -62,7 +62,7 @@ public:
 
 private:
     void scanSoundFonts(const QDir &dir);
-    void initializeSynth(QSettings *settings = 0);
+    void initializeSynth(QSettings *settings = nullptr);
     void loadSoundFont();
 
     int m_sfid;

@@ -101,7 +101,7 @@ inline int MIDI_MSB(int x)
          * @brief MIDIOutput constructor
          * @param parent
          */
-        explicit MIDIOutput(QObject *parent = 0) : QObject(parent) {}
+        explicit MIDIOutput(QObject *parent = nullptr) : QObject(parent) {}
         /**
          * @brief ~MIDIOutput destructor
          */

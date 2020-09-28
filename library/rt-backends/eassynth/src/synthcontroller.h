@@ -33,7 +33,7 @@ namespace rt {
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIOutput)
     public:
-        explicit SynthController(QObject *parent = 0);
+        explicit SynthController(QObject *parent = nullptr);
         virtual ~SynthController();
 
         void start();

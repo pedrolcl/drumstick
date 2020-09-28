@@ -54,7 +54,7 @@ SynthRenderer::initEAS()
     EAS_HANDLE handle;
 
     const S_EAS_LIB_CONFIG *easConfig = EAS_Config();
-    if (easConfig == 0) {
+    if (easConfig == nullptr) {
         qCritical() << "EAS_Config returned null";
         return;
     }
@@ -74,7 +74,7 @@ SynthRenderer::initEAS()
 
     m_easData = dataHandle;
     m_streamHandle = handle;
-    Q_ASSERT(m_streamHandle != 0);
+    Q_ASSERT(m_streamHandle != nullptr);
     m_sampleRate = easConfig->sampleRate;
     m_bufferSize = easConfig->mixBufferSize;
     m_channels = easConfig->numChannels;
@@ -87,8 +87,8 @@ SynthRenderer::initPulse()
     pa_sample_spec samplespec;
     pa_buffer_attr bufattr;
     int period_bytes;
-    char *server = 0;
-    char *device = 0;
+    char *server = nullptr;
+    char *device = nullptr;
     int err;
 
     samplespec.format = PA_SAMPLE_S16LE;
@@ -120,7 +120,7 @@ void
 SynthRenderer::uninitEAS()
 {
     EAS_RESULT eas_res;
-    if (m_easData != 0 && m_streamHandle != 0) {
+    if (m_easData != nullptr && m_streamHandle != nullptr) {
       eas_res = EAS_CloseMIDIStream(m_easData, m_streamHandle);
       if (eas_res != EAS_SUCCESS) {
           qWarning() << "EAS_CloseMIDIStream error: " << eas_res;
@@ -129,8 +129,8 @@ SynthRenderer::uninitEAS()
       if (eas_res != EAS_SUCCESS) {
           qWarning() << "EAS_Shutdown error: " << eas_res;
       }
-      m_streamHandle = 0;
-      m_easData = 0;
+      m_streamHandle = nullptr;
+      m_easData = nullptr;
     }
     //qDebug() << Q_FUNC_INFO;
 }
@@ -138,9 +138,9 @@ SynthRenderer::uninitEAS()
 void
 SynthRenderer::uninitPulse()
 {
-    if (m_pulseHandle != 0) {
+    if (m_pulseHandle != nullptr) {
         pa_simple_free(m_pulseHandle);
-        m_pulseHandle = 0;
+        m_pulseHandle = nullptr;
     }
     //qDebug() << Q_FUNC_INFO;
 }
@@ -195,7 +195,7 @@ SynthRenderer::run()
             EAS_I32 numGen = 0;
             size_t bytes = 0;
             QCoreApplication::sendPostedEvents();
-            if (m_easData != 0)
+            if (m_easData != nullptr)
             {
                 EAS_PCM *buffer = (EAS_PCM *) data;
                 eas_res = EAS_Render(m_easData, buffer, m_bufferSize, &numGen);
@@ -222,7 +222,7 @@ void
 SynthRenderer::writeMIDIData(const QByteArray& message)
 {
     EAS_RESULT eas_res = EAS_ERROR_ALREADY_STOPPED;
-    if (m_easData != 0 && m_streamHandle != 0)
+    if (m_easData != nullptr && m_streamHandle != nullptr)
     {
         //count = m_codec->decode((unsigned char *)&buffer, sizeof(buffer), ev->getHandle());
         if (message.length() > 0) {

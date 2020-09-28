@@ -37,7 +37,7 @@ SynthController::~SynthController()
         stop();
     }
     delete m_renderer;
-    m_renderer = 0;
+    m_renderer = nullptr;
 }
 
 void

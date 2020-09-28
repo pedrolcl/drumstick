@@ -67,12 +67,12 @@ const int TIMEOUT = 100;
 SequencerOutputThread::SequencerOutputThread(MidiClient *seq, int portId)
     : QThread(),
     m_MidiClient(seq),
-    m_Queue(0),
+    m_Queue(nullptr),
     m_PortId(portId),
     m_Stopped(false),
     m_QueueId(0),
     m_npfds(0),
-    m_pfds(0)
+    m_pfds(nullptr)
 {
     if (m_MidiClient != nullptr) {
         m_Queue = m_MidiClient->getQueue();
@@ -207,7 +207,7 @@ void SequencerOutputThread::run()
             qWarning("exception in output thread");
         }
         m_npfds = 0;
-        m_pfds = 0;
+        m_pfds = nullptr;
     }
 }
 

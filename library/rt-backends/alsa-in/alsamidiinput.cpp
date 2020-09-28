@@ -209,7 +209,7 @@ namespace rt {
                 switch(ev->getSequencerType()) {
                 case SND_SEQ_EVENT_NOTEOFF: {
                         const NoteOffEvent* n = static_cast<const NoteOffEvent*>(ev);
-                        if(m_out != 0 && m_thruEnabled) {
+                        if(m_out != nullptr && m_thruEnabled) {
                             m_out->sendNoteOff(n->getChannel(), n->getKey(), n->getVelocity());
                         }
                         emit m_inp->midiNoteOff(n->getChannel(), n->getKey(), n->getVelocity());
@@ -217,7 +217,7 @@ namespace rt {
                     break;
                 case SND_SEQ_EVENT_NOTEON: {
                         const NoteOnEvent* n = static_cast<const NoteOnEvent*>(ev);
-                        if(m_out != 0 && m_thruEnabled) {
+                        if(m_out != nullptr && m_thruEnabled) {
                             m_out->sendNoteOn(n->getChannel(), n->getKey(), n->getVelocity());
                         }
                         emit m_inp->midiNoteOn(n->getChannel(), n->getKey(), n->getVelocity());
@@ -225,7 +225,7 @@ namespace rt {
                     break;
                 case SND_SEQ_EVENT_KEYPRESS: {
                         const KeyPressEvent* n = static_cast<const KeyPressEvent*>(ev);
-                        if(m_out != 0 && m_thruEnabled) {
+                        if(m_out != nullptr && m_thruEnabled) {
                             m_out->sendKeyPressure(n->getChannel(), n->getKey(), n->getVelocity());
                         }
                         emit m_inp->midiKeyPressure(n->getChannel(), n->getKey(), n->getVelocity());
@@ -234,7 +234,7 @@ namespace rt {
                 case SND_SEQ_EVENT_CONTROLLER:
                 case SND_SEQ_EVENT_CONTROL14: {
                         const ControllerEvent* n = static_cast<const ControllerEvent*>(ev);
-                        if(m_out != 0 && m_thruEnabled) {
+                        if(m_out != nullptr && m_thruEnabled) {
                             m_out->sendController(n->getChannel(), n->getParam(), n->getValue());
                         }
                         emit m_inp->midiController(n->getChannel(), n->getParam(), n->getValue());
@@ -242,7 +242,7 @@ namespace rt {
                     break;
                 case SND_SEQ_EVENT_PGMCHANGE: {
                         const ProgramChangeEvent* p = static_cast<const ProgramChangeEvent*>(ev);
-                        if(m_out != 0 && m_thruEnabled) {
+                        if(m_out != nullptr && m_thruEnabled) {
                             m_out->sendProgram(p->getChannel(), p->getValue());
                         }
                         emit m_inp->midiProgram(p->getChannel(), p->getValue());
@@ -250,7 +250,7 @@ namespace rt {
                     break;
                 case SND_SEQ_EVENT_CHANPRESS: {
                         const ChanPressEvent* n = static_cast<const ChanPressEvent*>(ev);
-                        if(m_out != 0 && m_thruEnabled) {
+                        if(m_out != nullptr && m_thruEnabled) {
                             m_out->sendChannelPressure(n->getChannel(), n->getValue());
                         }
                         emit m_inp->midiChannelPressure(n->getChannel(), n->getValue());
@@ -258,7 +258,7 @@ namespace rt {
                     break;
                 case SND_SEQ_EVENT_PITCHBEND: {
                         const PitchBendEvent* n = static_cast<const PitchBendEvent*>(ev);
-                        if(m_out != 0 && m_thruEnabled) {
+                        if(m_out != nullptr && m_thruEnabled) {
                             m_out->sendPitchBend(n->getChannel(), n->getValue());
                         }
                         emit m_inp->midiPitchBend(n->getChannel(), n->getValue());
@@ -267,7 +267,7 @@ namespace rt {
                 case SND_SEQ_EVENT_SYSEX: {
                         const SysExEvent* n = static_cast<const SysExEvent*>(ev);
                         QByteArray data(n->getData(), n->getLength());
-                        if(m_out != 0 && m_thruEnabled) {
+                        if(m_out != nullptr && m_thruEnabled) {
                             m_out->sendSysex(data);
                         }
                         emit m_inp->midiSysex(data);
@@ -276,7 +276,7 @@ namespace rt {
                 case SND_SEQ_EVENT_SYSTEM: {
                         const SystemEvent* n = static_cast<const SystemEvent*>(ev);
                         int status = (int) n->getRaw8(0);
-                        if(m_out != 0 && m_thruEnabled) {
+                        if(m_out != nullptr && m_thruEnabled) {
                             m_out->sendSystemMsg(status);
                         }
                         if (status < 0xF7)
@@ -362,7 +362,7 @@ namespace rt {
 
     bool ALSAMIDIInput::isEnabledMIDIThru()
     {
-        return d->m_thruEnabled && (d->m_out != 0);
+        return d->m_thruEnabled && (d->m_out != nullptr);
     }
 
 }}

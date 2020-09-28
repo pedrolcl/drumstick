@@ -191,10 +191,10 @@ class DRUMSTICK_EXPORT MidiQueue : public QObject
 {
     Q_OBJECT
 public:
-    explicit MidiQueue(MidiClient* seq, QObject* parent = 0);
-    MidiQueue(MidiClient* seq, const QueueInfo& info, QObject* parent = 0);
-    MidiQueue(MidiClient* seq, const QString name, QObject* parent = 0);
-    MidiQueue(MidiClient* seq, const int queue_id, QObject* parent = 0);
+    explicit MidiQueue(MidiClient* seq, QObject* parent = nullptr);
+    MidiQueue(MidiClient* seq, const QueueInfo& info, QObject* parent = nullptr);
+    MidiQueue(MidiClient* seq, const QString name, QObject* parent = nullptr);
+    MidiQueue(MidiClient* seq, const int queue_id, QObject* parent = nullptr);
     virtual ~MidiQueue();
 
     int getId() const { return m_Id; }

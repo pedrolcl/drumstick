@@ -215,10 +215,10 @@ public:
         m_NeedRefreshClientList(true),
         m_OpenMode(SND_SEQ_OPEN_DUPLEX),
         m_DeviceName("default"),
-        m_SeqHandle(0),
-        m_Thread(0),
-        m_Queue(0),
-        m_handler(0)
+        m_SeqHandle(nullptr),
+        m_Thread(nullptr),
+        m_Queue(nullptr),
+        m_handler(nullptr)
     { }
 
     bool m_eventsEnabled;
@@ -270,11 +270,11 @@ MidiClient::~MidiClient()
 {
     stopSequencerInput();
     detachAllPorts();
-    if (d->m_Queue != 0)
+    if (d->m_Queue != nullptr)
         delete d->m_Queue;
     close();
     freeClients();
-    if (d->m_Thread != 0)
+    if (d->m_Thread != nullptr)
         delete d->m_Thread;
     delete d;
 }
@@ -355,7 +355,7 @@ void MidiClient::setHandler(SequencerEventHandler* handler)
  */
 void MidiClient::setRealTimeInput(bool enable)
 {
-    if (d->m_Thread == 0) {
+    if (d->m_Thread == nullptr) {
         d->m_Thread = new SequencerInputThread(this, DEFAULT_INPUT_TIMEOUT);
         d->m_Thread->m_RealTime = enable;
     }
@@ -368,7 +368,7 @@ void MidiClient::setRealTimeInput(bool enable)
  */
 bool MidiClient::realTimeInputEnabled()
 {
-    if (d->m_Thread == 0)
+    if (d->m_Thread == nullptr)
         return true;
     return d->m_Thread->m_RealTime;
 }
@@ -705,7 +705,7 @@ MidiClient::doEvents()
 void
 MidiClient::startSequencerInput()
 {
-    if (d->m_Thread == 0) {
+    if (d->m_Thread == nullptr) {
         d->m_Thread = new SequencerInputThread(this, DEFAULT_INPUT_TIMEOUT);
     }
     d->m_Thread->start( d->m_Thread->m_RealTime ?
@@ -719,7 +719,7 @@ void
 MidiClient::stopSequencerInput()
 {
     int counter = 0;
-    if (d->m_Thread != 0) {
+    if (d->m_Thread != nullptr) {
         if (d->m_Thread->isRunning()) {
             d->m_Thread->stop();
             while (!d->m_Thread->wait(500) && (counter < 10)) {

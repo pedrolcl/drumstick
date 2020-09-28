@@ -89,7 +89,7 @@ void OSSInput::enableMIDIThru(bool enable)
 
 bool OSSInput::isEnabledMIDIThru()
 {
-    return d->m_thruEnabled && (d->m_out != 0);
+    return d->m_thruEnabled && (d->m_out != nullptr);
 }
 
 }}

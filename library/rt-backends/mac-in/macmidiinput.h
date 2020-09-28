@@ -33,7 +33,7 @@ namespace rt {
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIInput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIInput)
     public:
-        explicit MacMIDIInput(QObject *parent = 0);
+        explicit MacMIDIInput(QObject *parent = nullptr);
         ~MacMIDIInput();
 
         // MIDIInput interface

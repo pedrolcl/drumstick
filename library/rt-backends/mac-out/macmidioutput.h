@@ -30,7 +30,7 @@ namespace rt {
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIOutput)
     public:
-        explicit MacMIDIOutput(QObject *parent = 0);
+        explicit MacMIDIOutput(QObject *parent = nullptr);
         virtual ~MacMIDIOutput();
 
         // MIDIOutput interface

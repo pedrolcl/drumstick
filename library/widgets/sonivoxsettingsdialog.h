@@ -39,7 +39,7 @@ namespace widgets {
         Q_OBJECT
 
     public:
-        explicit SonivoxSettingsDialog(QWidget *parent = 0);
+        explicit SonivoxSettingsDialog(QWidget *parent = nullptr);
         ~SonivoxSettingsDialog();
         void readSettings();
         void writeSettings();
