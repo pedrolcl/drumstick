@@ -39,7 +39,7 @@ public:
 
     OSSOutputPrivate() :
         m_advanced(false),
-        m_device(0),
+        m_device(nullptr),
         m_publicName(DEFAULT_PUBLIC_NAME)
     {
         reloadDeviceList();
@@ -79,10 +79,10 @@ public:
 
     void close()
     {
-        if (m_device != 0) {
+        if (m_device != nullptr) {
             m_device->close();
             delete m_device;
-            m_device = 0;
+            m_device = nullptr;
         }
         m_currentOutput = MIDIConnection();
     }
@@ -116,8 +116,8 @@ public:
 
     void sendMessage(const QByteArray& message )
     {
-        if (m_device == 0) {
-            qDebug() << "qfile is null";
+        if (m_device == nullptr) {
+            qDebug() << "device is null";
             return;
         }
         m_device->write(message);

@@ -11,7 +11,7 @@ class AlsaTest2 : public QObject, public TimerEventHandler
 public:
     AlsaTest2();
     // TimerEventHandler implementation
-    void handleTimerEvent(int ticks, int msecs);
+    void handleTimerEvent(int ticks, int msecs) override;
 
 private Q_SLOTS:
     void testTimer();
@@ -24,7 +24,7 @@ private:
 };
 
 AlsaTest2::AlsaTest2():
-    m_test_timer(0),
+    m_test_timer(nullptr),
     m_count(0)
 { }
 
@@ -56,7 +56,7 @@ void AlsaTest2::cleanupTestCase()
 
 void AlsaTest2::testTimer()
 {
-    if (m_test_timer != 0) {
+    if (m_test_timer != nullptr) {
         m_count = 0;
         try {
             TimerParams tparams;

@@ -38,19 +38,19 @@ namespace rt {
 
         // MIDIInput interface
     public:
-        virtual void initialize(QSettings* settings);
-        virtual QString backendName();
-        virtual QString publicName();
-        virtual void setPublicName(QString name);
-        virtual QList<MIDIConnection> connections(bool advanced);
-        virtual void setExcludedConnections(QStringList conns);
-        virtual void open(const MIDIConnection& name);
-        virtual void close();
-        virtual MIDIConnection currentConnection();
+        virtual void initialize(QSettings* settings) override;
+        virtual QString backendName() override;
+        virtual QString publicName() override;
+        virtual void setPublicName(QString name) override;
+        virtual QList<MIDIConnection> connections(bool advanced) override;
+        virtual void setExcludedConnections(QStringList conns) override;
+        virtual void open(const MIDIConnection& name) override;
+        virtual void close() override;
+        virtual MIDIConnection currentConnection() override;
 
-        virtual void setMIDIThruDevice(MIDIOutput *device);
-        virtual void enableMIDIThru(bool enable);
-        virtual bool isEnabledMIDIThru();
+        virtual void setMIDIThruDevice(MIDIOutput *device) override;
+        virtual void enableMIDIThru(bool enable) override;
+        virtual bool isEnabledMIDIThru() override;
     private:
         OSSInputPrivate *d;
     };

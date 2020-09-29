@@ -203,7 +203,7 @@ namespace rt {
             }
         }
 
-        void handleSequencerEvent(SequencerEvent* ev)
+        void handleSequencerEvent(SequencerEvent* ev) override
         {
             if ( !SequencerEvent::isConnectionChange(ev) && m_initialized)
                 switch(ev->getSequencerType()) {

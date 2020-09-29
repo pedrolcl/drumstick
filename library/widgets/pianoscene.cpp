@@ -62,7 +62,8 @@ PianoScene::PianoScene ( const int baseOctave,
     m_velocity( 100 ),
     m_channel( 0 ),
     m_velocityTint( true ),
-    m_handler( 0 ),
+    m_handler( nullptr ),
+    m_keybdMap( nullptr ),
     m_showColorScale( false ),
     m_hilightPalette(PianoPalette(PAL_SINGLE)),
     m_backgroundPalette(PianoPalette(PAL_KEYS)),
@@ -275,11 +276,11 @@ void PianoScene::keyOff(const int note)
 
 PianoKey* PianoScene::getKeyForPos( const QPointF& p ) const
 {
-    PianoKey* key = 0;
+    PianoKey* key = nullptr;
     QList<QGraphicsItem *> ptitems = this->items(p, Qt::IntersectsItemShape, Qt::DescendingOrder);
     foreach(QGraphicsItem *itm, ptitems) {
         key = dynamic_cast<PianoKey*>(itm);
-        if (key != 0)
+        if (key != nullptr)
             break;
     }
     return key;

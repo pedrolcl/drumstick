@@ -33,7 +33,7 @@ namespace widgets {
 class KeyLabel : public QGraphicsTextItem
 {
 public:
-    KeyLabel(QGraphicsItem *parent = 0);
+    KeyLabel(QGraphicsItem *parent = nullptr);
     virtual ~KeyLabel() {}
     void setPlainText(const QString& text);
     void adjust();

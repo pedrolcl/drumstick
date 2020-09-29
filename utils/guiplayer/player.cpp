@@ -26,9 +26,9 @@ using namespace drumstick::ALSA;
 
 Player::Player(MidiClient *seq, int portId) 
     : SequencerOutputThread(seq, portId),
-    m_song(0),
-    m_songIterator(0),
-    m_lastEvent(0),
+    m_song(nullptr),
+    m_songIterator(nullptr),
+    m_lastEvent(nullptr),
     m_songPosition(0),
     m_echoResolution(0),
     m_pitchShift(0),
@@ -43,9 +43,9 @@ Player::~Player()
     if (isRunning()) {
         stop();
     }
-    if (m_songIterator != 0)
+    if (m_songIterator != nullptr)
         delete m_songIterator;
-    if (m_lastEvent != 0)
+    if (m_lastEvent != nullptr)
         delete m_lastEvent;
 }
 
@@ -88,7 +88,7 @@ bool Player::hasNext()
 
 SequencerEvent* Player::nextEvent()
 {
-    if (m_lastEvent != 0)
+    if (m_lastEvent != nullptr)
         delete m_lastEvent;
     m_lastEvent = m_songIterator->next()->clone();
     switch (m_lastEvent->getSequencerType()) {

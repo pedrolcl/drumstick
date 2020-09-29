@@ -203,7 +203,7 @@ namespace drumstick { namespace widgets {
         void setVelocityTint( const bool enable );
         void allKeysOff();
 
-        QSize sizeHint() const;
+        QSize sizeHint() const override;
         void setKeyboardMap(KeyboardMap* m);
         KeyboardMap* getKeyboardMap();
         void resetKeyboardMap();
@@ -218,8 +218,8 @@ namespace drumstick { namespace widgets {
         void showNoteOff( const int note, int vel = -1 );
 
         // RawKbdHandler methods
-        bool handleKeyPressed(int keycode);
-        bool handleKeyReleased(int keycode);
+        bool handleKeyPressed(int keycode) override;
+        bool handleKeyReleased(int keycode) override;
 
     signals:
         void noteOn( int midiNote, int vel );
@@ -230,7 +230,7 @@ namespace drumstick { namespace widgets {
         void initialize();
         void initDefaultMap();
         void initScene(int base, int num, int ini, const QColor& c = QColor());
-        void resizeEvent(QResizeEvent *event);
+        void resizeEvent(QResizeEvent *event) override;
 
     private:
         class PianoKeybdPrivate;

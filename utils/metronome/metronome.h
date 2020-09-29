@@ -67,7 +67,7 @@ public:
     void metronome_set_controls();
 
     // SequencerEventHandler interface
-    void handleSequencerEvent( drumstick::ALSA::SequencerEvent* ev );
+    void handleSequencerEvent( drumstick::ALSA::SequencerEvent* ev ) override;
 
 private:
     int m_weak_note;

@@ -36,7 +36,7 @@
 using namespace drumstick::rt;
 using namespace drumstick::widgets;
 
-VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags )
+VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags),
     m_midiIn(nullptr),
     m_midiOut(nullptr)

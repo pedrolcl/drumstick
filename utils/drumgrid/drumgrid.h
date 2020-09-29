@@ -72,7 +72,7 @@ public:
     void addShortcut(const QKeySequence& key, const QString& value);
     void readSettings();
     void writeSettings();
-    void closeEvent( QCloseEvent *event );
+    void closeEvent( QCloseEvent *event ) override;
 
     void metronome_start();
     void metronome_stop();

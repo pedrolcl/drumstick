@@ -64,7 +64,7 @@ public:
     };
     Q_ENUM(PlayerState)
 
-    GUIPlayer(QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
+    GUIPlayer(QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::Window);
     ~GUIPlayer();
 
     void appendSMFEvent(drumstick::ALSA::SequencerEvent* ev);
@@ -73,9 +73,9 @@ public:
     void subscribe(const QString& portName);
     void updateTimeLabel(int mins, int secs, int cnts);
     void updateTempoLabel(float ftempo);
-    void dragEnterEvent(QDragEnterEvent* event);
-    void dropEvent(QDropEvent* event);
-    void closeEvent(QCloseEvent* event);
+    void dragEnterEvent(QDragEnterEvent* event) override;
+    void dropEvent(QDropEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
     void openFile(const QString& fileName);
     void readSettings();
     void writeSettings();

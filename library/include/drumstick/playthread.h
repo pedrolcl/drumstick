@@ -51,16 +51,17 @@ class DRUMSTICK_EXPORT  SequencerOutputThread : public QThread
 
 public:
     SequencerOutputThread(MidiClient *seq, int portId);
-    virtual void run();
+    virtual void run() override;
     /**
-     * Gets the initial position in ticks of the sequence
+     * Gets the initial position in ticks of the sequence. The
+     * default value zero means starting from the beginning.
      * @return Initial position (ticks)
      */
     virtual unsigned int getInitialPosition() { return 0; }
     /**
      * Gets the echo event resolution in ticks. This is the time
      * between echo events interleaved with the MIDI sequence. The default
-     * value zero means that not echo events are sent at all.
+     * value zero means that no echo events are sent at all.
      * @return Echo resolution (ticks)
      */
     virtual unsigned int getEchoResolution() { return 0; }

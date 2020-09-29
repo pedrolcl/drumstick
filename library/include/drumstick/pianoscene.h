@@ -48,7 +48,7 @@ namespace drumstick { namespace widgets {
                      const int numKeys,
                      const int startKey,
                      const QColor& keyPressedColor = QColor(),
-                     QObject * parent = 0 );
+                     QObject * parent = nullptr );
 
         QSize sizeHint() const;
         void setKeyboardMap( KeyboardMap* map ) { m_keybdMap = map; }
@@ -136,12 +136,12 @@ namespace drumstick { namespace widgets {
         PianoKey* getKeyForPos( const QPointF& p ) const;
         PianoKey* getPianoKey( const int key ) const;
         QString noteName( PianoKey* key );
-        void mouseMoveEvent ( QGraphicsSceneMouseEvent * mouseEvent );
-        void mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent );
-        void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
-        void keyPressEvent ( QKeyEvent * keyEvent );
-        void keyReleaseEvent ( QKeyEvent * keyEvent );
-        bool event(QEvent *event);
+        void mouseMoveEvent ( QGraphicsSceneMouseEvent * mouseEvent ) override;
+        void mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent ) override;
+        void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent ) override;
+        void keyPressEvent ( QKeyEvent * keyEvent ) override;
+        void keyReleaseEvent ( QKeyEvent * keyEvent ) override;
+        bool event(QEvent *event) override;
 
     private:
         void triggerNoteOn( const int note, const int vel );

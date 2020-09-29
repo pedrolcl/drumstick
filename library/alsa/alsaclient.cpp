@@ -194,7 +194,7 @@ public:
         m_Stopped(false),
         m_RealTime(true) {}
     virtual ~SequencerInputThread() {}
-    virtual void run();
+    virtual void run() override;
     bool stopped();
     void stop();
     void setRealtimePriority();

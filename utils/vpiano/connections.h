@@ -46,7 +46,7 @@ public slots:
     void refreshInputs(QString id);
     void refreshOutputs(QString id);
     void refresh();
-    void accept();
+    void accept() override;
 
 private:
     bool m_settingsChanged;

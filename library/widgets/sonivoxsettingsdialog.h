@@ -45,8 +45,8 @@ namespace widgets {
         void writeSettings();
 
     public slots:
-        void accept();
-        void showEvent(QShowEvent *event);
+        void accept() override;
+        void showEvent(QShowEvent *event) override;
         void restoreDefaults();
 
     private:

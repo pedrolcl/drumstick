@@ -32,10 +32,10 @@ public:
 
 public slots:
     void slotButtonClicked(QAbstractButton *button);
-    void accept();
+    void accept() override;
 
 protected:
-    void showEvent ( QShowEvent *event ); 
+    void showEvent ( QShowEvent *event ) override;
 
 private:
     Ui::PreferencesClass ui;

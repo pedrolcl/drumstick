@@ -289,7 +289,7 @@ private:
            m_Stopped(false) {}
        /** Destructor */
        virtual ~TimerInputThread() {}
-       virtual void run();
+       virtual void run() override;
        bool stopped();
        void stop();       
     private:

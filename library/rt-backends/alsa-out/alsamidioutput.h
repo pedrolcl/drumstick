@@ -34,26 +34,26 @@ namespace rt {
         ALSAMIDIOutput(QObject *parent = nullptr);
         virtual ~ALSAMIDIOutput();
 
-        virtual void initialize(QSettings* settings);
-        virtual QString backendName();
-        virtual QString publicName();
-        virtual void setPublicName(QString name);
-        virtual QList<MIDIConnection> connections(bool advanced);
-        virtual void setExcludedConnections(QStringList conns);
-        virtual void open(const MIDIConnection& name);
-        virtual void close();
-        virtual MIDIConnection currentConnection();
+        virtual void initialize(QSettings* settings) override;
+        virtual QString backendName() override;
+        virtual QString publicName() override;
+        virtual void setPublicName(QString name) override;
+        virtual QList<MIDIConnection> connections(bool advanced) override;
+        virtual void setExcludedConnections(QStringList conns) override;
+        virtual void open(const MIDIConnection& name) override;
+        virtual void close() override;
+        virtual MIDIConnection currentConnection() override;
 
     public slots:
-        virtual void sendNoteOn(int chan, int note, int vel);
-        virtual void sendNoteOff(int chan, int note, int vel);
-        virtual void sendController(int chan, int control, int value);
-        virtual void sendKeyPressure(int chan, int note, int value);
-        virtual void sendProgram(int chan, int program);
-        virtual void sendChannelPressure(int chan, int value);
-        virtual void sendPitchBend(int chan, int value);
-        virtual void sendSysex(const QByteArray& data);
-        virtual void sendSystemMsg(const int status);
+        virtual void sendNoteOn(int chan, int note, int vel) override;
+        virtual void sendNoteOff(int chan, int note, int vel) override;
+        virtual void sendController(int chan, int control, int value) override;
+        virtual void sendKeyPressure(int chan, int note, int value) override;
+        virtual void sendProgram(int chan, int program) override;
+        virtual void sendChannelPressure(int chan, int value) override;
+        virtual void sendPitchBend(int chan, int value) override;
+        virtual void sendSysex(const QByteArray& data) override;
+        virtual void sendSystemMsg(const int status) override;
 
     private:
         class ALSAMIDIOutputPrivate;
