@@ -50,7 +50,7 @@ class DRUMSTICK_EXPORT Subscriber
 public:
     Subscriber();
     Subscriber(const Subscriber& other);
-    Subscriber(snd_seq_query_subscribe_t* other);
+    explicit Subscriber(snd_seq_query_subscribe_t* other);
     virtual ~Subscriber();
     Subscriber* clone();
     int getSizeOfInfo() const;
@@ -88,8 +88,8 @@ class DRUMSTICK_EXPORT Subscription
 public:
     Subscription();
     Subscription(const Subscription& other);
-    Subscription(snd_seq_port_subscribe_t* other);
-    Subscription(MidiClient* seq);
+    explicit Subscription(snd_seq_port_subscribe_t* other);
+    explicit Subscription(MidiClient* seq);
     virtual ~Subscription();
     Subscription* clone();
     int getSizeOfInfo() const;

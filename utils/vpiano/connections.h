@@ -31,7 +31,7 @@ class Connections : public QDialog
     Q_OBJECT
 
 public:
-    Connections(QWidget *parent = nullptr);
+    explicit Connections(QWidget *parent = nullptr);
     void setInput(drumstick::rt::MIDIInput *in);
     void setOutput(drumstick::rt::MIDIOutput *out);
     void setInputs(QList<drumstick::rt::MIDIInput *> ins);

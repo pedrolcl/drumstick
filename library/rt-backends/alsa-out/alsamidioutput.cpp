@@ -49,7 +49,7 @@ namespace rt {
         QMutex m_outMutex;
         bool m_initialized;
 
-        ALSAMIDIOutputPrivate(ALSAMIDIOutput *q):
+        explicit ALSAMIDIOutputPrivate(ALSAMIDIOutput *q):
             m_out(q),
             m_client(nullptr),
             m_port(nullptr),
@@ -125,7 +125,7 @@ namespace rt {
             auto outputs = m_client->getAvailableOutputs();
             m_clientFilter = !advanced;
             m_outputDevices.clear();
-            for (const PortInfo& p : outputs) {
+            for (const PortInfo& p : qAsConst(outputs)) {
                 QString name = p.getClientName();
                 clientNames << name;
                 if (namesMap.contains(name)) {
@@ -143,7 +143,7 @@ namespace rt {
                     continue;
                 if ( name.startsWith(m_publicName) )
                     continue;
-                for (const QString& n : m_excludedNames) {
+                for (const QString& n : qAsConst(m_excludedNames)) {
                     if ( name.startsWith(n) ) {
                         excluded = true;
                         break;

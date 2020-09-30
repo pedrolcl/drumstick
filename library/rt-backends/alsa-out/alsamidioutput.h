@@ -31,7 +31,7 @@ namespace rt {
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIOutput)
     public:
-        ALSAMIDIOutput(QObject *parent = nullptr);
+        explicit ALSAMIDIOutput(QObject *parent = nullptr);
         virtual ~ALSAMIDIOutput();
 
         virtual void initialize(QSettings* settings) override;

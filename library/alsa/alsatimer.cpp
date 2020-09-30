@@ -1416,10 +1416,12 @@ Timer::TimerInputThread::run()
             m_timer->pollDescriptors(fds, count);
             if ((err = poll(fds, count, m_Wait)) < 0) {
                 qWarning() << "poll error " << err << "(" << strerror(err) << ")";
+                free(fds);
                 return;
             }
             if (err == 0) {
                 qWarning() << "timer time out";
+                free(fds);
                 return;
             }
             m_timer->doEvents();

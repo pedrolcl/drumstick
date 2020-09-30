@@ -211,7 +211,7 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
                    SLOT(wrkUpdateLoadProgress()));
 
     m_player = new Player(m_Client, m_portId);
-    connect(m_player, &Player::stopped, this, &GUIPlayer::playerStopped, Qt::QueuedConnection);
+    connect(m_player, &Player::playbackStopped, this, &GUIPlayer::playerStopped, Qt::QueuedConnection);
 
     m_Client->setRealTimeInput(false);
     m_Client->startSequencerInput();

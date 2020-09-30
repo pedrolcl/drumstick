@@ -917,11 +917,12 @@ MidiClient::portDetach(MidiPort* port)
 void MidiClient::detachAllPorts()
 {
     if (d->m_SeqHandle != nullptr) {
-        MidiPortList::iterator it;
-        for (it = d->m_Ports.begin(); it != d->m_Ports.end(); ++it) {
-            DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_delete_port(d->m_SeqHandle, (*it)->getPortInfo()->getPort()));
-            (*it)->setMidiClient(nullptr);
-            d->m_Ports.erase(it);
+        QMutableListIterator<MidiPort*> it(d->m_Ports);
+        while (it.hasNext()) {
+            MidiPort* p = it.next();
+            DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_delete_port(d->m_SeqHandle, p->getPortInfo()->getPort()));
+            p->setMidiClient(nullptr);
+            it.remove();
         }
     }
 }
@@ -996,18 +997,18 @@ MidiClient::setErrorBounce(bool newValue)
 void
 MidiClient::output(SequencerEvent* ev, bool async, int timeout)
 {
-    int npfds;
-    pollfd* pfds;
+    pollfd* pfds = nullptr;
     if (async) {
         DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_event_output(d->m_SeqHandle, ev->getHandle()));
     } else {
-        npfds = snd_seq_poll_descriptors_count(d->m_SeqHandle, POLLOUT);
-        pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
+        int npfds = snd_seq_poll_descriptors_count(d->m_SeqHandle, POLLOUT);
+        pfds = (pollfd*) calloc(npfds, sizeof(pollfd));
         snd_seq_poll_descriptors(d->m_SeqHandle, pfds, npfds, POLLOUT);
         while (snd_seq_event_output(d->m_SeqHandle, ev->getHandle()) < 0)
         {
             poll(pfds, npfds, timeout);
         }
+        free(pfds);
     }
 }
 
@@ -1024,18 +1025,17 @@ MidiClient::output(SequencerEvent* ev, bool async, int timeout)
  */
 void MidiClient::outputDirect(SequencerEvent* ev, bool async, int timeout)
 {
-    int npfds;
-    pollfd* pfds;
     if (async) {
         DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_event_output_direct(d->m_SeqHandle, ev->getHandle()));
     } else {
-        npfds = snd_seq_poll_descriptors_count(d->m_SeqHandle, POLLOUT);
-        pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
+        int npfds = snd_seq_poll_descriptors_count(d->m_SeqHandle, POLLOUT);
+        pollfd* pfds = (pollfd*) calloc(npfds, sizeof(pollfd));
         snd_seq_poll_descriptors(d->m_SeqHandle, pfds, npfds, POLLOUT);
         while (snd_seq_event_output_direct(d->m_SeqHandle, ev->getHandle()) < 0)
         {
             poll(pfds, npfds, timeout);
         }
+        free(pfds);
     }
 }
 
@@ -1066,18 +1066,17 @@ MidiClient::outputBuffer(SequencerEvent* ev)
  */
 void MidiClient::drainOutput(bool async, int timeout)
 {
-    int npfds;
-    pollfd* pfds;
     if (async) {
         DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_drain_output(d->m_SeqHandle));
     } else {
-        npfds = snd_seq_poll_descriptors_count(d->m_SeqHandle, POLLOUT);
-        pfds = (pollfd*) alloca(npfds * sizeof(pollfd));
+        int npfds = snd_seq_poll_descriptors_count(d->m_SeqHandle, POLLOUT);
+        pollfd* pfds = (pollfd*) calloc(npfds, sizeof(pollfd));
         snd_seq_poll_descriptors(d->m_SeqHandle, pfds, npfds, POLLOUT);
         while (snd_seq_drain_output(d->m_SeqHandle) < 0)
         {
             poll(pfds, npfds, timeout);
         }
+        free(pfds);
     }
 }
 
@@ -1799,14 +1798,12 @@ MidiClient::SequencerInputThread::setRealtimePriority()
 void
 MidiClient::SequencerInputThread::run()
 {
-    unsigned long npfd;
-    pollfd* pfd;
-    if ( priority() == TimeCriticalPriority )
+    if ( priority() == TimeCriticalPriority ) {
         setRealtimePriority();
-
+    }
     if (m_MidiClient != nullptr) {
-        npfd = snd_seq_poll_descriptors_count(m_MidiClient->getHandle(), POLLIN);
-        pfd = (pollfd *) alloca(npfd * sizeof(pollfd));
+        int npfd = snd_seq_poll_descriptors_count(m_MidiClient->getHandle(), POLLIN);
+        pollfd* pfd = (pollfd *) calloc(npfd, sizeof(pollfd));
         try
         {
             snd_seq_poll_descriptors(m_MidiClient->getHandle(), pfd, npfd, POLLIN);
@@ -1822,6 +1819,7 @@ MidiClient::SequencerInputThread::run()
         {
             qWarning() << "exception in input thread";
         }
+        free(pfd);
     }
 }
 

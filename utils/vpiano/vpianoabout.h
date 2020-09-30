@@ -27,7 +27,7 @@ class About : public QDialog
     Q_OBJECT
 
 public:
-    About(QWidget *parent = nullptr);
+    explicit About(QWidget *parent = nullptr);
 
 private:
     Ui::AboutClass ui;

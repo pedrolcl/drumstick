@@ -33,8 +33,11 @@ namespace widgets {
     class PianoKey : public QGraphicsRectItem
     {
     public:
-        PianoKey(QGraphicsItem * parent = nullptr )
-            : QGraphicsRectItem(parent), m_pressed(false) { }
+        explicit PianoKey(QGraphicsItem * parent = nullptr ): QGraphicsRectItem(parent),
+            m_pressed(false),
+            m_note(0),
+            m_black(false)
+        { }
         PianoKey(const QRectF &rect, const bool black, const int note);
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) override;
         int getNote() const { return m_note; }

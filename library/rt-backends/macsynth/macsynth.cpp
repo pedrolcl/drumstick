@@ -42,7 +42,9 @@ namespace rt {
     public:
         explicit MacSynthOutputPrivate():
             m_graph(nullptr),
-            m_synthUnit(nullptr)
+            m_synthUnit(nullptr),
+            m_default_dls(true),
+            m_reverb_dls(false)
         {
             //qDebug() << Q_FUNC_INFO;
             m_connection = MIDIConnection();

@@ -66,7 +66,7 @@ class DrumGrid : public QMainWindow
     Q_OBJECT
 
 public:
-    DrumGrid(QWidget *parent = nullptr);
+    explicit DrumGrid(QWidget *parent = nullptr);
     ~DrumGrid();
     void subscribe(const QString& portName);
     void addShortcut(const QKeySequence& key, const QString& value);

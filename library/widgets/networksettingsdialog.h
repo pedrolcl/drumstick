@@ -27,8 +27,7 @@
  * Declaration of the Network configuration dialog
  */
 
-namespace drumstick {
-namespace widgets {
+namespace drumstick { namespace widgets {
 
     namespace Ui {
         class NetworkSettingsDialog;

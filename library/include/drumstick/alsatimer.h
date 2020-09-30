@@ -57,7 +57,7 @@ class DRUMSTICK_EXPORT TimerInfo
 public:
     TimerInfo();
     TimerInfo(const TimerInfo& other);
-    TimerInfo(const snd_timer_info_t* other);
+    explicit TimerInfo(const snd_timer_info_t* other);
     virtual ~TimerInfo();
     TimerInfo* clone();
     TimerInfo& operator=(const TimerInfo& other);
@@ -91,7 +91,7 @@ class DRUMSTICK_EXPORT TimerId
 public:
     TimerId();
     TimerId(const TimerId& other);
-    TimerId(const snd_timer_id_t *other);
+    explicit TimerId(const snd_timer_id_t *other);
     TimerId(int cls, int scls, int card, int dev, int sdev);
     virtual ~TimerId();
     TimerId* clone();
@@ -130,7 +130,7 @@ class DRUMSTICK_EXPORT TimerGlobalInfo
 public:
     TimerGlobalInfo();
     TimerGlobalInfo(const TimerGlobalInfo& other);
-    TimerGlobalInfo(const snd_timer_ginfo_t* other);
+    explicit TimerGlobalInfo(const snd_timer_ginfo_t* other);
     virtual ~TimerGlobalInfo();
     TimerGlobalInfo* clone();
     TimerGlobalInfo& operator=(const TimerGlobalInfo& other);
@@ -195,7 +195,7 @@ class DRUMSTICK_EXPORT TimerParams
 public:
     TimerParams();
     TimerParams(const TimerParams& other);
-    TimerParams(const snd_timer_params_t* other);
+    explicit TimerParams(const snd_timer_params_t* other);
     virtual ~TimerParams();
     TimerParams* clone();
     TimerParams& operator=(const TimerParams& other);
@@ -230,7 +230,7 @@ class DRUMSTICK_EXPORT TimerStatus
 public:
     TimerStatus();
     TimerStatus(const TimerStatus& other);
-    TimerStatus(const snd_timer_status_t* other);
+    explicit TimerStatus(const snd_timer_status_t* other);
     virtual ~TimerStatus();
     TimerStatus* clone();
     TimerStatus& operator=(const TimerStatus& other);

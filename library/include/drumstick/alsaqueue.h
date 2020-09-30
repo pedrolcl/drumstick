@@ -53,7 +53,7 @@ class DRUMSTICK_EXPORT QueueInfo
 public:
     QueueInfo();
     QueueInfo(const QueueInfo& other);
-    QueueInfo(snd_seq_queue_info_t* other);
+    explicit QueueInfo(snd_seq_queue_info_t* other);
     virtual ~QueueInfo();
     QueueInfo* clone();
     QueueInfo& operator=(const QueueInfo& other);
@@ -86,7 +86,7 @@ class DRUMSTICK_EXPORT QueueStatus
 public:
     QueueStatus();
     QueueStatus(const QueueStatus& other);
-    QueueStatus(snd_seq_queue_status_t* other);
+    explicit QueueStatus(snd_seq_queue_status_t* other);
     virtual ~QueueStatus();
     QueueStatus* clone();
     QueueStatus& operator=(const QueueStatus& other);
@@ -123,7 +123,7 @@ class DRUMSTICK_EXPORT QueueTempo
 public:
     QueueTempo();
     QueueTempo(const QueueTempo& other);
-    QueueTempo(snd_seq_queue_tempo_t* other);
+    explicit QueueTempo(snd_seq_queue_tempo_t* other);
     virtual ~QueueTempo(); 
     QueueTempo* clone();
     QueueTempo& operator=(const QueueTempo& other);
@@ -163,7 +163,7 @@ class DRUMSTICK_EXPORT QueueTimer
 public:
     QueueTimer();
     QueueTimer(const QueueTimer& other);
-    QueueTimer(snd_seq_queue_timer_t* other);
+    explicit QueueTimer(snd_seq_queue_timer_t* other);
     virtual ~QueueTimer(); 
     QueueTimer* clone();
     QueueTimer& operator=(const QueueTimer& other);

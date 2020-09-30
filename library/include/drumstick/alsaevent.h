@@ -59,7 +59,7 @@ class DRUMSTICK_EXPORT SequencerEvent : public QEvent
 public:
     SequencerEvent();
     SequencerEvent(const SequencerEvent& other);
-    SequencerEvent(const snd_seq_event_t* event);
+    explicit SequencerEvent(const snd_seq_event_t* event);
 
     SequencerEvent& operator=(const SequencerEvent& other);
     void setSequencerType(const snd_seq_event_type_t eventType);
@@ -154,7 +154,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    ChannelEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
+    explicit ChannelEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     /**
      * Sets the channel of the event
      * @param c A channel, between 0 and 15.
@@ -183,7 +183,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    KeyEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
+    explicit KeyEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
     /**
      * Gets the MIDI note of this event.
      * @return The event's MIDI note.
@@ -227,7 +227,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    NoteEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
+    explicit NoteEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
     /**
      * Constructor
      * @param ch MIDI Channel
@@ -264,7 +264,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    NoteOnEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
+    explicit NoteOnEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
     /**
      * Constructor
      * @param ch MIDI Channel
@@ -287,7 +287,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    NoteOffEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
+    explicit NoteOffEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
     /**
      * Constructor
      * @param ch MIDI Channel
@@ -310,7 +310,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    KeyPressEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
+    explicit KeyPressEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
     /**
      * Constructor
      * @param ch MIDI Channel
@@ -333,7 +333,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    ControllerEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
+    explicit ControllerEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
     /**
      * Constructor
      * @param ch MIDI Channel
@@ -380,7 +380,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    ProgramChangeEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
+    explicit ProgramChangeEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
     /**
      * Constructor
      * @param ch MIDI Channel
@@ -412,7 +412,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    PitchBendEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
+    explicit PitchBendEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
     /**
      * Constructor
      * @param ch MIDI Channel
@@ -444,7 +444,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    ChanPressEvent( const snd_seq_event_t* event ) : ChannelEvent(event) {}
+    explicit ChanPressEvent( const snd_seq_event_t* event ) : ChannelEvent(event) {}
     /**
      * Constructor
      * @param ch MIDI Channel
@@ -471,8 +471,8 @@ class DRUMSTICK_EXPORT VariableEvent : public SequencerEvent
 {
 public:
     VariableEvent();
-    VariableEvent(const snd_seq_event_t* event);
-    VariableEvent(const QByteArray& data);
+    explicit VariableEvent(const snd_seq_event_t* event);
+    explicit VariableEvent(const QByteArray& data);
     VariableEvent(const VariableEvent& other);
     VariableEvent(const unsigned int datalen, char* dataptr);
     VariableEvent& operator=(const VariableEvent& other);
@@ -498,8 +498,8 @@ class DRUMSTICK_EXPORT SysExEvent : public VariableEvent
 {
 public:
     SysExEvent();
-    SysExEvent(const snd_seq_event_t* event);
-    SysExEvent(const QByteArray& data);
+    explicit SysExEvent(const snd_seq_event_t* event);
+    explicit SysExEvent(const QByteArray& data);
     SysExEvent(const SysExEvent& other);
     SysExEvent(const unsigned int datalen, char* dataptr);
     virtual SysExEvent* clone() const override;
@@ -515,7 +515,7 @@ class DRUMSTICK_EXPORT TextEvent : public VariableEvent
 {
 public:
     TextEvent();
-    TextEvent(const snd_seq_event_t* event);
+    explicit TextEvent(const snd_seq_event_t* event);
     explicit TextEvent(const QString& text, const int textType = 1);
     TextEvent(const TextEvent& other);
     TextEvent(const unsigned int datalen, char* dataptr);
@@ -538,8 +538,8 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    SystemEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
-    SystemEvent(const snd_seq_event_type_t type);
+    explicit SystemEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
+    explicit SystemEvent(const snd_seq_event_type_t type);
     virtual SystemEvent* clone() const override;
 };
 
@@ -557,7 +557,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    QueueControlEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
+    explicit QueueControlEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     QueueControlEvent(const snd_seq_event_type_t type, const int queue, const int value);
     /**
      * Gets the queue number
@@ -634,7 +634,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    ValueEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
+    explicit ValueEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     ValueEvent(const snd_seq_event_type_t type, const int val);
     /**
      * Gets the event's value
@@ -661,7 +661,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    TempoEvent(const snd_seq_event_t* event) : QueueControlEvent(event) {}
+    explicit TempoEvent(const snd_seq_event_t* event) : QueueControlEvent(event) {}
     TempoEvent(const int queue, const int tempo);
     virtual TempoEvent* clone() const override;
 };
@@ -678,7 +678,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    SubscriptionEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
+    explicit SubscriptionEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     /**
      * Returns true if the event was a subscribed port
      * @return whether the event was a subscribed port
@@ -724,7 +724,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    ClientEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
+    explicit ClientEvent(const snd_seq_event_t* event) : SequencerEvent(event) {}
     /**
      * Gets the client number
      * @return the client number
@@ -745,7 +745,7 @@ public:
      * Constructor from an ALSA event record
      * @param event an ALSA event record
      */
-    PortEvent(const snd_seq_event_t* event) : ClientEvent(event) {}
+    explicit PortEvent(const snd_seq_event_t* event) : ClientEvent(event) {}
     /**
      * Gets the port number
      * @return the port number
@@ -766,7 +766,7 @@ public:
 public:
     RemoveEvents();
     RemoveEvents(const RemoveEvents& other);
-    RemoveEvents(snd_seq_remove_events_t* other);
+    explicit RemoveEvents(snd_seq_remove_events_t* other);
     virtual ~RemoveEvents();
     RemoveEvents* clone();
     RemoveEvents& operator=(const RemoveEvents& other);

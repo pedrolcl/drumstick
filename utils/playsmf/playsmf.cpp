@@ -16,7 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <signal.h>
+#include <csignal>
 #include <QDebug>
 #include <QCoreApplication>
 #include <QTextStream>
@@ -119,7 +119,7 @@ void PlaySMF::subscribe(const QString& portName)
         cerr << "SequencerError exception. Error code: " << err.code()
              << " (" << err.qstrError() << ")" << endl;
         cerr << "Location: " << err.location() << endl;
-        throw err;
+        throw;
     }
 }
 
@@ -302,7 +302,7 @@ void PlaySMF::play(QString fileName)
         cerr << "SequencerError exception. Error code: " << err.code()
              << " (" << err.qstrError() << ")" << endl;
         cerr << "Location: " << err.location() << endl;
-        throw err;
+        throw;
     }
 }
 

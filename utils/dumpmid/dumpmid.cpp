@@ -16,7 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <signal.h>
+#include <csignal>
 #include <QObject>
 #include <QString>
 #include <QCoreApplication>
@@ -39,14 +39,14 @@ static QTextStream cerr(stderr, QIODevice::WriteOnly);
 using namespace drumstick::ALSA;
 
 QDumpMIDI::QDumpMIDI()
-    : QObject()
+    : QObject(), m_Stopped(false)
 {
     m_Client = new MidiClient(this);
     m_Client->open();
     m_Client->setClientName("DumpMIDI");
 #ifndef USE_QEVENTS // using signals instead
-    connect( m_Client, SIGNAL(eventReceived(SequencerEvent*)),
-                       SLOT(sequencerEvent(SequencerEvent*)),
+    connect( m_Client, &MidiClient::eventReceived,
+                 this, &QDumpMIDI::sequencerEvent,
                        Qt::DirectConnection );
 #endif
     m_Port = new MidiPort(this);
@@ -62,8 +62,7 @@ QDumpMIDI::QDumpMIDI()
     //m_Port->setTimestampReal(true);
     m_Port->setTimestampQueue(m_Queue->getId());
 #endif
-    connect( m_Port, SIGNAL(subscribed(MidiPort*,Subscription*)),
-                     SLOT(subscription(MidiPort*,Subscription*)));
+    connect( m_Port, &MidiPort::subscribed, this, &QDumpMIDI::subscription);
     qDebug() << "Trying to subscribe from Announce";
     m_Port->subscribeFromAnnounce();
 }
@@ -107,7 +106,7 @@ void QDumpMIDI::subscribe(const QString& portName)
         cerr << "SequencerError exception. Error code: " << err.code()
              << " (" << err.qstrError() << ")" << endl;
         cerr << "Location: " << err.location() << endl;
-        throw err;
+        throw;
     }
 }
 
@@ -131,7 +130,7 @@ void QDumpMIDI::run()
         m_Stopped = false;
         while (!stopped()) {
 #ifdef USE_QEVENTS
-            QApplication::sendPostedEvents();
+            QCoreApplication::sendPostedEvents();
 #endif
             sleep(1);
         }
@@ -143,7 +142,7 @@ void QDumpMIDI::run()
         cerr << "SequencerError exception. Error code: " << err.code()
              << " (" << err.qstrError() << ")" << endl;
         cerr << "Location: " << err.location() << endl;
-        throw err;
+        throw;
     }
 }
 

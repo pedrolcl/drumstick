@@ -89,16 +89,15 @@ signals:
     /**
      * Signal emitted when the sequence play-back has finished.
      */
-    void finished();
+    void playbackFinished();
 
     /**
      * Signal emitted when the play-back has stopped.
-     * @since 0.2.0
      */
-    void stopped();
+    void playbackStopped();
 
 public slots:
-    void start( Priority priority = InheritPriority );
+    void start( QThread::Priority priority = InheritPriority );
 
 protected:
     virtual void sendEchoEvent(int tick);

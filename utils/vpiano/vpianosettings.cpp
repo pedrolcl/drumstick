@@ -105,7 +105,7 @@ void VPianoSettings::internalRead(QSettings &settings)
             keys.append(key);
         }
     }
-    for(const QString& key : keys) {
+    for(const QString& key : qAsConst(keys)) {
         QVariant defval = m_defaultsMap.contains(key) ? m_defaultsMap[key] : QString();
         m_settingsMap.insert(key, settings.value(key, defval));
     }
@@ -157,7 +157,7 @@ void VPianoSettings::internalSave(QSettings &settings)
     settings.endGroup();
 
     settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
-    for(auto key : m_settingsMap.keys()) {
+    for(const auto &key : m_settingsMap.keys()) {
         settings.setValue(key, m_settingsMap[key]);
     }
     settings.endGroup();

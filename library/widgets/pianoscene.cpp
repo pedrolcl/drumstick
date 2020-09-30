@@ -450,7 +450,7 @@ void PianoScene::setKeyPressedColor(const QColor& color)
         m_hilightPalette = PianoPalette(PAL_SINGLE);
         m_hilightPalette.setColor(0, color);
         QBrush hilightBrush(color);
-        for (PianoKey* key : m_keys) {
+        for (PianoKey* key : qAsConst(m_keys)) {
             key->setPressedBrush(hilightBrush);
         }
     }
@@ -460,14 +460,14 @@ void PianoScene::resetKeyPressedColor()
 {
     m_hilightPalette.resetColors();
     QBrush hilightBrush(getKeyPressedColor());
-    for (PianoKey* key : m_keys) {
+    for (PianoKey* key : qAsConst(m_keys)) {
         key->setPressedBrush(hilightBrush);
     }
 }
 
 void PianoScene::hideOrShowKeys()
 {
-    for (PianoKey* key : m_keys) {
+    for (PianoKey* key : qAsConst(m_keys)) {
         int n = m_baseOctave*12 + key->getNote() + m_transpose;
         bool b = !(n > m_maxNote) && !(n < m_minNote);
         key->setVisible(b);
@@ -556,7 +556,7 @@ QString PianoScene::noteName( PianoKey* key )
 
 void PianoScene::refreshLabels()
 {
-    for (KeyLabel* lbl : m_labels) {
+    for (KeyLabel* lbl : qAsConst(m_labels)) {
         PianoKey* key = dynamic_cast<PianoKey*>(lbl->parentItem());
         if (key != nullptr) {
             lbl->setVisible(false);
@@ -573,7 +573,7 @@ void PianoScene::refreshLabels()
 
 void PianoScene::refreshKeys()
 {
-    for (PianoKey* key : m_keys) {
+    for (PianoKey* key : qAsConst(m_keys)) {
         if (m_showColorScale && (m_backgroundPalette.paletteId() == PAL_SCALE)) {
             int degree = key->getNote() % 12;
             key->setBrush(m_backgroundPalette.getColor(degree));

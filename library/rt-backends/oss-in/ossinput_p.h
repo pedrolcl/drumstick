@@ -49,7 +49,7 @@ public:
     QStringList m_excludedNames;
     QByteArray m_buffer;
 
-    OSSInputPrivate(QObject *parent = nullptr);
+    explicit OSSInputPrivate(QObject *parent = nullptr);
     void reloadDeviceList(bool advanced = false);
     void open(const MIDIConnection& portName);
     void close();

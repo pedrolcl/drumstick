@@ -1278,12 +1278,12 @@ int QWrk::readChunk()
 
 void QWrk::wrkRead()
 {
-    int vma, vme;
-    int ck_id;
     QByteArray hdr(HEADER.length(), ' ');
     d->m_tempos.clear();
     d->m_IOStream->device()->read(hdr.data(), HEADER.length());
     if (hdr == HEADER) {
+        int vma, vme;
+        int ck_id;
         readGap(1);
         vme = readByte();
         vma = readByte();

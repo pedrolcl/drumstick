@@ -134,7 +134,7 @@ namespace drumstick { namespace rt {
     {
         QVariantMap tmpMap;
         settings->beginGroup(QSTR_DRUMSTICKRT_GROUP);
-        for(auto k : settings->allKeys()) {
+        for(const auto &k : settings->allKeys()) {
             tmpMap.insert(k, settings->value(k));
         }
         settings->endGroup();

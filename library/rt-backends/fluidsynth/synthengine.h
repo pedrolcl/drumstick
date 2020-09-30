@@ -38,7 +38,7 @@ class SynthEngine : public QObject
     Q_PROPERTY(QString soundFont READ soundFont WRITE setSoundFont)
 
 public:
-    SynthEngine(QObject *parent = nullptr);
+    explicit SynthEngine(QObject *parent = nullptr);
     virtual ~SynthEngine();
 
     QString soundFont() const { return m_soundFont; }

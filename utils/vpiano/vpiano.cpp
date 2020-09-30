@@ -152,7 +152,7 @@ void VPiano::initialize()
             m_midiIn->initialize(settings.getQSettings());
             auto conin = m_midiIn->connections(VPianoSettings::instance()->advanced());
             auto lastIn = VPianoSettings::instance()->lastInputConnection();
-            for(const MIDIConnection& conn: conin) {
+            for(const MIDIConnection& conn: qAsConst(conin)) {
                 if (conn.first == lastIn) {
                     m_midiIn->open(conn);
                     break;
@@ -165,7 +165,7 @@ void VPiano::initialize()
     if (m_midiOut != nullptr && !lastConnOut.isEmpty()) {
         m_midiOut->initialize(settings.getQSettings());
         auto connOut = m_midiOut->connections(VPianoSettings::instance()->advanced());
-        for(const MIDIConnection& conn : connOut) {
+        for(const MIDIConnection& conn : qAsConst(connOut)) {
             if (conn.first == lastConnOut) {
                 m_midiOut->open(conn);
                 if (m_midiIn != nullptr) {
@@ -387,7 +387,7 @@ void VPiano::readSettings()
      */
     PianoPalette bgpalette(PAL_KEYS);
     bgpalette.setColor(0, QColor("ivory"));
-    bgpalette.setColor(1, QColor("#3E3131"));
+    bgpalette.setColor(1, QColor("#3F3030"));
     ui.pianokeybd->setBackgroundPalette(bgpalette);
 }
 
@@ -518,6 +518,7 @@ void VPiano::slotStandardNames()
 {
     VPianoSettings::instance()->setNamingPolicy(StandardNames);
     ui.pianokeybd->useStandardNoteNames();
+    ui.actionStandard->setChecked(true);
 }
 
 void VPiano::slotCustomNames(bool sharps)

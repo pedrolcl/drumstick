@@ -138,7 +138,7 @@ namespace drumstick { namespace widgets {
 #endif
 
     public:
-        PianoKeybd(QWidget *parent = nullptr);
+        explicit PianoKeybd(QWidget *parent = nullptr);
         PianoKeybd(const int baseOctave, const int numKeys, const int startKey, QWidget *parent = nullptr);
         virtual ~PianoKeybd();
 

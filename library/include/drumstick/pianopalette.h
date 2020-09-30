@@ -60,7 +60,7 @@ class DRUMSTICK_EXPORT PianoPalette
     Q_ENUM(PalettePolicy)
 
 public:
-    PianoPalette(const int id);
+    explicit PianoPalette(const int id);
     virtual ~PianoPalette() {}
 
     void resetColors();

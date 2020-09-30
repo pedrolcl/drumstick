@@ -27,7 +27,7 @@ class DrumGridModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    DrumGridModel(QObject *parent = nullptr);
+    explicit DrumGridModel(QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;

@@ -47,7 +47,7 @@ class DRUMSTICK_EXPORT PortInfo
 public:
     PortInfo();
     PortInfo(const PortInfo& other);
-    PortInfo(snd_seq_port_info_t* other);
+    explicit PortInfo(snd_seq_port_info_t* other);
     PortInfo(MidiClient* seq, const int client, const int port);
     PortInfo(MidiClient* seq, const int port);
     virtual ~PortInfo();
@@ -117,7 +117,7 @@ class DRUMSTICK_EXPORT MidiPort : public QObject
     friend class MidiClient;
 
 public:
-    MidiPort( QObject* parent = nullptr );
+    explicit MidiPort( QObject* parent = nullptr );
     virtual ~MidiPort();
 
     void attach( MidiClient* seq );

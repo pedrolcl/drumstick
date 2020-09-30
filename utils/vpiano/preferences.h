@@ -27,7 +27,7 @@ class Preferences : public QDialog
     Q_OBJECT
 
 public:
-    Preferences(QWidget *parent = nullptr);
+    explicit Preferences(QWidget *parent = nullptr);
     void apply();
 
 public slots:

@@ -48,7 +48,7 @@ namespace rt {
         QStringList m_excludedNames;
         QList<MIDIConnection> m_inputDevices;
 
-        WinMIDIInputPrivate(WinMIDIInput *inp):
+        explicit WinMIDIInputPrivate(WinMIDIInput *inp):
             m_inp(inp),
             m_out(nullptr),
             m_thruEnabled(false),

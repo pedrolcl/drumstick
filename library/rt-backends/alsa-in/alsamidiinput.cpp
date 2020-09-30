@@ -50,7 +50,7 @@ namespace rt {
         QStringList m_excludedNames;
         bool m_initialized;
 
-        ALSAMIDIInputPrivate(ALSAMIDIInput *inp) :
+        explicit ALSAMIDIInputPrivate(ALSAMIDIInput *inp) :
             m_inp(inp),
             m_out(nullptr),
             m_client(nullptr),
@@ -58,6 +58,7 @@ namespace rt {
             m_portId(-1),
             m_clientId(-1),
             m_thruEnabled(false),
+            m_clientFilter(false),
             m_publicName(DEFAULT_PUBLIC_NAME),
             m_initialized(false)
         {
@@ -129,7 +130,7 @@ namespace rt {
             auto inputs = m_client->getAvailableInputs();
             m_clientFilter = !advanced;
             m_inputDevices.clear();
-            for (const PortInfo& p : inputs) {
+            for (const PortInfo& p : qAsConst(inputs)) {
                 QString name = p.getClientName();
                 clientNames << name;
                 if (namesMap.contains(name)) {
@@ -147,7 +148,7 @@ namespace rt {
                     continue;
                 if ( name.startsWith(m_publicName) )
                     continue;
-                for (const QString& n : m_excludedNames) {
+                for (const QString& n : qAsConst(m_excludedNames)) {
                     if (name.startsWith(n)) {
                         excluded = true;
                         break;

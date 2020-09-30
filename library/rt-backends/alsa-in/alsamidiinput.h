@@ -32,7 +32,7 @@ namespace rt {
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIInput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIInput)
     public:
-        ALSAMIDIInput(QObject *parent = nullptr);
+        explicit ALSAMIDIInput(QObject *parent = nullptr);
         virtual ~ALSAMIDIInput();
 
         // MIDIInput interface

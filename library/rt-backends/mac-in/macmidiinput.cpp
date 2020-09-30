@@ -53,7 +53,7 @@ namespace rt {
         QStringList m_excludedNames;
         QList<MIDIConnection> m_inputDevices;
 
-        MacMIDIInputPrivate(MacMIDIInput *inp) :
+        explicit MacMIDIInputPrivate(MacMIDIInput *inp) :
             m_inp(inp),
             m_out(nullptr),
             m_client(0),

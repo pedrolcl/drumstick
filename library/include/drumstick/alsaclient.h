@@ -19,10 +19,12 @@
 #ifndef DRUMSTICK_ALSACLIENT_H
 #define DRUMSTICK_ALSACLIENT_H
 
-#include "alsaport.h"
+#include <QObject>
 #include <QPointer>
 #include <QThread>
 #include <QReadWriteLock>
+#include "macros.h"
+#include "alsaport.h"
 
 /**
  * @file alsaclient.h
@@ -62,7 +64,7 @@ class DRUMSTICK_EXPORT ClientInfo
 public:
     ClientInfo();
     ClientInfo(const ClientInfo& other);
-    ClientInfo(snd_seq_client_info_t* other);
+    explicit ClientInfo(snd_seq_client_info_t* other);
     ClientInfo(MidiClient* seq, int id);
     virtual ~ClientInfo();
     ClientInfo* clone();
@@ -119,8 +121,8 @@ class DRUMSTICK_EXPORT SystemInfo
 public:
     SystemInfo();
     SystemInfo(const SystemInfo& other);
-    SystemInfo(snd_seq_system_info_t* other);
-    SystemInfo(MidiClient* seq);
+    explicit SystemInfo(snd_seq_system_info_t* other);
+    explicit SystemInfo(MidiClient* seq);
     virtual ~SystemInfo();
     SystemInfo* clone();
     SystemInfo& operator=(const SystemInfo& other);
@@ -150,8 +152,8 @@ class DRUMSTICK_EXPORT PoolInfo
 public:
     PoolInfo();
     PoolInfo(const PoolInfo& other);
-    PoolInfo(snd_seq_client_pool_t* other);
-    PoolInfo(MidiClient* seq);
+    explicit PoolInfo(snd_seq_client_pool_t* other);
+    explicit PoolInfo(MidiClient* seq);
     virtual ~PoolInfo();
     PoolInfo* clone();
     PoolInfo& operator=(const PoolInfo& other);
@@ -207,7 +209,7 @@ class DRUMSTICK_EXPORT MidiClient : public QObject
 {
     Q_OBJECT
 public:
-    MidiClient( QObject* parent = nullptr );
+    explicit MidiClient( QObject* parent = nullptr );
     virtual ~MidiClient();
 
     void open( const QString deviceName = "default",

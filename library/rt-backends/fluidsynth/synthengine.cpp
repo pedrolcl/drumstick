@@ -62,6 +62,7 @@ namespace rt {
 
 SynthEngine::SynthEngine(QObject *parent)
     : QObject(parent),
+      m_sfid(0),
       m_settings(nullptr),
       m_synth(nullptr),
       m_driver(nullptr)

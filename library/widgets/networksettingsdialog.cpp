@@ -32,8 +32,8 @@
 namespace drumstick {
 namespace widgets {
 
-const QString QSTR_ADDRESS_IPV4(QLatin1Literal("225.0.0.37"));
-const QString QSTR_ADDRESS_IPV6(QLatin1Literal("ff12::37"));
+const QString QSTR_ADDRESS_IPV4 = QLatin1Literal("225.0.0.37");
+const QString QSTR_ADDRESS_IPV6 = QLatin1Literal("ff12::37");
 
 NetworkSettingsDialog::NetworkSettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -93,13 +93,9 @@ void NetworkSettingsDialog::readSettings()
 void NetworkSettingsDialog::writeSettings()
 {
     SettingsFactory settings;
-    QString networkAddr = QSTR_ADDRESS_IPV4;
-    QString networkIface;
-    bool ipv6 = false;
-
-    networkAddr = ui->txtAddress->text();
-    networkIface = ui->comboInterface->currentData().toString();
-    ipv6 = ui->checkIPv6->isChecked();
+    QString networkAddr = ui->txtAddress->text();
+    QString networkIface = ui->comboInterface->currentData().toString();
+    bool ipv6 = ui->checkIPv6->isChecked();
 
     settings->beginGroup("Network");
     settings->setValue("address", networkAddr);

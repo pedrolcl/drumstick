@@ -51,7 +51,7 @@ public:
     void run();
 
 public slots:
-    void subscription(drumstick::ALSA::MidiPort* port, drumstick::ALSA::Subscription* subs);
+    void subscription( drumstick::ALSA::MidiPort* port, drumstick::ALSA::Subscription* subs );
 
 #ifdef USE_QEVENTS
 protected:

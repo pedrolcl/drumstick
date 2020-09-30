@@ -87,7 +87,7 @@ class DRUMSTICK_EXPORT QWrk : public QObject
     Q_OBJECT
 
 public:
-    QWrk(QObject * parent = nullptr);
+    explicit QWrk(QObject * parent = nullptr);
     virtual ~QWrk();
 
     void readFromStream(QDataStream *stream);
