@@ -11,5 +11,11 @@ CONFIG += plugin
 HEADERS += vpiano-plugin.h
 SOURCES += vpiano-plugin.cpp
 RESOURCES += vpiano-plugin.qrc
-LIBS += -L$$OUT_PWD/../../build/lib/
-LIBS += -l$$drumstickLib(drumstick-widgets)
+
+macx:!static {
+    QMAKE_LFLAGS += -F$$OUT_PWD/../../build/lib -L$$OUT_PWD/../../build/lib
+    LIBS += -framework drumstick-widgets
+} else {
+    LIBS += -L$$OUT_PWD/../../build/lib \
+            -l$$drumstickLib(drumstick-widgets)
+}
