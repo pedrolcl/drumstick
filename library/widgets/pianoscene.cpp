@@ -122,7 +122,7 @@ void PianoScene::displayKeyOn(PianoKey* key)
     int n = key->getNote() + m_baseOctave*12 + m_transpose;
     QString s = QString("#%1 (%2)").arg(n).arg(noteName(key));
     emit signalName(s);
-    KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().first());
+    KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().constFirst());
     if (lbl != nullptr) {
         lbl->setDefaultTextColor(m_foregroundPalette.getColor(key->isBlack() ? 3 : 2));
         if (m_showLabels == ShowActivated) {
@@ -150,7 +150,7 @@ void PianoScene::showKeyOff( PianoKey* key, int )
 {
     key->setPressed(false);
     emit signalName(QString());
-    KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().first());
+    KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().constFirst());
     if (lbl != nullptr) {
         lbl->restoreColor();
         if (m_showLabels == ShowActivated) {

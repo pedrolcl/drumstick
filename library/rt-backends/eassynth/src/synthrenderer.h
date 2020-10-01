@@ -26,10 +26,7 @@
 #include <drumstick/rtmidioutput.h>
 #include "eas.h"
 
-const QString QSTR_SONIVOXEAS(QLatin1String("SonivoxEAS"));
-
-namespace drumstick {
-namespace rt {
+namespace drumstick { namespace rt {
 
     class SynthRenderer : public QObject
     {
@@ -51,6 +48,14 @@ namespace rt {
         MIDIConnection connection();
         void setBufferTime(int milliseconds);
         void initialize(QSettings* settings);
+
+        static const QString QSTR_PREFERENCES;
+        static const QString QSTR_BUFFERTIME;
+        static const QString QSTR_REVERBTYPE;
+        static const QString QSTR_REVERBAMT;
+        static const QString QSTR_CHORUSTYPE;
+        static const QString QSTR_CHORUSAMT;
+        static const QString QSTR_SONIVOXEAS;
 
     private:
         void initEAS();

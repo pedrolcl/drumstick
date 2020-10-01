@@ -24,10 +24,7 @@
 #include "ossinput_p.h"
 #include "ossinput.h"
 
-namespace drumstick {
-namespace rt {
-
-static QString DEFAULT_PUBLIC_NAME(QLatin1String("MIDI In"));
+namespace drumstick { namespace rt {
 
 OSSInputPrivate::OSSInputPrivate(QObject *parent) : QObject(parent),
     m_inp(qobject_cast<OSSInput *>(parent)),
@@ -37,7 +34,7 @@ OSSInputPrivate::OSSInputPrivate(QObject *parent) : QObject(parent),
     m_parser(nullptr),
     m_thruEnabled(false),
     m_advanced(false),
-    m_publicName(DEFAULT_PUBLIC_NAME)
+    m_publicName(OSSInput::DEFAULT_PUBLIC_NAME)
 {
     reloadDeviceList();
 }

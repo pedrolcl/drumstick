@@ -27,10 +27,9 @@
  * Implementation of the PianoKey class
  */
 
-namespace drumstick {
-namespace widgets {
+namespace drumstick { namespace widgets {
 
-const PianoPalette keyPalette(PAL_KEYS);
+const PianoPalette PianoKey::keyPalette(PAL_KEYS);
 
 PianoKey::PianoKey(const QRectF &rect, const bool black, const int note)
     : QGraphicsRectItem(rect),
@@ -82,7 +81,7 @@ void PianoKey::setPressed(bool p)
 
 QPixmap& PianoKey::getPixmap() const
 {
-    static QPixmap pixmap(QLatin1String(":/vpiano/blkey.png"));
+    static QPixmap pixmap(QStringLiteral(":/vpiano/blkey.png"));
     return pixmap;
 }
 

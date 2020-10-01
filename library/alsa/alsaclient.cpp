@@ -1749,9 +1749,9 @@ MidiClient::SequencerInputThread::setRealtimePriority()
     if (rt != 0) {
 #if defined(RTKIT_SUPPORT)
         const QString rtkit_service =
-                QLatin1String("org.freedesktop.RealtimeKit1");
+                QStringLiteral("org.freedesktop.RealtimeKit1");
         const QString rtkit_path =
-                QLatin1String("/org/freedesktop/RealtimeKit1");
+                QStringLiteral("/org/freedesktop/RealtimeKit1");
         const QString rtkit_iface = rtkit_service;
         thread = _gettid();
         QDBusConnection bus = QDBusConnection::systemBus();

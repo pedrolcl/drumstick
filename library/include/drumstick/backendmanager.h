@@ -41,14 +41,6 @@ namespace rt {
      * @{
      */
 
-    const QString QSTR_DRUMSTICK = QLatin1String("drumstick2");
-    const QString QSTR_DRUMSTICKRT = QLatin1String("DRUMSTICKRT");
-    const QString QSTR_DRUMSTICKRT_GROUP = QLatin1String("DrumstickRT");
-    const QString QSTR_DRUMSTICKRT_PUBLICNAMEIN = QLatin1String("PublicNameIN");
-    const QString QSTR_DRUMSTICKRT_PUBLICNAMEOUT = QLatin1String("PublicNameOUT");
-    const QString QSTR_DRUMSTICKRT_EXCLUDED = QLatin1String("ExcludedNames");
-    const QString QSTR_DRUMSTICKRT_PATH = QLatin1String("BackendsPath");
-
     /**
      * @brief The BackendManager class manages lists of dynamic and static
      * backends for applications based on drumstick-rt
@@ -109,6 +101,14 @@ namespace rt {
          * @return Output backend instance if available
          */
         MIDIOutput* outputBackendByName(const QString name);
+
+        static const QString QSTR_DRUMSTICK;
+        static const QString QSTR_DRUMSTICKRT;
+        static const QString QSTR_DRUMSTICKRT_GROUP;
+        static const QString QSTR_DRUMSTICKRT_PUBLICNAMEIN;
+        static const QString QSTR_DRUMSTICKRT_PUBLICNAMEOUT;
+        static const QString QSTR_DRUMSTICKRT_EXCLUDED;
+        static const QString QSTR_DRUMSTICKRT_PATH;
 
     private:
         class BackendManagerPrivate;

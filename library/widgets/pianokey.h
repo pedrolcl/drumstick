@@ -27,8 +27,9 @@
  * Declaration of the PianoKey class
  */
 
-namespace drumstick {
-namespace widgets {
+namespace drumstick { namespace widgets {
+
+    class PianoPalette;
 
     class PianoKey : public QGraphicsRectItem
     {
@@ -51,6 +52,8 @@ namespace widgets {
         bool isBlack() const { return m_black; }
         QPixmap& getPixmap() const;
         QRectF pixmapRect() const;
+
+        static const PianoPalette keyPalette;
 
     private:
         bool m_pressed;

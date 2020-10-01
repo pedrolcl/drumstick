@@ -23,7 +23,7 @@
 #include <QtGui>
 #endif
 
-const QString DEFVAL("f");
+const QString DrumGridModel::DEFVAL = QStringLiteral("f");
 
 DrumGridModel::DrumGridModel(QObject *parent)
     : QAbstractTableModel(parent),
@@ -38,11 +38,11 @@ DrumGridModel::DrumGridModel(QObject *parent)
 void DrumGridModel::loadKeyNames()
 {
     m_keyNames.clear();
-    m_keyNames[46] = QLatin1String("Open HH");
-    m_keyNames[42] = QLatin1String("Closed HH");
-    m_keyNames[39] = QLatin1String("Hand Claps");
-    m_keyNames[38] = QLatin1String("Snare Drum");
-    m_keyNames[36] = QLatin1String("Bass Drum");
+    m_keyNames[46] = QStringLiteral("Open HH");
+    m_keyNames[42] = QStringLiteral("Closed HH");
+    m_keyNames[39] = QStringLiteral("Hand Claps");
+    m_keyNames[38] = QStringLiteral("Snare Drum");
+    m_keyNames[36] = QStringLiteral("Bass Drum");
 }
 
 void DrumGridModel::fillSampleData()

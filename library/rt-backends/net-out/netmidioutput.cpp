@@ -22,10 +22,13 @@
 #include <QSettings>
 #include "netmidioutput.h"
 
-namespace drumstick {
-namespace rt {
+namespace drumstick { namespace rt {
 
-static QString DEFAULT_PUBLIC_NAME(QLatin1String("MIDI Out"));
+const QString NetMIDIOutput::DEFAULT_PUBLIC_NAME = QStringLiteral("MIDI Out");
+const QString NetMIDIOutput::STR_ADDRESS_IPV4 = QStringLiteral("225.0.0.37");
+const QString NetMIDIOutput::STR_ADDRESS_IPV6 = QStringLiteral("ff12::37");
+const int NetMIDIOutput::MULTICAST_PORT = 21928;
+const int NetMIDIOutput::LAST_PORT = 21948;
 
 class NetMIDIOutput::NetMIDIOutputPrivate
 {
@@ -169,7 +172,7 @@ void NetMIDIOutput::initialize(QSettings *settings)
 
 QString NetMIDIOutput::backendName()
 {
-    return QLatin1String("Network");
+    return QStringLiteral("Network");
 }
 
 QString NetMIDIOutput::publicName()

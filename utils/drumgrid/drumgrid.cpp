@@ -34,6 +34,27 @@
 
 using namespace drumstick::ALSA;
 
+const QString DrumGrid::QSTR_WINDOW = QStringLiteral("Window");
+const QString DrumGrid::QSTR_GEOMETRY = QStringLiteral("Geometry");
+const QString DrumGrid::QSTR_STATE = QStringLiteral("State");
+const QString DrumGrid::QSTR_MIDI = QStringLiteral("MIDI");
+const QString DrumGrid::QSTR_CONNECTION = QStringLiteral("Connection");
+const QString DrumGrid::QSTR_TEMPO = QStringLiteral("Tempo");
+const QString DrumGrid::QSTR_PATTERN = QStringLiteral("Pattern");
+
+const int DrumGrid::TEMPO_MIN = 25;
+const int DrumGrid::TEMPO_MAX = 250;
+const int DrumGrid::TEMPO_DEFAULT = 120;
+const int DrumGrid::NOTE_DURATION = 10;
+const int DrumGrid::METRONOME_CHANNEL = 9;
+const int DrumGrid::METRONOME_VELOCITY = 100;
+const int DrumGrid::METRONOME_PROGRAM = 0;
+const int DrumGrid::METRONOME_RESOLUTION = 120;
+const int DrumGrid::METRONOME_VOLUME = 100;
+const int DrumGrid::METRONOME_PAN = 64;
+const int DrumGrid::VOLUME_CC = 7;
+const int DrumGrid::PAN_CC = 10;
+
 DrumGrid::DrumGrid(QWidget *parent)
     : QMainWindow(parent),
     m_ui(new Ui::DrumGrid),
@@ -159,8 +180,9 @@ void DrumGrid::connectMidi()
     QString item = QInputDialog::getItem(this, "MIDI port subscription",
                                          "Output port:", items,
                                          current, false, &ok);
-    if (ok && !item.isEmpty())
+    if (ok && !item.isEmpty()) {
         subscribe(item);
+    }
 }
 
 void DrumGrid::sequencerEvent(SequencerEvent *ev)
@@ -214,7 +236,7 @@ void DrumGrid::shortcutPressed(const QString& value)
 void DrumGrid::addShortcut(const QKeySequence& key, const QString& value)
 {
     QShortcut* shortcut = new QShortcut(key, m_ui->tableView);
-    connect(shortcut, &QShortcut::activated, [=]{ shortcutPressed(value); });
+    connect(shortcut, &QShortcut::activated, this, [=]{ shortcutPressed(value); });
     m_shortcuts.append(shortcut);
 }
 
@@ -409,6 +431,7 @@ void DrumGrid::updateDisplay(int /*bar*/, int beat)
 
 void DrumGrid::slotAbout()
 {
+    About dlgAbout(this);
     dlgAbout.exec();
 }
 

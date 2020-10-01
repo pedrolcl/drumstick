@@ -51,6 +51,9 @@ using namespace drumstick;
 using namespace ALSA;
 using namespace File;
 
+const QString GUIPlayer::QSTR_DOMAIN = QStringLiteral("drumstick.sourceforge.net");
+const QString GUIPlayer::QSTR_APPNAME = QStringLiteral("GUIPlayer");
+
 GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags),
     m_portId(-1),

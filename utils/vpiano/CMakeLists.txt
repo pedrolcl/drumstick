@@ -50,10 +50,6 @@ add_executable(drumstick-vpiano
     ${vpiano_SRCS}
 )
 
-target_include_directories(drumstick-vpiano
-    PRIVATE ../common
-)
-
 target_link_libraries(drumstick-vpiano PRIVATE
     Drumstick::RT
     Drumstick::Widgets

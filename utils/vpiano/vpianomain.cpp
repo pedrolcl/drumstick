@@ -25,8 +25,6 @@
 #include <QCommandLineParser>
 #include <drumstick/backendmanager.h>
 #include <drumstick/settingsfactory.h>
-
-#include "cmdversion.h"
 #include "vpiano.h"
 
 const QString PGM_DESCRIPTION = QObject::tr(
@@ -80,7 +78,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("drumstick.sourceforge.net");
     QCoreApplication::setOrganizationDomain("drumstick.sourceforge.net");
     QCoreApplication::setApplicationName("VPiano");
-    QCoreApplication::setApplicationVersion(PGM_VERSION);
+    QCoreApplication::setApplicationVersion(QStringLiteral(QT_STRINGIFY(VERSION)));
     QCoreApplication::setAttribute(Qt::AA_SynthesizeMouseForUnhandledTouchEvents, false);
     QCoreApplication::setAttribute(Qt::AA_SynthesizeTouchForUnhandledMouseEvents, false);
     QApplication app(argc, argv);
@@ -110,12 +108,8 @@ int main(int argc, char *argv[])
     QCoreApplication::installTranslator(&appTranslator);
 
     QCommandLineParser parser;
-    parser.setApplicationDescription(
-        QString("%1 v.%2\n\n%3")
-        .arg(QCoreApplication::applicationName())
-        .arg(QCoreApplication::applicationVersion())
-        .arg(PGM_DESCRIPTION)
-    );
+    parser.setApplicationDescription(QString("%1 v.%2\n\n%3").arg(QCoreApplication::applicationName(),
+        QCoreApplication::applicationVersion(), PGM_DESCRIPTION));
     auto helpOption = parser.addHelpOption();
     auto versionOption = parser.addVersionOption();
     QCommandLineOption portableOption({"p", "portable"}, QObject::tr("Portable settings mode"));

@@ -65,12 +65,12 @@ SynthController::initialize(QSettings* settings)
 
 QString SynthController::backendName()
 {
-    return QSTR_SONIVOXEAS;
+    return SynthRenderer::QSTR_SONIVOXEAS;
 }
 
 QString SynthController::publicName()
 {
-    return QSTR_SONIVOXEAS;
+    return SynthRenderer::QSTR_SONIVOXEAS;
 }
 
 void SynthController::setPublicName(QString name)
@@ -81,7 +81,7 @@ void SynthController::setPublicName(QString name)
 QList<MIDIConnection> SynthController::connections(bool advanced)
 {
     Q_UNUSED(advanced)
-    return QList<MIDIConnection>{MIDIConnection(QSTR_SONIVOXEAS, QSTR_SONIVOXEAS)};
+    return QList<MIDIConnection>{MIDIConnection(SynthRenderer::QSTR_SONIVOXEAS, SynthRenderer::QSTR_SONIVOXEAS)};
 }
 
 void SynthController::setExcludedConnections(QStringList conns)

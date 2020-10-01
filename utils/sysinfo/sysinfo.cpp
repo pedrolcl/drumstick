@@ -25,12 +25,11 @@
 #include <drumstick/alsaclient.h>
 #include <drumstick/subscription.h>
 #include <drumstick/sequencererror.h>
-#include "cmdversion.h"
 
-const QString PGM_NAME("drumstick-sysinfo");
-const QString PGM_DESCRIPTION("ALSA Sequencer System Info");
-static QTextStream cout(stdout, QIODevice::WriteOnly);
-static QTextStream cerr(stderr, QIODevice::WriteOnly);
+QString PGM_NAME = QStringLiteral("drumstick-sysinfo");
+QString PGM_DESCRIPTION = QStringLiteral("ALSA Sequencer System Info");
+QTextStream cout(stdout, QIODevice::WriteOnly);
+QTextStream cerr(stderr, QIODevice::WriteOnly);
 
 using namespace drumstick::ALSA;
 
@@ -196,7 +195,7 @@ void systemInfo()
     client->open();
     client->setClientName(PGM_NAME);
     SystemInfo info = client->getSystemInfo();
-    cout << PGM_DESCRIPTION << ", version: "<< PGM_VERSION << endl;
+    cout << PGM_DESCRIPTION << ", version: "<< QStringLiteral(QT_STRINGIFY(VERSION)) << endl;
     cout << "Compiled ALSA library: " << LIBRARY_VERSION << endl;
     cout << "Runtime ALSA library: "
          << getRuntimeALSALibraryVersion() << endl;
@@ -224,14 +223,15 @@ void systemInfo()
 
 int main(int argc, char **argv)
 {
-    const QString errorstr = "Fatal error from the ALSA sequencer. "
+    const QString ERRORSTR = QStringLiteral("Fatal error from the ALSA sequencer. "
         "This usually happens when the kernel doesn't have ALSA support, "
         "or the device node (/dev/snd/seq) doesn't exists, "
         "or the kernel module (snd_seq) is not loaded. "
-        "Please check your ALSA/MIDI configuration.";
+        "Please check your ALSA/MIDI configuration.");
+
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName(PGM_NAME);
-    QCoreApplication::setApplicationVersion(PGM_VERSION);
+    QCoreApplication::setApplicationVersion(QStringLiteral(QT_STRINGIFY(VERSION)));
 
     QCommandLineParser parser;
     parser.setApplicationDescription(PGM_DESCRIPTION);
@@ -246,9 +246,9 @@ int main(int argc, char **argv)
     try {
         systemInfo();
     } catch (const SequencerError& ex) {
-        cerr << errorstr + " Returned error was: " + ex.qstrError() << endl;
+        cerr << ERRORSTR << " Returned error was: " << ex.qstrError() << endl;
     } catch (...) {
-        cerr << errorstr << endl;
+        cerr << ERRORSTR << endl;
     }
     return 0;
 }

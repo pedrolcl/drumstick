@@ -25,7 +25,6 @@
 #include <QLibraryInfo>
 #include <drumstick/sequencererror.h>
 #include "guiplayer.h"
-#include "cmdversion.h"
 
 const QString PGM_DESCRIPTION("ALSA Sequencer based MIDI file player");
 
@@ -37,10 +36,10 @@ const QString errorstr = "Fatal error from the ALSA sequencer. "
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setOrganizationName(QSTR_DOMAIN);
-    QCoreApplication::setOrganizationDomain(QSTR_DOMAIN);
-    QCoreApplication::setApplicationName(QSTR_APPNAME);    
-    QCoreApplication::setApplicationVersion(PGM_VERSION);
+    QCoreApplication::setOrganizationName(GUIPlayer::QSTR_DOMAIN);
+    QCoreApplication::setOrganizationDomain(GUIPlayer::QSTR_DOMAIN);
+    QCoreApplication::setApplicationName(GUIPlayer::QSTR_APPNAME);
+    QCoreApplication::setApplicationVersion(QStringLiteral(QT_STRINGIFY(VERSION)));
     QApplication app(argc, argv);
 
     QLocale locale;

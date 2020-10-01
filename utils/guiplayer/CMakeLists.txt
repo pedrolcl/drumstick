@@ -57,10 +57,6 @@ add_executable(drumstick-guiplayer
     ${guiplayer_SRCS}
 )
 
-target_include_directories(drumstick-guiplayer PRIVATE
-    ../common
-)
-
 target_link_libraries(drumstick-guiplayer PRIVATE
     Drumstick::File
     Drumstick::ALSA

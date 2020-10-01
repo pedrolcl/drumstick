@@ -30,10 +30,6 @@ add_executable(drumstick-dumpmid
     ${dumpmid_SRCS}
 )
 
-target_include_directories(drumstick-dumpmid PRIVATE
-    ../common
-)
-
 target_link_libraries(drumstick-dumpmid PRIVATE
     Drumstick::ALSA
     Qt5::Core

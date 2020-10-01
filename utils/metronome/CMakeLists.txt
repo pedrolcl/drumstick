@@ -30,10 +30,6 @@ add_executable(drumstick-metronome
     ${metronome_SRCS}
 )
 
-target_include_directories(drumstick-metronome PRIVATE
-    ../common
-)
-
 target_link_libraries(drumstick-metronome PRIVATE
     Drumstick::ALSA
     Qt5::Core

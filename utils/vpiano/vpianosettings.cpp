@@ -61,8 +61,8 @@ void VPianoSettings::ResetDefaults()
     m_numKeys = 88;
     m_startingKey = 9;
     m_defaultsMap = QVariantMap{
-        { drumstick::rt::QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("Virtual Piano IN")},
-        { drumstick::rt::QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("Virtual Piano OUT")}
+        { BackendManager::QSTR_DRUMSTICKRT_PUBLICNAMEIN, QStringLiteral("Virtual Piano IN")},
+        { BackendManager::QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QStringLiteral("Virtual Piano OUT")}
     };
     emit ValuesChanged();
 }
@@ -93,16 +93,19 @@ void VPianoSettings::SaveToFile(const QString &filepath)
 
 void VPianoSettings::internalRead(QSettings &settings)
 {
+    const QStringList STD_NAMES_S{"do", "do♯", "re", "re♯", "mi", "fa", "fa♯", "sol", "sol♯", "la", "la♯", "si"};
+    const QStringList STD_NAMES_F{"do", "re♭", "re", "mi♭", "mi", "fa", "sol♭", "sol", "la♭", "la", "si♭", "si"};
+
     settings.beginGroup("Window");
     m_geometry = settings.value("Geometry").toByteArray();
     m_state = settings.value("State").toByteArray();
     settings.endGroup();
 
-    settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
+    settings.beginGroup(BackendManager::QSTR_DRUMSTICKRT_GROUP);
     QStringList keys = settings.allKeys();
-    for(const QString& key : m_defaultsMap.keys()) {
-        if (!keys.contains(key)) {
-            keys.append(key);
+    for(auto it = m_defaultsMap.begin(); it != m_defaultsMap.end(); ++it) {
+        if (!keys.contains(it.key())) {
+            keys.append(it.key());
         }
     }
     for(const QString& key : qAsConst(keys)) {
@@ -156,9 +159,9 @@ void VPianoSettings::internalSave(QSettings &settings)
     settings.setValue("State", m_state);
     settings.endGroup();
 
-    settings.beginGroup(QSTR_DRUMSTICKRT_GROUP);
-    for(const auto &key : m_settingsMap.keys()) {
-        settings.setValue(key, m_settingsMap[key]);
+    settings.beginGroup(BackendManager::QSTR_DRUMSTICKRT_GROUP);
+    for (auto it = m_settingsMap.begin(); it != m_settingsMap.end(); ++it) {
+        settings.setValue(it.key(), it.value());
     }
     settings.endGroup();
 

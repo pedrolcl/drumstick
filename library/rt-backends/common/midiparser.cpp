@@ -38,7 +38,7 @@ public:
             m_out->sendNoteOff(chan, note, vel);
         }
         if (m_in != nullptr) {
-            m_in->emit midiNoteOff(chan, note, vel);
+            emit m_in->midiNoteOff(chan, note, vel);
         }
     }
 
@@ -49,7 +49,7 @@ public:
             m_out->sendNoteOn(chan, note, vel);
         }
         if (m_in != nullptr) {
-            m_in->emit midiNoteOn(chan, note, vel);
+            emit m_in->midiNoteOn(chan, note, vel);
         }
     }
 
@@ -60,7 +60,7 @@ public:
             m_out->sendKeyPressure(chan, note, value);
         }
         if (m_in != nullptr) {
-            m_in->emit midiKeyPressure(chan, note, value);
+            emit m_in->midiKeyPressure(chan, note, value);
         }
     }
 
@@ -71,7 +71,7 @@ public:
             m_out->sendController(chan, control, value);
         }
         if (m_in != nullptr) {
-            m_in->emit midiController(chan, control, value);
+            emit m_in->midiController(chan, control, value);
         }
     }
 
@@ -82,7 +82,7 @@ public:
             m_out->sendProgram(chan, program);
         }
         if (m_in != nullptr) {
-            m_in->emit midiProgram(chan, program);
+            emit m_in->midiProgram(chan, program);
         }
     }
 
@@ -93,7 +93,7 @@ public:
             m_out->sendChannelPressure(chan, value);
         }
         if (m_in != nullptr) {
-            m_in->emit midiChannelPressure(chan, value);
+            emit m_in->midiChannelPressure(chan, value);
         }
     }
 
@@ -104,7 +104,7 @@ public:
             m_out->sendPitchBend(chan, value);
         }
         if (m_in != nullptr) {
-            m_in->emit midiPitchBend(chan, value);
+            emit m_in->midiPitchBend(chan, value);
         }
     }
 
@@ -115,7 +115,7 @@ public:
             m_out->sendSysex(data);
         }
         if (m_in != nullptr) {
-            m_in->emit midiSysex(data);
+            emit m_in->midiSysex(data);
         }
     }
 
@@ -126,8 +126,7 @@ public:
             m_out->sendSystemMsg(status);
         }
         if (m_in != nullptr) {
-            m_in->emit midiSystemCommon(status);
-
+            emit m_in->midiSystemCommon(status);
         }
     }
 
@@ -138,7 +137,7 @@ public:
             m_out->sendSystemMsg(byte);
         }
         if (m_in != nullptr) {
-            m_in->emit midiSystemRealtime(byte);
+            emit m_in->midiSystemRealtime(byte);
         }
     }
 
@@ -164,9 +163,6 @@ void MIDIParser::setMIDIThruDevice(MIDIOutput *device)
 
 void MIDIParser::parse(unsigned char byte)
 {
-    unsigned char status;
-    int chan, m1, m2, v;
-
     if (byte >= MIDI_STATUS_REALTIME) { // system realtime
         d->processSystemRealtime(byte);
         return;
@@ -174,7 +170,8 @@ void MIDIParser::parse(unsigned char byte)
         d->m_buffer.append(byte);
 
     while(d->m_buffer.length() > 0) {
-        status = static_cast<unsigned>(d->m_buffer.at(0));
+        int chan, m1, m2, v;
+        unsigned char status = static_cast<unsigned>(d->m_buffer.at(0));
         if (status == MIDI_STATUS_SYSEX) { // system exclusive
             if (byte == MIDI_STATUS_ENDSYSEX) {
                 d->processSysex(d->m_buffer);

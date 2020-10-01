@@ -27,10 +27,7 @@
 #include <drumstick/rtmidioutput.h>
 #include <fluidsynth.h>
 
-const QString QSTR_FLUIDSYNTH(QLatin1String("FluidSynth"));
-
-namespace drumstick {
-namespace rt {
+namespace drumstick { namespace rt {
 
 class SynthEngine : public QObject
 {
@@ -59,6 +56,31 @@ public:
     void close();
     void open();
     void uninitialize();
+
+    static const QString QSTR_FLUIDSYNTH;
+    static const QString QSTR_PREFERENCES;
+    static const QString QSTR_INSTRUMENTSDEFINITION;
+    static const QString QSTR_DATADIR;
+    static const QString QSTR_DATADIR2;
+    static const QString QSTR_SOUNDFONT;
+
+    static const QString QSTR_AUDIODRIVER;
+    static const QString QSTR_PERIODSIZE;
+    static const QString QSTR_PERIODS;
+    static const QString QSTR_SAMPLERATE;
+    static const QString QSTR_CHORUS;
+    static const QString QSTR_REVERB;
+    static const QString QSTR_GAIN;
+    static const QString QSTR_POLYPHONY;
+    static const QString QSTR_DEFAULT_AUDIODRIVER;
+
+    static const int DEFAULT_PERIODS;
+    static const int DEFAULT_PERIODSIZE;
+    static const double DEFAULT_SAMPLERATE;
+    static const int DEFAULT_CHORUS;
+    static const int DEFAULT_REVERB;
+    static const double DEFAULT_GAIN;
+    static const int DEFAULT_POLYPHONY;
 
 private:
     void scanSoundFonts(const QDir &dir);

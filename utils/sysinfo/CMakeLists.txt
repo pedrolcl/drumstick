@@ -22,10 +22,6 @@ add_executable(drumstick-sysinfo
     ${sysinfo_SRCS}
 )
 
-target_include_directories(drumstick-sysinfo PRIVATE
-    ../common
-)
-
 target_link_libraries(drumstick-sysinfo PRIVATE
     Drumstick::ALSA
     Qt5::Core

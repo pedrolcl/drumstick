@@ -50,10 +50,6 @@ add_executable(drumstick-drumgrid
     ${drumgrid_SRCS}
 )
 
-target_include_directories(drumstick-drumgrid PRIVATE
-    ../common
-)
-
 target_link_libraries(drumstick-drumgrid PRIVATE
     Drumstick::ALSA
     Qt5::Widgets

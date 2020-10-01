@@ -174,23 +174,23 @@ signals:
      * @param port MIDI port object pointer
      * @param subs Subscription object pointer
      */
-    void subscribed(MidiPort* port, Subscription* subs);
+    void subscribed(drumstick::ALSA::MidiPort* port, drumstick::ALSA::Subscription* subs);
     /**
      * Signal emitted when the MidiClient has changed
      * @param port MIDI port object pinter
      * @param seq MidiClient object pointer
      */
-    void midiClientChanged(MidiPort* port, MidiClient* seq);
+    void midiClientChanged(drumstick::ALSA::MidiPort* port, drumstick::ALSA::MidiClient* seq);
     /**
      * Signal emitted when the port is attached to a MidiClient
      * @param port MIDI port object pointer
      */
-    void attached(MidiPort* port);
+    void attached(drumstick::ALSA::MidiPort* port);
     /**
      * Signal emitted when the port is detached from a MidiClient
      * @param port MIDI port object pointer
      */
-    void detached(MidiPort* port);
+    void detached(drumstick::ALSA::MidiPort* port);
 
 protected:
     PortInfo* getPortInfo();

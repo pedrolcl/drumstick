@@ -23,13 +23,7 @@
 #include <QHostAddress>
 #include <drumstick/rtmidioutput.h>
 
-namespace drumstick {
-namespace rt {
-
-    const QString STR_ADDRESS_IPV4(QLatin1Literal("225.0.0.37"));
-    const QString STR_ADDRESS_IPV6(QLatin1Literal("ff12::37"));
-    const int MULTICAST_PORT(21928);
-    const int LAST_PORT(21948);
+namespace drumstick { namespace rt {
 
     class NetMIDIOutput : public MIDIOutput
     {
@@ -39,6 +33,12 @@ namespace rt {
     public:
         explicit NetMIDIOutput(QObject *parent = nullptr);
         virtual ~NetMIDIOutput();
+
+        static const QString DEFAULT_PUBLIC_NAME;
+        static const QString STR_ADDRESS_IPV4;
+        static const QString STR_ADDRESS_IPV6;
+        static const int MULTICAST_PORT;
+        static const int LAST_PORT;
 
         // MIDIOutput interface
     public:

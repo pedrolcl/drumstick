@@ -27,13 +27,10 @@
 #include <QFileInfo>
 #include <QCommandLineParser>
 #include <drumstick/qsmf.h>
-#include "cmdversion.h"
 #include "dumpsmf.h"
 
-const QString PGM_NAME("drumstick-dumpsmf");
-const QString PGM_DESCRIPTION("Drumstick command line utility for decoding SMF (Standard MIDI) files");
-static QTextStream cout(stdout, QIODevice::WriteOnly);
-static QTextStream cerr(stderr, QIODevice::WriteOnly);
+QTextStream cout(stdout, QIODevice::WriteOnly);
+QTextStream cerr(stderr, QIODevice::WriteOnly);
 
 using drumstick::File::QSmf;
 
@@ -248,11 +245,13 @@ int QSpySMF::numErrors()
 
 int main(int argc, char **argv)
 {
+    const QString PGM_NAME = QStringLiteral("drumstick-dumpsmf");
+    const QString PGM_DESCRIPTION = QStringLiteral("Drumstick command line utility for decoding SMF (Standard MIDI) files");
+
     QSpySMF spy;
-    QString file;
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName(PGM_NAME);
-    QCoreApplication::setApplicationVersion(PGM_VERSION);
+    QCoreApplication::setApplicationVersion(QStringLiteral(QT_STRINGIFY(VERSION)));
 
     QCommandLineParser parser;
     parser.setApplicationDescription(PGM_DESCRIPTION);

@@ -22,8 +22,7 @@
 #include <QObject>
 #include <drumstick/rtmidioutput.h>
 
-namespace drumstick {
-namespace rt {
+namespace drumstick { namespace rt {
 
     class OSSOutput : public MIDIOutput
     {
@@ -33,6 +32,8 @@ namespace rt {
     public:
         explicit OSSOutput(QObject *parent = nullptr);
         virtual ~OSSOutput();
+
+        static const QString DEFAULT_PUBLIC_NAME;
 
         // MIDIOutput interface
     public:

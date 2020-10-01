@@ -26,9 +26,6 @@
 #include <drumstick/backendmanager.h>
 #include <drumstick/pianokeybd.h>
 
-const QStringList STD_NAMES_S{"do", "do♯", "re", "re♯", "mi", "fa", "fa♯", "sol", "sol♯", "la", "la♯", "si"};
-const QStringList STD_NAMES_F{"do", "re♭", "re", "mi♭", "mi", "fa", "sol♭", "sol", "la♭", "la", "si♭", "si"};
-
 class VPianoSettings : public QObject
 {
     Q_OBJECT

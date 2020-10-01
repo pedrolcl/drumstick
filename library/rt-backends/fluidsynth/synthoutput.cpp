@@ -36,12 +36,12 @@ void SynthOutput::initialize(QSettings *settings)
 
 QString SynthOutput::backendName()
 {
-    return QSTR_FLUIDSYNTH;
+    return SynthEngine::QSTR_FLUIDSYNTH;
 }
 
 QString SynthOutput::publicName()
 {
-    return QSTR_FLUIDSYNTH;
+    return SynthEngine::QSTR_FLUIDSYNTH;
 }
 
 void SynthOutput::setPublicName(QString name)
@@ -52,7 +52,7 @@ void SynthOutput::setPublicName(QString name)
 QList<MIDIConnection> SynthOutput::connections(bool advanced)
 {
     Q_UNUSED(advanced)
-    return QList<MIDIConnection>{MIDIConnection(QSTR_FLUIDSYNTH, QSTR_FLUIDSYNTH)};
+    return QList<MIDIConnection>{MIDIConnection(SynthEngine::QSTR_FLUIDSYNTH, SynthEngine::QSTR_FLUIDSYNTH)};
 }
 
 void SynthOutput::setExcludedConnections(QStringList conns)

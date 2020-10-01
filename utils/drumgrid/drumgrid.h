@@ -19,32 +19,9 @@
 #ifndef DRUMGRID_H
 #define DRUMGRID_H
 
-#include "drumgridabout.h"
-
 #include <QMainWindow>
 #include <QShortcut>
 #include <QCloseEvent>
-
-const QString QSTR_WINDOW("Window");
-const QString QSTR_GEOMETRY("Geometry");
-const QString QSTR_STATE("State");
-const QString QSTR_MIDI("MIDI");
-const QString QSTR_CONNECTION("Connection");
-const QString QSTR_TEMPO("Tempo");
-const QString QSTR_PATTERN("Pattern");
-
-const int TEMPO_MIN(25);
-const int TEMPO_MAX(250);
-const int TEMPO_DEFAULT(120);
-const int NOTE_DURATION(10);
-const int METRONOME_CHANNEL(9);
-const int METRONOME_VELOCITY(100);
-const int METRONOME_PROGRAM(0);
-const int METRONOME_RESOLUTION(120);
-const int METRONOME_VOLUME(100);
-const int METRONOME_PAN(64);
-const int VOLUME_CC(7);
-const int PAN_CC(10);
 
 namespace Ui
 {
@@ -91,6 +68,27 @@ public:
     void metronome_event_output(drumstick::ALSA::SequencerEvent* ev);
     int decodeVelocity(const QString drumVel);
 
+    static const QString QSTR_WINDOW;
+    static const QString QSTR_GEOMETRY;
+    static const QString QSTR_STATE;
+    static const QString QSTR_MIDI;
+    static const QString QSTR_CONNECTION;
+    static const QString QSTR_TEMPO;
+    static const QString QSTR_PATTERN;
+
+    static const int TEMPO_MIN;
+    static const int TEMPO_MAX;
+    static const int TEMPO_DEFAULT;
+    static const int NOTE_DURATION;
+    static const int METRONOME_CHANNEL;
+    static const int METRONOME_VELOCITY;
+    static const int METRONOME_PROGRAM;
+    static const int METRONOME_RESOLUTION;
+    static const int METRONOME_VOLUME;
+    static const int METRONOME_PAN;
+    static const int VOLUME_CC;
+    static const int PAN_CC;
+
 public slots:
     void slotAbout();
     void slotAboutQt();
@@ -119,7 +117,6 @@ private:
     DrumGridModel* m_model;
     QString m_subscription;
     QVector<QShortcut*> m_shortcuts;
-    About dlgAbout;
 
     int m_bar;
     int m_beat;

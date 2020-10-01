@@ -28,12 +28,12 @@ void DummyOutput::initialize(QSettings* settings)
 
 QString DummyOutput::backendName()
 {
-    return QLatin1String("DUMMY");
+    return QStringLiteral("DUMMY");
 }
 
 QString DummyOutput::publicName()
 {
-    return QLatin1String("DUMMY Out");
+    return QStringLiteral("DUMMY Out");
 }
 
 void DummyOutput::setPublicName(QString name)

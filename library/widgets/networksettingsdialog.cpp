@@ -29,11 +29,10 @@
  * Implementation of the Network configuration dialog
  */
 
-namespace drumstick {
-namespace widgets {
+namespace drumstick { namespace widgets {
 
-const QString QSTR_ADDRESS_IPV4 = QLatin1Literal("225.0.0.37");
-const QString QSTR_ADDRESS_IPV6 = QLatin1Literal("ff12::37");
+const QString NetworkSettingsDialog::QSTR_ADDRESS_IPV4 = QStringLiteral("225.0.0.37");
+const QString NetworkSettingsDialog::QSTR_ADDRESS_IPV6 = QStringLiteral("ff12::37");
 
 NetworkSettingsDialog::NetworkSettingsDialog(QWidget *parent) :
     QDialog(parent),

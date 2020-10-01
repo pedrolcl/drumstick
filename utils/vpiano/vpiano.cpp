@@ -45,7 +45,8 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
 
     bool mouseInputEnabled = true;
     bool touchInputEnabled = false;
-    for(const QTouchDevice *dev : QTouchDevice::devices()) {
+    const QList<const QTouchDevice*> devs = QTouchDevice::devices();
+    for(const QTouchDevice *dev : devs) {
         if (dev->type() == QTouchDevice::TouchScreen) {
             mouseInputEnabled = false;
             touchInputEnabled = true;
@@ -71,8 +72,8 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
     nameGroup->addAction(ui.actionCustom_Sharps);
     nameGroup->addAction(ui.actionCustom_Flats);
     connect(ui.actionStandard,      &QAction::triggered, this, &VPiano::slotStandardNames);
-    connect(ui.actionCustom_Sharps, &QAction::triggered, [=]{ slotCustomNames(true); });
-    connect(ui.actionCustom_Flats,  &QAction::triggered, [=]{ slotCustomNames(false); });
+    connect(ui.actionCustom_Sharps, &QAction::triggered, this, [=]{ slotCustomNames(true); });
+    connect(ui.actionCustom_Flats,  &QAction::triggered, this, [=]{ slotCustomNames(false); });
 
     QActionGroup* nameVisibilityGroup = new QActionGroup(this);
     nameVisibilityGroup->setExclusive(true);
@@ -387,7 +388,7 @@ void VPiano::readSettings()
      */
     PianoPalette bgpalette(PAL_KEYS);
     bgpalette.setColor(0, QColor("ivory"));
-    bgpalette.setColor(1, QColor("#3F3030"));
+    bgpalette.setColor(1, QColor(0x40,0x10,0x10));
     ui.pianokeybd->setBackgroundPalette(bgpalette);
 }
 

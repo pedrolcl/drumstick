@@ -192,7 +192,7 @@ namespace rt {
                     return;
                 }
             }
-            m_connection = MIDIConnection(QLatin1String(PRETTY_NAME), QLatin1String(PRETTY_NAME));
+            m_connection = MIDIConnection(QStringLiteral(PRETTY_NAME), QStringLiteral(PRETTY_NAME));
         }
 
         void stop ()
@@ -265,12 +265,12 @@ namespace rt {
 
     QString MacSynthOutput::backendName()
     {
-        return QLatin1String(PRETTY_NAME);
+        return QStringLiteral(PRETTY_NAME);
     }
 
     QString MacSynthOutput::publicName()
     {
-        return QLatin1String(PRETTY_NAME);
+        return QStringLiteral(PRETTY_NAME);
     }
 
     void MacSynthOutput::setPublicName(QString name)
@@ -281,7 +281,7 @@ namespace rt {
     QList<MIDIConnection> MacSynthOutput::connections(bool advanced)
     {
         Q_UNUSED(advanced)
-        return QList<MIDIConnection>{MIDIConnection(QLatin1String(PRETTY_NAME),QLatin1String(PRETTY_NAME))};
+        return QList<MIDIConnection>{MIDIConnection(QStringLiteral(PRETTY_NAME),QStringLiteral(PRETTY_NAME))};
     }
 
     void MacSynthOutput::setExcludedConnections(QStringList conns)

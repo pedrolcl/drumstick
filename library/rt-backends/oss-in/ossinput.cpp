@@ -18,8 +18,9 @@
 
 #include "ossinput.h"
 
-namespace drumstick {
-namespace rt {
+namespace drumstick { namespace rt {
+
+const QString OSSInput::DEFAULT_PUBLIC_NAME = QStringLiteral("MIDI In");
 
 OSSInput::OSSInput(QObject *parent) : MIDIInput(parent),
     d(new OSSInputPrivate(this))

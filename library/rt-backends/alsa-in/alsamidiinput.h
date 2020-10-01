@@ -50,6 +50,8 @@ namespace rt {
         virtual void enableMIDIThru(bool enable) override;
         virtual bool isEnabledMIDIThru() override;
 
+        static const QString DEFAULT_PUBLIC_NAME;
+
     private:
         class ALSAMIDIInputPrivate;
         ALSAMIDIInputPrivate * const d;

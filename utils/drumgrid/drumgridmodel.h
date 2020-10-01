@@ -46,6 +46,8 @@ public:
     QString patternHit(int row, int col);
     void updatePatternColumns(int columns);
 
+    static const QString DEFVAL;
+
 public slots:
     void changeCell(const QModelIndex &index);
     void changeCell(const QModelIndex &index, const QString& newValue);

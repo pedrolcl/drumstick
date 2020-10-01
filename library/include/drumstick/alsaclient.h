@@ -299,7 +299,7 @@ signals:
     /** Signal emitted when an event is received
      * @param ev pointer to the received event
      */
-    void eventReceived(SequencerEvent* ev);
+    void eventReceived(drumstick::ALSA::SequencerEvent* ev);
 
 protected:
     void doEvents();
@@ -346,7 +346,7 @@ DRUMSTICK_EXPORT int getRuntimeALSADriverNumber();
  * different to the runtime library.
  * @see getRuntimeALSALibraryVersion
  */
-const QString LIBRARY_VERSION = QLatin1String(SND_LIB_VERSION_STR);
+const QString LIBRARY_VERSION = QStringLiteral(SND_LIB_VERSION_STR);
 
 /** @} */
 

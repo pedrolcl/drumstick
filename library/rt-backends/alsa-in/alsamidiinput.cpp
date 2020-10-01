@@ -25,16 +25,16 @@
 #include <drumstick/rtmidioutput.h>
 #include "alsamidiinput.h"
 
-namespace drumstick {
-namespace rt {
+namespace drumstick { namespace rt {
 
     using namespace ALSA;
 
-    static QString DEFAULT_PUBLIC_NAME(QLatin1String("MIDI In"));
+    const QString ALSAMIDIInput::DEFAULT_PUBLIC_NAME = QStringLiteral("MIDI In");
 
     class ALSAMIDIInput::ALSAMIDIInputPrivate : public SequencerEventHandler
     {
     public:
+
         ALSAMIDIInput *m_inp;
         MIDIOutput *m_out;
         MidiClient *m_client;
@@ -59,7 +59,7 @@ namespace rt {
             m_clientId(-1),
             m_thruEnabled(false),
             m_clientFilter(false),
-            m_publicName(DEFAULT_PUBLIC_NAME),
+            m_publicName(ALSAMIDIInput::DEFAULT_PUBLIC_NAME),
             m_initialized(false)
         {
             m_runtimeAlsaNum = getRuntimeALSALibraryNumber();
@@ -144,7 +144,7 @@ namespace rt {
                 QString name = p.getClientName();
                 if (m_clientFilter && clientIsAdvanced(p.getClient()))
                     continue;
-                if ( m_clientFilter && name.startsWith(QLatin1String("Virtual Raw MIDI")) )
+                if ( m_clientFilter && name.startsWith(QStringLiteral("Virtual Raw MIDI")) )
                     continue;
                 if ( name.startsWith(m_publicName) )
                     continue;
@@ -310,7 +310,7 @@ namespace rt {
 
     QString ALSAMIDIInput::backendName()
     {
-        return QLatin1String("ALSA");
+        return QStringLiteral("ALSA");
     }
 
     QString ALSAMIDIInput::publicName()

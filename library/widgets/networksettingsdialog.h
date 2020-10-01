@@ -43,6 +43,9 @@ namespace drumstick { namespace widgets {
         void readSettings();
         void writeSettings();
 
+        static const QString QSTR_ADDRESS_IPV4;
+        static const QString QSTR_ADDRESS_IPV6;
+
     public slots:
         void accept() override;
         void showEvent(QShowEvent *event) override;

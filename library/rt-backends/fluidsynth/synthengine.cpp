@@ -24,41 +24,41 @@
 #include <drumstick/rtmidioutput.h>
 #include "synthengine.h"
 
-const QString QSTR_PREFERENCES("FluidSynth");
-const QString QSTR_INSTRUMENTSDEFINITION("InstrumentsDefinition");
-const QString QSTR_DATADIR("soundfonts");
-const QString QSTR_DATADIR2("sounds/sf2");
-const QString QSTR_SOUNDFONT("default.sf2");
+namespace drumstick { namespace rt {
 
-const QString QSTR_AUDIODRIVER("AudioDriver");
-const QString QSTR_PERIODSIZE("PeriodSize");
-const QString QSTR_PERIODS("Periods");
-const QString QSTR_SAMPLERATE("SampleRate");
-const QString QSTR_CHORUS("Chorus");
-const QString QSTR_REVERB("Reverb");
-const QString QSTR_GAIN("Gain");
-const QString QSTR_POLYPHONY("Polyphony");
+const QString SynthEngine::QSTR_FLUIDSYNTH = QStringLiteral("FluidSynth");
+const QString SynthEngine::QSTR_PREFERENCES = QStringLiteral("FluidSynth");
+const QString SynthEngine::QSTR_INSTRUMENTSDEFINITION = QStringLiteral("InstrumentsDefinition");
+const QString SynthEngine::QSTR_DATADIR = QStringLiteral("soundfonts");
+const QString SynthEngine::QSTR_DATADIR2 = QStringLiteral("sounds/sf2");
+const QString SynthEngine::QSTR_SOUNDFONT = QStringLiteral("default.sf2");
 
-const QString QSTR_DEFAULT_AUDIODRIVER =
+const QString SynthEngine::QSTR_AUDIODRIVER = QStringLiteral("AudioDriver");
+const QString SynthEngine::QSTR_PERIODSIZE = QStringLiteral("PeriodSize");
+const QString SynthEngine::QSTR_PERIODS = QStringLiteral("Periods");
+const QString SynthEngine::QSTR_SAMPLERATE = QStringLiteral("SampleRate");
+const QString SynthEngine::QSTR_CHORUS = QStringLiteral("Chorus");
+const QString SynthEngine::QSTR_REVERB = QStringLiteral("Reverb");
+const QString SynthEngine::QSTR_GAIN = QStringLiteral("Gain");
+const QString SynthEngine::QSTR_POLYPHONY = QStringLiteral("Polyphony");
+
+const QString SynthEngine::QSTR_DEFAULT_AUDIODRIVER =
 #if defined(Q_OS_LINUX)
-    QLatin1Literal("pulseaudio");
+    QStringLiteral("pulseaudio");
 #elif defined(Q_OS_WIN)
-    QLatin1Literal("dsound");
+    QStringLiteral("dsound");
 #elif defined(Q_OS_OSX)
-    QLatin1Literal("coreaudio");
+    QStringLiteral("coreaudio");
 #else
-    QLatin1Literal("oss");
+    QStringLiteral("oss");
 #endif
-const int DEFAULT_PERIODS = 1;
-const int DEFAULT_PERIODSIZE = 3072;
-const double DEFAULT_SAMPLERATE = 48000.0;
-const int DEFAULT_CHORUS = 0;
-const int DEFAULT_REVERB = 0;
-const double DEFAULT_GAIN = .4;
-const int DEFAULT_POLYPHONY = 32;
-
-namespace drumstick {
-namespace rt {
+const int SynthEngine::DEFAULT_PERIODS = 1;
+const int SynthEngine::DEFAULT_PERIODSIZE = 3072;
+const double SynthEngine::DEFAULT_SAMPLERATE = 48000.0;
+const int SynthEngine::DEFAULT_CHORUS = 0;
+const int SynthEngine::DEFAULT_REVERB = 0;
+const double SynthEngine::DEFAULT_GAIN = .4;
+const int SynthEngine::DEFAULT_POLYPHONY = 32;
 
 SynthEngine::SynthEngine(QObject *parent)
     : QObject(parent),

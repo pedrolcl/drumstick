@@ -24,8 +24,7 @@
 #include <drumstick/rtmidiinput.h>
 #include "ossinput_p.h"
 
-namespace drumstick {
-namespace rt {
+namespace drumstick { namespace rt {
 
     class OSSInput : public MIDIInput
     {
@@ -35,6 +34,8 @@ namespace rt {
     public:
         explicit OSSInput(QObject *parent = nullptr);
         virtual ~OSSInput();
+
+        static const QString DEFAULT_PUBLIC_NAME;
 
         // MIDIInput interface
     public:

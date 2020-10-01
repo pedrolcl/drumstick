@@ -30,12 +30,12 @@
 
 namespace drumstick { namespace widgets {
 
-const QString QSTR_PREFERENCES("SonivoxEAS");
-const QString QSTR_BUFFERTIME("BufferTime");
-const QString QSTR_REVERBTYPE("ReverbType");
-const QString QSTR_REVERBAMT("ReverbAmt");
-const QString QSTR_CHORUSTYPE("ChorusType");
-const QString QSTR_CHORUSAMT("ChorusAmt");
+const QString SonivoxSettingsDialog::QSTR_PREFERENCES = QStringLiteral("SonivoxEAS");
+const QString SonivoxSettingsDialog::QSTR_BUFFERTIME = QStringLiteral("BufferTime");
+const QString SonivoxSettingsDialog::QSTR_REVERBTYPE = QStringLiteral("ReverbType");
+const QString SonivoxSettingsDialog::QSTR_REVERBAMT = QStringLiteral("ReverbAmt");
+const QString SonivoxSettingsDialog::QSTR_CHORUSTYPE = QStringLiteral("ChorusType");
+const QString SonivoxSettingsDialog::QSTR_CHORUSAMT = QStringLiteral("ChorusAmt");
 
 SonivoxSettingsDialog::SonivoxSettingsDialog(QWidget *parent) :
     QDialog(parent),

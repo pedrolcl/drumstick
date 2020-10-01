@@ -29,17 +29,14 @@
 #include <QVariant>
 #include <QCommandLineParser>
 #include <drumstick/qwrk.h>
-
 #include "dumpwrk.h"
-#include "cmdversion.h"
 
-const QString NO_CHANNEL("--");
-const QString PGM_NAME("drumstick-dumpwrk");
-const QString PGM_DESCRIPTION("Drumstick command line utility for decoding WRK (Cakewalk) files");
-static QTextStream cout(stdout, QIODevice::WriteOnly);
-static QTextStream cerr(stderr, QIODevice::WriteOnly);
+QTextStream cout(stdout, QIODevice::WriteOnly);
+QTextStream cerr(stderr, QIODevice::WriteOnly);
 
 using drumstick::File::QWrk;
+
+const QString QSpyWrk::NO_CHANNEL = QStringLiteral("--");
 
 QSpyWrk::QSpyWrk():
     m_verbosity(false),
@@ -246,7 +243,7 @@ void QSpyWrk::trackHeader( const QString& name1, const QString& name2,
                            int velocity, int port,
                            bool selected, bool muted, bool loop )
 {
-    dump(0, trackno, QString::number(channel), "Track", QString("name1='%2' name2='%3'").arg(name1).arg(name2));
+    dump(0, trackno, QString::number(channel), "Track", QString("name1='%2' name2='%3'").arg(name1, name2));
     if (m_verbosity) {
         dumpVar("pitch", pitch);
         dumpVar("velocity",velocity);
@@ -459,10 +456,13 @@ void QSpyWrk::run(QString fileName)
 
 int main(int argc, char *argv[])
 {
+    const QString PGM_NAME = QStringLiteral("drumstick-dumpwrk");
+    const QString PGM_DESCRIPTION = QStringLiteral("Drumstick command line utility for decoding WRK (Cakewalk) files");
+
     QSpyWrk spy;
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName(PGM_NAME);
-    QCoreApplication::setApplicationVersion(PGM_VERSION);
+    QCoreApplication::setApplicationVersion(QStringLiteral(QT_STRINGIFY(VERSION)));
 
     QCommandLineParser parser;
     parser.setApplicationDescription(PGM_DESCRIPTION);

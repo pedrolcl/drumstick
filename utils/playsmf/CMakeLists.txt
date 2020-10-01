@@ -30,10 +30,6 @@ add_executable(drumstick-playsmf
     ${playsmf_SRCS}
 )
 
-target_include_directories(drumstick-playsmf PRIVATE
-    ../common
-)
-
 target_link_libraries(drumstick-playsmf PRIVATE
     Drumstick::ALSA
     Drumstick::File

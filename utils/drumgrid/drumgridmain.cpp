@@ -23,7 +23,6 @@
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <drumstick/sequencererror.h>
-#include "cmdversion.h"
 #include "drumgrid.h"
 
 const QString QSTR_APPNAME("DrumGrid");
@@ -40,7 +39,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName(QSTR_DOMAIN);
     QCoreApplication::setOrganizationDomain(QSTR_DOMAIN);
     QCoreApplication::setApplicationName(QSTR_APPNAME);
-    QCoreApplication::setApplicationVersion(PGM_VERSION);
+    QCoreApplication::setApplicationVersion(QStringLiteral(QT_STRINGIFY(VERSION)));
     QApplication app(argc, argv);
 
     QLocale locale;

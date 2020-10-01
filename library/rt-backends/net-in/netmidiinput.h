@@ -27,11 +27,6 @@
 namespace drumstick {
 namespace rt {
 
-    const QString STR_ADDRESS_IPV4(QLatin1Literal("225.0.0.37"));
-    const QString STR_ADDRESS_IPV6(QLatin1Literal("ff12::37"));
-    const int MULTICAST_PORT(21928);
-    const int LAST_PORT(21948);
-
     class NetMIDIInputPrivate;
 
     class NetMIDIInput : public MIDIInput
@@ -56,6 +51,12 @@ namespace rt {
         virtual void setMIDIThruDevice(MIDIOutput *device) override;
         virtual void enableMIDIThru(bool enable) override;
         virtual bool isEnabledMIDIThru() override;
+
+        static const QString DEFAULT_PUBLIC_NAME;
+        static const QString STR_ADDRESS_IPV4;
+        static const QString STR_ADDRESS_IPV6;
+        static const int MULTICAST_PORT;
+        static const int LAST_PORT;
 
     private:
         NetMIDIInputPrivate * const d;

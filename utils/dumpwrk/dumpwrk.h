@@ -37,6 +37,8 @@
     bool verbosityEnabled() const;
     int returnCode() const { return m_rc; }
 
+    static const QString NO_CHANNEL;
+
   public slots:
     void unknownChunk(int type, const QByteArray& data);
     void fileHeader(int verh, int verl);

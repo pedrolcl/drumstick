@@ -28,12 +28,9 @@
 #include <drumstick/alsatimer.h>
 #include <drumstick/sequencererror.h>
 #include "metronome.h"
-#include "cmdversion.h"
 
-const QString PGM_NAME("drumstick-metronome");
-const QString PGM_DESCRIPTION("ALSA based command line metronome");
-static QTextStream cout(stdout, QIODevice::WriteOnly);
-static QTextStream cerr(stderr, QIODevice::WriteOnly);
+QTextStream cout(stdout, QIODevice::WriteOnly);
+QTextStream cerr(stderr, QIODevice::WriteOnly);
 
 using namespace drumstick::ALSA;
 
@@ -60,7 +57,7 @@ Metronome::Metronome(QObject *parent) : QObject(parent),
     m_clientId(-1),
     m_Stopped(true)
 {
-    QLatin1String name("Metronome");
+    QString name{QStringLiteral("Metronome")};
     m_Client = new MidiClient(this);
     m_Client->open();
     m_Client->setClientName(name);
@@ -242,18 +239,20 @@ void signalHandler(int sig)
 
 int main(int argc, char **argv)
 {
-    const QString errorstr = "Fatal error from the ALSA sequencer. "
+    const QString PGM_NAME = QStringLiteral("drumstick-metronome");
+    const QString PGM_DESCRIPTION = QStringLiteral("ALSA based command line metronome");
+    const QString ERRORSTR = QStringLiteral("Fatal error from the ALSA sequencer. "
         "This usually happens when the kernel doesn't have ALSA support, "
         "or the device node (/dev/snd/seq) doesn't exists, "
         "or the kernel module (snd_seq) is not loaded. "
-        "Please check your ALSA/MIDI configuration.";
+        "Please check your ALSA/MIDI configuration.");
 
     signal(SIGINT, signalHandler);
     signal(SIGTERM, signalHandler);
 
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName(PGM_NAME);
-    QCoreApplication::setApplicationVersion(PGM_VERSION);
+    QCoreApplication::setApplicationVersion(QStringLiteral(QT_STRINGIFY(VERSION)));
 
     QCommandLineParser parser;
     parser.setApplicationDescription(PGM_DESCRIPTION);
@@ -286,9 +285,9 @@ int main(int argc, char **argv)
         metronome->play(bpm);
 
     } catch (const SequencerError& ex) {
-        cerr << errorstr + " Returned error was: " + ex.qstrError() << endl;
+        cerr << ERRORSTR << " Returned error was: " << ex.qstrError() << endl;
     } catch (...) {
-        cerr << errorstr << endl;
+        cerr << ERRORSTR << endl;
     }
     delete metronome;
     return 0;

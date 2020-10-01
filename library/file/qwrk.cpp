@@ -30,8 +30,7 @@
  * Implementation of a class managing Cakewalk WRK Files input
  */
 
-namespace drumstick {
-namespace File {
+namespace drumstick { namespace File {
 
 /**
  * @addtogroup WRK
@@ -1298,5 +1297,7 @@ void QWrk::wrkRead()
     } else
         Q_EMIT signalWRKError("Invalid file format");
 }
+
+const QByteArray QWrk::HEADER = QByteArrayLiteral("CAKEWALK");
 
 }} // namespace drumstick::File

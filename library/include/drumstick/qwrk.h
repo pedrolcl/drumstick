@@ -72,11 +72,6 @@ enum WrkChunkType {
 };
 
 /**
- * Cakewalk WRK file format header string id
- */
-const QByteArray HEADER = QByteArray("CAKEWALK"); ///< Cakewalk WRK File header id
-
-/**
  * Cakewalk WRK file format (input only)
  *
  * This class is used to parse Cakewalk WRK Files
@@ -128,6 +123,11 @@ public:
 
     QByteArray getLastChunkRawData() const;
     double getRealTime(long ticks) const;
+
+    /**
+     * Cakewalk WRK file format header string id
+     */
+    static const QByteArray HEADER; ///< Cakewalk WRK File header id
 
 Q_SIGNALS:
 

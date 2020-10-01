@@ -9,7 +9,7 @@ static {
 }
 DESTDIR = ../../build/bin
 LRELEASE_DIR=.
-INCLUDEPATH += . ../../library/include ../common 
+INCLUDEPATH += . ../../library/include
 LIBS = -L../../build/lib -ldrumstick-alsa -lasound
 include (../../global.pri)
 SOURCES += drumgridabout.cpp \

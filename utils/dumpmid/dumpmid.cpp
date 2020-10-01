@@ -26,15 +26,10 @@
 #include <QWriteLocker>
 #include <QCommandLineParser>
 #include <drumstick/sequencererror.h>
-
 #include "dumpmid.h"
-#include "cmdversion.h"
 
-const QString PGM_NAME("drumstick-dumpmid");
-const QString PGM_DESCRIPTION("Drumstick command line utility for decoding MIDI events");
-
-static QTextStream cout(stdout, QIODevice::WriteOnly);
-static QTextStream cerr(stderr, QIODevice::WriteOnly);
+QTextStream cout(stdout, QIODevice::WriteOnly);
+QTextStream cerr(stderr, QIODevice::WriteOnly);
 
 using namespace drumstick::ALSA;
 
@@ -452,15 +447,17 @@ void signalHandler(int sig)
 
 int main(int argc, char **argv)
 {
-    const QString errorstr = "Fatal error from the ALSA sequencer. "
+    const QString ERRORSTR = QStringLiteral("Fatal error from the ALSA sequencer. "
         "This usually happens when the kernel doesn't have ALSA support, "
         "or the device node (/dev/snd/seq) doesn't exists, "
         "or the kernel module (snd_seq) is not loaded. "
-        "Please check your ALSA/MIDI configuration.";
+        "Please check your ALSA/MIDI configuration.");
+    const QString PGM_NAME = QStringLiteral("drumstick-dumpmid");
+    const QString PGM_DESCRIPTION = QStringLiteral("Drumstick command line utility for decoding MIDI events");
 
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName(PGM_NAME);
-    QCoreApplication::setApplicationVersion(PGM_VERSION);
+    QCoreApplication::setApplicationVersion(QStringLiteral(QT_STRINGIFY(VERSION)));
 
     QCommandLineParser parser;
     parser.setApplicationDescription(PGM_DESCRIPTION);
@@ -487,9 +484,9 @@ int main(int argc, char **argv)
         }
         test->run();
     } catch (const SequencerError& ex) {
-        cerr << errorstr + " Returned error was: " + ex.qstrError() << endl;
+        cerr << ERRORSTR << " Returned error was: " << ex.qstrError() << endl;
     } catch (...) {
-        cerr << errorstr << endl;
+        cerr << ERRORSTR << endl;
     }
     delete test;
     return 0;

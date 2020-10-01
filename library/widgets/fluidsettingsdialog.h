@@ -51,6 +51,29 @@ public slots:
     void restoreDefaults();
     void showFileDialog();
 
+public:
+    static const QString QSTR_PREFERENCES;
+    static const QString QSTR_INSTRUMENTSDEFINITION;
+    static const QString QSTR_DATADIR;
+    static const QString QSTR_DATADIR2;
+    static const QString QSTR_SOUNDFONT;
+    static const QString QSTR_AUDIODRIVER;
+    static const QString QSTR_PERIODSIZE;
+    static const QString QSTR_PERIODS;
+    static const QString QSTR_SAMPLERATE;
+    static const QString QSTR_CHORUS;
+    static const QString QSTR_REVERB;
+    static const QString QSTR_GAIN;
+    static const QString QSTR_POLYPHONY;
+
+    static const int DEFAULT_PERIODSIZE = 3072;
+    static const int DEFAULT_PERIODS = 1;
+    static const double DEFAULT_SAMPLERATE;
+    static const int DEFAULT_CHORUS = 0;
+    static const int DEFAULT_REVERB = 0;
+    static const double DEFAULT_GAIN;
+    static const int DEFAULT_POLYPHONY = 32;
+
 private:
     QString defaultAudioDriver() const;
     Ui::FluidSettingsDialog *ui;

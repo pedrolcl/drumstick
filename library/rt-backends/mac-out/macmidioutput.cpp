@@ -130,7 +130,7 @@ namespace rt {
                 if (dest != 0) {
                     QString name = getEndpointName(dest);
                     if ( m_clientFilter &&
-                         name.contains(QLatin1String("IAC"), Qt::CaseSensitive) )
+                         name.contains(QStringLiteral("IAC"), Qt::CaseSensitive) )
                         continue;
                     if ( name.contains (m_publicName) )
                         continue;

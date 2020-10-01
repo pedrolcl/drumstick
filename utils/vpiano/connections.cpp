@@ -93,6 +93,8 @@ void Connections::accept()
                 m_midiOut->open(connOut);
             }
         }
+        VPianoSettings::instance()->setLastOutputBackend(m_midiOut->backendName());
+        VPianoSettings::instance()->setLastOutputConnection(connOut.first);
     }
     if (m_midiIn != nullptr) {
         connIn = ui.m_inputPorts->currentData().value<MIDIConnection>();
@@ -107,11 +109,9 @@ void Connections::accept()
             m_midiIn->setMIDIThruDevice(m_midiOut);
             m_midiIn->enableMIDIThru(VPianoSettings::instance()->midiThru());
         }
+        VPianoSettings::instance()->setLastInputBackend(m_midiIn->backendName());
+        VPianoSettings::instance()->setLastInputConnection(connIn.first);
     }
-    VPianoSettings::instance()->setLastInputBackend(m_midiIn->backendName());
-    VPianoSettings::instance()->setLastOutputBackend(m_midiOut->backendName());
-    VPianoSettings::instance()->setLastInputConnection(connIn.first);
-    VPianoSettings::instance()->setLastOutputConnection(connOut.first);
     m_settingsChanged = false;
     QDialog::accept();
 }
@@ -143,7 +143,8 @@ void Connections::refreshInputs(QString id)
     ui.m_inputPorts->clear();
     if (m_midiIn != nullptr) {
         ui.m_inputPorts->addItem(QString());
-        for(const MIDIConnection& conn : m_midiIn->connections(ui.m_advanced->isChecked())) {
+        const QList<MIDIConnection> conns = m_midiIn->connections(ui.m_advanced->isChecked());
+        for (const MIDIConnection& conn : conns) {
             ui.m_inputPorts->addItem(conn.first, QVariant::fromValue(conn));
         }
         ui.m_inputPorts->setCurrentText(m_midiIn->currentConnection().first);
@@ -167,7 +168,8 @@ void Connections::refreshOutputs(QString id)
     }
     ui.m_outputPorts->clear();
     if (m_midiOut != nullptr) {
-        for(const MIDIConnection& conn : m_midiOut->connections(ui.m_advanced->isChecked())) {
+        const QList<MIDIConnection> conns = m_midiOut->connections(ui.m_advanced->isChecked());
+        for(const MIDIConnection& conn : conns) {
             ui.m_outputPorts->addItem(conn.first, QVariant::fromValue(conn));
         }
         ui.m_outputPorts->setCurrentText(m_midiOut->currentConnection().first);

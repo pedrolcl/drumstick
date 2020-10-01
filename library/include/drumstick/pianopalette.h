@@ -91,6 +91,8 @@ public:
     bool operator==(const PianoPalette& other) const;
     bool operator!=(const PianoPalette& other) const;
 
+    static const QString QSTR_PALETTEPREFIX;
+
 protected:
     void initialize();
     void resetPaletteSingle();

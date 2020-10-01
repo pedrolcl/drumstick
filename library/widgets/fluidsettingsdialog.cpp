@@ -34,27 +34,21 @@
 
 namespace drumstick { namespace widgets {
 
-const QString QSTR_PREFERENCES("FluidSynth");
-const QString QSTR_INSTRUMENTSDEFINITION("InstrumentsDefinition");
-const QString QSTR_DATADIR("soundfonts");
-const QString QSTR_DATADIR2("sounds/sf2");
-const QString QSTR_SOUNDFONT("default.sf2");
-const QString QSTR_AUDIODRIVER("AudioDriver");
-const QString QSTR_PERIODSIZE("PeriodSize");
-const QString QSTR_PERIODS("Periods");
-const QString QSTR_SAMPLERATE("SampleRate");
-const QString QSTR_CHORUS("Chorus");
-const QString QSTR_REVERB("Reverb");
-const QString QSTR_GAIN("Gain");
-const QString QSTR_POLYPHONY("Polyphony");
-
-const int DEFAULT_PERIODSIZE = 3072;
-const int DEFAULT_PERIODS = 1;
-const double DEFAULT_SAMPLERATE = 48000.0;
-const int DEFAULT_CHORUS = 0;
-const int DEFAULT_REVERB = 0;
-const double DEFAULT_GAIN = .5;
-const int DEFAULT_POLYPHONY = 32;
+const QString FluidSettingsDialog::QSTR_PREFERENCES = QStringLiteral("FluidSynth");
+const QString FluidSettingsDialog::QSTR_INSTRUMENTSDEFINITION = QStringLiteral("InstrumentsDefinition");
+const QString FluidSettingsDialog::QSTR_DATADIR = QStringLiteral("soundfonts");
+const QString FluidSettingsDialog::QSTR_DATADIR2 = QStringLiteral("sounds/sf2");
+const QString FluidSettingsDialog::QSTR_SOUNDFONT = QStringLiteral("default.sf2");
+const QString FluidSettingsDialog::QSTR_AUDIODRIVER = QStringLiteral("AudioDriver");
+const QString FluidSettingsDialog::QSTR_PERIODSIZE = QStringLiteral("PeriodSize");
+const QString FluidSettingsDialog::QSTR_PERIODS = QStringLiteral("Periods");
+const QString FluidSettingsDialog::QSTR_SAMPLERATE = QStringLiteral("SampleRate");
+const QString FluidSettingsDialog::QSTR_CHORUS = QStringLiteral("Chorus");
+const QString FluidSettingsDialog::QSTR_REVERB = QStringLiteral("Reverb");
+const QString FluidSettingsDialog::QSTR_GAIN = QStringLiteral("Gain");
+const QString FluidSettingsDialog::QSTR_POLYPHONY = QStringLiteral("Polyphony");
+const double FluidSettingsDialog::DEFAULT_SAMPLERATE = 48000.0;
+const double FluidSettingsDialog::DEFAULT_GAIN = .5;
 
 FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
     QDialog(parent),

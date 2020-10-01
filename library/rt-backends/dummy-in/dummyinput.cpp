@@ -28,12 +28,12 @@ void DummyInput::initialize(QSettings* settings)
 
 QString DummyInput::backendName()
 {
-    return QLatin1String("DUMMY");
+    return QStringLiteral("DUMMY");
 }
 
 QString DummyInput::publicName()
 {
-    return QLatin1String("DUMMY In");
+    return QStringLiteral("DUMMY In");
 }
 
 void DummyInput::setPublicName(QString name)

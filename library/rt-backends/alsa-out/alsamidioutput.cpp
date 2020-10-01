@@ -32,7 +32,7 @@ namespace rt {
 
     using namespace ALSA;
 
-    static QString DEFAULT_PUBLIC_NAME(QLatin1String("MIDI Out"));
+    const QString ALSAMIDIOutput::DEFAULT_PUBLIC_NAME = QStringLiteral("MIDI Out");
 
     class ALSAMIDIOutput::ALSAMIDIOutputPrivate {
     public:
@@ -139,7 +139,7 @@ namespace rt {
                 QString name = p.getClientName();
                 if (m_clientFilter && clientIsAdvanced(p.getClient()))
                     continue;
-                if ( m_clientFilter && name.startsWith(QLatin1String("Virtual Raw MIDI")) )
+                if ( m_clientFilter && name.startsWith(QStringLiteral("Virtual Raw MIDI")) )
                     continue;
                 if ( name.startsWith(m_publicName) )
                     continue;

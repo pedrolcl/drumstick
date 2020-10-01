@@ -30,7 +30,7 @@
 namespace drumstick {
 namespace widgets {
 
-const QString QSTR_PALETTEPREFIX("Palette_");
+const QString PianoPalette::QSTR_PALETTEPREFIX = QStringLiteral("Palette_");
 
 PianoPalette::PianoPalette(int id) :
     m_paletteId(id)

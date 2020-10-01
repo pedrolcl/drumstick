@@ -22,10 +22,9 @@
 
 #include "ossoutput.h"
 
-namespace drumstick {
-namespace rt {
+namespace drumstick { namespace rt {
 
-static QString DEFAULT_PUBLIC_NAME(QLatin1String("MIDI Out"));
+const QString OSSOutput::DEFAULT_PUBLIC_NAME = QStringLiteral("MIDI Out");
 
 class OSSOutput::OSSOutputPrivate
 {
@@ -141,7 +140,7 @@ void OSSOutput::initialize(QSettings *settings)
 
 QString OSSOutput::backendName()
 {
-    return QLatin1String("OSS");
+    return QStringLiteral("OSS");
 }
 
 QString OSSOutput::publicName()

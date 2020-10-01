@@ -22,10 +22,7 @@
 #include "netmidiinput_p.h"
 #include "netmidiinput.h"
 
-namespace drumstick {
-namespace rt {
-
-static QString DEFAULT_PUBLIC_NAME(QLatin1String("MIDI In"));
+namespace drumstick { namespace rt {
 
 NetMIDIInputPrivate::NetMIDIInputPrivate(QObject *parent) : QObject(parent),
     m_inp(qobject_cast<NetMIDIInput *>(parent)),
@@ -34,11 +31,11 @@ NetMIDIInputPrivate::NetMIDIInputPrivate(QObject *parent) : QObject(parent),
     m_parser(nullptr),
     m_thruEnabled(false),
     m_port(0),
-    m_publicName(DEFAULT_PUBLIC_NAME),
-    m_groupAddress(QHostAddress(STR_ADDRESS_IPV4)),
+    m_publicName(NetMIDIInput::DEFAULT_PUBLIC_NAME),
+    m_groupAddress(QHostAddress(NetMIDIInput::STR_ADDRESS_IPV4)),
     m_ipv6(false)
 {
-    for(int i=MULTICAST_PORT; i<LAST_PORT; ++i) {
+    for(int i=NetMIDIInput::MULTICAST_PORT; i<NetMIDIInput::LAST_PORT; ++i) {
         m_inputDevices << MIDIConnection(QString::number(i), i);
     }
 }
@@ -46,7 +43,7 @@ NetMIDIInputPrivate::NetMIDIInputPrivate(QObject *parent) : QObject(parent),
 void NetMIDIInputPrivate::open(const MIDIConnection& portName)
 {
     int p = portName.second.toInt();
-    if (p >= MULTICAST_PORT && p < LAST_PORT)
+    if (p >= NetMIDIInput::MULTICAST_PORT && p < NetMIDIInput::LAST_PORT)
     {
         //qDebug() << Q_FUNC_INFO << portName;
         m_socket = new QUdpSocket();
@@ -87,13 +84,13 @@ void NetMIDIInputPrivate::initialize(QSettings *settings)
         settings->beginGroup("Network");
         QString ifaceName = settings->value("interface", QString()).toString();
         m_ipv6 = settings->value("ipv6", false).toBool();
-        QString address = settings->value("address", m_ipv6 ? STR_ADDRESS_IPV6 : STR_ADDRESS_IPV4).toString();
+        QString address = settings->value("address", m_ipv6 ? NetMIDIInput::STR_ADDRESS_IPV6 : NetMIDIInput::STR_ADDRESS_IPV4).toString();
         settings->endGroup();
         if (!ifaceName.isEmpty()) {
             m_iface = QNetworkInterface::interfaceFromName(ifaceName);
         }
         if (address.isEmpty()) {
-            m_groupAddress.setAddress(m_ipv6 ? STR_ADDRESS_IPV6 : STR_ADDRESS_IPV4);
+            m_groupAddress.setAddress(m_ipv6 ? NetMIDIInput::STR_ADDRESS_IPV6 : NetMIDIInput::STR_ADDRESS_IPV4);
         } else {
             m_groupAddress.setAddress(address);
         }

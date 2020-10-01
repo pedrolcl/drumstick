@@ -6,7 +6,7 @@ static {
     DEFINES += DRUMSTICK_STATIC
 }
 DESTDIR = ../../build/bin
-INCLUDEPATH += . ../../library/include ../common 
+INCLUDEPATH += . ../../library/include
 include (../../global.pri)
 # Input
 HEADERS += dumpwrk.h

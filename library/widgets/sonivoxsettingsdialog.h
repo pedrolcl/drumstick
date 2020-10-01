@@ -44,6 +44,13 @@ namespace widgets {
         void readSettings();
         void writeSettings();
 
+        static const QString QSTR_PREFERENCES;
+        static const QString QSTR_BUFFERTIME;
+        static const QString QSTR_REVERBTYPE;
+        static const QString QSTR_REVERBAMT;
+        static const QString QSTR_CHORUSTYPE;
+        static const QString QSTR_CHORUSAMT;
+
     public slots:
         void accept() override;
         void showEvent(QShowEvent *event) override;

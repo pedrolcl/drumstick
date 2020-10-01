@@ -6,7 +6,7 @@ CONFIG += lrelease
 DESTDIR = ../../build/bin
 LRELEASE_DIR=.
 include (../../global.pri)
-INCLUDEPATH += . ../../library/include ../common
+INCLUDEPATH += . ../../library/include
 
 # Input
 FORMS += \

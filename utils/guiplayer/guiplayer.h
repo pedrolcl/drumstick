@@ -48,9 +48,6 @@ class Player;
 class About;
 class Song;
 
-const QString QSTR_DOMAIN = QStringLiteral("drumstick.sourceforge.net");
-const QString QSTR_APPNAME = QStringLiteral("GUIPlayer");
-
 class GUIPlayer : public QMainWindow
 {
     Q_OBJECT
@@ -84,6 +81,9 @@ public:
     void progressDialogInit(const QString& type, int max);
     void progressDialogUpdate(int pos);
     void progressDialogClose();
+
+    static const QString QSTR_DOMAIN;
+    static const QString QSTR_APPNAME;
 
 public slots:
     void about();

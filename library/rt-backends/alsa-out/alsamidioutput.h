@@ -44,6 +44,8 @@ namespace rt {
         virtual void close() override;
         virtual MIDIConnection currentConnection() override;
 
+        static const QString DEFAULT_PUBLIC_NAME;
+
     public slots:
         virtual void sendNoteOn(int chan, int note, int vel) override;
         virtual void sendNoteOff(int chan, int note, int vel) override;

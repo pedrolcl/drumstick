@@ -31,12 +31,13 @@
 namespace drumstick {
 namespace rt {
 
-const QString QSTR_PREFERENCES("SonivoxEAS");
-const QString QSTR_BUFFERTIME("BufferTime");
-const QString QSTR_REVERBTYPE("ReverbType");
-const QString QSTR_REVERBAMT("ReverbAmt");
-const QString QSTR_CHORUSTYPE("ChorusType");
-const QString QSTR_CHORUSAMT("ChorusAmt");
+const QString SynthRenderer::QSTR_PREFERENCES = QStringLiteral("SonivoxEAS");
+const QString SynthRenderer::QSTR_BUFFERTIME = QStringLiteral("BufferTime");
+const QString SynthRenderer::QSTR_REVERBTYPE = QStringLiteral("ReverbType");
+const QString SynthRenderer::QSTR_REVERBAMT = QStringLiteral("ReverbAmt");
+const QString SynthRenderer::QSTR_CHORUSTYPE = QStringLiteral("ChorusType");
+const QString SynthRenderer::QSTR_CHORUSAMT = QStringLiteral("ChorusAmt");
+const QString SynthRenderer::QSTR_SONIVOXEAS = QStringLiteral("SonivoxEAS");
 
 SynthRenderer::SynthRenderer(QObject *parent) : QObject(parent),
     m_Stopped(true),

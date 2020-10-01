@@ -75,8 +75,8 @@ namespace drumstick { namespace rt {
     BackendManager::BackendManager(): d(new BackendManagerPrivate)
     {
         QVariantMap defaultSettings {
-            { QSTR_DRUMSTICKRT_PUBLICNAMEIN, QLatin1String("MIDI In")},
-            { QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QLatin1String("MIDI Out")}
+            { QSTR_DRUMSTICKRT_PUBLICNAMEIN, QStringLiteral("MIDI In")},
+            { QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QStringLiteral("MIDI Out")}
         };
         refresh(defaultSettings);
     }
@@ -134,7 +134,8 @@ namespace drumstick { namespace rt {
     {
         QVariantMap tmpMap;
         settings->beginGroup(QSTR_DRUMSTICKRT_GROUP);
-        for(const auto &k : settings->allKeys()) {
+        const QStringList allKeys = settings->allKeys();
+        for(const auto &k : allKeys) {
             tmpMap.insert(k, settings->value(k));
         }
         settings->endGroup();
@@ -157,8 +158,8 @@ namespace drumstick { namespace rt {
         name_in = map.value(QSTR_DRUMSTICKRT_PUBLICNAMEIN).toString();
         name_out = map.value(QSTR_DRUMSTICKRT_PUBLICNAMEOUT).toString();
         names << map.value(QSTR_DRUMSTICKRT_EXCLUDED).toStringList();
-        names << (name_in.isEmpty() ? QLatin1String("MIDI In") : name_in);
-        names << (name_out.isEmpty() ? QLatin1String("MIDI Out") : name_out);
+        names << (name_in.isEmpty() ? QStringLiteral("MIDI In") : name_in);
+        names << (name_out.isEmpty() ? QStringLiteral("MIDI Out") : name_out);
 
         paths << defaultPaths();
         d->clearLists();
@@ -246,5 +247,13 @@ namespace drumstick { namespace rt {
         }
         return nullptr;
     }
+
+    const QString BackendManager::QSTR_DRUMSTICK = QStringLiteral("drumstick2");
+    const QString BackendManager::QSTR_DRUMSTICKRT = QStringLiteral("DRUMSTICKRT");
+    const QString BackendManager::QSTR_DRUMSTICKRT_GROUP = QStringLiteral("DrumstickRT");
+    const QString BackendManager::QSTR_DRUMSTICKRT_PUBLICNAMEIN = QStringLiteral("PublicNameIN");
+    const QString BackendManager::QSTR_DRUMSTICKRT_PUBLICNAMEOUT = QStringLiteral("PublicNameOUT");
+    const QString BackendManager::QSTR_DRUMSTICKRT_EXCLUDED = QStringLiteral("ExcludedNames");
+    const QString BackendManager::QSTR_DRUMSTICKRT_PATH = QStringLiteral("BackendsPath");
 
 }} // namespace drusmtick::rt

@@ -7,7 +7,7 @@ static {
     CONFIG += link_prl
 }
 DESTDIR = ../../build/bin
-INCLUDEPATH += . ../../library/include ../common 
+INCLUDEPATH += . ../../library/include
 DEPENDPATH += . ../../library ../../library/include
 include (../../global.pri)
 # Input

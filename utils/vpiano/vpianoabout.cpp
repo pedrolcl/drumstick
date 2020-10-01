@@ -17,14 +17,13 @@
 */
 
 #include "vpianoabout.h"
-#include "cmdversion.h"
 
 About::About(QWidget *parent)
     : QDialog(parent)
 {
     ui.setupUi(this);
     QString aboutText = ui.AboutTextView->toHtml();
-    aboutText.replace("%VERSION%", PGM_VERSION);
+    aboutText.replace("%VERSION%", QStringLiteral(QT_STRINGIFY(VERSION)));
     ui.AboutTextView->setHtml(aboutText);
 }
 

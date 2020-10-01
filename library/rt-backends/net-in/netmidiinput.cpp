@@ -20,8 +20,13 @@
 #include "netmidiinput.h"
 #include "netmidiinput_p.h"
 
-namespace drumstick {
-namespace rt {
+namespace drumstick { namespace rt {
+
+const QString NetMIDIInput::DEFAULT_PUBLIC_NAME = QStringLiteral("MIDI In");
+const QString NetMIDIInput::STR_ADDRESS_IPV4 = QStringLiteral("225.0.0.37");
+const QString NetMIDIInput::STR_ADDRESS_IPV6 = QStringLiteral("ff12::37");
+const int NetMIDIInput::MULTICAST_PORT = 21928;
+const int NetMIDIInput::LAST_PORT = 21948;
 
 NetMIDIInput::NetMIDIInput(QObject *parent):
     MIDIInput(parent),
@@ -35,7 +40,7 @@ void NetMIDIInput::initialize(QSettings *settings)
 
 QString NetMIDIInput::backendName()
 {
-    return QLatin1String("Network");
+    return QStringLiteral("Network");
 }
 
 QString NetMIDIInput::publicName()
