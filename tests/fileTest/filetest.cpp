@@ -10,9 +10,9 @@ class FileTest : public QObject
 {
     Q_OBJECT
 public:
-    FileTest();
+    explicit FileTest(QObject* parent = nullptr);
 
-    static const unsigned char test_mid[];
+    static const char test_mid[];
     static const int test_mid_len;
     static const int FORMAT;
     static const int TRACKS;
@@ -45,10 +45,11 @@ public Q_SLOTS:
 private Q_SLOTS:
     void testCaseWriteSmf();
     void testCaseReadSmf();
+    void initTestCase();
+    void cleanupTestCase();
 
 private:
     QSmf *m_engine;
-    QDataStream *m_stream;
     int m_numNoteOn;
     int m_lastNoteOn;
     int m_numNoteOff;
@@ -61,8 +62,7 @@ private:
     int m_lastChanPress;
     int m_lastPitchBend;
     int m_lastTempo;
-    QByteArray m_data;
-    QByteArray m_expected;
+    QByteArray m_testData;
     QByteArray m_lastSysex;
     QString m_lastError;
     QString m_header;
@@ -72,9 +72,8 @@ private:
     QString m_lastKeySig;
 };
 
-FileTest::FileTest():
+FileTest::FileTest(QObject* parent): QObject(parent),
     m_engine(nullptr),
-    m_stream(nullptr),
     m_numNoteOn(0),
     m_lastNoteOn(0),
     m_numNoteOff(0),
@@ -90,46 +89,44 @@ FileTest::FileTest():
 {
     m_engine = new QSmf(this);
     m_engine->setTextCodec(QTextCodec::codecForName("UTF-8"));
-    m_stream = new QDataStream(&m_data, QIODevice::ReadWrite);
-    m_expected = QByteArray::fromRawData(reinterpret_cast<const char *>(test_mid), test_mid_len);
 
-    connect(m_engine, SIGNAL(signalSMFError(const QString&)), this, SLOT(errorHandler(const QString&)));
-    connect(m_engine, SIGNAL(signalSMFWriteTrack(int)), this, SLOT(trackHandler(int)));
+    connect(m_engine, &QSmf::signalSMFError, this, &FileTest::errorHandler);
+    connect(m_engine, &QSmf::signalSMFWriteTrack, this, &FileTest::trackHandler);
 
-    connect(m_engine, SIGNAL(signalSMFHeader(int,int,int)), this, SLOT(headerEvent(int,int,int)));
-    connect(m_engine, SIGNAL(signalSMFTrackStart()), this, SLOT(trackStartEvent()));
-    connect(m_engine, SIGNAL(signalSMFTrackEnd()), this, SLOT(trackEndEvent()));
-    connect(m_engine, SIGNAL(signalSMFNoteOn(int,int,int)), this, SLOT(noteOnEvent(int,int,int)));
-    connect(m_engine, SIGNAL(signalSMFNoteOff(int,int,int)), this, SLOT(noteOffEvent(int,int,int)));
-    connect(m_engine, SIGNAL(signalSMFKeyPress(int,int,int)), this, SLOT(keyPressEvent(int,int,int)));
-    connect(m_engine, SIGNAL(signalSMFCtlChange(int,int,int)), this, SLOT(ctlChangeEvent(int,int,int)));
-    connect(m_engine, SIGNAL(signalSMFPitchBend(int,int)), this, SLOT(pitchBendEvent(int,int)));
-    connect(m_engine, SIGNAL(signalSMFProgram(int,int)), this, SLOT(programEvent(int,int)));
-    connect(m_engine, SIGNAL(signalSMFChanPress(int,int)), this, SLOT(chanPressEvent(int,int)));
-    connect(m_engine, SIGNAL(signalSMFSysex(const QByteArray&)), this, SLOT(sysexEvent(const QByteArray&)));
-    connect(m_engine, SIGNAL(signalSMFText(int,const QString&)), this, SLOT(textEvent(int,const QString&)));
-    connect(m_engine, SIGNAL(signalSMFendOfTrack()), this, SLOT(endOfTrackEvent()));
-    connect(m_engine, SIGNAL(signalSMFTimeSig(int,int,int,int)), this, SLOT(timeSigEvent(int,int,int,int)));
-    connect(m_engine, SIGNAL(signalSMFKeySig(int,int)), this, SLOT(keySigEvent(int,int)));
-    connect(m_engine, SIGNAL(signalSMFTempo(int)), this, SLOT(tempoEvent(int)));
+    connect(m_engine, &QSmf::signalSMFHeader, this, &FileTest::headerEvent);
+    connect(m_engine, &QSmf::signalSMFTrackStart, this, &FileTest::trackStartEvent);
+    connect(m_engine, &QSmf::signalSMFTrackEnd, this, &FileTest::trackEndEvent);
+    connect(m_engine, &QSmf::signalSMFNoteOn, this, &FileTest::noteOnEvent);
+    connect(m_engine, &QSmf::signalSMFNoteOff, this, &FileTest::noteOffEvent);
+    connect(m_engine, &QSmf::signalSMFKeyPress, this, &FileTest::keyPressEvent);
+    connect(m_engine, &QSmf::signalSMFCtlChange, this, &FileTest::ctlChangeEvent);
+    connect(m_engine, &QSmf::signalSMFPitchBend, this, &FileTest::pitchBendEvent);
+    connect(m_engine, &QSmf::signalSMFProgram, this, &FileTest::programEvent);
+    connect(m_engine, &QSmf::signalSMFChanPress, this, &FileTest::chanPressEvent);
+    connect(m_engine, &QSmf::signalSMFSysex, this, &FileTest::sysexEvent);
+    connect(m_engine, &QSmf::signalSMFText, this, &FileTest::textEvent);
+    connect(m_engine, &QSmf::signalSMFendOfTrack, this, &FileTest::endOfTrackEvent);
+    connect(m_engine, &QSmf::signalSMFTimeSig, this, &FileTest::timeSigEvent);
+    connect(m_engine, &QSmf::signalSMFKeySig, this, &FileTest::keySigEvent);
+    connect(m_engine, &QSmf::signalSMFTempo, this, &FileTest::tempoEvent);
 }
 
-const unsigned char FileTest::test_mid[] = {
-  0x4d, 0x54, 0x68, 0x64, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x01,
-  0x00, 0x78, 0x4d, 0x54, 0x72, 0x6b, 0x00, 0x00, 0x00, 0x99, 0x00, 0xff,
-  0x02, 0x2f, 0x43, 0x6f, 0x70, 0x79, 0x72, 0x69, 0x67, 0x68, 0x74, 0x20,
-  0x28, 0x43, 0x29, 0x20, 0x32, 0x30, 0x30, 0x36, 0x2d, 0x32, 0x30, 0x32,
-  0x30, 0x20, 0x50, 0x65, 0x64, 0x72, 0x6f, 0x20, 0x4c, 0xc3, 0xb3, 0x70,
-  0x65, 0x7a, 0x2d, 0x43, 0x61, 0x62, 0x61, 0x6e, 0x69, 0x6c, 0x6c, 0x61,
-  0x73, 0x00, 0xff, 0x51, 0x03, 0x09, 0x27, 0xc0, 0x00, 0xff, 0x58, 0x04,
-  0x03, 0x02, 0x24, 0x08, 0x00, 0xff, 0x59, 0x02, 0x02, 0x00, 0x00, 0xf0,
-  0x0a, 0x41, 0x10, 0x42, 0x12, 0x40, 0x00, 0x7f, 0x00, 0x41, 0xf7, 0x00,
-  0x90, 0x3c, 0x78, 0x3c, 0x80, 0x3c, 0x00, 0x00, 0x90, 0x3e, 0x78, 0x3c,
-  0x80, 0x3e, 0x00, 0x00, 0x90, 0x40, 0x78, 0x3c, 0x80, 0x40, 0x00, 0x00,
-  0x90, 0x41, 0x78, 0x3c, 0x80, 0x41, 0x00, 0x00, 0x90, 0x43, 0x78, 0x3c,
-  0x80, 0x43, 0x00, 0x00, 0x90, 0x45, 0x78, 0x3c, 0x80, 0x45, 0x00, 0x00,
-  0x90, 0x47, 0x78, 0x3c, 0x80, 0x47, 0x00, 0x00, 0x90, 0x48, 0x78, 0x3c,
-  0x80, 0x48, 0x00, 0x00, 0xff, 0x2f, 0x00
+const char FileTest::test_mid[] = {
+  '\x4d','\x54','\x68','\x64','\x00','\x00','\x00','\x06','\x00','\x00','\x00','\x01',
+  '\x00','\x78','\x4d','\x54','\x72','\x6b','\x00','\x00','\x00','\x99','\x00','\xff',
+  '\x02','\x2f','\x43','\x6f','\x70','\x79','\x72','\x69','\x67','\x68','\x74','\x20',
+  '\x28','\x43','\x29','\x20','\x32','\x30','\x30','\x36','\x2d','\x32','\x30','\x32',
+  '\x30','\x20','\x50','\x65','\x64','\x72','\x6f','\x20','\x4c','\xc3','\xb3','\x70',
+  '\x65','\x7a','\x2d','\x43','\x61','\x62','\x61','\x6e','\x69','\x6c','\x6c','\x61',
+  '\x73','\x00','\xff','\x51','\x03','\x09','\x27','\xc0','\x00','\xff','\x58','\x04',
+  '\x03','\x02','\x24','\x08','\x00','\xff','\x59','\x02','\x02','\x00','\x00','\xf0',
+  '\x0a','\x41','\x10','\x42','\x12','\x40','\x00','\x7f','\x00','\x41','\xf7','\x00',
+  '\x90','\x3c','\x78','\x3c','\x80','\x3c','\x00','\x00','\x90','\x3e','\x78','\x3c',
+  '\x80','\x3e','\x00','\x00','\x90','\x40','\x78','\x3c','\x80','\x40','\x00','\x00',
+  '\x90','\x41','\x78','\x3c','\x80','\x41','\x00','\x00','\x90','\x43','\x78','\x3c',
+  '\x80','\x43','\x00','\x00','\x90','\x45','\x78','\x3c','\x80','\x45','\x00','\x00',
+  '\x90','\x47','\x78','\x3c','\x80','\x47','\x00','\x00','\x90','\x48','\x78','\x3c',
+  '\x80','\x48','\x00','\x00','\xff','\x2f','\x00'
 };
 const int FileTest::test_mid_len = sizeof(test_mid); //175;
 const QString FileTest::COPYRIGHT = QStringLiteral("Copyright (C) 2006-2020 Pedro López-Cabanillas");
@@ -249,23 +246,34 @@ void FileTest::tempoEvent(int tempo)
     m_lastTempo = static_cast<int>( 6e7 / tempo );
 }
 
+void FileTest::initTestCase()
+{
+    m_testData = QByteArray::fromRawData(test_mid, test_mid_len);
+}
+
+void FileTest::cleanupTestCase()
+{
+    m_testData.clear();
+}
+
 void FileTest::testCaseWriteSmf()
 {
-    m_data.clear();
+    QByteArray data;
+    QDataStream stream(&data,  QIODevice::ReadWrite);
     m_engine->setDivision(DIVISION);
     m_engine->setFileFormat(FORMAT);
     m_engine->setTracks(TRACKS);
-    m_engine->writeToStream(m_stream);
+    m_engine->writeToStream(&stream);
     if (!m_lastError.isEmpty()) {
         QFAIL(m_lastError.toLocal8Bit());
     }
-    QCOMPARE(m_data, m_expected);
+    QCOMPARE(data, m_testData);
 }
 
 void FileTest::testCaseReadSmf()
 {
-    m_stream->device()->reset();
-    m_engine->readFromStream(m_stream);
+    QDataStream stream(&m_testData,  QIODevice::ReadWrite);
+    m_engine->readFromStream(&stream);
     if (!m_lastError.isEmpty()) {
         QFAIL(m_lastError.toLocal8Bit());
     }
