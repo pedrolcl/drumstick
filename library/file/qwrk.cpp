@@ -667,7 +667,7 @@ void QWrk::processTrackChunk()
         namelen = readByte();
         name[i] = readString(namelen);
     }
-    channel = (qint8) readByte();
+    channel = readByte() & 0x0f;
     pitch = readByte();
     velocity = readByte();
     port = readByte();

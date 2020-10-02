@@ -752,7 +752,7 @@ MidiQueue::~MidiQueue()
 {
     if ( m_allocated && (m_MidiClient->getHandle() != nullptr) )
     {
-        DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_free_queue(m_MidiClient->getHandle(), m_Id));
+        DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_free_queue(m_MidiClient->getHandle(), m_Id));
     }
 }
 

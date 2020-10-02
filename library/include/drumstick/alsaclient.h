@@ -44,7 +44,6 @@ namespace ALSA {
 class MidiQueue;
 class MidiClient;
 class SequencerEvent;
-class SequencerInputThread;
 class RemoveEvents;
 
 /**
@@ -338,15 +337,7 @@ DRUMSTICK_EXPORT int getRuntimeALSALibraryNumber();
 #endif
 DRUMSTICK_EXPORT QString getRuntimeALSADriverVersion();
 DRUMSTICK_EXPORT int getRuntimeALSADriverNumber();
-
-/**
- * ALSA library version as a constant string.
- *
- * This string corresponds to the compilation library, which may be
- * different to the runtime library.
- * @see getRuntimeALSALibraryVersion
- */
-const QString LIBRARY_VERSION = QStringLiteral(SND_LIB_VERSION_STR);
+DRUMSTICK_EXPORT QString getCompiledALSALibraryVersion();
 
 /** @} */
 

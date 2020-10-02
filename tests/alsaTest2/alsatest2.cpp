@@ -90,6 +90,6 @@ void AlsaTest2::testTimer()
     }
 }
 
-QTEST_MAIN(AlsaTest2)
+QTEST_GUILESS_MAIN(AlsaTest2)
 
 #include "alsatest2.moc"

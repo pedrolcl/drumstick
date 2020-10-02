@@ -19,7 +19,8 @@
 #ifndef PIANOPALETTE_H
 #define PIANOPALETTE_H
 
-#include <QApplication>
+#include <QGuiApplication>
+#include <QString>
 #include <QColor>
 #include <QList>
 #include "macros.h"

@@ -196,7 +196,7 @@ void systemInfo()
     client->setClientName(PGM_NAME);
     SystemInfo info = client->getSystemInfo();
     cout << PGM_DESCRIPTION << ", version: "<< QStringLiteral(QT_STRINGIFY(VERSION)) << endl;
-    cout << "Compiled ALSA library: " << LIBRARY_VERSION << endl;
+    cout << "Compiled ALSA library: " << getCompiledALSALibraryVersion() << endl;
     cout << "Runtime ALSA library: "
          << getRuntimeALSALibraryVersion() << endl;
     cout << "Runtime ALSA drivers: "

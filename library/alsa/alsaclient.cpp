@@ -279,7 +279,6 @@ MidiClient::~MidiClient()
     delete d;
 }
 
-
 /**
  * Returns the sequencer handler managed by ALSA
  * @return the sequencer handler
@@ -920,7 +919,7 @@ void MidiClient::detachAllPorts()
         QMutableListIterator<MidiPort*> it(d->m_Ports);
         while (it.hasNext()) {
             MidiPort* p = it.next();
-            DRUMSTICK_ALSA_CHECK_ERROR(snd_seq_delete_port(d->m_SeqHandle, p->getPortInfo()->getPort()));
+            DRUMSTICK_ALSA_CHECK_WARNING(snd_seq_delete_port(d->m_SeqHandle, p->getPortInfo()->getPort()));
             p->setMidiClient(nullptr);
             it.remove();
         }
@@ -2497,6 +2496,18 @@ getRuntimeALSADriverNumber()
         j++;
     }
     return result;
+}
+
+/**
+ * ALSA library version at build time.
+ *
+ * This string corresponds to the compilation library, which may be
+ * different to the runtime library.
+ * @see getRuntimeALSALibraryVersion
+ */
+QString getCompiledALSALibraryVersion()
+{
+    return QStringLiteral(SND_LIB_VERSION_STR);
 }
 
 /** @} */

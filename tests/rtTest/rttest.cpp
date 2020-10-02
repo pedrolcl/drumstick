@@ -113,6 +113,6 @@ QString RtTest::joinConns(QList<MIDIConnection> conns)
     return res;
 }
 
-QTEST_MAIN(RtTest)
+QTEST_GUILESS_MAIN(RtTest)
 
 #include "rttest.moc"

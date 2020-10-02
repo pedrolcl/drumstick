@@ -606,7 +606,7 @@ VariableEvent::VariableEvent(const QByteArray& data)
  * @param other Another VariableEvent instance.
 s */
 VariableEvent::VariableEvent(const VariableEvent& other)
-    : SequencerEvent()
+    : SequencerEvent(other)
 {
     m_data = other.m_data;
     snd_seq_ev_set_variable ( &m_event, m_data.size(), m_data.data() );
