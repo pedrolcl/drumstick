@@ -1,3 +1,4 @@
+#include <QObject>
 #include <QString>
 #include <QDataStream>
 #include <QByteArray>

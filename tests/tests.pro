@@ -3,7 +3,7 @@ SUBDIRS += fileTest \
            rtTest \
            widgetsTest
 
-linux* {
+linux {
     SUBDIRS += \
         alsaTest1 \
         alsaTest2

@@ -17,4 +17,4 @@ SOURCES += dumpmid.cpp
 LIBS = -L$$OUT_PWD/../../build/lib \
     -ldrumstick-alsa
 
-PKGCONFIG += alsa
+linux:PKGCONFIG += alsa

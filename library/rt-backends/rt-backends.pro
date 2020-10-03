@@ -4,7 +4,7 @@ dummy {
     SUBDIRS += dummy-in dummy-out
 }
 
-linux* {
+linux {
     SUBDIRS += alsa-in alsa-out
 }
 

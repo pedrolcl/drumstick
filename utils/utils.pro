@@ -7,7 +7,7 @@ SUBDIRS += \
    dumpwrk \
    vpiano
 
-linux* {
+linux {
     SUBDIRS += \
        drumgrid \
        dumpmid \

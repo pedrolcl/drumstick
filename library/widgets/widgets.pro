@@ -62,7 +62,7 @@ macx {
     SOURCES += macsynthsettingsdialog.cpp
 }
 
-linux* {
+linux {
     FORMS += sonivoxsettingsdialog.ui
     HEADERS += sonivoxsettingsdialog.h
     SOURCES += sonivoxsettingsdialog.cpp

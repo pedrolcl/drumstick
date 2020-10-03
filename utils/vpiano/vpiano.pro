@@ -69,7 +69,7 @@ static {
         }
     }
 
-    linux* {
+    linux {
         DEFINES += LINUX_BACKEND
         LIBS += -ldrumstick-rt-alsa-in \
                 -ldrumstick-rt-alsa-out \

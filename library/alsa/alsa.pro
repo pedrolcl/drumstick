@@ -37,4 +37,4 @@ SOURCES += \
     sequencererror.cpp \
     subscription.cpp
 
-PKGCONFIG += alsa
+linux:PKGCONFIG += alsa

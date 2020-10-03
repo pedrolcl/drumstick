@@ -93,8 +93,8 @@ void VPianoSettings::SaveToFile(const QString &filepath)
 
 void VPianoSettings::internalRead(QSettings &settings)
 {
-    const QStringList STD_NAMES_S{"do", "do♯", "re", "re♯", "mi", "fa", "fa♯", "sol", "sol♯", "la", "la♯", "si"};
-    const QStringList STD_NAMES_F{"do", "re♭", "re", "mi♭", "mi", "fa", "sol♭", "sol", "la♭", "la", "si♭", "si"};
+    const QStringList STD_NAMES_S{"do", u8"do♯", "re", u8"re♯", "mi", "fa", u8"fa♯", "sol", u8"sol♯", "la", u8"la♯", "si"};
+    const QStringList STD_NAMES_F{"do", u8"re♭", "re", u8"mi♭", "mi", "fa", u8"sol♭", "sol", u8"la♭", "la", u8"si♭", "si"};
 
     settings.beginGroup("Window");
     m_geometry = settings.value("Geometry").toByteArray();
