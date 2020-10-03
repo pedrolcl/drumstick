@@ -249,6 +249,7 @@ namespace drumstick { namespace rt {
     }
 
     const QString BackendManager::QSTR_DRUMSTICK = QStringLiteral("drumstick2");
+    const QString BackendManager::QSTR_DRUMSTICK_VERSION = QStringLiteral(QT_STRINGIFY(VERSION));
     const QString BackendManager::QSTR_DRUMSTICKRT = QStringLiteral("DRUMSTICKRT");
     const QString BackendManager::QSTR_DRUMSTICKRT_GROUP = QStringLiteral("DrumstickRT");
     const QString BackendManager::QSTR_DRUMSTICKRT_PUBLICNAMEIN = QStringLiteral("PublicNameIN");

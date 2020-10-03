@@ -80,7 +80,7 @@ enum WrkChunkType {
 class DRUMSTICK_EXPORT QWrk : public QObject
 {
     Q_OBJECT
-
+    Q_ENUM(WrkChunkType)
 public:
     explicit QWrk(QObject * parent = nullptr);
     virtual ~QWrk();

@@ -2510,6 +2510,15 @@ QString getCompiledALSALibraryVersion()
     return QStringLiteral(SND_LIB_VERSION_STR);
 }
 
+/**
+ * @brief getDrumstickLibraryVersion provides the Drumstick version as an edited QString
+ * @return Drumstick library version
+ */
+QString getDrumstickLibraryVersion()
+{
+    return QStringLiteral(QT_STRINGIFY(VERSION));
+}
+
 /** @} */
 
 }} /* namespace drumstick::ALSA */

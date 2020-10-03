@@ -24,6 +24,7 @@ About::About(QWidget *parent)
     ui.setupUi(this);
     QString aboutText = ui.AboutTextView->toHtml();
     aboutText.replace("%VERSION%", QStringLiteral(QT_STRINGIFY(VERSION)));
+    aboutText.replace("%QT_VERSION%", qVersion());
     ui.AboutTextView->setHtml(aboutText);
 }
 

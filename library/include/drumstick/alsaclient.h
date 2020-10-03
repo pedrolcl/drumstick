@@ -338,6 +338,7 @@ DRUMSTICK_EXPORT int getRuntimeALSALibraryNumber();
 DRUMSTICK_EXPORT QString getRuntimeALSADriverVersion();
 DRUMSTICK_EXPORT int getRuntimeALSADriverNumber();
 DRUMSTICK_EXPORT QString getCompiledALSALibraryVersion();
+DRUMSTICK_EXPORT QString getDrumstickLibraryVersion();
 
 /** @} */
 

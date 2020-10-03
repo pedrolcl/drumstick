@@ -101,6 +101,15 @@ void changeSoundFont(const QString driver, const QString fileName, QWidget* pare
     }
 }
 
+/**
+ * @brief libraryVersion returns the runtime library version as a QString
+ * @return version string
+ */
+QString libraryVersion()
+{
+    return QStringLiteral(QT_STRINGIFY(VERSION));
+}
+
 }} // namespace drumstick::widgets
 
 /** @} */

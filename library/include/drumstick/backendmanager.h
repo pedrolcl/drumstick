@@ -103,6 +103,7 @@ namespace rt {
         MIDIOutput* outputBackendByName(const QString name);
 
         static const QString QSTR_DRUMSTICK;
+        static const QString QSTR_DRUMSTICK_VERSION;
         static const QString QSTR_DRUMSTICKRT;
         static const QString QSTR_DRUMSTICKRT_GROUP;
         static const QString QSTR_DRUMSTICKRT_PUBLICNAMEIN;
