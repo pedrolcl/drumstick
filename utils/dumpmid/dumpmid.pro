@@ -2,7 +2,7 @@ TEMPLATE = app
 TARGET = drumstick-dumpmid
 #QT += dbus
 CONFIG += c++11 cmdline
-CONFIG += qt console thread exceptions link_pkgconfig
+CONFIG += qt console thread exceptions
 static {
     CONFIG += link_prl
 }
@@ -16,5 +16,3 @@ SOURCES += dumpmid.cpp
 
 LIBS = -L$$OUT_PWD/../../build/lib \
     -ldrumstick-alsa
-
-linux:PKGCONFIG += alsa

@@ -6,11 +6,11 @@
 
 using namespace drumstick::File;
 
-class FileTest : public QObject
+class FileTest1 : public QObject
 {
     Q_OBJECT
 public:
-    explicit FileTest(QObject* parent = nullptr);
+    explicit FileTest1(QObject* parent = nullptr);
 
     static const char test_mid[];
     static const int test_mid_len;
@@ -72,7 +72,7 @@ private:
     QString m_lastKeySig;
 };
 
-FileTest::FileTest(QObject* parent): QObject(parent),
+FileTest1::FileTest1(QObject* parent): QObject(parent),
     m_engine(nullptr),
     m_numNoteOn(0),
     m_lastNoteOn(0),
@@ -90,28 +90,28 @@ FileTest::FileTest(QObject* parent): QObject(parent),
     m_engine = new QSmf(this);
     m_engine->setTextCodec(QTextCodec::codecForName("UTF-8"));
 
-    connect(m_engine, &QSmf::signalSMFError, this, &FileTest::errorHandler);
-    connect(m_engine, &QSmf::signalSMFWriteTrack, this, &FileTest::trackHandler);
+    connect(m_engine, &QSmf::signalSMFError, this, &FileTest1::errorHandler);
+    connect(m_engine, &QSmf::signalSMFWriteTrack, this, &FileTest1::trackHandler);
 
-    connect(m_engine, &QSmf::signalSMFHeader, this, &FileTest::headerEvent);
-    connect(m_engine, &QSmf::signalSMFTrackStart, this, &FileTest::trackStartEvent);
-    connect(m_engine, &QSmf::signalSMFTrackEnd, this, &FileTest::trackEndEvent);
-    connect(m_engine, &QSmf::signalSMFNoteOn, this, &FileTest::noteOnEvent);
-    connect(m_engine, &QSmf::signalSMFNoteOff, this, &FileTest::noteOffEvent);
-    connect(m_engine, &QSmf::signalSMFKeyPress, this, &FileTest::keyPressEvent);
-    connect(m_engine, &QSmf::signalSMFCtlChange, this, &FileTest::ctlChangeEvent);
-    connect(m_engine, &QSmf::signalSMFPitchBend, this, &FileTest::pitchBendEvent);
-    connect(m_engine, &QSmf::signalSMFProgram, this, &FileTest::programEvent);
-    connect(m_engine, &QSmf::signalSMFChanPress, this, &FileTest::chanPressEvent);
-    connect(m_engine, &QSmf::signalSMFSysex, this, &FileTest::sysexEvent);
-    connect(m_engine, &QSmf::signalSMFText, this, &FileTest::textEvent);
-    connect(m_engine, &QSmf::signalSMFendOfTrack, this, &FileTest::endOfTrackEvent);
-    connect(m_engine, &QSmf::signalSMFTimeSig, this, &FileTest::timeSigEvent);
-    connect(m_engine, &QSmf::signalSMFKeySig, this, &FileTest::keySigEvent);
-    connect(m_engine, &QSmf::signalSMFTempo, this, &FileTest::tempoEvent);
+    connect(m_engine, &QSmf::signalSMFHeader, this, &FileTest1::headerEvent);
+    connect(m_engine, &QSmf::signalSMFTrackStart, this, &FileTest1::trackStartEvent);
+    connect(m_engine, &QSmf::signalSMFTrackEnd, this, &FileTest1::trackEndEvent);
+    connect(m_engine, &QSmf::signalSMFNoteOn, this, &FileTest1::noteOnEvent);
+    connect(m_engine, &QSmf::signalSMFNoteOff, this, &FileTest1::noteOffEvent);
+    connect(m_engine, &QSmf::signalSMFKeyPress, this, &FileTest1::keyPressEvent);
+    connect(m_engine, &QSmf::signalSMFCtlChange, this, &FileTest1::ctlChangeEvent);
+    connect(m_engine, &QSmf::signalSMFPitchBend, this, &FileTest1::pitchBendEvent);
+    connect(m_engine, &QSmf::signalSMFProgram, this, &FileTest1::programEvent);
+    connect(m_engine, &QSmf::signalSMFChanPress, this, &FileTest1::chanPressEvent);
+    connect(m_engine, &QSmf::signalSMFSysex, this, &FileTest1::sysexEvent);
+    connect(m_engine, &QSmf::signalSMFText, this, &FileTest1::textEvent);
+    connect(m_engine, &QSmf::signalSMFendOfTrack, this, &FileTest1::endOfTrackEvent);
+    connect(m_engine, &QSmf::signalSMFTimeSig, this, &FileTest1::timeSigEvent);
+    connect(m_engine, &QSmf::signalSMFKeySig, this, &FileTest1::keySigEvent);
+    connect(m_engine, &QSmf::signalSMFTempo, this, &FileTest1::tempoEvent);
 }
 
-const char FileTest::test_mid[] = {
+const char FileTest1::test_mid[] = {
   '\x4d','\x54','\x68','\x64','\x00','\x00','\x00','\x06','\x00','\x00','\x00','\x01',
   '\x00','\x78','\x4d','\x54','\x72','\x6b','\x00','\x00','\x00','\x99','\x00','\xff',
   '\x02','\x2f','\x43','\x6f','\x70','\x79','\x72','\x69','\x67','\x68','\x74','\x20',
@@ -128,22 +128,22 @@ const char FileTest::test_mid[] = {
   '\x90','\x47','\x78','\x3c','\x80','\x47','\x00','\x00','\x90','\x48','\x78','\x3c',
   '\x80','\x48','\x00','\x00','\xff','\x2f','\x00'
 };
-const int FileTest::test_mid_len = sizeof(test_mid); //175;
-const QString FileTest::COPYRIGHT = QStringLiteral("Copyright (C) 2006-2020 Pedro L\u00f3pez-Cabanillas");
-const QByteArray FileTest::GSRESET = QByteArrayLiteral( "f04110421240007f0041f7" );
-const QList<int> FileTest::NOTES = { 60, 62, 64, 65, 67, 69, 71, 72 };
-const int FileTest::FORMAT = 0;
-const int FileTest::TRACKS = 1;
-const int FileTest::DIVISION = 120;
-const int FileTest::TEMPO = 100;
+const int FileTest1::test_mid_len = sizeof(test_mid); //175;
+const QString FileTest1::COPYRIGHT = QString::fromUtf8(u8"Copyright (C) 2006-2020 Pedro López-Cabanillas");
+const QByteArray FileTest1::GSRESET = QByteArrayLiteral( "f04110421240007f0041f7" );
+const QList<int> FileTest1::NOTES = { 60, 62, 64, 65, 67, 69, 71, 72 };
+const int FileTest1::FORMAT = 0;
+const int FileTest1::TRACKS = 1;
+const int FileTest1::DIVISION = 120;
+const int FileTest1::TEMPO = 100;
 
-void FileTest::errorHandler(const QString& errorStr)
+void FileTest1::errorHandler(const QString& errorStr)
 {
     m_lastError = errorStr;
     qWarning() << errorStr;
 }
 
-void FileTest::trackHandler(int )
+void FileTest1::trackHandler(int )
 {
     int i;
     // Text event
@@ -164,99 +164,99 @@ void FileTest::trackHandler(int )
     m_engine->writeMetaEvent(0, end_of_track);
 }
 
-void FileTest::headerEvent(int format, int ntrks, int division)
+void FileTest1::headerEvent(int format, int ntrks, int division)
 {
     m_header = QString("Format=%1, Tracks=%2, Division=%3").arg(format).arg(ntrks).arg(division);
 }
 
-void FileTest::trackStartEvent()
+void FileTest1::trackStartEvent()
 {
     m_currentTrack++;
 }
 
-void FileTest::trackEndEvent()
+void FileTest1::trackEndEvent()
 {
     m_trackEnd = QString("End: %1").arg(m_currentTrack);
 }
 
-void FileTest::endOfTrackEvent()
+void FileTest1::endOfTrackEvent()
 {
     m_endOfTrack++;
 }
 
-void FileTest::noteOnEvent(int , int pitch, int )
+void FileTest1::noteOnEvent(int , int pitch, int )
 {
     m_numNoteOn++;
     m_lastNoteOn = pitch;
 }
 
-void FileTest::noteOffEvent(int , int pitch, int )
+void FileTest1::noteOffEvent(int , int pitch, int )
 {
     m_numNoteOff++;
     m_lastNoteOff = pitch;
 }
 
-void FileTest::keyPressEvent(int , int pitch, int )
+void FileTest1::keyPressEvent(int , int pitch, int )
 {
     m_lastKeyPress = pitch;
 }
 
-void FileTest::ctlChangeEvent(int , int ctl, int )
+void FileTest1::ctlChangeEvent(int , int ctl, int )
 {
     m_lastCtl = ctl;
 }
 
-void FileTest::pitchBendEvent(int , int value)
+void FileTest1::pitchBendEvent(int , int value)
 {
     m_lastPitchBend = value;
 }
 
-void FileTest::programEvent(int , int patch)
+void FileTest1::programEvent(int , int patch)
 {
     m_lastProgram = patch;
 }
 
-void FileTest::chanPressEvent(int , int press)
+void FileTest1::chanPressEvent(int , int press)
 {
     m_lastChanPress = press;
 }
 
-void FileTest::sysexEvent(const QByteArray& data)
+void FileTest1::sysexEvent(const QByteArray& data)
 {
     m_lastSysex = data;
 }
 
-void FileTest::textEvent(int , const QString& data)
+void FileTest1::textEvent(int , const QString& data)
 {
     m_lastTextEvent = data;
 }
 
-void FileTest::timeSigEvent(int b0, int b1, int b2, int b3)
+void FileTest1::timeSigEvent(int b0, int b1, int b2, int b3)
 {
     m_lastTimeSig = QString("%1, %2, %3, %4").arg(b0).arg(b1).arg(b2).arg(b3);
 }
 
-void FileTest::keySigEvent(int b0, int b1)
+void FileTest1::keySigEvent(int b0, int b1)
 {
     m_lastKeySig = QString("%1, %2").arg(b0).arg(b1);
 }
 
-void FileTest::tempoEvent(int tempo)
+void FileTest1::tempoEvent(int tempo)
 {
     m_lastTempo = static_cast<int>( 6e7 / tempo );
 }
 
-void FileTest::initTestCase()
+void FileTest1::initTestCase()
 {
     m_testData = QByteArray::fromRawData(test_mid, test_mid_len);
 }
 
-void FileTest::cleanupTestCase()
+void FileTest1::cleanupTestCase()
 {
     m_testData.clear();
 }
 
-void FileTest::testCaseWriteSmf()
+void FileTest1::testCaseWriteSmf()
 {
     QByteArray data;
     QDataStream stream(&data,  QIODevice::ReadWrite);
@@ -270,7 +270,7 @@ void FileTest::testCaseWriteSmf()
     QCOMPARE(data, m_testData);
 }
 
-void FileTest::testCaseReadSmf()
+void FileTest1::testCaseReadSmf()
 {
     QDataStream stream(&m_testData,  QIODevice::ReadWrite);
     m_engine->readFromStream(&stream);
@@ -291,6 +291,6 @@ void FileTest::testCaseReadSmf()
     QCOMPARE(m_endOfTrack, TRACKS);
 }
 
-QTEST_APPLESS_MAIN(FileTest)
+QTEST_APPLESS_MAIN(FileTest1)
 
-#include "filetest.moc"
+#include "filetest1.moc"

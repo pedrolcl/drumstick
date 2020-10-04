@@ -1,10 +1,11 @@
-QT       += testlib
-QT       -= gui
-TARGET = fileTest
-CONFIG   += c++11 cmdline
+QT += testlib
+QT -= gui
+TARGET = fileTest1
+CONFIG += qt warn_on depend_includepath testcase
+CONFIG += c++11 cmdline
 TEMPLATE = app
 include (../../global.pri)
-SOURCES += filetest.cpp
+SOURCES += filetest1.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 INCLUDEPATH += . ../../library/include
 DESTDIR = ../../build/bin
