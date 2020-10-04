@@ -205,7 +205,7 @@ void FileTest2::testCaseReadWrkFile()
     QCOMPARE(m_fileVersion, "2.0");
     QCOMPARE(m_timeBase, 192);
     QCOMPARE(m_tracks, 1);
-    QCOMPARE(m_lastTempo, 120);
+    QCOMPARE(m_lastTempo, 120.0);
     QCOMPARE(m_lastTimeSig, "4/4");
     QCOMPARE(m_lastKeySig, 0);
     QCOMPARE(m_numNotes, 5);

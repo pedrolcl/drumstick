@@ -680,31 +680,31 @@ void PianoScene::setTouchEnabled(const bool enable)
 void PianoScene::retranslate()
 {
     m_names_s = QStringList{
-        tr("C"),
-        tr("C♯"),
-        tr("D"),
-        tr("D♯"),
-        tr("E"),
-        tr("F"),
-        tr("F♯"),
-        tr("G"),
-        tr("G♯"),
-        tr("A"),
-        tr("A♯"),
-        tr("B")};
+        tr(u8"C"),
+        tr(u8"C♯"),
+        tr(u8"D"),
+        tr(u8"D♯"),
+        tr(u8"E"),
+        tr(u8"F"),
+        tr(u8"F♯"),
+        tr(u8"G"),
+        tr(u8"G♯"),
+        tr(u8"A"),
+        tr(u8"A♯"),
+        tr(u8"B")};
     m_names_f = QStringList{
-        tr("C"),
-        tr("D♭"),
-        tr("D"),
-        tr("E♭"),
-        tr("E"),
-        tr("F"),
-        tr("G♭"),
-        tr("G"),
-        tr("A♭"),
-        tr("A"),
-        tr("B♭"),
-        tr("B")};
+        tr(u8"C"),
+        tr(u8"D♭"),
+        tr(u8"D"),
+        tr(u8"E♭"),
+        tr(u8"E"),
+        tr(u8"F"),
+        tr(u8"G♭"),
+        tr(u8"G"),
+        tr(u8"A♭"),
+        tr(u8"A"),
+        tr(u8"B♭"),
+        tr(u8"B")};
     refreshLabels();
 }
 
