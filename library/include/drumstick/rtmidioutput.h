@@ -38,47 +38,57 @@ namespace drumstick { namespace rt {
  * @{
  */
 
-const quint8 MIDI_STD_CHANNELS        = 16;
-const quint8 MIDI_GM_STD_DRUM_CHANNEL = (10-1);
-const quint8 MIDI_CONTROL_MSB_BANK_SELECT   = 0x00;
-const quint8 MIDI_CONTROL_MSB_MAIN_VOLUME   = 0x07;
-const quint8 MIDI_CONTROL_LSB_BANK_SELECT   = 0x20;
-const quint8 MIDI_CONTROL_REVERB_SEND       = 0x5b;
-const quint8 MIDI_CONTROL_ALL_SOUNDS_OFF    = 0x78;
-const quint8 MIDI_CONTROL_ALL_NOTES_OFF     = 0x7b;
-const quint8 MIDI_CONTROL_RESET_CONTROLLERS = 0x79;
+const quint8 MIDI_STD_CHANNELS              = 16; ///< Standard number of MIDI channels
+const quint8 MIDI_GM_STD_DRUM_CHANNEL       = (10-1); ///< Number of the GM percussion channel
+const quint8 MIDI_CONTROL_MSB_BANK_SELECT   = 0x00; ///< MIDI Controller number for MSB Bank number
+const quint8 MIDI_CONTROL_MSB_MAIN_VOLUME   = 0x07; ///< MIDI Controller number for MSB volume
+const quint8 MIDI_CONTROL_LSB_BANK_SELECT   = 0x20; ///< MIDI Controller number for LSB Bank number
+const quint8 MIDI_CONTROL_REVERB_SEND       = 0x5b; ///< MIDI Controller number for Reverb send
+const quint8 MIDI_CONTROL_ALL_SOUNDS_OFF    = 0x78; ///< MIDI Controller number for All sounds off
+const quint8 MIDI_CONTROL_ALL_NOTES_OFF     = 0x7b; ///< MIDI Controller number for All notes off
+const quint8 MIDI_CONTROL_RESET_CONTROLLERS = 0x79; ///< MIDI Controller number for Reset all controllers
 
-const quint8 MIDI_STATUS_NOTEOFF         = 0x80;
-const quint8 MIDI_STATUS_NOTEON          = 0x90;
-const quint8 MIDI_STATUS_KEYPRESURE      = 0xa0;
-const quint8 MIDI_STATUS_CONTROLCHANGE   = 0xb0;
-const quint8 MIDI_STATUS_PROGRAMCHANGE   = 0xc0;
-const quint8 MIDI_STATUS_CHANNELPRESSURE = 0xd0;
-const quint8 MIDI_STATUS_PITCHBEND       = 0xe0;
-const quint8 MIDI_STATUS_SYSEX           = 0xf0;
-const quint8 MIDI_STATUS_ENDSYSEX        = 0xf7;
-const quint8 MIDI_STATUS_REALTIME        = 0xf8;
+const quint8 MIDI_STATUS_NOTEOFF         = 0x80; ///< MIDI status byte for NOTE OFF messages
+const quint8 MIDI_STATUS_NOTEON          = 0x90; ///< MIDI status byte for NOTE ON messages
+const quint8 MIDI_STATUS_KEYPRESURE      = 0xa0; ///< MIDI status byte for KEY pressure messages
+const quint8 MIDI_STATUS_CONTROLCHANGE   = 0xb0; ///< MIDI status byte for CONTROL change messages
+const quint8 MIDI_STATUS_PROGRAMCHANGE   = 0xc0; ///< MIDI status byte for PROGRAM change messages
+const quint8 MIDI_STATUS_CHANNELPRESSURE = 0xd0; ///< MIDI status byte for CHANNEL PRESSURE messages
+const quint8 MIDI_STATUS_PITCHBEND       = 0xe0; ///< MIDI status byte for PITCH bend messages
+const quint8 MIDI_STATUS_SYSEX           = 0xf0; ///< MIDI status byte for System Exclusive START messages
+const quint8 MIDI_STATUS_ENDSYSEX        = 0xf7; ///< MIDI status byte for System Exclusive END messages
+const quint8 MIDI_STATUS_REALTIME        = 0xf8; ///< Minimum value for MIDI Realtime messages status
 
-const quint8 MIDI_STATUS_MASK            = 0xf0;
-const quint8 MIDI_CHANNEL_MASK           = 0x0f;
+const quint8 MIDI_STATUS_MASK            = 0xf0; ///< Mask to extract the MIDI status byte from a MIDI message
+const quint8 MIDI_CHANNEL_MASK           = 0x0f; ///< Mask to extract the MIDI channel byte from a MIDI message
 
-const quint8 MIDI_COMMON_QTRFRAME        = 0xF1;
-const quint8 MIDI_COMMON_SONGPP          = 0xF2;
-const quint8 MIDI_COMMON_SONSELECT       = 0xF3;
-const quint8 MIDI_COMMON_TUNEREQ         = 0xF6;
+const quint8 MIDI_COMMON_QTRFRAME        = 0xF1; ///< MIDI Quarter frame status message
+const quint8 MIDI_COMMON_SONGPP          = 0xF2; ///< MIDI Song Position status message
+const quint8 MIDI_COMMON_SONGSELECT      = 0xF3; ///< MIDI Song Select status message
+const quint8 MIDI_COMMON_TUNEREQ         = 0xF6; ///< MIDI Tune Request status message
 
-const quint8 MIDI_REALTIME_CLOCK         = 0xF8;
-const quint8 MIDI_REALTIME_START         = 0xFA;
-const quint8 MIDI_REALTIME_CONTINUE      = 0xFB;
-const quint8 MIDI_REALTIME_STOP          = 0xFC;
-const quint8 MIDI_REALTIME_SENSING       = 0xFE;
-const quint8 MIDI_REALTIME_RESET         = 0xFF;
+const quint8 MIDI_REALTIME_CLOCK         = 0xF8; ///< MIDI Clock status message
+const quint8 MIDI_REALTIME_START         = 0xFA; ///< MIDI Start status message
+const quint8 MIDI_REALTIME_CONTINUE      = 0xFB; ///< MIDI Continue status message
+const quint8 MIDI_REALTIME_STOP          = 0xFC; ///< MIDI Stop status message
+const quint8 MIDI_REALTIME_SENSING       = 0xFE; ///< MIDI Active Sensing status message
+const quint8 MIDI_REALTIME_RESET         = 0xFF; ///< MIDI Reset status message
 
+/**
+ * @brief MIDI_LSB is a function to extract the least significative byte of a MIDI value
+ * @param x a MIDI integer value
+ * @return the least significative byte of the input value
+ */
 inline int MIDI_LSB(int x)
 {
     return (x % 0x80);
 }
 
+/**
+ * @brief MIDI_MSB is a function to extract the most significative byte of a MIDI value
+ * @param x MIDI integer value
+ * @return the most significative byte of the input value
+ */
 inline int MIDI_MSB(int x)
 {
     return (x / 0x80);
@@ -86,6 +96,12 @@ inline int MIDI_MSB(int x)
 
     /**
      * @brief MIDIConnection represents a connection identifier
+     *
+     * MIDIConnection is an alias for QPair<QString,QVariant> where the
+     * first component is a QString representing the symbolic name of the MIDI Port
+     * and the second component is a QVariant that represents the native identification
+     * of the MIDI port, which may be a string, a number, or any other data type
+     * accepted as a QVariant.
      */
     typedef QPair<QString,QVariant> MIDIConnection;
 
@@ -105,7 +121,7 @@ inline int MIDI_MSB(int x)
         /**
          * @brief ~MIDIOutput destructor
          */
-        virtual ~MIDIOutput() {}
+        virtual ~MIDIOutput() = default;
         /**
          * @brief initialize
          * @param settings

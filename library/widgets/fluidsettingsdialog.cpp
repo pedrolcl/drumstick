@@ -16,16 +16,16 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QFileInfo>
 #include <QDir>
-#include <QStandardPaths>
 #include <QFileDialog>
-#include <QToolButton>
+#include <QFileInfo>
 #include <QPushButton>
+#include <QStandardPaths>
+#include <QToolButton>
 
-#include <drumstick/settingsfactory.h>
 #include "fluidsettingsdialog.h"
 #include "ui_fluidsettingsdialog.h"
+#include <drumstick/settingsfactory.h>
 
 /**
  * @file fluidsettingsdialog.cpp
@@ -208,4 +208,5 @@ void FluidSettingsDialog::changeSoundFont(const QString& fileName)
     writeSettings();
 }
 
-}} // namespace drumstick::widgets
+} // namespace widgets
+} // namespace drumstick

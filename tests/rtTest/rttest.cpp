@@ -1,9 +1,9 @@
 #include <QString>
 #include <QStringList>
 #include <QtTest>
+#include <drumstick/backendmanager.h>
 #include <drumstick/rtmidiinput.h>
 #include <drumstick/rtmidioutput.h>
-#include <drumstick/backendmanager.h>
 
 #if defined(LINUX_BACKEND)
 Q_IMPORT_PLUGIN(ALSAMIDIInput)
@@ -57,9 +57,7 @@ private Q_SLOTS:
     void testRT();
 };
 
-RtTest::RtTest()
-{
-}
+RtTest::RtTest() = default;
 
 void RtTest::testRT()
 {

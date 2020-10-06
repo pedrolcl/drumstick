@@ -16,9 +16,9 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <drumstick/configurationdialogs.h>
-#include "networksettingsdialog.h"
 #include "fluidsettingsdialog.h"
+#include "networksettingsdialog.h"
+#include <drumstick/configurationdialogs.h>
 #if defined(Q_OS_LINUX)
 #include "sonivoxsettingsdialog.h"
 #endif
@@ -40,6 +40,9 @@ namespace drumstick { namespace widgets {
 
 /**
  * @brief Input Driver configuration dialog
+ * Some RT input drivers can be configured. This function provides a
+ * dialog box to show and edit the configurable parameters, and
+ * save the settings. Curremtly, only the Network driver is configurable.
  * @param driver name of the driver
  * @param parent optional parent widget
  * @return true if configuration has changed
@@ -55,6 +58,10 @@ bool configureInputDriver(const QString driver, QWidget* parent)
 
 /**
  * @brief Output Driver configuration dialog
+ * Some RT output drivers can be configured. This function provides a
+ * dialog box to show and edit the configurable parameters, and
+ * save the settings. Curremtly the Network, FluidSynth, SonivoxEAS,
+ * and macOS DLS Synth drivers are configurable.
  * @param driver name of the driver
  * @param parent optional parent widget
  * @return true if configuration has changed
@@ -83,6 +90,9 @@ bool configureOutputDriver(const QString driver, QWidget* parent)
 
 /**
  * @brief Changes the sound font configuration
+ * Some RT output drivers accept soundfonts. This function allows to
+ * change the soundfont file for a driver and store the setting. The
+ * FluidSynth and macOS DLS Synth drivers are currently supported.
  * @param driver name of the driver
  * @param fileName name of the soundfont file
  * @param parent optional parent widget
@@ -110,6 +120,7 @@ QString libraryVersion()
     return QStringLiteral(QT_STRINGIFY(VERSION));
 }
 
-}} // namespace drumstick::widgets
+} // namespace widgets
+} // namespace drumstick
 
 /** @} */

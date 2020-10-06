@@ -126,15 +126,13 @@ if(BUILD_TESTING)
 endif()
 
 if(UNIX AND NOT APPLE)
-    find_package(Doxygen)
+    find_package(Doxygen REQUIRED dot)
     if(DOXYGEN_FOUND)
         string(REPLACE ";" " " DOXYGEN_INCLUDE_DIRS "${Qt5Core_INCLUDE_DIRS}")
-        configure_file(
-            "${CMAKE_SOURCE_DIR}/Doxyfile.in"
-            "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
-            IMMEDIATE @ONLY)
+        configure_file("${CMAKE_SOURCE_DIR}/Doxyfile.in"
+            "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE @ONLY)
         add_custom_target(doxygen
-            ${DOXYGEN} Doxyfile
+            ${DOXYGEN_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
     endif()
     add_subdirectory(doc)

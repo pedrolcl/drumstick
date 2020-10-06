@@ -16,9 +16,9 @@
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "vpiano-plugin.h"
 #include <QtPlugin>
 #include <drumstick/pianokeybd.h>
-#include "vpiano-plugin.h"
 
 using namespace drumstick::widgets;
 

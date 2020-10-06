@@ -16,16 +16,16 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
+#include "vpiano.h"
 #include <QApplication>
+#include <QCommandLineParser>
+#include <QDebug>
 #include <QFileInfo>
+#include <QLibraryInfo>
 #include <QTextStream>
 #include <QTranslator>
-#include <QLibraryInfo>
-#include <QCommandLineParser>
 #include <drumstick/backendmanager.h>
 #include <drumstick/settingsfactory.h>
-#include "vpiano.h"
 
 const QString PGM_DESCRIPTION = QObject::tr(
      "Drumstick Simple Virtual Piano\n"

@@ -16,36 +16,36 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
 #include <QApplication>
-#include <QFileDialog>
-#include <QInputDialog>
+#include <QCloseEvent>
+#include <QDebug>
 #include <QDragEnterEvent>
 #include <QDropEvent>
-#include <QCloseEvent>
-#include <QToolTip>
-#include <QMessageBox>
-#include <QStatusBar>
-#include <QSettings>
-#include <QUrl>
+#include <QFileDialog>
 #include <QFileInfo>
-#include <QTextCodec>
+#include <QInputDialog>
+#include <QMessageBox>
 #include <QMimeData>
+#include <QSettings>
+#include <QStatusBar>
+#include <QTextCodec>
+#include <QToolTip>
+#include <QUrl>
 #include <qmath.h>
 
-#include <drumstick/qsmf.h>
-#include <drumstick/qwrk.h>
-#include <drumstick/alsaevent.h>
-#include <drumstick/alsaclient.h>
-#include <drumstick/alsaqueue.h>
-#include <drumstick/alsaport.h>
-#include <drumstick/sequencererror.h>
 #include "guiplayer.h"
 #include "iconutils.h"
-#include "ui_guiplayer.h"
-#include "playerabout.h"
 #include "player.h"
+#include "playerabout.h"
 #include "song.h"
+#include "ui_guiplayer.h"
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaevent.h>
+#include <drumstick/alsaport.h>
+#include <drumstick/alsaqueue.h>
+#include <drumstick/qsmf.h>
+#include <drumstick/qwrk.h>
+#include <drumstick/sequencererror.h>
 
 using namespace drumstick;
 using namespace ALSA;

@@ -93,4 +93,5 @@ bool OSSInput::isEnabledMIDIThru()
     return d->m_thruEnabled && (d->m_out != nullptr);
 }
 
-}}
+} // namespace rt
+} // namespace drumstick

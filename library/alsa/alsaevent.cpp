@@ -16,8 +16,8 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <drumstick/alsaevent.h>
 #include "errorcheck.h"
+#include <drumstick/alsaevent.h>
 /**
  * @file alsaevent.cpp
  * Implementation of classes managing ALSA Sequencer events.
@@ -29,8 +29,7 @@
  * @see https://doc.qt.io/qt-5/qevent.html
  */
 
-namespace drumstick {
-namespace ALSA {
+namespace drumstick { namespace ALSA {
 
 /**
  * @addtogroup ALSAEvent
@@ -945,6 +944,8 @@ RemoveEvents::clone()
 RemoveEvents&
 RemoveEvents::operator=(const RemoveEvents& other)
 {
+    if (this == &other)
+        return *this;
     snd_seq_remove_events_copy(m_Info, other.m_Info);
     return *this;
 }
@@ -1234,4 +1235,6 @@ MidiCodec::resizeBuffer(int bufsize)
     DRUMSTICK_ALSA_CHECK_WARNING(snd_midi_event_resize_buffer(m_Info, bufsize));
 }
 
-}} /* namespace drumstick::ALSA */
+} // namespace ALSA
+} // namespace drumstick
+

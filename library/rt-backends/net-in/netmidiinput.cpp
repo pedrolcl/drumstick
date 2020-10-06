@@ -16,9 +16,9 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QUdpSocket>
 #include "netmidiinput.h"
 #include "netmidiinput_p.h"
+#include <QUdpSocket>
 
 namespace drumstick { namespace rt {
 
@@ -94,5 +94,6 @@ bool NetMIDIInput::isEnabledMIDIThru()
     return d->m_thruEnabled && (d->m_out != nullptr);
 }
 
-}}
+} // namespace rt
+} // namespace drumstick
 

@@ -38,7 +38,7 @@ namespace drumstick { namespace widgets {
      * @{
      *
      * @class PianoScene
-     * The PianoScene class
+     * The PianoScene class is a QGraphicsScene composed by a number of graphics items
      */
     class DRUMSTICK_EXPORT PianoScene : public QGraphicsScene
     {
@@ -49,137 +49,130 @@ namespace drumstick { namespace widgets {
                      const int startKey,
                      const QColor& keyPressedColor = QColor(),
                      QObject * parent = nullptr );
+        ~PianoScene();
 
         QSize sizeHint() const;
-        void setKeyboardMap( KeyboardMap* map ) { m_keybdMap = map; }
-        KeyboardMap* getKeyboardMap() const { return m_keybdMap; }
-        PianoHandler* getPianoHandler() const { return m_handler; }
-        void setPianoHandler(PianoHandler* handler) { m_handler = handler; }
+        void setKeyboardMap( KeyboardMap *map );
+        KeyboardMap *getKeyboardMap() const;
+        PianoHandler *getPianoHandler() const;
+        void setPianoHandler(PianoHandler *handler);
 
-        PianoPalette getHighlightPalette() { return m_hilightPalette; }
+        PianoPalette getHighlightPalette();
         void setHighlightPalette( const PianoPalette& p );
-        PianoPalette getBackgroundPalette() { return m_backgroundPalette; }
+        PianoPalette getBackgroundPalette();
         void setBackgroundPalette( const PianoPalette& p );
-        PianoPalette getForegroundPalette() { return m_foregroundPalette; }
+        PianoPalette getForegroundPalette();
         void setForegroundPalette( const PianoPalette& p );
 
-        bool showColorScale() const { return m_showColorScale; }
+        bool showColorScale() const;
         void setShowColorScale(const bool show);
 
         QColor getKeyPressedColor() const;
         void setKeyPressedColor(const QColor& color);
         void resetKeyPressedColor();
 
-        int getMinNote() const { return m_minNote; }
+        int getMinNote() const;
         void setMinNote(const int note);
-        int getMaxNote() const { return m_maxNote; }
+        int getMaxNote() const;
         void setMaxNote(const int note);
-        int getTranspose() const { return m_transpose; }
+        int getTranspose() const;
         void setTranspose(const int transpose);
 
-        LabelVisibility showLabels() const { return m_showLabels; }
+        LabelVisibility showLabels() const;
         void setShowLabels(const LabelVisibility show);
-        LabelAlteration alterations() const { return m_alterations; }
+        LabelAlteration alterations() const;
         void setAlterations(const LabelAlteration use);
-        LabelCentralOctave getOctave() const { return m_octave; }
+        LabelCentralOctave getOctave() const;
         void setOctave(const LabelCentralOctave octave);
-        LabelOrientation getOrientation() const { return m_orientation; }
+        LabelOrientation getOrientation() const;
         void setOrientation(const LabelOrientation orientation);
 
-        bool isKeyboardEnabled() const { return m_keyboardEnabled; }
+        bool isKeyboardEnabled() const;
         void setKeyboardEnabled( const bool enable );
-        bool isMouseEnabled() const { return m_mouseEnabled; }
+        bool isMouseEnabled() const;
         void setMouseEnabled( const bool enable );
-        bool isTouchEnabled() const { return m_touchEnabled; }
+        bool isTouchEnabled() const;
         void setTouchEnabled( const bool enable );
-        bool velocityTint() const { return m_velocityTint; }
-        void setVelocityTint( const bool enable ) { m_velocityTint = enable; }
+        bool velocityTint() const;
+        void setVelocityTint( const bool enable );
         bool isOctaveStart( const int note );
 
         void showNoteOn( const int note, QColor color, int vel = -1 );
         void showNoteOn( const int note, int vel = -1 );
         void showNoteOff( const int note, int vel = -1 );
-        int baseOctave() const { return m_baseOctave; }
+        int baseOctave() const;
         void setBaseOctave( const int base );
-        int numKeys() const { return m_numKeys; }
-        int startKey() const { return m_startKey; }
+        int numKeys() const;
+        int startKey() const;
         void allKeysOff();
         void keyOn( const int note );
         void keyOff( const int note );
-        bool getRawKeyboardMode() const { return m_rawkbd; }
+        bool getRawKeyboardMode() const;
         void setRawKeyboardMode(const bool b);
         void useCustomNoteNames(const QStringList& names);
         void useStandardNoteNames();
         QStringList customNoteNames() const;
         QStringList standardNoteNames() const;
-        int getVelocity() { return m_velocity; }
-        void setVelocity(const int velocity) { m_velocity = velocity; }
-        int getChannel() const { return m_channel; }
-        void setChannel(const int channel) { m_channel = channel; }
+        int getVelocity();
+        void setVelocity(const int velocity);
+        int getChannel() const;
+        void setChannel(const int channel);
         void retranslate();
         void refreshLabels();
 
     signals:
+        /**
+         * This signal is emitted for each Note On MIDI event created using
+         * the computer keyboard, mouse or touch screen. It is not emitted if
+         * a PianoHandler has been assigned using setPianoHandler().
+         * @param n the MIDI note number
+         * @param v the MIDI velocity
+         */
         void noteOn(int n, int v);
+        /**
+         * This signal is emitted for each Note Off MIDI event created using
+         * the computer keyboard, mouse or touch screen. It is not emitted if
+         * a PianoHandler has been assigned using setPianoHandler().
+         * @param n the MIDI note number
+         * @param v the MIDI velocity
+         */
         void noteOff(int n, int v);
+        /**
+         * signalName is emitted for each note created, and contains a string
+         * with the MIDI note number and the note name for each note on event.
+         * @param name the MIDI note number and name
+         */
         void signalName(const QString& name);
 
     protected:
-        void showKeyOn( PianoKey* key, QColor color, int vel );
-        void showKeyOn( PianoKey* key, int vel );
-        void showKeyOff( PianoKey* key, int vel );
-        void displayKeyOn(PianoKey* key);
-        void keyOn( PianoKey* key );
-        void keyOff( PianoKey* key );
-        void keyOn( PianoKey* key, qreal pressure );
-        void keyOff( PianoKey* key, qreal pressure );
-        PianoKey* getKeyForPos( const QPointF& p ) const;
-        PianoKey* getPianoKey( const int key ) const;
-        QString noteName( PianoKey* key );
-        void mouseMoveEvent ( QGraphicsSceneMouseEvent * mouseEvent ) override;
-        void mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent ) override;
-        void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent ) override;
-        void keyPressEvent ( QKeyEvent * keyEvent ) override;
-        void keyReleaseEvent ( QKeyEvent * keyEvent ) override;
+        void showKeyOn( PianoKey *key, QColor color, int vel );
+        void showKeyOn( PianoKey *key, int vel );
+        void showKeyOff( PianoKey *key, int vel );
+        void displayKeyOn(PianoKey *key);
+        void keyOn( PianoKey *key );
+        void keyOff( PianoKey *key );
+        void keyOn( PianoKey *key, qreal pressure );
+        void keyOff( PianoKey *key, qreal pressure );
+        PianoKey *getKeyForPos( const QPointF &p ) const;
+        PianoKey *getPianoKey( const int key ) const;
+        QString noteName( PianoKey *key );
+        void mouseMoveEvent ( QGraphicsSceneMouseEvent *mouseEvent ) override;
+        void mousePressEvent ( QGraphicsSceneMouseEvent *mouseEvent ) override;
+        void mouseReleaseEvent ( QGraphicsSceneMouseEvent *mouseEvent ) override;
+        void keyPressEvent ( QKeyEvent *keyEvent ) override;
+        void keyReleaseEvent ( QKeyEvent *keyEvent ) override;
         bool event(QEvent *event) override;
 
-    private:
         void triggerNoteOn( const int note, const int vel );
         void triggerNoteOff( const int note, const int vel );
         int getNoteFromKey( const int key ) const;
-        void setHighlightColorFromPolicy(PianoKey* key, const int vel);
+        void setHighlightColorFromPolicy(PianoKey *key, const int vel);
         void hideOrShowKeys();
         void refreshKeys();
 
-        int m_baseOctave;
-        int m_numKeys;
-        int m_startKey;
-        int m_minNote;
-        int m_maxNote;
-        int m_transpose;
-        LabelVisibility m_showLabels;
-        LabelAlteration m_alterations;
-        LabelCentralOctave m_octave;
-        LabelOrientation m_orientation;
-        bool m_rawkbd;
-        bool m_keyboardEnabled;
-        bool m_mouseEnabled;
-        bool m_touchEnabled;
-        bool m_mousePressed;
-        int m_velocity;
-        int m_channel;
-        bool m_velocityTint;
-        PianoHandler* m_handler;
-        KeyboardMap* m_keybdMap;
-        QHash<int, PianoKey*> m_keys;
-        QMap<int, KeyLabel*> m_labels;
-        QStringList m_noteNames;
-        QStringList m_names_s;
-        QStringList m_names_f;
-        bool m_showColorScale;
-        PianoPalette m_hilightPalette;
-        PianoPalette m_backgroundPalette;
-        PianoPalette m_foregroundPalette;
+    private:
+        class PianoScenePrivate;
+        PianoScenePrivate *d;
     };
 
 }} // namespace drumstick::widgets

@@ -16,17 +16,17 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <csignal>
-#include <QDebug>
+#include "playsmf.h"
+#include <QCommandLineParser>
 #include <QCoreApplication>
-#include <QTextStream>
-#include <QtAlgorithms>
+#include <QDebug>
 #include <QFileInfo>
 #include <QReadLocker>
+#include <QTextStream>
 #include <QWriteLocker>
-#include <QCommandLineParser>
+#include <QtAlgorithms>
+#include <csignal>
 #include <drumstick/sequencererror.h>
-#include "playsmf.h"
 
 QTextStream cout(stdout, QIODevice::WriteOnly);
 QTextStream cerr(stderr, QIODevice::WriteOnly);

@@ -16,16 +16,16 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QNetworkInterface>
 #include <QDialogButtonBox>
-#include <QPushButton>
 #include <QDir>
-#include <QStandardPaths>
 #include <QFileDialog>
+#include <QNetworkInterface>
+#include <QPushButton>
+#include <QStandardPaths>
 
-#include <drumstick/settingsfactory.h>
 #include "macsynthsettingsdialog.h"
 #include "ui_macsynthsettingsdialog.h"
+#include <drumstick/settingsfactory.h>
 
 /**
  * @file macsynthsettingsdialog.cpp
@@ -116,4 +116,5 @@ void MacSynthSettingsDialog::showFileDialog()
     }
 }
 
-}} // namespace drumstick::widgets
+} // namespace widgets
+} // namespace drumstick

@@ -16,9 +16,9 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
 #include "synthcontroller.h"
 #include "synthrenderer.h"
+#include <QDebug>
 
 namespace drumstick {
 namespace rt {
@@ -154,4 +154,5 @@ void SynthController::sendSystemMsg(const int status)
     Q_UNUSED(status)
 }
 
-}}
+} // namespace rt
+} // namespace drumstick

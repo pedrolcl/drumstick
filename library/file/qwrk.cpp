@@ -16,13 +16,13 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cmath>
 #include <QDataStream>
 #include <QFile>
 #include <QIODevice>
-#include <QTextStream>
-#include <QTextCodec>
 #include <QStringList>
+#include <QTextCodec>
+#include <QTextStream>
+#include <cmath>
 #include <drumstick/qwrk.h>
 
 /**
@@ -1300,4 +1300,5 @@ void QWrk::wrkRead()
 
 const QByteArray QWrk::HEADER = QByteArrayLiteral("CAKEWALK");
 
-}} // namespace drumstick::File
+} // namespace File
+} // namespace drumstick

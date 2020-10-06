@@ -16,11 +16,11 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <drumstick/alsaclient.h>
-#include <drumstick/alsaqueue.h>
 #include "player.h"
 #include "song.h"
 #include <cmath>
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaqueue.h>
 
 using namespace drumstick::ALSA;
 
@@ -43,19 +43,15 @@ Player::~Player()
     if (isRunning()) {
         stop();
     }
-    if (m_songIterator != nullptr)
-        delete m_songIterator;
-    if (m_lastEvent != nullptr)
-        delete m_lastEvent;
+    delete m_songIterator;
+    delete m_lastEvent;
 }
 
 void Player::setSong(Song* s)
 {
     m_song = s;
     if (m_song != nullptr) {
-        if (m_songIterator != nullptr) {
-            delete m_songIterator;
-        }
+        delete m_songIterator;
         m_songIterator = new SongIterator(*m_song);
         m_echoResolution = m_song->getDivision() / 12;
         m_songPosition = 0;
@@ -88,8 +84,7 @@ bool Player::hasNext()
 
 SequencerEvent* Player::nextEvent()
 {
-    if (m_lastEvent != nullptr)
-        delete m_lastEvent;
+    delete m_lastEvent;
     m_lastEvent = m_songIterator->next()->clone();
     switch (m_lastEvent->getSequencerType()) {
         case SND_SEQ_EVENT_NOTE:

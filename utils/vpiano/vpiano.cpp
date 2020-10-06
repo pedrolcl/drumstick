@@ -16,22 +16,22 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QDebug>
 #include <QDir>
 #include <QFileInfo>
 #include <QFontDialog>
 #include <QInputDialog>
-#include <QDebug>
 #if defined(Q_OS_MACOS)
 #include <CoreFoundation/CoreFoundation.h>
 #endif
+#include "connections.h"
+#include "preferences.h"
+#include "vpiano.h"
+#include "vpianoabout.h"
+#include "vpianosettings.h"
 #include <drumstick/backendmanager.h>
 #include <drumstick/pianokeybd.h>
 #include <drumstick/settingsfactory.h>
-#include "vpiano.h"
-#include "vpianosettings.h"
-#include "vpianoabout.h"
-#include "connections.h"
-#include "preferences.h"
 
 using namespace drumstick::rt;
 using namespace drumstick::widgets;

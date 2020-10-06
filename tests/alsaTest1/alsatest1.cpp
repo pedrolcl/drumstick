@@ -15,9 +15,7 @@ private Q_SLOTS:
     void testEvents();
 };
 
-AlsaTest1::AlsaTest1()
-{
-}
+AlsaTest1::AlsaTest1() = default;
 
 void AlsaTest1::testEvents()
 {

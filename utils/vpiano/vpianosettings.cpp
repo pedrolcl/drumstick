@@ -16,10 +16,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QFileInfo>
-#include <QDir>
-#include <drumstick/settingsfactory.h>
 #include "vpianosettings.h"
+#include <QDir>
+#include <QFileInfo>
+#include <drumstick/settingsfactory.h>
 
 using namespace drumstick::rt;
 using namespace drumstick::widgets;

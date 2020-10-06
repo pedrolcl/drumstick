@@ -1,6 +1,6 @@
-#include <QString>
-#include <QDataStream>
 #include <QByteArray>
+#include <QDataStream>
+#include <QString>
 #include <QtTest>
 #include <drumstick/qwrk.h>
 
@@ -11,7 +11,7 @@ class FileTest2 : public QObject
     Q_OBJECT
 
 public:
-    explicit FileTest2(QObject* parent = 0);
+    explicit FileTest2(QObject* parent = nullptr);
 
     static const char test_wrk[];
     static const int test_wrk_len;

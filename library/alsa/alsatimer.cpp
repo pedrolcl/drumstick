@@ -16,12 +16,12 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cmath>
-#include <cstdio>
+#include "errorcheck.h"
 #include <QReadLocker>
 #include <QWriteLocker>
+#include <cmath>
+#include <cstdio>
 #include <drumstick/alsatimer.h>
-#include "errorcheck.h"
 /**
  * @file alsatimer.cpp
  * Implementation of classes managing ALSA Timers
@@ -136,6 +136,8 @@ TimerInfo::clone()
 TimerInfo&
 TimerInfo::operator=(const TimerInfo& other)
 {
+    if (this == &other)
+        return *this;
     snd_timer_info_copy(m_Info, other.m_Info);
     return *this;
 }
@@ -310,6 +312,8 @@ TimerId::clone()
 TimerId&
 TimerId::operator=(const TimerId& other)
 {
+    if (this == &other)
+        return *this;
     snd_timer_id_copy(m_Info, other.m_Info);
     if (getCard() < 0)
     setCard(0);
@@ -596,6 +600,8 @@ TimerGlobalInfo::clone()
 TimerGlobalInfo&
 TimerGlobalInfo::operator=(const TimerGlobalInfo& other)
 {
+    if (this == &other)
+        return *this;
     snd_timer_ginfo_copy(m_Info, other.m_Info);
     return *this;
 }
@@ -767,6 +773,8 @@ TimerParams::clone()
 TimerParams&
 TimerParams::operator=(const TimerParams& other)
 {
+    if (this == &other)
+        return *this;
     snd_timer_params_copy (m_Info, other.m_Info);
     return *this;
 }
@@ -955,6 +963,8 @@ TimerStatus::clone()
 TimerStatus&
 TimerStatus::operator=(const TimerStatus& other)
 {
+    if (this == &other)
+        return *this;
     snd_timer_status_copy (m_Info, other.m_Info);
     return *this;
 }
@@ -1453,4 +1463,6 @@ Timer::TimerInputThread::stop()
     m_Stopped = true;
 }
 
-}} /* namespace drumstick::ALSA */
+} // namespace ALSA
+} // namespace drumstick
+

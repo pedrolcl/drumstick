@@ -18,16 +18,16 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cstdlib>
+#include "dumpsmf.h"
+#include <QCommandLineParser>
+#include <QCoreApplication>
+#include <QFileInfo>
 #include <QObject>
 #include <QString>
-#include <QCoreApplication>
-#include <QTextStream>
 #include <QTextCodec>
-#include <QFileInfo>
-#include <QCommandLineParser>
+#include <QTextStream>
+#include <cstdlib>
 #include <drumstick/qsmf.h>
-#include "dumpsmf.h"
 
 QTextStream cout(stdout, QIODevice::WriteOnly);
 QTextStream cerr(stderr, QIODevice::WriteOnly);

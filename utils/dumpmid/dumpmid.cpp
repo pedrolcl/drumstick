@@ -16,17 +16,17 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <csignal>
-#include <QObject>
-#include <QString>
-#include <QCoreApplication>
-#include <QTextStream>
-#include <QtDebug>
-#include <QReadLocker>
-#include <QWriteLocker>
-#include <QCommandLineParser>
-#include <drumstick/sequencererror.h>
 #include "dumpmid.h"
+#include <QCommandLineParser>
+#include <QCoreApplication>
+#include <QObject>
+#include <QReadLocker>
+#include <QString>
+#include <QTextStream>
+#include <QWriteLocker>
+#include <QtDebug>
+#include <csignal>
+#include <drumstick/sequencererror.h>
 
 QTextStream cout(stdout, QIODevice::WriteOnly);
 QTextStream cerr(stderr, QIODevice::WriteOnly);

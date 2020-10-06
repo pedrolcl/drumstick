@@ -16,9 +16,9 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "midiparser.h"
 #include <QDebug>
 #include <drumstick/rtmidioutput.h>
-#include "midiparser.h"
 
 namespace drumstick {
 namespace rt {
@@ -253,5 +253,6 @@ void MIDIParser::parse(QByteArray bytes)
     }
 }
 
-}}
+} // namespace rt
+} // namespace drumstick
 

@@ -256,7 +256,7 @@ class DRUMSTICK_EXPORT TimerEventHandler
 {
 public:
     /** Destructor */
-    virtual ~TimerEventHandler() {}
+    virtual ~TimerEventHandler() = default;
     /**
      * Timer event handler. This method is called when the timer expires.
      * @param ticks The time in ticks.
@@ -288,8 +288,8 @@ private:
            m_Wait(timeout),
            m_Stopped(false) {}
        /** Destructor */
-       virtual ~TimerInputThread() {}
-       virtual void run() override;
+       virtual ~TimerInputThread() = default;
+       void run() override;
        bool stopped();
        void stop();       
     private:

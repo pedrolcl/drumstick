@@ -18,18 +18,18 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cstdlib>
+#include "dumpwrk.h"
+#include <QCommandLineParser>
+#include <QCoreApplication>
+#include <QFileInfo>
 #include <QObject>
 #include <QString>
-#include <QCoreApplication>
-#include <QTextStream>
-#include <QTextCodec>
 #include <QStringList>
-#include <QFileInfo>
+#include <QTextCodec>
+#include <QTextStream>
 #include <QVariant>
-#include <QCommandLineParser>
+#include <cstdlib>
 #include <drumstick/qwrk.h>
-#include "dumpwrk.h"
 
 QTextStream cout(stdout, QIODevice::WriteOnly);
 QTextStream cerr(stderr, QIODevice::WriteOnly);

@@ -17,9 +17,9 @@
 */
 
 #include "preferences.h"
+#include "vpianosettings.h"
 #include <QPushButton>
 #include <QShowEvent>
-#include "vpianosettings.h"
 
 Preferences::Preferences(QWidget *parent)
     : QDialog(parent)

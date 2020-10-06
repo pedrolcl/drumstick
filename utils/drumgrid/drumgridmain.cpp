@@ -16,14 +16,14 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
-#include <QApplication>
-#include <QMessageBox>
-#include <QCommandLineParser>
-#include <QTranslator>
-#include <QLibraryInfo>
-#include <drumstick/sequencererror.h>
 #include "drumgrid.h"
+#include <QApplication>
+#include <QCommandLineParser>
+#include <QDebug>
+#include <QLibraryInfo>
+#include <QMessageBox>
+#include <QTranslator>
+#include <drumstick/sequencererror.h>
 
 const QString QSTR_APPNAME("DrumGrid");
 const QString QSTR_DOMAIN("drumstick.sourceforge.net");

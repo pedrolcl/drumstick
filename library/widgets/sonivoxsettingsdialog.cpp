@@ -19,9 +19,9 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 
-#include <drumstick/settingsfactory.h>
 #include "sonivoxsettingsdialog.h"
 #include "ui_sonivoxsettingsdialog.h"
+#include <drumstick/settingsfactory.h>
 
 /**
  * @file sonivoxsettingsdialog.cpp
@@ -119,5 +119,6 @@ void SonivoxSettingsDialog::restoreDefaults()
     ui->dial_Chorus->setValue(0);
 }
 
-}} // namespace drumstick::widgets
+} // namespace widgets
+} // namespace drumstick
 

@@ -16,8 +16,8 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <drumstick/alsaclient.h>
 #include "errorcheck.h"
+#include <drumstick/alsaclient.h>
 /**
  * @file subscription.cpp
  * Implementation of classes managing ALSA sequencer subscriptions
@@ -100,6 +100,8 @@ Subscriber* Subscriber::clone()
  */
 Subscriber& Subscriber::operator=(const Subscriber& other)
 {
+    if (this == &other)
+        return *this;
     snd_seq_query_subscribe_copy(m_Info, other.m_Info);
     return *this;
 }
@@ -347,6 +349,8 @@ Subscription::clone()
 Subscription&
 Subscription::operator=(const Subscription& other)
 {
+    if (this == &other)
+        return *this;
     snd_seq_port_subscribe_copy(m_Info, other.m_Info);
     return *this;
 }
@@ -541,4 +545,6 @@ Subscription::getSizeOfInfo() const
     return snd_seq_port_subscribe_sizeof();
 }
 
-}} /* namespace drumstick::ALSA */
+} // namespace ALSA
+} // namespace drumstick
+

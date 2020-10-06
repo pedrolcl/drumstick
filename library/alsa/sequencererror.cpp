@@ -41,7 +41,7 @@ const char *SequencerError::what() const noexcept
     return snd_strerror(m_errCode);
 }
 
-const QString SequencerError::qstrError() const
+QString SequencerError::qstrError() const
 {
     return QString(what());
 }
@@ -58,4 +58,5 @@ const QString &SequencerError::location() const
 
 /** @} */
 
-}} // namespace drumstick::ALSA
+} // namespace ALSA
+} // namespace drumstick

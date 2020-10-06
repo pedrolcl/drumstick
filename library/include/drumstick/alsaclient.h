@@ -62,12 +62,12 @@ class DRUMSTICK_EXPORT ClientInfo
 
 public:
     ClientInfo();
-    ClientInfo(const ClientInfo& other);
-    explicit ClientInfo(snd_seq_client_info_t* other);
+    ClientInfo(const ClientInfo &other);
+    explicit ClientInfo(snd_seq_client_info_t *other);
     ClientInfo(MidiClient* seq, int id);
     virtual ~ClientInfo();
     ClientInfo* clone();
-    ClientInfo& operator=(const ClientInfo& other);
+    ClientInfo& operator=(const ClientInfo &other);
     int getSizeOfInfo() const;
 
     int getClientId();
@@ -185,7 +185,7 @@ class DRUMSTICK_EXPORT SequencerEventHandler
 {
 public:
     /** Destructor */
-    virtual ~SequencerEventHandler() {}
+    virtual ~SequencerEventHandler() = default;
 
     /**
      * Callback function to be implemented by the derived class.

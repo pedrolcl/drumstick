@@ -25,8 +25,13 @@
  * Implementation of the PianoKeybd class
  */
 
-namespace drumstick {
-namespace widgets {
+/**
+ * @class QGraphicsView
+ * The QGraphicsView class provides a widget for displaying the contents of a QGraphicsScene.
+ * @see https://doc.qt.io/qt-5/qgraphicsview.html
+ */
+
+namespace drumstick { namespace widgets {
 
 /**
  * Global Default Alphanumeric Keyboard Map
@@ -199,8 +204,7 @@ public:
     PianoKeybdPrivate(): m_rotation(0), m_scene(nullptr), m_rawMap(nullptr)
     { }
 
-    ~PianoKeybdPrivate()
-    { }
+    ~PianoKeybdPrivate() = default;
 
     int m_rotation;
     PianoScene *m_scene;
@@ -228,11 +232,27 @@ PianoKeybd::~PianoKeybd()
     delete d;
 }
 
+/**
+ * Gets the PianoHandler pointer to the note receiver.
+ *
+ * If this method returns null, then there is not a PianoHandler class assigned,
+ * and then the signals noteOn() and noteOff() are emitted instead.
+ * @return pointer to the PianoHandler class, if there is one assigned
+ */
 PianoHandler *PianoKeybd::getPianoHandler() const
 {
     return d->m_scene->getPianoHandler();
 }
 
+
+/**
+ * Assigns a PianoHandler pointer for processing note events.
+ *
+ * When this member is used to assign a PianoHandler instance, then
+ * the methods in that instance are called instead of emitting the
+ * signals noteOn() and noteOff().
+ * @param handler pointer to the PianoHandler instance
+ */
 void PianoKeybd::setPianoHandler(PianoHandler *handler)
 {
     d->m_scene->setPianoHandler(handler);
@@ -631,4 +651,5 @@ void PianoKeybd::setFont(const QFont &font)
     d->m_scene->refreshLabels();
 }
 
-}} // namespace drumstick::widgets
+} // namespace widgets
+} // namespace drumstick

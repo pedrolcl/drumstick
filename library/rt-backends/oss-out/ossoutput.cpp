@@ -16,9 +16,9 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QFile>
-#include <QDir>
 #include <QDebug>
+#include <QDir>
+#include <QFile>
 
 #include "ossoutput.h"
 
@@ -225,4 +225,5 @@ void OSSOutput::sendSystemMsg(const int status)
     d->sendMessage(status);
 }
 
-}}
+} // namespace rt
+} // namespace drumstick

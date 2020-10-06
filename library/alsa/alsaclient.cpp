@@ -16,23 +16,23 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <drumstick/alsaclient.h>
-#include <drumstick/alsaqueue.h>
-#include <drumstick/alsaevent.h>
 #include "errorcheck.h"
+#include <QCoreApplication>
 #include <QFile>
+#include <QReadLocker>
 #include <QRegExp>
 #include <QThread>
-#include <QReadLocker>
 #include <QWriteLocker>
-#include <QCoreApplication>
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaevent.h>
+#include <drumstick/alsaqueue.h>
 
 #if defined(RTKIT_SUPPORT)
 #include <QDBusConnection>
 #include <QDBusInterface>
-#include <sys/types.h>
-#include <sys/syscall.h>
 #include <sys/resource.h>
+#include <sys/syscall.h>
+#include <sys/types.h>
 #endif
 #include <pthread.h>
 
@@ -193,8 +193,8 @@ public:
         m_Wait(timeout),
         m_Stopped(false),
         m_RealTime(true) {}
-    virtual ~SequencerInputThread() {}
-    virtual void run() override;
+    virtual ~SequencerInputThread() = default;
+    void run() override;
     bool stopped();
     void stop();
     void setRealtimePriority();
@@ -1723,7 +1723,7 @@ MidiClient::SequencerInputThread::stop()
 }
 
 #if defined(RTKIT_SUPPORT)
-static pid_t _gettid(void) {
+static pid_t _gettid() {
     return (pid_t) ::syscall(SYS_gettid);
 }
 #endif
@@ -1889,6 +1889,8 @@ ClientInfo::clone()
 ClientInfo&
 ClientInfo::operator=(const ClientInfo& other)
 {
+    if (this == &other)
+        return *this;
     snd_seq_client_info_copy(m_Info, other.m_Info);
     m_Ports = other.m_Ports;
     return *this;
@@ -2181,6 +2183,8 @@ SystemInfo::clone()
 SystemInfo&
 SystemInfo::operator=(const SystemInfo& other)
 {
+    if (this == &other)
+        return *this;
     snd_seq_system_info_copy(m_Info, other.m_Info);
     return *this;
 }
@@ -2309,8 +2313,11 @@ PoolInfo::clone()
  * @param other Another PoolInfo object reference to be copied
  * @return This object
  */
-PoolInfo& PoolInfo::operator=(const PoolInfo& other)
+PoolInfo&
+PoolInfo::operator=(const PoolInfo& other)
 {
+    if (this == &other)
+        return *this;
     snd_seq_client_pool_copy(m_Info, other.m_Info);
     return *this;
 }
@@ -2503,6 +2510,7 @@ getRuntimeALSADriverNumber()
  *
  * This string corresponds to the compilation library, which may be
  * different to the runtime library.
+ * @return ALSA runtime library formatted as a QString
  * @see getRuntimeALSALibraryVersion
  */
 QString getCompiledALSALibraryVersion()
@@ -2521,4 +2529,6 @@ QString getDrumstickLibraryVersion()
 
 /** @} */
 
-}} /* namespace drumstick::ALSA */
+} // namespace ALSA
+} // namespace drumstick
+

@@ -17,22 +17,90 @@
 */
 
 #include <QApplication>
-#include <QPalette>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
-#include <qmath.h>
+#include <QPalette>
 #include <drumstick/pianokeybd.h>
 #include <drumstick/pianoscene.h>
+#include <qmath.h>
 
 /**
  * @file pianoscene.cpp
  * Implementation of the Piano Scene
  */
 
+/**
+ * @class QGraphicsScene
+ * The QGraphicsScene class provides a surface for managing a large number of 2D graphical items.
+ * @see https://doc.qt.io/qt-5/qgraphicsscene.html
+ */
+
 namespace drumstick { namespace widgets {
 
-#define KEYWIDTH  180
-#define KEYHEIGHT 720
+class PianoScene::PianoScenePrivate
+{
+public:
+    PianoScenePrivate ( const int baseOctave,
+                        const int numKeys,
+                        const int startKey ):
+        m_baseOctave( baseOctave ),
+        m_numKeys( numKeys ),
+        m_startKey( startKey ),
+        m_minNote( 0 ),
+        m_maxNote( 127 ),
+        m_transpose( 0 ),
+        m_showLabels( ShowNever ),
+        m_alterations( ShowSharps ),
+        m_octave( OctaveC4 ),
+        m_orientation( HorizontalOrientation ),
+        m_rawkbd( false ),
+        m_keyboardEnabled( true ),
+        m_mouseEnabled( true ),
+        m_touchEnabled( true ),
+        m_mousePressed( false ),
+        m_velocity( 100 ),
+        m_channel( 0 ),
+        m_velocityTint( true ),
+        m_handler( nullptr ),
+        m_keybdMap( nullptr ),
+        m_showColorScale( false ),
+        m_hilightPalette(PianoPalette(PAL_SINGLE)),
+        m_backgroundPalette(PianoPalette(PAL_KEYS)),
+        m_foregroundPalette(PianoPalette(PAL_FONT))
+    { }
+    int m_baseOctave;
+    int m_numKeys;
+    int m_startKey;
+    int m_minNote;
+    int m_maxNote;
+    int m_transpose;
+    LabelVisibility m_showLabels;
+    LabelAlteration m_alterations;
+    LabelCentralOctave m_octave;
+    LabelOrientation m_orientation;
+    bool m_rawkbd;
+    bool m_keyboardEnabled;
+    bool m_mouseEnabled;
+    bool m_touchEnabled;
+    bool m_mousePressed;
+    int m_velocity;
+    int m_channel;
+    bool m_velocityTint;
+    PianoHandler *m_handler;
+    KeyboardMap *m_keybdMap;
+    QHash<int, PianoKey *> m_keys;
+    QMap<int, KeyLabel *> m_labels;
+    QStringList m_noteNames;
+    QStringList m_names_s;
+    QStringList m_names_f;
+    bool m_showColorScale;
+    PianoPalette m_hilightPalette;
+    PianoPalette m_backgroundPalette;
+    PianoPalette m_foregroundPalette;
+};
+
+const int KEYWIDTH = 180;
+const int KEYHEIGHT = 720;
 
 static qreal sceneWidth(int keys) {
     return KEYWIDTH * qCeil( keys * 7.0 / 12.0 );
@@ -44,30 +112,7 @@ PianoScene::PianoScene ( const int baseOctave,
                          const QColor& keyPressedColor,
                          QObject * parent )
     : QGraphicsScene( QRectF(0, 0, sceneWidth(numKeys), KEYHEIGHT), parent ),
-    m_baseOctave( baseOctave ),
-    m_numKeys( numKeys ),
-    m_startKey( startKey ),
-    m_minNote( 0 ),
-    m_maxNote( 127 ),
-    m_transpose( 0 ),
-    m_showLabels( ShowNever ),
-    m_alterations( ShowSharps ),
-    m_octave( OctaveC4 ),
-    m_orientation( HorizontalOrientation ),
-    m_rawkbd( false ),
-    m_keyboardEnabled( true ),
-    m_mouseEnabled( true ),
-    m_touchEnabled( true ),
-    m_mousePressed( false ),
-    m_velocity( 100 ),
-    m_channel( 0 ),
-    m_velocityTint( true ),
-    m_handler( nullptr ),
-    m_keybdMap( nullptr ),
-    m_showColorScale( false ),
-    m_hilightPalette(PianoPalette(PAL_SINGLE)),
-    m_backgroundPalette(PianoPalette(PAL_KEYS)),
-    m_foregroundPalette(PianoPalette(PAL_FONT))
+      d(new PianoScenePrivate(baseOctave, numKeys, startKey))
 {
     if (keyPressedColor.isValid()) {
         setKeyPressedColor(keyPressedColor);
@@ -77,10 +122,10 @@ PianoScene::PianoScene ( const int baseOctave,
     if (view != nullptr) {
         setFont(view->font());
     }
-    int upperLimit = m_numKeys + m_startKey;
-    int adj = m_startKey % 12;
+    int upperLimit = d->m_numKeys + d->m_startKey;
+    int adj = d->m_startKey % 12;
     if (adj >= 5) adj++;
-    for(int i = m_startKey; i < upperLimit; ++i)
+    for(int i = d->m_startKey; i < upperLimit; ++i)
     {
         float x = 0;
         PianoKey* key = nullptr;
@@ -92,40 +137,85 @@ PianoScene::PianoScene ( const int baseOctave,
             x = (ocs + qFloor((j-adj) / 2.0)) * KEYWIDTH;
             key = new PianoKey( QRectF(x, 0, KEYWIDTH, KEYHEIGHT), false, i );
             lbl = new KeyLabel(key);
-            lbl->setDefaultTextColor(m_foregroundPalette.getColor(0));
+            lbl->setDefaultTextColor(d->m_foregroundPalette.getColor(0));
         } else {
-            x = (ocs + qFloor((j-adj) / 2.0)) * KEYWIDTH + KEYWIDTH * 6/10 + 1;
-            key = new PianoKey( QRectF( x, 0, KEYWIDTH * 8/10 - 1, KEYHEIGHT * 6/10 ), true, i );
+            x = (ocs + qFloor((j-adj) / 2.0)) * KEYWIDTH + KEYWIDTH * 0.6 + 1;
+            key = new PianoKey( QRectF( x, 0, KEYWIDTH * 0.8 - 1, KEYHEIGHT * 0.6 ), true, i );
             key->setZValue( 1 );
             lbl = new KeyLabel(key);
-            lbl->setDefaultTextColor(m_foregroundPalette.getColor(1));
+            lbl->setDefaultTextColor(d->m_foregroundPalette.getColor(1));
         }
         addItem( key );
         lbl->setFont(font());
         key->setAcceptTouchEvents(true);
         key->setPressedBrush(hilightBrush);
-        m_keys.insert(i, key);
-        m_labels.insert(i, lbl);
+        d->m_keys.insert(i, key);
+        d->m_labels.insert(i, lbl);
     }
     hideOrShowKeys();
     retranslate();
 }
 
+PianoScene::~PianoScene()
+{
+    delete d;
+}
+
 QSize PianoScene::sizeHint() const
 {
-    return QSize(sceneWidth(m_numKeys), KEYHEIGHT);
+    return {static_cast<int>(sceneWidth(d->m_numKeys)), KEYHEIGHT};
+}
+
+void PianoScene::setKeyboardMap(KeyboardMap *map)
+{
+    d->m_keybdMap = map;
+}
+
+KeyboardMap *PianoScene::getKeyboardMap() const
+{
+    return d->m_keybdMap;
+}
+
+/**
+ * Gets the PianoHandler pointer to the note receiver.
+ *
+ * If this method returns null, then there is not a PianoHandler class assigned,
+ * and then the signals noteOn() and noteOff() are emitted instead.
+ * @return pointer to the PianoHandler class, if there is one assigned
+ */
+PianoHandler *PianoScene::getPianoHandler() const
+{
+    return d->m_handler;
+}
+
+/**
+ * Assigns a PianoHandler pointer for processing note events.
+ *
+ * When this member is used to assign a PianoHandler instance, then
+ * the methods in that instance are called instead of emitting the
+ * signals noteOn() and noteOff().
+ * @param handler pointer to a PianoHandler instance
+ */
+void PianoScene::setPianoHandler(PianoHandler *handler)
+{
+    d->m_handler = handler;
+}
+
+PianoPalette PianoScene::getHighlightPalette()
+{
+    return d->m_hilightPalette;
 }
 
 void PianoScene::displayKeyOn(PianoKey* key)
 {
     key->setPressed(true);
-    int n = key->getNote() + m_baseOctave*12 + m_transpose;
+    int n = key->getNote() + d->m_baseOctave*12 + d->m_transpose;
     QString s = QString("#%1 (%2)").arg(n).arg(noteName(key));
     emit signalName(s);
     KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().constFirst());
     if (lbl != nullptr) {
-        lbl->setDefaultTextColor(m_foregroundPalette.getColor(key->isBlack() ? 3 : 2));
-        if (m_showLabels == ShowActivated) {
+        lbl->setDefaultTextColor(d->m_foregroundPalette.getColor(key->isBlack() ? 3 : 2));
+        if (d->m_showLabels == ShowActivated) {
             lbl->setVisible(true);
         }
     }
@@ -133,7 +223,7 @@ void PianoScene::displayKeyOn(PianoKey* key)
 
 void PianoScene::showKeyOn( PianoKey* key, QColor color, int vel )
 {
-    if (m_velocityTint && vel >= 0 && color.isValid() ) {
+    if (d->m_velocityTint && vel >= 0 && color.isValid() ) {
         QBrush hilightBrush(color.lighter(200 - vel));
         key->setPressedBrush(hilightBrush);
     }
@@ -153,7 +243,7 @@ void PianoScene::showKeyOff( PianoKey* key, int )
     KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().constFirst());
     if (lbl != nullptr) {
         lbl->restoreColor();
-        if (m_showLabels == ShowActivated) {
+        if (d->m_showLabels == ShowActivated) {
             lbl->setVisible(false);
         }
     }
@@ -161,33 +251,35 @@ void PianoScene::showKeyOff( PianoKey* key, int )
 
 void PianoScene::showNoteOn( const int note, QColor color, int vel )
 {
-    int n = note - m_baseOctave*12 - m_transpose;
-    if ((note >= m_minNote) && (note <= m_maxNote) && m_keys.contains(n) && color.isValid())
-        showKeyOn(m_keys.value(n), color, vel);
+    int n = note - d->m_baseOctave*12 - d->m_transpose;
+    if ((note >= d->m_minNote) && (note <= d->m_maxNote) && d->m_keys.contains(n) && color.isValid())
+        showKeyOn(d->m_keys.value(n), color, vel);
 }
 
 void PianoScene::showNoteOn( const int note, int vel )
 {
-    int n = note - m_baseOctave*12 - m_transpose;
-    if ((note >= m_minNote) && (note <= m_maxNote) && m_keys.contains(n)) {
-        showKeyOn(m_keys.value(n), vel);
+    int n = note - d->m_baseOctave*12 - d->m_transpose;
+    if ((note >= d->m_minNote) && (note <= d->m_maxNote) && d->m_keys.contains(n)) {
+        showKeyOn(d->m_keys.value(n), vel);
     }
 }
 
 void PianoScene::showNoteOff( const int note, int vel )
 {
-    int n = note - m_baseOctave*12 - m_transpose;
-    if ((note >= m_minNote) && (note <= m_maxNote) && m_keys.contains(n)) {
-        showKeyOff(m_keys.value(n), vel);
+    int n = note - d->m_baseOctave*12 - d->m_transpose;
+    if ((note >= d->m_minNote) && (note <= d->m_maxNote) && d->m_keys.contains(n)) {
+        showKeyOff(d->m_keys.value(n), vel);
     }
 }
 
+int PianoScene::baseOctave() const { return d->m_baseOctave; }
+
 void PianoScene::triggerNoteOn( const int note, const int vel )
 {
-    int n = m_baseOctave*12 + note + m_transpose;
-    if ((n >= m_minNote) && (n <= m_maxNote)) {
-        if (m_handler != nullptr) {
-            m_handler->noteOn(n, vel);
+    int n = d->m_baseOctave*12 + note + d->m_transpose;
+    if ((n >= d->m_minNote) && (n <= d->m_maxNote)) {
+        if (d->m_handler != nullptr) {
+            d->m_handler->noteOn(n, vel);
         } else {
             emit noteOn(n, vel);
         }
@@ -196,10 +288,10 @@ void PianoScene::triggerNoteOn( const int note, const int vel )
 
 void PianoScene::triggerNoteOff( const int note, const int vel )
 {
-    int n = m_baseOctave*12 + note + m_transpose;
-    if ((n >= m_minNote) && (n <= m_maxNote)) {
-        if (m_handler != nullptr) {
-            m_handler->noteOff(n, vel);
+    int n = d->m_baseOctave*12 + note + d->m_transpose;
+    if ((n >= d->m_minNote) && (n <= d->m_maxNote)) {
+        if (d->m_handler != nullptr) {
+            d->m_handler->noteOff(n, vel);
         } else {
             emit noteOff(n, vel);
         }
@@ -209,21 +301,21 @@ void PianoScene::triggerNoteOff( const int note, const int vel )
 void PianoScene::setHighlightColorFromPolicy(PianoKey* key, int vel)
 {
     QColor c;
-    switch (m_hilightPalette.paletteId()) {
+    switch (d->m_hilightPalette.paletteId()) {
     case PAL_SINGLE:
-        c = m_hilightPalette.getColor(0);
+        c = d->m_hilightPalette.getColor(0);
         break;
     case PAL_DOUBLE:
-        c = m_hilightPalette.getColor(key->getType());
+        c = d->m_hilightPalette.getColor(key->getType());
         break;
     case PAL_CHANNELS:
-        c = m_hilightPalette.getColor(m_channel);
+        c = d->m_hilightPalette.getColor(d->m_channel);
         break;
     default:
         return;
     }
     if (c.isValid()) {
-        if (m_velocityTint) {
+        if (d->m_velocityTint) {
             QBrush h(c.lighter(200 - vel));
             key->setPressedBrush(h);
         } else {
@@ -234,8 +326,8 @@ void PianoScene::setHighlightColorFromPolicy(PianoKey* key, int vel)
 
 void PianoScene::keyOn( PianoKey* key )
 {
-    triggerNoteOn(key->getNote(), m_velocity);
-    showKeyOn(key, m_velocity);
+    triggerNoteOn(key->getNote(), d->m_velocity);
+    showKeyOn(key, d->m_velocity);
 }
 
 void PianoScene::keyOff( PianoKey* key )
@@ -246,33 +338,35 @@ void PianoScene::keyOff( PianoKey* key )
 
 void PianoScene::keyOn( PianoKey* key, qreal pressure )
 {
-    int vel = m_velocity * pressure;
+    int vel = d->m_velocity * pressure;
     triggerNoteOn(key->getNote(), vel);
     showKeyOn(key, vel);
 }
 
 void PianoScene::keyOff( PianoKey* key, qreal pressure )
 {
-    int vel = m_velocity * pressure;
+    int vel = d->m_velocity * pressure;
     triggerNoteOff(key->getNote(), vel);
     showKeyOff(key, vel);
 }
 
 void PianoScene::keyOn(const int note)
 {
-    if (m_keys.contains(note))
-        keyOn(m_keys.value(note));
+    if (d->m_keys.contains(note))
+        keyOn(d->m_keys.value(note));
     else
-        triggerNoteOn(note, m_velocity);
+        triggerNoteOn(note, d->m_velocity);
 }
 
 void PianoScene::keyOff(const int note)
 {
-    if (m_keys.contains(note))
-        keyOff(m_keys.value(note));
+    if (d->m_keys.contains(note))
+        keyOff(d->m_keys.value(note));
     else
-        triggerNoteOff(note, m_velocity);
+        triggerNoteOff(note, d->m_velocity);
 }
+
+bool PianoScene::getRawKeyboardMode() const { return d->m_rawkbd; }
 
 PianoKey* PianoScene::getKeyForPos( const QPointF& p ) const
 {
@@ -288,8 +382,8 @@ PianoKey* PianoScene::getKeyForPos( const QPointF& p ) const
 
 void PianoScene::mouseMoveEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 {
-    if (m_mouseEnabled) {
-        if (m_mousePressed) {
+    if (d->m_mouseEnabled) {
+        if (d->m_mousePressed) {
             PianoKey* key = getKeyForPos(mouseEvent->scenePos());
             PianoKey* lastkey = getKeyForPos(mouseEvent->lastScenePos());
             if ((lastkey != nullptr) && (lastkey != key) && lastkey->isPressed()) {
@@ -306,11 +400,11 @@ void PianoScene::mouseMoveEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 
 void PianoScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 {
-    if (m_mouseEnabled) {
+    if (d->m_mouseEnabled) {
         PianoKey* key = getKeyForPos(mouseEvent->scenePos());
         if (key != nullptr && !key->isPressed()) {
             keyOn(key);
-            m_mousePressed = true;
+            d->m_mousePressed = true;
             mouseEvent->accept();
             return;
         }
@@ -319,8 +413,8 @@ void PianoScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 
 void PianoScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 {
-    if (m_mouseEnabled) {
-        m_mousePressed = false;
+    if (d->m_mouseEnabled) {
+        d->m_mousePressed = false;
         PianoKey* key = getKeyForPos(mouseEvent->scenePos());
         if (key != nullptr && key->isPressed()) {
             keyOff(key);
@@ -332,9 +426,9 @@ void PianoScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 
 int PianoScene::getNoteFromKey( const int key ) const
 {
-    if (m_keybdMap != nullptr) {
-        KeyboardMap::ConstIterator it = m_keybdMap->constFind(key);
-        if ((it != m_keybdMap->constEnd()) && (it.key() == key)) {
+    if (d->m_keybdMap != nullptr) {
+        KeyboardMap::ConstIterator it = d->m_keybdMap->constFind(key);
+        if ((it != d->m_keybdMap->constEnd()) && (it.key() == key)) {
             int note = it.value();
             return note;
         }
@@ -345,15 +439,15 @@ int PianoScene::getNoteFromKey( const int key ) const
 PianoKey* PianoScene::getPianoKey( const int key ) const
 {
     int note = getNoteFromKey(key);
-    if (m_keys.contains(note))
-        return m_keys.value(note);
+    if (d->m_keys.contains(note))
+        return d->m_keys.value(note);
     return nullptr;
 }
 
 void PianoScene::keyPressEvent ( QKeyEvent * keyEvent )
 {
-    if ( m_keyboardEnabled) {
-        if ( !m_rawkbd && !keyEvent->isAutoRepeat() ) { // ignore auto-repeats
+    if ( d->m_keyboardEnabled) {
+        if ( !d->m_rawkbd && !keyEvent->isAutoRepeat() ) { // ignore auto-repeats
             int note = getNoteFromKey(keyEvent->key());
             if (note > -1)
                 keyOn(note);
@@ -366,8 +460,8 @@ void PianoScene::keyPressEvent ( QKeyEvent * keyEvent )
 
 void PianoScene::keyReleaseEvent ( QKeyEvent * keyEvent )
 {
-    if (m_keyboardEnabled) {
-        if ( !m_rawkbd && !keyEvent->isAutoRepeat() ) { // ignore auto-repeats
+    if (d->m_keyboardEnabled) {
+        if ( !d->m_rawkbd && !keyEvent->isAutoRepeat() ) { // ignore auto-repeats
             int note = getNoteFromKey(keyEvent->key());
             if (note > -1)
                 keyOff(note);
@@ -386,7 +480,7 @@ bool PianoScene::event(QEvent *event)
     case QEvent::TouchUpdate:
     {
         QTouchEvent *touchEvent = static_cast<QTouchEvent*>(event);
-        if (m_touchEnabled && touchEvent->device()->type() == QTouchDevice::DeviceType::TouchScreen) {
+        if (d->m_touchEnabled && touchEvent->device()->type() == QTouchDevice::DeviceType::TouchScreen) {
             QList<QTouchEvent::TouchPoint> touchPoints = touchEvent->touchPoints();
             foreach(const QTouchEvent::TouchPoint& touchPoint, touchPoints) {
                 switch (touchPoint.state()) {
@@ -439,7 +533,7 @@ bool PianoScene::event(QEvent *event)
 
 void PianoScene::allKeysOff()
 {
-    foreach(PianoKey* key, m_keys) {
+    foreach(PianoKey* key, d->m_keys) {
         key->setPressed(false);
     }
 }
@@ -447,10 +541,10 @@ void PianoScene::allKeysOff()
 void PianoScene::setKeyPressedColor(const QColor& color)
 {
     if (color.isValid()) {
-        m_hilightPalette = PianoPalette(PAL_SINGLE);
-        m_hilightPalette.setColor(0, color);
+        d->m_hilightPalette = PianoPalette(PAL_SINGLE);
+        d->m_hilightPalette.setColor(0, color);
         QBrush hilightBrush(color);
-        for (PianoKey* key : qAsConst(m_keys)) {
+        for (PianoKey* key : qAsConst(d->m_keys)) {
             key->setPressedBrush(hilightBrush);
         }
     }
@@ -458,96 +552,115 @@ void PianoScene::setKeyPressedColor(const QColor& color)
 
 void PianoScene::resetKeyPressedColor()
 {
-    m_hilightPalette.resetColors();
+    d->m_hilightPalette.resetColors();
     QBrush hilightBrush(getKeyPressedColor());
-    for (PianoKey* key : qAsConst(m_keys)) {
+    for (PianoKey* key : qAsConst(d->m_keys)) {
         key->setPressedBrush(hilightBrush);
     }
 }
 
+int PianoScene::getMinNote() const { return d->m_minNote; }
+
 void PianoScene::hideOrShowKeys()
 {
-    for (PianoKey* key : qAsConst(m_keys)) {
-        int n = m_baseOctave*12 + key->getNote() + m_transpose;
-        bool b = !(n > m_maxNote) && !(n < m_minNote);
+    for (PianoKey* key : qAsConst(d->m_keys)) {
+        int n = d->m_baseOctave*12 + key->getNote() + d->m_transpose;
+        bool b = !(n > d->m_maxNote) && !(n < d->m_minNote);
         key->setVisible(b);
     }
 }
 
 void PianoScene::setMinNote(const int note)
 {
-    if (m_minNote != note) {
-        m_minNote = note;
+    if (d->m_minNote != note) {
+        d->m_minNote = note;
         hideOrShowKeys();
     }
+}
+
+int PianoScene::getMaxNote() const
+{
+    return d->m_maxNote;
 }
 
 void PianoScene::setMaxNote(const int note)
 {
-    if (m_maxNote != note) {
-        m_maxNote = note;
+    if (d->m_maxNote != note) {
+        d->m_maxNote = note;
         hideOrShowKeys();
     }
 }
 
+int PianoScene::getTranspose() const { return d->m_transpose; }
+
 void PianoScene::setBaseOctave(const int base)
 { 
-    if (m_baseOctave != base) {
-        m_baseOctave = base;
+    if (d->m_baseOctave != base) {
+        d->m_baseOctave = base;
         hideOrShowKeys();
         refreshLabels();
     }
 }
 
+int PianoScene::numKeys() const
+{
+    return d->m_numKeys;
+}
+
+int PianoScene::startKey() const
+{
+    return d->m_startKey;
+}
+
 bool PianoScene::isOctaveStart(const int note)
 {
-    return (note + m_transpose + 12) % 12 == 0;
+    return (note + d->m_transpose + 12) % 12 == 0;
 }
 
 QString PianoScene::noteName( PianoKey* key )
 {
     Q_ASSERT(key != nullptr);
     int note = key->getNote();
-    int num = (note + m_transpose + 12) % 12;
-    int adj = ((note + m_transpose < 0) ? 2 : 1) - m_octave + 1;
-    int oct = m_baseOctave + ((note + m_transpose) / 12) - adj;
-    if (m_noteNames.isEmpty()) {
+    int num = (note + d->m_transpose + 12) % 12;
+    int adj = ((note + d->m_transpose < 0) ? 2 : 1) - d->m_octave + 1;
+    int oct = d->m_baseOctave + ((note + d->m_transpose) / 12) - adj;
+    if (d->m_noteNames.isEmpty()) {
         QString name;
-        if (!m_names_f.isEmpty() && !m_names_s.isEmpty()) {
-            switch(m_alterations) {
+        if (!d->m_names_f.isEmpty() && !d->m_names_s.isEmpty()) {
+            switch(d->m_alterations) {
             case ShowFlats:
-                name = m_names_f.value(num);
+                name = d->m_names_f.value(num);
                 break;
             case ShowSharps:
-                name =  m_names_s.value(num);
+                name =  d->m_names_s.value(num);
                 break;
             case ShowNothing:
                 if (key->isBlack()) {
                     return QString();
                 }
-                name =  m_names_s.value(num);
+                name =  d->m_names_s.value(num);
                 break;
             default:
                 break;
             }
         }
-        if (m_octave==OctaveNothing) {
+        if (d->m_octave==OctaveNothing) {
             return name;
         } else {
             return QString("%1%2").arg(name).arg(oct);
         }
     } else {
-        if (m_noteNames.length() == 128) {
-            int n = m_baseOctave*12 + note + m_transpose;
+        if (d->m_noteNames.length() == 128) {
+            int n = d->m_baseOctave*12 + note + d->m_transpose;
             //qDebug() << Q_FUNC_INFO << n << note;
-            if (n >= 0 && n < m_noteNames.length()) {
-                return m_noteNames.value(n);
+            if (n >= 0 && n < d->m_noteNames.length()) {
+                return d->m_noteNames.value(n);
             }
-        } else if (m_noteNames.length() >= 12) {
-            if (m_octave==OctaveNothing) {
-                return m_noteNames.value(num);
+        } else if (d->m_noteNames.length() >= 12) {
+            if (d->m_octave==OctaveNothing) {
+                return d->m_noteNames.value(num);
             } else {
-                return QString("%1%2").arg(m_noteNames.value(num)).arg(oct);
+                return QString("%1%2").arg(d->m_noteNames.value(num)).arg(oct);
             }
         }
         return QString();
@@ -556,29 +669,29 @@ QString PianoScene::noteName( PianoKey* key )
 
 void PianoScene::refreshLabels()
 {
-    for (KeyLabel* lbl : qAsConst(m_labels)) {
+    for (KeyLabel* lbl : qAsConst(d->m_labels)) {
         PianoKey* key = dynamic_cast<PianoKey*>(lbl->parentItem());
         if (key != nullptr) {
             lbl->setVisible(false);
             lbl->setFont(font());
-            lbl->setDefaultTextColor(m_foregroundPalette.getColor(key->isBlack() ? 1 : 0));
-            lbl->setOrientation(m_orientation);
+            lbl->setDefaultTextColor(d->m_foregroundPalette.getColor(key->isBlack() ? 1 : 0));
+            lbl->setOrientation(d->m_orientation);
             lbl->setPlainText(noteName(key));
             lbl->adjust();
-            lbl->setVisible((m_showLabels == ShowAlways) ||
-                (m_showLabels == ShowMinimum && isOctaveStart(key->getNote())));
+            lbl->setVisible((d->m_showLabels == ShowAlways) ||
+                (d->m_showLabels == ShowMinimum && isOctaveStart(key->getNote())));
         }
     }
 }
 
 void PianoScene::refreshKeys()
 {
-    for (PianoKey* key : qAsConst(m_keys)) {
-        if (m_showColorScale && (m_backgroundPalette.paletteId() == PAL_SCALE)) {
+    for (PianoKey* key : qAsConst(d->m_keys)) {
+        if (d->m_showColorScale && (d->m_backgroundPalette.paletteId() == PAL_SCALE)) {
             int degree = key->getNote() % 12;
-            key->setBrush(m_backgroundPalette.getColor(degree));
+            key->setBrush(d->m_backgroundPalette.getColor(degree));
         } else {
-            key->setBrush(m_backgroundPalette.getColor(key->isBlack() ? 1 : 0));
+            key->setBrush(d->m_backgroundPalette.getColor(key->isBlack() ? 1 : 0));
         }
         key->setPressed(false);
     }
@@ -587,99 +700,165 @@ void PianoScene::refreshKeys()
 void PianoScene::setShowLabels(const LabelVisibility show)
 {
     //qDebug() << Q_FUNC_INFO << show;
-    if (m_showLabels != show) {
-        m_showLabels = show;
+    if (d->m_showLabels != show) {
+        d->m_showLabels = show;
         refreshLabels();
     }
+}
+
+LabelAlteration PianoScene::alterations() const
+{
+    return d->m_alterations;
 }
 
 void PianoScene::setAlterations(const LabelAlteration use)
 {
-    if (m_alterations != use) {
-        m_alterations = use;
+    if (d->m_alterations != use) {
+        d->m_alterations = use;
         refreshLabels();
     }
 }
+
+LabelCentralOctave PianoScene::getOctave() const
+{
+    return d->m_octave;
+}
+
 void PianoScene::setOrientation(const LabelOrientation orientation)
 {
-    if (m_orientation != orientation) {
-        m_orientation = orientation;
+    if (d->m_orientation != orientation) {
+        d->m_orientation = orientation;
         refreshLabels();
     }
+}
+
+bool PianoScene::isKeyboardEnabled() const
+{
+    return d->m_keyboardEnabled;
 }
 
 void PianoScene::setOctave(const LabelCentralOctave octave)
 {
-    if (m_octave != octave) {
-        m_octave = octave;
+    if (d->m_octave != octave) {
+        d->m_octave = octave;
         refreshLabels();
     }
 }
 
+LabelOrientation PianoScene::getOrientation() const
+{
+    return d->m_orientation;
+}
+
 void PianoScene::setTranspose(const int transpose)
 {
-    if (m_transpose != transpose && transpose > -12 && transpose < 12) {
-        m_transpose = transpose;
+    if (d->m_transpose != transpose && transpose > -12 && transpose < 12) {
+        d->m_transpose = transpose;
         hideOrShowKeys();
         refreshLabels();
     }
 }
 
+LabelVisibility PianoScene::showLabels() const
+{
+    return d->m_showLabels;
+}
+
 void PianoScene::setRawKeyboardMode(bool b)
 {
-    if (m_rawkbd != b) {
-        m_rawkbd = b;
+    if (d->m_rawkbd != b) {
+        d->m_rawkbd = b;
     }
 }
 
 QStringList PianoScene::customNoteNames() const
 {
-    return m_noteNames;
+    return d->m_noteNames;
 }
 
 QStringList PianoScene::standardNoteNames() const
 {
-    return m_names_s;
+    return d->m_names_s;
+}
+
+int PianoScene::getVelocity()
+{
+    return d->m_velocity;
+}
+
+void PianoScene::setVelocity(const int velocity)
+{
+    d->m_velocity = velocity;
+}
+
+int PianoScene::getChannel() const
+{
+    return d->m_channel;
+}
+
+void PianoScene::setChannel(const int channel)
+{
+    d->m_channel = channel;
 }
 
 void PianoScene::useCustomNoteNames(const QStringList& names)
 {
     //qDebug() << Q_FUNC_INFO << names;
-    m_noteNames = names;
+    d->m_noteNames = names;
     refreshLabels();
 }
 
 void PianoScene::useStandardNoteNames()
 {
     //qDebug() << Q_FUNC_INFO;
-    m_noteNames.clear();
+    d->m_noteNames.clear();
     refreshLabels();
 }
 
 void PianoScene::setKeyboardEnabled(const bool enable)
 {
-    if (enable != m_keyboardEnabled) {
-        m_keyboardEnabled = enable;
+    if (enable != d->m_keyboardEnabled) {
+        d->m_keyboardEnabled = enable;
     }
+}
+
+bool PianoScene::isMouseEnabled() const
+{
+    return d->m_mouseEnabled;
 }
 
 void PianoScene::setMouseEnabled(const bool enable)
 {
-    if (enable != m_mouseEnabled) {
-        m_mouseEnabled = enable;
+    if (enable != d->m_mouseEnabled) {
+        d->m_mouseEnabled = enable;
     }
+}
+
+bool PianoScene::isTouchEnabled() const
+{
+    return d->m_touchEnabled;
 }
 
 void PianoScene::setTouchEnabled(const bool enable)
 {
-    if (enable != m_touchEnabled) {
-        m_touchEnabled = enable;
+    if (enable != d->m_touchEnabled) {
+        d->m_touchEnabled = enable;
     }
+}
+
+bool PianoScene::velocityTint() const
+{
+    return d->m_velocityTint;
+}
+
+void PianoScene::setVelocityTint(const bool enable)
+{
+    d->m_velocityTint = enable;
 }
 
 void PianoScene::retranslate()
 {
-    m_names_s = QStringList{
+    d->m_names_s = QStringList{
         tr(u8"C"),
         tr(u8"C♯"),
         tr(u8"D"),
@@ -692,7 +871,7 @@ void PianoScene::retranslate()
         tr(u8"A"),
         tr(u8"A♯"),
         tr(u8"B")};
-    m_names_f = QStringList{
+    d->m_names_f = QStringList{
         tr(u8"C"),
         tr(u8"D♭"),
         tr(u8"D"),
@@ -710,8 +889,8 @@ void PianoScene::retranslate()
 
 void PianoScene::setShowColorScale(const bool show)
 {
-    if (m_showColorScale != show) {
-        m_showColorScale = show;
+    if (d->m_showColorScale != show) {
+        d->m_showColorScale = show;
         refreshKeys();
         invalidate();
     }
@@ -719,34 +898,50 @@ void PianoScene::setShowColorScale(const bool show)
 
 QColor PianoScene::getKeyPressedColor() const
 {
-    return m_hilightPalette.getColor(0);
+    return d->m_hilightPalette.getColor(0);
 }
 
 void PianoScene::setHighlightPalette( const PianoPalette& p )
 {
-    if (m_hilightPalette != p) {
-        m_hilightPalette = p;
+    if (d->m_hilightPalette != p) {
+        d->m_hilightPalette = p;
         refreshKeys();
         invalidate();
     }
+}
+
+PianoPalette PianoScene::getBackgroundPalette()
+{
+    return d->m_backgroundPalette;
 }
 
 void PianoScene::setBackgroundPalette(const PianoPalette& p )
 {
-    if (m_backgroundPalette != p) {
-        m_backgroundPalette = p;
+    if (d->m_backgroundPalette != p) {
+        d->m_backgroundPalette = p;
         refreshKeys();
         invalidate();
     }
 }
 
+PianoPalette PianoScene::getForegroundPalette()
+{
+    return d->m_foregroundPalette;
+}
+
 void PianoScene::setForegroundPalette(const PianoPalette &p)
 {
-    if (m_foregroundPalette != p) {
-        m_foregroundPalette = p;
+    if (d->m_foregroundPalette != p) {
+        d->m_foregroundPalette = p;
         refreshLabels();
         invalidate();
     }
 }
 
-}} // namespace drumstick::widgets
+bool PianoScene::showColorScale() const
+{
+    return d->m_showColorScale;
+}
+
+} // namespace widgets
+} // namespace drumstick

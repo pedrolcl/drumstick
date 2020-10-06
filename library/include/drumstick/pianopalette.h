@@ -53,6 +53,8 @@ enum PalettePolicy {
 
 /**
  * @brief The PianoPalette class
+ *
+ * PianoPalette represents a set of colors used to paint the PianoKeybd widgets
  */
 class DRUMSTICK_EXPORT PianoPalette
 {
@@ -62,7 +64,7 @@ class DRUMSTICK_EXPORT PianoPalette
 
 public:
     explicit PianoPalette(const int id);
-    virtual ~PianoPalette() {}
+    virtual ~PianoPalette() = default;
 
     void resetColors();
     void retranslateStrings();

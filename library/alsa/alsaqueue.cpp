@@ -16,12 +16,12 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "errorcheck.h"
 #include <cmath>
-#include <drumstick/alsaqueue.h>
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaevent.h>
+#include <drumstick/alsaqueue.h>
 #include <drumstick/alsatimer.h>
-#include "errorcheck.h"
 
 /**
  * @file alsaqueue.cpp
@@ -113,6 +113,8 @@ QueueInfo* QueueInfo::clone()
  */
 QueueInfo& QueueInfo::operator=(const QueueInfo& other)
 {
+    if (this == &other)
+        return *this;
     snd_seq_queue_info_copy(m_Info, other.m_Info);
     return *this;
 }
@@ -260,6 +262,8 @@ QueueStatus* QueueStatus::clone()
  */
 QueueStatus& QueueStatus::operator=(const QueueStatus& other)
 {
+    if (this == &other)
+        return *this;
     snd_seq_queue_status_copy(m_Info, other.m_Info);
     return *this;
 }
@@ -389,6 +393,8 @@ QueueTempo* QueueTempo::clone()
  */
 QueueTempo& QueueTempo::operator=(const QueueTempo& other)
 {
+    if (this == &other)
+        return *this;
     snd_seq_queue_tempo_copy(m_Info, other.m_Info);
     return *this;
 }
@@ -586,6 +592,8 @@ QueueTimer* QueueTimer::clone()
  */
 QueueTimer& QueueTimer::operator=(const QueueTimer& other)
 {
+    if (this == &other)
+        return *this;
     snd_seq_queue_timer_copy(m_Info, other.m_Info);
     return *this;
 }
@@ -914,4 +922,6 @@ void MidiQueue::setRealTimePosition(snd_seq_real_time_t* pos)
     m_MidiClient->outputDirect(&event);
 }
 
-}} /* namespace drumstick::ALSA */
+} // namespace ALSA
+} // namespace drumstick
+

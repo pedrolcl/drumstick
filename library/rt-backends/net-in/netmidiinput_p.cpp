@@ -16,11 +16,11 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QObject>
 #include <QDebug>
+#include <QObject>
 
-#include "netmidiinput_p.h"
 #include "netmidiinput.h"
+#include "netmidiinput_p.h"
 
 namespace drumstick { namespace rt {
 
@@ -117,4 +117,5 @@ void NetMIDIInputPrivate::processIncomingMessages()
     }
 }
 
-}}
+} // namespace rt
+} // namespace drumstick

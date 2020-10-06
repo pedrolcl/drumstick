@@ -16,18 +16,18 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <csignal>
-#include <QDebug>
-#include <QCoreApplication>
-#include <QTextStream>
-#include <QtAlgorithms>
-#include <QStringList>
-#include <QReadLocker>
-#include <QWriteLocker>
+#include "metronome.h"
 #include <QCommandLineParser>
+#include <QCoreApplication>
+#include <QDebug>
+#include <QReadLocker>
+#include <QStringList>
+#include <QTextStream>
+#include <QWriteLocker>
+#include <QtAlgorithms>
+#include <csignal>
 #include <drumstick/alsatimer.h>
 #include <drumstick/sequencererror.h>
-#include "metronome.h"
 
 QTextStream cout(stdout, QIODevice::WriteOnly);
 QTextStream cerr(stderr, QIODevice::WriteOnly);

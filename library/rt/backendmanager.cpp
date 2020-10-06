@@ -16,11 +16,11 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGlobal>
-#include <QDir>
-#include <QPluginLoader>
 #include <QCoreApplication>
+#include <QDir>
 #include <QLibraryInfo>
+#include <QPluginLoader>
+#include <QtGlobal>
 #include <drumstick/backendmanager.h>
 
 /**
@@ -257,4 +257,5 @@ namespace drumstick { namespace rt {
     const QString BackendManager::QSTR_DRUMSTICKRT_EXCLUDED = QStringLiteral("ExcludedNames");
     const QString BackendManager::QSTR_DRUMSTICKRT_PATH = QStringLiteral("BackendsPath");
 
-}} // namespace drusmtick::rt
+} // namespace rt
+} // namespace drumstick

@@ -22,9 +22,9 @@ extern "C" {
 
 #include <QReadLocker>
 #include <QWriteLocker>
-#include <drumstick/playthread.h>
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaqueue.h>
+#include <drumstick/playthread.h>
 
 /**
  * @file playthread.cpp
@@ -223,5 +223,7 @@ void SequencerOutputThread::start( Priority priority )
     QThread::start( priority );
 }
 
-}} /* namespace drumstick::ALSA */
+} // namespace ALSA
+} // namespace drumstick
+
 

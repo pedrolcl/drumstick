@@ -16,16 +16,16 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "alsamidioutput.h"
 #include <QDebug>
-#include <QString>
-#include <QStringList>
 #include <QMap>
 #include <QMutex>
 #include <QMutexLocker>
+#include <QString>
+#include <QStringList>
 #include <drumstick/alsaclient.h>
-#include <drumstick/alsaport.h>
 #include <drumstick/alsaevent.h>
-#include "alsamidioutput.h"
+#include <drumstick/alsaport.h>
 
 namespace drumstick {
 namespace rt {
@@ -325,5 +325,6 @@ namespace rt {
         d->uninitialize();
     }
 
-}}
+} // namespace rt
+} // namespace drumstick
 

@@ -16,13 +16,13 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QNetworkInterface>
 #include <QDialogButtonBox>
+#include <QNetworkInterface>
 #include <QPushButton>
 
-#include <drumstick/settingsfactory.h>
 #include "networksettingsdialog.h"
 #include "ui_networksettingsdialog.h"
+#include <drumstick/settingsfactory.h>
 
 /**
  * @file networksettingsdialog.cpp
@@ -116,4 +116,5 @@ void NetworkSettingsDialog::toggledIPv6(bool checked)
     ui->txtAddress->setText(checked ? QSTR_ADDRESS_IPV6 : QSTR_ADDRESS_IPV4);
 }
 
-}} // namespace drumstick::widgets
+} // namespace widgets
+} // namespace drumstick

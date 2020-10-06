@@ -25,8 +25,7 @@ SynthOutput::SynthOutput(QObject *parent) : MIDIOutput(parent),
     m_synth(new SynthEngine(this))
 { }
 
-SynthOutput::~SynthOutput()
-{ }
+SynthOutput::~SynthOutput() = default;
 
 void SynthOutput::initialize(QSettings *settings)
 {
@@ -124,4 +123,5 @@ void SynthOutput::sendSystemMsg(const int status)
     Q_UNUSED(status)
 }
 
-}} // namespace drumstick::rt
+} // namespace rt
+} // namespace drumstick

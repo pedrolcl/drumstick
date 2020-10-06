@@ -1,6 +1,6 @@
-#include <QString>
-#include <QDataStream>
 #include <QByteArray>
+#include <QDataStream>
+#include <QString>
 #include <QtTest>
 #include <drumstick/qsmf.h>
 

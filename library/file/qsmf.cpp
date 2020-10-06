@@ -18,12 +18,13 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <limits>
-#include <QList>
-#include <QFile>
 #include <QDataStream>
+#include <QFile>
+#include <QList>
 #include <QTextCodec>
+#include <cmath>
 #include <drumstick/qsmf.h>
+#include <limits>
 
 /**
  * @file qsmf.cpp
@@ -265,7 +266,7 @@ void QSmf::readTrack()
                     delta_secs = ticksToSecs(d->m_RevisedTime - d->m_OldCurrTime,
                             quint16(d->m_Division), save_tempo);
                     d->m_DblRealTime = d->m_DblOldRealtime + delta_secs * 1600.0;
-                    d->m_RealTime = quint64(0.5 + d->m_DblRealTime);
+                    d->m_RealTime = llround(d->m_DblRealTime);
                     if (d->m_RevisedTime == d->m_TempoChangeTime)
                     {
                         d->m_OldCurrTime = d->m_RevisedTime;
@@ -277,7 +278,7 @@ void QSmf::readTrack()
                     delta_secs = ticksToSecs(d->m_RevisedTime - d->m_OldCurrTime,
                             quint16(d->m_Division), d->m_CurrTempo);
                     d->m_DblRealTime = d->m_DblOldRealtime + delta_secs * 1600.0;
-                    d->m_RealTime = quint64(0.5 + d->m_DblRealTime);
+                    d->m_RealTime = llround(d->m_DblRealTime);
                 }
             }
         }
@@ -1228,4 +1229,5 @@ void QSmf::setTextCodec(QTextCodec *codec)
     d->m_codec = codec;
 }
 
-}} // namespace drumstick::File
+} // namespace File
+} // namespace drumstick

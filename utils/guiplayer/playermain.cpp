@@ -16,15 +16,15 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
-#include <QApplication>
-#include <QFileInfo>
-#include <QMessageBox>
-#include <QCommandLineParser>
-#include <QTranslator>
-#include <QLibraryInfo>
-#include <drumstick/sequencererror.h>
 #include "guiplayer.h"
+#include <QApplication>
+#include <QCommandLineParser>
+#include <QDebug>
+#include <QFileInfo>
+#include <QLibraryInfo>
+#include <QMessageBox>
+#include <QTranslator>
+#include <drumstick/sequencererror.h>
 
 const QString PGM_DESCRIPTION("ALSA Sequencer based MIDI file player");
 

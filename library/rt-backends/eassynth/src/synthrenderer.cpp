@@ -16,17 +16,17 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QObject>
-#include <QString>
-#include <QCoreApplication>
-#include <QTextStream>
-#include <QtDebug>
-#include <QReadLocker>
-#include <QWriteLocker>
-#include <eas_reverb.h>
-#include <eas_chorus.h>
-#include <pulse/simple.h>
 #include "synthrenderer.h"
+#include <QCoreApplication>
+#include <QObject>
+#include <QReadLocker>
+#include <QString>
+#include <QTextStream>
+#include <QWriteLocker>
+#include <QtDebug>
+#include <eas_chorus.h>
+#include <eas_reverb.h>
+#include <pulse/simple.h>
 
 namespace drumstick {
 namespace rt {
@@ -337,4 +337,5 @@ SynthRenderer::setBufferTime(int milliseconds)
     m_bufferTime = milliseconds;
 }
 
-}}
+} // namespace rt
+} // namespace drumstick

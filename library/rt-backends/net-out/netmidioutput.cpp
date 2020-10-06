@@ -16,11 +16,11 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "netmidioutput.h"
 #include <QDebug>
-#include <QUdpSocket>
 #include <QNetworkInterface>
 #include <QSettings>
-#include "netmidioutput.h"
+#include <QUdpSocket>
 
 namespace drumstick { namespace rt {
 
@@ -258,5 +258,6 @@ void NetMIDIOutput::sendSystemMsg(const int status)
     d->sendMessage(status);
 }
 
-}}
+} // namespace rt
+} // namespace drumstick
 

@@ -16,21 +16,21 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
-#include <QInputDialog>
-#include <QShortcut>
-#include <QToolTip>
-#include <QSettings>
-#include <qmath.h>
-#include <drumstick/alsaclient.h>
-#include <drumstick/alsaport.h>
-#include <drumstick/alsaqueue.h>
-#include <drumstick/alsaevent.h>
-#include <drumstick/sequencererror.h>
 #include "drumgrid.h"
+#include "drumgridabout.h"
 #include "drumgridmodel.h"
 #include "ui_drumgrid.h"
-#include "drumgridabout.h"
+#include <QDebug>
+#include <QInputDialog>
+#include <QSettings>
+#include <QShortcut>
+#include <QToolTip>
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaevent.h>
+#include <drumstick/alsaport.h>
+#include <drumstick/alsaqueue.h>
+#include <drumstick/sequencererror.h>
+#include <qmath.h>
 
 using namespace drumstick::ALSA;
 

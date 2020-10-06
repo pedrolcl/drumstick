@@ -16,9 +16,9 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <drumstick/alsaqueue.h>
-#include <drumstick/alsaclient.h>
 #include "errorcheck.h"
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaqueue.h>
 
 /**
  * @file alsaport.cpp
@@ -130,6 +130,8 @@ PortInfo* PortInfo::clone()
  */
 PortInfo& PortInfo::operator=(const PortInfo& other)
 {
+    if (this == &other)
+        return *this;
     snd_seq_port_info_copy(m_Info, other.m_Info);
     m_ReadSubscribers = other.m_ReadSubscribers;
     m_WriteSubscribers = other.m_WriteSubscribers;
@@ -1264,4 +1266,6 @@ MidiPort::updateConnectionsFrom(const PortInfoList& ports)
     }
 }
 
-}} /* namespace drumstick::ALSA */
+} // namespace ALSA
+} // namespace drumstick
+

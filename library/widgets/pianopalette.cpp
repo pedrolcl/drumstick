@@ -19,8 +19,8 @@
 #include <QGuiApplication>
 #include <QPalette>
 
-#include <drumstick/settingsfactory.h>
 #include <drumstick/pianopalette.h>
+#include <drumstick/settingsfactory.h>
 
 /**
  * @file pianopalette.cpp
@@ -341,7 +341,7 @@ PianoPalette::getColor(const int i) const
 {
     if (i < m_colors.size())
         return m_colors[i];
-    return QColor();
+    return {};
 }
 
 QString
@@ -425,4 +425,5 @@ PianoPalette::operator!=(const PianoPalette &other) const
     return !(*this == other);
 }
 
-}} // namespace drumstick::widgets
+} // namespace widgets
+} // namespace drumstick

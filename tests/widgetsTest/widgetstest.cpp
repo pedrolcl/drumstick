@@ -1,7 +1,7 @@
+#include <QByteArray>
+#include <QDataStream>
 #include <QObject>
 #include <QString>
-#include <QDataStream>
-#include <QByteArray>
 #include <QtTest>
 #include <drumstick/pianopalette.h>
 
@@ -36,12 +36,12 @@ private:
     };
 };
 
-WidgetsTest::WidgetsTest()
-{
+WidgetsTest::WidgetsTest() = default;
+//{
 //    for( PianoPalette& pal : m_paletteList) {
-//        pal.paletteId();
+//        ...  pal.paletteId();
 //    }
-}
+//}
 
 void WidgetsTest::testPaletteSingle()
 {

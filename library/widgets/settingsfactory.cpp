@@ -56,4 +56,5 @@ QSettings *SettingsFactory::operator->()
     return getQSettings();
 }
 
-}} // namespace drumstick::widgets
+} // namespace widgets
+} // namespace drumstick

@@ -16,13 +16,13 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QObject>
-#include <QFile>
-#include <QDir>
 #include <QDebug>
+#include <QDir>
+#include <QFile>
+#include <QObject>
 
-#include "ossinput_p.h"
 #include "ossinput.h"
+#include "ossinput_p.h"
 
 namespace drumstick { namespace rt {
 
@@ -102,4 +102,5 @@ void OSSInputPrivate::processIncomingMessages(int)
     }
 }
 
-}}
+} // namespace rt
+} // namespace drumstick

@@ -32,7 +32,7 @@ namespace rt {
         Q_INTERFACES(drumstick::rt::MIDIOutput)
     public:
         explicit DummyOutput(QObject *parent = nullptr) : MIDIOutput(parent) {}
-        virtual ~DummyOutput() {}
+        virtual ~DummyOutput() = default;
 
         // MIDIOutput interface
     public:

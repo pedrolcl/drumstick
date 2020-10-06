@@ -16,17 +16,16 @@
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QFont>
 #include "keylabel.h"
 #include "pianokey.h"
+#include <QFont>
 
 /**
  * @file keylabel.cpp
  * Implementation of the KeyLabel class
  */
 
-namespace drumstick {
-namespace widgets {
+namespace drumstick { namespace widgets {
 
 KeyLabel::KeyLabel(QGraphicsItem *parent) : QGraphicsTextItem(parent)
 {
@@ -103,4 +102,5 @@ void KeyLabel::setPlainText(const QString &text)
     }
 }
 
-}} // namespace drumstick::widgets
+} // namespace widgets
+} // namespace drumstick

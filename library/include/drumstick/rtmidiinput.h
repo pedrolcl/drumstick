@@ -55,7 +55,7 @@ namespace drumstick { namespace rt {
         /**
          * @brief ~MIDIInput destructor
          */
-        virtual ~MIDIInput() {}
+        virtual ~MIDIInput() = default;
         /**
          * @brief initialize
          * @param settings

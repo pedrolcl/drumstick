@@ -37,27 +37,60 @@ namespace drumstick { namespace widgets {
      *
      * @class RawKbdHandler
      * @brief The RawKbdHandler class callbacks
+     *
+     * RawKbdHandler provides callbacks for low level computer keyboard events
      */
     class RawKbdHandler {
     public:
-        virtual ~RawKbdHandler() {}
+        virtual ~RawKbdHandler() = default;
+        /**
+         * @brief handleKeyPressed handles low level computer keyboard press events
+         * @param keycode The low level key code pressed
+         * @return whether the event has been processed or not
+         */
         virtual bool handleKeyPressed(int keycode) = 0;
+        /**
+         * @brief handleKeyReleased handles low level computer keyboard reelase events
+         * @param keycode The low level key code released
+         * @return whether the event has been processed or not
+         */
         virtual bool handleKeyReleased(int keycode) = 0;
     };
 
     /**
      * @brief The PianoHandler class callbacks
+     *
+     * This class provides handler methods for note events. This class must be
+     * inherited and implemented by a program using also PianoKeybd to receive the
+     * note events generated from a computer keyboard, mouse or touch events. It is
+     * provided using the method @ref PianoKeybd::setPianoHandler() and can be retrieved
+     * using @ref PianoKeybd::getPianoHandler(). This mechanism is an option alternative
+     * to proces signals @ref PianoKeybd::noteOn() and @ref PianoKeybd::noteOff() .
      */
     class PianoHandler
     {
     public:
-        virtual ~PianoHandler() {}
+        virtual ~PianoHandler() = default;
+        /**
+         * @brief noteOn handles MIDI note on events
+         * @param note MIDI note number
+         * @param vel MIDI velocity
+         */
         virtual void noteOn( const int note, const int vel ) = 0;
+        /**
+         * @brief noteOff handles MIDI note off events
+         * @param note MIDI note number
+         * @param vel MIDI velocity
+         */
         virtual void noteOff( const int note, const int vel ) = 0;
     };
 
     /**
      * @brief KeyboardMap
+     *
+     * KeyboardMap represents a mapping definition to translate from
+     * computer keyboard keys and MIDI notes, either for alphanumeric
+     * or low level (raw) events.
      */
     typedef QHash<int, int> KeyboardMap;
 
@@ -117,6 +150,8 @@ namespace drumstick { namespace widgets {
 
     /**
      * @brief The PianoKeybd class
+     *
+     * This class is a widget providing the look and behavior of a musical piano
      */
     class DRUMSTICK_EXPORT PianoKeybd : public QGraphicsView, public RawKbdHandler
     {
@@ -222,8 +257,27 @@ namespace drumstick { namespace widgets {
         bool handleKeyReleased(int keycode) override;
 
     signals:
+        /**
+         * This signal is emitted for each Note On MIDI event created using
+         * the computer keyboard, mouse or touch screen. It is not emitted if
+         * a PianoHandler has been assigned using setPianoHandler().
+         * @param midiNote the MIDI note number
+         * @param vel the MIDI velocity
+         */
         void noteOn( int midiNote, int vel );
+        /**
+         * This signal is emitted for each Note Off MIDI event created using
+         * the computer keyboard, mouse or touch screen. It is not emitted if
+         * a PianoHandler has been assigned using setPianoHandler().
+         * @param midiNote the MIDI note number
+         * @param vel the MIDI velocity
+         */
         void noteOff( int midiNote, int vel );
+        /**
+         * signalName is emitted for each note created, and contains a string
+         * with the MIDI note number and the note name for each note on event.
+         * @param name the MIDI note number and name
+         */
         void signalName( const QString& name );
 
     protected:

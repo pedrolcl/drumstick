@@ -16,13 +16,13 @@
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "synthengine.h"
+#include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QSettings>
 #include <QStandardPaths>
-#include <QCoreApplication>
 #include <drumstick/rtmidioutput.h>
-#include "synthengine.h"
 
 namespace drumstick { namespace rt {
 
@@ -256,4 +256,5 @@ void SynthEngine::open()
     m_currentConnection = MIDIConnection(QSTR_FLUIDSYNTH, QSTR_FLUIDSYNTH);
 }
 
-}} // namespace drumstick::rt
+} // namespace rt
+} // namespace drumstick

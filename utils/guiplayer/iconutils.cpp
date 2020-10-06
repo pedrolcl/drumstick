@@ -16,9 +16,9 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "iconutils.h"
 #include <QApplication>
 #include <QPainter>
-#include "iconutils.h"
 
 namespace IconUtils
 {
@@ -36,4 +36,4 @@ namespace IconUtils
         PaintPixmap(pixmap, color);
         return pixmap;
     }
-}
+} // namespace IconUtils

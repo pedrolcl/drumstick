@@ -16,10 +16,10 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "connections.h"
+#include "vpianosettings.h"
 #include <drumstick/configurationdialogs.h>
 #include <drumstick/settingsfactory.h>
-#include "vpianosettings.h"
-#include "connections.h"
 
 using namespace drumstick::rt;
 

@@ -16,11 +16,11 @@
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "pianokey.h"
 #include <QApplication>
 #include <QPainter>
 #include <QPalette>
 #include <drumstick/pianopalette.h>
-#include "pianokey.h"
 
 /**
  * @file pianokey.cpp
@@ -95,4 +95,5 @@ void PianoKey::resetBrush()
     m_brush = keyPalette.getColor(m_black ? 1 : 0);
 }
 
-}} // namespace drumstick::widgets
+} // namespace widgets
+} // namespace drumstick

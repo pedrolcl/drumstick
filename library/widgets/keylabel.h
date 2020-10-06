@@ -34,7 +34,7 @@ class KeyLabel : public QGraphicsTextItem
 {
 public:
     explicit KeyLabel(QGraphicsItem *parent = nullptr);
-    virtual ~KeyLabel() {}
+    virtual ~KeyLabel() = default;
     void setPlainText(const QString& text);
     void adjust();
     void setOrientation(LabelOrientation  ori);

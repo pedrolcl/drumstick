@@ -70,7 +70,7 @@ public:
      * Gets the human readable error message from the error code
      * @return Error message
      */
-    const QString qstrError() const;
+    QString qstrError() const;
 
     /**
      * Gets the numeric error code
