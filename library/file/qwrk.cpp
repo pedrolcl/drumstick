@@ -131,9 +131,7 @@ QWrk::QWrk(QObject * parent) :
  * Destructor
  */
 QWrk::~QWrk()
-{
-    delete d;
-}
+{ }
 
 /**
  * Gets the text codec used for text meta-events I/O

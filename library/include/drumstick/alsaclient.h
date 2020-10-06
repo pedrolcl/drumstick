@@ -21,6 +21,7 @@
 
 #include <QObject>
 #include <QPointer>
+#include <QScopedPointer>
 #include <QThread>
 #include <QReadWriteLock>
 #include "macros.h"
@@ -328,7 +329,7 @@ protected:
 private:
     class SequencerInputThread;
     class MidiClientPrivate;
-    MidiClientPrivate *d;
+    QScopedPointer<MidiClientPrivate> d;
 };
 
 #if SND_LIB_VERSION > 0x010004

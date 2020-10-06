@@ -157,9 +157,7 @@ PianoScene::PianoScene ( const int baseOctave,
 }
 
 PianoScene::~PianoScene()
-{
-    delete d;
-}
+{ }
 
 QSize PianoScene::sizeHint() const
 {

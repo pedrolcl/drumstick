@@ -20,6 +20,7 @@
 #define PIANOSCENE_H_
 
 #include <QGraphicsScene>
+#include <QScopedPointer>
 #include <QHash>
 #include <drumstick/pianokeybd.h>
 #include <drumstick/pianopalette.h>
@@ -172,7 +173,7 @@ namespace drumstick { namespace widgets {
 
     private:
         class PianoScenePrivate;
-        PianoScenePrivate *d;
+        QScopedPointer<PianoScenePrivate> d;
     };
 
 }} // namespace drumstick::widgets

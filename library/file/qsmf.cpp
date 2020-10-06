@@ -108,7 +108,6 @@ QSmf::QSmf(QObject * parent) :
 QSmf::~QSmf()
 {
     d->m_TempoList.clear();
-    delete d;
 }
 
 /**

@@ -21,6 +21,7 @@
 
 #include "macros.h"
 #include <QObject>
+#include <QScopedPointer>
 
 class QDataStream;
 
@@ -537,7 +538,7 @@ private:
     };
 
     class QWrkPrivate;
-    QWrkPrivate *d;
+    QScopedPointer<QWrkPrivate> d;
 };
 
 /** @} */

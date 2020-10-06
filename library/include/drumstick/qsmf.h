@@ -23,6 +23,7 @@
 
 #include "macros.h"
 #include <QObject>
+#include <QScopedPointer>
 
 class QDataStream;
 
@@ -294,7 +295,7 @@ private:
     };
 
     class QSmfPrivate;
-    QSmfPrivate *d;
+    QScopedPointer<QSmfPrivate> d;
 
     void SMFRead();
     void SMFWrite();

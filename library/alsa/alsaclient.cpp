@@ -270,13 +270,10 @@ MidiClient::~MidiClient()
 {
     stopSequencerInput();
     detachAllPorts();
-    if (d->m_Queue != nullptr)
-        delete d->m_Queue;
+    delete d->m_Queue;
     close();
     freeClients();
-    if (d->m_Thread != nullptr)
-        delete d->m_Thread;
-    delete d;
+    delete d->m_Thread;
 }
 
 /**
@@ -295,7 +292,7 @@ MidiClient::getHandle()
  */
 bool MidiClient::isOpened()
 {
-    return (d->m_SeqHandle != nullptr);
+    return !d.isNull() && (d->m_SeqHandle != nullptr);
 }
 
 /**

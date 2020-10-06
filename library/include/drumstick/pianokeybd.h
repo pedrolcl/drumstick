@@ -20,6 +20,7 @@
 #define PIANOKEYBD_H
 
 #include <QGraphicsView>
+#include <QScopedPointer>
 #include <QGraphicsScene>
 #include "macros.h"
 #include "pianopalette.h"
@@ -288,7 +289,7 @@ namespace drumstick { namespace widgets {
 
     private:
         class PianoKeybdPrivate;
-        PianoKeybdPrivate* d;
+        QScopedPointer<PianoKeybdPrivate> d;
     };
 
 /** @} */

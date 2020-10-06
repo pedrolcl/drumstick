@@ -85,9 +85,7 @@ namespace drumstick { namespace rt {
      * @brief Destructor
      */
     BackendManager::~BackendManager()
-    {
-        delete d;
-    }
+    { }
 
     /**
      * @brief returns the paths where backends are searched

@@ -20,6 +20,7 @@
 #define BACKENDMANAGER_H
 
 #include <QObject>
+#include <QScopedPointer>
 #include "macros.h"
 #include "rtmidiinput.h"
 #include "rtmidioutput.h"
@@ -113,7 +114,7 @@ namespace rt {
 
     private:
         class BackendManagerPrivate;
-        BackendManagerPrivate *d;
+        QScopedPointer<BackendManagerPrivate> d;
     };
 
 /** @} */

@@ -229,7 +229,6 @@ PianoKeybd::~PianoKeybd()
 {
     d->m_scene->setRawKeyboardMode(false);
     setKeyboardMap(nullptr);
-    delete d;
 }
 
 /**
