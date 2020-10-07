@@ -35,15 +35,13 @@ if(APPLE AND ${CMAKE_VERSION} VERSION_LESS 3.14)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()
 
-if (WIN32)
-    if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /source-charset:utf-8")
-    endif()
+if (WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8") #/source-charset:utf-8 /execution-charset:utf-8
 endif()
 
 if(UNIX AND NOT APPLE)
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra") #-Wzero-as-null-pointer-constant -Wsuggest-override")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
     endif()
     #set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--as-needed")
     #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")

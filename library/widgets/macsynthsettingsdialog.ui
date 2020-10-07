@@ -10,6 +10,9 @@
     <height>182</height>
    </rect>
   </property>
+  <property name="windowTitle">
+   <string>macOS Synth Driver Settings</string>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QLabel" name="label_3">
