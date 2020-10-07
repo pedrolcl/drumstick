@@ -11,5 +11,5 @@ defineReplace(drumstickLib) {
 }
 
 win32-msvc {
-    QMAKE_CXXFLAGS += /source-charset:utf-8
+    QMAKE_CXXFLAGS += /utf-8 #/source-charset:utf-8 /execution-charset:utf-8
 }

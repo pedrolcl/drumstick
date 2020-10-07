@@ -857,31 +857,31 @@ void PianoScene::setVelocityTint(const bool enable)
 void PianoScene::retranslate()
 {
     d->m_names_s = QStringList{
-        tr(u8"C"),
-        tr(u8"C♯"),
-        tr(u8"D"),
-        tr(u8"D♯"),
-        tr(u8"E"),
-        tr(u8"F"),
-        tr(u8"F♯"),
-        tr(u8"G"),
-        tr(u8"G♯"),
-        tr(u8"A"),
-        tr(u8"A♯"),
-        tr(u8"B")};
+        tr("C"),
+        tr("C♯"),
+        tr("D"),
+        tr("D♯"),
+        tr("E"),
+        tr("F"),
+        tr("F♯"),
+        tr("G"),
+        tr("G♯"),
+        tr("A"),
+        tr("A♯"),
+        tr("B")};
     d->m_names_f = QStringList{
-        tr(u8"C"),
-        tr(u8"D♭"),
-        tr(u8"D"),
-        tr(u8"E♭"),
-        tr(u8"E"),
-        tr(u8"F"),
-        tr(u8"G♭"),
-        tr(u8"G"),
-        tr(u8"A♭"),
-        tr(u8"A"),
-        tr(u8"B♭"),
-        tr(u8"B")};
+        tr("C"),
+        tr("D♭"),
+        tr("D"),
+        tr("E♭"),
+        tr("E"),
+        tr("F"),
+        tr("G♭"),
+        tr("G"),
+        tr("A♭"),
+        tr("A"),
+        tr("B♭"),
+        tr("B")};
     refreshLabels();
 }
 

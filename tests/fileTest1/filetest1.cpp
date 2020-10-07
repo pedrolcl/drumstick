@@ -129,7 +129,7 @@ const char FileTest1::test_mid[] = {
   '\x80','\x48','\x00','\x00','\xff','\x2f','\x00'
 };
 const int FileTest1::test_mid_len = sizeof(test_mid); //175;
-const QString FileTest1::COPYRIGHT = QStringLiteral("Copyright (C) 2006-2020 Pedro López-Cabanillas");
+const QString FileTest1::COPYRIGHT = u8"Copyright (C) 2006-2020 Pedro López-Cabanillas";
 const QByteArray FileTest1::GSRESET = QByteArrayLiteral( "f04110421240007f0041f7" );
 const QList<int> FileTest1::NOTES = { 60, 62, 64, 65, 67, 69, 71, 72 };
 const int FileTest1::FORMAT = 0;
