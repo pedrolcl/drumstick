@@ -1,3 +1,6 @@
+2020-10-08
+    * License upgrade: GPLv3 or later
+
 2020-09-28
     * fixed SequencerOutputThread troubles finishing songs properly
     * enhanced guiplayer usability
