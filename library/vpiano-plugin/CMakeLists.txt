@@ -21,33 +21,39 @@ set(CMAKE_AUTORCC ON)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5UiPlugin REQUIRED)
 
-set(vpiano-plugin_SRCS
+set(SOURCES
     vpiano-plugin.h
     vpiano-plugin.cpp
-    vpiano-plugin.qrc
-)
+    vpiano-plugin.qrc)
 
-add_library(vpiano-plugin MODULE
-    ${vpiano-plugin_SRCS})
+add_library(drumstick-vpiano-plugin MODULE ${SOURCES})
 
-target_compile_definitions(vpiano-plugin
-    PRIVATE QT_PLUGIN)
+target_compile_definitions(drumstick-vpiano-plugin PRIVATE QT_PLUGIN)
 
-target_include_directories(vpiano-plugin PRIVATE
+target_include_directories(drumstick-vpiano-plugin PRIVATE
     ${Drumstick_SOURCE_DIR}/library/include
 )
 
-target_link_libraries(vpiano-plugin PRIVATE
+target_link_libraries(drumstick-vpiano-plugin PRIVATE
     Qt5::Widgets
     Qt5::UiPlugin
     Drumstick::Widgets
 )
 
-set_target_properties(vpiano-plugin PROPERTIES
+set_target_properties(drumstick-vpiano-plugin PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/designer)
 
-install(TARGETS vpiano-plugin
-    EXPORT vpiano-plugin-targets
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/designer
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/designer)
+get_target_property(QT_QMAKE_EXECUTABLE Qt5::qmake LOCATION)
+execute_process(COMMAND ${QT_QMAKE_EXECUTABLE} -query QT_INSTALL_PLUGINS
+  OUTPUT_VARIABLE QT_INSTALL_PLUGINS OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+execute_process(COMMAND ${QT_QMAKE_EXECUTABLE} -query QT_HOST_PREFIX
+  OUTPUT_VARIABLE QT_HOST_PREFIX OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+string(REPLACE "${QT_HOST_PREFIX}/" "" _INSTALL_PLUGINS  "${QT_INSTALL_PLUGINS}")
+
+install(TARGETS drumstick-vpiano-plugin
+    EXPORT drumstick-vpiano-targets
+    RUNTIME DESTINATION ${_INSTALL_PLUGINS}/designer
+    ARCHIVE DESTINATION ${_INSTALL_PLUGINS}/designer
+    LIBRARY DESTINATION ${_INSTALL_PLUGINS}/designer)

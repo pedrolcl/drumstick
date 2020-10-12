@@ -293,7 +293,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Nothing</string>
+    <string>C</string>
    </property>
   </action>
  </widget>
@@ -301,7 +301,7 @@
   <customwidget>
    <class>drumstick::widgets::PianoKeybd</class>
    <extends>QGraphicsView</extends>
-   <header>drumstick/pianokeybd.h</header>
+   <header location="global">drumstick/pianokeybd.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

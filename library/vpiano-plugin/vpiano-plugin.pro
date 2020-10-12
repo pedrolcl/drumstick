@@ -1,5 +1,5 @@
 TEMPLATE = lib
-TARGET = vpianoplugin
+TARGET = drumstick-vpiano-plugin
 target.path = $$[QT_INSTALL_PLUGINS]/designer
 INSTALLS += target
 DESTDIR = ../../build/lib/designer

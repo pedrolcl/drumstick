@@ -1,8 +1,8 @@
 TEMPLATE = subdirs
 
-dummy {
-    SUBDIRS += dummy-in dummy-out
-}
+#dummy {
+#    SUBDIRS += dummy-in dummy-out
+#}
 
 linux {
     SUBDIRS += alsa-in alsa-out
