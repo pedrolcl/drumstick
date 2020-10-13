@@ -21,6 +21,11 @@
 
 #include <QDesignerCustomWidgetInterface>
 
+/**
+ * @file vpiano-plugin.h
+ * PianoKeybdPlugin class definition (Qt Designer plugin)
+ */
+
 class PianoKeybdPlugin : public QObject,
                          public QDesignerCustomWidgetInterface
 {

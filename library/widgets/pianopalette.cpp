@@ -30,8 +30,16 @@
 namespace drumstick {
 namespace widgets {
 
+/**
+ * @brief PianoPalette::QSTR_PALETTEPREFIX is the string prefix for all
+ * the settings stored as persisting settings
+ */
 const QString PianoPalette::QSTR_PALETTEPREFIX = QStringLiteral("Palette_");
 
+/**
+ * @brief PianoPalette::PianoPalette Constructor
+ * @param id The Palette Policy identifier
+ */
 PianoPalette::PianoPalette(int id) :
     m_paletteId(id)
 {
@@ -40,6 +48,10 @@ PianoPalette::PianoPalette(int id) :
     retranslateStrings();
 }
 
+/**
+ * @brief PianoPalette::initialize reserves and initializes space to store colors
+ * according to the palette policy identifier
+ */
 void
 PianoPalette::initialize()
 {
@@ -74,6 +86,10 @@ PianoPalette::initialize()
     }
 }
 
+/**
+ * @brief PianoPalette::resetColors resets the colors to the standard values
+ * according to the palette policy identifier
+ */
 void
 PianoPalette::resetColors()
 {
@@ -101,12 +117,20 @@ PianoPalette::resetColors()
     }
 }
 
+/**
+ * @brief PianoPalette::resetPaletteSingle resets the colors to the standard values
+ * for the PAL_SINGLE palette policy
+ */
 void
 PianoPalette::resetPaletteSingle()
 {
     setColor(0, QString(), qApp->palette().highlight().color());
 }
 
+/**
+ * @brief PianoPalette::resetPaletteDouble  resets the colors to the standard values
+ * for the PAL_DOUBLE palette policy
+ */
 void
 PianoPalette::resetPaletteDouble()
 {
@@ -114,6 +138,10 @@ PianoPalette::resetPaletteDouble()
     setColor(1, tr("#"), QColor("lawngreen"));
 }
 
+/**
+ * @brief PianoPalette::resetPaletteChannels resets the colors to the standard values
+ * for the PAL_CHANNELS palette policy
+ */
 void
 PianoPalette::resetPaletteChannels()
 {
@@ -135,6 +163,10 @@ PianoPalette::resetPaletteChannels()
     setColor(15, tr("16"), QColor("greenyellow"));
 }
 
+/**
+ * @brief PianoPalette::resetPaletteScale resets the colors to the standard values
+ * for the PAL_SCALE palette policy
+ */
 void
 PianoPalette::resetPaletteScale()
 {
@@ -167,6 +199,10 @@ PianoPalette::resetPaletteScale()
     setColor(11, tr("B"), QColor::fromRgb(0,127,255));
 }
 
+/**
+ * @brief PianoPalette::resetPaletteKeys resets the colors to the standard values
+ * for the PAL_KEYS palette policy
+ */
 void
 PianoPalette::resetPaletteKeys()
 {
@@ -174,6 +210,10 @@ PianoPalette::resetPaletteKeys()
     setColor(1, tr("#"), QColor("black"));
 }
 
+/**
+ * @brief PianoPalette::resetPaletteFont resets the colors to the standard values
+ * for the PAL_FONT palette policy
+ */
 void
 PianoPalette::resetPaletteFont()
 {
@@ -183,6 +223,10 @@ PianoPalette::resetPaletteFont()
     setColor(3, tr("#*"), QColor("white"));
 }
 
+/**
+ * @brief PianoPalette::retranslateStrings retranslates the names and description
+ * texts according to the palette policy
+ */
 void
 PianoPalette::retranslateStrings()
 {
@@ -222,12 +266,20 @@ PianoPalette::retranslateStrings()
     }
 }
 
+/**
+ * @brief PianoPalette::retranslatePaletteSingle retranslates the color names
+ * for the PAL_SINGLE palette policy
+ */
 void
 PianoPalette::retranslatePaletteSingle()
 {
     setColorName(0, QString());
 }
 
+/**
+ * @brief PianoPalette::retranslatePaletteDouble retranslates the color names
+ * for the PAL_DOUBLE palette policy
+ */
 void
 PianoPalette::retranslatePaletteDouble()
 {
@@ -235,6 +287,10 @@ PianoPalette::retranslatePaletteDouble()
     setColorName(1, tr("#"));
 }
 
+/**
+ * @brief PianoPalette::retranslatePaletteChannels retranslates the color names
+ * for the PAL_CHANNELS palette policy
+ */
 void
 PianoPalette::retranslatePaletteChannels()
 {
@@ -256,6 +312,10 @@ PianoPalette::retranslatePaletteChannels()
     setColorName(15, tr("16"));
 }
 
+/**
+ * @brief PianoPalette::retranslatePaletteScale retranslates the color names
+ * for the PAL_SCALE palette policy
+ */
 void
 PianoPalette::retranslatePaletteScale()
 {
@@ -273,6 +333,10 @@ PianoPalette::retranslatePaletteScale()
     setColorName(11, tr("B"));
 }
 
+/**
+ * @brief PianoPalette::retranslatePaletteKeys retranslates the color names
+ * for the PAL_KEYS palette policy
+ */
 void
 PianoPalette::retranslatePaletteKeys()
 {
@@ -280,6 +344,10 @@ PianoPalette::retranslatePaletteKeys()
     setColorName(1, tr("#"));
 }
 
+/**
+ * @brief PianoPalette::retranslatePaletteFont retranslates the color names
+ * for the PAL_FONT palette policy
+ */
 void
 PianoPalette::retranslatePaletteFont()
 {
@@ -289,30 +357,52 @@ PianoPalette::retranslatePaletteFont()
     setColorName(3, tr("#*"));
 }
 
+/**
+ * @brief PianoPalette::isHighLight palette function
+ * @return true if the palette is used for keys highlighting
+ */
 bool
 PianoPalette::isHighLight() const
 {
     return (m_paletteId == PAL_SINGLE) || (m_paletteId == PAL_DOUBLE) || (m_paletteId == PAL_CHANNELS);
 }
 
+/**
+ * @brief PianoPalette::isBackground palette function
+ * @return true if the palette is used for painting the keys background
+ */
 bool
 PianoPalette::isBackground() const
 {
     return (m_paletteId == PAL_SCALE) || (m_paletteId == PAL_KEYS);
 }
 
+/**
+ * @brief PianoPalette::isForeground palette function
+ * @return true if the palette is used to paint text over the keys
+ */
 bool
 PianoPalette::isForeground() const
 {
     return (m_paletteId == PAL_FONT);
 }
 
+/**
+ * @brief PianoPalette::paletteId palette policy
+ * @return the palette policy identifier
+ */
 int
 PianoPalette::paletteId() const
 {
     return m_paletteId;
 }
 
+/**
+ * @brief PianoPalette::setColor changes a palette color
+ * @param n the color number
+ * @param s the color name
+ * @param c the color value
+ */
 void
 PianoPalette::setColor(const int n, const QString& s, const QColor& c)
 {
@@ -322,6 +412,11 @@ PianoPalette::setColor(const int n, const QString& s, const QColor& c)
     }
 }
 
+/**
+ * @brief PianoPalette::setColor changes a palette color
+ * @param n the color number
+ * @param c the color value
+ */
 void
 PianoPalette::setColor(const int n, const QColor& c)
 {
@@ -329,6 +424,11 @@ PianoPalette::setColor(const int n, const QColor& c)
         m_colors[n] = c;
 }
 
+/**
+ * @brief PianoPalette::setColorName changes a palette color name
+ * @param n the color number
+ * @param s the color name
+ */
 void
 PianoPalette::setColorName(const int n, const QString& s)
 {
@@ -336,6 +436,11 @@ PianoPalette::setColorName(const int n, const QString& s)
         m_names[n] = s;
 }
 
+/**
+ * @brief PianoPalette::getColor gets a palette color
+ * @param i the color number
+ * @return  the color value
+ */
 QColor
 PianoPalette::getColor(const int i) const
 {
@@ -344,6 +449,11 @@ PianoPalette::getColor(const int i) const
     return {};
 }
 
+/**
+ * @brief PianoPalette::getColorName gets a palette color name
+ * @param i the color number
+ * @return  the color name
+ */
 QString
 PianoPalette::getColorName(const int i) const
 {
@@ -352,18 +462,30 @@ PianoPalette::getColorName(const int i) const
     return QString();
 }
 
+/**
+ * @brief PianoPalette::getNumColors palette policy colors size
+ * @return the number of colors represented by the palette
+ */
 int
 PianoPalette::getNumColors() const
 {
     return m_colors.size();
 }
 
+/**
+ * @brief PianoPalette::paletteName palette policy name
+ * @return the name of the palette
+ */
 QString
 PianoPalette::paletteName() const
 {
     return m_paletteName;
 }
 
+/**
+ * @brief PianoPalette::setPaletteName changes the palette name
+ * @param name new name of the palette
+ */
 void
 PianoPalette::setPaletteName(const QString& name)
 {
@@ -372,18 +494,29 @@ PianoPalette::setPaletteName(const QString& name)
     }
 }
 
+/**
+ * @brief PianoPalette::paletteText gets the palette description
+ * @return new description of the palette
+ */
 QString
 PianoPalette::paletteText() const
 {
     return m_paletteText;
 }
 
+/**
+ * @brief PianoPalette::setPaletteText changes the palette description
+ * @param help new palette description string
+ */
 void
 PianoPalette::setPaletteText(const QString& help)
 {
     m_paletteText = help;
 }
 
+/**
+ * @brief PianoPalette::saveColors stores the set of colors as persistent settings
+ */
 void
 PianoPalette::saveColors() const
 {
@@ -397,6 +530,9 @@ PianoPalette::saveColors() const
     settings->sync();
 }
 
+/**
+ * @brief PianoPalette::loadColors loads the set of colors from persistent settings
+ */
 void
 PianoPalette::loadColors()
 {
@@ -412,6 +548,11 @@ PianoPalette::loadColors()
     settings->endArray();
 }
 
+/**
+ * @brief PianoPalette::operator == compares two palettes
+ * @param other another palette object
+ * @return true if both palettes are equal
+ */
 bool
 PianoPalette::operator==(const PianoPalette& other) const
 {
@@ -419,6 +560,11 @@ PianoPalette::operator==(const PianoPalette& other) const
            (m_colors == other.m_colors);
 }
 
+/**
+ * @brief PianoPalette::operator != compares two palettes
+ * @param other another palette object
+ * @return true if both palettes are different
+ */
 bool
 PianoPalette::operator!=(const PianoPalette &other) const
 {

@@ -22,6 +22,11 @@
 
 using namespace drumstick::widgets;
 
+/**
+ * @file vpiano-plugin.cpp
+ * Implementation of the PianoKeybdPlugin class (Qt Designer plugin)
+ */
+
 PianoKeybdPlugin::PianoKeybdPlugin(QObject *parent)
     : QObject(parent)
 { }

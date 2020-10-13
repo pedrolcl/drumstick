@@ -28,6 +28,12 @@
  * SettingsFactory class declaration
  */
 
+/**
+ * @class QSettings
+ * @brief The QSettings class provides persistent platform-independent application settings.
+ * @see https://doc.qt.io/qt-5/qsettings.html
+ */
+
 namespace drumstick { namespace widgets {
 
     /**
@@ -35,13 +41,14 @@ namespace drumstick { namespace widgets {
      * @{
      *
      * @class SettingsFactory
-     * @brief The SettingsFactory class
+     * @brief The SettingsFactory class holds a global QSettings object.
+     * This class creates and returns a QSettings object globally configured
+     * instance using native or file storage.
      */
     class DRUMSTICK_EXPORT SettingsFactory
     {
     public:
         QSettings* getQSettings();
-        QSettings& operator*();
         QSettings* operator->();
         static void setFileName(const QString name);
 

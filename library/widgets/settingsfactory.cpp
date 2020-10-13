@@ -26,15 +26,29 @@
 
 namespace drumstick { namespace widgets {
 
+/**
+ * @brief SettingsFactory::s_fileName is a global string providing the file name
+ * of the persisting settings using the INI file format
+ */
 QString SettingsFactory::s_fileName;
 
+/**
+ * @brief SettingsFactory::setFileName sets the global file name for the
+ * persisting settings and sets the INI format as well
+ * @param name the new file name
+ */
 void SettingsFactory::setFileName(const QString name)
 {
     SettingsFactory::s_fileName = name;
     QSettings::setDefaultFormat(QSettings::IniFormat);
 }
 
-QSettings* SettingsFactory::getQSettings()
+/**
+ * @brief SettingsFactory::getQSettings creates and/or returns a QSettings object pointer
+ * @return the internal QSettings object pointer
+ */
+QSettings*
+SettingsFactory::getQSettings()
 {
     if (m_settings.isNull()) {
         if (s_fileName.isEmpty() || QSettings::defaultFormat() == QSettings::NativeFormat) {
@@ -46,12 +60,12 @@ QSettings* SettingsFactory::getQSettings()
     return m_settings.get();
 }
 
-QSettings &SettingsFactory::operator*()
-{
-    return *getQSettings();
-}
-
-QSettings *SettingsFactory::operator->()
+/**
+ * @brief SettingsFactory::operator -> is equivalent to calling getQSettings()
+ * @return  the internal QSettings object pointer
+ */
+QSettings*
+SettingsFactory::operator->()
 {
     return getQSettings();
 }
