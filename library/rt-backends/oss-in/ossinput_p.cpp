@@ -67,7 +67,7 @@ void OSSInputPrivate::open(const MIDIConnection& portName)
     m_notifier = new QSocketNotifier(f->handle(), QSocketNotifier::Read);
     m_parser = new MIDIParser(m_inp);
     m_buffer.clear();
-    connect(m_notifier, SIGNAL(activated(int)), this, SLOT(processIncomingMessages(int)));
+    connect(m_notifier, &QSocketNotifier::activated, this, &OSSInputPrivate::processIncomingMessages);
     //qDebug() << Q_FUNC_INFO << portName;
 }
 

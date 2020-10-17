@@ -26,10 +26,5 @@ About::About(QWidget *parent)
     aboutText.replace("%VERSION%", QStringLiteral(QT_STRINGIFY(VERSION)));
     aboutText.replace("%QT_VERSION%", qVersion());
     ui.AboutTextView->setHtml(aboutText);
-    connect (ui.aboutQt, SIGNAL(clicked()), SLOT(aboutQt()));
-}
-
-void About::aboutQt()
-{
-    qApp->aboutQt();
+    connect(ui.aboutQt, &QPushButton::clicked, qApp, QApplication::aboutQt);
 }

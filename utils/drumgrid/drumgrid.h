@@ -91,7 +91,6 @@ public:
 
 public slots:
     void slotAbout();
-    void slotAboutQt();
     void updateView();
     void sequencerEvent(drumstick::ALSA::SequencerEvent *ev);
     void connectMidi();

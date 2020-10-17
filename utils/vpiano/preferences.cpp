@@ -25,7 +25,7 @@ Preferences::Preferences(QWidget *parent)
     : QDialog(parent)
 {
     ui.setupUi( this );
-    connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(slotButtonClicked(QAbstractButton*)));
+    connect(ui.buttonBox, &QDialogButtonBox::clicked, this, &Preferences::slotButtonClicked);
 }
 
 void Preferences::slotButtonClicked(QAbstractButton *button)

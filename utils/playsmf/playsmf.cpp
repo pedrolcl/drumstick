@@ -85,20 +85,20 @@ PlaySMF::PlaySMF() :
     m_portId = m_Port->getPortId();
 
     m_engine = new QSmf(this);
-    connect(m_engine, SIGNAL(signalSMFHeader(int,int,int)), SLOT(headerEvent(int,int,int)));
-    connect(m_engine, SIGNAL(signalSMFNoteOn(int,int,int)), SLOT(noteOnEvent(int,int,int)));
-    connect(m_engine, SIGNAL(signalSMFNoteOff(int,int,int)), SLOT(noteOffEvent(int,int,int)));
-    connect(m_engine, SIGNAL(signalSMFKeyPress(int,int,int)), SLOT(keyPressEvent(int,int,int)));
-    connect(m_engine, SIGNAL(signalSMFCtlChange(int,int,int)), SLOT(ctlChangeEvent(int,int,int)));
-    connect(m_engine, SIGNAL(signalSMFPitchBend(int,int)), SLOT(pitchBendEvent(int,int)));
-    connect(m_engine, SIGNAL(signalSMFProgram(int,int)), SLOT(programEvent(int,int)));
-    connect(m_engine, SIGNAL(signalSMFChanPress(int,int)), SLOT(chanPressEvent(int,int)));
-    connect(m_engine, SIGNAL(signalSMFSysex(const QByteArray&)), SLOT(sysexEvent(const QByteArray&)));
-    connect(m_engine, SIGNAL(signalSMFText(int,const QString&)), SLOT(textEvent(int,const QString&)));
-    connect(m_engine, SIGNAL(signalSMFTempo(int)), SLOT(tempoEvent(int)));
-    connect(m_engine, SIGNAL(signalSMFTimeSig(int,int,int,int)), SLOT(timeSigEvent(int,int,int,int)));
-    connect(m_engine, SIGNAL(signalSMFKeySig(int,int)), SLOT(keySigEvent(int,int)));
-    connect(m_engine, SIGNAL(signalSMFError(const QString&)), SLOT(errorHandler(const QString&)));
+    connect(m_engine, &QSmf::signalSMFHeader, this, &PlaySMF::headerEvent);
+    connect(m_engine, &QSmf::signalSMFNoteOn, this, &PlaySMF::noteOnEvent);
+    connect(m_engine, &QSmf::signalSMFNoteOff, this, &PlaySMF::noteOffEvent);
+    connect(m_engine, &QSmf::signalSMFKeyPress, this, &PlaySMF::keyPressEvent);
+    connect(m_engine, &QSmf::signalSMFCtlChange, this, &PlaySMF::ctlChangeEvent);
+    connect(m_engine, &QSmf::signalSMFPitchBend, this, &PlaySMF::pitchBendEvent);
+    connect(m_engine, &QSmf::signalSMFProgram, this, &PlaySMF::programEvent);
+    connect(m_engine, &QSmf::signalSMFChanPress, this, &PlaySMF::chanPressEvent);
+    connect(m_engine, &QSmf::signalSMFSysex, this, &PlaySMF::sysexEvent);
+    connect(m_engine, &QSmf::signalSMFText, this, &PlaySMF::textEvent);
+    connect(m_engine, &QSmf::signalSMFTempo, this, &PlaySMF::tempoEvent);
+    connect(m_engine, &QSmf::signalSMFTimeSig, this, &PlaySMF::timeSigEvent);
+    connect(m_engine, &QSmf::signalSMFKeySig, this, &PlaySMF::keySigEvent);
+    connect(m_engine, &QSmf::signalSMFError, this, &PlaySMF::errorHandler);
 }
 
 PlaySMF::~PlaySMF()

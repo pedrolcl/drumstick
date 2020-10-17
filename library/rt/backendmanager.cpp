@@ -17,6 +17,7 @@
 */
 
 #include <QCoreApplication>
+//#include <QDebug>
 #include <QDir>
 #include <QLibraryInfo>
 #include <QPluginLoader>
@@ -62,7 +63,8 @@ namespace drumstick { namespace rt {
         }
         void appendDir(const QString& candidate, QStringList& result)
         {
-            QDir checked(candidate);
+            QDir checked(candidate.trimmed());
+            //qDebug() << Q_FUNC_INFO << candidate << "exists:" << checked.exists();
             if (checked.exists() && !result.contains(checked.absolutePath())) {
                 result << checked.absolutePath();
             }
@@ -113,6 +115,7 @@ namespace drumstick { namespace rt {
     #endif
         d->appendDir( appPath + ".." + QDir::separator() + QSTR_DRUMSTICK, result );
         QByteArray envdir = qgetenv(QSTR_DRUMSTICKRT.toLatin1());
+        //qDebug() << Q_FUNC_INFO << "envdir:" << envdir;
         if(!envdir.isEmpty()) {
             d->appendDir(QString(envdir), result );
         }
@@ -133,6 +136,7 @@ namespace drumstick { namespace rt {
         QVariantMap tmpMap;
         settings->beginGroup(QSTR_DRUMSTICKRT_GROUP);
         const QStringList allKeys = settings->allKeys();
+        //qDebug() << Q_FUNC_INFO << allKeys;
         for(const auto &k : allKeys) {
             tmpMap.insert(k, settings->value(k));
         }
@@ -158,8 +162,10 @@ namespace drumstick { namespace rt {
         names << map.value(QSTR_DRUMSTICKRT_EXCLUDED).toStringList();
         names << (name_in.isEmpty() ? QStringLiteral("MIDI In") : name_in);
         names << (name_out.isEmpty() ? QStringLiteral("MIDI Out") : name_out);
-
         paths << defaultPaths();
+        //qDebug() << Q_FUNC_INFO << "names:" << names;
+        //qDebug() << Q_FUNC_INFO << "paths:" << paths;
+
         d->clearLists();
 
         // Dynamic backends

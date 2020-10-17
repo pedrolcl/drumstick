@@ -169,7 +169,7 @@ namespace drumstick { namespace widgets {
 
 #ifndef Q_MOC_RUN
         Q_CLASSINFO("Author", "Pedro Lopez-Cabanillas <plcl@users.sf.net>")
-        Q_CLASSINFO("URL", "https://sourceforge.net/projects/vmpk")
+        Q_CLASSINFO("URL", "https://sourceforge.net/projects/drumstick")
         Q_CLASSINFO("Version", QT_STRINGIFY(VERSION))
 #endif
 

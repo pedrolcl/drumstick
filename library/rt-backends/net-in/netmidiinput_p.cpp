@@ -61,7 +61,7 @@ void NetMIDIInputPrivate::open(const MIDIConnection& portName)
             } else {
                 res = m_socket->joinMulticastGroup(m_groupAddress);
             }
-            connect(m_socket, SIGNAL(readyRead()), this, SLOT(processIncomingMessages()));
+            connect(m_socket, &QUdpSocket::readyRead, this, &NetMIDIInputPrivate::processIncomingMessages);
         }
         if (!res) {
             qWarning() << "Socket error. err:" << m_socket->error() << m_socket->errorString();

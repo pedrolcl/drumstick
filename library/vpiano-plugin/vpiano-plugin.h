@@ -26,6 +26,12 @@
  * PianoKeybdPlugin class definition (Qt Designer plugin)
  */
 
+/**
+ * @class QDesignerCustomWidgetInterface
+ * @brief The QDesignerCustomWidgetInterface class enables Qt Designer to access and construct custom widgets.
+ * @see https://doc.qt.io/qt-5/qdesignercustomwidgetinterface.html
+ */
+
 class PianoKeybdPlugin : public QObject,
                          public QDesignerCustomWidgetInterface
 {

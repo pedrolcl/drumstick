@@ -71,26 +71,26 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     m_player(nullptr),
     m_ui(new Ui::GUIPlayerClass),
     m_pd(nullptr),
-    m_aboutDlg(nullptr),
     m_song(new Song)
 {
     m_ui->setupUi(this);
     setAcceptDrops(true);
-    connect(m_ui->actionAbout, SIGNAL(triggered()), SLOT(about()));
-    connect(m_ui->actionAboutQt, SIGNAL(triggered()), SLOT(aboutQt()));
-    connect(m_ui->actionPlay, SIGNAL(triggered()), SLOT(play()));
-    connect(m_ui->actionPause, SIGNAL(triggered()), SLOT(pause()));
-    connect(m_ui->actionStop, SIGNAL(triggered()), SLOT(stop()));
-    connect(m_ui->actionOpen, SIGNAL(triggered()), SLOT(open()));
-    connect(m_ui->actionMIDISetup, SIGNAL(triggered()), SLOT(setup()));
-    connect(m_ui->actionQuit, SIGNAL(triggered()), SLOT(close()));
-    connect(m_ui->btnTempo, SIGNAL(clicked()), SLOT(tempoReset()));
-    connect(m_ui->btnVolume, SIGNAL(clicked()), SLOT(volumeReset()));
-    connect(m_ui->sliderTempo, SIGNAL(valueChanged(int)), SLOT(tempoSlider(int)));
-	connect(m_ui->volumeSlider, SIGNAL(valueChanged(int)), SLOT(volumeSlider(int)));
-	connect(m_ui->spinPitch, SIGNAL(valueChanged(int)), SLOT(pitchShift(int)));
-    connect(m_ui->toolBar->toggleViewAction(), SIGNAL(toggled(bool)),
-            m_ui->actionShowToolbar, SLOT(setChecked(bool)));
+    connect(m_ui->actionAbout, &QAction::triggered, this, &GUIPlayer::about);
+    connect(m_ui->actionAboutQt, &QAction::triggered, qApp, QApplication::aboutQt);
+    connect(m_ui->actionPlay, &QAction::triggered, this, &GUIPlayer::play);
+    connect(m_ui->actionPause, &QAction::triggered, this, &GUIPlayer::pause);
+    connect(m_ui->actionStop, &QAction::triggered, this, &GUIPlayer::stop);
+    connect(m_ui->actionOpen, &QAction::triggered, this, &GUIPlayer::open);
+    connect(m_ui->actionMIDISetup, &QAction::triggered, this, &GUIPlayer::setup);
+    connect(m_ui->actionQuit, &QAction::triggered, this, &GUIPlayer::close);
+    connect(m_ui->btnTempo, &QPushButton::clicked, this, &GUIPlayer::tempoReset);
+    connect(m_ui->btnVolume, &QPushButton::clicked, this, &GUIPlayer::volumeReset);
+    connect(m_ui->sliderTempo, &QSlider::valueChanged, this, &GUIPlayer::tempoSlider);
+    connect(m_ui->volumeSlider, &QSlider::valueChanged, this, &GUIPlayer::volumeSlider);
+    connect(m_ui->spinPitch, QOverload<int>::of(&QSpinBox::valueChanged),
+            this, &GUIPlayer::pitchShift);
+    connect(m_ui->toolBar->toggleViewAction(), &QAction::toggled,
+            m_ui->actionShowToolbar, &QAction::setChecked);
 
     m_ui->actionPlay->setIcon(QIcon(IconUtils::GetPixmap(this, ":/resources/play.png")));
     m_ui->actionPlay->setShortcut( Qt::Key_MediaPlay );
@@ -119,99 +119,54 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     m_portId = m_Port->getPortId();
 
     m_smf = new QSmf(this);
-    connect(m_smf, SIGNAL(signalSMFHeader(int,int,int)),
-                   SLOT(smfHeaderEvent(int,int,int)));
-    connect(m_smf, SIGNAL(signalSMFNoteOn(int,int,int)),
-                   SLOT(smfNoteOnEvent(int,int,int)));
-    connect(m_smf, SIGNAL(signalSMFNoteOff(int,int,int)),
-                   SLOT(smfNoteOffEvent(int,int,int)));
-    connect(m_smf, SIGNAL(signalSMFKeyPress(int,int,int)),
-                   SLOT(smfKeyPressEvent(int,int,int)));
-    connect(m_smf, SIGNAL(signalSMFCtlChange(int,int,int)),
-                   SLOT(smfCtlChangeEvent(int,int,int)));
-    connect(m_smf, SIGNAL(signalSMFPitchBend(int,int)),
-                   SLOT(smfPitchBendEvent(int,int)));
-    connect(m_smf, SIGNAL(signalSMFProgram(int,int)),
-                   SLOT(smfProgramEvent(int,int)));
-    connect(m_smf, SIGNAL(signalSMFChanPress(int,int)),
-                   SLOT(smfChanPressEvent(int,int)));
-    connect(m_smf, SIGNAL(signalSMFSysex(const QByteArray&)),
-                   SLOT(smfSysexEvent(const QByteArray&)));
-    connect(m_smf, SIGNAL(signalSMFText(int,const QString&)),
-                   SLOT(smfUpdateLoadProgress()));
-    connect(m_smf, SIGNAL(signalSMFTempo(int)),
-                   SLOT(smfTempoEvent(int)));
-    connect(m_smf, SIGNAL(signalSMFTrackStart()),
-                   SLOT(smfUpdateLoadProgress()));
-    connect(m_smf, SIGNAL(signalSMFTrackStart()),
-                   SLOT(smfTrackStarted()));
-    connect(m_smf, SIGNAL(signalSMFTrackEnd()),
-                   SLOT(smfTrackEnded()));
-    connect(m_smf, SIGNAL(signalSMFendOfTrack()),
-                   SLOT(smfUpdateLoadProgress()));
-    connect(m_smf, SIGNAL(signalSMFError(const QString&)),
-                   SLOT(smfErrorHandler(const QString&)));
+    connect(m_smf, &QSmf::signalSMFHeader, this, &GUIPlayer::smfHeaderEvent);
+    connect(m_smf, &QSmf::signalSMFNoteOn, this, &GUIPlayer::smfNoteOnEvent);
+    connect(m_smf, &QSmf::signalSMFNoteOff, this, &GUIPlayer::smfNoteOffEvent);
+    connect(m_smf, &QSmf::signalSMFKeyPress, this, &GUIPlayer::smfKeyPressEvent);
+    connect(m_smf, &QSmf::signalSMFCtlChange, this, &GUIPlayer::smfCtlChangeEvent);
+    connect(m_smf, &QSmf::signalSMFPitchBend, this, &GUIPlayer::smfPitchBendEvent);
+    connect(m_smf, &QSmf::signalSMFProgram, this, &GUIPlayer::smfProgramEvent);
+    connect(m_smf, &QSmf::signalSMFChanPress, this, &GUIPlayer::smfChanPressEvent);
+    connect(m_smf, &QSmf::signalSMFSysex, this, &GUIPlayer::smfSysexEvent);
+    connect(m_smf, &QSmf::signalSMFText, this, &GUIPlayer::smfUpdateLoadProgress);
+    connect(m_smf, &QSmf::signalSMFTempo, this, &GUIPlayer::smfTempoEvent);
+    connect(m_smf, &QSmf::signalSMFTrackStart, this, &GUIPlayer::smfUpdateLoadProgress);
+    connect(m_smf, &QSmf::signalSMFTrackStart, this, &GUIPlayer::smfTrackStarted);
+    connect(m_smf, &QSmf::signalSMFTrackEnd, this, &GUIPlayer::smfTrackEnded);
+    connect(m_smf, &QSmf::signalSMFendOfTrack, this, &GUIPlayer::smfUpdateLoadProgress);
+    connect(m_smf, &QSmf::signalSMFError, this, &GUIPlayer::smfErrorHandler);
+
     m_wrk = new QWrk(this);
-    connect(m_wrk, SIGNAL(signalWRKError(const QString&)),
-                   SLOT(wrkErrorHandler(const QString&)));
-    connect(m_wrk, SIGNAL(signalWRKUnknownChunk(int,const QByteArray&)),
-                   SLOT(wrkUpdateLoadProgress()));
-    connect(m_wrk, SIGNAL(signalWRKHeader(int,int)),
-                   SLOT(wrkFileHeader(int,int)));
-    connect(m_wrk, SIGNAL(signalWRKEnd()),
-                   SLOT(wrkEndOfFile()));
-    connect(m_wrk, SIGNAL(signalWRKStreamEnd(long)),
-                   SLOT(wrkStreamEndEvent(long)));
-    connect(m_wrk, SIGNAL(signalWRKGlobalVars()),
-                   SLOT(wrkUpdateLoadProgress()));
-    connect(m_wrk, SIGNAL(signalWRKTrack(const QString&, const QString&, int,int,int,int,int,bool,bool,bool)),
-                   SLOT(wrkTrackHeader(const QString&, const QString&, int,int,int,int,int,bool,bool,bool)));
-    connect(m_wrk, SIGNAL(signalWRKTimeBase(int)),
-                   SLOT(wrkTimeBase(int)));
-    connect(m_wrk, SIGNAL(signalWRKNote(int,long,int,int,int,int)),
-                   SLOT(wrkNoteEvent(int,long,int,int,int,int)));
-    connect(m_wrk, SIGNAL(signalWRKKeyPress(int,long,int,int,int)),
-                   SLOT(wrkKeyPressEvent(int,long,int,int,int)));
-    connect(m_wrk, SIGNAL(signalWRKCtlChange(int,long,int,int,int)),
-                   SLOT(wrkCtlChangeEvent(int,long,int,int,int)));
-    connect(m_wrk, SIGNAL(signalWRKPitchBend(int,long,int,int)),
-                   SLOT(wrkPitchBendEvent(int,long,int,int)));
-    connect(m_wrk, SIGNAL(signalWRKProgram(int,long,int,int)),
-                   SLOT(wrkProgramEvent(int,long,int,int)));
-    connect(m_wrk, SIGNAL(signalWRKChanPress(int,long,int,int)),
-                   SLOT(wrkChanPressEvent(int,long,int,int)));
-    connect(m_wrk, SIGNAL(signalWRKSysexEvent(int,long,int)),
-                   SLOT(wrkSysexEvent(int,long,int)));
-    connect(m_wrk, SIGNAL(signalWRKSysex(int,const QString&,bool,int,const QByteArray&)),
-                   SLOT(wrkSysexEventBank(int,const QString&,bool,int,const QByteArray&)));
-    connect(m_wrk, SIGNAL(signalWRKText(int,long,int,const QString&)),
-                   SLOT(wrkUpdateLoadProgress()));
-    connect(m_wrk, SIGNAL(signalWRKTimeSig(int,int,int)),
-                   SLOT(wrkUpdateLoadProgress()));
-    connect(m_wrk, SIGNAL(signalWRKKeySig(int,int)),
-                   SLOT(wrkUpdateLoadProgress()));
-    connect(m_wrk, SIGNAL(signalWRKTempo(long,int)),
-                   SLOT(wrkTempoEvent(long,int)));
-    connect(m_wrk, SIGNAL(signalWRKTrackPatch(int,int)),
-                   SLOT(wrkTrackPatch(int,int)));
-    connect(m_wrk, SIGNAL(signalWRKComments(const QString&)),
-                   SLOT(wrkUpdateLoadProgress()));
-    connect(m_wrk, SIGNAL(signalWRKVariableRecord(const QString&,const QByteArray&)),
-                   SLOT(wrkUpdateLoadProgress()));
-    connect(m_wrk, SIGNAL(signalWRKNewTrack(const QString&,int,int,int,int,int,bool,bool,bool)),
-                   SLOT(wrkNewTrackHeader(const QString&,int,int,int,int,int,bool,bool,bool)));
-    connect(m_wrk, SIGNAL(signalWRKTrackName(int,const QString&)),
-                   SLOT(wrkUpdateLoadProgress()));
-    connect(m_wrk, SIGNAL(signalWRKTrackVol(int,int)),
-                   SLOT(wrkTrackVol(int,int)));
-    connect(m_wrk, SIGNAL(signalWRKTrackBank(int,int)),
-                   SLOT(wrkTrackBank(int,int)));
-    connect(m_wrk, SIGNAL(signalWRKSegment(int,long,const QString&)),
-                   SLOT(wrkUpdateLoadProgress()));
-    connect(m_wrk, SIGNAL(signalWRKChord(int,long,const QString&,const QByteArray&)),
-                   SLOT(wrkUpdateLoadProgress()));
-    connect(m_wrk, SIGNAL(signalWRKExpression(int,long,int,const QString&)),
-                   SLOT(wrkUpdateLoadProgress()));
+    connect(m_wrk, &QWrk::signalWRKError, this, &GUIPlayer::wrkErrorHandler);
+    connect(m_wrk, &QWrk::signalWRKUnknownChunk, this, &GUIPlayer::wrkUpdateLoadProgress);
+    connect(m_wrk, &QWrk::signalWRKHeader, this, &GUIPlayer::wrkFileHeader);
+    connect(m_wrk, &QWrk::signalWRKEnd, this, &GUIPlayer::wrkEndOfFile);
+    connect(m_wrk, &QWrk::signalWRKStreamEnd, this, &GUIPlayer::wrkStreamEndEvent);
+    connect(m_wrk, &QWrk::signalWRKGlobalVars, this, &GUIPlayer::wrkUpdateLoadProgress);
+    connect(m_wrk, &QWrk::signalWRKTrack, this, &GUIPlayer::wrkTrackHeader);
+    connect(m_wrk, &QWrk::signalWRKTimeBase, this, &GUIPlayer::wrkTimeBase);
+    connect(m_wrk, &QWrk::signalWRKNote, this, &GUIPlayer::wrkNoteEvent);
+    connect(m_wrk, &QWrk::signalWRKKeyPress, this, &GUIPlayer::wrkKeyPressEvent);
+    connect(m_wrk, &QWrk::signalWRKCtlChange, this, &GUIPlayer::wrkCtlChangeEvent);
+    connect(m_wrk, &QWrk::signalWRKPitchBend, this, &GUIPlayer::wrkPitchBendEvent);
+    connect(m_wrk, &QWrk::signalWRKProgram, this, &GUIPlayer::wrkProgramEvent);
+    connect(m_wrk, &QWrk::signalWRKChanPress, this, &GUIPlayer::wrkChanPressEvent);
+    connect(m_wrk, &QWrk::signalWRKSysexEvent, this, &GUIPlayer::wrkSysexEvent);
+    connect(m_wrk, &QWrk::signalWRKSysex, this, &GUIPlayer::wrkSysexEventBank);
+    connect(m_wrk, &QWrk::signalWRKText, this, &GUIPlayer::wrkUpdateLoadProgress);
+    connect(m_wrk, &QWrk::signalWRKTimeSig, this, &GUIPlayer::wrkUpdateLoadProgress);
+    connect(m_wrk, &QWrk::signalWRKKeySig, this, &GUIPlayer::wrkUpdateLoadProgress);
+    connect(m_wrk, &QWrk::signalWRKTempo, this, &GUIPlayer::wrkTempoEvent);
+    connect(m_wrk, &QWrk::signalWRKTrackPatch, this, &GUIPlayer::wrkTrackPatch);
+    connect(m_wrk, &QWrk::signalWRKComments, this, &GUIPlayer::wrkUpdateLoadProgress);
+    connect(m_wrk, &QWrk::signalWRKVariableRecord, this, &GUIPlayer::wrkUpdateLoadProgress);
+    connect(m_wrk, &QWrk::signalWRKNewTrack, this, &GUIPlayer::wrkNewTrackHeader);
+    connect(m_wrk, &QWrk::signalWRKTrackName, this, &GUIPlayer::wrkUpdateLoadProgress);
+    connect(m_wrk, &QWrk::signalWRKTrackVol, this, &GUIPlayer::wrkTrackVol);
+    connect(m_wrk, &QWrk::signalWRKTrackBank, this, &GUIPlayer::wrkTrackBank);
+    connect(m_wrk, &QWrk::signalWRKSegment, this, &GUIPlayer::wrkUpdateLoadProgress);
+    connect(m_wrk, &QWrk::signalWRKChord, this, &GUIPlayer::wrkUpdateLoadProgress);
+    connect(m_wrk, &QWrk::signalWRKExpression, this, &GUIPlayer::wrkUpdateLoadProgress);
 
     m_player = new Player(m_Client, m_portId);
     connect(m_player, &Player::playbackStopped, this, &GUIPlayer::playerStopped, Qt::QueuedConnection);
@@ -601,14 +556,8 @@ void GUIPlayer::closeEvent( QCloseEvent *event )
 
 void GUIPlayer::about()
 {
-    if (m_aboutDlg == nullptr)
-        m_aboutDlg = new About(this);
-    m_aboutDlg->exec();
-}
-
-void GUIPlayer::aboutQt()
-{
-    qApp->aboutQt();
+    About aboutDlg(this);
+    aboutDlg.exec();
 }
 
 /* **************************************** *

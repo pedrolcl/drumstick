@@ -16,21 +16,21 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "drumgrid.h"
-#include "drumgridabout.h"
-#include "drumgridmodel.h"
-#include "ui_drumgrid.h"
 #include <QDebug>
 #include <QInputDialog>
 #include <QSettings>
 #include <QShortcut>
 #include <QToolTip>
+#include <QtMath>
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaevent.h>
 #include <drumstick/alsaport.h>
 #include <drumstick/alsaqueue.h>
 #include <drumstick/sequencererror.h>
-#include <qmath.h>
+#include "drumgrid.h"
+#include "drumgridabout.h"
+#include "drumgridmodel.h"
+#include "ui_drumgrid.h"
 
 using namespace drumstick::ALSA;
 
@@ -84,19 +84,19 @@ DrumGrid::DrumGrid(QWidget *parent)
     m_ui->tempoSlider->setMinimum(TEMPO_MIN);
     m_ui->tempoSlider->setValue(m_bpm);
 
-    connect( m_ui->actionAbout, SIGNAL(triggered()), SLOT(slotAbout()));
-    connect( m_ui->actionAbout_Qt, SIGNAL(triggered()), SLOT(slotAboutQt()));
-    connect( m_ui->actionQuit, SIGNAL(triggered()), SLOT(close()));
-    connect( m_ui->actionConnect, SIGNAL(triggered()), SLOT(connectMidi()));
-    connect( m_ui->startButton, SIGNAL(clicked()), SLOT(play()));
-    connect( m_ui->stopButton, SIGNAL(clicked()), SLOT(stop()));
-    connect( m_ui->tempoSlider, SIGNAL(valueChanged(int)), SLOT(tempoChange(int)));
-    connect( m_ui->gridColumns, SIGNAL(valueChanged(int)), SLOT(gridColumns(int)));
+    connect( m_ui->actionAbout, &QAction::triggered, this, &DrumGrid::slotAbout);
+    connect( m_ui->actionAbout_Qt, &QAction::triggered, qApp, &QApplication::aboutQt);
+    connect( m_ui->actionQuit, &QAction::triggered, this, &DrumGrid::close);
+    connect( m_ui->actionConnect, &QAction::triggered, this, &DrumGrid::connectMidi);
+    connect( m_ui->startButton, &QPushButton::clicked, this, &DrumGrid::play);
+    connect( m_ui->stopButton, &QPushButton::clicked, this, &DrumGrid::stop);
+    connect( m_ui->tempoSlider, &QSlider::valueChanged, this, &DrumGrid::tempoChange);
+    connect( m_ui->gridColumns, QOverload<int>::of(&QSpinBox::valueChanged), this, &DrumGrid::gridColumns);
 
     m_model = new DrumGridModel(this);
     m_model->fillSampleData();
     m_ui->tableView->setModel(m_model);
-    connect ( this, SIGNAL(signalUpdate(int,int)), SLOT(updateDisplay(int,int)) );
+    connect ( this, &DrumGrid::signalUpdate, this, &DrumGrid::updateDisplay );
 
     addShortcut(QKeySequence(Qt::Key_F), "f");
     addShortcut(QKeySequence(Qt::Key_P), "p");
@@ -111,8 +111,8 @@ DrumGrid::DrumGrid(QWidget *parent)
     addShortcut(QKeySequence(Qt::Key_9), "9");
     addShortcut(QKeySequence(Qt::Key_0), QString());
     addShortcut(QKeySequence::Delete, QString());
-    connect ( m_ui->tableView, SIGNAL(doubleClicked(const QModelIndex&)),
-              m_model, SLOT(changeCell(const QModelIndex &)) );
+    connect ( m_ui->tableView, &QTableView::doubleClicked, m_model,
+              QOverload<const QModelIndex &>::of(&DrumGridModel::changeCell) );
 
     m_Client = new MidiClient(this);
     m_Client->open();
@@ -433,9 +433,4 @@ void DrumGrid::slotAbout()
 {
     About dlgAbout(this);
     dlgAbout.exec();
-}
-
-void DrumGrid::slotAboutQt()
-{
-    qApp->aboutQt();
 }

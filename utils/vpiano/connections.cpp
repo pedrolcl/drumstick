@@ -32,9 +32,9 @@ Connections::Connections(QWidget *parent)
     ui.setupUi(this);
     ui.m_advanced->setChecked(VPianoSettings::instance()->advanced());
     ui.m_thru->setChecked(VPianoSettings::instance()->midiThru());
-    connect(ui.m_advanced, SIGNAL(clicked(bool)), SLOT(clickedAdvanced(bool)));
-    connect(ui.m_inputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshInputs(QString)));
-    connect(ui.m_outputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshOutputs(QString)));
+    connect(ui.m_advanced, &QCheckBox::clicked, this, &Connections::clickedAdvanced);
+    connect(ui.m_inputBackends, QOverload<const QString&>::of(&QComboBox::currentIndexChanged), this, &Connections::refreshInputs);
+    connect(ui.m_outputBackends, QOverload<const QString&>::of(&QComboBox::currentIndexChanged), this, &Connections::refreshOutputs);
     connect(ui.btnInputDriverCfg, &QToolButton::clicked, this, &Connections::configureInputDriver);
     connect(ui.btnOutputDriverCfg, &QToolButton::clicked, this, &Connections::configureOutputDriver);
 }
@@ -56,7 +56,7 @@ void Connections::setInputs(QList<MIDIInput *> ins)
     foreach(MIDIInput *i, ins) {
         ui.m_inputBackends->addItem(i->backendName(), QVariant::fromValue(i));
     }
-    connect(ui.m_inputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshInputs(QString)));
+    connect(ui.m_inputBackends, QOverload<const QString&>::of(&QComboBox::currentIndexChanged), this, &Connections::refreshInputs);
 }
 
 void Connections::setOutputs(QList<MIDIOutput *> outs)
@@ -65,7 +65,7 @@ void Connections::setOutputs(QList<MIDIOutput *> outs)
     foreach(MIDIOutput *o, outs) {
         ui.m_outputBackends->addItem(o->backendName(), QVariant::fromValue(o));
     }
-    connect(ui.m_outputBackends, SIGNAL(currentIndexChanged(QString)), SLOT(refreshOutputs(QString)));
+    connect(ui.m_outputBackends, QOverload<const QString&>::of(&QComboBox::currentIndexChanged), this, &Connections::refreshOutputs);
 }
 
 MIDIInput *Connections::getInput()
@@ -130,7 +130,7 @@ void Connections::refresh()
 
 void Connections::refreshInputs(QString id)
 {
-    ui.btnInputDriverCfg->setEnabled(id == "Network");
+    ui.btnInputDriverCfg->setEnabled(drumstick::widgets::inputDriverIsConfigurable(id));
     if (m_midiIn != nullptr && m_midiIn->backendName() != id) {
         m_midiIn->close();
         int idx = ui.m_inputBackends->findText(id, Qt::MatchStartsWith);
@@ -153,10 +153,7 @@ void Connections::refreshInputs(QString id)
 
 void Connections::refreshOutputs(QString id)
 {
-    ui.btnOutputDriverCfg->setEnabled(id == "Network" ||
-                                      id == "FluidSynth" ||
-                                      id == "DLS Synth" ||
-                                      id == "SonivoxEAS");
+    ui.btnOutputDriverCfg->setEnabled(drumstick::widgets::outputDriverIsConfigurable(id));
     if (m_midiOut != nullptr && m_midiOut->backendName() != id) {
         m_midiOut->close();
         int idx = ui.m_outputBackends->findText(id, Qt::MatchStartsWith);
@@ -185,7 +182,7 @@ void Connections::clickedAdvanced(bool value)
 void Connections::configureInputDriver()
 {
     QString driver = ui.m_inputBackends->currentText();
-    if (driver == "Network") {
+    if (drumstick::widgets::inputDriverIsConfigurable(driver)) {
         m_settingsChanged |= drumstick::widgets::configureInputDriver(driver, this);
     }
 }
@@ -193,10 +190,7 @@ void Connections::configureInputDriver()
 void Connections::configureOutputDriver()
 {
     QString driver = ui.m_outputBackends->currentText();
-    if (driver == "Network" ||
-        driver == "FluidSynth" ||
-        driver == "SonivoxEAS" ||
-        driver == "DLS Synth") {
+    if (drumstick::widgets::outputDriverIsConfigurable(driver)) {
         m_settingsChanged |= drumstick::widgets::configureOutputDriver(driver, this);
     }
 }

@@ -61,7 +61,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
     connect(ui.pianokeybd, &PianoKeybd::signalName, this, &VPiano::slotNoteName);
     connect(ui.actionExit, &QAction::triggered, this,  &VPiano::close);
     connect(ui.actionAbout, &QAction::triggered, this,  &VPiano::slotAbout);
-    connect(ui.actionAbout_Qt, &QAction::triggered, this,  &VPiano::slotAboutQt);
+    connect(ui.actionAbout_Qt, &QAction::triggered, qApp, &QApplication::aboutQt);
     connect(ui.actionConnections, &QAction::triggered, this,  &VPiano::slotConnections);
     connect(ui.actionPreferences, &QAction::triggered, this,  &VPiano::slotPreferences);
     connect(ui.actionNames_Font, &QAction::triggered, this, &VPiano::slotChangeFont);
@@ -226,11 +226,6 @@ void VPiano::slotAbout()
 {
     About dlgAbout(this);
     dlgAbout.exec();
-}
-
-void VPiano::slotAboutQt()
-{
-    qApp->aboutQt();
 }
 
 void VPiano::slotConnections()

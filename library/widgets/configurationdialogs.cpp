@@ -39,6 +39,32 @@
 namespace drumstick { namespace widgets {
 
 /**
+ * @brief inputDriverIsConfigurable
+ * @param driver the driver name
+ * @return true if the input driver has a configuration dialog
+ */
+bool inputDriverIsConfigurable(const QString driver)
+{
+    return (driver == "Network");
+}
+
+/**
+ * @brief outputDriverIsConfigurable
+ * @param driver the driver name
+ * @return  true if the output driver has a configuration dialog
+ */
+bool outputDriverIsConfigurable(const QString driver)
+{
+    return (driver == "Network")
+#if defined(Q_OS_LINUX)
+            || (driver == "SonivoxEAS")
+#endif
+#if defined(Q_OS_MACOS)
+            || (driver == "DLS Synth")
+#endif
+            || (driver == "FluidSynth");
+}
+/**
  * @brief Input Driver configuration dialog
  * Some RT input drivers can be configured. This function provides a
  * dialog box to show and edit the configurable parameters, and

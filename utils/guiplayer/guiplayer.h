@@ -87,7 +87,6 @@ public:
 
 public slots:
     void about();
-    void aboutQt();
     void play();
     void pause();
     void stop();
@@ -163,7 +162,6 @@ private:
     Player* m_player;
     Ui::GUIPlayerClass* m_ui;
     QPointer<QProgressDialog> m_pd;
-    QPointer<About> m_aboutDlg;
     Song* m_song;
 
     QString m_subscription;

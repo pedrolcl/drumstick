@@ -43,7 +43,6 @@ public slots:
     void writeSettings();
 
     void slotAbout();
-    void slotAboutQt();
     void slotConnections();
     void slotPreferences();
 
