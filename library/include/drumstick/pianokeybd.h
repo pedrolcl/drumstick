@@ -152,7 +152,7 @@ namespace drumstick { namespace widgets {
     /**
      * @brief The PianoKeybd class
      *
-     * This class is a widget providing the look and behavior of a musical piano
+     * This class is a widget providing the look and behavior of a musical piano keyboard.
      */
     class DRUMSTICK_EXPORT PianoKeybd : public QGraphicsView, public RawKbdHandler
     {

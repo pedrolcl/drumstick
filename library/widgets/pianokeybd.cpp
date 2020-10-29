@@ -203,7 +203,6 @@ class PianoKeybd::PianoKeybdPrivate {
 public:
     PianoKeybdPrivate(): m_rotation(0), m_scene(nullptr), m_rawMap(nullptr)
     { }
-
     ~PianoKeybdPrivate() = default;
 
     int m_rotation;
@@ -211,6 +210,13 @@ public:
     KeyboardMap *m_rawMap;
 };
 
+/**
+ * @brief Constructor
+ *
+ * This is the usual constructor when using QtDesigner and without providing
+ * custom settings, using the default octave, number of keys and starting key.
+ * @param parent Widget's parent
+ */
 PianoKeybd::PianoKeybd(QWidget *parent) 
     : QGraphicsView(parent), d(new PianoKeybdPrivate())
 {
@@ -218,6 +224,14 @@ PianoKeybd::PianoKeybd(QWidget *parent)
     initScene(DEFAULTBASEOCTAVE, DEFAULTNUMBEROFKEYS, DEFAULTSTARTINGKEY);
 }
 
+/**
+ * @brief Constructor providing not only a parent widget, but also
+ * custom values for octave, number of keys and starting key.
+ * @param baseOctave The base octave number
+ * @param numKeys The number of displayed keys
+ * @param startKey The startup key
+ * @param parent The widget's parent
+ */
 PianoKeybd::PianoKeybd(const int baseOctave, const int numKeys, const int startKey, QWidget *parent)
     : QGraphicsView(parent), d(new PianoKeybdPrivate)
 {
@@ -225,6 +239,9 @@ PianoKeybd::PianoKeybd(const int baseOctave, const int numKeys, const int startK
     initScene(baseOctave, numKeys, startKey);
 }
 
+/**
+ * @brief Destructor
+ */
 PianoKeybd::~PianoKeybd()
 {
     d->m_scene->setRawKeyboardMode(false);
@@ -243,7 +260,6 @@ PianoHandler *PianoKeybd::getPianoHandler() const
     return d->m_scene->getPianoHandler();
 }
 
-
 /**
  * Assigns a PianoHandler pointer for processing note events.
  *
@@ -257,71 +273,138 @@ void PianoKeybd::setPianoHandler(PianoHandler *handler)
     d->m_scene->setPianoHandler(handler);
 }
 
+/**
+ * Returns the palette used for highlighting the played keys
+ * @return The PianoPalette used to highlight the played keys
+ */
 PianoPalette PianoKeybd::getHighlightPalette() const
 {
     return d->m_scene->getHighlightPalette();
 }
 
+/**
+ * Assigns the palette used for highlighting the played keys.
+ * @param p PianoPalette const reference
+ */
 void PianoKeybd::setHighlightPalette(const PianoPalette& p)
 {
     d->m_scene->setHighlightPalette(p);
 }
 
+/**
+ * Returns the palette used to paint the keys' background.
+ * @return The PianoPalette used to paint the keys' background
+ */
 PianoPalette PianoKeybd::getBackgroundPalette() const
 {
     return d->m_scene->getBackgroundPalette();
 }
 
+/**
+ * Assigns the palette used to paint the keys' background.
+ * @param p PianoPalette const reference
+ */
 void PianoKeybd::setBackgroundPalette(const PianoPalette& p)
 {
     d->m_scene->setBackgroundPalette(p);
 }
 
+/**
+ * Returns the palette used to paint texts over the keys like the note names
+ * or custom labels.
+ * @return The PianoPalette used to paint the keys' foreground
+ */
 PianoPalette PianoKeybd::getForegroundPalette() const
 {
     return d->m_scene->getForegroundPalette();
 }
 
+/**
+ * Assigns the palette used to paint texts over the keys like the note names
+ * or custom labels.
+ * @param p PianoPalette const reference
+ */
 void PianoKeybd::setForegroundPalette(const PianoPalette &p)
 {
     d->m_scene->setForegroundPalette(p);
 }
 
+/**
+ * Returns true if the color scale background palette is assigned and active.
+ * @return whether the color scale display is enabled or not
+ */
 bool PianoKeybd::showColorScale() const
 {
     return d->m_scene->showColorScale();
 }
 
+/**
+ * Enables or disables the color scale background palette.
+ * @param show the color scale activation state
+ */
 void PianoKeybd::setShowColorScale(const bool show)
 {
     d->m_scene->setShowColorScale(show);
 }
 
+/**
+ * Assigns a list of custom text labels to be displayer over the keys.
+ *
+ * This can be used for instance, to display the names of the percussion sounds for
+ * General MIDI channel 10. The number of elements should be 128, when
+ * naming the whole set of MIDI notes, or at least 12 when naming the note names,
+ * in which case an octave designation may be attached to the supplied name.
+ * @param names list of key labels
+ */
 void PianoKeybd::useCustomNoteNames(const QStringList &names)
 {
     d->m_scene->useCustomNoteNames(names);
 }
 
+/**
+ * Disables the custom note names usage as labels over the keys, and restores
+ * the standard note names instead.
+ */
 void PianoKeybd::useStandardNoteNames()
 {
     d->m_scene->useStandardNoteNames();
 }
 
+/**
+ * Returns the list of custom note names.
+ * @return the list of custom key names
+ */
 QStringList PianoKeybd::customNoteNames() const
 {
     return d->m_scene->customNoteNames();
 }
 
+/**
+ * Returns the list of standard note names.
+ * @return the list of standard key names
+ */
 QStringList PianoKeybd::standardNoteNames() const
 {
     return d->m_scene->standardNoteNames();
 }
 
+/**
+ * Updates the standard names of notes according to the
+ * currently active program language translation.
+ * The custom note names are not affected.
+ */
 void PianoKeybd::retranslate()
 {
     d->m_scene->retranslate();
 }
 
+/**
+ * Creates and initializes a new PianoScene instance and assigns it to this widget.
+ * @param base octave base number
+ * @param num number of displayed keys
+ * @param strt starting note number
+ * @param c single default highlight color
+ */
 void PianoKeybd::initScene(int base, int num, int strt, const QColor& c)
 {
     d->m_scene = new PianoScene(base, num, strt, c, this);
@@ -332,6 +415,10 @@ void PianoKeybd::initScene(int base, int num, int strt, const QColor& c)
     setScene(d->m_scene);
 }
 
+/**
+ * This method is called from the available constructors
+ * to initialize some widget attributes, settings, and optimizations.
+ */
 void PianoKeybd::initialize()
 {
     setAttribute(Qt::WA_AcceptTouchEvents);
@@ -348,13 +435,23 @@ void PianoKeybd::initialize()
     resetRawKeyboardMap();
 }
 
+/**
+ * This method overrides QGraphicsView::resizeEvent()
+ * to keep the aspect ratio of the keys scene when the view is resized.
+ * @param event
+ */
 void PianoKeybd::resizeEvent(QResizeEvent *event)
 {
     QGraphicsView::resizeEvent(event);
     fitInView(d->m_scene->sceneRect(), Qt::KeepAspectRatio);
 }
 
-
+/**
+ * This method changes the number of displayed keys
+ * and the starting key number, keeping the other settings the same.
+ * @param numKeys The new number of keys
+ * @param startKey The number of the starting key
+ */
 void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
 {
     if ( numKeys != d->m_scene->numKeys() || startKey != d->m_scene->startKey() )
@@ -399,6 +496,10 @@ void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
     }
 }
 
+/**
+ * Rotates the keyboard view an angle clockwise.
+ * @param r rotating angle in degrees to rotate.
+ */
 void PianoKeybd::setRotation(int r)
 {
     if (r != d->m_rotation) {
@@ -409,6 +510,10 @@ void PianoKeybd::setRotation(int r)
     }
 }
 
+/**
+ * Overrides QGraphicsView::sizeHint() providing a size value based on the piano scene.
+ * @return The sizeHint property of the piano view
+ */
 QSize PianoKeybd::sizeHint() const 
 { 
     return mapFromScene(sceneRect()).boundingRect().size();
@@ -433,6 +538,10 @@ bool PianoKeybd::handleKeyReleased(int keycode)
     return false;
 }
 
+/**
+ * Returns the base octave number.
+ * @return the base octave number
+ */
 int PianoKeybd::baseOctave() const
 {
     return d->m_scene->baseOctave();
