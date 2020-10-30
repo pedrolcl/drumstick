@@ -12,7 +12,7 @@ To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/
 This is the reference documentation for drumstick. These libraries are a set of C++ MIDI related classes,
 using Qt5 objects, idioms and style.
 
-Currently, there are four libraries designed to work together when needed:
+Currently, there are four libraries designed to work together if/when needed:
 - \b Drumstick::ALSA is a Linux only C++/Qt wrapper around the ALSA Sequencer API. ALSA sequencer provides software support for MIDI technology on Linux.
 - \b Drumstick::File provides easy multiplatform file I/O for Standard MIDI Files (.mid) and Cakewalk (.wrk) file formats.
 - \b Drumstick::RT is a realtime MIDI I/O library with pluggable backends. It uses Drumstick::ALSA on Linux, and other native frameworks on macOS and Windows.
@@ -43,17 +43,17 @@ Linux technology.
 Here is how a simple program playing notes using Drumstick::ALSA looks like:
 
 @code
-#include <QApplication>
-#include <drumstick.h>
+#include <QCoreApplication>
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaevent.h>
 
-int main(int argc, char **argv) {
-    QApplication app(argc, argv, false);
-
+int main(int argc, char **argv)
+{
+    QCoreApplication app(argc, argv);
     // create a client object on the heap
     drumstick::ALSA::MidiClient *client = new drumstick::ALSA::MidiClient;
     client->open();
     client->setClientName( "MyClient" );
-
     // create the port. The pointer is owned by the client instance
     drumstick::ALSA::MidiPort *port = client->createPort();
     port->setPortName( "MyPort" );
@@ -61,12 +61,11 @@ int main(int argc, char **argv) {
     port->setPortType( SND_SEQ_PORT_TYPE_MIDI_GENERIC );
     // subscribe the port to some other client:port
     port->subscribeTo( "128:0" ); // or "name:port", like in "FluidSynth:0"
-
-    QList<int> notes = { 60, 62, 64, 65, 67, 69, 71, 72 };
-    for(int i = 0; i < notes.length(); ++i)
+    QList<int> notelist{ 60, 62, 64, 65, 67, 69, 71, 72 };
+    for(auto note : notelist)
     {
         // create event objects on the stack, to send note on/off messages
-        drumstick::ALSA::NoteOnEvent ev1( 0, notes[i], 100 ); // (channel, note number, velocity)
+        drumstick::ALSA::NoteOnEvent ev1( 0, note, 100 ); // (channel, note number, velocity)
         ev1.setSource( port->getPortId() );
         ev1.setSubscribers();   // deliver to all the connected ports
         ev1.setDirect();        // not scheduled, deliver immediately
@@ -75,7 +74,7 @@ int main(int argc, char **argv) {
 
         QThread::msleep(250);   // wait a quarter second
 
-        drumstick::ALSA::NoteOffEvent ev2( 0, notes[i], 0 ); // (channel, note number, velocity)
+        drumstick::ALSA::NoteOffEvent ev2( 0, note, 0 ); // (channel, note number, velocity)
         ev2.setSource( port->getPortId() );
         ev2.setSubscribers();   // deliver to all the connected ports
         ev2.setDirect();        // not scheduled, deliver immediately
@@ -96,27 +95,28 @@ Drumstick::RT library, which is multiplatform. An example equivalent to the
 former one, but implemented using the Drumstick::RT library looks like this:
 
 @code
-#include <QApplication>
-#include <drumstick.h>
+#include <QCoreApplication>
+#include <QThread>
+#include <QDebug>
+#include <drumstick/backendmanager.h>
+#include <drumstick/rtmidioutput.h>
 
 int main(int argc, char **argv) {
-    QApplication app(argc, argv, false);
-
+    QCoreApplication app(argc, argv);
     drumstick::rt::BackendManager man;
-    drumstick::rt::MIDIOutput* output = man.outputBackendByName("ALSA");
+    drumstick::rt::MIDIOutput* output = man.outputBackendByName("SonivoxEAS");
     if (output != 0) {
         qDebug() << "testing backend: " << output->backendName();
         qDebug() << "public name " << output->publicName();
-        foreach(const QString& c, output->connections()) {
-            qDebug() << "port " << c;
-        }
-        output->open("FLUID Synth (qsynth):0");
-        QList<int> notes = { 60, 62, 64, 65, 67, 69, 71, 72 };
-        for(int i = 0; i < notes.length(); ++i)
+        auto conn = output->connections().first();
+        qDebug() << "port " << conn.first;
+        output->open(conn);
+        QList<int> note_list{ 60, 62, 64, 65, 67, 69, 71, 72 };
+        for(auto midi_note : note_list)
         {
-            output->sendNoteOn(0, notes[i], 100);
+            output->sendNoteOn(0, midi_note, 100);
             QThread::msleep(250); // wait a quarter second
-            output->sendNoteOff(0, notes[i], 0);
+            output->sendNoteOff(0, midi_note, 0);
         }
         output->close();
     }
@@ -130,11 +130,15 @@ using Drumstick::ALSA again, because ALSA Sequencer is capable of event scheduli
 (that is why it is called a Sequencer).
 
 @code
-#include <QApplication>
-#include <drumstick.h>
+#include <QCoreApplication>
+#include <drumstick/alsaclient.h>
+#include <drumstick/alsaport.h>
+#include <drumstick/alsaqueue.h>
+#include <drumstick/alsaevent.h>
 
-int main(int argc, char **argv) {
-    QApplication app(argc, argv, false);
+int main(int argc, char **argv)
+{
+    QCoreApplication app(argc, argv);
     drumstick::ALSA::MidiClient *client = new drumstick::ALSA::MidiClient;
     client->open();
     client->setClientName( "MyClient" );
@@ -147,23 +151,24 @@ int main(int argc, char **argv) {
 
     drumstick::ALSA::MidiQueue *queue = client->createQueue( "MyQueue" );
     drumstick::ALSA::QueueTempo tempo = queue->getTempo();
+    tempo.setPPQ( 120 );
     tempo.setNominalBPM( 120 );
     queue->setTempo(tempo);
     client->drainOutput();
     queue->start();
 
     int tick = 0;
-    QList<int> notes = { 60, 62, 64, 65, 67, 69, 71, 72 };
-    for(int i = 0; i < notes.length(); ++i)
+    QList<int> notelist{ 60, 62, 64, 65, 67, 69, 71, 72 };
+    for(auto midinote : notelist)
     {
-        drumstick::ALSA::NoteOnEvent ev1( 0, notes[i], 100 );
+        drumstick::ALSA::NoteOnEvent ev1( 0, midinote, 100 );
         ev1.setSource( port->getPortId() );
         ev1.setSubscribers();
         ev1.scheduleTick(queue->getId(), tick, false);
         client->output( &ev1 );
 
         tick += 60;
-        drumstick::ALSA::NoteOffEvent ev2( 0, notes[i], 0 );
+        drumstick::ALSA::NoteOffEvent ev2( 0, midinote, 0 );
         ev2.setSource( port->getPortId() );
         ev2.setSubscribers();
         ev2.scheduleTick(queue->getId(), tick, false);
@@ -172,7 +177,6 @@ int main(int argc, char **argv) {
     client->drainOutput();
     client->synchronizeOutput();
     queue->stop();
-
     // close and clean
     client->close();
     delete client;
@@ -227,6 +231,13 @@ cmake .. -DCMAKE_PREFIX_PATH=$HOME/Qt/5.12.9/gcc_64 -DDrumstick_DIR=$HOME/Source
 cmake --build .
 @endcode
 
+To run your Drumstick::RT programs without installing Drumstick, you may need to use an environment
+variable to indicate the location of the plugins, like this:
+
+@code
+export DRUMSTICKRT=$HOME/Source/Drumstick/build/lib/drumstick2/
+./example
+@endcode
 
 There are more examples in the source tree, under the utils/ directory, and
 you can also see applications using this library, like kmetronome, kmidimon and VMPK.
