@@ -227,12 +227,12 @@ without needing to install Drumstick. In this case:
 @code
 mkdir build
 cd build
-cmake .. -DCMAKE_PREFIX_PATH=$HOME/Qt/5.12.9/gcc_64 -DDrumstick_DIR=$HOME/Source/Drumstick/build"
+cmake .. -DCMAKE_PREFIX_PATH=$HOME/Qt/5.12.9/gcc_64 -DDrumstick_DIR=$HOME/Source/Drumstick/build
 cmake --build .
 @endcode
 
-To run your Drumstick::RT programs without installing Drumstick, you may need to use an environment
-variable to indicate the location of the plugins, like this:
+To run your Drumstick::RT programs without installing Drumstick and your program, you may need
+to use an environment variable to indicate the location of the plugins, like this:
 
 @code
 export DRUMSTICKRT=$HOME/Source/Drumstick/build/lib/drumstick2/

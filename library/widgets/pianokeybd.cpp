@@ -283,7 +283,9 @@ PianoPalette PianoKeybd::getHighlightPalette() const
 }
 
 /**
- * Assigns the palette used for highlighting the played keys.
+ * Assigns the palette used for highlighting the played keys. When the palette
+ * has a single color, the method setKeyPressedColor() may be used instead.
+ * @see setKeyPressedColor()
  * @param p PianoPalette const reference
  */
 void PianoKeybd::setHighlightPalette(const PianoPalette& p)
@@ -540,6 +542,7 @@ bool PianoKeybd::handleKeyReleased(int keycode)
 
 /**
  * Returns the base octave number.
+ * @see setBaseOctave()
  * @return the base octave number
  */
 int PianoKeybd::baseOctave() const
@@ -547,211 +550,394 @@ int PianoKeybd::baseOctave() const
     return d->m_scene->baseOctave();
 }
 
+/**
+ * Assigns the base octave number.
+ * @param baseOctave the base octave number
+ */
 void PianoKeybd::setBaseOctave(const int baseOctave)
 {
     d->m_scene->setBaseOctave(baseOctave);
 }
 
+/**
+ * Returns the total number of keys
+ * @see setNumKeys()
+ * @return the number of keys displayed
+ */
 int PianoKeybd::numKeys() const
 {
     return d->m_scene->numKeys();
 }
 
+/**
+ * Returns the starting key note: C=0, A=9 and so on.
+ * @return the starting key note.
+ */
 int PianoKeybd::startKey() const
 {
     return d->m_scene->startKey();
 }
 
+/**
+ * Returns the rotation angle in degrees, clockwise, of the piano view.
+ * @return the rotation angle in degrees.
+ */
 int PianoKeybd::getRotation() const
 {
     return d->m_rotation;
 }
 
+/**
+ * Returns the key highlight color.
+ * @return the key highlight color
+ */
 QColor PianoKeybd::getKeyPressedColor() const
 {
     return d->m_scene->getKeyPressedColor();
 }
 
+/**
+ * Assigns a single color for key highlight. This is an alternative to creating a
+ * highlight palette with a single color and assigning it.
+ * @see setHighlightPalette()
+ * @param c color for key highlight
+ */
 void PianoKeybd::setKeyPressedColor(const QColor& c)
 {
     d->m_scene->setKeyPressedColor(c);
 }
 
+/**
+ * Assigns the default highlight palette colors and assigns it to the scene.
+ */
 void PianoKeybd::resetKeyPressedColor()
 {
     d->m_scene->resetKeyPressedColor();
 }
 
+/**
+ * Returns the label visibility policy.
+ * @see setShowLabels()
+ * @return the label visibility policy
+ */
 LabelVisibility PianoKeybd::showLabels() const
 {
     return d->m_scene->showLabels();
 }
 
+/**
+ * Assigns the label visibility policy.
+ * @see LabelVisibility
+ * @param show the label visibility policy
+ */
 void PianoKeybd::setShowLabels(const LabelVisibility show)
 {
     d->m_scene->setShowLabels(show);
 }
 
+/**
+ * Returns the label alterations policy.
+ * @see setLabelAlterations()
+ * @return the label alterations policy
+ */
 LabelAlteration PianoKeybd::labelAlterations() const
 {
     return d->m_scene->alterations();
 }
 
+/**
+ * Assigns the label alterations policy.
+ * @see LabelAlteration
+ * @param use the label alterations policy
+ */
 void PianoKeybd::setLabelAlterations(const LabelAlteration use)
 {
     d->m_scene->setAlterations(use);
 }
 
+/**
+ * Returns the labels orientation policy.
+ * @see setLabelOrientation()
+ * @return the labels orientation policy
+ */
 LabelOrientation PianoKeybd::labelOrientation() const
 {
     return d->m_scene->getOrientation();
 }
 
+/**
+ * Assigns the labels orientation policy.
+ * @see LabelOrientation
+ * @param orientation the labels orientation policy
+ */
 void PianoKeybd::setLabelOrientation(const LabelOrientation orientation)
 {
     d->m_scene->setOrientation(orientation);
 }
 
+/**
+ * Returns the octave label policy.
+ * @see setLabelOctave()
+ * @return the octave label policy
+ */
 LabelCentralOctave PianoKeybd::labelOctave() const
 {
     return d->m_scene->getOctave();
 }
 
+/**
+ * Assigns the octave label policy
+ * @see LabelCentralOctave
+ * @param octave the octave label policy
+ */
 void PianoKeybd::setLabelOctave(const LabelCentralOctave octave)
 {
     d->m_scene->setOctave(octave);
 }
 
+/**
+ * Returns the transpose amount in semitones.
+ * @see setTranspose()
+ * @return the transpose amount in semitones
+ */
 int PianoKeybd::getTranspose() const
 {
     return d->m_scene->getTranspose();
 }
 
+/**
+ * Assigns the transpose amount in semitones.
+ * @see getTranspose()
+ * @param t the transpose amount in semitones
+ */
 void PianoKeybd::setTranspose(int t)
 {
     d->m_scene->setTranspose(t);
 }
 
+/**
+ * Returns the MIDI Channel (0-15).
+ * @return the MIDI Channel (0-15)
+ */
 int PianoKeybd::getChannel() const
 {
     return d->m_scene->getChannel();
 }
 
+/**
+ * Assigns the MIDI Channel (0-15).
+ * @param c the MIDI Channel (0-15)
+ */
 void PianoKeybd::setChannel(const int c)
 {
     d->m_scene->setChannel(c);
 }
 
+/**
+ * Returns the MIDI note velocity
+ * @see setVelocity()
+ * @return  the MIDI note velocity
+ */
 int PianoKeybd::getVelocity() const
 {
     return d->m_scene->getVelocity();
 }
 
+/**
+ * Assigns the MIDI note velocity.
+ * @see getVelocity()
+ * @param v the MIDI note velocity
+ */
 void PianoKeybd::setVelocity(const int v)
 {
     d->m_scene->setVelocity(v);
 }
 
+/**
+ * Returns whether the computer keyboard is enabled.
+ * @return true if the computer keyboard is enabled.
+ */
 bool PianoKeybd::isKeyboardEnabled() const
 {
     return d->m_scene->isKeyboardEnabled();
 }
 
+/**
+ * Enables or disables the computer keyboard note input.
+ * @param enable the computer keyboard note input.
+ */
 void PianoKeybd::setKeyboardEnabled(const bool enable)
 {
     d->m_scene->setKeyboardEnabled(enable);
 }
 
+/**
+ * Returns whether the mouse note input is enabled.
+ * @return true if the mouse note input is enabled
+ */
 bool PianoKeybd::isMouseEnabled() const
 {
     return d->m_scene->isMouseEnabled();
 }
 
+/**
+ * Enables or disables the mouse note input.
+ * @param enable the mouse note input
+ */
 void PianoKeybd::setMouseEnabled(const bool enable)
 {
     d->m_scene->setMouseEnabled(enable);
 }
 
+/**
+ * Returns whether the touch screen note input is enabled.
+ * @return true if the touch screen note input is enabled
+ */
 bool PianoKeybd::isTouchEnabled() const
 {
     return d->m_scene->isTouchEnabled();
 }
 
+/**
+ * Enables or disables the touch screen note input.
+ * @param enable the touch screen note input.
+ */
 void PianoKeybd::setTouchEnabled(const bool enable)
 {
     d->m_scene->setTouchEnabled(enable);
 }
 
+/**
+ * Returns whether the note MIDI velocity influences the highlight color tint.
+ * @return true if the note MIDI velocity influences the highlight color tint
+ */
 bool PianoKeybd::velocityTint() const
 {
     return d->m_scene->velocityTint();
 }
 
+/**
+ * Enables or disables the note MIDI velocity influencing the highlight color tint.
+ * @param enable the note MIDI velocity influencing the highlight color tint
+ */
 void PianoKeybd::setVelocityTint(const bool enable)
 {
     d->m_scene->setVelocityTint(enable);
 }
 
+/**
+ * Forces all active notes to silence.
+ */
 void PianoKeybd::allKeysOff()
 {
     d->m_scene->allKeysOff();
 }
 
+/**
+ * Assigns the computer keyboard note map.
+ * @param m the computer keyboard note map.
+ */
 void PianoKeybd::setKeyboardMap(KeyboardMap* m)
 {
     d->m_scene->setKeyboardMap(m);
 }
 
+/**
+ * Returns the computer keyboard note map.
+ * @return the computer keyboard note map
+ */
 KeyboardMap* PianoKeybd::getKeyboardMap()
 {
     return d->m_scene->getKeyboardMap();
 }
 
+/**
+ * Resets the computer keyboard note map to the default one.
+ */
 void PianoKeybd::resetRawKeyboardMap()
 {
     d->m_rawMap = &g_DefaultRawKeyMap;
 }
 
+/**
+ * Returns the low level computer keyboard note map.
+ * @return the low level computer keyboard note map
+ */
 bool PianoKeybd::getRawKeyboardMode() const
 {
     return d->m_scene->getRawKeyboardMode();
 }
 
+/**
+ * Enables or disables the low level computer keyboard mode.
+ * @param b the low level computer keyboard mode
+ */
 void PianoKeybd::setRawKeyboardMode(const bool b)
 {
     d->m_scene->setRawKeyboardMode(b);
 }
 
+/**
+ * Resets the low level computer keyboard note map to the default one.
+ */
 void PianoKeybd::resetKeyboardMap()
 {
     d->m_scene->setKeyboardMap(&g_DefaultKeyMap);
 }
 
+/**
+ * Assigns the low level computer keyboard note map.
+ * @param m the low level computer keyboard note map
+ */
 void PianoKeybd::setRawKeyboardMap(KeyboardMap *m)
 {
     d->m_rawMap = m;
 }
 
+/**
+ * Returns the low level computer keyboard note map.
+ * @return the low level computer keyboard note map
+ */
 KeyboardMap *PianoKeybd::getRawKeyboardMap()
 {
     return d->m_rawMap;
 }
 
+/**
+ * Highlights one note key with the specified color and velocity
+ * @param note The MIDI note number
+ * @param color The highlight color
+ * @param vel The MIDI note velocity
+ */
 void PianoKeybd::showNoteOn(const int note, QColor color, int vel)
 {
     d->m_scene->showNoteOn(note, color, vel);
 }
 
+/**
+ * Highlights one note key with the specified velocity
+ * @param note The MIDI note number
+ * @param vel The MIDI note velocity
+ */
 void PianoKeybd::showNoteOn(const int note, int vel)
 {
     d->m_scene->showNoteOn(note, vel);
 }
 
+/**
+ * Shows inactive one note key with the specified velocity
+ * @param note The MIDI note number
+ * @param vel The MIDI note velocity
+ */
 void PianoKeybd::showNoteOff(const int note, int vel)
 {
     d->m_scene->showNoteOff(note, vel);
 }
 
+/**
+ * Assigns a typographic font for drawing the note labels.
+ * @param font typographic font for drawing the note labels
+ */
 void PianoKeybd::setFont(const QFont &font)
 {
     QWidget::setFont(font);
