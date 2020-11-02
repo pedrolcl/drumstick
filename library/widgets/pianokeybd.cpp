@@ -935,7 +935,7 @@ void PianoKeybd::showNoteOff(const int note, int vel)
 }
 
 /**
- * Assigns a typographic font for drawing the note labels.
+ * Assigns a typographic font for drawing the note labels over the piano keys.
  * @param font typographic font for drawing the note labels
  */
 void PianoKeybd::setFont(const QFont &font)

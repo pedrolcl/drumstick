@@ -106,6 +106,14 @@ static qreal sceneWidth(int keys) {
     return KEYWIDTH * qCeil( keys * 7.0 / 12.0 );
 }
 
+/**
+ * Constructor.
+ * @param baseOctave octave base number
+ * @param numKeys number of keys
+ * @param startKey starting key
+ * @param keyPressedColor highlight keys color
+ * @param parent owner object
+ */
 PianoScene::PianoScene ( const int baseOctave,
                          const int numKeys,
                          const int startKey,
@@ -156,19 +164,34 @@ PianoScene::PianoScene ( const int baseOctave,
     retranslate();
 }
 
+/**
+ * Destructor.
+ */
 PianoScene::~PianoScene()
 { }
 
+/**
+ * Returns the calculated size of the scene.
+ * @return the calculated size of the scene
+ */
 QSize PianoScene::sizeHint() const
 {
     return {static_cast<int>(sceneWidth(d->m_numKeys)), KEYHEIGHT};
 }
 
+/**
+ * Assigns the computer keyboard note map.
+ * @param map the computer keyboard note map.
+ */
 void PianoScene::setKeyboardMap(KeyboardMap *map)
 {
     d->m_keybdMap = map;
 }
 
+/**
+ * Returns the computer keyboard note map.
+ * @return the computer keyboard note map
+ */
 KeyboardMap *PianoScene::getKeyboardMap() const
 {
     return d->m_keybdMap;
@@ -199,11 +222,19 @@ void PianoScene::setPianoHandler(PianoHandler *handler)
     d->m_handler = handler;
 }
 
+/**
+ * Returns the palette used for highlighting the played keys
+ * @return The PianoPalette used to highlight the played keys
+ */
 PianoPalette PianoScene::getHighlightPalette()
 {
     return d->m_hilightPalette;
 }
 
+/**
+ * Displays the note label over a highligted key
+ * @param key the activated key
+ */
 void PianoScene::displayKeyOn(PianoKey* key)
 {
     key->setPressed(true);
@@ -219,6 +250,12 @@ void PianoScene::displayKeyOn(PianoKey* key)
     }
 }
 
+/**
+ * Displays highlighted the activated key with the supplied color and note velocity
+ * @param key the activated key
+ * @param color the highlight color
+ * @param vel the MIDI note velocity
+ */
 void PianoScene::showKeyOn( PianoKey* key, QColor color, int vel )
 {
     if (d->m_velocityTint && vel >= 0 && color.isValid() ) {
@@ -228,14 +265,25 @@ void PianoScene::showKeyOn( PianoKey* key, QColor color, int vel )
     displayKeyOn(key);
 }
 
+/**
+ * Displays highlighted the activated key with the supplied note velocity
+ * @param key the activated key
+ * @param vel the MIDI note velocity
+ */
 void PianoScene::showKeyOn( PianoKey* key, int vel )
 {
     setHighlightColorFromPolicy(key, vel);
     displayKeyOn(key);
 }
 
-void PianoScene::showKeyOff( PianoKey* key, int )
+/**
+ * Displays as deactivated a key
+ * @param key the deactivated key
+ * @param vel the MIDI note velocity
+ */
+void PianoScene::showKeyOff( PianoKey* key, int vel)
 {
+    Q_UNUSED(vel)
     key->setPressed(false);
     emit signalName(QString());
     KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().constFirst());
@@ -247,6 +295,12 @@ void PianoScene::showKeyOff( PianoKey* key, int )
     }
 }
 
+/**
+ * Displays highlighted the corresponding key for a given MIDI note, with a color and MIDI velocity
+ * @param note The MIDI note number
+ * @param color The highlight color
+ * @param vel The MIDI note velocity
+ */
 void PianoScene::showNoteOn( const int note, QColor color, int vel )
 {
     int n = note - d->m_baseOctave*12 - d->m_transpose;
@@ -254,6 +308,11 @@ void PianoScene::showNoteOn( const int note, QColor color, int vel )
         showKeyOn(d->m_keys.value(n), color, vel);
 }
 
+/**
+ * Displays highlighted the corresponding key for a given MIDI note, with MIDI velocity
+ * @param note The MIDI note number
+ * @param vel The MIDI note velocity
+ */
 void PianoScene::showNoteOn( const int note, int vel )
 {
     int n = note - d->m_baseOctave*12 - d->m_transpose;
@@ -262,6 +321,11 @@ void PianoScene::showNoteOn( const int note, int vel )
     }
 }
 
+/**
+ * Displays deactivated the corresponding key for a given MIDI note, with MIDI velocity
+ * @param note The MIDI note number
+ * @param vel The MIDI note velocity
+ */
 void PianoScene::showNoteOff( const int note, int vel )
 {
     int n = note - d->m_baseOctave*12 - d->m_transpose;
@@ -270,8 +334,20 @@ void PianoScene::showNoteOff( const int note, int vel )
     }
 }
 
+/**
+ * Returns the base octave number.
+ * @see setBaseOctave()
+ * @return the base octave number
+ */
 int PianoScene::baseOctave() const { return d->m_baseOctave; }
 
+/**
+ * Performs a Note On MIDI event for the given MIDI note number and velocity.
+ * If a PianoHandler instance is assigned, its PianoHandler::noteOn() method is called,
+ * otherwise the noteOn() signal is triggered.
+ * @param note The MIDI note number
+ * @param vel The MIDI velocity
+ */
 void PianoScene::triggerNoteOn( const int note, const int vel )
 {
     int n = d->m_baseOctave*12 + note + d->m_transpose;
@@ -284,6 +360,13 @@ void PianoScene::triggerNoteOn( const int note, const int vel )
     }
 }
 
+/**
+ * Performs a Note Off MIDI event for the given MIDI note number and velocity.
+ * If a PianoHandler instance is assigned, its PianoHandler::noteOff() method is called,
+ * otherwise the noteOff() signal is triggered.
+ * @param note The MIDI note number
+ * @param vel The MIDI velocity
+ */
 void PianoScene::triggerNoteOff( const int note, const int vel )
 {
     int n = d->m_baseOctave*12 + note + d->m_transpose;
@@ -296,6 +379,12 @@ void PianoScene::triggerNoteOff( const int note, const int vel )
     }
 }
 
+/**
+ * Assigns to the given key the highlight color from the active highlight palette
+ * and the given MIDI velocity.
+ * @param key The given piano key
+ * @param vel The MIDI note velocity
+ */
 void PianoScene::setHighlightColorFromPolicy(PianoKey* key, int vel)
 {
     QColor c;
@@ -322,18 +411,31 @@ void PianoScene::setHighlightColorFromPolicy(PianoKey* key, int vel)
     }
 }
 
+/**
+ * Produces a MIDI Note On event and highlights the given key
+ * @param key The given key
+ */
 void PianoScene::keyOn( PianoKey* key )
 {
     triggerNoteOn(key->getNote(), d->m_velocity);
     showKeyOn(key, d->m_velocity);
 }
 
+/**
+ * Produces a MIDI Note Off event and deactivates the given key
+ * @param key The given key
+ */
 void PianoScene::keyOff( PianoKey* key )
 {
     triggerNoteOff(key->getNote(), 0);
     showKeyOff(key, 0);
 }
 
+/**
+ * Produces a MIDI Note On event and highlights the given key with the given pressure
+ * @param key The given key
+ * @param pressure The applied pressure
+ */
 void PianoScene::keyOn( PianoKey* key, qreal pressure )
 {
     int vel = d->m_velocity * pressure;
@@ -341,6 +443,11 @@ void PianoScene::keyOn( PianoKey* key, qreal pressure )
     showKeyOn(key, vel);
 }
 
+/**
+ * Produces a MIDI Note Off event and deactivates the given key with the given pressure.
+ * @param key The given key
+ * @param pressure The applied pressure
+ */
 void PianoScene::keyOff( PianoKey* key, qreal pressure )
 {
     int vel = d->m_velocity * pressure;
@@ -348,6 +455,10 @@ void PianoScene::keyOff( PianoKey* key, qreal pressure )
     showKeyOff(key, vel);
 }
 
+/**
+ * Produces a MIDI Note On event and highlights the corresponding key for the given MIDI note number.
+ * @param note The given MIDI note number
+ */
 void PianoScene::keyOn(const int note)
 {
     if (d->m_keys.contains(note))
@@ -356,6 +467,10 @@ void PianoScene::keyOn(const int note)
         triggerNoteOn(note, d->m_velocity);
 }
 
+/**
+ * Produces a MIDI Note Off event and deactivates the corresponding key for the given MIDI note number.
+ * @param note The given MIDI note number
+ */
 void PianoScene::keyOff(const int note)
 {
     if (d->m_keys.contains(note))
@@ -364,8 +479,20 @@ void PianoScene::keyOff(const int note)
         triggerNoteOff(note, d->m_velocity);
 }
 
-bool PianoScene::getRawKeyboardMode() const { return d->m_rawkbd; }
+/**
+ * Returns whether the low level computer keyboard mode is enabled.
+ * @return true if the low level computer keyboard mode is enabled
+ */
+bool PianoScene::getRawKeyboardMode() const
+{
+    return d->m_rawkbd;
+}
 
+/**
+ * Returns the piano key for the given scene point coordenates.
+ * @param p The given scene point coordenates
+ * @return
+ */
 PianoKey* PianoScene::getKeyForPos( const QPointF& p ) const
 {
     PianoKey* key = nullptr;
@@ -378,6 +505,10 @@ PianoKey* PianoScene::getKeyForPos( const QPointF& p ) const
     return key;
 }
 
+/**
+ * This event handler, for event mouseEvent, is reimplemented to receive mouse move events for the scene.
+ * @param mouseEvent The mouse move event object pointer
+ */
 void PianoScene::mouseMoveEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 {
     if (d->m_mouseEnabled) {
@@ -396,6 +527,10 @@ void PianoScene::mouseMoveEvent ( QGraphicsSceneMouseEvent * mouseEvent )
     }
 }
 
+/**
+ * This event handler, for event mouseEvent, is reimplemented to receive mouse press events for the scene.
+ * @param mouseEvent The mouse press event object pointer
+ */
 void PianoScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 {
     if (d->m_mouseEnabled) {
@@ -409,6 +544,10 @@ void PianoScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent )
     }
 }
 
+/**
+ * This event handler, for event mouseEvent, is reimplemented to receive mouse release events for the scene.
+ * @param mouseEvent The mouse release event object pointer
+ */
 void PianoScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 {
     if (d->m_mouseEnabled) {
@@ -422,6 +561,11 @@ void PianoScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent )
     }
 }
 
+/**
+ * Returns the note number for the given computer keyboard key code.
+ * @param key The given computer keyboard key code
+ * @return The note number
+ */
 int PianoScene::getNoteFromKey( const int key ) const
 {
     if (d->m_keybdMap != nullptr) {
@@ -434,6 +578,11 @@ int PianoScene::getNoteFromKey( const int key ) const
     return -1;
 }
 
+/**
+ * Returns the piano key object corresponding to the given computer keyboard key.
+ * @param key The given computer keyboard key
+ * @return The Piano Key object pointer
+ */
 PianoKey* PianoScene::getPianoKey( const int key ) const
 {
     int note = getNoteFromKey(key);
@@ -442,6 +591,10 @@ PianoKey* PianoScene::getPianoKey( const int key ) const
     return nullptr;
 }
 
+/**
+ * This event handler, for event keyEvent, is reimplemented to receive keypress events.
+ * @param keyEvent The computer keyboard pressed event
+ */
 void PianoScene::keyPressEvent ( QKeyEvent * keyEvent )
 {
     if ( d->m_keyboardEnabled) {
@@ -456,6 +609,10 @@ void PianoScene::keyPressEvent ( QKeyEvent * keyEvent )
     keyEvent->ignore();
 }
 
+/**
+ * This event handler, for event keyEvent, is reimplemented to receive key release events.
+ * @param keyEvent The computer keyboard released event
+ */
 void PianoScene::keyReleaseEvent ( QKeyEvent * keyEvent )
 {
     if (d->m_keyboardEnabled) {
@@ -470,6 +627,11 @@ void PianoScene::keyReleaseEvent ( QKeyEvent * keyEvent )
     keyEvent->ignore();
 }
 
+/**
+ * Processes touch screen events
+ * @param event The given event
+ * @return true if the event was processed
+ */
 bool PianoScene::event(QEvent *event)
 {
     switch(event->type()) {
@@ -529,6 +691,9 @@ bool PianoScene::event(QEvent *event)
     return QGraphicsScene::event(event);
 }
 
+/**
+ * Deactivates all keys.
+ */
 void PianoScene::allKeysOff()
 {
     foreach(PianoKey* key, d->m_keys) {
@@ -536,6 +701,12 @@ void PianoScene::allKeysOff()
     }
 }
 
+/**
+ * Assigns a single color for key highlight. This is an alternative to creating a
+ * highlight palette with a single color and assigning it.
+ * @see setHighlightPalette()
+ * @param color Color for key highlight
+ */
 void PianoScene::setKeyPressedColor(const QColor& color)
 {
     if (color.isValid()) {
@@ -548,6 +719,9 @@ void PianoScene::setKeyPressedColor(const QColor& color)
     }
 }
 
+/**
+ * Assigns the default highlight palette colors and assigns it to the scene.
+ */
 void PianoScene::resetKeyPressedColor()
 {
     d->m_hilightPalette.resetColors();
@@ -557,8 +731,18 @@ void PianoScene::resetKeyPressedColor()
     }
 }
 
-int PianoScene::getMinNote() const { return d->m_minNote; }
+/**
+ * Returns the minimum MIDI note number that will be displayed.
+ * @return the minimum MIDI note number
+ */
+int PianoScene::getMinNote() const
+{
+    return d->m_minNote;
+}
 
+/**
+ * Hides or shows keys
+ */
 void PianoScene::hideOrShowKeys()
 {
     for (PianoKey* key : qAsConst(d->m_keys)) {
@@ -568,6 +752,10 @@ void PianoScene::hideOrShowKeys()
     }
 }
 
+/**
+ * Assigns the minimum MIDI note number that will be displayed.
+ * @param note the minimum MIDI note number
+ */
 void PianoScene::setMinNote(const int note)
 {
     if (d->m_minNote != note) {
@@ -576,11 +764,19 @@ void PianoScene::setMinNote(const int note)
     }
 }
 
+/**
+ * Returns the maximum MIDI note number that will be displayed.
+ * @return the maximum MIDI note number
+ */
 int PianoScene::getMaxNote() const
 {
     return d->m_maxNote;
 }
 
+/**
+ * Assigns the maximum MIDI note number that will be displayed.
+ * @param note the maximum MIDI note number
+ */
 void PianoScene::setMaxNote(const int note)
 {
     if (d->m_maxNote != note) {
@@ -589,8 +785,19 @@ void PianoScene::setMaxNote(const int note)
     }
 }
 
-int PianoScene::getTranspose() const { return d->m_transpose; }
+/**
+ * Returns the transpose amount in semitones.
+ * @return the transpose amount in semitones
+ */
+int PianoScene::getTranspose() const
+{
+    return d->m_transpose;
+}
 
+/**
+ * Assigns the octave base number
+ * @param base the octave base number
+ */
 void PianoScene::setBaseOctave(const int base)
 { 
     if (d->m_baseOctave != base) {
@@ -600,21 +807,39 @@ void PianoScene::setBaseOctave(const int base)
     }
 }
 
+/**
+ * Returns the number of keys that will be displayed.
+ * @return the number of keys
+ */
 int PianoScene::numKeys() const
 {
     return d->m_numKeys;
 }
 
+/**
+ * Returns the first key number that will be displayed.
+ * @return the first key number
+ */
 int PianoScene::startKey() const
 {
     return d->m_startKey;
 }
 
+/**
+ * Returns whether the given note number is a octave startup note
+ * @param note The given note number
+ * @return true if the given note number is a octave startup note
+ */
 bool PianoScene::isOctaveStart(const int note)
 {
     return (note + d->m_transpose + 12) % 12 == 0;
 }
 
+/**
+ * Returns the note name string that will be displayed over a given piano key.
+ * @param key The given piano key
+ * @return the note name string
+ */
 QString PianoScene::noteName( PianoKey* key )
 {
     Q_ASSERT(key != nullptr);
@@ -665,6 +890,9 @@ QString PianoScene::noteName( PianoKey* key )
     }
 }
 
+/**
+ * Refresh the visibility and other attributes of the labels shown over the piano keys.
+ */
 void PianoScene::refreshLabels()
 {
     for (KeyLabel* lbl : qAsConst(d->m_labels)) {
@@ -682,6 +910,9 @@ void PianoScene::refreshLabels()
     }
 }
 
+/**
+ * Refresh the background colors of all the piano keys
+ */
 void PianoScene::refreshKeys()
 {
     for (PianoKey* key : qAsConst(d->m_keys)) {
@@ -695,6 +926,11 @@ void PianoScene::refreshKeys()
     }
 }
 
+/**
+ * Assigns the label visibility policy to the piano keys
+ * @see LabelVisibility
+ * @param show the new label visibility policy
+ */
 void PianoScene::setShowLabels(const LabelVisibility show)
 {
     //qDebug() << Q_FUNC_INFO << show;
@@ -704,11 +940,21 @@ void PianoScene::setShowLabels(const LabelVisibility show)
     }
 }
 
+/**
+ * Returns the alterations name policy.
+ * @see LabelAlteration, setAlterations()
+ * @return the alterations name policy
+ */
 LabelAlteration PianoScene::alterations() const
 {
     return d->m_alterations;
 }
 
+/**
+ * Assigns the alterations name policy
+ * @see LabelAlteration, alterations()
+ * @param use the new alterations name policy
+ */
 void PianoScene::setAlterations(const LabelAlteration use)
 {
     if (d->m_alterations != use) {
@@ -717,11 +963,19 @@ void PianoScene::setAlterations(const LabelAlteration use)
     }
 }
 
+/**
+ * Returns the central octave name policy.
+ * @return the central octave name policy
+ */
 LabelCentralOctave PianoScene::getOctave() const
 {
     return d->m_octave;
 }
 
+/**
+ * Assigns the label orientation policy.
+ * @param orientation the label orientation policy
+ */
 void PianoScene::setOrientation(const LabelOrientation orientation)
 {
     if (d->m_orientation != orientation) {
@@ -748,6 +1002,10 @@ LabelOrientation PianoScene::getOrientation() const
     return d->m_orientation;
 }
 
+/**
+ * Assigns the transpose amount in semitones.
+ * @param transpose the transpose amount in semitones
+ */
 void PianoScene::setTranspose(const int transpose)
 {
     if (d->m_transpose != transpose && transpose > -12 && transpose < 12) {
@@ -757,11 +1015,20 @@ void PianoScene::setTranspose(const int transpose)
     }
 }
 
+/**
+ * Returns the label visibility policy (display note names over the piano keys).
+ * @see LabelVisibility, setShowLabels()
+ * @return the label visibility policy
+ */
 LabelVisibility PianoScene::showLabels() const
 {
     return d->m_showLabels;
 }
 
+/**
+ * Assigns the low level computer keyboard mode.
+ * @param b the low level computer keyboard mode
+ */
 void PianoScene::setRawKeyboardMode(bool b)
 {
     if (d->m_rawkbd != b) {
@@ -769,36 +1036,66 @@ void PianoScene::setRawKeyboardMode(bool b)
     }
 }
 
+/**
+ * Returns the custom note names list.
+ * @return the custom note names list
+ */
 QStringList PianoScene::customNoteNames() const
 {
     return d->m_noteNames;
 }
 
+/**
+ * Returns the standard note names list.
+ * @return the standard note names list
+ */
 QStringList PianoScene::standardNoteNames() const
 {
     return d->m_names_s;
 }
 
+/**
+ * Returns the MIDI note velocity parameter that is assigned to the MIDI OUT notes.
+ * @return the MIDI note velocity
+ */
 int PianoScene::getVelocity()
 {
     return d->m_velocity;
 }
 
+/**
+ * Assigns the MIDI note velocity parameter that is assigned to the MIDI OUT notes.
+ * @param velocity the MIDI note velocity
+ */
 void PianoScene::setVelocity(const int velocity)
 {
     d->m_velocity = velocity;
 }
 
+/**
+ * Returns the MIDI channel that is assigned to the output events, or used to filter
+ * the input events (unless MIDI OMNI mode is enabled).
+ * @return the MIDI channel
+ */
 int PianoScene::getChannel() const
 {
     return d->m_channel;
 }
 
+/**
+ * Assigns the MIDI channel that is included into the output events, or used to filter
+ * the input events (unless MIDI OMNI mode is enabled).
+ * @param channel the MIDI channel
+ */
 void PianoScene::setChannel(const int channel)
 {
     d->m_channel = channel;
 }
 
+/**
+ * Assigns the list of custom note names, and enables this mode.
+ * @param names the list of custom note names
+ */
 void PianoScene::useCustomNoteNames(const QStringList& names)
 {
     //qDebug() << Q_FUNC_INFO << names;
@@ -806,6 +1103,9 @@ void PianoScene::useCustomNoteNames(const QStringList& names)
     refreshLabels();
 }
 
+/**
+ * Assigns the standard note names, clearing the list of custom note names.
+ */
 void PianoScene::useStandardNoteNames()
 {
     //qDebug() << Q_FUNC_INFO;
@@ -813,6 +1113,10 @@ void PianoScene::useStandardNoteNames()
     refreshLabels();
 }
 
+/**
+ * Enables or disables the computer keyboard note generation.
+ * @param enable the computer keyboard note generation
+ */
 void PianoScene::setKeyboardEnabled(const bool enable)
 {
     if (enable != d->m_keyboardEnabled) {
@@ -820,11 +1124,19 @@ void PianoScene::setKeyboardEnabled(const bool enable)
     }
 }
 
+/**
+ * Returns whether the computer keyboard note generation is enabled
+ * @return true if the computer keyboard note generation is enabled
+ */
 bool PianoScene::isMouseEnabled() const
 {
     return d->m_mouseEnabled;
 }
 
+/**
+ * Enables or disables the mouse note generation.
+ * @param enable the mouse note generation
+ */
 void PianoScene::setMouseEnabled(const bool enable)
 {
     if (enable != d->m_mouseEnabled) {
@@ -832,11 +1144,19 @@ void PianoScene::setMouseEnabled(const bool enable)
     }
 }
 
+/**
+ * Returns whether the touch screen note generation is enabled.
+ * @return true if the touch screen note generation is enabled
+ */
 bool PianoScene::isTouchEnabled() const
 {
     return d->m_touchEnabled;
 }
 
+/**
+ * Enables or disables the touch screen note generation.
+ * @param enable the touch screen note generation
+ */
 void PianoScene::setTouchEnabled(const bool enable)
 {
     if (enable != d->m_touchEnabled) {
@@ -844,16 +1164,27 @@ void PianoScene::setTouchEnabled(const bool enable)
     }
 }
 
+/**
+ * Returns whether the velocity parameter of note events is used to influence the highlight key colors.
+ * @return whether the velocity parameter of note events is used to influence the highlight key colors
+ */
 bool PianoScene::velocityTint() const
 {
     return d->m_velocityTint;
 }
 
+/**
+ * Enables or disables the velocity parameter of note events to influence the highlight key colors.
+ * @param enable the velocity parameter of note events to influence the highlight key colors
+ */
 void PianoScene::setVelocityTint(const bool enable)
 {
     d->m_velocityTint = enable;
 }
 
+/**
+ * Retranslates the standard note names
+ */
 void PianoScene::retranslate()
 {
     d->m_names_s = QStringList{
@@ -885,6 +1216,10 @@ void PianoScene::retranslate()
     refreshLabels();
 }
 
+/**
+ * Enables or disables the color scale key background mode.
+ * @param show the color scale key background mode
+ */
 void PianoScene::setShowColorScale(const bool show)
 {
     if (d->m_showColorScale != show) {
@@ -894,11 +1229,19 @@ void PianoScene::setShowColorScale(const bool show)
     }
 }
 
+/**
+ * Returns the single highlight palette color.
+ * @return the single highlight palette color
+ */
 QColor PianoScene::getKeyPressedColor() const
 {
     return d->m_hilightPalette.getColor(0);
 }
 
+/**
+ * Assigns the active highlight palette.
+ * @param p the active highlight palette
+ */
 void PianoScene::setHighlightPalette( const PianoPalette& p )
 {
     if (d->m_hilightPalette != p) {
@@ -908,11 +1251,19 @@ void PianoScene::setHighlightPalette( const PianoPalette& p )
     }
 }
 
+/**
+ * Returns the background palette.
+ * @return the background palette
+ */
 PianoPalette PianoScene::getBackgroundPalette()
 {
     return d->m_backgroundPalette;
 }
 
+/**
+ * Assigns the active background palette.
+ * @param p the active background palette
+ */
 void PianoScene::setBackgroundPalette(const PianoPalette& p )
 {
     if (d->m_backgroundPalette != p) {
@@ -922,11 +1273,19 @@ void PianoScene::setBackgroundPalette(const PianoPalette& p )
     }
 }
 
+/**
+ * Returns the active foreground palette.
+ * @return the active foreground palette
+ */
 PianoPalette PianoScene::getForegroundPalette()
 {
     return d->m_foregroundPalette;
 }
 
+/**
+ * Assigns the active foreground palette.
+ * @param p the foreground palette
+ */
 void PianoScene::setForegroundPalette(const PianoPalette &p)
 {
     if (d->m_foregroundPalette != p) {
@@ -936,6 +1295,10 @@ void PianoScene::setForegroundPalette(const PianoPalette &p)
     }
 }
 
+/**
+ * Returns whether the color scale mode is enabled.
+ * @return true if the color scale mode is enabled
+ */
 bool PianoScene::showColorScale() const
 {
     return d->m_showColorScale;

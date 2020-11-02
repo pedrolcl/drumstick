@@ -39,7 +39,8 @@ namespace drumstick { namespace widgets {
      * @{
      *
      * @class PianoScene
-     * The PianoScene class is a QGraphicsScene composed by a number of graphics items
+     * The PianoScene class is a QGraphicsScene composed by a number of graphics items:
+     * the piano keys.
      */
     class DRUMSTICK_EXPORT PianoScene : public QGraphicsScene
     {
@@ -176,8 +177,8 @@ namespace drumstick { namespace widgets {
         QScopedPointer<PianoScenePrivate> d;
     };
 
-}} // namespace drumstick::widgets
-
 /** @} */
+
+}} // namespace drumstick::widgets
 
 #endif /*PIANOSCENE_H_*/
