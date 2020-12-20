@@ -11,7 +11,7 @@
         <location filename="../pianopalette.cpp" line="279"/>
         <location filename="../pianopalette.cpp" line="286"/>
         <source>N</source>
-        <translation type="unfinished"></translation>
+        <translation>N</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="114"/>
@@ -21,187 +21,187 @@
         <location filename="../pianopalette.cpp" line="280"/>
         <location filename="../pianopalette.cpp" line="287"/>
         <source>#</source>
-        <translation type="unfinished"></translation>
+        <translation>#</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="120"/>
         <location filename="../pianopalette.cpp" line="241"/>
         <source>1</source>
-        <translation type="unfinished"></translation>
+        <translation>1</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="121"/>
         <location filename="../pianopalette.cpp" line="242"/>
         <source>2</source>
-        <translation type="unfinished"></translation>
+        <translation>2</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="122"/>
         <location filename="../pianopalette.cpp" line="243"/>
         <source>3</source>
-        <translation type="unfinished"></translation>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="123"/>
         <location filename="../pianopalette.cpp" line="244"/>
         <source>4</source>
-        <translation type="unfinished"></translation>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="124"/>
         <location filename="../pianopalette.cpp" line="245"/>
         <source>5</source>
-        <translation type="unfinished"></translation>
+        <translation>5</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="125"/>
         <location filename="../pianopalette.cpp" line="246"/>
         <source>6</source>
-        <translation type="unfinished"></translation>
+        <translation>6</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="126"/>
         <location filename="../pianopalette.cpp" line="247"/>
         <source>7</source>
-        <translation type="unfinished"></translation>
+        <translation>7</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="127"/>
         <location filename="../pianopalette.cpp" line="248"/>
         <source>8</source>
-        <translation type="unfinished"></translation>
+        <translation>8</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="128"/>
         <location filename="../pianopalette.cpp" line="249"/>
         <source>9</source>
-        <translation type="unfinished"></translation>
+        <translation>9</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="129"/>
         <location filename="../pianopalette.cpp" line="250"/>
         <source>10</source>
-        <translation type="unfinished"></translation>
+        <translation>10</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="130"/>
         <location filename="../pianopalette.cpp" line="251"/>
         <source>11</source>
-        <translation type="unfinished"></translation>
+        <translation>11</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="131"/>
         <location filename="../pianopalette.cpp" line="252"/>
         <source>12</source>
-        <translation type="unfinished"></translation>
+        <translation>12</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="132"/>
         <location filename="../pianopalette.cpp" line="253"/>
         <source>13</source>
-        <translation type="unfinished"></translation>
+        <translation>13</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="133"/>
         <location filename="../pianopalette.cpp" line="254"/>
         <source>14</source>
-        <translation type="unfinished"></translation>
+        <translation>14</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="134"/>
         <location filename="../pianopalette.cpp" line="255"/>
         <source>15</source>
-        <translation type="unfinished"></translation>
+        <translation>15</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="135"/>
         <location filename="../pianopalette.cpp" line="256"/>
         <source>16</source>
-        <translation type="unfinished"></translation>
+        <translation>16</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="156"/>
         <location filename="../pianopalette.cpp" line="262"/>
         <source>C</source>
-        <translation type="unfinished"></translation>
+        <translation>До</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="157"/>
         <location filename="../pianopalette.cpp" line="263"/>
         <source>C#</source>
-        <translation type="unfinished"></translation>
+        <translation>До #</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="158"/>
         <location filename="../pianopalette.cpp" line="264"/>
         <source>D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ре</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="159"/>
         <location filename="../pianopalette.cpp" line="265"/>
         <source>D#</source>
-        <translation type="unfinished"></translation>
+        <translation>Ре #</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="160"/>
         <location filename="../pianopalette.cpp" line="266"/>
         <source>E</source>
-        <translation type="unfinished"></translation>
+        <translation>Ми</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="161"/>
         <location filename="../pianopalette.cpp" line="267"/>
         <source>F</source>
-        <translation type="unfinished"></translation>
+        <translation>Фа</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="162"/>
         <location filename="../pianopalette.cpp" line="268"/>
         <source>F#</source>
-        <translation type="unfinished"></translation>
+        <translation>Фа #</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="163"/>
         <location filename="../pianopalette.cpp" line="269"/>
         <source>G</source>
-        <translation type="unfinished"></translation>
+        <translation>Соль</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="164"/>
         <location filename="../pianopalette.cpp" line="270"/>
         <source>G#</source>
-        <translation type="unfinished"></translation>
+        <translation>Соль #</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="165"/>
         <location filename="../pianopalette.cpp" line="271"/>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation>Ля</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="166"/>
         <location filename="../pianopalette.cpp" line="272"/>
         <source>A#</source>
-        <translation type="unfinished"></translation>
+        <translation>Ля #</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="167"/>
         <location filename="../pianopalette.cpp" line="273"/>
         <source>B</source>
-        <translation type="unfinished"></translation>
+        <translation>Си</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="182"/>
         <location filename="../pianopalette.cpp" line="288"/>
         <source>N*</source>
-        <translation type="unfinished"></translation>
+        <translation>N*</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="183"/>
         <location filename="../pianopalette.cpp" line="289"/>
         <source>#*</source>
-        <translation type="unfinished"></translation>
+        <translation>#*</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="191"/>
@@ -405,93 +405,93 @@
         <location filename="../pianoscene.cpp" line="860"/>
         <location filename="../pianoscene.cpp" line="873"/>
         <source>C</source>
-        <translation type="unfinished"></translation>
+        <translation>До</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="861"/>
         <source>C♯</source>
-        <translation type="unfinished"></translation>
+        <translation>До♯</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="862"/>
         <location filename="../pianoscene.cpp" line="875"/>
         <source>D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ре</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="863"/>
         <source>D♯</source>
-        <translation type="unfinished"></translation>
+        <translation>Ре♯</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="864"/>
         <location filename="../pianoscene.cpp" line="877"/>
         <source>E</source>
-        <translation type="unfinished"></translation>
+        <translation>Ми</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="865"/>
         <location filename="../pianoscene.cpp" line="878"/>
         <source>F</source>
-        <translation type="unfinished"></translation>
+        <translation>Фа</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="866"/>
         <source>F♯</source>
-        <translation type="unfinished"></translation>
+        <translation>Фа♯</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="867"/>
         <location filename="../pianoscene.cpp" line="880"/>
         <source>G</source>
-        <translation type="unfinished"></translation>
+        <translation>Соль</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="868"/>
         <source>G♯</source>
-        <translation type="unfinished"></translation>
+        <translation>Соль♯</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="869"/>
         <location filename="../pianoscene.cpp" line="882"/>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation>Ля</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="870"/>
         <source>A♯</source>
-        <translation type="unfinished"></translation>
+        <translation>Ля♯</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="871"/>
         <location filename="../pianoscene.cpp" line="884"/>
         <source>B</source>
-        <translation type="unfinished"></translation>
+        <translation>Си</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="874"/>
         <source>D♭</source>
-        <translation type="unfinished"></translation>
+        <translation>Ре♭</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="876"/>
         <source>E♭</source>
-        <translation type="unfinished"></translation>
+        <translation>Ми♭</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="879"/>
         <source>G♭</source>
-        <translation type="unfinished"></translation>
+        <translation>Соль♭</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="881"/>
         <source>A♭</source>
-        <translation type="unfinished"></translation>
+        <translation>Ля♭</translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="883"/>
         <source>B♭</source>
-        <translation type="unfinished"></translation>
+        <translation>Си♭</translation>
     </message>
 </context>
 <context>

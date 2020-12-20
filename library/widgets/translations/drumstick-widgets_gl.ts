@@ -337,7 +337,7 @@
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="14"/>
         <source>macOS Synth Driver Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Axustes do controlador de sintetizador de macOS</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="20"/>
