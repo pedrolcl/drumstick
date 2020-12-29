@@ -26,7 +26,7 @@ Requirements
 Minimum supported versions:
 
 * CMake 3.9
-* Qt5
+* Qt 5.7
 * For Linux: ALSA 1.x
 * RT backends for
 *    Linux: ALSA
@@ -80,7 +80,7 @@ Optional CMake parameters
     Specify the desired install prefix
     
     -DUSE_DBUS=YES|ON|1
-    Build DBus support, required to use RealtimeKit (default)
+    Build DBus support, required to use RealtimeKit 
     
     -DUSE_DBUS=NO|OFF|0
-    Don't include DBus support
+    Don't include DBus support (default)

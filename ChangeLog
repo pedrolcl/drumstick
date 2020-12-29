@@ -1,5 +1,14 @@
+2020-12-29
+    * release 2.0.0
+
+2020-11-02
+    * documentation updated
+
+2020-10-12
+    * designer plugin renamed to "drumstick-vpiano-plugin" and fixed deploy location. Central C naming revised
+
 2020-10-08
-    * License upgrade: GPLv3 or later
+    * License upgrade: GPLv3 or later. Translations updated.
 
 2020-09-28
     * fixed SequencerOutputThread troubles finishing songs properly
