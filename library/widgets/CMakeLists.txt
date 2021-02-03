@@ -23,7 +23,6 @@ find_package(Qt5LinguistTools REQUIRED)
 set(drumstick-widgets_HEADERS
     ../include/drumstick/pianokeybd.h
     ../include/drumstick/pianopalette.h
-    ../include/drumstick/pianoscene.h
     ../include/drumstick/settingsfactory.h
     ../include/drumstick/configurationdialogs.h
 )
@@ -31,7 +30,7 @@ set(drumstick-widgets_HEADERS
 set(drumstick-widgets_OBJ_SRCS
     ../include/drumstick/pianokeybd.h
     ../include/drumstick/pianopalette.h
-    ../include/drumstick/pianoscene.h
+    pianoscene.h
     fluidsettingsdialog.h
     networksettingsdialog.h
     macsynthsettingsdialog.h

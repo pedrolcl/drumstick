@@ -21,9 +21,9 @@ FORMS += \
 HEADERS += \
     ../include/drumstick/pianokeybd.h \
     ../include/drumstick/pianopalette.h \
-    ../include/drumstick/pianoscene.h \
     ../include/drumstick/configurationdialogs.h \
     ../include/drumstick/settingsfactory.h \
+    pianoscene.h \
     pianokey.h \
     keylabel.h \
     fluidsettingsdialog.h \

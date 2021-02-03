@@ -18,7 +18,7 @@ cmake_minimum_required(VERSION 3.9)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
 
 project(Drumstick
-        VERSION 2.0.0
+        VERSION 2.0.1
         DESCRIPTION "MIDI C++ Libraries for Qt")
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_admin)

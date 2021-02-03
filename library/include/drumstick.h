@@ -49,7 +49,6 @@
 // Widgets
 #include <drumstick/pianokeybd.h>
 #include <drumstick/pianopalette.h>
-// #include <drumstick/pianoscene.h> (fix for ticket #23)
 #include <drumstick/settingsfactory.h>
 #include <drumstick/configurationdialogs.h>
 

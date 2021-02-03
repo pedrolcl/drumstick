@@ -18,7 +18,7 @@
 
 #include <QApplication>
 #include <drumstick/pianokeybd.h>
-#include <drumstick/pianoscene.h>
+#include "pianoscene.h"
 
 /**
  * @file pianokeybd.cpp

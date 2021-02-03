@@ -21,7 +21,7 @@
 #include <QKeyEvent>
 #include <QPalette>
 #include <drumstick/pianokeybd.h>
-#include <drumstick/pianoscene.h>
+#include "pianoscene.h"
 #include <qmath.h>
 
 /**
