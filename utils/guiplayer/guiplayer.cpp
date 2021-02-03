@@ -1,6 +1,6 @@
 /*
     SMF GUI Player test using the MIDI Sequencer C++ library
-    Copyright (C) 2006-2020, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2021, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -283,8 +283,11 @@ void GUIPlayer::pause()
 void GUIPlayer::stop()
 {
     if (m_state == PlayingState || m_state == PausedState ||
-        m_player->isRunning())
+        m_player->isRunning()) {
+        m_Queue->stop();
+        m_Queue->clear();
         m_player->stop();
+    }
     if (m_initialTempo != 0)
         songFinished();
     else

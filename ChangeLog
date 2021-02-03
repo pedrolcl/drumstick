@@ -1,3 +1,8 @@
+2021-02-03
+    * copyright years updated
+    * drumstick-guiplayer: fixed stop playback, removed Overture mimetype from desktop file
+    * library headers: preliminary fix for ticket #23
+
 2020-12-29
     * release 2.0.0
 
