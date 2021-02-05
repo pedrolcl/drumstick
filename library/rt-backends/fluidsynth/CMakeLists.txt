@@ -52,6 +52,7 @@ target_include_directories(drumstick-rt-fluidsynth PRIVATE
 
 target_link_libraries(drumstick-rt-fluidsynth PRIVATE
     Qt5::Core
+    Drumstick::RT
     PkgConfig::FLUIDSYNTH
 )
 
