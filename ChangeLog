@@ -1,3 +1,6 @@
+2021-02-10
+    * fix for ticket #27: error parsing a wrk file
+
 2021-02-03
     * copyright years updated
     * drumstick-guiplayer: fixed stop playback, removed Overture mimetype from desktop file

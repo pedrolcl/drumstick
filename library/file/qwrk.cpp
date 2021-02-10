@@ -116,6 +116,9 @@ public:
     QDataStream *m_IOStream;
     QByteArray m_lastChunkData;
     QList<RecTempo> m_tempos;
+
+    qint64 m_lastChunkPos;
+    qint64 internalFilePos();
 };
 
 /**
@@ -593,7 +596,7 @@ QString QWrk::readVarString()
  */
 long QWrk::getFilePos()
 {
-    return d->m_IOStream->device()->pos();
+    return d->internalFilePos();
 }
 
 /**
@@ -621,7 +624,7 @@ bool QWrk::atEnd()
 void QWrk::readGap(int size)
 {
     if ( size > 0)
-        seek( getFilePos() + size );
+        seek( d->internalFilePos() + size );
 }
 
 /**
@@ -733,7 +736,7 @@ void QWrk::processNoteArray(int track, int events)
     int value = 0, type = 0, channel = 0, len = 0;
     QString text;
     QByteArray data;
-    for ( i = 0; (i < events) && !atEnd(); ++i ) {
+    for ( i = 0; (i < events) && (d->internalFilePos() < d->m_lastChunkPos) && !atEnd(); ++i ) {
         time = read24bit();
         status = readByte();
         dur = 0;
@@ -815,7 +818,7 @@ void QWrk::processStreamChunk()
     quint8 status = 0, data1 = 0, data2 = 0;
     quint16 track = read16bit();
     int events = read16bit();
-    for ( i = 0; (i < events) && !atEnd(); ++i ) {
+    for ( i = 0; (i < events) && (d->internalFilePos() < d->m_lastChunkPos) && !atEnd(); ++i ) {
         time = read24bit();
         status = readByte();
         data1 = readByte();
@@ -1172,12 +1175,13 @@ void QWrk::processEndChunk()
 
 int QWrk::readChunk()
 {
-    long start_pos, final_pos;
+    qint64 start_pos;
     int ck_len, ck = readByte();
     if (ck != END_CHUNK) {
         ck_len = read32bit();
-        start_pos = getFilePos();
-        final_pos = start_pos + ck_len;
+        start_pos = d->internalFilePos();
+        d->m_lastChunkPos = start_pos + ck_len;
+        //qDebug() << "Chunk: " << ck << "start:" << start_pos << "end:" << d->m_lastChunkPos << "len:" << ck_len;
         readRawData(ck_len);
         seek(start_pos);
         switch (ck) {
@@ -1268,7 +1272,10 @@ int QWrk::readChunk()
         default:
             processUnknown(ck);
         }
-        seek(final_pos);
+        if (d->internalFilePos() != d->m_lastChunkPos) {
+            //qDebug() << "Current pos:" << internalFilePos() << "should be:" << d->m_lastChunkPos;
+            seek(d->m_lastChunkPos);
+        }
     }
     return ck;
 }
@@ -1294,6 +1301,11 @@ void QWrk::wrkRead()
             processEndChunk();
     } else
         Q_EMIT signalWRKError("Invalid file format");
+}
+
+qint64 QWrk::QWrkPrivate::internalFilePos()
+{
+    return m_IOStream->device()->pos();
 }
 
 const QByteArray QWrk::HEADER = QByteArrayLiteral("CAKEWALK");
