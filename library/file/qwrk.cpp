@@ -16,6 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+//#include <QDebug>
 #include <QDataStream>
 #include <QFile>
 #include <QIODevice>
@@ -171,7 +172,12 @@ QByteArray QWrk::getLastChunkRawData() const
  */
 void QWrk::readRawData(int size)
 {
-    d->m_lastChunkData = d->m_IOStream->device()->read(size);
+    if (size > 0) {
+        d->m_lastChunkData = d->m_IOStream->device()->read(size);
+    } else {
+        d->m_lastChunkData.clear();
+        //qDebug() << Q_FUNC_INFO << "Size error:" << size;
+    }
 }
 
 /**
@@ -605,7 +611,9 @@ long QWrk::getFilePos()
  */
 void QWrk::seek(qint64 pos)
 {
-    d->m_IOStream->device()->seek(pos);
+    if (!d->m_IOStream->device()->seek(pos)) {
+        //qDebug() << Q_FUNC_INFO << "Error, pos:" << pos;
+    }
 }
 
 /**
@@ -1175,13 +1183,17 @@ void QWrk::processEndChunk()
 
 int QWrk::readChunk()
 {
-    qint64 start_pos;
-    int ck_len, ck = readByte();
+    qint64 start_pos = d->internalFilePos();
+    int ck = readByte();
     if (ck != END_CHUNK) {
-        ck_len = read32bit();
+        quint32 ck_len = read32bit();
+        if (ck_len > d->m_IOStream->device()->bytesAvailable()) {
+            Q_EMIT signalWRKError("Corrupted file");
+            seek(start_pos);
+            return END_CHUNK;
+        }
         start_pos = d->internalFilePos();
         d->m_lastChunkPos = start_pos + ck_len;
-        //qDebug() << "Chunk: " << ck << "start:" << start_pos << "end:" << d->m_lastChunkPos << "len:" << ck_len;
         readRawData(ck_len);
         seek(start_pos);
         switch (ck) {
@@ -1273,7 +1285,7 @@ int QWrk::readChunk()
             processUnknown(ck);
         }
         if (d->internalFilePos() != d->m_lastChunkPos) {
-            //qDebug() << "Current pos:" << internalFilePos() << "should be:" << d->m_lastChunkPos;
+            //qDebug() << Q_FUNC_INFO << "Current pos:" << d->internalFilePos() << "should be:" << d->m_lastChunkPos;
             seek(d->m_lastChunkPos);
         }
     }
@@ -1294,11 +1306,13 @@ void QWrk::wrkRead()
         Q_EMIT signalWRKHeader(vma, vme);
         do {
             ck_id = readChunk();
-        }  while (ck_id != END_CHUNK);
-        if (!atEnd())
-            Q_EMIT signalWRKError("Corrupted file");
-        else
-            processEndChunk();
+        }  while ((ck_id != END_CHUNK) && !atEnd());
+        if (!atEnd()) {
+            //qDebug() << Q_FUNC_INFO << "extra junk past the end at" << d->internalFilePos();
+            readRawData(d->m_IOStream->device()->bytesAvailable());
+            processUnknown(ck_id);
+        }
+        processEndChunk();
     } else
         Q_EMIT signalWRKError("Invalid file format");
 }
