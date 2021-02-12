@@ -44,9 +44,7 @@ PianoKey::PianoKey(const QRectF &rect, const bool black, const int note)
 void PianoKey::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     static const QPen blackPen(Qt::black, 1);
-    static const QPen grayPen(QBrush(Qt::gray), 1, Qt::SolidLine,  Qt::RoundCap, Qt::RoundJoin);
     painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-
     if (m_pressed) {
         if (m_selectedBrush.style() != Qt::NoBrush) {
             painter->setBrush(m_selectedBrush);
@@ -57,18 +55,8 @@ void PianoKey::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidge
         painter->setBrush(m_brush);
     }
     painter->setPen(blackPen);
-    painter->drawRoundedRect(rect(), 15, 15, Qt::RelativeSize);
-    if (m_black) {
-        painter->drawPixmap(rect(), getPixmap(), pixmapRect());
-    } else {
-        QPointF points[3] = {
-             QPointF(rect().left()+1.5, rect().bottom()-1),
-             QPointF(rect().right()-1, rect().bottom()-1),
-             QPointF(rect().right()-1, rect().top()+1),
-        };
-        painter->setPen(grayPen);
-        painter->drawPolyline(points, 3);
-    }
+    painter->drawRoundedRect(rect(), 20, 15, Qt::RelativeSize);
+    painter->drawPixmap(rect(), getPixmap(), pixmapRect());
 }
 
 void PianoKey::setPressed(bool p)
@@ -81,8 +69,9 @@ void PianoKey::setPressed(bool p)
 
 QPixmap& PianoKey::getPixmap() const
 {
-    static QPixmap pixmap(QStringLiteral(":/vpiano/blkey.png"));
-    return pixmap;
+    static QPixmap blpixmap(QStringLiteral(":/vpiano/blkey.png"));
+    static QPixmap whpixmap(QStringLiteral(":/vpiano/whkey.png"));
+    return m_black ? blpixmap : whpixmap;
 }
 
 QRectF PianoKey::pixmapRect() const

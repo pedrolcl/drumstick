@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/vpiano">
         <file>blkey.png</file>
+        <file>whkey.png</file>
     </qresource>
 </RCC>
