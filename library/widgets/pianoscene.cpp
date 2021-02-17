@@ -258,7 +258,7 @@ void PianoScene::displayKeyOn(PianoKey* key)
  */
 void PianoScene::showKeyOn( PianoKey* key, QColor color, int vel )
 {
-    if (d->m_velocityTint && vel >= 0 && color.isValid() ) {
+    if (d->m_velocityTint && (vel >= 0) && (vel < 128) && color.isValid() ) {
         QBrush hilightBrush(color.lighter(200 - vel));
         key->setPressedBrush(hilightBrush);
     }
@@ -402,7 +402,7 @@ void PianoScene::setHighlightColorFromPolicy(PianoKey* key, int vel)
         return;
     }
     if (c.isValid()) {
-        if (d->m_velocityTint) {
+        if (d->m_velocityTint && (vel >= 0) && (vel < 128)) {
             QBrush h(c.lighter(200 - vel));
             key->setPressedBrush(h);
         } else {
