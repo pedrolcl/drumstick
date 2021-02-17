@@ -75,6 +75,9 @@ PianoPalette::initialize()
     case PAL_FONT:
         maxcolors = 4;
         break;
+    case PAL_HISCALE:
+        maxcolors = 12;
+        break;
     default:
         return;
     }
@@ -111,6 +114,9 @@ PianoPalette::resetColors()
         break;
     case PAL_FONT:
         resetPaletteFont();
+        break;
+    case PAL_HISCALE:
+        resetPaletteScale();
         break;
     default:
         return;
@@ -172,31 +178,31 @@ PianoPalette::resetPaletteScale()
 {
     /*
                     R       G       B
-            C       -       -       100%    0
-            C#      50%     -       100%    1
-            D       100%    -       100%    2
-            D#      100%    -       50%     3
-            E       100%    -       -       4
-            F       100%    50%     -       5
-            F#      100%    100%    -       6
-            G       50%     100%    -       7
-            G#      -       100%    -       8
-            A       -       100%    50%     9
-            A#      -       100%    100%    10
-            B       -       50%     100%    11
+            C       100%    -       -       0
+            C#      100%    50%     -       1
+            D       100%    100%    -       2
+            D#      50%     100%    -       3
+            E       -       100%    -       4
+            F       -       100%    50%     5
+            F#      -       100%    100%    6
+            G       -       50%     100%    7
+            G#      -       -       100%    8
+            A       50%     -       100%    9
+            A#      100%    -       100%    10
+            B       100%    -       50%     11
     */
-    setColor(0, tr("C"), QColor::fromRgb(0,0,255));
-    setColor(1, tr("C#"), QColor::fromRgb(127,0,255));
-    setColor(2, tr("D"), QColor::fromRgb(255,0,255));
-    setColor(3, tr("D#"), QColor::fromRgb(255,0,127));
-    setColor(4, tr("E"), QColor::fromRgb(255,0,0));
-    setColor(5, tr("F"), QColor::fromRgb(255,127,0));
-    setColor(6, tr("F#"), QColor::fromRgb(255,255,0));
-    setColor(7, tr("G"), QColor::fromRgb(127,255,0));
-    setColor(8, tr("G#"), QColor::fromRgb(0,255,0));
-    setColor(9, tr("A"), QColor::fromRgb(0,255,127));
-    setColor(10, tr("A#"), QColor::fromRgb(0,255,255));
-    setColor(11, tr("B"), QColor::fromRgb(0,127,255));
+    setColor(0,  tr("C"),  QColor::fromRgb(255,0,0));
+    setColor(1,  tr("C#"), QColor::fromRgb(255,127,0));
+    setColor(2,  tr("D"),  QColor::fromRgb(255,255,0));
+    setColor(3,  tr("D#"), QColor::fromRgb(127,255,0));
+    setColor(4,  tr("E"),  QColor::fromRgb(0,255,0));
+    setColor(5,  tr("F"),  QColor::fromRgb(0,255,127));
+    setColor(6,  tr("F#"), QColor::fromRgb(0,255,255));
+    setColor(7,  tr("G"),  QColor::fromRgb(0,127,255));
+    setColor(8,  tr("G#"), QColor::fromRgb(0,0,255));
+    setColor(9,  tr("A"),  QColor::fromRgb(127,0,255));
+    setColor(10, tr("A#"), QColor::fromRgb(255,0,255));
+    setColor(11, tr("B"),  QColor::fromRgb(255,0,127));
 }
 
 /**
@@ -260,6 +266,11 @@ PianoPalette::retranslateStrings()
         setPaletteName(tr("Font foreground"));
         setPaletteText(tr("Colors for note names"));
         retranslatePaletteFont();
+        break;
+    case PAL_HISCALE:
+        setPaletteName(tr("Chromatic scale highlight"));
+        setPaletteText(tr("One color for each note in the chromatic scale"));
+        retranslatePaletteScale();
         break;
     default:
         return;
@@ -364,7 +375,10 @@ PianoPalette::retranslatePaletteFont()
 bool
 PianoPalette::isHighLight() const
 {
-    return (m_paletteId == PAL_SINGLE) || (m_paletteId == PAL_DOUBLE) || (m_paletteId == PAL_CHANNELS);
+    return (m_paletteId == PAL_SINGLE) ||
+           (m_paletteId == PAL_DOUBLE) ||
+           (m_paletteId == PAL_CHANNELS) ||
+           (m_paletteId == PAL_HISCALE);
 }
 
 /**
@@ -374,7 +388,8 @@ PianoPalette::isHighLight() const
 bool
 PianoPalette::isBackground() const
 {
-    return (m_paletteId == PAL_SCALE) || (m_paletteId == PAL_KEYS);
+    return (m_paletteId == PAL_SCALE) ||
+           (m_paletteId == PAL_KEYS);
 }
 
 /**

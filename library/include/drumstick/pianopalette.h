@@ -48,7 +48,8 @@ enum PalettePolicy {
     PAL_CHANNELS = 2,  ///< Different highlihgting colors for each channel
     PAL_SCALE = 3,     ///< Background colors for each chromatic scale note
     PAL_KEYS = 4,      ///< Two background colors (naturals/alterations)
-    PAL_FONT = 5       ///< Foreground font colors for names
+    PAL_FONT = 5,      ///< Foreground font colors for names
+    PAL_HISCALE = 6    ///< Highlighting colors for each chromatic scale note
 };
 
 /**

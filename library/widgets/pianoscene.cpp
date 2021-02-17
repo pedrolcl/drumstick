@@ -16,6 +16,7 @@
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QDebug>
 #include <QApplication>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
@@ -258,6 +259,7 @@ void PianoScene::displayKeyOn(PianoKey* key)
  */
 void PianoScene::showKeyOn( PianoKey* key, QColor color, int vel )
 {
+    qDebug() << Q_FUNC_INFO << key << vel << color;
     if (d->m_velocityTint && (vel >= 0) && (vel < 128) && color.isValid() ) {
         QBrush hilightBrush(color.lighter(200 - vel));
         key->setPressedBrush(hilightBrush);
@@ -303,6 +305,7 @@ void PianoScene::showKeyOff( PianoKey* key, int vel)
  */
 void PianoScene::showNoteOn( const int note, QColor color, int vel )
 {
+    qDebug() << Q_FUNC_INFO << note << vel << color;
     int n = note - d->m_baseOctave*12 - d->m_transpose;
     if ((note >= d->m_minNote) && (note <= d->m_maxNote) && d->m_keys.contains(n) && color.isValid())
         showKeyOn(d->m_keys.value(n), color, vel);
@@ -315,6 +318,7 @@ void PianoScene::showNoteOn( const int note, QColor color, int vel )
  */
 void PianoScene::showNoteOn( const int note, int vel )
 {
+    qDebug() << Q_FUNC_INFO << note << vel;
     int n = note - d->m_baseOctave*12 - d->m_transpose;
     if ((note >= d->m_minNote) && (note <= d->m_maxNote) && d->m_keys.contains(n)) {
         showKeyOn(d->m_keys.value(n), vel);
@@ -397,6 +401,9 @@ void PianoScene::setHighlightColorFromPolicy(PianoKey* key, int vel)
         break;
     case PAL_CHANNELS:
         c = d->m_hilightPalette.getColor(d->m_channel);
+        break;
+    case PAL_HISCALE:
+        c = d->m_hilightPalette.getColor(key->getDegree());
         break;
     default:
         return;

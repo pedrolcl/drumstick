@@ -58,6 +58,7 @@ set(drumstick-widgets_SRCS
     pianokeybd.cpp
     pianopalette.cpp
     pianoscene.cpp
+    pianoscene.h
     settingsfactory.cpp
     sonivoxsettingsdialog.cpp
     sonivoxsettingsdialog.h
