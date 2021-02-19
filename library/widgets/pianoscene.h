@@ -122,6 +122,9 @@ namespace drumstick { namespace widgets {
         void retranslate();
         void refreshLabels();
 
+        void setKeyPicture(const bool natural, const QPixmap& pix);
+        QPixmap getKeyPicture(const bool natural);
+
     signals:
         /**
          * This signal is emitted for each Note On MIDI event created using

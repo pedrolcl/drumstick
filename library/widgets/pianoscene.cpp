@@ -16,11 +16,11 @@
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
 #include <QApplication>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QPalette>
+#include <QPixmap>
 #include <drumstick/pianokeybd.h>
 #include "pianoscene.h"
 #include <qmath.h>
@@ -98,6 +98,7 @@ public:
     PianoPalette m_hilightPalette;
     PianoPalette m_backgroundPalette;
     PianoPalette m_foregroundPalette;
+    QPixmap m_keyPix[2];
 };
 
 const int KEYWIDTH = 180;
@@ -259,7 +260,7 @@ void PianoScene::displayKeyOn(PianoKey* key)
  */
 void PianoScene::showKeyOn( PianoKey* key, QColor color, int vel )
 {
-    qDebug() << Q_FUNC_INFO << key << vel << color;
+    //qDebug() << Q_FUNC_INFO << key << vel << color;
     if (d->m_velocityTint && (vel >= 0) && (vel < 128) && color.isValid() ) {
         QBrush hilightBrush(color.lighter(200 - vel));
         key->setPressedBrush(hilightBrush);
@@ -305,7 +306,7 @@ void PianoScene::showKeyOff( PianoKey* key, int vel)
  */
 void PianoScene::showNoteOn( const int note, QColor color, int vel )
 {
-    qDebug() << Q_FUNC_INFO << note << vel << color;
+    //qDebug() << Q_FUNC_INFO << note << vel << color;
     int n = note - d->m_baseOctave*12 - d->m_transpose;
     if ((note >= d->m_minNote) && (note <= d->m_maxNote) && d->m_keys.contains(n) && color.isValid())
         showKeyOn(d->m_keys.value(n), color, vel);
@@ -318,7 +319,7 @@ void PianoScene::showNoteOn( const int note, QColor color, int vel )
  */
 void PianoScene::showNoteOn( const int note, int vel )
 {
-    qDebug() << Q_FUNC_INFO << note << vel;
+    //qDebug() << Q_FUNC_INFO << note << vel;
     int n = note - d->m_baseOctave*12 - d->m_transpose;
     if ((note >= d->m_minNote) && (note <= d->m_maxNote) && d->m_keys.contains(n)) {
         showKeyOn(d->m_keys.value(n), vel);
@@ -1309,6 +1310,21 @@ void PianoScene::setForegroundPalette(const PianoPalette &p)
 bool PianoScene::showColorScale() const
 {
     return d->m_showColorScale;
+}
+
+void PianoScene::setKeyPicture(const bool natural, const QPixmap &pix)
+{
+    d->m_keyPix[int(natural)] = pix;
+    for (PianoKey* key : qAsConst(d->m_keys)) {
+        if (key->isBlack() == !natural) {
+            key->setPixmap(pix);
+        }
+    }
+}
+
+QPixmap PianoScene::getKeyPicture(const bool natural)
+{
+    return d->m_keyPix[int(natural)];
 }
 
 } // namespace widgets

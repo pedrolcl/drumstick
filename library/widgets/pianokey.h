@@ -50,7 +50,8 @@ namespace drumstick { namespace widgets {
         int getDegree() const { return m_note % 12; }
         int getType() const { return (m_black ? 1 : 0); }
         bool isBlack() const { return m_black; }
-        QPixmap& getPixmap() const;
+        const QPixmap& getPixmap() const;
+        void setPixmap(const QPixmap& p);
         QRectF pixmapRect() const;
 
         static const PianoPalette keyPalette;
@@ -61,6 +62,7 @@ namespace drumstick { namespace widgets {
         QBrush m_brush;
         int m_note;
         bool m_black;
+        QPixmap m_pixmap;
     };
 
 }} // namespace drumstick::widgets

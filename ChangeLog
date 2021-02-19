@@ -1,3 +1,9 @@
+2021-02-19
+    * implemented ticket #26: customizable texture for black and white keys
+
+2021-02-17
+    * Implemented ticket #25: chromatic scale highlight palette 
+
 2021-02-10
     * fix for ticket #27: error parsing a wrk file
 

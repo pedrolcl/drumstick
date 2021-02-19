@@ -540,6 +540,16 @@ bool PianoKeybd::handleKeyReleased(int keycode)
     return false;
 }
 
+void PianoKeybd::setKeyPicture(const bool natural, const QPixmap &pix)
+{
+    d->m_scene->setKeyPicture(natural, pix);
+}
+
+QPixmap PianoKeybd::getKeyPicture(const bool natural)
+{
+    return d->m_scene->getKeyPicture(natural);
+}
+
 /**
  * Returns the base octave number.
  * @see setBaseOctave()

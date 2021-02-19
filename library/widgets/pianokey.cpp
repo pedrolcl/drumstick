@@ -67,11 +67,15 @@ void PianoKey::setPressed(bool p)
     }
 }
 
-QPixmap& PianoKey::getPixmap() const
+const QPixmap& PianoKey::getPixmap() const
 {
     static QPixmap blpixmap(QStringLiteral(":/vpiano/blkey.png"));
     static QPixmap whpixmap(QStringLiteral(":/vpiano/whkey.png"));
-    return m_black ? blpixmap : whpixmap;
+    if (m_pixmap.isNull()) {
+        return m_black ? blpixmap : whpixmap;
+    } else {
+        return m_pixmap;
+    }
 }
 
 QRectF PianoKey::pixmapRect() const
@@ -82,6 +86,11 @@ QRectF PianoKey::pixmapRect() const
 void PianoKey::resetBrush()
 {
     m_brush = keyPalette.getColor(m_black ? 1 : 0);
+}
+
+void PianoKey::setPixmap(const QPixmap &p)
+{
+    m_pixmap = p;
 }
 
 } // namespace widgets
