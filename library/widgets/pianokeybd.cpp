@@ -540,14 +540,43 @@ bool PianoKeybd::handleKeyReleased(int keycode)
     return false;
 }
 
+/**
+ * @brief Assigns a custom picture to the white or black keys
+ * that will be used as a texture to paint the keys.
+ * @param natural true for white keys, false for black keys
+ * @param pix this transparent QPixmap will be used to paint the keys
+ */
 void PianoKeybd::setKeyPicture(const bool natural, const QPixmap &pix)
 {
     d->m_scene->setKeyPicture(natural, pix);
 }
 
+/**
+ * @brief Returns the custom picture used to paint the corresponding keys.
+ * @param natural true for white keys, false for black keys
+ * @return a transparent QPixmap used to paint the keys
+ */
 QPixmap PianoKeybd::getKeyPicture(const bool natural)
 {
     return d->m_scene->getKeyPicture(natural);
+}
+
+/**
+ * @brief Enables or disables a picture to paint the keys.
+ * @param enable or disable
+ */
+void PianoKeybd::setUseKeyPictures(const bool enable)
+{
+    d->m_scene->setUseKeyPictures(enable);
+}
+
+/**
+ * @brief Returns whether pictures are used to paint the keys.
+ * @return  true if the pictures are enabled to paint the keys
+ */
+bool PianoKeybd::getUseKeyPictures() const
+{
+    return d->m_scene->getUseKeyPictures();
 }
 
 /**

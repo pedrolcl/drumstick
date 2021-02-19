@@ -35,7 +35,8 @@ PianoKey::PianoKey(const QRectF &rect, const bool black, const int note)
     : QGraphicsRectItem(rect),
     m_pressed(false),
     m_note(note),
-    m_black(black)
+    m_black(black),
+    m_usePixmap(true)
 {
     m_brush = keyPalette.getColor(black ? 1 : 0);
     setAcceptedMouseButtons(Qt::NoButton);
@@ -56,7 +57,9 @@ void PianoKey::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidge
     }
     painter->setPen(blackPen);
     painter->drawRoundedRect(rect(), 20, 15, Qt::RelativeSize);
-    painter->drawPixmap(rect(), getPixmap(), pixmapRect());
+    if (m_usePixmap) {
+        painter->drawPixmap(rect(), getPixmap(), pixmapRect());
+    }
 }
 
 void PianoKey::setPressed(bool p)
@@ -91,6 +94,16 @@ void PianoKey::resetBrush()
 void PianoKey::setPixmap(const QPixmap &p)
 {
     m_pixmap = p;
+}
+
+bool PianoKey::getUsePixmap() const
+{
+    return m_usePixmap;
+}
+
+void PianoKey::setUsePixmap(bool usePixmap)
+{
+    m_usePixmap = usePixmap;
 }
 
 } // namespace widgets

@@ -37,7 +37,8 @@ namespace drumstick { namespace widgets {
         explicit PianoKey(QGraphicsItem * parent = nullptr ): QGraphicsRectItem(parent),
             m_pressed(false),
             m_note(0),
-            m_black(false)
+            m_black(false),
+            m_usePixmap(true)
         { }
         PianoKey(const QRectF &rect, const bool black, const int note);
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) override;
@@ -53,6 +54,8 @@ namespace drumstick { namespace widgets {
         const QPixmap& getPixmap() const;
         void setPixmap(const QPixmap& p);
         QRectF pixmapRect() const;
+        bool getUsePixmap() const;
+        void setUsePixmap(bool usePixmap);
 
         static const PianoPalette keyPalette;
 
@@ -63,6 +66,7 @@ namespace drumstick { namespace widgets {
         int m_note;
         bool m_black;
         QPixmap m_pixmap;
+        bool m_usePixmap;
     };
 
 }} // namespace drumstick::widgets

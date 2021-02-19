@@ -67,7 +67,8 @@ public:
         m_showColorScale( false ),
         m_hilightPalette(PianoPalette(PAL_SINGLE)),
         m_backgroundPalette(PianoPalette(PAL_KEYS)),
-        m_foregroundPalette(PianoPalette(PAL_FONT))
+        m_foregroundPalette(PianoPalette(PAL_FONT)),
+        m_useKeyPix( true )
     { }
     int m_baseOctave;
     int m_numKeys;
@@ -98,6 +99,7 @@ public:
     PianoPalette m_hilightPalette;
     PianoPalette m_backgroundPalette;
     PianoPalette m_foregroundPalette;
+    bool m_useKeyPix;
     QPixmap m_keyPix[2];
 };
 
@@ -1325,6 +1327,19 @@ void PianoScene::setKeyPicture(const bool natural, const QPixmap &pix)
 QPixmap PianoScene::getKeyPicture(const bool natural)
 {
     return d->m_keyPix[int(natural)];
+}
+
+void PianoScene::setUseKeyPictures(const bool enable)
+{
+    d->m_useKeyPix = enable;
+    for (PianoKey* key : qAsConst(d->m_keys)) {
+        key->setUsePixmap(enable);
+    }
+}
+
+bool PianoScene::getUseKeyPictures() const
+{
+    return d->m_useKeyPix;
 }
 
 } // namespace widgets
