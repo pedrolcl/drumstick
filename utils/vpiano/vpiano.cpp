@@ -265,6 +265,8 @@ void VPiano::slotPreferences()
             ui.pianokeybd->startKey() != VPianoSettings::instance()->startingKey()) {
             ui.pianokeybd->setNumKeys(VPianoSettings::instance()->numKeys(), VPianoSettings::instance()->startingKey());
         }
+        ui.pianokeybd->setChannel(VPianoSettings::instance()->outChannel());
+        ui.pianokeybd->setVelocity(VPianoSettings::instance()->velocity());
     }
 }
 
@@ -385,6 +387,7 @@ void VPiano::readSettings()
     bgpalette.setColor(0, QColor("ivory"));
     bgpalette.setColor(1, QColor(0x40,0x10,0x10));
     ui.pianokeybd->setBackgroundPalette(bgpalette);
+    ui.pianokeybd->setVelocityTint(false);
 }
 
 void VPiano::findInput(QString name)

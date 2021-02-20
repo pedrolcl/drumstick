@@ -586,5 +586,37 @@ PianoPalette::operator!=(const PianoPalette &other) const
     return !(*this == other);
 }
 
+/**
+ * @brief Serialize a PianoPalette instance into a QDataStream
+ * @param stream a QDataStream
+ * @param palette instance
+ * @return the QDataStream
+ */
+QDataStream &operator<<(QDataStream &stream, const PianoPalette &palette)
+{
+    stream << palette.m_paletteId;
+    stream << palette.m_colors;
+    stream << palette.m_names;
+    stream << palette.m_paletteName;
+    stream << palette.m_paletteText;
+    return stream;
+}
+
+/**
+ * @brief Deserialize a PianoPalette instance from a QDataStream
+ * @param stream a QDataStream
+ * @param palette instance
+ * @return the QDataStream
+ */
+QDataStream &operator>>(QDataStream &stream, PianoPalette &palette)
+{
+    stream >> palette.m_paletteId;
+    stream >> palette.m_colors;
+    stream >> palette.m_names;
+    stream >> palette.m_paletteName;
+    stream >> palette.m_paletteText;
+    return stream;
+}
+
 } // namespace widgets
 } // namespace drumstick

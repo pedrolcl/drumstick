@@ -456,44 +456,23 @@ void PianoKeybd::resizeEvent(QResizeEvent *event)
  */
 void PianoKeybd::setNumKeys(const int numKeys, const int startKey)
 {
+    //qDebug() << Q_FUNC_INFO << numKeys << startKey;
     if ( numKeys != d->m_scene->numKeys() || startKey != d->m_scene->startKey() )
     {
+        QByteArray dataBuffer;
         int baseOctave = d->m_scene->baseOctave();
         QColor color = d->m_scene->getKeyPressedColor();
         PianoHandler* handler = d->m_scene->getPianoHandler();
         KeyboardMap* keyMap = d->m_scene->getKeyboardMap();
-        PianoPalette highlighPalette = d->m_scene->getHighlightPalette();
-        PianoPalette backgroundPalette = d->m_scene->getBackgroundPalette();
-        PianoPalette foregroundPalette = d->m_scene->getForegroundPalette();
-        bool keyboardEnabled = d->m_scene->isKeyboardEnabled();
-        bool mouseEnabled = d->m_scene->isMouseEnabled();
-        bool touchEnabled = d->m_scene->isTouchEnabled();
-        bool showScale = d->m_scene->showColorScale();
-        LabelVisibility showLabels = d->m_scene->showLabels();
-        LabelAlteration alteration = d->m_scene->alterations();
-        LabelCentralOctave octave  = d->m_scene->getOctave();
-        LabelOrientation orientation = d->m_scene->getOrientation();
-        QStringList customNames =  d->m_scene->customNoteNames();
+        d->m_scene->saveData(dataBuffer);
         delete d->m_scene;
         initScene(baseOctave, numKeys, startKey, color);
+        d->m_scene->loadData(dataBuffer);
         d->m_scene->setPianoHandler(handler);
         d->m_scene->setKeyboardMap(keyMap);
-        d->m_scene->setHighlightPalette(highlighPalette);
-        d->m_scene->setBackgroundPalette(backgroundPalette);
-        d->m_scene->setForegroundPalette(foregroundPalette);
-        d->m_scene->setKeyboardEnabled(keyboardEnabled);
-        d->m_scene->setMouseEnabled(mouseEnabled);
-        d->m_scene->setTouchEnabled(touchEnabled);
-        d->m_scene->setShowColorScale(showScale);
-        d->m_scene->setShowLabels(showLabels);
-        d->m_scene->setAlterations(alteration);
-        d->m_scene->setOctave(octave);
-        d->m_scene->setOrientation(orientation);
-        if (customNames.isEmpty()) {
-            d->m_scene->useStandardNoteNames();
-        } else {
-            d->m_scene->useCustomNoteNames(customNames);
-        }
+        d->m_scene->hideOrShowKeys();
+        d->m_scene->refreshKeys();
+        d->m_scene->refreshLabels();
         fitInView(d->m_scene->sceneRect(), Qt::KeepAspectRatio);
     }
 }
@@ -861,6 +840,7 @@ bool PianoKeybd::velocityTint() const
  */
 void PianoKeybd::setVelocityTint(const bool enable)
 {
+    //qDebug() << Q_FUNC_INFO << enable;
     d->m_scene->setVelocityTint(enable);
 }
 

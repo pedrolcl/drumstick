@@ -1,5 +1,8 @@
+2021-02-20
+    * Implemented palette serialization methods. Fixed lost attributes when piano scene is rebuilt.
+
 2021-02-19
-    * implemented ticket #26: customizable texture for black and white keys
+    * Implemented ticket #26: customizable texture for black and white keys
 
 2021-02-17
     * Implemented ticket #25: chromatic scale highlight palette 

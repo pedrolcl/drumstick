@@ -17,13 +17,16 @@
 */
 
 #include <QApplication>
+#include <QDataStream>
+#include <QByteArray>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QPalette>
 #include <QPixmap>
+#include <QtMath>
+
 #include <drumstick/pianokeybd.h>
 #include "pianoscene.h"
-#include <qmath.h>
 
 /**
  * @file pianoscene.cpp
@@ -70,6 +73,68 @@ public:
         m_foregroundPalette(PianoPalette(PAL_FONT)),
         m_useKeyPix( true )
     { }
+
+    void saveData(QByteArray& buffer)
+    {
+        QDataStream ds(&buffer, QIODevice::WriteOnly);
+        ds << m_minNote;
+        ds << m_maxNote;
+        ds << m_transpose;
+        ds << m_showLabels;
+        ds << m_alterations;
+        ds << m_octave;
+        ds << m_orientation;
+        ds << m_rawkbd;
+        ds << m_keyboardEnabled;
+        ds << m_mouseEnabled;
+        ds << m_touchEnabled;
+        ds << m_mousePressed;
+        ds << m_velocity;
+        ds << m_channel;
+        ds << m_velocityTint;
+        ds << m_noteNames;
+        ds << m_names_s;
+        ds << m_names_f;
+        ds << m_showColorScale;
+        ds << m_hilightPalette;
+        ds << m_backgroundPalette;
+        ds << m_foregroundPalette;
+        ds << m_useKeyPix;
+        ds << m_keyPix[0];
+        ds << m_keyPix[1];
+    }
+
+    void loadData(QByteArray& buffer)
+    {
+        quint32 u;
+        QDataStream ds(&buffer, QIODevice::ReadOnly);
+        ds >> m_minNote;
+        ds >> m_maxNote;
+        ds >> m_transpose;
+        ds >> u; m_showLabels = LabelVisibility(u);
+        ds >> u; m_alterations = LabelAlteration(u);
+        ds >> u; m_octave = LabelCentralOctave(u);
+        ds >> u; m_orientation =  LabelOrientation(u);
+        ds >> m_rawkbd;
+        ds >> m_keyboardEnabled;
+        ds >> m_mouseEnabled;
+        ds >> m_touchEnabled;
+        ds >> m_mousePressed;
+        ds >> m_velocity;
+        ds >> m_channel;
+        ds >> m_velocityTint;
+        ds >> m_noteNames;
+        ds >> m_names_s;
+        ds >> m_names_f;
+        ds >> m_showColorScale;
+        ds >> m_hilightPalette;
+        ds >> m_backgroundPalette;
+        ds >> m_foregroundPalette;
+        ds >> m_useKeyPix;
+        ds >> m_keyPix[0];
+        ds >> m_keyPix[1];
+    }
+
     int m_baseOctave;
     int m_numKeys;
     int m_startKey;
@@ -262,7 +327,7 @@ void PianoScene::displayKeyOn(PianoKey* key)
  */
 void PianoScene::showKeyOn( PianoKey* key, QColor color, int vel )
 {
-    //qDebug() << Q_FUNC_INFO << key << vel << color;
+    //qDebug() << Q_FUNC_INFO << key->getNote() << vel << color << d->m_velocityTint;
     if (d->m_velocityTint && (vel >= 0) && (vel < 128) && color.isValid() ) {
         QBrush hilightBrush(color.lighter(200 - vel));
         key->setPressedBrush(hilightBrush);
@@ -395,6 +460,7 @@ void PianoScene::triggerNoteOff( const int note, const int vel )
 void PianoScene::setHighlightColorFromPolicy(PianoKey* key, int vel)
 {
     QColor c;
+    //qDebug() << Q_FUNC_INFO << key->getNote() << vel << d->m_velocityTint;
     switch (d->m_hilightPalette.paletteId()) {
     case PAL_SINGLE:
         c = d->m_hilightPalette.getColor(0);
@@ -1189,6 +1255,7 @@ bool PianoScene::velocityTint() const
  */
 void PianoScene::setVelocityTint(const bool enable)
 {
+    //qDebug() << Q_FUNC_INFO << enable;
     d->m_velocityTint = enable;
 }
 
@@ -1340,6 +1407,16 @@ void PianoScene::setUseKeyPictures(const bool enable)
 bool PianoScene::getUseKeyPictures() const
 {
     return d->m_useKeyPix;
+}
+
+void PianoScene::saveData(QByteArray &ba)
+{
+    d->saveData(ba);
+}
+
+void PianoScene::loadData(QByteArray &ba)
+{
+    d->loadData(ba);
 }
 
 } // namespace widgets

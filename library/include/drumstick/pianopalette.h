@@ -97,6 +97,9 @@ public:
 
     static const QString QSTR_PALETTEPREFIX;
 
+    friend QDataStream &operator<<(QDataStream& stream, const PianoPalette& palette);
+    friend QDataStream &operator>>(QDataStream& stream, PianoPalette& palette);
+
 protected:
     void initialize();
     void resetPaletteSingle();

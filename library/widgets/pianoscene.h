@@ -121,12 +121,17 @@ namespace drumstick { namespace widgets {
         void setChannel(const int channel);
         void retranslate();
         void refreshLabels();
+        void hideOrShowKeys();
+        void refreshKeys();
 
         void setKeyPicture(const bool natural, const QPixmap& pix);
         QPixmap getKeyPicture(const bool natural);
 
         void setUseKeyPictures(const bool enable);
         bool getUseKeyPictures() const;
+
+        void saveData(QByteArray& ba);
+        void loadData(QByteArray& ba);
 
     signals:
         /**
@@ -175,8 +180,6 @@ namespace drumstick { namespace widgets {
         void triggerNoteOff( const int note, const int vel );
         int getNoteFromKey( const int key ) const;
         void setHighlightColorFromPolicy(PianoKey *key, const int vel);
-        void hideOrShowKeys();
-        void refreshKeys();
 
     private:
         class PianoScenePrivate;
