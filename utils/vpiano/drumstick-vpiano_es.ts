@@ -286,7 +286,6 @@ redistribuirlo bajo ciertas condiciones.</translation>
     </message>
     <message>
         <location filename="vpiano.ui" line="194"/>
-        <location filename="vpiano.ui" line="296"/>
         <source>Nothing</source>
         <translation>Nada</translation>
     </message>
@@ -346,17 +345,22 @@ redistribuirlo bajo ciertas condiciones.</translation>
         <translation>Personalizadas con bemoles</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="458"/>
+        <location filename="vpiano.ui" line="296"/>
+        <source>C</source>
+        <translation>do</translation>
+    </message>
+    <message>
+        <location filename="vpiano.cpp" line="456"/>
         <source>Font to display note names</source>
         <translation>Fuente para mostrar nombres de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="534"/>
+        <location filename="vpiano.cpp" line="532"/>
         <source>Custom Note Names</source>
         <translation>Nombres personalizados de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="534"/>
+        <location filename="vpiano.cpp" line="532"/>
         <source>Names:</source>
         <translation>Nombres:</translation>
     </message>

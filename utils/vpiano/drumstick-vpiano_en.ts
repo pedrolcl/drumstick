@@ -282,7 +282,6 @@ under certain conditions; see the LICENSE file for details.</source>
     </message>
     <message>
         <location filename="vpiano.ui" line="194"/>
-        <location filename="vpiano.ui" line="296"/>
         <source>Nothing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -342,17 +341,22 @@ under certain conditions; see the LICENSE file for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="458"/>
+        <location filename="vpiano.ui" line="296"/>
+        <source>C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="vpiano.cpp" line="456"/>
         <source>Font to display note names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="534"/>
+        <location filename="vpiano.cpp" line="532"/>
         <source>Custom Note Names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="534"/>
+        <location filename="vpiano.cpp" line="532"/>
         <source>Names:</source>
         <translation type="unfinished"></translation>
     </message>
