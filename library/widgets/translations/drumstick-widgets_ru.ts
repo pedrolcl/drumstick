@@ -206,68 +206,68 @@
     <message>
         <location filename="../pianopalette.cpp" line="241"/>
         <source>Single color highlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Подсветка одним цветом</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="242"/>
         <source>A single color to highlight all note events</source>
-        <translation type="unfinished"></translation>
+        <translation>Один цвет для подсветки всех событий нот</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="246"/>
         <source>Two colors highlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Подсветка двумя цветами</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="247"/>
         <source>One color to highlight natural notes and a different one for accidentals</source>
-        <translation type="unfinished"></translation>
+        <translation>Один цвет подсвечивает натуральные ноты, второй акцентированные</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="251"/>
         <source>MIDI Channels highlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Подсветка каналов MIDI</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="252"/>
         <source>A different color to highlight each MIDI channel. Enable Omni mode in the MIDI IN connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Разные цвета подсветки каждого канала MIDI. Включить режим Omni в соединении MIDI IN</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="256"/>
         <source>Chromatic scale background</source>
-        <translation type="unfinished"></translation>
+        <translation>Хроматический фон</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="257"/>
         <location filename="../pianopalette.cpp" line="272"/>
         <source>One color for each note in the chromatic scale</source>
-        <translation type="unfinished"></translation>
+        <translation>Один цвет для каждой ноты по хроматической шкале</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="261"/>
         <source>Keys background</source>
-        <translation type="unfinished"></translation>
+        <translation>Фон клавиш</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="262"/>
         <source>One color for natural notes and another for accidentals</source>
-        <translation type="unfinished"></translation>
+        <translation>Один цвет для натуральных нот и один для акцентированных</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="266"/>
         <source>Font foreground</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет шрифта</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="267"/>
         <source>Colors for note names</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвета для названий нот</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="271"/>
         <source>Chromatic scale highlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Подсветка хроматической шкалой</translation>
     </message>
 </context>
 <context>
@@ -275,67 +275,67 @@
     <message>
         <location filename="../fluidsettingsdialog.ui" line="14"/>
         <source>FluidSynth Driver Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки драйвера FluidSynth</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="48"/>
         <source>Sample Rate:</source>
-        <translation type="unfinished"></translation>
+        <translation>Скорость сэмплов:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="58"/>
         <source>Period Size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер периода:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="71"/>
         <source># of Periods:</source>
-        <translation type="unfinished"></translation>
+        <translation>Число периодов:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="84"/>
         <source>Audio Driver:</source>
-        <translation type="unfinished"></translation>
+        <translation>Аудиодрайвер:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="91"/>
         <source>Polyphony:</source>
-        <translation type="unfinished"></translation>
+        <translation>Полифония:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="104"/>
         <source>Sound Font:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sound Font:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="114"/>
         <source>Gain:</source>
-        <translation type="unfinished"></translation>
+        <translation>Усиление:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="127"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="134"/>
         <source>Chorus</source>
-        <translation type="unfinished"></translation>
+        <translation>Хорус</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="141"/>
         <source>Reverb</source>
-        <translation type="unfinished"></translation>
+        <translation>Реверберация</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="198"/>
         <source>Select SoundFont</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать SoundFont</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="198"/>
         <source>SoundFont Files (*.sf2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Файлы SoundFont (*.sf2)</translation>
     </message>
 </context>
 <context>
@@ -343,37 +343,37 @@
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="14"/>
         <source>macOS Synth Driver Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки драйвера macOS Synth</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="20"/>
         <source>SoundFont:</source>
-        <translation type="unfinished"></translation>
+        <translation>SoundFont:</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="46"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="66"/>
         <source>Use Internal Reverb</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать встроенную реверберацию</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="73"/>
         <source>Default Apple DLS Sound Set</source>
-        <translation type="unfinished"></translation>
+        <translation>Набор звуков Apple DLS по умолчанию</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="113"/>
         <source>Select SoundFont</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбор SoundFont</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="113"/>
         <source>SoundFont Files (*.sf2 *.dls)</source>
-        <translation type="unfinished"></translation>
+        <translation>Файлы SoundFont (*.sf2 *.dls)</translation>
     </message>
 </context>
 <context>
@@ -381,28 +381,28 @@
     <message>
         <location filename="../networksettingsdialog.ui" line="14"/>
         <source>Network Driver Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки драйвера сети</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="20"/>
         <source>Use IPv6</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать IPv6</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="27"/>
         <source>Network Interface:</source>
-        <translation type="unfinished"></translation>
+        <translation>Сетевой интерфейс:</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="40"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Адрес</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="75"/>
         <location filename="../networksettingsdialog.cpp" line="111"/>
         <source>Any</source>
-        <translation type="unfinished"></translation>
+        <translation>Любой</translation>
     </message>
 </context>
 <context>
@@ -505,27 +505,27 @@
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="14"/>
         <source>Sonivox EAS Synth</source>
-        <translation type="unfinished"></translation>
+        <translation>Sonivox EAS Synth</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="26"/>
         <source>Chorus</source>
-        <translation type="unfinished"></translation>
+        <translation>Хорус</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="56"/>
         <source>Reverb</source>
-        <translation type="unfinished"></translation>
+        <translation>Реверберация</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="74"/>
         <source>Buffer Time:</source>
-        <translation type="unfinished"></translation>
+        <translation>Время буфера:</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="84"/>
         <source> ms</source>
-        <translation type="unfinished"></translation>
+        <translation> мс</translation>
     </message>
 </context>
 </TS>
