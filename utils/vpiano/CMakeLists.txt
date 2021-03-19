@@ -46,7 +46,7 @@ set(vpiano_SRCS
     vpianosettings.h
 )
 
-add_executable(drumstick-vpiano
+add_executable(drumstick-vpiano MACOSX_BUNDLE WIN32
     ${vpiano_SRCS}
 )
 
@@ -126,7 +126,8 @@ if(STATIC_DRUMSTICK)
 endif()
 
 install(TARGETS drumstick-vpiano
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        BUNDLE DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 install(FILES drumstick-vpiano.desktop
         DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
