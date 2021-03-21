@@ -331,6 +331,8 @@ void PianoScene::showKeyOn( PianoKey* key, QColor color, int vel )
     if (d->m_velocityTint && (vel >= 0) && (vel < 128) && color.isValid() ) {
         QBrush hilightBrush(color.lighter(200 - vel));
         key->setPressedBrush(hilightBrush);
+    } else if (color.isValid()) {
+        key->setPressedBrush(color);
     }
     displayKeyOn(key);
 }
