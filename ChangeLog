@@ -1,3 +1,6 @@
+2021-03-21
+    * fix for ticket #28: highlight color is wrong unless velocity tint is active
+
 2021-03-20
     * release 2.1.0
 

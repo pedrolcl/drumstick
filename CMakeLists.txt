@@ -18,7 +18,7 @@ cmake_minimum_required(VERSION 3.9)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
 
 project(Drumstick
-        VERSION 2.1.0
+        VERSION 2.1.1
         DESCRIPTION "MIDI C++ Libraries for Qt")
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_admin)
@@ -89,7 +89,7 @@ if(${CMAKE_SYSTEM} MATCHES "Linux")
     endif()
 endif()
 
-if(PKG_CONFIG_FOUND)
+if(UNIX AND NOT APPLE)
     pkg_check_modules(PULSE IMPORTED_TARGET libpulse-simple)
     if(PULSE_FOUND)
         message(STATUS "Found PulseAudio version = ${PULSE_VERSION}")
@@ -105,11 +105,17 @@ if(${CMAKE_SYSTEM} MATCHES "Darwin")
     endif()
 endif()
 
+# CMAKE_SYSTEM_PROCESSOR is broken on Windows with MSVC
+# cmake bug https://gitlab.kitware.com/cmake/cmake/-/issues/15170 still open in 2021/03
+if(MSVC)
+    string(TOLOWER ${MSVC_CXX_ARCHITECTURE_ID} CMAKE_SYSTEM_PROCESSOR)
+endif()
+
 message (STATUS "${PROJECT_NAME} v${PROJECT_VERSION}
     install prefix: ${CMAKE_INSTALL_PREFIX}
     Build configuration: ${CMAKE_BUILD_TYPE}
     Processor: ${CMAKE_SYSTEM_PROCESSOR}
-    Qt5: ${Qt5Core_VERSION_STRING}
+    Qt5 Version: ${Qt5Core_VERSION_STRING}
     D-Bus support: ${USE_DBUS}")
 
 add_subdirectory(library)
