@@ -53,7 +53,13 @@ include(GNUInstallDirs)
 add_definitions(-DVERSION=${PROJECT_VERSION})
 
 set(_DBUS_INIT OFF)
+if (UNIX AND NOT APPLE)
+    set(_DOCS_INIT ON)
+else ()
+    set(_DOCS_INIT OFF)
+endif ()
 
+option(BUILD_DOCS "Build Doxygen documentation and man pages" ${_DOCS_INIT})
 option(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)
 option(USE_DBUS "Include DBus support (required for RealtimeKit)" ${_DBUS_INIT})
 
@@ -112,11 +118,13 @@ if(MSVC)
 endif()
 
 message (STATUS "${PROJECT_NAME} v${PROJECT_VERSION}
-    install prefix: ${CMAKE_INSTALL_PREFIX}
+    Install prefix: ${CMAKE_INSTALL_PREFIX}
     Build configuration: ${CMAKE_BUILD_TYPE}
     Processor: ${CMAKE_SYSTEM_PROCESSOR}
     Qt5 Version: ${Qt5Core_VERSION_STRING}
-    D-Bus support: ${USE_DBUS}")
+    D-Bus support: ${USE_DBUS}
+    Building docs: ${BUILD_DOCS}"
+)
 
 add_subdirectory(library)
 add_subdirectory(utils)
@@ -128,16 +136,18 @@ if(BUILD_TESTING)
 endif()
 
 if(UNIX AND NOT APPLE)
-    find_package(Doxygen REQUIRED dot)
-    if(DOXYGEN_FOUND)
-        string(REPLACE ";" " " DOXYGEN_INCLUDE_DIRS "${Qt5Core_INCLUDE_DIRS}")
-        configure_file("${CMAKE_SOURCE_DIR}/Doxyfile.in"
-            "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE @ONLY)
-        add_custom_target(doxygen
-            ${DOXYGEN_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    if (BUILD_DOCS)
+        find_package(Doxygen REQUIRED dot)
+        if(DOXYGEN_FOUND)
+            string(REPLACE ";" " " DOXYGEN_INCLUDE_DIRS "${Qt5Core_INCLUDE_DIRS}")
+            configure_file("${CMAKE_SOURCE_DIR}/Doxyfile.in"
+                "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE @ONLY)
+            add_custom_target(doxygen
+                ${DOXYGEN_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
+                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+        endif()
+        add_subdirectory(doc)
     endif()
-    add_subdirectory(doc)
     configure_file(drumstick-alsa.pc.in drumstick-alsa.pc IMMEDIATE @ONLY)
     configure_file(drumstick.spec.in drumstick.spec IMMEDIATE @ONLY)
     install(FILES
