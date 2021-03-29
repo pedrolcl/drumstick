@@ -1,5 +1,4 @@
-Basic build commands
---------------------
+## Basic build commands
 
 $ cd drumstick-x.x.x
 $ mkdir -p build
@@ -20,8 +19,7 @@ $ sudo make install
 $ sudo ldconfig
     (not needed if you only want STATIC_DRUMSTICK)
 
-Requirements
-------------
+## Requirements
 
 Minimum supported versions:
 
@@ -35,16 +33,14 @@ Minimum supported versions:
 *    Unix: OSS
 *    Synthesizers: SonivoxEAS, FluidSynth
 *    All: Network - ipMIDI (IPv4, IPv6)
-
 * shared-mime-info 0.30
-See http://freedesktop.org/wiki/Software/shared-mime-info
+  See http://freedesktop.org/wiki/Software/shared-mime-info
 The utility "update-mime-database" must be executed after installing the library
 "drumstick-file" and the "drumstick.xml" file. This is automatically done by 
 the cmake build system unless you defined DESTDIR. In this case, your package 
 manager should perform it as a post-install step. 
-
 * Doxygen 1.5
-See http://www.doxygen.org
+See http://www.doxygen.org 
 If you want to generate the documentation for the libraries  
 
 If you want to generate and install the man pages, the build system can do it 
@@ -84,3 +80,9 @@ Optional CMake parameters
     
     -DUSE_DBUS=NO|OFF|0
     Don't include DBus support (default)
+
+    -DBUILD_DOCS=YES|ON|1
+    Build Doxygen documentation and man pages (default in Unix)
+    
+    -DBUILD_DOCS=NO|OFF|0
+    Don't build Doxygen documentation nor man pages
