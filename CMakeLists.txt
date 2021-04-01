@@ -14,14 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.9)
-set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
+cmake_minimum_required(VERSION 3.14)
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12" CACHE STRING "Minimum OS X deployment version")
 
-project(Drumstick
-        VERSION 2.1.1
-        DESCRIPTION "MIDI C++ Libraries for Qt")
+project( Drumstick
+    VERSION 2.1.2
+    LANGUAGES C CXX
+    DESCRIPTION "MIDI C++ Libraries for Qt"
+    HOMEPAGE_URL "https://sourceforge.net/p/drumstick/"
+)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_admin)
+include(SCMRevision)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
@@ -51,6 +55,9 @@ endif()
 include(GNUInstallDirs)
 
 add_definitions(-DVERSION=${PROJECT_VERSION})
+if (DEFINED PROJECT_WC_REVISION)
+    add_definitions(-DREVISION=${PROJECT_WC_REVISION})
+endif()
 
 set(_DBUS_INIT OFF)
 if (UNIX AND NOT APPLE)
