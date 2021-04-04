@@ -67,6 +67,7 @@ else ()
 endif ()
 
 option(BUILD_DOCS "Build Doxygen documentation and man pages" ${_DOCS_INIT})
+option(BUILD_UTILS "Build Utilities and Examples" ON)
 option(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)
 option(USE_DBUS "Include DBus support (required for RealtimeKit)" ${_DBUS_INIT})
 
@@ -130,11 +131,15 @@ message (STATUS "${PROJECT_NAME} v${PROJECT_VERSION}
     Processor: ${CMAKE_SYSTEM_PROCESSOR}
     Qt5 Version: ${Qt5Core_VERSION_STRING}
     D-Bus support: ${USE_DBUS}
-    Building docs: ${BUILD_DOCS}"
+    Building tests: ${BUILD_TESTING}
+    Building docs: ${BUILD_DOCS}
+    Building utils: ${BUILD_UTILS}"
 )
 
 add_subdirectory(library)
-add_subdirectory(utils)
+if (BUILD_UTILS)
+    add_subdirectory(utils)
+endif()
 add_subdirectory(icons)
 
 include(CTest)

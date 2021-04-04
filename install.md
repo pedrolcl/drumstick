@@ -87,3 +87,15 @@ Build Doxygen documentation and man pages (default in Unix)
 
 -DBUILD_DOCS=NO|OFF|0  
 Don't build Doxygen documentation nor man pages
+
+-DBUILD_UTILS=YES|ON|1
+Build utilities and example programs (default)
+
+-DBUILD_UTILS=NO|OFF|0 
+Don't build utilities and example programs
+
+-DBUILD_TESTING=YES|ON|1
+Build unit tests (default)
+
+-DBUILD_TESTING=NO|OFF|0 
+Don't build unit tests
