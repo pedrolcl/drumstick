@@ -1,3 +1,11 @@
+2021-04-05
+    * added wasapi option to fluidsynth settings dialog in Windows (WIP)
+    * removed background settings from pianokeybd, to allow better dark theme transitions
+
+2021-04-04
+    * new option: BUILD_UTILS (ON by default).
+    * documentation for BUILD_UTILS and BUILD_TESTING options.
+
 2021-04-01
     * added SCM Revision to the about box of GUI utils
 
