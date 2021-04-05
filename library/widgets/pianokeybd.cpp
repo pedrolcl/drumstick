@@ -427,13 +427,11 @@ void PianoKeybd::initialize()
     setAttribute(Qt::WA_InputMethodEnabled, false);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setCacheMode(CacheBackground);
     setViewportUpdateMode(MinimalViewportUpdate);
     setRenderHints(QPainter::Antialiasing|QPainter::TextAntialiasing|QPainter::SmoothPixmapTransform);
     setOptimizationFlag(DontClipPainter, true);
     setOptimizationFlag(DontSavePainterState, true);
     setOptimizationFlag(DontAdjustForAntialiasing, true);
-    setBackgroundBrush(QApplication::palette().window());
     resetRawKeyboardMap();
 }
 

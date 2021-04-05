@@ -105,7 +105,7 @@ void FluidSettingsDialog::readSettings()
 #if defined(Q_OS_LINUX)
     drivers << "alsa" << "pulseaudio" << "oss";
 #elif defined(Q_OS_WIN)
-    drivers << "dsound";
+    drivers << "dsound" << "wasapi";
 #elif defined(Q_OS_OSX)
     drivers << "coreaudio";
 #else
