@@ -118,6 +118,14 @@ void FluidSettingsDialog::readSettings()
         fs_defSoundFont = sf2.absoluteFilePath();
     }
 
+    if (m_driver != nullptr) {
+        QVariant drivers = m_driver->property("audiodrivers");
+        if (drivers.isValid()) {
+            ui->audioDriver->clear();
+            ui->audioDriver->addItems(drivers.toStringList());
+        }
+    }
+
     settings->beginGroup(QSTR_PREFERENCES);
     ui->audioDriver->setCurrentText( settings->value(QSTR_AUDIODRIVER, defaultAudioDriver()).toString() );
     ui->periodSize->setText( settings->value(QSTR_PERIODSIZE, DEFAULT_PERIODSIZE).toString() );
@@ -129,14 +137,6 @@ void FluidSettingsDialog::readSettings()
     ui->polyphony->setText( settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toString() );
     ui->soundFont->setText( settings->value(QSTR_INSTRUMENTSDEFINITION, fs_defSoundFont).toString() );
     settings->endGroup();
-
-    if (m_driver != nullptr) {
-        QVariant drivers = m_driver->property("audiodrivers");
-        if (drivers.isValid()) {
-            ui->audioDriver->clear();
-            ui->audioDriver->addItems(drivers.toStringList());
-        }
-    }
 }
 
 void FluidSettingsDialog::writeSettings()
