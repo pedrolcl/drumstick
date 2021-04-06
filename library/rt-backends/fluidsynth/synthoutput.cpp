@@ -18,19 +18,33 @@
 
 #include "synthoutput.h"
 
-namespace drumstick {
-namespace rt {
+namespace drumstick { namespace rt {
 
-SynthOutput::SynthOutput(QObject *parent) : MIDIOutput(parent),
-    m_synth(new SynthEngine(this))
-{ }
+SynthOutput::SynthOutput(QObject *parent) : MIDIOutput(parent)
+{
+    m_synth = new SynthEngine;
+    m_synth->moveToThread(&m_synthThread);
+    connect(&m_synthThread, &QThread::started,  m_synth, &SynthEngine::initialize);
+    connect(&m_synthThread, &QThread::finished, m_synth, &QObject::deleteLater);
+}
 
-SynthOutput::~SynthOutput() = default;
+SynthOutput::~SynthOutput()
+{
+    if (m_synthThread.isRunning()) {
+        m_synthThread.quit();
+        m_synthThread.wait();
+    }
+}
+
+QStringList SynthOutput::getAudioDrivers()
+{
+    return m_synth->getVariantData("audiodrivers").toStringList();
+}
 
 void SynthOutput::initialize(QSettings *settings)
 {
     m_synth->readSettings(settings);
-    m_synth->initialize(settings);
+    m_synthThread.start(QThread::HighPriority);
 }
 
 QString SynthOutput::backendName()

@@ -93,6 +93,7 @@ target_include_directories(drumstick-widgets PUBLIC
 target_link_libraries(drumstick-widgets PRIVATE
     Qt5::Widgets
     Qt5::Network
+    Drumstick::RT
 )
 
 set(TS_FILES

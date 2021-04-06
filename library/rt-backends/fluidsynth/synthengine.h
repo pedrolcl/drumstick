@@ -24,6 +24,7 @@
 #include <QList>
 #include <QDir>
 #include <QSettings>
+#include <QMutex>
 #include <drumstick/rtmidioutput.h>
 #include <fluidsynth.h>
 
@@ -41,7 +42,7 @@ public:
     QString soundFont() const { return m_soundFont; }
     void setSoundFont(const QString &value);
 
-    Q_INVOKABLE void initialize(QSettings *settings);
+    Q_INVOKABLE void initialize();
     Q_INVOKABLE void readSettings(QSettings *settings);
     Q_INVOKABLE void scanSoundFonts();
     Q_INVOKABLE void panic();
@@ -51,6 +52,7 @@ public:
     Q_INVOKABLE void controlChange(const int channel, const int ctl, const int value);
     Q_INVOKABLE void bender(const int channel, const int value);
     Q_INVOKABLE QString version() const { return QT_STRINGIFY(VERSION); }
+    Q_INVOKABLE QVariant getVariantData(const QString key);
 
     MIDIConnection currentConnection() const { return m_currentConnection; }
     void close();
@@ -84,8 +86,10 @@ public:
 
 private:
     void scanSoundFonts(const QDir &dir);
-    void initializeSynth(QSettings *settings = nullptr);
+    void retrieveAudioDrivers();
+    void initializeSynth();
     void loadSoundFont();
+    void internalInitialize();
 
     int m_sfid;
     MIDIConnection m_currentConnection;
@@ -95,6 +99,16 @@ private:
     fluid_synth_t* m_synth;
     fluid_audio_driver_t* m_driver;
     QStringList m_soundFontsList;
+    QStringList m_audioDriversList;
+    QMutex m_mutex;
+    QString fs_audiodriver{ QSTR_DEFAULT_AUDIODRIVER };
+    int fs_periodSize { DEFAULT_PERIODSIZE };
+    int fs_periods { DEFAULT_PERIODS };
+    double fs_sampleRate { DEFAULT_SAMPLERATE };
+    int fs_chorus { DEFAULT_CHORUS };
+    int fs_reverb { DEFAULT_REVERB };
+    double fs_gain { DEFAULT_GAIN };
+    int fs_polyphony { DEFAULT_POLYPHONY };
 };
 
 }} // namespace drumstick::rt

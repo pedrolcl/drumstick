@@ -26,6 +26,7 @@
 #include "fluidsettingsdialog.h"
 #include "ui_fluidsettingsdialog.h"
 #include <drumstick/settingsfactory.h>
+#include <drumstick/backendmanager.h>
 
 /**
  * @file fluidsettingsdialog.cpp
@@ -63,6 +64,13 @@ FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
     ui->sampleRate->setValidator(new QDoubleValidator(22050.0, 96000.0, 1, this));
     ui->gain->setValidator(new QDoubleValidator(0.0, 10.0, 2, this));
     ui->polyphony->setValidator(new QIntValidator(16, 4096, this));
+
+    SettingsFactory settings;
+    drumstick::rt::BackendManager man;
+    m_driver = man.outputBackendByName("FluidSynth");
+    if (m_driver != nullptr) {
+        m_driver->initialize(settings.getQSettings());
+    }
 }
 
 FluidSettingsDialog::~FluidSettingsDialog()
@@ -100,18 +108,7 @@ QString FluidSettingsDialog::defaultAudioDriver() const
 void FluidSettingsDialog::readSettings()
 {
     SettingsFactory settings;
-    QStringList drivers;
     QString fs_defSoundFont = QSTR_SOUNDFONT;
-#if defined(Q_OS_LINUX)
-    drivers << "alsa" << "pulseaudio" << "oss";
-#elif defined(Q_OS_WIN)
-    drivers << "dsound" << "wasapi";
-#elif defined(Q_OS_OSX)
-    drivers << "coreaudio";
-#else
-    drivers << "oss";
-#endif
-
     QDir dir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
     if (!dir.exists()) {
         dir = QDir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR2, QStandardPaths::LocateDirectory));
@@ -120,8 +117,6 @@ void FluidSettingsDialog::readSettings()
     if (sf2.exists()) {
         fs_defSoundFont = sf2.absoluteFilePath();
     }
-
-    ui->audioDriver->addItems(drivers);
 
     settings->beginGroup(QSTR_PREFERENCES);
     ui->audioDriver->setCurrentText( settings->value(QSTR_AUDIODRIVER, defaultAudioDriver()).toString() );
@@ -134,6 +129,14 @@ void FluidSettingsDialog::readSettings()
     ui->polyphony->setText( settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toString() );
     ui->soundFont->setText( settings->value(QSTR_INSTRUMENTSDEFINITION, fs_defSoundFont).toString() );
     settings->endGroup();
+
+    if (m_driver != nullptr) {
+        QVariant drivers = m_driver->property("audiodrivers");
+        if (drivers.isValid()) {
+            ui->audioDriver->clear();
+            ui->audioDriver->addItems(drivers.toStringList());
+        }
+    }
 }
 
 void FluidSettingsDialog::writeSettings()

@@ -28,6 +28,11 @@
  */
 
 namespace drumstick {
+
+namespace rt {
+    class MIDIOutput;
+}
+
 namespace widgets {
 
 namespace Ui {
@@ -76,7 +81,9 @@ public:
 
 private:
     QString defaultAudioDriver() const;
+
     Ui::FluidSettingsDialog *ui;
+    drumstick::rt::MIDIOutput *m_driver;
 };
 
 }} // namespace drumstick::widgets

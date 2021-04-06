@@ -16,13 +16,13 @@
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "synthengine.h"
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QSettings>
 #include <QStandardPaths>
 #include <drumstick/rtmidioutput.h>
+#include "synthengine.h"
 
 namespace drumstick { namespace rt {
 
@@ -89,28 +89,8 @@ void SynthEngine::uninitialize()
     }
 }
 
-void SynthEngine::initializeSynth(QSettings* settings)
+void SynthEngine::initializeSynth()
 {
-    QString fs_audiodriver = QSTR_DEFAULT_AUDIODRIVER;
-    int fs_periodSize = DEFAULT_PERIODSIZE;
-    int fs_periods = DEFAULT_PERIODS;
-    double fs_sampleRate = DEFAULT_SAMPLERATE;
-    int fs_chorus = DEFAULT_CHORUS;
-    int fs_reverb = DEFAULT_REVERB;
-    double fs_gain = DEFAULT_GAIN;
-    int fs_polyphony = DEFAULT_POLYPHONY;
-    if (settings != nullptr) {
-        settings->beginGroup(QSTR_PREFERENCES);
-        fs_audiodriver = settings->value(QSTR_AUDIODRIVER, QSTR_DEFAULT_AUDIODRIVER).toString();
-        fs_periodSize = settings->value(QSTR_PERIODSIZE, DEFAULT_PERIODSIZE).toInt();
-        fs_periods = settings->value(QSTR_PERIODS, DEFAULT_PERIODS).toInt();
-        fs_sampleRate = settings->value(QSTR_SAMPLERATE, DEFAULT_SAMPLERATE).toDouble();
-        fs_chorus = settings->value(QSTR_CHORUS, DEFAULT_CHORUS).toInt();
-        fs_reverb = settings->value(QSTR_REVERB, DEFAULT_REVERB).toInt();
-        fs_gain = settings->value(QSTR_GAIN, DEFAULT_GAIN).toDouble();
-        fs_polyphony = settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toInt();
-        settings->endGroup();
-    }
     uninitialize();
     m_settings = ::new_fluid_settings();
     ::fluid_settings_setstr(m_settings, "audio.driver", qPrintable(fs_audiodriver));
@@ -148,9 +128,11 @@ void SynthEngine::loadSoundFont()
     m_sfid = ::fluid_synth_sfload(m_synth, qPrintable(m_soundFont), 1);
 }
 
-void SynthEngine::initialize(QSettings *settings)
+void SynthEngine::initialize()
 {
-    initializeSynth(settings);
+    QMutexLocker locker(&m_mutex);
+    initializeSynth();
+    retrieveAudioDrivers();
     scanSoundFonts();
     loadSoundFont();
     if (m_sfid < 0) {
@@ -182,6 +164,15 @@ void SynthEngine::setSoundFont(const QString &value)
     }
 }
 
+QVariant SynthEngine::getVariantData(const QString key)
+{
+    QMutexLocker locker(&m_mutex);
+    if (QString::compare(key, "audiodrivers", Qt::CaseInsensitive) == 0) {
+        return m_audioDriversList;
+    }
+    return QVariant();
+}
+
 void SynthEngine::scanSoundFonts(const QDir &initialDir)
 {
     QDir dir(initialDir);
@@ -197,6 +188,18 @@ void SynthEngine::scanSoundFonts(const QDir &initialDir)
         } else if (info.isDir()){
             scanSoundFonts(name);
         }
+    }
+}
+
+void SynthEngine::retrieveAudioDrivers()
+{
+    if (m_settings != nullptr) {
+        m_audioDriversList.clear();
+        ::fluid_settings_foreach_option(m_settings, "audio.driver", &m_audioDriversList, [](void *context2, const char *, const char *option2){
+            QStringList *options_list = static_cast<QStringList*>(context2);
+            options_list->append(option2);
+        });
+        //qDebug() << "Drivers: " << m_audioDriversList;
     }
 }
 
@@ -243,12 +246,22 @@ void SynthEngine::readSettings(QSettings *settings)
     settings->beginGroup(QSTR_PREFERENCES);
     m_soundFont = settings->value(QSTR_INSTRUMENTSDEFINITION, m_defSoundFont).toString();
     settings->endGroup();
+
+    settings->beginGroup(QSTR_PREFERENCES);
+    fs_audiodriver = settings->value(QSTR_AUDIODRIVER, QSTR_DEFAULT_AUDIODRIVER).toString();
+    fs_periodSize = settings->value(QSTR_PERIODSIZE, DEFAULT_PERIODSIZE).toInt();
+    fs_periods = settings->value(QSTR_PERIODS, DEFAULT_PERIODS).toInt();
+    fs_sampleRate = settings->value(QSTR_SAMPLERATE, DEFAULT_SAMPLERATE).toDouble();
+    fs_chorus = settings->value(QSTR_CHORUS, DEFAULT_CHORUS).toInt();
+    fs_reverb = settings->value(QSTR_REVERB, DEFAULT_REVERB).toInt();
+    fs_gain = settings->value(QSTR_GAIN, DEFAULT_GAIN).toDouble();
+    fs_polyphony = settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toInt();
+    settings->endGroup();
 }
 
 void SynthEngine::close()
 {
     m_currentConnection = MIDIConnection();
-    uninitialize();
 }
 
 void SynthEngine::open()

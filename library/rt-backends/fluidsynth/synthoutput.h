@@ -20,6 +20,7 @@
 #define SynthOUTPUT_H
 
 #include <QObject>
+#include <QThread>
 #include <drumstick/rtmidioutput.h>
 #include "synthengine.h"
 
@@ -31,6 +32,8 @@ namespace rt {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIOutput)
+        Q_PROPERTY(QStringList audiodrivers READ getAudioDrivers)
+
     public:
         explicit SynthOutput(QObject *parent = nullptr);
         virtual ~SynthOutput();
@@ -59,7 +62,11 @@ namespace rt {
         virtual void sendSystemMsg(const int status) override;
 
     private:
+        QStringList getAudioDrivers();
+
+    private:
         SynthEngine *m_synth;
+        QThread m_synthThread;
     };
 
 }} // namespace drumstick::rt
