@@ -21,6 +21,7 @@
 
 #include <QObject>
 #include <QThread>
+#include <QPointer>
 #include <drumstick/rtmidioutput.h>
 #include "synthengine.h"
 
@@ -37,6 +38,9 @@ namespace rt {
     public:
         explicit SynthOutput(QObject *parent = nullptr);
         virtual ~SynthOutput();
+
+        void start();
+        void stop();
 
         // MIDIOutput interface
     public:
@@ -65,7 +69,7 @@ namespace rt {
         QStringList getAudioDrivers();
 
     private:
-        SynthEngine *m_synth;
+        QPointer<SynthEngine> m_synth;
         QThread m_synthThread;
     };
 

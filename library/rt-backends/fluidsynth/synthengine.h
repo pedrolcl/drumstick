@@ -42,6 +42,8 @@ public:
     QString soundFont() const { return m_soundFont; }
     void setSoundFont(const QString &value);
 
+    void stop();
+
     Q_INVOKABLE void initialize();
     Q_INVOKABLE void readSettings(QSettings *settings);
     Q_INVOKABLE void scanSoundFonts();
@@ -58,6 +60,8 @@ public:
     void close();
     void open();
     void uninitialize();
+
+    static const QString QSTR_FLUIDSYNTH_VERSION;
 
     static const QString QSTR_FLUIDSYNTH;
     static const QString QSTR_PREFERENCES;
@@ -93,6 +97,7 @@ private:
 
     int m_sfid;
     MIDIConnection m_currentConnection;
+    QString m_runtimeLibraryVersion;
     QString m_soundFont;
     QString m_defSoundFont;
     fluid_settings_t* m_settings;

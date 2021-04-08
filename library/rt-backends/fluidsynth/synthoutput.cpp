@@ -16,21 +16,41 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+//#include <QDebug>
 #include "synthoutput.h"
 
 namespace drumstick { namespace rt {
 
 SynthOutput::SynthOutput(QObject *parent) : MIDIOutput(parent)
 {
+    //qDebug() << Q_FUNC_INFO;
     m_synth = new SynthEngine;
     m_synth->moveToThread(&m_synthThread);
     connect(&m_synthThread, &QThread::started,  m_synth, &SynthEngine::initialize);
-    connect(&m_synthThread, &QThread::finished, m_synth, &QObject::deleteLater);
 }
 
 SynthOutput::~SynthOutput()
 {
+    //qDebug() << Q_FUNC_INFO;
     if (m_synthThread.isRunning()) {
+        stop();
+    }
+    delete m_synth;
+}
+
+void SynthOutput::start()
+{
+    if (!m_synthThread.isRunning()) {
+        //qDebug() << Q_FUNC_INFO;
+        m_synthThread.start(QThread::HighPriority);
+    }
+}
+
+void SynthOutput::stop()
+{
+    if (m_synthThread.isRunning()) {
+        //qDebug() << Q_FUNC_INFO;
+        m_synth->stop();
         m_synthThread.quit();
         m_synthThread.wait();
     }
@@ -43,8 +63,10 @@ QStringList SynthOutput::getAudioDrivers()
 
 void SynthOutput::initialize(QSettings *settings)
 {
+    //qDebug() << Q_FUNC_INFO;
     m_synth->readSettings(settings);
-    m_synthThread.start(QThread::HighPriority);
+    stop();
+    start();
 }
 
 QString SynthOutput::backendName()

@@ -16,6 +16,7 @@
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
+//#include <QDebug>
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
@@ -26,6 +27,7 @@
 
 namespace drumstick { namespace rt {
 
+const QString SynthEngine::QSTR_FLUIDSYNTH_VERSION = QStringLiteral(FLUIDSYNTH_VERSION);
 const QString SynthEngine::QSTR_FLUIDSYNTH = QStringLiteral("FluidSynth");
 const QString SynthEngine::QSTR_PREFERENCES = QStringLiteral("FluidSynth");
 const QString SynthEngine::QSTR_INSTRUMENTSDEFINITION = QStringLiteral("InstrumentsDefinition");
@@ -66,16 +68,23 @@ SynthEngine::SynthEngine(QObject *parent)
       m_settings(nullptr),
       m_synth(nullptr),
       m_driver(nullptr)
-{ }
+{
+    //qDebug() << Q_FUNC_INFO;
+    m_runtimeLibraryVersion = ::fluid_version_str();
+    //qDebug() << "Compiled FluidSynth Version:" << QSTR_FLUIDSYNTH_VERSION;
+    //qDebug() << "Runtime FluidSynth Version:" << m_runtimeLibraryVersion;
+}
 
 SynthEngine::~SynthEngine()
 {
+    //qDebug() << Q_FUNC_INFO;
     uninitialize();
 }
 
 void SynthEngine::uninitialize()
 {
     if (m_driver != nullptr) {
+        //qDebug() << Q_FUNC_INFO;
         ::delete_fluid_audio_driver(m_driver);
         m_driver = nullptr;
     }
@@ -91,6 +100,7 @@ void SynthEngine::uninitialize()
 
 void SynthEngine::initializeSynth()
 {
+    //qDebug() << Q_FUNC_INFO;
     uninitialize();
     m_settings = ::new_fluid_settings();
     ::fluid_settings_setstr(m_settings, "audio.driver", qPrintable(fs_audiodriver));
@@ -130,6 +140,7 @@ void SynthEngine::loadSoundFont()
 
 void SynthEngine::initialize()
 {
+    //qDebug() << Q_FUNC_INFO;
     QMutexLocker locker(&m_mutex);
     initializeSynth();
     retrieveAudioDrivers();
@@ -162,6 +173,13 @@ void SynthEngine::setSoundFont(const QString &value)
         m_soundFont = value;
         loadSoundFont();
     }
+}
+
+void SynthEngine::stop()
+{
+    //qDebug() << Q_FUNC_INFO;
+    QMutexLocker locker(&m_mutex);
+    uninitialize();
 }
 
 QVariant SynthEngine::getVariantData(const QString key)
@@ -245,9 +263,6 @@ void SynthEngine::readSettings(QSettings *settings)
     //qDebug() << "defSoundFont:" << m_defSoundFont;
     settings->beginGroup(QSTR_PREFERENCES);
     m_soundFont = settings->value(QSTR_INSTRUMENTSDEFINITION, m_defSoundFont).toString();
-    settings->endGroup();
-
-    settings->beginGroup(QSTR_PREFERENCES);
     fs_audiodriver = settings->value(QSTR_AUDIODRIVER, QSTR_DEFAULT_AUDIODRIVER).toString();
     fs_periodSize = settings->value(QSTR_PERIODSIZE, DEFAULT_PERIODSIZE).toInt();
     fs_periods = settings->value(QSTR_PERIODS, DEFAULT_PERIODS).toInt();
@@ -257,6 +272,7 @@ void SynthEngine::readSettings(QSettings *settings)
     fs_gain = settings->value(QSTR_GAIN, DEFAULT_GAIN).toDouble();
     fs_polyphony = settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toInt();
     settings->endGroup();
+    //qDebug() << Q_FUNC_INFO << "audioDriver:" << fs_audiodriver << "buffer" << fs_periodSize << '*' << fs_periods;
 }
 
 void SynthEngine::close()
