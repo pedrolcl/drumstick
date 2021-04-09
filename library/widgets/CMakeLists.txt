@@ -30,6 +30,8 @@ set(drumstick-widgets_HEADERS
 set(drumstick-widgets_OBJ_SRCS
     ../include/drumstick/pianokeybd.h
     ../include/drumstick/pianopalette.h
+    ../include/drumstick/rtmidiinput.h
+    ../include/drumstick/rtmidioutput.h
     pianoscene.h
     fluidsettingsdialog.h
     networksettingsdialog.h
