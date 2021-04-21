@@ -484,6 +484,102 @@ Q_SIGNALS:
      */
     void signalWRKHairpin(int track, long time, int code, int dur);
 
+    /**
+     * Emitted after reading a text message
+     * This signal is emitted when getTextCodec() is nullptr
+     *
+     * @param track track number
+     * @param time musical time
+     * @param type Text type
+     * @param data Text data
+     */
+    void signalWRKText2(int track, long time, int type, const QByteArray& data);
+
+    /**
+     * Emitted after reading a track prefix chunk
+     * This signal is emitted when getTextCodec() is nullptr
+     *
+     * @param name1 track 1st name
+     * @param name2 track 2nd name
+     * @param trackno track number
+     * @param channel track forced channel (-1=no forced)
+     * @param pitch track pitch transpose in semitones (-127..127)
+     * @param velocity track velocity increment (-127..127)
+     * @param port track forced port
+     * @param selected true if track is selected
+     * @param muted true if track is muted
+     * @param loop true if loop is enabled
+     */
+    void signalWRKTrack2(const QByteArray& name1,
+                        const QByteArray& name2,
+                        int trackno, int channel, int pitch,
+                        int velocity, int port,
+                        bool selected, bool muted, bool loop );
+
+    /**
+     * Emitted after reading a comments chunk
+     * This signal is emitted when getTextCodec() is nullptr
+     *
+     * @param data file text comments
+     */
+    void signalWRKComments2(const QByteArray& data);
+
+    /**
+     * Emitted after reading a new track prefix
+     * This signal is emitted when getTextCodec() is nullptr
+     *
+     * @param name track name
+     * @param trackno track number
+     * @param channel forced MIDI channel
+     * @param pitch Note transposition
+     * @param velocity Velocity increment
+     * @param port MIDI port number
+     * @param selected track is selected
+     * @param muted track is muted
+     * @param loop track loop enabled
+     */
+    void signalWRKNewTrack2(const QByteArray& name,
+                            int trackno, int channel, int pitch,
+                            int velocity, int port,
+                            bool selected, bool muted, bool loop );
+    /**
+     * Emitted after reading a track name chunk.
+     * This signal is emitted when getTextCodec() is nullptr
+     *
+     * @param track track number
+     * @param name track name
+     */
+    void signalWRKTrackName2(int track, const QByteArray& name);
+
+    /**
+     * Emitted after reading a string event types chunk.
+     * This signal is emitted when getTextCodec() is nullptr
+     *
+     * @param strs list of declared string event types
+     */
+    void signalWRKStringTable2(const QList<QByteArray>& strs);
+
+    /**
+     * Emitted after reading a segment prefix chunk.
+     * This signal is emitted when getTextCodec() is nullptr
+     *
+     * @param track track number
+     * @param time segment time offset
+     * @param name segment name
+     */
+    void signalWRKSegment2(int track, long time, const QByteArray& name);
+
+    /**
+     * Emitted after reading an expression indication (notation) chunk.
+     * This signal is emitted when getTextCodec() is nullptr
+     *
+     * @param track track number
+     * @param time event time in ticks
+     * @param code expression event code
+     * @param text expression text
+     */
+    void signalWRKExpression2(int track, long time, int code, const QByteArray& text);
+
 private:
     quint8 readByte();
     quint16 to16bit(quint8 c1, quint8 c2);
@@ -530,6 +626,8 @@ private:
     void processUnknown(int id);
     void processEndChunk();
     void wrkRead();
+    QByteArray readByteArray(int len);
+    QByteArray readVarByteArray();
 
     struct RecTempo {
         long time;

@@ -1,4 +1,17 @@
+2021-04-21
+    * Drumstick::File
+    * new QWrk class signals with a QByteArray parameter instead of QString:
+    *   signalWRKText2
+    *   signalWRKTrack2
+    *   signalWRKComments2
+    *   signalWRKNewTrack2
+    *   signalWRKTrackName2
+    *   signalWRKStringTable2
+    *   signalWRKSegment2
+    *   signalWRKExpression2
+
 2021-04-05
+    * Drumstick::Widgets
     * added wasapi option to fluidsynth settings dialog in Windows (WIP)
     * removed background settings from pianokeybd, to allow better dark theme transitions
 

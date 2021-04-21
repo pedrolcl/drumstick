@@ -553,35 +553,64 @@ quint32 QWrk::read32bit()
 }
 
 /**
- * Reads a string
+ * Reads a string assuming local encoding if getTextCodec() is null
  * @return a string
  */
 QString QWrk::readString(int len)
 {
     QString s;
     if ( len > 0 ) {
-        quint8 c = 0xff;
-        QByteArray data;
-        for ( int i = 0; i < len && c != 0 && !atEnd(); ++i ) {
-            c = readByte();
-            if ( c != 0)
-                data += c;
-        }
-        if (d->m_codec == nullptr)
-            s = QString(data);
-        else
+        QByteArray data = readByteArray(len);
+        if (d->m_codec == nullptr) {
+            s = QString::fromLocal8Bit(data);
+        } else {
             s = d->m_codec->toUnicode(data);
+        }
     }
     return s;
 }
 
 /**
+ * Reads a string as a QByteArray (without decoding)
+ * @return a string
+ */
+QByteArray QWrk::readByteArray(int len)
+{
+    QByteArray data;
+    if ( len > 0 ) {
+        quint8 c = 0xff;
+        for ( int i = 0; i < len && c != 0 && !atEnd(); ++i ) {
+            c = readByte();
+            if ( c != 0)
+                data += c;
+        }
+    }
+    return data;
+}
+
+/**
  * Reads a variable length string (C-style)
+ * (assuming local encoding if getTextCodec() is null)
  * @return a string
  */
 QString QWrk::readVarString()
 {
     QString s;
+    QByteArray data = readVarByteArray();
+    if (d->m_codec == nullptr) {
+        s = QString::fromLocal8Bit(data);
+    } else {
+        s = d->m_codec->toUnicode(data);
+    }
+    return s;
+}
+
+/**
+ * Reads a variable length string (C-style) as a QByteArray (without decoding)
+ * @return a string
+ */
+QByteArray QWrk::readVarByteArray()
+{
     QByteArray data;
     quint8 b;
     do {
@@ -589,11 +618,7 @@ QString QWrk::readVarString()
         if (b != 0)
             data += b;
     } while (b != 0 && !atEnd());
-    if (d->m_codec == nullptr)
-        s = QString(data);
-    else
-        s = d->m_codec->toUnicode(data);
-    return s;
+    return data;
 }
 
 /**
@@ -662,6 +687,7 @@ void QWrk::processTrackChunk()
 {
     int namelen;
     QString name[2];
+    QByteArray data[2];
     int trackno;
     int channel;
     int pitch;
@@ -674,7 +700,11 @@ void QWrk::processTrackChunk()
     trackno = read16bit();
     for(int i=0; i<2; ++i) {
         namelen = readByte();
-        name[i] = readString(namelen);
+        if (d->m_codec == nullptr) {
+            data[i] = readByteArray(namelen);
+        } else {
+            name[i] = readString(namelen);
+        }
     }
     channel = readByte() & 0x0f;
     pitch = readByte();
@@ -684,10 +714,17 @@ void QWrk::processTrackChunk()
     selected = ((flags & 1) != 0);
     muted = ((flags & 2) != 0);
     loop = ((flags & 4) != 0);
-    Q_EMIT signalWRKTrack( name[0], name[1],
-                           trackno, channel, pitch,
-                           velocity, port, selected,
-                           muted, loop );
+    if (d->m_codec == nullptr) {
+        Q_EMIT signalWRKTrack2( data[0], data[1],
+                               trackno, channel, pitch,
+                               velocity, port, selected,
+                               muted, loop );
+    } else {
+        Q_EMIT signalWRKTrack( name[0], name[1],
+                               trackno, channel, pitch,
+                               velocity, port, selected,
+                               muted, loop );
+    }
 }
 
 void QWrk::processVarsChunk()
@@ -783,8 +820,13 @@ void QWrk::processNoteArray(int track, int events)
         } else if (status == 5) {
             int code = read16bit();
             len = read32bit();
-            text = readString(len);
-            Q_EMIT signalWRKExpression(track, time, code, text);
+            if (d->m_codec == nullptr) {
+                data = readByteArray(len);
+                Q_EMIT signalWRKExpression2(track, time, code, data);
+            } else {
+                text = readString(len);
+                Q_EMIT signalWRKExpression(track, time, code, text);
+            }
         } else if (status == 6) {
             int code = read16bit();
             dur = read16bit();
@@ -809,8 +851,13 @@ void QWrk::processNoteArray(int track, int events)
             Q_EMIT signalWRKSysex(0, QString(), false, 0, data);
         } else {
             len = read32bit();
-            text = readString(len);
-            Q_EMIT signalWRKText(track, time, status, text);
+            if (d->m_codec == nullptr) {
+                data = readByteArray(len);
+                Q_EMIT signalWRKText2(track, time, status, data);
+            } else {
+                text = readString(len);
+                Q_EMIT signalWRKText(track, time, status, text);
+            }
         }
     }
     if ((i < events) && atEnd()) {
@@ -1038,8 +1085,13 @@ void QWrk::processTimeFormat()
 void QWrk::processComments()
 {
     int len = read16bit();
-    QString text = readString(len);
-    Q_EMIT signalWRKComments(text);
+    if (d->m_codec == nullptr) {
+        QByteArray data = readByteArray(len);
+        Q_EMIT signalWRKComments2(data);
+    } else {
+        QString text = readString(len);
+        Q_EMIT signalWRKComments(text);
+    }
 }
 
 void QWrk::processVariableRecord(int max)
@@ -1060,6 +1112,8 @@ void QWrk::processUnknown(int id)
 
 void QWrk::processNewTrack()
 {
+    QByteArray data;
+    QString name;
     qint16 bank = -1;
     qint16 patch = -1;
     //qint16 vol = -1;
@@ -1073,7 +1127,11 @@ void QWrk::processNewTrack()
     bool loop = false;
     quint16 track = read16bit();
     quint8 len = readByte();
-    QString name = readString(len);
+    if (d->m_codec == nullptr) {
+        data = readByteArray(len);
+    } else {
+        name = readString(len);
+    }
     bank = read16bit();
     patch = read16bit();
     /*vol =*/ read16bit();
@@ -1084,7 +1142,11 @@ void QWrk::processNewTrack()
     port = readByte();
     channel = readByte();
     muted = (readByte() != 0);
-    Q_EMIT signalWRKNewTrack(name, track, channel, key, vel, port, selected, muted, loop);
+    if (d->m_codec == nullptr) {
+        Q_EMIT signalWRKNewTrack2(data, track, channel, key, vel, port, selected, muted, loop);
+    } else {
+        Q_EMIT signalWRKNewTrack(name, track, channel, key, vel, port, selected, muted, loop);
+    }
     if (bank > -1)
         Q_EMIT signalWRKTrackBank(track, bank);
     if (patch > -1) {
@@ -1106,21 +1168,38 @@ void QWrk::processTrackName()
 {
     int track = read16bit();
     int len = readByte();
-    QString name = readString(len);
-    Q_EMIT signalWRKTrackName(track, name);
+    if (d->m_codec == nullptr) {
+        QByteArray data = readByteArray(len);
+        Q_EMIT signalWRKTrackName2(track, data);
+    } else {
+        QString name = readString(len);
+        Q_EMIT signalWRKTrackName(track, name);
+    }
 }
 
 void QWrk::processStringTable()
 {
-    QStringList table;
-    int rows = read16bit();
-    for (int i = 0; i < rows; ++i) {
-        int len = readByte();
-        QString name = readString(len);
-        int idx = readByte();
-        table.insert(idx, name);
+    if (d->m_codec == nullptr) {
+        QList<QByteArray> table;
+        int rows = read16bit();
+        for (int i = 0; i < rows; ++i) {
+            int len = readByte();
+            QByteArray name = readByteArray(len);
+            int idx = readByte();
+            table.insert(idx, name);
+        }
+        Q_EMIT signalWRKStringTable2(table);
+    } else {
+        QStringList table;
+        int rows = read16bit();
+        for (int i = 0; i < rows; ++i) {
+            int len = readByte();
+            QString name = readString(len);
+            int idx = readByte();
+            table.insert(idx, name);
+        }
+        Q_EMIT signalWRKStringTable(table);
     }
-    Q_EMIT signalWRKStringTable(table);
 }
 
 void QWrk::processLyricsStream()
@@ -1154,13 +1233,22 @@ void QWrk::processTrackBank()
 void QWrk::processSegmentChunk()
 {
     QString name;
+    QByteArray data;
     int track = read16bit();
     int offset = read32bit();
     readGap(8);
     int len = readByte();
-    name = readString(len);
+    if (d->m_codec == nullptr) {
+        data = readByteArray(len);
+    } else {
+        name = readString(len);
+    }
     readGap(20);
-    Q_EMIT signalWRKSegment(track, offset, name);
+    if (d->m_codec == nullptr) {
+        Q_EMIT signalWRKSegment2(track, offset, data);
+    } else {
+        Q_EMIT signalWRKSegment(track, offset, name);
+    }
     int events = read32bit();
     processNoteArray(track, events);
 }
@@ -1168,10 +1256,16 @@ void QWrk::processSegmentChunk()
 void QWrk::processNewStream()
 {
     QString name;
+    QByteArray data;
     int track = read16bit();
     int len = readByte();
-    name = readString(len);
-    Q_EMIT signalWRKSegment(track, 0, name);
+    if (d->m_codec == nullptr) {
+        data = readByteArray(len);
+        Q_EMIT signalWRKSegment2(track, 0, data);
+    } else {
+        name = readString(len);
+        Q_EMIT signalWRKSegment(track, 0, name);
+    }
     int events = read32bit();
     processNoteArray(track, events);
 }
