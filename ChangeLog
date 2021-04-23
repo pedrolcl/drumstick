@@ -9,6 +9,12 @@
     *   signalWRKStringTable2
     *   signalWRKSegment2
     *   signalWRKExpression2
+    * the old signals are still emitted when a QTextCodec is assigned
+
+2021-04-06
+    * Drumstick::RT
+    * FluidSynth backend: initialization moved to a background thread
+    * retrieve dynamically the audio driver names for using in configuration dialog
 
 2021-04-05
     * Drumstick::Widgets
