@@ -1,3 +1,6 @@
+2021-04-25
+    * Standarization: MIDI texts/lyrics encoding defaults to Latin1
+
 2021-04-21
     * Drumstick::File
     * new QWrk class signals with a QByteArray parameter instead of QString:

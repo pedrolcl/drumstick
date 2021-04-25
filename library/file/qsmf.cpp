@@ -1033,7 +1033,7 @@ void QSmf::metaEvent(quint8 b)
     case cue_point: {
             QString s;
             if (d->m_codec == nullptr)
-                s = QString(m);
+                s = QString::fromLatin1(m);
             else
                 s = d->m_codec->toUnicode(m);
             emit signalSMFText(b, s);

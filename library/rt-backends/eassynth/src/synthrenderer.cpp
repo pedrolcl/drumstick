@@ -225,7 +225,6 @@ SynthRenderer::writeMIDIData(const QByteArray& message)
     EAS_RESULT eas_res = EAS_ERROR_ALREADY_STOPPED;
     if (m_easData != nullptr && m_streamHandle != nullptr)
     {
-        //count = m_codec->decode((unsigned char *)&buffer, sizeof(buffer), ev->getHandle());
         if (message.length() > 0) {
             //qDebug() << Q_FUNC_INFO << message.toHex();
             eas_res = EAS_WriteMIDIStream(m_easData, m_streamHandle, (EAS_U8 *)message.data(), message.length());

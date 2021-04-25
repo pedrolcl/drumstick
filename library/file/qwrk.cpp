@@ -562,7 +562,7 @@ QString QWrk::readString(int len)
     if ( len > 0 ) {
         QByteArray data = readByteArray(len);
         if (d->m_codec == nullptr) {
-            s = QString::fromLocal8Bit(data);
+            s = QString::fromLatin1(data);
         } else {
             s = d->m_codec->toUnicode(data);
         }
@@ -598,7 +598,7 @@ QString QWrk::readVarString()
     QString s;
     QByteArray data = readVarByteArray();
     if (d->m_codec == nullptr) {
-        s = QString::fromLocal8Bit(data);
+        s = QString::fromLatin1(data);
     } else {
         s = d->m_codec->toUnicode(data);
     }
