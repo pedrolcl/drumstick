@@ -43,8 +43,8 @@ public slots:
     void configureInputDriver();
     void configureOutputDriver();
     void clickedAdvanced(bool value);
-    void refreshInputs(QString id);
-    void refreshOutputs(QString id);
+    void refreshInputs(int index);
+    void refreshOutputs(int index);
     void refresh();
     void accept() override;
 

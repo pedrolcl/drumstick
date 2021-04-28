@@ -22,7 +22,6 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QLibraryInfo>
-#include <QTextStream>
 #include <QTranslator>
 #include <drumstick/backendmanager.h>
 #include <drumstick/settingsfactory.h>
@@ -74,7 +73,6 @@ using namespace drumstick::rt;
 
 int main(int argc, char *argv[])
 {
-    QTextStream cerr(stderr, QIODevice::WriteOnly);
     QCoreApplication::setOrganizationName("drumstick.sourceforge.net");
     QCoreApplication::setOrganizationDomain("drumstick.sourceforge.net");
     QCoreApplication::setApplicationName("VPiano");
@@ -129,7 +127,7 @@ int main(int argc, char *argv[])
         w.show();
         return app.exec();
     } catch (...) {
-        cerr << "Fatal error from a MIDI backend." << endl;
+        qWarning() << "Fatal error from a MIDI backend.";
     }
     return 0;
 }

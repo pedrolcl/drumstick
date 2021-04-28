@@ -26,6 +26,14 @@
 #include <drumstick/sequencererror.h>
 #include <drumstick/subscription.h>
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+#define right Qt::right
+#define left Qt::left
+#define endl Qt::endl
+#define hex Qt::hex
+#define dec Qt::dec
+#endif
+
 QString PGM_NAME = QStringLiteral("drumstick-sysinfo");
 QString PGM_DESCRIPTION = QStringLiteral("ALSA Sequencer System Info");
 QTextStream cout(stdout, QIODevice::WriteOnly);
@@ -47,7 +55,7 @@ void queryTimers()
 			Timer* timer = new Timer(id, SND_TIMER_OPEN_NONBLOCK);
 			TimerInfo info = timer->getTimerInfo();
 			cout << qSetFieldWidth(8) << left << info.getId()
-				 << qSetFieldWidth(20) << left << info.getName().left(20)
+                 << qSetFieldWidth(20) << left << info.getName().leftJustified(20, ' ', true)
 				 << qSetFieldWidth(0) << " "
 				 << id.getClass() << "/" << id.getSlaveClass() << "/"
 				 << id.getCard() << "/" << id.getDevice() << "/"
@@ -91,9 +99,9 @@ void queryQueues(MidiClient* c)
             	tname = "inaccessible";
             }
 			cout << qSetFieldWidth(3)  << left << qinfo.getId()
-				 << qSetFieldWidth(20) << qinfo.getName().left(20)
+                 << qSetFieldWidth(20) << qinfo.getName().leftJustified(20, ' ', true)
 				 << qSetFieldWidth(0)  << " "
-				 << qSetFieldWidth(20) << tname.left(20)
+                 << qSetFieldWidth(20) << tname.leftJustified(20, ' ', true)
 				 << qSetFieldWidth(6)  << right << qinfo.getOwner()
 				 << qSetFieldWidth(7)  << (qinfo.isLocked() ? "locked" : "free")
 				 << qSetFieldWidth(8)  << (qsts.isRunning() ? "running" : "stopped")

@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
         if (f.exists())
             fileNames += f.canonicalFilePath();
         else
-            qWarning() << "File not found: " << a << endl;
+            qWarning() << "File not found: " << a;
     }
 
     try {

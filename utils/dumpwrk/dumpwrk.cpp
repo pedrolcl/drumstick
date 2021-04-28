@@ -31,6 +31,12 @@
 #include <cstdlib>
 #include <drumstick/qwrk.h>
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+#define right Qt::right
+#define left Qt::left
+#define endl Qt::endl
+#endif
+
 QTextStream cout(stdout, QIODevice::WriteOnly);
 QTextStream cerr(stderr, QIODevice::WriteOnly);
 
