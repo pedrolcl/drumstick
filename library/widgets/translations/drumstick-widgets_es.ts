@@ -328,12 +328,12 @@
         <translation>Reverberación</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="198"/>
+        <location filename="../fluidsettingsdialog.cpp" line="201"/>
         <source>Select SoundFont</source>
         <translation>Seleccionar SoundFont</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="198"/>
+        <location filename="../fluidsettingsdialog.cpp" line="201"/>
         <source>SoundFont Files (*.sf2)</source>
         <translation>Archivos SoundFont (*.sf2)</translation>
     </message>
@@ -408,94 +408,94 @@
 <context>
     <name>drumstick::widgets::PianoScene</name>
     <message>
-        <location filename="../pianoscene.cpp" line="1268"/>
-        <location filename="../pianoscene.cpp" line="1281"/>
+        <location filename="../pianoscene.cpp" line="1270"/>
+        <location filename="../pianoscene.cpp" line="1283"/>
         <source>C</source>
         <translation>do</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1269"/>
+        <location filename="../pianoscene.cpp" line="1271"/>
         <source>C♯</source>
         <translation>do♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1270"/>
-        <location filename="../pianoscene.cpp" line="1283"/>
+        <location filename="../pianoscene.cpp" line="1272"/>
+        <location filename="../pianoscene.cpp" line="1285"/>
         <source>D</source>
         <translation>re</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1271"/>
+        <location filename="../pianoscene.cpp" line="1273"/>
         <source>D♯</source>
         <translation>re♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1272"/>
-        <location filename="../pianoscene.cpp" line="1285"/>
+        <location filename="../pianoscene.cpp" line="1274"/>
+        <location filename="../pianoscene.cpp" line="1287"/>
         <source>E</source>
         <translation>mi</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1273"/>
-        <location filename="../pianoscene.cpp" line="1286"/>
+        <location filename="../pianoscene.cpp" line="1275"/>
+        <location filename="../pianoscene.cpp" line="1288"/>
         <source>F</source>
         <translation>fa</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1274"/>
+        <location filename="../pianoscene.cpp" line="1276"/>
         <source>F♯</source>
         <translation>fa♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1275"/>
-        <location filename="../pianoscene.cpp" line="1288"/>
+        <location filename="../pianoscene.cpp" line="1277"/>
+        <location filename="../pianoscene.cpp" line="1290"/>
         <source>G</source>
         <translation>sol</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1276"/>
+        <location filename="../pianoscene.cpp" line="1278"/>
         <source>G♯</source>
         <translation>sol♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1277"/>
-        <location filename="../pianoscene.cpp" line="1290"/>
+        <location filename="../pianoscene.cpp" line="1279"/>
+        <location filename="../pianoscene.cpp" line="1292"/>
         <source>A</source>
         <translation>la</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1278"/>
+        <location filename="../pianoscene.cpp" line="1280"/>
         <source>A♯</source>
         <translation>la♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1279"/>
-        <location filename="../pianoscene.cpp" line="1292"/>
+        <location filename="../pianoscene.cpp" line="1281"/>
+        <location filename="../pianoscene.cpp" line="1294"/>
         <source>B</source>
         <translation>si</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1282"/>
+        <location filename="../pianoscene.cpp" line="1284"/>
         <source>D♭</source>
         <translation>re♭</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1284"/>
+        <location filename="../pianoscene.cpp" line="1286"/>
         <source>E♭</source>
         <translation>mi♭</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1287"/>
+        <location filename="../pianoscene.cpp" line="1289"/>
         <source>G♭</source>
         <translation>sol♭</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1289"/>
+        <location filename="../pianoscene.cpp" line="1291"/>
         <source>A♭</source>
         <translation>la♭</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1291"/>
+        <location filename="../pianoscene.cpp" line="1293"/>
         <source>B♭</source>
         <translation>si♭</translation>
     </message>

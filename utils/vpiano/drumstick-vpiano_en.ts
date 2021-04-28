@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
+    <name>About</name>
+    <message>
+        <location filename="vpianoabout.cpp" line="29"/>
+        <source>Revision</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AboutClass</name>
     <message>
         <location filename="vpianoabout.ui" line="14"/>
@@ -164,7 +172,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="vpianomain.cpp" line="30"/>
+        <location filename="vpianomain.cpp" line="29"/>
         <source>Drumstick Simple Virtual Piano
 Copyright (C) 2006-2021 Pedro López-Cabanillas
 This program comes with ABSOLUTELY NO WARRANTY;
@@ -173,7 +181,7 @@ under certain conditions; see the LICENSE file for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpianomain.cpp" line="115"/>
+        <location filename="vpianomain.cpp" line="113"/>
         <source>Portable settings mode</source>
         <translation type="unfinished"></translation>
     </message>

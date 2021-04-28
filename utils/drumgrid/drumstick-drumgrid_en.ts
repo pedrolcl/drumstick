@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
+    <name>About</name>
+    <message>
+        <location filename="drumgridabout.cpp" line="29"/>
+        <source>Revision</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AboutClass</name>
     <message>
         <location filename="drumgridabout.ui" line="14"/>
