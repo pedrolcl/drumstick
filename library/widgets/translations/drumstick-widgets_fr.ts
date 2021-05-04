@@ -211,7 +211,7 @@
     <message>
         <location filename="../pianopalette.cpp" line="242"/>
         <source>A single color to highlight all note events</source>
-        <translation>Une seule couleur pour marquer tous les évênements de notes</translation>
+        <translation>Une seule couleur pour tous les évênements de notes</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="246"/>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../pianopalette.cpp" line="247"/>
         <source>One color to highlight natural notes and a different one for accidentals</source>
-        <translation>Une couleur pour les notes naturelles, une autre pour les notes accidentées</translation>
+        <translation>Une couleur pour les notes naturelles, une autre pour les notes altérées</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="251"/>
@@ -231,7 +231,7 @@
     <message>
         <location filename="../pianopalette.cpp" line="252"/>
         <source>A different color to highlight each MIDI channel. Enable Omni mode in the MIDI IN connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur différente selon le canal MIDI. Activer le mode Omni pour la connexion MIDI IN</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="256"/>
@@ -247,27 +247,27 @@
     <message>
         <location filename="../pianopalette.cpp" line="261"/>
         <source>Keys background</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur des touches</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="262"/>
         <source>One color for natural notes and another for accidentals</source>
-        <translation>Une couleur pour les notes naturelles, une autre pour les notes accidentées</translation>
+        <translation>Une couleur pour les notes naturelles, une autre pour les notes altérées</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="266"/>
         <source>Font foreground</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur du texte</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="267"/>
         <source>Colors for note names</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleurs des noms des notes</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="271"/>
         <source>Chromatic scale highlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Echelle chromatique</translation>
     </message>
 </context>
 <context>
@@ -343,7 +343,7 @@
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="14"/>
         <source>macOS Synth Driver Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres du pilote de synthé macOS</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="20"/>
@@ -386,7 +386,7 @@
     <message>
         <location filename="../networksettingsdialog.ui" line="20"/>
         <source>Use IPv6</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser l&apos;IPv6</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="27"/>
