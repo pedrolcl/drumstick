@@ -1,3 +1,9 @@
+2021-05-04
+    * French and German translations updated (Thanks to Frank Kober)
+
+2021-04-28
+    * removed warnings when buiding with Qt >= 5.15
+
 2021-04-25
     * Standarization: MIDI texts/lyrics encoding defaults to Latin1
 
