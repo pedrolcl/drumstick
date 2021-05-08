@@ -211,7 +211,7 @@
     <message>
         <location filename="../pianopalette.cpp" line="242"/>
         <source>A single color to highlight all note events</source>
-        <translation type="unfinished"></translation>
+        <translation>En färg för att markera alla tonhändelser</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="246"/>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../pianopalette.cpp" line="247"/>
         <source>One color to highlight natural notes and a different one for accidentals</source>
-        <translation type="unfinished"></translation>
+        <translation>En färg för att markera stamtoner och en annan för grentoner</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="251"/>
@@ -242,7 +242,7 @@
         <location filename="../pianopalette.cpp" line="257"/>
         <location filename="../pianopalette.cpp" line="272"/>
         <source>One color for each note in the chromatic scale</source>
-        <translation type="unfinished"></translation>
+        <translation>En färg för varje ton i den kromatiska skalan</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="261"/>
@@ -275,67 +275,67 @@
     <message>
         <location filename="../fluidsettingsdialog.ui" line="14"/>
         <source>FluidSynth Driver Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Drivrutinsinställningar för FluidSynth</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="48"/>
         <source>Sample Rate:</source>
-        <translation type="unfinished"></translation>
+        <translation>Samplingsfrekvens:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="58"/>
         <source>Period Size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Periodstorlek:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="71"/>
         <source># of Periods:</source>
-        <translation type="unfinished"></translation>
+        <translation>Antal perioder:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="84"/>
         <source>Audio Driver:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ljuddrivrutin:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="91"/>
         <source>Polyphony:</source>
-        <translation type="unfinished"></translation>
+        <translation>Polyfoni:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="104"/>
         <source>Sound Font:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ljudfont:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="114"/>
         <source>Gain:</source>
-        <translation type="unfinished"></translation>
+        <translation>Volym:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="127"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="134"/>
         <source>Chorus</source>
-        <translation type="unfinished"></translation>
+        <translation>Korus</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="141"/>
         <source>Reverb</source>
-        <translation type="unfinished"></translation>
+        <translation>Eko</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="201"/>
         <source>Select SoundFont</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj ljudfont</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="201"/>
         <source>SoundFont Files (*.sf2)</source>
-        <translation type="unfinished"></translation>
+        <translation>SoundFont-filer (*.sf2)</translation>
     </message>
 </context>
 <context>
@@ -348,32 +348,32 @@
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="20"/>
         <source>SoundFont:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ljudfont:</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="46"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="66"/>
         <source>Use Internal Reverb</source>
-        <translation type="unfinished"></translation>
+        <translation>Använd internt eko</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="73"/>
         <source>Default Apple DLS Sound Set</source>
-        <translation type="unfinished"></translation>
+        <translation>Förvald Apple DLS ljuduppsättning</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="113"/>
         <source>Select SoundFont</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj ljudfont</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="113"/>
         <source>SoundFont Files (*.sf2 *.dls)</source>
-        <translation type="unfinished"></translation>
+        <translation>SoundFont-filer (*.sf2 *.dls)</translation>
     </message>
 </context>
 <context>
@@ -381,28 +381,28 @@
     <message>
         <location filename="../networksettingsdialog.ui" line="14"/>
         <source>Network Driver Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Drivrutinsinställningar för nätverk</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="20"/>
         <source>Use IPv6</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="27"/>
         <source>Network Interface:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nätverksgränssnitt:</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="40"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adress</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="75"/>
         <location filename="../networksettingsdialog.cpp" line="111"/>
         <source>Any</source>
-        <translation type="unfinished"></translation>
+        <translation>Någon</translation>
     </message>
 </context>
 <context>
@@ -505,27 +505,27 @@
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="14"/>
         <source>Sonivox EAS Synth</source>
-        <translation type="unfinished"></translation>
+        <translation>Sonivox EAS Synt</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="26"/>
         <source>Chorus</source>
-        <translation type="unfinished"></translation>
+        <translation>Korus</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="56"/>
         <source>Reverb</source>
-        <translation type="unfinished"></translation>
+        <translation>Eko</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="74"/>
         <source>Buffer Time:</source>
-        <translation type="unfinished"></translation>
+        <translation>Buffringstid:</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="84"/>
         <source> ms</source>
-        <translation type="unfinished"></translation>
+        <translation> ms</translation>
     </message>
 </context>
 </TS>

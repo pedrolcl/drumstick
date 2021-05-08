@@ -22,5 +22,7 @@ SOURCES += playermain.cpp \
     playerabout.cpp
 RESOURCES += guiplayer.qrc
 TRANSLATIONS += \
+    drumstick-guiplayer_cs.ts \
     drumstick-guiplayer_en.ts \
-    drumstick-guiplayer_es.ts
+    drumstick-guiplayer_es.ts \
+    drumstick-guiplayer_ru.ts 

@@ -64,8 +64,9 @@ target_link_libraries(drumstick-guiplayer PRIVATE
 )
 
 set(TS_FILES
-    drumstick-guiplayer_en.ts
+    drumstick-guiplayer_cs.ts
     drumstick-guiplayer_es.ts
+    drumstick-guiplayer_ru.ts
 )
 
 qt5_add_translation(QM_FILES ${TS_FILES})
