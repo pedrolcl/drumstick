@@ -24,10 +24,18 @@
 
 #include "winmidiinput.h"
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+#define right Qt::right
+#define left Qt::left
+#define hex Qt::hex
+#define dec Qt::dec
+#define endl Qt::endl
+#endif
+
 namespace drumstick {
 namespace rt {
 
-    static QLatin1Literal DEFAULT_PUBLIC_NAME = QLatin1Literal("MIDI In");
+    static QLatin1String DEFAULT_PUBLIC_NAME = QLatin1String("MIDI In");
 
     void CALLBACK midiCallback( HMIDIIN hMidiIn,
                                 UINT wMsg,
@@ -113,7 +121,7 @@ namespace rt {
 #else
                 devName = QString::fromLocal8Bit(deviceCaps.szPname);
 #endif
-                for (const QString& n : m_excludedNames) {
+                foreach (const QString& n , m_excludedNames) {
                     if (devName.startsWith(n)) {
                         excluded = true;
                         break;
@@ -254,7 +262,7 @@ namespace rt {
 
     QString WinMIDIInput::backendName()
     {
-        return QLatin1Literal("Windows MM");
+        return QLatin1String("Windows MM");
     }
 
     QString WinMIDIInput::publicName()

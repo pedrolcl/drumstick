@@ -25,6 +25,10 @@
 #include <mmsystem.h>
 #include "winmidioutput.h"
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+#define hex Qt::hex
+#endif
+
 namespace drumstick {
 namespace rt {
 
@@ -34,7 +38,7 @@ namespace rt {
         quint8 data[sizeof(DWORD)];
     };
 
-    static QLatin1Literal DEFAULT_PUBLIC_NAME = QLatin1Literal("MIDI Out");
+    static QLatin1String DEFAULT_PUBLIC_NAME = QLatin1String("MIDI Out");
 
     void CALLBACK midiCallback( HMIDIOUT hmo,
                                 UINT wMsg,
@@ -82,7 +86,7 @@ namespace rt {
     #else
                 devName = QString::fromLocal8Bit(deviceCaps.szPname);
     #endif
-                for (const QString& n : m_excludedNames) {
+                foreach (const QString& n, m_excludedNames) {
                     if (devName.startsWith(n)) {
                         excluded = true;
                         break;
