@@ -26,17 +26,17 @@ using namespace drumstick::widgets;
 
 VPianoSettings::VPianoSettings(QObject *parent) : QObject(parent)
 {
-    m_nativeInput = QLatin1Literal("Network");
-    m_defaultInput = QLatin1Literal("21928");
+    m_nativeInput = QLatin1String("Network");
+    m_defaultInput = QLatin1String("21928");
 #if defined(Q_OS_LINUX)
-    m_nativeOutput = QLatin1Literal("SonivoxEAS");
-    m_defaultOutput = QLatin1Literal("SonivoxEAS");
+    m_nativeOutput = QLatin1String("SonivoxEAS");
+    m_defaultOutput = QLatin1String("SonivoxEAS");
 #elif defined(Q_OS_MACOS)
-    m_nativeOutput = QLatin1Literal("DLS Synth");
-    m_defaultOutput = QLatin1Literal("DLS Synth");
+    m_nativeOutput = QLatin1String("DLS Synth");
+    m_defaultOutput = QLatin1String("DLS Synth");
 #elif defined(Q_OS_WIN)
-    m_nativeOutput = QLatin1Literal("Windows MM");
-    m_defaultOutput = QLatin1Literal("Microsoft GS Wavetable Synth");
+    m_nativeOutput = QLatin1String("Windows MM");
+    m_defaultOutput = QLatin1String("Microsoft GS Wavetable Synth");
 #else
     m_nativeOutput = m_nativeInput;
     m_defaultOutput = m_defaultInput;

@@ -283,7 +283,7 @@ namespace rt {
 
     QString MacMIDIInput::backendName()
     {
-        return QLatin1Literal("CoreMIDI");
+        return QLatin1String("CoreMIDI");
     }
 
     QString MacMIDIInput::publicName()

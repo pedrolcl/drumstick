@@ -94,13 +94,13 @@ QString FluidSettingsDialog::defaultAudioDriver() const
 {
     const QString QSTR_DEFAULT_AUDIODRIVER =
 #if defined(Q_OS_LINUX)
-        QLatin1Literal("pulseaudio");
+        QLatin1String("pulseaudio");
 #elif defined(Q_OS_WIN)
-        QLatin1Literal("dsound");
+        QLatin1String("dsound");
 #elif defined(Q_OS_OSX)
-        QLatin1Literal("coreaudio");
+        QLatin1String("coreaudio");
 #else
-        QLatin1Literal("oss");
+        QLatin1String("oss");
 #endif
     return QSTR_DEFAULT_AUDIODRIVER;
 }
@@ -123,6 +123,17 @@ void FluidSettingsDialog::readSettings()
         if (drivers.isValid()) {
             ui->audioDriver->clear();
             ui->audioDriver->addItems(drivers.toStringList());
+        }
+        QVariant varVersion = m_driver->property("libversion");
+        if (varVersion.isValid()) {
+            ui->lblVersion->clear();
+            ui->lblVersion->setText(varVersion.toString());
+        }
+        QVariant varStatus = m_driver->property("status");
+        if (varStatus.isValid()) {
+            ui->lblStatus->clear();
+            ui->lblStatus->setText(varStatus.toBool() ? tr("Ready") : tr("Failed") );
+            ui->lblStatusIcon->setPixmap(varStatus.toBool() ? style()->standardPixmap(QStyle::SP_DialogApplyButton) : style()->standardPixmap(QStyle::SP_DialogCancelButton) );
         }
     }
 

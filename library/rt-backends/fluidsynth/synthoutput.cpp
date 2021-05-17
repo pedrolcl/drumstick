@@ -61,6 +61,16 @@ QStringList SynthOutput::getAudioDrivers()
     return m_synth->getVariantData("audiodrivers").toStringList();
 }
 
+QString SynthOutput::getLibVersion()
+{
+    return m_synth->getVariantData("libversion").toString();
+}
+
+bool SynthOutput::getStatus()
+{
+    return m_synth->getVariantData("status").toBool();
+}
+
 void SynthOutput::initialize(QSettings *settings)
 {
     //qDebug() << Q_FUNC_INFO;

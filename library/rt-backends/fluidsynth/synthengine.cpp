@@ -96,6 +96,7 @@ void SynthEngine::uninitialize()
         ::delete_fluid_settings(m_settings);
         m_settings = nullptr;
     }
+    m_status = false;
 }
 
 void SynthEngine::initializeSynth()
@@ -150,6 +151,7 @@ void SynthEngine::initialize()
         m_soundFont = m_defSoundFont;
         loadSoundFont();
     }
+    m_status = (m_synth != nullptr) && (m_driver != nullptr) && (m_sfid >= 0);
 }
 
 void SynthEngine::panic()
@@ -187,6 +189,10 @@ QVariant SynthEngine::getVariantData(const QString key)
     QMutexLocker locker(&m_mutex);
     if (QString::compare(key, "audiodrivers", Qt::CaseInsensitive) == 0) {
         return m_audioDriversList;
+    } else if (QString::compare(key, "libversion", Qt::CaseInsensitive) == 0) {
+        return m_runtimeLibraryVersion;
+    } else if (QString::compare(key, "status", Qt::CaseInsensitive) == 0) {
+        return m_status;
     }
     return QVariant();
 }
@@ -226,7 +232,7 @@ void SynthEngine::scanSoundFonts()
     m_soundFontsList.clear();
     QStringList paths = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
 #if defined(Q_OS_OSX)
-    paths << (QCoreApplication::applicationDirPath() + QLatin1Literal("../Resources"));
+    paths << (QCoreApplication::applicationDirPath() + QLatin1String("../Resources"));
 #endif
     foreach(const QString& p, paths) {
        QDir d(p + QDir::separator() + QSTR_DATADIR);
@@ -246,11 +252,11 @@ void SynthEngine::readSettings(QSettings *settings)
 {
     QDir dir;
 #if defined(Q_OS_OSX)
-    dir = QDir(QCoreApplication::applicationDirPath() + QLatin1Literal("/../Resources"));
+    dir = QDir(QCoreApplication::applicationDirPath() + QLatin1String("/../Resources"));
 #elif defined(Q_OS_UNIX)
-    dir = QDir(QCoreApplication::applicationDirPath() + QLatin1Literal("/../share/soundfonts/"));
+    dir = QDir(QCoreApplication::applicationDirPath() + QLatin1String("/../share/soundfonts/"));
     if (!dir.exists()) {
-        dir = QDir(QCoreApplication::applicationDirPath() + QLatin1Literal("/../share/sounds/sf2/"));
+        dir = QDir(QCoreApplication::applicationDirPath() + QLatin1String("/../share/sounds/sf2/"));
     }
 #else
     dir = QDir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));

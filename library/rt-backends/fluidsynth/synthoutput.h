@@ -34,6 +34,8 @@ namespace rt {
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIOutput)
         Q_PROPERTY(QStringList audiodrivers READ getAudioDrivers)
+        Q_PROPERTY(QString libversion READ getLibVersion)
+        Q_PROPERTY(bool status READ getStatus);
 
     public:
         explicit SynthOutput(QObject *parent = nullptr);
@@ -67,6 +69,8 @@ namespace rt {
 
     private:
         QStringList getAudioDrivers();
+        QString getLibVersion();
+        bool getStatus();
 
     private:
         QPointer<SynthEngine> m_synth;

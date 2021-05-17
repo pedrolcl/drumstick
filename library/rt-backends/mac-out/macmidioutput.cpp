@@ -190,7 +190,7 @@ namespace rt {
 
     QString MacMIDIOutput::backendName()
     {
-        return QLatin1Literal("CoreMIDI");
+        return QLatin1String("CoreMIDI");
     }
 
     QString MacMIDIOutput::publicName()

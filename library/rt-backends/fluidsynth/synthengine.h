@@ -114,6 +114,7 @@ private:
     int fs_reverb { DEFAULT_REVERB };
     double fs_gain { DEFAULT_GAIN };
     int fs_polyphony { DEFAULT_POLYPHONY };
+    bool m_status;
 };
 
 }} // namespace drumstick::rt
