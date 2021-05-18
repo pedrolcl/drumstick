@@ -61,6 +61,11 @@ QStringList SynthOutput::getAudioDrivers()
     return m_synth->getVariantData("audiodrivers").toStringList();
 }
 
+QStringList SynthOutput::getDiagnostics()
+{
+    return m_synth->getVariantData("diagnostics").toStringList();
+}
+
 QString SynthOutput::getLibVersion()
 {
     return m_synth->getVariantData("libversion").toString();

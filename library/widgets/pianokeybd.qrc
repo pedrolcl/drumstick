@@ -3,4 +3,8 @@
         <file>blkey.png</file>
         <file>whkey.png</file>
     </qresource>
+    <qresource prefix="/">
+        <file>checked.png</file>
+        <file>error.png</file>
+    </qresource>
 </RCC>

@@ -41,6 +41,7 @@ public:
 
     QString soundFont() const { return m_soundFont; }
     void setSoundFont(const QString &value);
+    void appendDiagnostics(int level, const char* message);
 
     void stop();
 
@@ -105,6 +106,7 @@ private:
     fluid_audio_driver_t* m_driver;
     QStringList m_soundFontsList;
     QStringList m_audioDriversList;
+    QStringList m_diagnostics;
     QMutex m_mutex;
     QString fs_audiodriver{ QSTR_DEFAULT_AUDIODRIVER };
     int fs_periodSize { DEFAULT_PERIODSIZE };

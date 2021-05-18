@@ -94,16 +94,17 @@ bool configureInputDriver(const QString driver, QWidget* parent)
  */
 bool configureOutputDriver(const QString driver, QWidget* parent)
 {
+    bool result = false;
     if (driver == "Network") {
         NetworkSettingsDialog dlg(parent);
-        return (dlg.exec() == QDialog::Accepted);
+        result = (dlg.exec() == QDialog::Accepted);
     } else if (driver == "FluidSynth") {
         FluidSettingsDialog dlg(parent);
-        return (dlg.exec() == QDialog::Accepted);
+        result = (dlg.exec() == QDialog::Accepted);
 #if defined(Q_OS_LINUX)
     } else if (driver == "SonivoxEAS") {
         SonivoxSettingsDialog dlg(parent);
-        return (dlg.exec() == QDialog::Accepted);
+        result = (dlg.exec() == QDialog::Accepted);
 #endif
 #if defined(Q_OS_MACOS)
     } else if (driver == "DLS Synth") {
@@ -111,7 +112,7 @@ bool configureOutputDriver(const QString driver, QWidget* parent)
         return (dlg.exec() == QDialog::Accepted);
 #endif
     }
-    return false;
+    return result;
 }
 
 /**

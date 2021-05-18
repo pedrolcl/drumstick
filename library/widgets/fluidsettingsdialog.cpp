@@ -22,6 +22,7 @@
 #include <QPushButton>
 #include <QStandardPaths>
 #include <QToolButton>
+#include <QMessageBox>
 
 #include "fluidsettingsdialog.h"
 #include "ui_fluidsettingsdialog.h"
@@ -71,16 +72,37 @@ FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
     if (m_driver != nullptr) {
         m_driver->initialize(settings.getQSettings());
     }
+    getDriverProperties();
 }
 
 FluidSettingsDialog::~FluidSettingsDialog()
 {
+    if (m_driver != nullptr) {
+        m_driver->close();
+    }
     delete ui;
 }
 
 void FluidSettingsDialog::accept()
 {
     writeSettings();
+    if (m_driver != nullptr) {
+        QString title;
+        QVariant varStatus = m_driver->property("status");
+        if (varStatus.isValid()) {
+            title = varStatus.toBool() ? tr("FluidSynth Initialized") : tr("FluidSynth Initialization Failed");
+            QVariant varDiag = m_driver->property("diagnostics");
+            if (varDiag.isValid()) {
+                QString text = varDiag.toStringList().join(QChar::LineFeed);
+                if (varStatus.toBool()) {
+                    QMessageBox::information(this, title, text);
+                } else {
+                    QMessageBox::critical(this, title, text);
+                    return;
+                }
+            }
+        }
+    }
     QDialog::accept();
 }
 
@@ -105,19 +127,8 @@ QString FluidSettingsDialog::defaultAudioDriver() const
     return QSTR_DEFAULT_AUDIODRIVER;
 }
 
-void FluidSettingsDialog::readSettings()
+void FluidSettingsDialog::getDriverProperties()
 {
-    SettingsFactory settings;
-    QString fs_defSoundFont = QSTR_SOUNDFONT;
-    QDir dir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
-    if (!dir.exists()) {
-        dir = QDir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR2, QStandardPaths::LocateDirectory));
-    }
-    QFileInfo sf2(dir, QSTR_SOUNDFONT);
-    if (sf2.exists()) {
-        fs_defSoundFont = sf2.absoluteFilePath();
-    }
-
     if (m_driver != nullptr) {
         QVariant drivers = m_driver->property("audiodrivers");
         if (drivers.isValid()) {
@@ -133,8 +144,22 @@ void FluidSettingsDialog::readSettings()
         if (varStatus.isValid()) {
             ui->lblStatus->clear();
             ui->lblStatus->setText(varStatus.toBool() ? tr("Ready") : tr("Failed") );
-            ui->lblStatusIcon->setPixmap(varStatus.toBool() ? style()->standardPixmap(QStyle::SP_DialogApplyButton) : style()->standardPixmap(QStyle::SP_DialogCancelButton) );
+            ui->lblStatusIcon->setPixmap(varStatus.toBool() ? QPixmap(":/checked.png") : QPixmap(":/error.png") );
         }
+    }
+}
+
+void FluidSettingsDialog::readSettings()
+{
+    SettingsFactory settings;
+    QString fs_defSoundFont = QSTR_SOUNDFONT;
+    QDir dir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
+    if (!dir.exists()) {
+        dir = QDir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR2, QStandardPaths::LocateDirectory));
+    }
+    QFileInfo sf2(dir, QSTR_SOUNDFONT);
+    if (sf2.exists()) {
+        fs_defSoundFont = sf2.absoluteFilePath();
     }
 
     settings->beginGroup(QSTR_PREFERENCES);
@@ -188,6 +213,12 @@ void FluidSettingsDialog::writeSettings()
     settings->setValue(QSTR_POLYPHONY, polyphony);
     settings->endGroup();
     settings->sync();
+
+    if (m_driver != nullptr) {
+        m_driver->close();
+        m_driver->initialize(settings.getQSettings());
+    }
+    getDriverProperties();
 }
 
 void FluidSettingsDialog::restoreDefaults()

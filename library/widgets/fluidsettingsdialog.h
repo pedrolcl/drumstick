@@ -49,6 +49,7 @@ public:
     void readSettings();
     void writeSettings();
     void changeSoundFont(const QString& fileName);
+    void getDriverProperties();
 
 public slots:
     void accept() override;

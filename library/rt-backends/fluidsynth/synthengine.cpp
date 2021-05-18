@@ -62,6 +62,13 @@ const int SynthEngine::DEFAULT_REVERB = 0;
 const double SynthEngine::DEFAULT_GAIN = .4;
 const int SynthEngine::DEFAULT_POLYPHONY = 32;
 
+static void
+SynthEngine_log_function(int level, const char* message, void* data)
+{
+    SynthEngine *classInstance = static_cast<SynthEngine*>(data);
+    classInstance->appendDiagnostics(level, message);
+}
+
 SynthEngine::SynthEngine(QObject *parent)
     : QObject(parent),
       m_sfid(0),
@@ -73,6 +80,9 @@ SynthEngine::SynthEngine(QObject *parent)
     m_runtimeLibraryVersion = ::fluid_version_str();
     //qDebug() << "Compiled FluidSynth Version:" << QSTR_FLUIDSYNTH_VERSION;
     //qDebug() << "Runtime FluidSynth Version:" << m_runtimeLibraryVersion;
+    ::fluid_set_log_function(fluid_log_level::FLUID_ERR, &SynthEngine_log_function, this);
+    ::fluid_set_log_function(fluid_log_level::FLUID_WARN, &SynthEngine_log_function, this);
+    ::fluid_set_log_function(fluid_log_level::FLUID_INFO, &SynthEngine_log_function, this);
 }
 
 SynthEngine::~SynthEngine()
@@ -83,8 +93,8 @@ SynthEngine::~SynthEngine()
 
 void SynthEngine::uninitialize()
 {
+    //qDebug() << Q_FUNC_INFO;
     if (m_driver != nullptr) {
-        //qDebug() << Q_FUNC_INFO;
         ::delete_fluid_audio_driver(m_driver);
         m_driver = nullptr;
     }
@@ -97,6 +107,7 @@ void SynthEngine::uninitialize()
         m_settings = nullptr;
     }
     m_status = false;
+    m_diagnostics.clear();
 }
 
 void SynthEngine::initializeSynth()
@@ -177,6 +188,16 @@ void SynthEngine::setSoundFont(const QString &value)
     }
 }
 
+void SynthEngine::appendDiagnostics(int level, const char *message)
+{
+    static const QMap<int,QString> prefix {
+        {fluid_log_level::FLUID_ERR,  tr("Error")},
+        {fluid_log_level::FLUID_WARN, tr("Warning")},
+        {fluid_log_level::FLUID_INFO, tr("Information")}
+    };
+    m_diagnostics.append(prefix[level]+": "+message);
+}
+
 void SynthEngine::stop()
 {
     //qDebug() << Q_FUNC_INFO;
@@ -189,6 +210,8 @@ QVariant SynthEngine::getVariantData(const QString key)
     QMutexLocker locker(&m_mutex);
     if (QString::compare(key, "audiodrivers", Qt::CaseInsensitive) == 0) {
         return m_audioDriversList;
+    } else if (QString::compare(key, "diagnostics", Qt::CaseInsensitive) == 0) {
+        return m_diagnostics;
     } else if (QString::compare(key, "libversion", Qt::CaseInsensitive) == 0) {
         return m_runtimeLibraryVersion;
     } else if (QString::compare(key, "status", Qt::CaseInsensitive) == 0) {
