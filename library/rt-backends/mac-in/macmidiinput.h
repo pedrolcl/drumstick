@@ -32,6 +32,9 @@ namespace rt {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIInput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIInput)
+        Q_PROPERTY(QStringList diagnostics READ getDiagnostics)
+        Q_PROPERTY(bool status READ getStatus);
+
     public:
         explicit MacMIDIInput(QObject *parent = nullptr);
         ~MacMIDIInput();
@@ -54,6 +57,8 @@ namespace rt {
 
     private:
         MacMIDIInputPrivate* const d;
+        QStringList getDiagnostics();
+        bool getStatus();
     };
 
 }}

@@ -23,6 +23,7 @@ set(drumstick-rt-mac-out_QTOBJ_SRCS
 set(drumstick-rt-mac-out_SRCS
     ../common/maccommon.h
     ../common/maccommon.cpp
+    ../common/maccommon.mm
     macmidioutput.cpp
 )
 
@@ -49,7 +50,7 @@ endif()
 target_link_libraries(drumstick-rt-mac-out PUBLIC
     Drumstick::RT
     Qt5::Core
-    "-framework CoreMIDI -framework CoreFoundation"
+    "-framework CoreMIDI -framework CoreFoundation -framework CoreServices -framework Foundation"
 )
 
 target_include_directories(drumstick-rt-mac-out PRIVATE

@@ -23,6 +23,7 @@ set(drumstick-rt-mac-in_QTOBJ_SRCS
 set(drumstick-rt-mac-in_SRCS
     ../common/maccommon.h
     ../common/maccommon.cpp
+    ../common/maccommon.mm
     macmidiinput.cpp
 )
 
@@ -55,7 +56,7 @@ target_link_libraries(drumstick-rt-mac-in PUBLIC
     Drumstick::RT
     Qt5::Core
     Qt5::Concurrent
-    "-framework CoreMIDI -framework CoreFoundation"
+    "-framework CoreMIDI -framework CoreFoundation -framework CoreServices -framework Foundation"
 )
 
 set_target_properties(drumstick-rt-mac-in PROPERTIES

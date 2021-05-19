@@ -20,7 +20,6 @@
 #include "maccommon.h"
 
 #include <QObject>
-#include <QDebug>
 #include <QString>
 #include <QStringList>
 #include <QByteArray>
@@ -46,6 +45,8 @@ namespace rt {
         QString m_publicName;
         QStringList m_excludedNames;
         QList<MIDIConnection> m_outputDevices;
+        bool m_status;
+        QStringList m_diagnostics;
 
         MacMIDIOutputPrivate():
             m_client(0),
@@ -58,25 +59,36 @@ namespace rt {
             internalCreate(DEFAULT_PUBLIC_NAME);
         }
 
+        void registerStatus(const QString& context, const OSStatus status)
+        {
+            if (status != noErr) {
+                m_diagnostics << QString("%1 error: %2").arg(context, status);
+                m_diagnostics << getErrorTextFromOSStatus(status);
+            }
+        }
+
         void internalCreate(CFStringRef name)
         {
             OSStatus result = noErr;
+            m_status = false;
+            m_diagnostics.clear();
             result = MIDIClientCreate( name, NULL, NULL, &m_client );
             if ( result != noErr ) {
-                qDebug() << "MIDIClientCreate() error:" << result;
+                registerStatus("MIDIClientCreate()", result);
                 return;
             }
             result = MIDISourceCreate( m_client, name, &m_endpoint );
             if ( result != noErr ) {
-                qDebug() << "MIDISourceCreate() error:" << result;
+                registerStatus("MIDISourceCreate()", result);
                 return;
             }
             result = MIDIOutputPortCreate( m_client, name, &m_port );
             if (result != noErr) {
-                qDebug() << "MIDIOutputPortCreate() error:" << result;
+                registerStatus("MIDIOutputPortCreate()", result);
                 return;
-            }
+            }            
             reloadDeviceList(true);
+            m_status = (result == noErr);
         }
 
         virtual ~MacMIDIOutputPrivate()
@@ -87,27 +99,30 @@ namespace rt {
         void internalDispose()
         {
             OSStatus result = noErr;
+            m_status = false;
+            m_diagnostics.clear();
             if (m_port != 0) {
                 result = MIDIPortDispose( m_port );
                 if (result != noErr) {
-                    qDebug() << "MIDIPortDispose() error:" << result;
+                    registerStatus("MIDIPortDispose()", result);
                     m_port = 0;
                 }
             }
             if (m_endpoint != 0) {
                 result = MIDIEndpointDispose( m_endpoint );
                 if (result != noErr) {
-                    qDebug() << "MIDIEndpointDispose() err:" << result;
+                    registerStatus("MIDIEndpointDispose()", result);
                     m_endpoint = 0;
                 }
             }
             if (m_client != 0) {
                 result = MIDIClientDispose( m_client );
                 if (result != noErr) {
-                    qDebug() << "MIDIClientDispose() error:" << result;
+                    registerStatus("MIDIClientDispose()", result);
                     m_client = 0;
                 }
             }
+            m_status = (result == noErr);
         }
 
         void setPublicName(QString name)
@@ -351,6 +366,16 @@ namespace rt {
             sizeof(data), &data);
         if (packet != NULL)
             d->sendEvents(&pktlist);
+    }
+
+    QStringList MacMIDIOutput::getDiagnostics()
+    {
+        return d->m_diagnostics;
+    }
+
+    bool MacMIDIOutput::getStatus()
+    {
+        return d->m_status;
     }
 
 }}

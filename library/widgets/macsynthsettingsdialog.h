@@ -21,6 +21,7 @@
 
 #include <QDialog>
 #include <QShowEvent>
+#include <QSettings>
 
 /**
  * @file macsynthsettingsdialog.h
@@ -28,6 +29,11 @@
  */
 
 namespace drumstick {
+
+namespace rt {
+    class MIDIOutput;
+}
+
 namespace widgets {
 
 namespace Ui {
@@ -53,6 +59,8 @@ public slots:
 
 private:
     Ui::MacSynthSettingsDialog *ui;
+    drumstick::rt::MIDIOutput *m_driver;
+    void checkDriver(QSettings* settings);
 };
 
 }} // namespace drumstick::widgets

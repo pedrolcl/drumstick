@@ -22,10 +22,12 @@
 #include <QNetworkInterface>
 #include <QPushButton>
 #include <QStandardPaths>
+#include <QMessageBox>
 
 #include "macsynthsettingsdialog.h"
 #include "ui_macsynthsettingsdialog.h"
 #include <drumstick/settingsfactory.h>
+#include <drumstick/backendmanager.h>
 
 /**
  * @file macsynthsettingsdialog.cpp
@@ -43,16 +45,45 @@ MacSynthSettingsDialog::MacSynthSettingsDialog(QWidget *parent) :
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::pressed,
             this, &MacSynthSettingsDialog::restoreDefaults);
     connect(ui->btn_soundfont, &QToolButton::pressed, this, &MacSynthSettingsDialog::showFileDialog);
+
+    SettingsFactory settings;
+    drumstick::rt::BackendManager man;
+    m_driver = man.outputBackendByName("DLS Synth");
+    if (m_driver != nullptr) {
+        checkDriver(settings.getQSettings());
+    }
 }
 
 MacSynthSettingsDialog::~MacSynthSettingsDialog()
 {
+    if (m_driver != nullptr) {
+        m_driver->close();
+    }
     delete ui;
 }
 
 void MacSynthSettingsDialog::accept()
 {
     writeSettings();
+    if (m_driver != nullptr) {
+        QString title;
+        QVariant varStatus = m_driver->property("status");
+        if (varStatus.isValid()) {
+            title = varStatus.toBool() ? tr("DLS Synth Initialized") : tr("DLS Synth Initialization Failed");
+            QVariant varDiag = m_driver->property("diagnostics");
+            if (varDiag.isValid()) {
+                QString text = varDiag.toStringList().join(QChar::LineFeed).trimmed();
+                if (varStatus.toBool()) {
+                    if (!text.isEmpty()) {
+                        QMessageBox::information(this, title, text);
+                    }
+                } else {
+                    QMessageBox::critical(this, title, text);
+                    return;
+                }
+            }
+        }
+    }
     QDialog::accept();
 }
 
@@ -77,6 +108,23 @@ void MacSynthSettingsDialog::readSettings()
     ui->soundfont_dls->setText(soundfont);
 }
 
+void drumstick::widgets::MacSynthSettingsDialog::checkDriver(QSettings* settings)
+{
+    if (m_driver != nullptr) {
+        m_driver->close();
+        m_driver->initialize(settings);
+        drumstick::rt::MIDIConnection conn;
+        m_driver->open(conn);
+
+        QVariant varStatus = m_driver->property("status");
+        if (varStatus.isValid()) {
+            ui->lblStatusText->clear();
+            ui->lblStatusText->setText(varStatus.toBool() ? tr("Ready") : tr("Failed") );
+            ui->lblStatusIcon->setPixmap(varStatus.toBool() ? QPixmap(":/checked.png") : QPixmap(":/error.png") );
+        }
+    }
+}
+
 void MacSynthSettingsDialog::writeSettings()
 {
     SettingsFactory settings;
@@ -91,6 +139,8 @@ void MacSynthSettingsDialog::writeSettings()
     settings->setValue("default_dls", def);
     settings->endGroup();
     settings->sync();
+
+    checkDriver(settings.getQSettings());
 }
 
 void MacSynthSettingsDialog::restoreDefaults()

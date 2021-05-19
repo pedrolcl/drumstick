@@ -20,7 +20,6 @@
 #include "macmidiinput.h"
 #include "maccommon.h"
 
-#include <QDebug>
 #include <QStringList>
 #include <QMutex>
 #include <QTextCodec>
@@ -35,8 +34,8 @@ namespace rt {
 
     static CFStringRef DEFAULT_PUBLIC_NAME CFSTR("MIDI In");
 
-    void MacMIDIReadProc( const MIDIPacketList *pktlist,
-                          void *refCon, void *connRefCon );
+    static void MacMIDIReadProc( const MIDIPacketList *pktlist,
+                                 void *refCon, void *connRefCon );
 
     class MacMIDIInputPrivate {
     public:
@@ -52,6 +51,8 @@ namespace rt {
         MIDIConnection m_currentInput;
         QStringList m_excludedNames;
         QList<MIDIConnection> m_inputDevices;
+        bool m_status;
+        QStringList m_diagnostics;
 
         explicit MacMIDIInputPrivate(MacMIDIInput *inp) :
             m_inp(inp),
@@ -67,22 +68,30 @@ namespace rt {
             internalCreate( DEFAULT_PUBLIC_NAME );
         }
 
+        void registerStatus(const QString& context, const OSStatus status)
+        {
+            if (status != noErr) {
+                m_diagnostics << QString("%1 error: %2").arg(context, status);
+                m_diagnostics << getErrorTextFromOSStatus(status);
+            }
+        }
+
         void internalCreate(CFStringRef name)
         {
             OSStatus result = noErr;
             result = MIDIClientCreate( name , nullptr, nullptr, &m_client );
             if (result != noErr) {
-                qDebug() << "MIDIClientCreate() err:" << result;
+                registerStatus("MIDIClientCreate()", result);
                 return;
             }
             result = MIDIDestinationCreate ( m_client, name, MacMIDIReadProc, (void*) this, &m_endpoint );
             if (result != noErr) {
-                qDebug() << "MIDIDestinationCreate() err:" << result;
+                registerStatus("MIDIDestinationCreate()", result);
                 return;
             }
             result = MIDIInputPortCreate( m_client, name, MacMIDIReadProc, (void *) this,  &m_port );
             if (result != noErr) {
-                qDebug() << "MIDIInputPortCreate() error:" << result;
+                registerStatus("MIDIInputPortCreate()", result);
                 return;
             }
             reloadDeviceList(true);
@@ -99,21 +108,21 @@ namespace rt {
             if (m_port != 0) {
                 result = MIDIPortDispose(m_port);
                 if (result != noErr) {
-                    qDebug() << "MIDIPortDispose() error:" << result;
+                   registerStatus("MIDIPortDispose()", result);
                     m_port = 0;
                 }
             }
             if (m_endpoint != 0) {
                 result = MIDIEndpointDispose(m_endpoint);
                 if (result != noErr) {
-                    qDebug() << "MIDIEndpointDispose() err:" << result;
+                    registerStatus("MIDIEndpointDispose()", result);
                     m_endpoint = 0;
                 }
             }
             if (m_client != 0) {
                 result = MIDIClientDispose(m_client);
                 if (result != noErr) {
-                    qDebug() << "MIDIClientDispose() err:" << result;
+                    registerStatus("MIDIClientDispose()", result);
                     m_client = 0;
                 }
             }
@@ -164,25 +173,32 @@ namespace rt {
         void open(const MIDIConnection& conn)
         {
             OSStatus result = noErr;
+            m_diagnostics.clear();
+            m_status = false;
             m_source = MIDIGetSource( conn.second.toInt() );
             result = MIDIPortConnectSource( m_port, m_source, nullptr );
             if (result != noErr) {
-                qDebug() << "MIDIPortConnectSource() error:" << result;
+                registerStatus("MIDIPortConnectSource()", result);
                 return;
             }
             m_currentInput = conn;
+            m_status = (result == noErr);
             return;
         }
 
         void close()
         {
             OSStatus result = noErr;
+            m_status = false;
+            m_diagnostics.clear();
             if (m_source != 0) {
                 result = MIDIPortDisconnectSource(m_port, m_source);
-                if (result != noErr)
-                    qDebug() << "MIDIPortDisconnectSource() error:" << result;
+                if (result != noErr) {
+                    registerStatus("MIDIPortDisconnectSource()", result);
+                }
                 m_source = 0;
                 m_currentInput = MIDIConnection();
+                m_status = (result == noErr);
             }
         }
 
@@ -244,13 +260,13 @@ namespace rt {
                     j+=packet.length();
                     break;
                 default:
-                    qDebug() << "status?" << status;
+                    registerStatus("invalid status", status);
                 }
             }
         }
     };
 
-    void MacMIDIReadProc( const MIDIPacketList *pktlist, void *refCon, void *connRefCon )
+    static void MacMIDIReadProc( const MIDIPacketList *pktlist, void *refCon, void *connRefCon )
     {
         Q_UNUSED(connRefCon)
         MacMIDIInputPrivate  *obj = nullptr;
@@ -335,6 +351,16 @@ namespace rt {
     bool MacMIDIInput::isEnabledMIDIThru()
     {
         return d->m_thruEnabled && d->m_out != 0;
+    }
+
+    QStringList MacMIDIInput::getDiagnostics()
+    {
+        return d->m_diagnostics;
+    }
+
+    bool MacMIDIInput::getStatus()
+    {
+        return d->m_status;
     }
 
 }} // namespace drumstick::rt

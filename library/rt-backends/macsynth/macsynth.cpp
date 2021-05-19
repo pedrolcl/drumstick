@@ -16,9 +16,9 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
 #include <QSettings>
 #include "macsynth.h"
+#include "maccommon.h"
 
 #include <CoreServices/CoreServices.h>
 #include <AudioUnit/AudioUnit.h>
@@ -38,6 +38,9 @@ namespace rt {
         QString m_soundfont_dls;
         bool m_default_dls;
         bool m_reverb_dls;
+    public:
+        bool m_status;
+        QStringList m_diagnostics;
 
     public:
         explicit MacSynthOutputPrivate():
@@ -54,6 +57,14 @@ namespace rt {
         {
             //qDebug() << Q_FUNC_INFO;
             stop();
+        }
+
+        void registerStatus(const QString& context, const OSStatus status)
+        {
+            if (status != noErr) {
+                m_diagnostics << QString("%1 error: %2").arg(context).arg(status);
+                m_diagnostics << getErrorTextFromOSStatus(status);
+            }
         }
 
         bool useDefaultDls() const
@@ -105,6 +116,8 @@ namespace rt {
             AUNode synthNode = 0;
             AUNode outputNode = 0;
             AUNode limiterNode = 0;
+            m_status = false;
+            m_diagnostics.clear();
 
             //qDebug() << Q_FUNC_INFO;
             if (m_graph == nullptr) {
@@ -157,6 +170,9 @@ namespace rt {
                                                       0, &url, sizeof(url));
                         registerStatus( "AudioUnitSetProperty(SoundBankURL)", result);
                         CFRelease(url);
+                        if (result != noErr) {
+                            return;
+                        }
                     }
                 }
 
@@ -192,26 +208,33 @@ namespace rt {
                     return;
                 }
             }
+            m_status = (result == noErr);
             m_connection = MIDIConnection(QStringLiteral(PRETTY_NAME), QStringLiteral(PRETTY_NAME));
         }
 
         void stop ()
         {
             OSStatus result;
+            m_status = false;
+            m_diagnostics.clear();
             //qDebug() << Q_FUNC_INFO;
             if (m_graph != nullptr) {
                 result = AUGraphStop(m_graph);
-                if (result != noErr)
-                    qWarning() << "AUGraphStop() err:" << result;
+                if (result != noErr) {
+                    registerStatus("AUGraphStop()", result);
+                }
                 result = AUGraphClose(m_graph);
-                if (result != noErr)
-                    qWarning() << "AUGraphClose() err:" << result;
+                if (result != noErr) {
+                    registerStatus("AUGraphClose()", result);
+                }
                 result = DisposeAUGraph(m_graph);
-                if (result != noErr)
-                    qWarning() << "DisposeAUGraph() err:" << result;
+                if (result != noErr) {
+                    registerStatus("DisposeAUGraph()", result);
+                }
                 m_graph = nullptr;
             }
             m_connection = MIDIConnection();
+            m_status = true;
         }
 
         void initialize ( QSettings *settings )
@@ -227,14 +250,6 @@ namespace rt {
             settings->endGroup();
         }
 
-        void registerStatus(const QString& context, const long status)
-        {
-            if (status != noErr) {
-                qWarning() << context << "err:" << status;
-            } //else {
-            //    qDebug() << context;
-            //}
-        }
 
         void sendStatusEvent(uint status, uint data1, uint data2)
         {
@@ -379,6 +394,16 @@ namespace rt {
     void MacSynthOutput::sendSystemMsg(const int status)
     {
         d->sendStatusEvent(static_cast<unsigned>(status), 0, 0);
+    }
+
+    QStringList MacSynthOutput::getDiagnostics()
+    {
+        return d->m_diagnostics;
+    }
+
+    bool MacSynthOutput::getStatus()
+    {
+        return d->m_status;
     }
 
 }}

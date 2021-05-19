@@ -31,6 +31,9 @@ namespace rt {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIOutput)
+        Q_PROPERTY(QStringList diagnostics READ getDiagnostics)
+        Q_PROPERTY(bool status READ getStatus);
+
     public:
         explicit MacSynthOutput(QObject *parent = nullptr);
         virtual ~MacSynthOutput();
@@ -61,6 +64,8 @@ namespace rt {
     private:
         class MacSynthOutputPrivate;
         MacSynthOutputPrivate* const d;
+        QStringList getDiagnostics();
+        bool getStatus();
     };
 
 }}
