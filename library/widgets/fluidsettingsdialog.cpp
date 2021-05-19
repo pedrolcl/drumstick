@@ -93,9 +93,11 @@ void FluidSettingsDialog::accept()
             title = varStatus.toBool() ? tr("FluidSynth Initialized") : tr("FluidSynth Initialization Failed");
             QVariant varDiag = m_driver->property("diagnostics");
             if (varDiag.isValid()) {
-                QString text = varDiag.toStringList().join(QChar::LineFeed);
+                QString text = varDiag.toStringList().join(QChar::LineFeed).trimmed();
                 if (varStatus.toBool()) {
-                    QMessageBox::information(this, title, text);
+                    if (!text.isEmpty()) {
+                        QMessageBox::information(this, title, text);
+                    }
                 } else {
                     QMessageBox::critical(this, title, text);
                     return;
