@@ -76,7 +76,7 @@ bool outputDriverIsConfigurable(const QString driver)
 bool configureInputDriver(const QString driver, QWidget* parent)
 {
     if (driver == "Network") {
-        NetworkSettingsDialog dlg(parent);
+        NetworkSettingsDialog dlg(true, parent);
         return (dlg.exec() == QDialog::Accepted);
     }
     return false;
@@ -96,7 +96,7 @@ bool configureOutputDriver(const QString driver, QWidget* parent)
 {
     bool result = false;
     if (driver == "Network") {
-        NetworkSettingsDialog dlg(parent);
+        NetworkSettingsDialog dlg(false, parent);
         result = (dlg.exec() == QDialog::Accepted);
     } else if (driver == "FluidSynth") {
         FluidSettingsDialog dlg(parent);

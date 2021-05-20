@@ -30,6 +30,9 @@ namespace drumstick { namespace rt {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIOutput)
+        Q_PROPERTY(QStringList diagnostics READ getDiagnostics)
+        Q_PROPERTY(bool status READ getStatus);
+
     public:
         explicit NetMIDIOutput(QObject *parent = nullptr);
         virtual ~NetMIDIOutput();
@@ -62,9 +65,14 @@ namespace drumstick { namespace rt {
         virtual void sendPitchBend(int chan, int value) override;
         virtual void sendSysex(const QByteArray &data) override;
         virtual void sendSystemMsg(const int status) override;
+
     private:
         class NetMIDIOutputPrivate;
         NetMIDIOutputPrivate * const d;
+
+    private:
+        QStringList getDiagnostics();
+        bool getStatus();
     };
 
 }}

@@ -16,17 +16,17 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "synthrenderer.h"
 #include <QCoreApplication>
 #include <QObject>
 #include <QReadLocker>
 #include <QString>
 #include <QTextStream>
 #include <QWriteLocker>
-#include <QtDebug>
+
 #include <eas_chorus.h>
 #include <eas_reverb.h>
 #include <pulse/simple.h>
+#include "synthrenderer.h"
 
 namespace drumstick {
 namespace rt {
@@ -53,22 +53,24 @@ SynthRenderer::initEAS()
     EAS_RESULT eas_res;
     EAS_DATA_HANDLE dataHandle;
     EAS_HANDLE handle;
+    m_status = false;
+    m_diagnostics.clear();
 
     const S_EAS_LIB_CONFIG *easConfig = EAS_Config();
     if (easConfig == nullptr) {
-        qCritical() << "EAS_Config returned null";
+        m_diagnostics << "EAS_Config returned null";
         return;
     }
 
     eas_res = EAS_Init(&dataHandle);
     if (eas_res != EAS_SUCCESS) {
-      qCritical() << "EAS_Init error: " << eas_res;
+      m_diagnostics << QString("EAS_Init error: %1").arg( eas_res );
       return;
     }
 
     eas_res = EAS_OpenMIDIStream(dataHandle, &handle, nullptr);
     if (eas_res != EAS_SUCCESS) {
-      qCritical() << "EAS_OpenMIDIStream error: " << eas_res;
+      m_diagnostics << QString("EAS_OpenMIDIStream error: %1").arg( eas_res );
       EAS_Shutdown(dataHandle);
       return;
     }
@@ -79,6 +81,7 @@ SynthRenderer::initEAS()
     m_sampleRate = easConfig->sampleRate;
     m_bufferSize = easConfig->mixBufferSize;
     m_channels = easConfig->numChannels;
+    m_status = true;
     //qDebug() << Q_FUNC_INFO << "EAS bufferSize=" << m_bufferSize << " sampleRate=" << m_sampleRate << " channels=" << m_channels;
 }
 
@@ -112,7 +115,8 @@ SynthRenderer::initPulse()
 
     if (!m_pulseHandle)
     {
-      qCritical() << "Failed to create PulseAudio connection";
+      m_diagnostics << "Failed to create PulseAudio connection";
+      m_status = false;
     }
     //qDebug() << Q_FUNC_INFO << "period_bytes=" << period_bytes;
 }
@@ -124,11 +128,11 @@ SynthRenderer::uninitEAS()
     if (m_easData != nullptr && m_streamHandle != nullptr) {
       eas_res = EAS_CloseMIDIStream(m_easData, m_streamHandle);
       if (eas_res != EAS_SUCCESS) {
-          qWarning() << "EAS_CloseMIDIStream error: " << eas_res;
+          m_diagnostics << QString("EAS_CloseMIDIStream error: %1").arg( eas_res );
       }
       eas_res = EAS_Shutdown(m_easData);
       if (eas_res != EAS_SUCCESS) {
-          qWarning() << "EAS_Shutdown error: " << eas_res;
+          m_diagnostics << QString("EAS_Shutdown error: %1").arg( eas_res );
       }
       m_streamHandle = nullptr;
       m_easData = nullptr;
@@ -190,8 +194,9 @@ SynthRenderer::run()
     //qDebug() << Q_FUNC_INFO << "started";
     try {
         initPulse();
+        //qDebug() << Q_FUNC_INFO << "m_status:" << m_status;
         m_Stopped = false;
-        while (!stopped()) {
+        while (!stopped() && m_status) {
             EAS_RESULT eas_res;
             EAS_I32 numGen = 0;
             size_t bytes = 0;
@@ -201,19 +206,20 @@ SynthRenderer::run()
                 EAS_PCM *buffer = (EAS_PCM *) data;
                 eas_res = EAS_Render(m_easData, buffer, m_bufferSize, &numGen);
                 if (eas_res != EAS_SUCCESS) {
-                    qWarning() << "EAS_Render error:" << eas_res;
+                    m_diagnostics << QString("EAS_Render error: %1").arg(eas_res);
                 }
                 bytes += (size_t) numGen * sizeof(EAS_PCM) * m_channels;
                 // hand over to pulseaudio the rendered buffer
                 if (pa_simple_write (m_pulseHandle, data, bytes, &pa_err) < 0)
                 {
-                    qWarning() << "Error writing to PulseAudio connection:" << pa_err;
+                    m_diagnostics << QString("Error writing to PulseAudio connection: %1").arg(pa_err);
                 }
             }
         }
         uninitPulse();
     } catch (...) {
-        qWarning() << "Exception in rendering loop - exiting";
+        m_diagnostics << "Exception in rendering loop - exiting";
+        m_status = false;
     }
     //qDebug() << Q_FUNC_INFO << "ended";
     emit finished();
@@ -229,10 +235,20 @@ SynthRenderer::writeMIDIData(const QByteArray& message)
             //qDebug() << Q_FUNC_INFO << message.toHex();
             eas_res = EAS_WriteMIDIStream(m_easData, m_streamHandle, (EAS_U8 *)message.data(), message.length());
             if (eas_res != EAS_SUCCESS) {
-                qWarning() << "EAS_WriteMIDIStream error: " << eas_res;
+                m_diagnostics << QString("EAS_WriteMIDIStream error: %1").arg(eas_res);
             }
         }
     }
+}
+
+bool SynthRenderer::getStatus() const
+{
+    return m_status;
+}
+
+QStringList SynthRenderer::getDiagnostics() const
+{
+    return m_diagnostics;
 }
 
 void
@@ -244,12 +260,12 @@ SynthRenderer::initReverb(int reverb_type)
         sw = EAS_FALSE;
         eas_res = EAS_SetParameter(m_easData, EAS_MODULE_REVERB, EAS_PARAM_REVERB_PRESET, (EAS_I32) reverb_type);
         if (eas_res != EAS_SUCCESS) {
-            qWarning() << "EAS_SetParameter error:" << eas_res;
+            m_diagnostics << QString("EAS_SetParameter error: %1").arg(eas_res);
         }
     }
     eas_res = EAS_SetParameter(m_easData, EAS_MODULE_REVERB, EAS_PARAM_REVERB_BYPASS, sw);
     if (eas_res != EAS_SUCCESS) {
-        qWarning() << "EAS_SetParameter error: " << eas_res;
+        m_diagnostics << QString("EAS_SetParameter error: %1").arg(eas_res);
     }
 }
 
@@ -262,12 +278,12 @@ SynthRenderer::initChorus(int chorus_type)
         sw = EAS_FALSE;
         eas_res = EAS_SetParameter(m_easData, EAS_MODULE_CHORUS, EAS_PARAM_CHORUS_PRESET, (EAS_I32) chorus_type);
         if (eas_res != EAS_SUCCESS) {
-            qWarning() << "EAS_SetParameter error:" << eas_res;
+            m_diagnostics << QString("EAS_SetParameter error: %1").arg(eas_res);
         }
     }
     eas_res = EAS_SetParameter(m_easData, EAS_MODULE_CHORUS, EAS_PARAM_CHORUS_BYPASS, sw);
     if (eas_res != EAS_SUCCESS) {
-        qWarning() << "EAS_SetParameter error:" << eas_res;
+        m_diagnostics << QString("EAS_SetParameter error: %1").arg(eas_res);
     }
 }
 
@@ -276,7 +292,7 @@ SynthRenderer::setReverbWet(int amount)
 {
     EAS_RESULT eas_res = EAS_SetParameter(m_easData, EAS_MODULE_REVERB, EAS_PARAM_REVERB_WET, (EAS_I32) amount);
     if (eas_res != EAS_SUCCESS) {
-        qWarning() << "EAS_SetParameter error:" << eas_res;
+        m_diagnostics << QString("EAS_SetParameter error: %1").arg(eas_res);
     }
 }
 
@@ -285,7 +301,7 @@ SynthRenderer::setChorusLevel(int amount)
 {
     EAS_RESULT eas_res = EAS_SetParameter(m_easData, EAS_MODULE_CHORUS, EAS_PARAM_CHORUS_LEVEL, (EAS_I32) amount);
     if (eas_res != EAS_SUCCESS) {
-        qWarning() << "EAS_SetParameter error:" << eas_res;
+        m_diagnostics << QString("EAS_SetParameter error: %1").arg(eas_res);
     }
 }
 

@@ -32,6 +32,9 @@ namespace rt {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIOutput)
+        Q_PROPERTY(QStringList diagnostics READ getDiagnostics)
+        Q_PROPERTY(bool status READ getStatus);
+
     public:
         explicit SynthController(QObject *parent = nullptr);
         virtual ~SynthController();
@@ -65,8 +68,11 @@ namespace rt {
     private:
         QThread m_renderingThread;
         SynthRenderer *m_renderer;
-    };
 
+    private:
+        QStringList getDiagnostics();
+        bool getStatus();
+    };
 
 }}
 #endif // SYNTHCONTROLLER_H

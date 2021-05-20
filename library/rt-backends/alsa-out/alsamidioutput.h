@@ -30,6 +30,9 @@ namespace rt {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIOutput)
+        Q_PROPERTY(QStringList diagnostics READ getDiagnostics)
+        Q_PROPERTY(bool status READ getStatus);
+
     public:
         explicit ALSAMIDIOutput(QObject *parent = nullptr);
         virtual ~ALSAMIDIOutput();
@@ -60,6 +63,10 @@ namespace rt {
     private:
         class ALSAMIDIOutputPrivate;
         ALSAMIDIOutputPrivate *d;
+
+    private:
+        QStringList getDiagnostics();
+        bool getStatus();
     };
 
 }}

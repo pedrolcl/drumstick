@@ -66,17 +66,20 @@ FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
     ui->gain->setValidator(new QDoubleValidator(0.0, 10.0, 2, this));
     ui->polyphony->setValidator(new QIntValidator(16, 4096, this));
 
-    SettingsFactory settings;
     drumstick::rt::BackendManager man;
     m_driver = man.outputBackendByName("FluidSynth");
     if (m_driver != nullptr) {
-        m_driver->initialize(settings.getQSettings());
+        QVariant v = m_driver->property("audiodrivers");
+        if (v.isValid()) {
+            ui->audioDriver->clear();
+            ui->audioDriver->addItems(v.toStringList());
+        }
     }
-    getDriverProperties();
 }
 
 FluidSettingsDialog::~FluidSettingsDialog()
 {
+    //qDebug() << Q_FUNC_INFO;
     if (m_driver != nullptr) {
         m_driver->close();
     }
@@ -129,13 +132,20 @@ QString FluidSettingsDialog::defaultAudioDriver() const
     return QSTR_DEFAULT_AUDIODRIVER;
 }
 
-void FluidSettingsDialog::getDriverProperties()
+void FluidSettingsDialog::chkDriverProperties(QSettings *settings)
 {
     if (m_driver != nullptr) {
+        drumstick::rt::MIDIConnection conn;
+        m_driver->close();
+        m_driver->initialize(settings);
+        m_driver->open(conn);
+
         QVariant drivers = m_driver->property("audiodrivers");
         if (drivers.isValid()) {
+            auto text = ui->audioDriver->currentText();
             ui->audioDriver->clear();
             ui->audioDriver->addItems(drivers.toStringList());
+            ui->audioDriver->setCurrentText(text);
         }
         QVariant varVersion = m_driver->property("libversion");
         if (varVersion.isValid()) {
@@ -175,6 +185,8 @@ void FluidSettingsDialog::readSettings()
     ui->polyphony->setText( settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toString() );
     ui->soundFont->setText( settings->value(QSTR_INSTRUMENTSDEFINITION, fs_defSoundFont).toString() );
     settings->endGroup();
+
+    chkDriverProperties(settings.getQSettings());
 }
 
 void FluidSettingsDialog::writeSettings()
@@ -216,11 +228,7 @@ void FluidSettingsDialog::writeSettings()
     settings->endGroup();
     settings->sync();
 
-    if (m_driver != nullptr) {
-        m_driver->close();
-        m_driver->initialize(settings.getQSettings());
-    }
-    getDriverProperties();
+    chkDriverProperties(settings.getQSettings());
 }
 
 void FluidSettingsDialog::restoreDefaults()

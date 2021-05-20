@@ -19,10 +19,12 @@
 #include <QDialogButtonBox>
 #include <QNetworkInterface>
 #include <QPushButton>
+#include <QMessageBox>
 
 #include "networksettingsdialog.h"
 #include "ui_networksettingsdialog.h"
 #include <drumstick/settingsfactory.h>
+#include <drumstick/backendmanager.h>
 
 /**
  * @file networksettingsdialog.cpp
@@ -34,24 +36,58 @@ namespace drumstick { namespace widgets {
 const QString NetworkSettingsDialog::QSTR_ADDRESS_IPV4 = QStringLiteral("225.0.0.37");
 const QString NetworkSettingsDialog::QSTR_ADDRESS_IPV6 = QStringLiteral("ff12::37");
 
-NetworkSettingsDialog::NetworkSettingsDialog(QWidget *parent) :
+NetworkSettingsDialog::NetworkSettingsDialog(const bool forInput, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::NetworkSettingsDialog)
+    ui(new Ui::NetworkSettingsDialog),
+    m_input(forInput)
 {
     ui->setupUi(this);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::pressed,
             this, &NetworkSettingsDialog::restoreDefaults);
     connect(ui->checkIPv6, &QCheckBox::toggled, this, &NetworkSettingsDialog::toggledIPv6);
+
+    drumstick::rt::BackendManager man;
+    if (m_input) {
+        m_driver = man.inputBackendByName("Network");
+    } else {
+        m_driver = man.outputBackendByName("Network");
+    }
 }
 
 NetworkSettingsDialog::~NetworkSettingsDialog()
 {
+    if (m_driver != nullptr) {
+        if (m_input) {
+            static_cast<drumstick::rt::MIDIInput*>(m_driver)->close();
+        } else {
+            static_cast<drumstick::rt::MIDIOutput*>(m_driver)->close();
+        }
+    }
     delete ui;
 }
 
 void NetworkSettingsDialog::accept()
 {
     writeSettings();
+    if (m_driver != nullptr) {
+        QString title;
+        QVariant varStatus = m_driver->property("status");
+        if (varStatus.isValid()) {
+            title = varStatus.toBool() ? tr("Network Initialized") : tr("Network Initialization Failed");
+            QVariant varDiag = m_driver->property("diagnostics");
+            if (varDiag.isValid()) {
+                QString text = varDiag.toStringList().join(QChar::LineFeed).trimmed();
+                if (varStatus.toBool()) {
+                    if (!text.isEmpty()) {
+                        QMessageBox::information(this, title, text);
+                    }
+                } else {
+                    QMessageBox::critical(this, title, text);
+                    return;
+                }
+            }
+        }
+    }
     QDialog::accept();
 }
 
@@ -87,6 +123,7 @@ void NetworkSettingsDialog::readSettings()
             }
         }
     }
+    chkInitialization(settings.getQSettings());
 }
 
 void NetworkSettingsDialog::writeSettings()
@@ -102,6 +139,30 @@ void NetworkSettingsDialog::writeSettings()
     settings->setValue("ipv6", ipv6);
     settings->endGroup();
     settings->sync();
+
+    chkInitialization(settings.getQSettings());
+}
+
+void NetworkSettingsDialog::chkInitialization(QSettings *settings)
+{
+    if (m_driver != nullptr) {
+        drumstick::rt::MIDIConnection conn("21928", 21928);
+        if (m_input) {
+            auto d = static_cast<drumstick::rt::MIDIInput*>(m_driver);
+            d->initialize(settings);
+            d->open(conn);
+        } else {
+            auto d = static_cast<drumstick::rt::MIDIOutput*>(m_driver);
+            d->initialize(settings);
+            d->open(conn);
+        }
+        QVariant varStatus = m_driver->property("status");
+        if (varStatus.isValid()) {
+            ui->lblStatusText->clear();
+            ui->lblStatusText->setText(varStatus.toBool() ? tr("Ready") : tr("Failed") );
+            ui->lblStatusIcon->setPixmap(varStatus.toBool() ? QPixmap(":/checked.png") : QPixmap(":/error.png") );
+        }
+    }
 }
 
 void NetworkSettingsDialog::restoreDefaults()

@@ -17,7 +17,6 @@
 */
 
 #include "alsamidioutput.h"
-#include <QDebug>
 #include <QMap>
 #include <QMutex>
 #include <QMutexLocker>
@@ -48,6 +47,8 @@ namespace rt {
         QStringList m_excludedNames;
         QMutex m_outMutex;
         bool m_initialized;
+        bool m_status;
+        QStringList m_diagnostics;
 
         explicit ALSAMIDIOutputPrivate(ALSAMIDIOutput *q):
             m_out(q),
@@ -57,9 +58,11 @@ namespace rt {
             m_clientFilter(true),
             m_runtimeAlsaNum(0),
             m_publicName(DEFAULT_PUBLIC_NAME),
-            m_initialized(false)
+            m_initialized(false),
+            m_status(false)
         {
             m_runtimeAlsaNum = getRuntimeALSALibraryNumber();
+            m_diagnostics.clear();
         }
 
         ~ALSAMIDIOutputPrivate()
@@ -83,6 +86,8 @@ namespace rt {
                 m_port->setPortType( SND_SEQ_PORT_TYPE_APPLICATION | SND_SEQ_PORT_TYPE_MIDI_GENERIC );
                 m_portId = m_port->getPortId();
                 m_initialized = true;
+                m_status = true;
+                m_diagnostics.clear();
             }
         }
 
@@ -101,6 +106,8 @@ namespace rt {
                     m_client = nullptr;
                 }
                 m_initialized = false;
+                m_status = false;
+                m_diagnostics.clear();
             }
         }
 
@@ -315,8 +322,10 @@ namespace rt {
 
     void ALSAMIDIOutput::open(const MIDIConnection& name)
     {
-        auto b = d->setSubscription(name);
-        if (!b) qWarning() << "failed subscription to" << name.first;
+        bool b = d->setSubscription(name);
+        if (!b) {
+            d->m_diagnostics << "failed subscription to " + name.first;
+        }
     }
 
     void ALSAMIDIOutput::close()

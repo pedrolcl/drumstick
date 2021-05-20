@@ -16,7 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
 #include <QDir>
 #include <QFile>
 
@@ -116,7 +115,7 @@ public:
     void sendMessage(const QByteArray& message )
     {
         if (m_device == nullptr) {
-            qDebug() << "device is null";
+            //qDebug() << "device is null";
             return;
         }
         m_device->write(message);

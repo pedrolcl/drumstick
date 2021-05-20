@@ -18,7 +18,6 @@
 
 #include "synthcontroller.h"
 #include "synthrenderer.h"
-#include <QDebug>
 
 namespace drumstick {
 namespace rt {
@@ -152,6 +151,16 @@ void SynthController::sendSysex(const QByteArray &data)
 void SynthController::sendSystemMsg(const int status)
 {
     Q_UNUSED(status)
+}
+
+QStringList SynthController::getDiagnostics()
+{
+    return m_renderer->getDiagnostics();
+}
+
+bool SynthController::getStatus()
+{
+    return m_renderer->getStatus();
 }
 
 } // namespace rt

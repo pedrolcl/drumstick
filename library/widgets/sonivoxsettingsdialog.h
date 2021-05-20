@@ -21,6 +21,7 @@
 
 #include <QDialog>
 #include <QShowEvent>
+#include <QSettings>
 
 /**
  * @file sonivoxsettingsdialog.h
@@ -28,6 +29,11 @@
  */
 
 namespace drumstick {
+
+namespace rt {
+    class MIDIOutput;
+}
+
 namespace widgets {
 
     namespace Ui {
@@ -43,6 +49,7 @@ namespace widgets {
         ~SonivoxSettingsDialog();
         void readSettings();
         void writeSettings();
+        void chkDriverProperties(QSettings *settings);
 
         static const QString QSTR_PREFERENCES;
         static const QString QSTR_BUFFERTIME;
@@ -58,6 +65,7 @@ namespace widgets {
 
     private:
         Ui::SonivoxSettingsDialog *ui;
+        drumstick::rt::MIDIOutput *m_driver;
     };
 
 }} // namespace drumstick::widgets

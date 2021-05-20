@@ -17,7 +17,6 @@
 */
 
 #include "netmidioutput.h"
-#include <QDebug>
 #include <QNetworkInterface>
 #include <QSettings>
 #include <QUdpSocket>
@@ -42,6 +41,8 @@ public:
     QNetworkInterface m_iface;
     quint16 m_port;
     bool m_ipv6;
+    bool m_status;
+    QStringList m_diagnostics;
 
     NetMIDIOutputPrivate() :
         m_socket(nullptr),
@@ -63,6 +64,8 @@ public:
     void initialize(QSettings* settings)
     {
         if (settings != nullptr) {
+            m_status = false;
+            m_diagnostics.clear();
             settings->beginGroup("Network");
             QString ifaceName = settings->value("interface", QString()).toString();
             m_ipv6 = settings->value("ipv6", false).toBool();
@@ -76,14 +79,18 @@ public:
             } else {
                 m_groupAddress.setAddress(address);
             }
+            m_status = m_groupAddress.isMulticast();
+            if (!m_status) {
+                m_diagnostics << QString("Invalid multicast address: %1").arg(address);
+            }
         }
     }
 
     void open(const MIDIConnection& portName)
     {
-        qDebug() << Q_FUNC_INFO << portName;
+        //qDebug() << Q_FUNC_INFO << portName;
         int p = portName.second.toInt();
-        if (p >= MULTICAST_PORT && p < LAST_PORT)
+        if (p >= MULTICAST_PORT && p < LAST_PORT && m_status)
         {
             m_socket = new QUdpSocket();
             bool res = m_socket->bind(m_ipv6 ? QHostAddress::AnyIPv6 : QHostAddress::AnyIPv4, m_socket->localPort());
@@ -97,9 +104,10 @@ public:
                     m_socket->setMulticastInterface(m_iface);
                 }
                 m_currentOutput = portName;
-            }
-            if (!res) {
-                qWarning() << Q_FUNC_INFO << "Socket error:" << m_socket->error() << m_socket->errorString();
+                m_status = m_socket->isValid();
+            } else {
+                m_status = false;
+                m_diagnostics << QString("Socket error: %1 = %2").arg(m_socket->error()).arg(m_socket->errorString());
             }
         }
     }
@@ -109,6 +117,8 @@ public:
         delete m_socket;
         m_socket = nullptr;
         m_currentOutput = MIDIConnection();
+        m_status = false;
+        m_diagnostics.clear();
     }
 
     void sendMessage(int m0)
@@ -142,16 +152,16 @@ public:
     {
         //qDebug() << Q_FUNC_INFO << message.toHex() << m_groupAddress << m_port;
         if (m_socket == nullptr) {
-            qWarning() << Q_FUNC_INFO << "udp socket is null";
+            m_diagnostics << "udp socket is null";
             return;
         } else if (!m_socket->isValid() || m_socket->state() != QAbstractSocket::BoundState) {
-            qWarning() << Q_FUNC_INFO << "udp socket has invalid state:" << m_socket->state() << "Error:" << m_socket->error() << m_socket->errorString();
+            m_diagnostics << QString("udp socket has invalid state: %1 Error: %2 %3").arg(m_socket->state()).arg(m_socket->error()).arg(m_socket->errorString());
             return;
         }
         auto res = m_socket->writeDatagram(message, m_groupAddress, m_port);
         //qDebug() << Q_FUNC_INFO << "writeDatagram:" << res;
         if (res < 0) {
-            qWarning() << Q_FUNC_INFO << "Error:" << m_socket->error() << m_socket->errorString();
+            m_diagnostics << QString("Error: %1 %2").arg(m_socket->error()).arg(m_socket->errorString());
         }
     }
 };
@@ -256,6 +266,16 @@ void NetMIDIOutput::sendSysex(const QByteArray &data)
 void NetMIDIOutput::sendSystemMsg(const int status)
 {
     d->sendMessage(status);
+}
+
+QStringList NetMIDIOutput::getDiagnostics()
+{
+    return d->m_diagnostics;
+}
+
+bool NetMIDIOutput::getStatus()
+{
+    return d->m_status;
 }
 
 } // namespace rt

@@ -16,7 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
 #include <QObject>
 
 #include "netmidiinput.h"
@@ -33,7 +32,8 @@ NetMIDIInputPrivate::NetMIDIInputPrivate(QObject *parent) : QObject(parent),
     m_port(0),
     m_publicName(NetMIDIInput::DEFAULT_PUBLIC_NAME),
     m_groupAddress(QHostAddress(NetMIDIInput::STR_ADDRESS_IPV4)),
-    m_ipv6(false)
+    m_ipv6(false),
+    m_status(false)
 {
     for(int i=NetMIDIInput::MULTICAST_PORT; i<NetMIDIInput::LAST_PORT; ++i) {
         m_inputDevices << MIDIConnection(QString::number(i), i);
@@ -43,7 +43,7 @@ NetMIDIInputPrivate::NetMIDIInputPrivate(QObject *parent) : QObject(parent),
 void NetMIDIInputPrivate::open(const MIDIConnection& portName)
 {
     int p = portName.second.toInt();
-    if (p >= NetMIDIInput::MULTICAST_PORT && p < NetMIDIInput::LAST_PORT)
+    if (p >= NetMIDIInput::MULTICAST_PORT && p < NetMIDIInput::LAST_PORT && m_status)
     {
         //qDebug() << Q_FUNC_INFO << portName;
         m_socket = new QUdpSocket();
@@ -62,9 +62,10 @@ void NetMIDIInputPrivate::open(const MIDIConnection& portName)
                 res = m_socket->joinMulticastGroup(m_groupAddress);
             }
             connect(m_socket, &QUdpSocket::readyRead, this, &NetMIDIInputPrivate::processIncomingMessages);
-        }
-        if (!res) {
-            qWarning() << "Socket error. err:" << m_socket->error() << m_socket->errorString();
+            m_status = m_socket->isValid();
+        } else {
+            m_status = false;
+            m_diagnostics << QString("Socket error. err: %1 = %2").arg(m_socket->error()).arg(m_socket->errorString());
         }
     }
 }
@@ -76,11 +77,15 @@ void NetMIDIInputPrivate::close()
     m_socket = nullptr;
     m_parser = nullptr;
     m_currentInput = MIDIConnection();
+    m_status = false;
+    m_diagnostics.clear();
 }
 
 void NetMIDIInputPrivate::initialize(QSettings *settings)
 {
     if (settings != nullptr) {
+        m_status = false;
+        m_diagnostics.clear();
         settings->beginGroup("Network");
         QString ifaceName = settings->value("interface", QString()).toString();
         m_ipv6 = settings->value("ipv6", false).toBool();
@@ -93,6 +98,10 @@ void NetMIDIInputPrivate::initialize(QSettings *settings)
             m_groupAddress.setAddress(m_ipv6 ? NetMIDIInput::STR_ADDRESS_IPV6 : NetMIDIInput::STR_ADDRESS_IPV4);
         } else {
             m_groupAddress.setAddress(address);
+        }
+        m_status = m_groupAddress.isMulticast();
+        if (!m_status) {
+            m_diagnostics << QString("Invalid multicast address: %1").arg(address);
         }
     }
 }

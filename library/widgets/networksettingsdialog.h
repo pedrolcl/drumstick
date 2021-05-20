@@ -21,13 +21,15 @@
 
 #include <QDialog>
 #include <QShowEvent>
+#include <QSettings>
 
 /**
  * @file networksettingsdialog.h
  * Declaration of the Network configuration dialog
  */
 
-namespace drumstick { namespace widgets {
+namespace drumstick {
+namespace widgets {
 
     namespace Ui {
         class NetworkSettingsDialog;
@@ -38,10 +40,11 @@ namespace drumstick { namespace widgets {
         Q_OBJECT
 
     public:
-        explicit NetworkSettingsDialog(QWidget *parent = nullptr);
+        explicit NetworkSettingsDialog(const bool forInput, QWidget *parent = nullptr);
         ~NetworkSettingsDialog();
         void readSettings();
         void writeSettings();
+        void chkInitialization(QSettings* settings);
 
         static const QString QSTR_ADDRESS_IPV4;
         static const QString QSTR_ADDRESS_IPV6;
@@ -54,6 +57,8 @@ namespace drumstick { namespace widgets {
 
     private:
         Ui::NetworkSettingsDialog *ui;
+        QObject *m_driver;
+        bool m_input;
     };
 
 }} // namespace drumstick::widgets

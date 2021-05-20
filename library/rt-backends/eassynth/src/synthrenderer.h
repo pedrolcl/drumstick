@@ -48,6 +48,8 @@ namespace drumstick { namespace rt {
         MIDIConnection connection();
         void setBufferTime(int milliseconds);
         void initialize(QSettings* settings);
+        bool getStatus() const;
+        QStringList getDiagnostics() const;
 
         static const QString QSTR_PREFERENCES;
         static const QString QSTR_BUFFERTIME;
@@ -81,7 +83,10 @@ namespace drumstick { namespace rt {
         /* pulseaudio */
         int m_bufferTime;
         pa_simple *m_pulseHandle;
+        /* object properties */
+        bool m_status;
+        QStringList m_diagnostics;
     };
 
-}}
+}} /* drumstick::rt */
 #endif /*SYNTHRENDERER_H_*/

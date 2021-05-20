@@ -16,7 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-//#include <QDebug>
 #include "synthoutput.h"
 
 namespace drumstick { namespace rt {
@@ -119,6 +118,7 @@ void SynthOutput::open(const MIDIConnection& name)
 void SynthOutput::close()
 {
     m_synth->close();
+    stop();
 }
 
 MIDIConnection SynthOutput::currentConnection()

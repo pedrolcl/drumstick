@@ -69,14 +69,15 @@ namespace rt {
         virtual void sendSystemMsg(const int status) override;
 
     private:
+        QPointer<SynthEngine> m_synth;
+        QThread m_synthThread;
+
+    private:
         QStringList getAudioDrivers();
         QStringList getDiagnostics();
         QString getLibVersion();
         bool getStatus();
 
-    private:
-        QPointer<SynthEngine> m_synth;
-        QThread m_synthThread;
     };
 
 }} // namespace drumstick::rt

@@ -21,6 +21,7 @@
 
 #include <QDialog>
 #include <QShowEvent>
+#include <QSettings>
 
 /**
  * @file fluidsettingsdialog.h
@@ -49,7 +50,7 @@ public:
     void readSettings();
     void writeSettings();
     void changeSoundFont(const QString& fileName);
-    void getDriverProperties();
+    void chkDriverProperties(QSettings* settings);
 
 public slots:
     void accept() override;

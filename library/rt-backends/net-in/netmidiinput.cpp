@@ -94,6 +94,16 @@ bool NetMIDIInput::isEnabledMIDIThru()
     return d->m_thruEnabled && (d->m_out != nullptr);
 }
 
+QStringList NetMIDIInput::getDiagnostics()
+{
+    return d->m_diagnostics;
+}
+
+bool NetMIDIInput::getStatus()
+{
+    return d->m_status;
+}
+
 } // namespace rt
 } // namespace drumstick
 

@@ -18,10 +18,12 @@
 
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <QMessageBox>
 
 #include "sonivoxsettingsdialog.h"
 #include "ui_sonivoxsettingsdialog.h"
 #include <drumstick/settingsfactory.h>
+#include <drumstick/backendmanager.h>
 
 /**
  * @file sonivoxsettingsdialog.cpp
@@ -57,28 +59,57 @@ SonivoxSettingsDialog::SonivoxSettingsDialog(QWidget *parent) :
     ui->combo_Chorus->setCurrentIndex(4);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::pressed,
             this, &SonivoxSettingsDialog::restoreDefaults);
+
+    drumstick::rt::BackendManager man;
+    m_driver = man.outputBackendByName("SonivoxEAS");
+    //qDebug() << Q_FUNC_INFO;
 }
 
 SonivoxSettingsDialog::~SonivoxSettingsDialog()
 {
+    //qDebug() << Q_FUNC_INFO;
+    if (m_driver != nullptr) {
+        m_driver->close();
+    }
     delete ui;
 }
 
 void SonivoxSettingsDialog::accept()
 {
+    //qDebug() << Q_FUNC_INFO;
     writeSettings();
+    if (m_driver != nullptr) {
+        QString title;
+        QVariant varStatus = m_driver->property("status");
+        if (varStatus.isValid()) {
+            title = varStatus.toBool() ? tr("Sonivox Initialized") : tr("Sonivox Initialization Failed");
+            QVariant varDiag = m_driver->property("diagnostics");
+            if (varDiag.isValid()) {
+                QString text = varDiag.toStringList().join(QChar::LineFeed).trimmed();
+                if (varStatus.toBool()) {
+                    if (!text.isEmpty()) {
+                        QMessageBox::information(this, title, text);
+                    }
+                } else {
+                    QMessageBox::critical(this, title, text);
+                    return;
+                }
+            }
+        }
+    }
     QDialog::accept();
 }
 
 void SonivoxSettingsDialog::showEvent(QShowEvent *event)
 {
+    //qDebug() << Q_FUNC_INFO;
     readSettings();
     event->accept();
 }
 
 void SonivoxSettingsDialog::readSettings()
 {
-
+    //qDebug() << Q_FUNC_INFO;
     SettingsFactory settings;
     settings->beginGroup(QSTR_PREFERENCES);
     int bufferTime = settings->value(QSTR_BUFFERTIME, 60).toInt();
@@ -95,10 +126,12 @@ void SonivoxSettingsDialog::readSettings()
     int chorusIndex = ui->combo_Chorus->findData(chorusType);
     ui->combo_Reverb->setCurrentIndex(reverbIndex);
     ui->combo_Chorus->setCurrentIndex(chorusIndex);
+    chkDriverProperties(settings.getQSettings());
 }
 
 void SonivoxSettingsDialog::writeSettings()
 {
+    //qDebug() << Q_FUNC_INFO;
     SettingsFactory settings;
     settings->beginGroup(QSTR_PREFERENCES);
     settings->setValue(QSTR_BUFFERTIME, ui->spnTime->value());
@@ -108,6 +141,24 @@ void SonivoxSettingsDialog::writeSettings()
     settings->setValue(QSTR_CHORUSAMT, ui->dial_Chorus->value());
     settings->endGroup();
     settings->sync();
+    chkDriverProperties(settings.getQSettings());
+}
+
+void SonivoxSettingsDialog::chkDriverProperties(QSettings *settings)
+{
+    //qDebug() << Q_FUNC_INFO;
+    if (m_driver != nullptr) {
+        //drumstick::rt::MIDIConnection conn;
+        m_driver->close();
+        m_driver->initialize(settings);
+        //m_driver->open(conn);
+    }
+    QVariant varStatus = m_driver->property("status");
+    if (varStatus.isValid()) {
+        ui->lblStatusText->clear();
+        ui->lblStatusText->setText(varStatus.toBool() ? tr("Ready") : tr("Failed") );
+        ui->lblStatusIcon->setPixmap(varStatus.toBool() ? QPixmap(":/checked.png") : QPixmap(":/error.png") );
+    }
 }
 
 void SonivoxSettingsDialog::restoreDefaults()

@@ -17,7 +17,6 @@
 */
 
 #include <QCoreApplication>
-//#include <QDebug>
 #include <QDir>
 #include <QLibraryInfo>
 #include <QPluginLoader>

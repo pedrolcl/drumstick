@@ -47,6 +47,8 @@ public:
     QStringList m_excludedNames;
     QNetworkInterface m_iface;
     bool m_ipv6;
+    bool m_status;
+    QStringList m_diagnostics;
 
     explicit NetMIDIInputPrivate(QObject *parent = nullptr);
 

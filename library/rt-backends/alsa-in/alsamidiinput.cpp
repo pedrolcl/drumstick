@@ -17,7 +17,6 @@
 */
 
 #include "alsamidiinput.h"
-#include <QDebug>
 #include <QMap>
 #include <QStringList>
 #include <drumstick/alsaclient.h>
@@ -49,6 +48,8 @@ namespace drumstick { namespace rt {
         QList<MIDIConnection> m_inputDevices;
         QStringList m_excludedNames;
         bool m_initialized;
+        bool m_status;
+        QStringList m_diagnostics;
 
         explicit ALSAMIDIInputPrivate(ALSAMIDIInput *inp) :
             m_inp(inp),
@@ -60,7 +61,8 @@ namespace drumstick { namespace rt {
             m_thruEnabled(false),
             m_clientFilter(false),
             m_publicName(ALSAMIDIInput::DEFAULT_PUBLIC_NAME),
-            m_initialized(false)
+            m_initialized(false),
+            m_status(false)
         {
             m_runtimeAlsaNum = getRuntimeALSALibraryNumber();
         }
@@ -89,6 +91,8 @@ namespace drumstick { namespace rt {
                 m_port->setTimestampReal(false);
                 m_client->setHandler(this);
                 m_initialized = true;
+                m_status = true;
+                m_diagnostics.clear();
             }
         }
 
@@ -106,6 +110,8 @@ namespace drumstick { namespace rt {
                     m_client = nullptr;
                 }
                 m_initialized = false;
+                m_status = false;
+                m_diagnostics.clear();
             }
         }
 
@@ -337,7 +343,9 @@ namespace drumstick { namespace rt {
     void ALSAMIDIInput::open(const MIDIConnection& name)
     {
         auto b = d->setSubscription(name);
-        if (!b) qWarning() << "failed subscription to" << name;
+        if (!b) {
+            d->m_diagnostics << "failed subscription to " + name.first;
+        }
     }
 
     void ALSAMIDIInput::close()
@@ -364,6 +372,16 @@ namespace drumstick { namespace rt {
     bool ALSAMIDIInput::isEnabledMIDIThru()
     {
         return d->m_thruEnabled && (d->m_out != nullptr);
+    }
+
+    QStringList ALSAMIDIInput::getDiagnostics()
+    {
+        return d->m_diagnostics;
+    }
+
+    bool ALSAMIDIInput::getStatus()
+    {
+        return d->m_status;
     }
 
 } // namespace rt

@@ -17,7 +17,6 @@
 */
 
 #include "midiparser.h"
-#include <QDebug>
 #include <drumstick/rtmidioutput.h>
 
 namespace drumstick {
