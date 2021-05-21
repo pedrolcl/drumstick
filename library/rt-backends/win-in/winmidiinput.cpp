@@ -18,7 +18,6 @@
 
 #include <QString>
 #include <QMap>
-#include <QDebug>
 #include <Windows.h>
 #include <mmsystem.h>
 
@@ -55,6 +54,8 @@ namespace rt {
         MIDIConnection m_currentInput;
         QStringList m_excludedNames;
         QList<MIDIConnection> m_inputDevices;
+        bool m_status;
+        QStringList m_diagnostics;
 
         explicit WinMIDIInputPrivate(WinMIDIInput *inp):
             m_inp(inp),
@@ -69,34 +70,42 @@ namespace rt {
 
         void open(const MIDIConnection &conn) {
             MMRESULT res;
+            m_status = false;
+            m_diagnostics.clear();
             if (conn != m_currentInput) {
                 if (m_handle != nullptr)
                     close();
                 reloadDeviceList(!m_clientFilter);
                 if (!conn.first.isEmpty()) {
                     res = midiInOpen(&m_handle, conn.second.toInt(), (DWORD_PTR) midiCallback, (DWORD_PTR) this, CALLBACK_FUNCTION | MIDI_IO_STATUS );
-                    if (res != MMSYSERR_NOERROR)
-                        qDebug() << "midiInOpen() err:" << mmErrorString(res);
-                    res = midiInStart(m_handle);
-                    if (res != MMSYSERR_NOERROR)
-                        qDebug() << "midiInStart() err:" << mmErrorString(res);
+                    if (res != MMSYSERR_NOERROR) {
+                        logError("midiInOpen()",res);
+                    } else {
+                        res = midiInStart(m_handle);
+                        if (res != MMSYSERR_NOERROR) {
+                            logError("midiInStart()",res);
+                        }
+                    }
                     m_currentInput = conn;
+                    m_status = (res == MMSYSERR_NOERROR);
                 }
             }
         }
 
         void close() {
             MMRESULT res;
+            m_status = false;
+            m_diagnostics.clear();
             if (m_handle != nullptr) {
                 res = midiInStop(m_handle);
                 if (res != MMSYSERR_NOERROR)
-                    qDebug() << "midiInStop() err:" << mmErrorString(res);
+                    logError("midiInStop()", res);
                 res = midiInReset( m_handle );
                 if (res != MMSYSERR_NOERROR)
-                    qDebug() << "midiInReset() err:" << mmErrorString(res);
+                    logError("midiInReset()", res);
                 res = midiInClose( m_handle );
                 if (res != MMSYSERR_NOERROR)
-                    qDebug() << "midiInClose() err:" << mmErrorString(res);
+                    logError("midiInClose()", res);
                 m_handle = nullptr;
             }
             m_currentInput = MIDIConnection();
@@ -181,7 +190,7 @@ namespace rt {
                 }
                 break;
             default:
-                qDebug() << "MIDI in status?" << status;
+                m_diagnostics << QString("MIDI in status? %1").arg(status);
             }
         }
 
@@ -207,6 +216,10 @@ namespace rt {
             return errstr;
         }
 
+        void logError(const QString context, const MMRESULT code)
+        {
+            m_diagnostics << QString("%1 error: %2 (%3)").arg(context).arg(code).arg(mmErrorString(code));
+        }
     };
 
     void CALLBACK midiCallback( HMIDIIN hMidiIn,
@@ -215,21 +228,22 @@ namespace rt {
                                 DWORD_PTR dwParam1,
                                 DWORD_PTR dwParam2 )
     {
+        Q_UNUSED(hMidiIn)
         Q_UNUSED(dwParam2)
         WinMIDIInput::WinMIDIInputPrivate* object = (WinMIDIInput::WinMIDIInputPrivate*) dwInstance;
         switch( wMsg ) {
         case MIM_OPEN:
-            qDebug() << "Open input" << hMidiIn;
+            object->m_diagnostics << "Open input";
             break;
         case MIM_CLOSE:
-            qDebug() << "Close input" << hMidiIn;
+            object->m_diagnostics << "Close input";
             break;
         case MIM_ERROR:
         case MIM_LONGERROR:
-            qDebug() << "Errors input";
+            object->m_diagnostics << "Errors input";
             break;
         case MIM_LONGDATA:
-            qDebug() << "Sysex data input";
+            object->m_diagnostics << "Sysex data input";
             break;
         case MIM_DATA:
         case MIM_MOREDATA: {
@@ -241,7 +255,7 @@ namespace rt {
             }
             break;
         default:
-            qDebug() << "unknown input message:" << hex << wMsg;
+            object->m_diagnostics << QString("unknown input message: %1").arg(wMsg);
             break;
         }
     }
@@ -316,4 +330,13 @@ namespace rt {
         return d->m_thruEnabled && d->m_out != nullptr;
     }
 
+    QStringList WinMIDIInput::getDiagnostics()
+    {
+        return d->m_diagnostics;
+    }
+
+    bool WinMIDIInput::getStatus()
+    {
+        return d->m_status;
+    }
 }} // namespace drumstick::rt

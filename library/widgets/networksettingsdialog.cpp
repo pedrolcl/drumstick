@@ -149,10 +149,12 @@ void NetworkSettingsDialog::chkInitialization(QSettings *settings)
         drumstick::rt::MIDIConnection conn("21928", 21928);
         if (m_input) {
             auto d = static_cast<drumstick::rt::MIDIInput*>(m_driver);
+            d->close();
             d->initialize(settings);
             d->open(conn);
         } else {
             auto d = static_cast<drumstick::rt::MIDIOutput*>(m_driver);
+            d->close();
             d->initialize(settings);
             d->open(conn);
         }

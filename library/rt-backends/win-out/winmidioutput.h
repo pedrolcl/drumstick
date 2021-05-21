@@ -20,8 +20,6 @@
 #define WINMIDIOUTPUT_H
 
 #include <QObject>
-#include <Windows.h>
-#include <mmsystem.h>
 #include <drumstick/rtmidioutput.h>
 
 namespace drumstick {
@@ -32,6 +30,9 @@ namespace rt {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIOutput)
+        Q_PROPERTY(QStringList diagnostics READ getDiagnostics)
+        Q_PROPERTY(bool status READ getStatus);
+
     public:
         class WinMIDIOutputPrivate;
 
@@ -62,6 +63,10 @@ namespace rt {
 
     private:
         WinMIDIOutputPrivate * const d;
+
+    private:
+        QStringList getDiagnostics();
+        bool getStatus();
     };
 
 }}

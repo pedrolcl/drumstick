@@ -16,7 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
 #include <QStringList>
 #include <QByteArray>
 #include <QVarLengthArray>
@@ -56,6 +55,8 @@ namespace rt {
         MIDIHDR m_midiSysexHdr;
         QByteArray m_sysexBuffer;
         QStringList m_excludedNames;
+        bool m_status;
+        QStringList m_diagnostics;
 
         WinMIDIOutputPrivate():
             m_handle(nullptr),
@@ -121,30 +122,36 @@ namespace rt {
         void open(const MIDIConnection& conn)
         {
             MMRESULT res;
+            m_status = false;
+            m_diagnostics.clear();
             if (m_handle != nullptr)
                 close();
             reloadDeviceList(!m_clientFilter);
             if (!conn.first.isEmpty()) {
                 res = midiOutOpen( &m_handle, conn.second.toInt(), (DWORD_PTR) midiCallback, (DWORD_PTR) this, CALLBACK_FUNCTION);
-                if (res == MMSYSERR_NOERROR)
+                if (res == MMSYSERR_NOERROR) {
                     m_currentOutput = conn;
-                else
-                    qDebug() << "midiStreamOpen() err:" << mmErrorString(res);
+                    m_status = true;
+                } else {
+                    logError("midiStreamOpen()", res);
+                }
             }
         }
 
         void close()
         {
             MMRESULT res;
+            m_status = false;
+            m_diagnostics.clear();
             if (m_handle != nullptr) {
                 res = midiOutReset( m_handle );
                 if (res != MMSYSERR_NOERROR)
-                    qDebug() << "midiOutReset() err:" << mmErrorString(res);
+                    logError("midiOutReset()", res);
                 res = midiOutClose( m_handle );
                 if (res == MMSYSERR_NOERROR)
                     m_currentOutput = MIDIConnection();
                 else
-                    qDebug() << "midiStreamClose() err:" << mmErrorString(res);
+                    logError("midiStreamClose()", res);
                 m_handle = nullptr;
             }
         }
@@ -154,7 +161,7 @@ namespace rt {
             MMRESULT res;
             res = midiOutUnprepareHeader( m_handle, lpMidiHdr, sizeof(MIDIHDR) );
             if (res != MMSYSERR_NOERROR)
-                qDebug() << "midiOutUnprepareHeader() err:" << mmErrorString(res);
+                logError("midiOutUnprepareHeader()", res);
             if ((lpMidiHdr->dwFlags & MHDR_ISSTRM) == 0)
                 return; // sysex header?
         }
@@ -164,7 +171,7 @@ namespace rt {
             MMRESULT res;
             res = midiOutShortMsg( m_handle, packet.dwPacket );
             if ( res != MMSYSERR_NOERROR )
-                qDebug() << "midiOutShortMsg() err:" << mmErrorString(res);
+                logError("midiOutShortMsg()", res);
         }
 
         void sendSysexEvent(const QByteArray& data)
@@ -178,11 +185,11 @@ namespace rt {
             m_midiSysexHdr.dwUser = 0;
             res = midiOutPrepareHeader( m_handle, &m_midiSysexHdr, sizeof(MIDIHDR) );
             if (res != MMSYSERR_NOERROR)
-                qDebug() << "midiOutPrepareHeader() err:" << mmErrorString(res);
+                logError("midiOutPrepareHeader()", res);
             else {
                 res = midiOutLongMsg( m_handle, &m_midiSysexHdr, sizeof(MIDIHDR) );
                 if (res != MMSYSERR_NOERROR)
-                    qDebug() << "midiOutLongMsg() err:" << mmErrorString(res);
+                    logError("midiOutLongMsg()", res);
             }
         }
 
@@ -200,6 +207,11 @@ namespace rt {
     #endif
             return errstr;
         }
+
+        void logError(const QString context, const MMRESULT code)
+        {
+            m_diagnostics << QString("%1 error: %2 (%3)").arg(context).arg(code).arg(mmErrorString(code));
+        }
     };
 
 
@@ -209,21 +221,21 @@ namespace rt {
                                 DWORD_PTR dwParam1,
                                 DWORD_PTR dwParam2)
     {
+        Q_UNUSED(hmo)
         Q_UNUSED(dwParam2)
-
         WinMIDIOutput::WinMIDIOutputPrivate* obj = (WinMIDIOutput::WinMIDIOutputPrivate*) dwInstance;
         switch( wMsg ) {
         case MOM_DONE:
             obj->doneHeader( (LPMIDIHDR) dwParam1 );
             break;
         case MOM_OPEN:
-            qDebug() << "Open output" << hmo;
+            obj->m_diagnostics << "Open output";
             break;
         case MOM_CLOSE:
-            qDebug() << "Close output" << hmo;
+            obj->m_diagnostics << "Close output";
             break;
         default:
-            qDebug() << "unknown output message:" << hex << wMsg;
+            obj->m_diagnostics << QString("unknown output message: %1").arg(wMsg);
             break;
         }
     }
@@ -358,4 +370,13 @@ namespace rt {
         d->sendSysexEvent(data);
     }
 
+    QStringList WinMIDIOutput::getDiagnostics()
+    {
+        return d->m_diagnostics;
+    }
+
+    bool WinMIDIOutput::getStatus()
+    {
+        return d->m_status;
+    }
 }}

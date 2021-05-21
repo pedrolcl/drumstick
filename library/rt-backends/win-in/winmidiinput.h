@@ -31,6 +31,9 @@ namespace rt {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIInput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIInput)
+        Q_PROPERTY(QStringList diagnostics READ getDiagnostics)
+        Q_PROPERTY(bool status READ getStatus);
+
     public:
         class WinMIDIInputPrivate;
 
@@ -54,6 +57,10 @@ namespace rt {
 
     private:
         WinMIDIInputPrivate * const d;
+
+    private:
+        QStringList getDiagnostics();
+        bool getStatus();
     };
 
 }}
