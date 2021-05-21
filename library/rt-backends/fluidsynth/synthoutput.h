@@ -70,7 +70,6 @@ namespace rt {
 
     private:
         QPointer<SynthEngine> m_synth;
-        QThread m_synthThread;
 
     private:
         QStringList getAudioDrivers();

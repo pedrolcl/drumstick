@@ -24,55 +24,43 @@ SynthOutput::SynthOutput(QObject *parent) : MIDIOutput(parent)
 {
     //qDebug() << Q_FUNC_INFO;
     m_synth = new SynthEngine;
-    m_synth->moveToThread(&m_synthThread);
-    connect(&m_synthThread, &QThread::started,  m_synth, &SynthEngine::initialize);
 }
 
 SynthOutput::~SynthOutput()
 {
     //qDebug() << Q_FUNC_INFO;
-    if (m_synthThread.isRunning()) {
-        stop();
-    }
+    stop();
     delete m_synth;
 }
 
 void SynthOutput::start()
 {
-    if (!m_synthThread.isRunning()) {
-        //qDebug() << Q_FUNC_INFO;
-        m_synthThread.start(QThread::HighPriority);
-    }
+    m_synth->initialize();
 }
 
 void SynthOutput::stop()
 {
-    if (m_synthThread.isRunning()) {
-        //qDebug() << Q_FUNC_INFO;
-        m_synth->stop();
-        m_synthThread.quit();
-        m_synthThread.wait();
-    }
+    m_synth->stop();
 }
 
 QStringList SynthOutput::getAudioDrivers()
 {
-    return m_synth->getVariantData("audiodrivers").toStringList();
+    return m_synth->getAudioDrivers();
 }
 
 QStringList SynthOutput::getDiagnostics()
 {
-    return m_synth->getVariantData("diagnostics").toStringList();
+    return m_synth->getDiagnostics();
 }
 
 QString SynthOutput::getLibVersion()
 {
-    return m_synth->getVariantData("libversion").toString();
+    return m_synth->getLibVersion();
 }
 
 bool SynthOutput::getStatus()
 {
-    return m_synth->getVariantData("status").toBool();
+    return m_synth->getStatus();
 }
 
 void SynthOutput::initialize(QSettings *settings)

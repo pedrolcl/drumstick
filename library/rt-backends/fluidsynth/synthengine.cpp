@@ -79,6 +79,7 @@ SynthEngine::SynthEngine(QObject *parent)
     m_runtimeLibraryVersion = ::fluid_version_str();
     //qDebug() << "Compiled FluidSynth Version:" << QSTR_FLUIDSYNTH_VERSION;
     //qDebug() << "Runtime FluidSynth Version:" << m_runtimeLibraryVersion;
+    //::fluid_set_log_function(fluid_log_level::FLUID_DBG, &SynthEngine_log_function, this);
     ::fluid_set_log_function(fluid_log_level::FLUID_ERR, &SynthEngine_log_function, this);
     ::fluid_set_log_function(fluid_log_level::FLUID_WARN, &SynthEngine_log_function, this);
     ::fluid_set_log_function(fluid_log_level::FLUID_INFO, &SynthEngine_log_function, this);
@@ -152,7 +153,6 @@ void SynthEngine::loadSoundFont()
 void SynthEngine::initialize()
 {
     //qDebug() << Q_FUNC_INFO;
-    QMutexLocker locker(&m_mutex);
     initializeSynth();
     retrieveAudioDrivers();
     scanSoundFonts();
@@ -190,6 +190,7 @@ void SynthEngine::setSoundFont(const QString &value)
 void SynthEngine::appendDiagnostics(int level, const char *message)
 {
     static const QMap<int,QString> prefix {
+        {fluid_log_level::FLUID_DBG,  tr("Debug")},
         {fluid_log_level::FLUID_ERR,  tr("Error")},
         {fluid_log_level::FLUID_WARN, tr("Warning")},
         {fluid_log_level::FLUID_INFO, tr("Information")}
@@ -200,24 +201,29 @@ void SynthEngine::appendDiagnostics(int level, const char *message)
 void SynthEngine::stop()
 {
     //qDebug() << Q_FUNC_INFO;
-    QMutexLocker locker(&m_mutex);
     uninitialize();
 }
 
-QVariant SynthEngine::getVariantData(const QString key)
+QStringList SynthEngine::getAudioDrivers()
 {
-    QMutexLocker locker(&m_mutex);
-    if (QString::compare(key, "audiodrivers", Qt::CaseInsensitive) == 0) {
-        return m_audioDriversList;
-    } else if (QString::compare(key, "diagnostics", Qt::CaseInsensitive) == 0) {
-        return m_diagnostics;
-    } else if (QString::compare(key, "libversion", Qt::CaseInsensitive) == 0) {
-        return m_runtimeLibraryVersion;
-    } else if (QString::compare(key, "status", Qt::CaseInsensitive) == 0) {
-        return m_status;
-    }
-    return QVariant();
+    return m_audioDriversList;
 }
+
+QStringList SynthEngine::getDiagnostics()
+{
+    return m_diagnostics;
+}
+
+QString SynthEngine::getLibVersion()
+{
+    return m_runtimeLibraryVersion;
+}
+
+bool SynthEngine::getStatus()
+{
+    return m_status;
+}
+
 
 void SynthEngine::scanSoundFonts(const QDir &initialDir)
 {

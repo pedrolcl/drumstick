@@ -42,7 +42,6 @@ public:
     QString soundFont() const { return m_soundFont; }
     void setSoundFont(const QString &value);
     void appendDiagnostics(int level, const char* message);
-
     void stop();
 
     Q_INVOKABLE void initialize();
@@ -55,12 +54,15 @@ public:
     Q_INVOKABLE void controlChange(const int channel, const int ctl, const int value);
     Q_INVOKABLE void bender(const int channel, const int value);
     Q_INVOKABLE QString version() const { return QT_STRINGIFY(VERSION); }
-    Q_INVOKABLE QVariant getVariantData(const QString key);
 
     MIDIConnection currentConnection() const { return m_currentConnection; }
     void close();
     void open();
     void uninitialize();
+    QStringList getAudioDrivers();
+    QStringList getDiagnostics();
+    QString getLibVersion();
+    bool getStatus();
 
     static const QString QSTR_FLUIDSYNTH_VERSION;
 
@@ -106,8 +108,6 @@ private:
     fluid_audio_driver_t* m_driver;
     QStringList m_soundFontsList;
     QStringList m_audioDriversList;
-    QStringList m_diagnostics;
-    QMutex m_mutex;
     QString fs_audiodriver{ QSTR_DEFAULT_AUDIODRIVER };
     int fs_periodSize { DEFAULT_PERIODSIZE };
     int fs_periods { DEFAULT_PERIODS };
@@ -117,6 +117,7 @@ private:
     double fs_gain { DEFAULT_GAIN };
     int fs_polyphony { DEFAULT_POLYPHONY };
     bool m_status;
+    QStringList m_diagnostics;
 };
 
 }} // namespace drumstick::rt

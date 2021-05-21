@@ -21,6 +21,7 @@
 #include <QFileInfo>
 #include <QFontDialog>
 #include <QInputDialog>
+#include <QMessageBox>
 #if defined(Q_OS_MACOS)
 #include <CoreFoundation/CoreFoundation.h>
 #endif
@@ -141,7 +142,6 @@ void VPiano::initialize()
 
     drumstick::widgets::SettingsFactory settings;
     if (m_midiIn != nullptr) {
-
         connect(m_midiIn, &MIDIInput::midiNoteOn,
                 this, QOverload<int,int,int>::of(&VPiano::slotNoteOn),
                 Qt::QueuedConnection);
@@ -156,6 +156,14 @@ void VPiano::initialize()
             for(const MIDIConnection& conn: qAsConst(conin)) {
                 if (conn.first == lastIn) {
                     m_midiIn->open(conn);
+                    auto status = m_midiIn->property("status");
+                    if (status.isValid() && !status.toBool()) {
+                        auto diagnostics = m_midiIn->property("diagnostics");
+                        if (diagnostics.isValid()) {
+                            auto text = diagnostics.toStringList().join(QChar::LineFeed).trimmed();
+                            qWarning() << "MIDI Input" << text;
+                        }
+                    }
                     break;
                 }
             }
@@ -169,6 +177,14 @@ void VPiano::initialize()
         for(const MIDIConnection& conn : qAsConst(connOut)) {
             if (conn.first == lastConnOut) {
                 m_midiOut->open(conn);
+                auto status = m_midiOut->property("status");
+                if (status.isValid() && !status.toBool()) {
+                    auto diagnostics = m_midiOut->property("diagnostics");
+                    if (diagnostics.isValid()) {
+                        auto text = diagnostics.toStringList().join(QChar::LineFeed).trimmed();
+                        qWarning() << "MIDI Output" << text;
+                    }
+                }
                 if (m_midiIn != nullptr) {
                     m_midiIn->setMIDIThruDevice(m_midiOut);
                     m_midiIn->enableMIDIThru(VPianoSettings::instance()->midiThru());
