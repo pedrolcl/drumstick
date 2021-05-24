@@ -66,7 +66,7 @@ void WidgetsTest::testPaletteSingle()
 {
     PianoPalette p(PAL_SINGLE);
     QCOMPARE(p, m_paletteList[PAL_SINGLE]);
-    QCOMPARE(p.paletteId(), PAL_SINGLE);
+    QCOMPARE(p.paletteId(), static_cast<int>(PAL_SINGLE));
     QCOMPARE(p.getNumColors(), 1);
     QCOMPARE(p.isHighLight(), true);
     QCOMPARE(p.isBackground(), false);
@@ -77,7 +77,7 @@ void WidgetsTest::testPaletteDouble()
 {
     PianoPalette p(PAL_DOUBLE);
     QCOMPARE(p, m_paletteList[PAL_DOUBLE]);
-    QCOMPARE(p.paletteId(), PAL_DOUBLE);
+    QCOMPARE(p.paletteId(), static_cast<int>(PAL_DOUBLE));
     QCOMPARE(p.getNumColors(), 2);
     QCOMPARE(p.isHighLight(), true);
     QCOMPARE(p.isBackground(), false);
@@ -88,7 +88,7 @@ void WidgetsTest::testPaletteChannels()
 {
     PianoPalette p(PAL_CHANNELS);
     QCOMPARE(p, m_paletteList[PAL_CHANNELS]);
-    QCOMPARE(p.paletteId(), PAL_CHANNELS);
+    QCOMPARE(p.paletteId(), static_cast<int>(PAL_CHANNELS));
     QCOMPARE(p.getNumColors(), 16);
     QCOMPARE(p.isHighLight(), true);
     QCOMPARE(p.isBackground(), false);
@@ -99,7 +99,7 @@ void WidgetsTest::testPaletteScale()
 {
     PianoPalette p(PAL_SCALE);
     QCOMPARE(p, m_paletteList[PAL_SCALE]);
-    QCOMPARE(p.paletteId(), PAL_SCALE);
+    QCOMPARE(p.paletteId(), static_cast<int>(PAL_SCALE));
     QCOMPARE(p.getNumColors(), 12);
     QCOMPARE(p.isHighLight(), false);
     QCOMPARE(p.isBackground(), true);
@@ -110,7 +110,7 @@ void WidgetsTest::testPaletteKeys()
 {
     PianoPalette p(PAL_KEYS);
     QCOMPARE(p, m_paletteList[PAL_KEYS]);
-    QCOMPARE(p.paletteId(), PAL_KEYS);
+    QCOMPARE(p.paletteId(), static_cast<int>(PAL_KEYS));
     QCOMPARE(p.getNumColors(), 2);
     QCOMPARE(p.isHighLight(), false);
     QCOMPARE(p.isBackground(), true);
@@ -121,7 +121,7 @@ void WidgetsTest::testPaletteFont()
 {
     PianoPalette p(PAL_FONT);
     QCOMPARE(p, m_paletteList[PAL_FONT]);
-    QCOMPARE(p.paletteId(), PAL_FONT);
+    QCOMPARE(p.paletteId(), static_cast<int>(PAL_FONT));
     QCOMPARE(p.getNumColors(), 4);
     QCOMPARE(p.isHighLight(), false);
     QCOMPARE(p.isBackground(), false);
@@ -145,7 +145,7 @@ void WidgetsTest::testPaletteUnchanged()
     p.setColor(0, Qt::white);
     p.setColor(1, Qt::black);
     QCOMPARE(p, m_paletteList[PAL_KEYS]);
-    QCOMPARE(p.paletteId(), PAL_KEYS);
+    QCOMPARE(p.paletteId(), static_cast<int>(PAL_KEYS));
     QCOMPARE(p.getNumColors(), 2);
 }
 

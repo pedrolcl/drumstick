@@ -57,7 +57,7 @@ SettingsFactory::getQSettings()
             m_settings.reset(new QSettings(s_fileName, QSettings::IniFormat));
         }
     }
-    return m_settings.get();
+    return m_settings.data();
 }
 
 /**

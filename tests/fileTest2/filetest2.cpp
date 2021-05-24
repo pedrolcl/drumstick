@@ -221,11 +221,11 @@ void FileTest2::testCaseReadWrkFile()
     if (!m_lastError.isEmpty()) {
         QFAIL(m_lastError.toLocal8Bit());
     }
-    QCOMPARE(m_fileVersion, "2.0");
+    QCOMPARE(m_fileVersion, QString("2.0"));
     QCOMPARE(m_timeBase, 192);
     QCOMPARE(m_tracks, 1);
     QCOMPARE(m_lastTempo, 120.0);
-    QCOMPARE(m_lastTimeSig, "4/4");
+    QCOMPARE(m_lastTimeSig, QString("4/4"));
     QCOMPARE(m_lastKeySig, 0);
     QCOMPARE(m_numNotes, 5);
     QCOMPARE(m_lastNote, 37);
