@@ -1,3 +1,6 @@
+2021-05-29
+    * fixed ticket #30: RT initialization diagnostics
+
 2021-05-17
     * bump version to 2.2.1 for the next development cycle
 

@@ -14,29 +14,38 @@
 # You should have received a copy of the GNU General Public License along 
 # with this program; If not, see <http://www.gnu.org/licenses/>.
 
-FIND_PROGRAM(XSLTPROC_EXECUTABLE xsltproc)
-IF(XSLTPROC_EXECUTABLE)
-    MESSAGE(STATUS "XSLTPROC Found: ${XSLTPROC_EXECUTABLE}")
-    CONFIGURE_FILE(drumstick-drumgrid.xml.in 
+find_program(XSLTPROC_EXECUTABLE xsltproc)
+if(XSLTPROC_EXECUTABLE)
+    message(STATUS "XSLTPROC Found: ${XSLTPROC_EXECUTABLE}")
+    #unset(RELEASE_DATE)
+    #execute_process (
+    #    COMMAND bash -c "LANG=C;date +'%B %d, %Y'"
+    #    OUTPUT_VARIABLE RELEASE_DATE
+    #    OUTPUT_STRIP_TRAILING_WHITESPACE
+    #)
+    set(RELEASE_DATE "May 31, 2021")
+    configure_file(drumstick-devel.doc.txt.in
+        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-devel.doc.txt IMMEDIATE @ONLY)
+    configure_file(drumstick-drumgrid.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-drumgrid.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-dumpmid.xml.in 
+    configure_file(drumstick-dumpmid.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpmid.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-dumpsmf.xml.in 
+    configure_file(drumstick-dumpsmf.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpsmf.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-dumpwrk.xml.in 
+    configure_file(drumstick-dumpwrk.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpwrk.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-metronome.xml.in 
+    configure_file(drumstick-metronome.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-metronome.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-playsmf.xml.in 
+    configure_file(drumstick-playsmf.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-playsmf.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-guiplayer.xml.in 
+    configure_file(drumstick-guiplayer.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-guiplayer.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-sysinfo.xml.in 
+    configure_file(drumstick-sysinfo.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-sysinfo.xml IMMEDIATE @ONLY)
-    CONFIGURE_FILE(drumstick-vpiano.xml.in 
+    configure_file(drumstick-vpiano.xml.in 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-vpiano.xml IMMEDIATE @ONLY)
-    INCLUDE(CreateManpages)
-    CREATE_MANPAGES ( 
+    include(CreateManpages)
+    create_manpages ( 
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-drumgrid.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpmid.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-dumpsmf.xml
@@ -47,6 +56,6 @@ IF(XSLTPROC_EXECUTABLE)
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-sysinfo.xml
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-vpiano.xml 
     )
-ELSE(XSLTPROC_EXECUTABLE)
-    MESSAGE(STATUS "Warning: XSLTPROC NOT Found. Man pages won't be installed")
-ENDIF(XSLTPROC_EXECUTABLE)
+else()
+    message(STATUS "Warning: XSLTPROC NOT Found. Man pages won't be installed")
+endif()
