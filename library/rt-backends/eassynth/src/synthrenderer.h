@@ -21,6 +21,7 @@
 
 #include <QObject>
 #include <QReadWriteLock>
+#include <QWaitCondition>
 #include <QSettings>
 #include <pulse/simple.h>
 #include <drumstick/rtmidioutput.h>
@@ -50,6 +51,7 @@ namespace drumstick { namespace rt {
         void initialize(QSettings* settings);
         bool getStatus() const;
         QStringList getDiagnostics() const;
+        void setCondition(QWaitCondition *cond);
 
         static const QString QSTR_PREFERENCES;
         static const QString QSTR_BUFFERTIME;
@@ -75,6 +77,7 @@ namespace drumstick { namespace rt {
     private:
         bool m_Stopped;
         QReadWriteLock m_mutex;
+        QWaitCondition *m_rendering;
         /* SONiVOX EAS */
         int m_sampleRate, m_bufferSize, m_channels;
         EAS_DATA_HANDLE m_easData;

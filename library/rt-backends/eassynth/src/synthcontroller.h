@@ -21,6 +21,7 @@
 
 #include <QObject>
 #include <QThread>
+#include <QWaitCondition>
 #include <drumstick/rtmidioutput.h>
 #include "synthrenderer.h"
 
@@ -68,6 +69,7 @@ namespace rt {
     private:
         QThread m_renderingThread;
         SynthRenderer *m_renderer;
+        QWaitCondition m_rendering;
 
     private:
         QStringList getDiagnostics();

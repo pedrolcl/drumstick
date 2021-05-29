@@ -41,6 +41,7 @@ const QString SynthRenderer::QSTR_SONIVOXEAS = QStringLiteral("SonivoxEAS");
 
 SynthRenderer::SynthRenderer(QObject *parent) : QObject(parent),
     m_Stopped(true),
+    m_rendering(nullptr),
     m_bufferTime(60)
 {
     initEAS();
@@ -196,6 +197,9 @@ SynthRenderer::run()
         initPulse();
         //qDebug() << Q_FUNC_INFO << "m_status:" << m_status;
         m_Stopped = false;
+        if (m_rendering != nullptr) {
+            m_rendering->wakeAll();
+        }
         while (!stopped() && m_status) {
             EAS_RESULT eas_res;
             EAS_I32 numGen = 0;
@@ -249,6 +253,11 @@ bool SynthRenderer::getStatus() const
 QStringList SynthRenderer::getDiagnostics() const
 {
     return m_diagnostics;
+}
+
+void SynthRenderer::setCondition(QWaitCondition *cond)
+{
+    m_rendering = cond;
 }
 
 void

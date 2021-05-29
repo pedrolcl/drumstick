@@ -16,6 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QMutex>
 #include "synthcontroller.h"
 #include "synthrenderer.h"
 
@@ -42,8 +43,12 @@ SynthController::~SynthController()
 void
 SynthController::start()
 {
-    //qDebug() << Q_FUNC_INFO;
+    QMutex mutex;
+    mutex.lock();
+    m_renderer->setCondition(&m_rendering);
     m_renderingThread.start(QThread::HighPriority);
+    m_rendering.wait(&mutex);
+    mutex.unlock();
 }
 
 void
