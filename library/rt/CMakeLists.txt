@@ -37,8 +37,12 @@ endif()
 set(drumstick-rt_SRCS
     backendmanager.cpp
 )
-    
-qt5_wrap_cpp(drumstick-rt_MOC_SRCS ${drumstick-rt_QOBJ_SRCS})
+
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(drumstick-rt_MOC_SRCS ${drumstick-rt_QOBJ_SRCS})
+else()
+    qt_wrap_cpp(drumstick-rt_MOC_SRCS ${drumstick-rt_QOBJ_SRCS})
+endif()
 
 add_library(drumstick-rt
     ${drumstick-rt_MOC_SRCS}
@@ -58,7 +62,7 @@ target_compile_definitions(drumstick-rt
 )
 
 target_link_libraries(drumstick-rt PRIVATE
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
 )
 
 if(STATIC_DRUMSTICK)

@@ -23,7 +23,11 @@ set(dumpsmf_qtobject_SRCS
     dumpsmf.h
 )
 
-qt5_wrap_cpp(dumpsmf_moc_SRCS ${dumpsmf_qtobject_SRCS})
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(dumpsmf_moc_SRCS ${dumpsmf_qtobject_SRCS})
+else()
+    qt_wrap_cpp(dumpsmf_moc_SRCS ${dumpsmf_qtobject_SRCS})
+endif()
 
 add_executable(drumstick-dumpsmf
     ${dumpsmf_moc_SRCS}
@@ -32,7 +36,7 @@ add_executable(drumstick-dumpsmf
 
 target_link_libraries(drumstick-dumpsmf PRIVATE
     Drumstick::File
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
 )
 
 install(TARGETS drumstick-dumpsmf

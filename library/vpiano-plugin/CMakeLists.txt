@@ -18,8 +18,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5UiPlugin REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR}Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR}UiPlugin REQUIRED)
 
 set(SOURCES
     vpiano-plugin.h
@@ -35,15 +35,15 @@ target_include_directories(drumstick-vpiano-plugin PRIVATE
 )
 
 target_link_libraries(drumstick-vpiano-plugin PRIVATE
-    Qt5::Widgets
-    Qt5::UiPlugin
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::UiPlugin
     Drumstick::Widgets
 )
 
 set_target_properties(drumstick-vpiano-plugin PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/designer)
 
-get_target_property(QT_QMAKE_EXECUTABLE Qt5::qmake LOCATION)
+get_target_property(QT_QMAKE_EXECUTABLE Qt${QT_VERSION_MAJOR}::qmake LOCATION)
 execute_process(COMMAND ${QT_QMAKE_EXECUTABLE} -query QT_INSTALL_PLUGINS
   OUTPUT_VARIABLE QT_INSTALL_PLUGINS OUTPUT_STRIP_TRAILING_WHITESPACE
 )

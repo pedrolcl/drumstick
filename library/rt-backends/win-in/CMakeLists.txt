@@ -24,9 +24,13 @@ set(drumstick-rt-win-in_SRCS
     winmidiinput.cpp
 )
 
-qt5_wrap_cpp(drumstick-rt-win-in_MOC_SRCS ${drumstick-rt-win-in_QTOBJ_SRCS}
-    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
-)
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(drumstick-rt-win-in_MOC_SRCS ${drumstick-rt-win-in_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+else()
+    qt_wrap_cpp(drumstick-rt-win-in_MOC_SRCS ${drumstick-rt-win-in_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+endif()
 
 if(STATIC_DRUMSTICK)
     add_library(drumstick-rt-win-in STATIC
@@ -45,7 +49,7 @@ else()
 endif()
 
 target_link_libraries(drumstick-rt-win-in
-    PUBLIC Qt5::Core
+    PUBLIC Qt${QT_VERSION_MAJOR}::Core
            Drumstick::RT
     PRIVATE winmm
 )

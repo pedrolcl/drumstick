@@ -22,6 +22,10 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 #    set(MACOSX_FRAMEWORK_BUNDLE_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
 #endif()
 
+if (QT_VERSION VERSION_GREATER_EQUAL 6.0)
+    find_package(Qt6 COMPONENTS Core5Compat REQUIRED)
+endif()
+
 set(drumstick-file_QTOBJ_SRCS
     ../include/drumstick/qsmf.h
     ../include/drumstick/qwrk.h
@@ -44,7 +48,11 @@ set(drumstick-file_SRCS
     qwrk.cpp
 )
 
-qt5_wrap_cpp(drumstick-file_MOC_SRCS ${drumstick-file_QTOBJ_SRCS})
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(drumstick-file_MOC_SRCS ${drumstick-file_QTOBJ_SRCS})
+else()
+    qt_wrap_cpp(drumstick-file_MOC_SRCS ${drumstick-file_QTOBJ_SRCS})
+endif()
 
 add_library(drumstick-file
     ${drumstick-file_MOC_SRCS}
@@ -60,8 +68,15 @@ target_include_directories(drumstick-file PUBLIC
 )
 
 target_link_libraries(drumstick-file PRIVATE
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
 )
+
+if (QT_VERSION VERSION_GREATER_EQUAL 6.0)
+    target_link_libraries(drumstick-file PRIVATE
+        Qt6::Core5Compat
+    )
+endif()
+
 
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-file PROPERTIES

@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-find_package(Qt5Test REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR}Test REQUIRED)
 set (CMAKE_AUTOMOC ON)
 enable_testing()
 

@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-find_package(Qt5Network REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR}Network REQUIRED)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -30,9 +30,13 @@ set(drumstick-rt-net-in_SRCS
     netmidiinput.cpp
 )
 
-qt5_wrap_cpp(drumstick-rt-net-in_MOC_SRCS ${drumstick-rt-net-in_QTOBJ_SRCS}
-    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
-)
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(drumstick-rt-net-in_MOC_SRCS ${drumstick-rt-net-in_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+else()
+    qt_wrap_cpp(drumstick-rt-net-in_MOC_SRCS ${drumstick-rt-net-in_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+endif()
 
 if(STATIC_DRUMSTICK)
     add_library(drumstick-rt-net-in STATIC
@@ -55,7 +59,7 @@ target_include_directories(drumstick-rt-net-in PRIVATE
     ../common )
 
 target_link_libraries(drumstick-rt-net-in PRIVATE
-    Qt5::Network
+    Qt${QT_VERSION_MAJOR}::Network
     Drumstick::RT
 )
 

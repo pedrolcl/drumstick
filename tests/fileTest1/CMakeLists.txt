@@ -18,8 +18,8 @@ add_executable (fileTest1 filetest1.cpp)
 
 target_link_libraries (fileTest1 PRIVATE
     Drumstick::File
-    Qt5::Core
-    Qt5::Test    
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Test
 )
 
 add_test (fileTest1 ${PROJECT_BINARY_DIR}/bin/fileTest1)

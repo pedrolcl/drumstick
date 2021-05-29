@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-find_package(Qt5Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR}Widgets REQUIRED)
 
 set ( SOURCES widgetstest.cpp )
 
@@ -24,8 +24,8 @@ target_include_directories ( widgetsTest PUBLIC
     ${CMAKE_SOURCE_DIR}/library/include )
 
 target_link_libraries (widgetsTest PRIVATE
-    Qt5::Widgets
-    Qt5::Test
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Test
     Drumstick::Widgets )
 
 add_test (widgetsTest ${PROJECT_BINARY_DIR}/bin/widgetsTest)

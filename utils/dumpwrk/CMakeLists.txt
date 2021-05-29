@@ -23,7 +23,11 @@ set(dumpwrk_qtobject_SRCS
     dumpwrk.h
 )
 
-qt5_wrap_cpp(dumpwrk_moc_SRCS ${dumpwrk_qtobject_SRCS})
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(dumpwrk_moc_SRCS ${dumpwrk_qtobject_SRCS})
+else()
+    qt_wrap_cpp(dumpwrk_moc_SRCS ${dumpwrk_qtobject_SRCS})
+endif()
 
 add_executable(drumstick-dumpwrk
     ${dumpwrk_moc_SRCS}
@@ -32,7 +36,7 @@ add_executable(drumstick-dumpwrk
 
 target_link_libraries(drumstick-dumpwrk PRIVATE
     Drumstick::File
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
 )
 
 install(TARGETS drumstick-dumpwrk

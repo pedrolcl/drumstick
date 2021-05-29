@@ -19,8 +19,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR}Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR}LinguistTools REQUIRED)
 
 set(EXTRA_LIBS)
 if(APPLE)
@@ -53,7 +53,7 @@ add_executable(drumstick-vpiano MACOSX_BUNDLE WIN32
 target_link_libraries(drumstick-vpiano PRIVATE
     Drumstick::RT
     Drumstick::Widgets
-    Qt5::Widgets
+    Qt${QT_VERSION_MAJOR}::Widgets
     ${EXTRA_LIBS}
 )
 
@@ -62,7 +62,12 @@ set(TS_FILES
     drumstick-vpiano_es.ts
 )
 
-qt5_add_translation(QM_FILES ${TS_FILES})
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_add_translation(QM_FILES ${TS_FILES})
+else()
+    qt_add_translation(QM_FILES ${TS_FILES})
+endif()
+
 add_custom_target(drumstick-vpiano-translations ALL DEPENDS ${QM_FILES})
 
 if (UNIX AND NOT APPLE)
@@ -111,8 +116,8 @@ if(STATIC_DRUMSTICK)
             winmm)
     endif()
 
-    find_package(Qt5Network)
-    if(Qt5Network_FOUND)
+    find_package(Qt${QT_VERSION_MAJOR}Network)
+    if(Qt${QT_VERSION_MAJOR}Network_FOUND)
         target_compile_definitions(drumstick-vpiano PUBLIC NET_BACKEND)
         target_link_libraries(drumstick-vpiano PRIVATE
             drumstick-rt-net-in

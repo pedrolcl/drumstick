@@ -22,8 +22,8 @@ target_include_directories (rtTest PUBLIC
     ${CMAKE_SOURCE_DIR}/library/include )
 
 target_link_libraries (rtTest PRIVATE
-    Qt5::Core
-    Qt5::Test
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Test
     Drumstick::RT )
 
 add_test (rtTest ${PROJECT_BINARY_DIR}/bin/rtTest)
@@ -69,8 +69,8 @@ if(STATIC_DRUMSTICK)
             winmm)
     endif()
 
-    find_package(Qt5Network)
-    if(Qt5Network_FOUND)
+    find_package(Qt${QT_VERSION_MAJOR}Network)
+    if(Qt${QT_VERSION_MAJOR}Network_FOUND)
         target_compile_definitions(rtTest PUBLIC NET_BACKEND)
         target_link_libraries(rtTest PRIVATE
             drumstick-rt-net-in

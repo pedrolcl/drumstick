@@ -26,9 +26,13 @@ set(drumstick-rt-fluidsynth_SRCS
     synthoutput.cpp
 )
 
-qt5_wrap_cpp(drumstick-rt-fluidsynth_MOC_SRCS ${drumstick-rt-fluidsynth_QTOBJ_SRCS}
-    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
-)
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(drumstick-rt-fluidsynth_MOC_SRCS ${drumstick-rt-fluidsynth_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+else()
+    qt_wrap_cpp(drumstick-rt-fluidsynth_MOC_SRCS ${drumstick-rt-fluidsynth_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+endif()
 
 if(STATIC_DRUMSTICK)
     add_library(drumstick-rt-fluidsynth STATIC
@@ -51,7 +55,7 @@ target_include_directories(drumstick-rt-fluidsynth PRIVATE
 )
 
 target_link_libraries(drumstick-rt-fluidsynth PRIVATE
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
     Drumstick::RT
     PkgConfig::FLUIDSYNTH
 )

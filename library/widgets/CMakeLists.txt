@@ -16,9 +16,9 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Network REQUIRED)
-find_package(Qt5LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR}Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR}Network REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR}LinguistTools REQUIRED)
 
 set(drumstick-widgets_HEADERS
     ../include/drumstick/pianokeybd.h
@@ -73,9 +73,15 @@ set(drumstick-widgets_FORMS
     sonivoxsettingsdialog.ui
 )
 
-qt5_wrap_ui(drumstick-widgets_UI_SRCS ${drumstick-widgets_FORMS})
-qt5_wrap_cpp(drumstick-widgets_MOC_SRCS ${drumstick-widgets_OBJ_SRCS})
-qt5_add_resources(drumstick-widgets_RESOURCES pianokeybd.qrc)
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_ui(drumstick-widgets_UI_SRCS ${drumstick-widgets_FORMS})
+    qt5_wrap_cpp(drumstick-widgets_MOC_SRCS ${drumstick-widgets_OBJ_SRCS})
+    qt5_add_resources(drumstick-widgets_RESOURCES pianokeybd.qrc)
+else()
+    qt_wrap_ui(drumstick-widgets_UI_SRCS ${drumstick-widgets_FORMS})
+    qt_wrap_cpp(drumstick-widgets_MOC_SRCS ${drumstick-widgets_OBJ_SRCS})
+    qt_add_resources(drumstick-widgets_RESOURCES pianokeybd.qrc)
+endif()
 
 add_library(drumstick-widgets
     ${drumstick-widgets_UI_SRCS}
@@ -93,8 +99,8 @@ target_include_directories(drumstick-widgets PUBLIC
 )
 
 target_link_libraries(drumstick-widgets PRIVATE
-    Qt5::Widgets
-    Qt5::Network
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Network
     Drumstick::RT
 )
 
@@ -113,7 +119,12 @@ set(TS_FILES
     translations/drumstick-widgets_zh_CN.ts
 )
 
-qt5_add_translation(QM_FILES ${TS_FILES})
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_add_translation(QM_FILES ${TS_FILES})
+else()
+    qt_add_translation(QM_FILES ${TS_FILES})
+endif()
+
 add_custom_target(drumstick-widgets-translations ALL DEPENDS ${QM_FILES})
 
 if (UNIX AND NOT APPLE)

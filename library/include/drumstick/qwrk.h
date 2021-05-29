@@ -22,6 +22,7 @@
 #include "macros.h"
 #include <QObject>
 #include <QScopedPointer>
+#include <QTextCodec>
 
 class QDataStream;
 

@@ -80,13 +80,14 @@ else()
     message(STATUS "Building dynamic libraries")
 endif()
 
-find_package(Qt5Core REQUIRED)
-message(STATUS "Found Qt5 version = ${Qt5Core_VERSION_STRING}")
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core REQUIRED)
+message(STATUS "Found Qt version = ${QT_VERSION}")
 
 if(USE_DBUS)
-    find_package(Qt5DBus REQUIRED)
+    find_package(Qt${QT_VERSION_MAJOR}DBus REQUIRED)
     add_definitions(-DRTKIT_SUPPORT)
-    message(STATUS "Found Qt5DBus version = ${Qt5DBus_VERSION_STRING}")
+    message(STATUS "Found QtDBus version = ${QT_VERSION}")
 endif()
 
 find_package(PkgConfig REQUIRED)
@@ -113,9 +114,9 @@ if(UNIX AND NOT APPLE)
 endif()
 
 if(${CMAKE_SYSTEM} MATCHES "Darwin")
-    find_package(Qt5Concurrent REQUIRED)
-    if(Qt5Concurrent_FOUND)
-        message(STATUS "Found Qt5Concurrent version = ${Qt5Concurrent_VERSION_STRING}")
+    find_package(Qt${QT_VERSION_MAJOR}Concurrent REQUIRED)
+    if(Qt${QT_VERSION_MAJOR}Concurrent_FOUND)
+        message(STATUS "Found Qt${QT_VERSION_MAJOR}Concurrent version = ${Qt${QT_VERSION_MAJOR}Concurrent_VERSION_STRING}")
     endif()
 endif()
 
@@ -129,7 +130,7 @@ message (STATUS "${PROJECT_NAME} v${PROJECT_VERSION}
     Install prefix: ${CMAKE_INSTALL_PREFIX}
     Build configuration: ${CMAKE_BUILD_TYPE}
     Processor: ${CMAKE_SYSTEM_PROCESSOR}
-    Qt5 Version: ${Qt5Core_VERSION_STRING}
+    Qt Version: ${QT_VERSION}
     D-Bus support: ${USE_DBUS}
     Building tests: ${BUILD_TESTING}
     Building docs: ${BUILD_DOCS}
@@ -151,7 +152,7 @@ if(UNIX AND NOT APPLE)
     if (BUILD_DOCS)
         find_package(Doxygen REQUIRED dot)
         if(DOXYGEN_FOUND)
-            string(REPLACE ";" " " DOXYGEN_INCLUDE_DIRS "${Qt5Core_INCLUDE_DIRS}")
+            string(REPLACE ";" " " DOXYGEN_INCLUDE_DIRS "${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}")
             configure_file("${CMAKE_SOURCE_DIR}/Doxyfile.in"
                 "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE @ONLY)
             add_custom_target(doxygen

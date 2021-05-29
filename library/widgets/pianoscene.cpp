@@ -24,6 +24,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QtMath>
+#include <QTouchDevice>
 
 #include <drumstick/pianokeybd.h>
 #include "pianoscene.h"

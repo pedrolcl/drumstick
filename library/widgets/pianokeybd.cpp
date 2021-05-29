@@ -429,7 +429,9 @@ void PianoKeybd::initialize()
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setViewportUpdateMode(MinimalViewportUpdate);
     setRenderHints(QPainter::Antialiasing|QPainter::TextAntialiasing|QPainter::SmoothPixmapTransform);
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     setOptimizationFlag(DontClipPainter, true);
+#endif
     setOptimizationFlag(DontSavePainterState, true);
     setOptimizationFlag(DontAdjustForAntialiasing, true);
     resetRawKeyboardMap();
