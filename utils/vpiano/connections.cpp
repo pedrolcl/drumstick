@@ -78,7 +78,7 @@ MIDIOutput *Connections::getOutput()
     return m_midiOut;
 }
 
-void Connections::accept()
+void Connections::reopenDrivers()
 {
     MIDIConnection connOut, connIn;
     drumstick::widgets::SettingsFactory settings;
@@ -113,7 +113,18 @@ void Connections::accept()
         VPianoSettings::instance()->setLastInputConnection(connIn.first);
     }
     m_settingsChanged = false;
+}
+
+void Connections::accept()
+{
+    reopenDrivers();
     QDialog::accept();
+}
+
+void Connections::reject()
+{
+    reopenDrivers();
+    QDialog::reject();
 }
 
 void Connections::refresh()
