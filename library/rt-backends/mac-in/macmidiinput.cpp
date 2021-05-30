@@ -22,7 +22,7 @@
 
 #include <QStringList>
 #include <QMutex>
-#include <QTextCodec>
+//#include <QTextCodec>
 #include <QObject>
 #include <QtConcurrent>
 
@@ -276,7 +276,11 @@ namespace rt {
         for (unsigned int i = 0; i < pktlist->numPackets; ++i) {
             if (obj != nullptr && packet != nullptr) {
                 QByteArray data((const char *)packet->data, packet->length);
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
                 QtConcurrent::run(obj, &MacMIDIInputPrivate::emitSignals, data);
+#else
+                obj->emitSignals(data);
+#endif
             }
             packet = MIDIPacketNext(packet);
         }

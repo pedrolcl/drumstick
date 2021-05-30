@@ -1,5 +1,5 @@
 2021-05-30
-    * preliminary cmake support for Qt6 (currently does not build, missing classes)
+    * experimental cmake support for building with Qt6
 
 2021-05-29
     * fixed ticket #30: RT initialization diagnostics

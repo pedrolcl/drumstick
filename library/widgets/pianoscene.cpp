@@ -24,8 +24,11 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QtMath>
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
 #include <QTouchDevice>
-
+#else
+#include <QInputDevice>
+#endif
 #include <drumstick/pianokeybd.h>
 #include "pianoscene.h"
 
@@ -719,7 +722,12 @@ bool PianoScene::event(QEvent *event)
     case QEvent::TouchUpdate:
     {
         QTouchEvent *touchEvent = static_cast<QTouchEvent*>(event);
-        if (d->m_touchEnabled && touchEvent->device()->type() == QTouchDevice::DeviceType::TouchScreen) {
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
+        const auto touchScreen = QTouchDevice::DeviceType::TouchScreen;
+#else
+        const auto touchScreen = QInputDevice::DeviceType::TouchScreen;
+#endif
+        if (d->m_touchEnabled && touchEvent->device()->type() == touchScreen) {
             QList<QTouchEvent::TouchPoint> touchPoints = touchEvent->touchPoints();
             foreach(const QTouchEvent::TouchPoint& touchPoint, touchPoints) {
                 switch (touchPoint.state()) {

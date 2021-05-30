@@ -71,7 +71,11 @@ QSpySMF::QSpySMF():
     connect(m_engine, &QSmf::signalSMFError, this, &QSpySMF::errorHandler);
     cout.setRealNumberNotation(QTextStream::FixedNotation);
     cout.setRealNumberPrecision(4);
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     cout.setCodec(codec);
+#else
+    cout.setEncoding(QStringConverter::Utf8);
+#endif
 }
 
 void QSpySMF::dump(const QString& chan, const QString& event,

@@ -27,9 +27,13 @@ set(drumstick-rt-mac-in_SRCS
     macmidiinput.cpp
 )
 
-qt5_wrap_cpp(drumstick-rt-mac-in_MOC_SRCS ${drumstick-rt-mac-in_QTOBJ_SRCS}
-    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
-)
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(drumstick-rt-mac-in_MOC_SRCS ${drumstick-rt-mac-in_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+else()
+    qt_wrap_cpp(drumstick-rt-mac-in_MOC_SRCS ${drumstick-rt-mac-in_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+endif()
 
 if(STATIC_DRUMSTICK)
     add_library(drumstick-rt-mac-in STATIC
@@ -54,8 +58,8 @@ target_include_directories(drumstick-rt-mac-in PRIVATE
 
 target_link_libraries(drumstick-rt-mac-in PUBLIC
     Drumstick::RT
-    Qt5::Core
-    Qt5::Concurrent
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Concurrent
     "-framework CoreMIDI -framework CoreFoundation -framework CoreServices -framework Foundation"
 )
 

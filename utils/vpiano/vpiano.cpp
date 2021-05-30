@@ -22,6 +22,7 @@
 #include <QFontDialog>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QActionGroup>
 #if defined(Q_OS_MACOS)
 #include <CoreFoundation/CoreFoundation.h>
 #endif
@@ -46,6 +47,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
 
     bool mouseInputEnabled = true;
     bool touchInputEnabled = false;
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     const QList<const QTouchDevice*> devs = QTouchDevice::devices();
     for(const QTouchDevice *dev : devs) {
         if (dev->type() == QTouchDevice::TouchScreen) {
@@ -54,6 +56,15 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
             break;
         }
     }
+#else
+    foreach(const QInputDevice *dev, QInputDevice::devices()) {
+        if (dev->type() == QInputDevice::DeviceType::TouchScreen) {
+            mouseInputEnabled = false;
+            touchInputEnabled = true;
+            break;
+        }
+    }
+#endif
     ui.pianokeybd->setMouseEnabled(mouseInputEnabled);
     ui.pianokeybd->setTouchEnabled(touchInputEnabled);
 

@@ -19,8 +19,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt${QT_VERSION_MAJOR}Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR}LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Gui Widgets LinguistTools REQUIRED)
 
 set(EXTRA_LIBS)
 if(APPLE)
@@ -53,6 +52,7 @@ add_executable(drumstick-vpiano MACOSX_BUNDLE WIN32
 target_link_libraries(drumstick-vpiano PRIVATE
     Drumstick::RT
     Drumstick::Widgets
+    Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Widgets
     ${EXTRA_LIBS}
 )

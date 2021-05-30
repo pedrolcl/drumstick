@@ -26,9 +26,13 @@ set(drumstick-rt-macsynth_SRCS
     macsynth.cpp
 )
 
-qt5_wrap_cpp(drumstick-rt-macsynth_MOC_SRCS ${drumstick-rt-macsynth_QTOBJ_SRCS}
-    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
-)
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(drumstick-rt-macsynth_MOC_SRCS ${drumstick-rt-macsynth_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+else()
+    qt_wrap_cpp(drumstick-rt-macsynth_MOC_SRCS ${drumstick-rt-macsynth_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+endif()
 
 if(STATIC_DRUMSTICK)
     add_library(drumstick-rt-macsynth STATIC
@@ -48,7 +52,7 @@ endif()
 
 target_link_libraries(drumstick-rt-macsynth PUBLIC
     Drumstick::RT
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
     "-framework CoreMIDI -framework CoreFoundation -framework CoreServices -framework Foundation -framework CoreAudio -framework AudioToolbox -framework AudioUnit"
 )
 

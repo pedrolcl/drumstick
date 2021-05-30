@@ -1185,7 +1185,7 @@ void QWrk::processStringTable()
             int len = readByte();
             QByteArray name = readByteArray(len);
             int idx = readByte();
-            table.insert(idx, name);
+            table.insert(i, name);
         }
         Q_EMIT signalWRKStringTable2(table);
     } else {
@@ -1195,7 +1195,7 @@ void QWrk::processStringTable()
             int len = readByte();
             QString name = readString(len);
             int idx = readByte();
-            table.insert(idx, name);
+            table.insert(i, name);
         }
         Q_EMIT signalWRKStringTable(table);
     }

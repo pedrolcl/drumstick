@@ -125,7 +125,11 @@ QSpyWrk::QSpyWrk():
 
     cout.setRealNumberNotation(QTextStream::FixedNotation);
     cout.setRealNumberPrecision(4);
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     cout.setCodec("UTF-8");
+#else
+    cout.setEncoding(QStringConverter::Utf8);
+#endif
 }
 
 void QSpyWrk::dump(const long time, const int track, const QString& chan, const QString& event, const QString& data)
