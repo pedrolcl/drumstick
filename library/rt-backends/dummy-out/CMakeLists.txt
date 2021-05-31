@@ -24,9 +24,13 @@ set(drumstick-rt-dummy-out_SRCS
     dummyoutput.cpp
 )
 
-qt5_wrap_cpp(drumstick-rt-dummy-out_MOC_SRCS ${drumstick-rt-dummy-out_QTOBJ_SRCS}
-    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
-)
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(drumstick-rt-dummy-out_MOC_SRCS ${drumstick-rt-dummy-out_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+else()
+    qt_wrap_cpp(drumstick-rt-dummy-out_MOC_SRCS ${drumstick-rt-dummy-out_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+endif()
 
 if(STATIC_DRUMSTICK)
     add_library(drumstick-rt-dummy-out STATIC
@@ -45,7 +49,7 @@ else()
 endif()
 
 target_link_libraries(drumstick-rt-dummy-out PUBLIC
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
     Drumstick::RT
 )
 

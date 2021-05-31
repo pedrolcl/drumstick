@@ -28,9 +28,13 @@ set(drumstick-rt-oss-in_SRCS
     ossinput.cpp
 )
 
-qt5_wrap_cpp(drumstick-rt-oss-in_MOC_SRCS ${drumstick-rt-oss-in_QTOBJ_SRCS}
-    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
-)
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(drumstick-rt-oss-in_MOC_SRCS ${drumstick-rt-oss-in_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+else()
+    qt5_wrap_cpp(drumstick-rt-oss-in_MOC_SRCS ${drumstick-rt-oss-in_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+endif()
 
 if(STATIC_DRUMSTICK)
     add_library(drumstick-rt-oss-in STATIC
@@ -54,7 +58,7 @@ target_include_directories(drumstick-rt-oss-in PRIVATE
 )
 
 target_link_libraries(drumstick-rt-oss-in PRIVATE
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
 )
 
 set_target_properties(drumstick-rt-oss-in PROPERTIES

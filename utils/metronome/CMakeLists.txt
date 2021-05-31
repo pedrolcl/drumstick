@@ -23,7 +23,11 @@ set(metronome_qtobject_SRCS
     metronome.h
 )
 
-qt5_wrap_cpp(metronome_moc_SRCS ${metronome_qtobject_SRCS})
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(metronome_moc_SRCS ${metronome_qtobject_SRCS})
+else()
+    qt_wrap_cpp(metronome_moc_SRCS ${metronome_qtobject_SRCS})
+endif()
 
 add_executable(drumstick-metronome
     ${metronome_moc_SRCS}
@@ -32,7 +36,7 @@ add_executable(drumstick-metronome
 
 target_link_libraries(drumstick-metronome PRIVATE
     Drumstick::ALSA
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
 )
 
 install(TARGETS drumstick-metronome

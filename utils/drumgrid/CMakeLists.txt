@@ -16,8 +16,7 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Gui Widgets LinguistTools REQUIRED)
 
 set(drumgrid_forms_SRCS
     drumgridabout.ui
@@ -40,9 +39,13 @@ set(drumgrid_qtobject_SRCS
     drumgrid.h
 )
 
-qt5_wrap_ui(drumgrid_ui_SRCS ${drumgrid_forms_SRCS})
-
-qt5_wrap_cpp(drumgrid_moc_SRCS ${drumgrid_qtobject_SRCS})
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_ui(drumgrid_ui_SRCS ${drumgrid_forms_SRCS})
+    qt5_wrap_cpp(drumgrid_moc_SRCS ${drumgrid_qtobject_SRCS})
+else()
+    qt_wrap_ui(drumgrid_ui_SRCS ${drumgrid_forms_SRCS})
+    qt_wrap_cpp(drumgrid_moc_SRCS ${drumgrid_qtobject_SRCS})
+endif()
 
 add_executable(drumstick-drumgrid
     ${drumgrid_ui_SRCS}
@@ -52,7 +55,8 @@ add_executable(drumstick-drumgrid
 
 target_link_libraries(drumstick-drumgrid PRIVATE
     Drumstick::ALSA
-    Qt5::Widgets
+    Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::Widgets
 )
 
 set(TS_FILES
@@ -60,7 +64,12 @@ set(TS_FILES
     drumstick-drumgrid_es.ts
 )
 
-qt5_add_translation(QM_FILES ${TS_FILES})
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_add_translation(QM_FILES ${TS_FILES})
+else()
+    qt_add_translation(QM_FILES ${TS_FILES})
+endif()
+
 add_custom_target(drumstick-drumgrid-translations ALL DEPENDS ${QM_FILES})
 
 if (UNIX AND NOT APPLE)

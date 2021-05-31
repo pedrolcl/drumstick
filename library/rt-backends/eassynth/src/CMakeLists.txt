@@ -8,9 +8,13 @@ set( SOURCES
     synthrenderer.cpp
 )
 
-qt5_wrap_cpp( MOC_SRCS ${HEADERS}
-    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
-)
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp( MOC_SRCS ${HEADERS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+else()
+    qt_wrap_cpp( MOC_SRCS ${HEADERS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+endif()
 
 if(STATIC_DRUMSTICK)
     add_library( drumstick-rt-eassynth STATIC ${MOC_SRCS} ${SOURCES} )
@@ -25,7 +29,7 @@ else()
 endif()
 
 target_link_libraries( drumstick-rt-eassynth PRIVATE
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
     PkgConfig::PULSE
     sonivox
 )

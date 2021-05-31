@@ -23,7 +23,11 @@ set(dumpmid_qtobject_SRCS
     dumpmid.h
 )
 
-qt5_wrap_cpp(dumpmid_moc_SRCS ${dumpmid_qtobject_SRCS})
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(dumpmid_moc_SRCS ${dumpmid_qtobject_SRCS})
+else()
+    qt_wrap_cpp(dumpmid_moc_SRCS ${dumpmid_qtobject_SRCS})
+endif()
 
 add_executable(drumstick-dumpmid
     ${dumpmid_moc_SRCS}
@@ -32,7 +36,7 @@ add_executable(drumstick-dumpmid
 
 target_link_libraries(drumstick-dumpmid PRIVATE
     Drumstick::ALSA
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
 )
 
 install(TARGETS drumstick-dumpmid

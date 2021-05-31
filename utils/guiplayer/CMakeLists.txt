@@ -16,8 +16,7 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Gui Widgets LinguistTools REQUIRED)
 
 set(guiplayer_forms_SRCS
     guiplayer.ui
@@ -44,11 +43,15 @@ set(guiplayer_qtobject_SRCS
     guiplayer.h
 )
 
-qt5_wrap_ui(guiplayer_ui_SRCS ${guiplayer_forms_SRCS})
-
-qt5_wrap_cpp(guiplayer_moc_SRCS ${guiplayer_qtobject_SRCS})
-
-qt5_add_resources(guiplayer_resources guiplayer.qrc)
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_ui(guiplayer_ui_SRCS ${guiplayer_forms_SRCS})
+    qt5_wrap_cpp(guiplayer_moc_SRCS ${guiplayer_qtobject_SRCS})
+    qt5_add_resources(guiplayer_resources guiplayer.qrc)
+else()
+    qt_wrap_ui(guiplayer_ui_SRCS ${guiplayer_forms_SRCS})
+    qt_wrap_cpp(guiplayer_moc_SRCS ${guiplayer_qtobject_SRCS})
+    qt_add_resources(guiplayer_resources guiplayer.qrc)
+endif()
 
 add_executable(drumstick-guiplayer
     ${guiplayer_resources}
@@ -60,7 +63,8 @@ add_executable(drumstick-guiplayer
 target_link_libraries(drumstick-guiplayer PRIVATE
     Drumstick::File
     Drumstick::ALSA
-    Qt5::Widgets
+    Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::Widgets
 )
 
 set(TS_FILES
@@ -69,7 +73,12 @@ set(TS_FILES
     drumstick-guiplayer_ru.ts
 )
 
-qt5_add_translation(QM_FILES ${TS_FILES})
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_add_translation(QM_FILES ${TS_FILES})
+else()
+    qt_add_translation(QM_FILES ${TS_FILES})
+endif()
+
 add_custom_target(drumstick-guiplayer-translations ALL DEPENDS ${QM_FILES})
 
 if (UNIX AND NOT APPLE)

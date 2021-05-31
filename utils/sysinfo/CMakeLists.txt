@@ -24,7 +24,7 @@ add_executable(drumstick-sysinfo
 
 target_link_libraries(drumstick-sysinfo PRIVATE
     Drumstick::ALSA
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
 )
 
 install(TARGETS drumstick-sysinfo

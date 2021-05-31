@@ -23,7 +23,11 @@ set(playsmf_qtobject_SRCS
     playsmf.h
 )
 
-qt5_wrap_cpp(playsmf_moc_SRCS ${playsmf_qtobject_SRCS})
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(playsmf_moc_SRCS ${playsmf_qtobject_SRCS})
+else()
+    qt_wrap_cpp(playsmf_moc_SRCS ${playsmf_qtobject_SRCS})
+endif()
 
 add_executable(drumstick-playsmf
     ${playsmf_moc_SRCS}
@@ -33,7 +37,7 @@ add_executable(drumstick-playsmf
 target_link_libraries(drumstick-playsmf PRIVATE
     Drumstick::ALSA
     Drumstick::File
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
 )
 
 install(TARGETS drumstick-playsmf

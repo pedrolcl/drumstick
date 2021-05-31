@@ -24,9 +24,13 @@ set(drumstick-rt-alsa-in_SRCS
     alsamidiinput.cpp
 )
 
-qt5_wrap_cpp(drumstick-rt-alsa-in_MOC_SRCS ${drumstick-rt-alsa-in_QTOBJ_SRCS}
-    OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include
-)
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(drumstick-rt-alsa-in_MOC_SRCS ${drumstick-rt-alsa-in_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+else()
+    qt_wrap_cpp(drumstick-rt-alsa-in_MOC_SRCS ${drumstick-rt-alsa-in_QTOBJ_SRCS}
+        OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
+endif()
 
 if(STATIC_DRUMSTICK)
     add_library(drumstick-rt-alsa-in STATIC
@@ -45,7 +49,7 @@ else()
 endif()
 
 target_link_libraries(drumstick-rt-alsa-in PRIVATE
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
     Drumstick::ALSA
 )
 

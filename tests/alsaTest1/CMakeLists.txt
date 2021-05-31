@@ -18,8 +18,8 @@ add_executable (alsaTest1 alsatest1.cpp)
 
 target_link_libraries (alsaTest1 PRIVATE
     Drumstick::ALSA
-    Qt5::Core
-    Qt5::Test
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Test
 )
 
 add_test (alsaTest1 ${PROJECT_BINARY_DIR}/bin/alsaTest1)

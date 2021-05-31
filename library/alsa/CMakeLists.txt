@@ -47,7 +47,11 @@ set(drumstick-alsa_SRCS
     subscription.cpp
 )
 
-qt5_wrap_cpp(drumstick-alsa_MOC_SRCS ${drumstick-alsa_QTOBJ_SRCS})
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(drumstick-alsa_MOC_SRCS ${drumstick-alsa_QTOBJ_SRCS})
+else()
+    qt_wrap_cpp(drumstick-alsa_MOC_SRCS ${drumstick-alsa_QTOBJ_SRCS})
+endif()
 
 add_library(drumstick-alsa
     ${drumstick-alsa_MOC_SRCS}
@@ -63,13 +67,13 @@ target_include_directories(drumstick-alsa PUBLIC
 )
 
 target_link_libraries(drumstick-alsa PRIVATE
-    Qt5::Core
+    Qt${QT_VERSION_MAJOR}::Core
     PkgConfig::ALSA
 )
 
 if(USE_DBUS)
     target_link_libraries(drumstick-alsa PRIVATE
-        Qt5::DBus
+        Qt${QT_VERSION_MAJOR}::DBus
     )
 endif()
 
