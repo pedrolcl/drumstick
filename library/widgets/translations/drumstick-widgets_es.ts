@@ -278,62 +278,92 @@
         <translation>Opciones del controlador de FluidSynth</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="48"/>
+        <location filename="../fluidsettingsdialog.ui" line="88"/>
         <source>Sample Rate:</source>
         <translation>Frecuencia de muestreo:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="58"/>
+        <location filename="../fluidsettingsdialog.ui" line="45"/>
         <source>Period Size:</source>
         <translation>Tamaño del periodo:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="71"/>
+        <location filename="../fluidsettingsdialog.ui" line="105"/>
         <source># of Periods:</source>
         <translation>Número de periodos:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="84"/>
+        <location filename="../fluidsettingsdialog.ui" line="81"/>
         <source>Audio Driver:</source>
         <translation>Controlador de audio:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="91"/>
+        <location filename="../fluidsettingsdialog.ui" line="115"/>
         <source>Polyphony:</source>
         <translation>Polifonía:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="104"/>
+        <location filename="../fluidsettingsdialog.ui" line="125"/>
+        <source>FluidSynth Version:</source>
+        <translation>Versión de Fluidsynth:</translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="148"/>
         <source>Sound Font:</source>
         <translation>SoundFont:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="114"/>
+        <location filename="../fluidsettingsdialog.ui" line="158"/>
+        <source>Initialization Status:</source>
+        <translation>Estado de inicialización:</translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="65"/>
         <source>Gain:</source>
         <translation>Ganancia:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="127"/>
+        <location filename="../fluidsettingsdialog.ui" line="55"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="134"/>
+        <location filename="../fluidsettingsdialog.ui" line="138"/>
         <source>Chorus</source>
         <translation>Coral</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="141"/>
+        <location filename="../fluidsettingsdialog.ui" line="98"/>
         <source>Reverb</source>
         <translation>Reverberación</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="201"/>
+        <location filename="../fluidsettingsdialog.cpp" line="96"/>
+        <source>FluidSynth Initialized</source>
+        <translation>FluidSynth inicializado</translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.cpp" line="96"/>
+        <source>FluidSynth Initialization Failed</source>
+        <translation>Inicialización fallida de FluidSynth</translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.cpp" line="158"/>
+        <source>Ready</source>
+        <translation>Preparado</translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.cpp" line="158"/>
+        <source>Failed</source>
+        <translation>Fallido</translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.cpp" line="253"/>
         <source>Select SoundFont</source>
         <translation>Seleccionar SoundFont</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="201"/>
+        <location filename="../fluidsettingsdialog.cpp" line="253"/>
         <source>SoundFont Files (*.sf2)</source>
         <translation>Archivos SoundFont (*.sf2)</translation>
     </message>
@@ -346,32 +376,57 @@
         <translation>Opciones del controlador del sintetizador de macOS</translation>
     </message>
     <message>
-        <location filename="../macsynthsettingsdialog.ui" line="20"/>
+        <location filename="../macsynthsettingsdialog.ui" line="56"/>
         <source>SoundFont:</source>
         <translation>SoundFont:</translation>
     </message>
     <message>
-        <location filename="../macsynthsettingsdialog.ui" line="46"/>
+        <location filename="../macsynthsettingsdialog.ui" line="76"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../macsynthsettingsdialog.ui" line="66"/>
+        <location filename="../macsynthsettingsdialog.ui" line="83"/>
         <source>Use Internal Reverb</source>
         <translation>Utilizar reverberación interna</translation>
     </message>
     <message>
-        <location filename="../macsynthsettingsdialog.ui" line="73"/>
+        <location filename="../macsynthsettingsdialog.ui" line="90"/>
+        <source>Init. Status:</source>
+        <translation>Estado de inicialización:</translation>
+    </message>
+    <message>
+        <location filename="../macsynthsettingsdialog.ui" line="69"/>
         <source>Default Apple DLS Sound Set</source>
         <translation>Conjunto de sonidos DLS de Apple por omisión</translation>
     </message>
     <message>
-        <location filename="../macsynthsettingsdialog.cpp" line="113"/>
+        <location filename="../macsynthsettingsdialog.cpp" line="72"/>
+        <source>DLS Synth Initialized</source>
+        <translation>Sintetizador DLS inicializado</translation>
+    </message>
+    <message>
+        <location filename="../macsynthsettingsdialog.cpp" line="72"/>
+        <source>DLS Synth Initialization Failed</source>
+        <translation>Inicialización fallida del sintetizador DLS</translation>
+    </message>
+    <message>
+        <location filename="../macsynthsettingsdialog.cpp" line="122"/>
+        <source>Ready</source>
+        <translation>Preparado</translation>
+    </message>
+    <message>
+        <location filename="../macsynthsettingsdialog.cpp" line="122"/>
+        <source>Failed</source>
+        <translation>Fallido</translation>
+    </message>
+    <message>
+        <location filename="../macsynthsettingsdialog.cpp" line="163"/>
         <source>Select SoundFont</source>
         <translation>Seleccionar SoundFont</translation>
     </message>
     <message>
-        <location filename="../macsynthsettingsdialog.cpp" line="113"/>
+        <location filename="../macsynthsettingsdialog.cpp" line="163"/>
         <source>SoundFont Files (*.sf2 *.dls)</source>
         <translation>Archivos SoundFont (*.sf2 *.dls)</translation>
     </message>
@@ -384,118 +439,143 @@
         <translation>Opciones del controlador de red</translation>
     </message>
     <message>
-        <location filename="../networksettingsdialog.ui" line="20"/>
+        <location filename="../networksettingsdialog.ui" line="33"/>
+        <source>Init. Status:</source>
+        <translation>Estado de inicialización:</translation>
+    </message>
+    <message>
+        <location filename="../networksettingsdialog.ui" line="50"/>
         <source>Use IPv6</source>
         <translation>Usar IPv6</translation>
     </message>
     <message>
-        <location filename="../networksettingsdialog.ui" line="27"/>
+        <location filename="../networksettingsdialog.ui" line="57"/>
         <source>Network Interface:</source>
         <translation>Interfaz de red:</translation>
     </message>
     <message>
-        <location filename="../networksettingsdialog.ui" line="40"/>
+        <location filename="../networksettingsdialog.ui" line="70"/>
         <source>Address</source>
         <translation>Dirección</translation>
     </message>
     <message>
-        <location filename="../networksettingsdialog.cpp" line="75"/>
+        <location filename="../networksettingsdialog.cpp" line="76"/>
+        <source>Network Initialized</source>
+        <translation>Red inicializada</translation>
+    </message>
+    <message>
+        <location filename="../networksettingsdialog.cpp" line="76"/>
+        <source>Network Initialization Failed</source>
+        <translation>Inicialización fallida de la red</translation>
+    </message>
+    <message>
         <location filename="../networksettingsdialog.cpp" line="111"/>
+        <location filename="../networksettingsdialog.cpp" line="174"/>
         <source>Any</source>
         <translation>Cualquiera</translation>
+    </message>
+    <message>
+        <location filename="../networksettingsdialog.cpp" line="164"/>
+        <source>Ready</source>
+        <translation>Preparado</translation>
+    </message>
+    <message>
+        <location filename="../networksettingsdialog.cpp" line="164"/>
+        <source>Failed</source>
+        <translation>Fallido</translation>
     </message>
 </context>
 <context>
     <name>drumstick::widgets::PianoScene</name>
     <message>
-        <location filename="../pianoscene.cpp" line="1270"/>
-        <location filename="../pianoscene.cpp" line="1283"/>
+        <location filename="../pianoscene.cpp" line="1279"/>
+        <location filename="../pianoscene.cpp" line="1292"/>
         <source>C</source>
         <translation>do</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1271"/>
+        <location filename="../pianoscene.cpp" line="1280"/>
         <source>C♯</source>
         <translation>do♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1272"/>
-        <location filename="../pianoscene.cpp" line="1285"/>
+        <location filename="../pianoscene.cpp" line="1281"/>
+        <location filename="../pianoscene.cpp" line="1294"/>
         <source>D</source>
         <translation>re</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1273"/>
+        <location filename="../pianoscene.cpp" line="1282"/>
         <source>D♯</source>
         <translation>re♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1274"/>
-        <location filename="../pianoscene.cpp" line="1287"/>
+        <location filename="../pianoscene.cpp" line="1283"/>
+        <location filename="../pianoscene.cpp" line="1296"/>
         <source>E</source>
         <translation>mi</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1275"/>
-        <location filename="../pianoscene.cpp" line="1288"/>
+        <location filename="../pianoscene.cpp" line="1284"/>
+        <location filename="../pianoscene.cpp" line="1297"/>
         <source>F</source>
         <translation>fa</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1276"/>
+        <location filename="../pianoscene.cpp" line="1285"/>
         <source>F♯</source>
         <translation>fa♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1277"/>
-        <location filename="../pianoscene.cpp" line="1290"/>
+        <location filename="../pianoscene.cpp" line="1286"/>
+        <location filename="../pianoscene.cpp" line="1299"/>
         <source>G</source>
         <translation>sol</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1278"/>
+        <location filename="../pianoscene.cpp" line="1287"/>
         <source>G♯</source>
         <translation>sol♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1279"/>
-        <location filename="../pianoscene.cpp" line="1292"/>
+        <location filename="../pianoscene.cpp" line="1288"/>
+        <location filename="../pianoscene.cpp" line="1301"/>
         <source>A</source>
         <translation>la</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1280"/>
+        <location filename="../pianoscene.cpp" line="1289"/>
         <source>A♯</source>
         <translation>la♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1281"/>
-        <location filename="../pianoscene.cpp" line="1294"/>
+        <location filename="../pianoscene.cpp" line="1290"/>
+        <location filename="../pianoscene.cpp" line="1303"/>
         <source>B</source>
         <translation>si</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1284"/>
+        <location filename="../pianoscene.cpp" line="1293"/>
         <source>D♭</source>
         <translation>re♭</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1286"/>
+        <location filename="../pianoscene.cpp" line="1295"/>
         <source>E♭</source>
         <translation>mi♭</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1289"/>
+        <location filename="../pianoscene.cpp" line="1298"/>
         <source>G♭</source>
         <translation>sol♭</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1291"/>
+        <location filename="../pianoscene.cpp" line="1300"/>
         <source>A♭</source>
         <translation>la♭</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1293"/>
+        <location filename="../pianoscene.cpp" line="1302"/>
         <source>B♭</source>
         <translation>si♭</translation>
     </message>
@@ -513,19 +593,44 @@
         <translation>Coral</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="56"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="43"/>
         <source>Reverb</source>
         <translation>Reverberación</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="74"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="71"/>
         <source>Buffer Time:</source>
         <translation>Tiempo de buffer:</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="84"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="81"/>
         <source> ms</source>
         <translation> ms</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.ui" line="110"/>
+        <source>Init. Status:</source>
+        <translation>Estado de inicialización:</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.cpp" line="85"/>
+        <source>Sonivox Initialized</source>
+        <translation>Sonivox inicializado</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.cpp" line="85"/>
+        <source>Sonivox Initialization Failed</source>
+        <translation>Inicialización fallida de Sonivox</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.cpp" line="159"/>
+        <source>Ready</source>
+        <translation>Preparado</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.cpp" line="159"/>
+        <source>Failed</source>
+        <translation>Fallido</translation>
     </message>
 </context>
 </TS>
