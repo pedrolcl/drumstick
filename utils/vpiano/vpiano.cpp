@@ -167,12 +167,16 @@ void VPiano::initialize()
             for(const MIDIConnection& conn: qAsConst(conin)) {
                 if (conn.first == lastIn) {
                     m_midiIn->open(conn);
-                    auto status = m_midiIn->property("status");
-                    if (status.isValid() && !status.toBool()) {
-                        auto diagnostics = m_midiIn->property("diagnostics");
-                        if (diagnostics.isValid()) {
-                            auto text = diagnostics.toStringList().join(QChar::LineFeed).trimmed();
-                            qWarning() << "MIDI Input" << text;
+                    auto metaObj = m_midiIn->metaObject();
+                    if ((metaObj->indexOfProperty("status") != -1) &&
+                        (metaObj->indexOfProperty("diagnostics") != -1)) {
+                        auto status = m_midiIn->property("status");
+                        if (status.isValid() && !status.toBool()) {
+                            auto diagnostics = m_midiIn->property("diagnostics");
+                            if (diagnostics.isValid()) {
+                                auto text = diagnostics.toStringList().join(QChar::LineFeed).trimmed();
+                                qWarning() << "MIDI Input" << text;
+                            }
                         }
                     }
                     break;
@@ -188,12 +192,16 @@ void VPiano::initialize()
         for(const MIDIConnection& conn : qAsConst(connOut)) {
             if (conn.first == lastConnOut) {
                 m_midiOut->open(conn);
-                auto status = m_midiOut->property("status");
-                if (status.isValid() && !status.toBool()) {
-                    auto diagnostics = m_midiOut->property("diagnostics");
-                    if (diagnostics.isValid()) {
-                        auto text = diagnostics.toStringList().join(QChar::LineFeed).trimmed();
-                        qWarning() << "MIDI Output" << text;
+                auto metaObj = m_midiOut->metaObject();
+                if ((metaObj->indexOfProperty("status") != -1) &&
+                    (metaObj->indexOfProperty("diagnostics") != -1)) {
+                    auto status = m_midiOut->property("status");
+                    if (status.isValid() && !status.toBool()) {
+                        auto diagnostics = m_midiOut->property("diagnostics");
+                        if (diagnostics.isValid()) {
+                            auto text = diagnostics.toStringList().join(QChar::LineFeed).trimmed();
+                            qWarning() << "MIDI Output" << text;
+                        }
                     }
                 }
                 if (m_midiIn != nullptr) {

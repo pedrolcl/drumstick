@@ -289,6 +289,16 @@ namespace rt {
         d->sendEvent(&ev);
     }
 
+    QStringList ALSAMIDIOutput::getDiagnostics()
+    {
+        return d->m_diagnostics;
+    }
+
+    bool ALSAMIDIOutput::getStatus()
+    {
+        return d->m_status;
+    }
+
     QString ALSAMIDIOutput::backendName()
     {
         return "ALSA";
