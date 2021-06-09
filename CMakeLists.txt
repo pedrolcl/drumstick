@@ -26,6 +26,8 @@ project( Drumstick
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_admin)
 include(SCMRevision)
+include(CTest)
+include(GNUInstallDirs)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
@@ -52,8 +54,6 @@ if(UNIX AND NOT APPLE)
     #set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--as-needed -Wl,--no-undefined")
 endif()
 
-include(GNUInstallDirs)
-
 add_definitions(-DVERSION=${PROJECT_VERSION})
 if (DEFINED PROJECT_WC_REVISION)
     add_definitions(-DREVISION=${PROJECT_WC_REVISION})
@@ -62,14 +62,19 @@ endif()
 set(_DBUS_INIT OFF)
 if (UNIX AND NOT APPLE)
     set(_DOCS_INIT ON)
+    set(_PULSE_INIT ON)
 else ()
     set(_DOCS_INIT OFF)
+    set(_PULSE_INIT OFF)
 endif ()
 
 option(BUILD_DOCS "Build Doxygen documentation and man pages" ${_DOCS_INIT})
 option(BUILD_UTILS "Build Utilities and Examples" ON)
 option(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)
 option(USE_DBUS "Include DBus support (required for RealtimeKit)" ${_DBUS_INIT})
+option(USE_PULSEAUDIO "Build Sonivox RT backend (if PulseAudio is available)" ${_PULSE_INIT})
+option(USE_FLUIDSYNTH "Build FluidSynth RT backend (if available)" ON)
+option(USE_NETWORK "Build Network RT backend (if QtNetwork is available)" ON)
 
 if(STATIC_DRUMSTICK)
     set(BUILD_SHARED_LIBS OFF)
@@ -87,7 +92,16 @@ message(STATUS "Found Qt version = ${QT_VERSION}")
 if(USE_DBUS)
     find_package(Qt${QT_VERSION_MAJOR}DBus REQUIRED)
     add_definitions(-DRTKIT_SUPPORT)
-    message(STATUS "Found QtDBus version = ${QT_VERSION}")
+    message(STATUS "Found QtDBus version = ${Qt${QT_VERSION_MAJOR}DBus_VERSION}")
+endif()
+
+if(USE_NETWORK)
+    find_package(Qt${QT_VERSION_MAJOR}Network REQUIRED)
+    if(Qt${QT_VERSION_MAJOR}Network_FOUND)
+        message(STATUS "Found QtNetwork version = ${Qt${QT_VERSION_MAJOR}Network_VERSION}")
+    else()
+        message(STATUS "Warning: QtNetwork library not available. Network RT backend won't be built.")
+    endif()
 endif()
 
 find_package(PkgConfig REQUIRED)
@@ -105,24 +119,37 @@ if(${CMAKE_SYSTEM} MATCHES "Linux")
 endif()
 
 if(UNIX AND NOT APPLE)
-    pkg_check_modules(PULSE IMPORTED_TARGET libpulse-simple)
+    if (USE_PULSEAUDIO)
+        pkg_check_modules(PULSE QUIET IMPORTED_TARGET libpulse-simple)
+    endif()
     if(PULSE_FOUND)
         message(STATUS "Found PulseAudio version = ${PULSE_VERSION}")
     else()
-        message(STATUS "Warning: PulseAudio library not found.")
+        message(STATUS "Warning: PulseAudio library not available. Sonivox RT backend won't be built.")
     endif()
 endif()
 
-if(${CMAKE_SYSTEM} MATCHES "Darwin")
+if (PKG_CONFIG_FOUND)
+    if (USE_FLUIDSYNTH)
+        pkg_check_modules(FLUIDSYNTH QUIET IMPORTED_TARGET fluidsynth>=1.1.1)
+    endif()
+    if(FLUIDSYNTH_FOUND)
+        message(STATUS "Found FluidSynth version = ${FLUIDSYNTH_VERSION}")
+    else()
+        message(STATUS "Warning: FluidSynth library not available. FluidSynth RT backend won't be built.")
+    endif()
+endif()
+
+if (${CMAKE_SYSTEM} MATCHES "Darwin")
     find_package(Qt${QT_VERSION_MAJOR}Concurrent REQUIRED)
-    if(Qt${QT_VERSION_MAJOR}Concurrent_FOUND)
+    if (Qt${QT_VERSION_MAJOR}Concurrent_FOUND)
         message(STATUS "Found Qt${QT_VERSION_MAJOR}Concurrent version = ${Qt${QT_VERSION_MAJOR}Concurrent_VERSION_STRING}")
     endif()
 endif()
 
 # CMAKE_SYSTEM_PROCESSOR is broken on Windows with MSVC
 # cmake bug https://gitlab.kitware.com/cmake/cmake/-/issues/15170 still open in 2021/03
-if(MSVC)
+if (MSVC)
     string(TOLOWER ${MSVC_CXX_ARCHITECTURE_ID} CMAKE_SYSTEM_PROCESSOR)
 endif()
 
@@ -132,6 +159,9 @@ message (STATUS "${PROJECT_NAME} v${PROJECT_VERSION}
     Processor: ${CMAKE_SYSTEM_PROCESSOR}
     Qt Version: ${QT_VERSION}
     D-Bus support: ${USE_DBUS}
+    Network support: ${USE_NETWORK}
+    PulseAudio support: ${USE_PULSEAUDIO}
+    FluidSynth support: ${USE_FLUIDSYNTH}
     Building tests: ${BUILD_TESTING}
     Building docs: ${BUILD_DOCS}
     Building utils: ${BUILD_UTILS}"
@@ -143,7 +173,6 @@ if (BUILD_UTILS)
 endif()
 add_subdirectory(icons)
 
-include(CTest)
 if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
@@ -161,11 +190,12 @@ if(UNIX AND NOT APPLE)
         endif()
         add_subdirectory(doc)
     endif()
-    configure_file(drumstick-alsa.pc.in drumstick-alsa.pc IMMEDIATE @ONLY)
     configure_file(drumstick.spec.in drumstick.spec IMMEDIATE @ONLY)
-    install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig )
+    if(ALSA_FOUND AND PKG_CONFIG_FOUND)
+        configure_file(drumstick-alsa.pc.in drumstick-alsa.pc IMMEDIATE @ONLY)
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/drumstick-alsa.pc
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig )
+    endif()
     # XML mime types
     set( SHARED_MIME_INFO_MINIMUM_VERSION "0.30" )
     set( XDG_MIME_INSTALL_DIR "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages" )

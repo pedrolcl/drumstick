@@ -28,7 +28,7 @@ $ sudo ldconfig
 
 Minimum supported versions:
 
-* CMake 3.9
+* CMake 3.14
 * Qt 5.7
 * For Linux: ALSA 1.x
 * RT backends for
@@ -36,14 +36,14 @@ Minimum supported versions:
     * macOS: CoreMIDI
     * Windows: WinMM
     * Unix: OSS
-    * Synthesizers: SonivoxEAS, FluidSynth, Apple DLS Synth
+    * Synthesizers (output backends): SonivoxEAS, FluidSynth, Apple DLS Synth
     * All: Network - ipMIDI (IPv4, IPv6)
 * shared-mime-info 0.30  
 See http://freedesktop.org/wiki/Software/shared-mime-info  
 The utility "update-mime-database" must be executed after installing the library "drumstick-file" and the "drumstick.xml" file. This is automatically done by the cmake build system unless you defined DESTDIR. In this case, your package manager should perform it as a post-install step. 
 * Doxygen 1.5  
 See http://www.doxygen.org  
-If you want to generate the documentation for the libraries  
+If you want to generate the HTML documentation for the libraries  
 
 If you want to generate and install the man pages, the build system can do it if you have installed in your system the following packages:
 
@@ -88,6 +88,9 @@ Build Doxygen documentation and man pages (default in Unix)
 -DBUILD_DOCS=NO|OFF|0  
 Don't build Doxygen documentation nor man pages
 
+Note: the last option only creates a "doxygen" target. You still need to call the
+target build if you want to generate the actual documentation.
+
 -DBUILD_UTILS=YES|ON|1
 Build utilities and example programs (default)
 
@@ -99,3 +102,23 @@ Build unit tests (default)
 
 -DBUILD_TESTING=NO|OFF|0 
 Don't build unit tests
+
+-DUSE_NETWORK=YES|ON|1  
+Build the ipMIDI Network RT backend (default)
+
+-DUSE_NETWORK=NO|OFF|0  
+Don't build the ipMIDI Network RT backend 
+
+-DUSE_PULSEAUDIO=YES|ON|1  
+Build the SonivoxEAS RT output backend (default)
+
+-DUSE_PULSEAUDIO=NO|OFF|0  
+Don't build the SonivoxEAS RT output backend 
+
+Note: FluidSynth has also a PulseAudio driver, which is independent of the last option
+
+-DUSE_FLUIDSYNTH=YES|ON|1  
+Build the FluidSynth RT output backend (default)
+
+-DUSE_FLUIDSYNTH=NO|OFF|0  
+Don't build the FluidSynth RT output backend

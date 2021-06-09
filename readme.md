@@ -13,15 +13,15 @@ Currently, there are four libraries designed to work together if/when needed:
 
 There are nine examples in the source tree, under the utils/ directory:
 
-* drumgrid: GUI program. Simple drum patterns.
-* dumpmid: CLI program. Prints received MIDI events.
-* dumpsmf: CLI program. Prints standard MIDI files.
-* dumpwrk: CLI program. Prints Cakewalk/Sonar MIDI files.
-* guiplayer: GUI program. Plays SMF and Cakewalk files.
-* metronome: CLI program. Simple command line MIDI metronome.
-* playsmf: CLI program. SMF player.
-* sysinfo: CLI program. Prints information about the ALSA sequencer subsystem.
-* vpiano: GUI program. A simple Virtual Piano Keyboard GUI application. See also [VMPK](http://vmpk.sourceforge.io).
+* drumgrid: GUI program. Simple drum patterns. Depends on Drumstick::ALSA.
+* dumpmid: CLI program. Prints received MIDI events. Depends on Drumstick::ALSA.
+* dumpsmf: CLI program. Prints standard MIDI files. Depends on Drumstick::File.
+* dumpwrk: CLI program. Prints Cakewalk/Sonar MIDI files. Depends on Drumstick::File.
+* guiplayer: GUI program. Plays SMF and Cakewalk files. Depends on Drumstick::ALSA and Drumstick::File.
+* metronome: CLI program. Simple command line MIDI metronome. Depends on Drumstick::ALSA.
+* playsmf: CLI program. SMF player. Depends on Drumstick::ALSA and Drumstick::File.
+* sysinfo: CLI program. Prints information about the ALSA sequencer subsystem. Depends on Drumstick::ALSA.
+* vpiano: GUI program. A simple Virtual Piano Keyboard GUI application. Depends on Drumstick::RT. See also [VMPK](http://vmpk.sourceforge.io).
 
 And you can also see independent applications using this library:
 

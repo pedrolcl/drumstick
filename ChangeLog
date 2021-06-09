@@ -1,3 +1,7 @@
+2021-06-09
+    * New options: USE_PULSEAUDIO, USE_FLUIDSYNTH, USE_NETWORK
+    * Revised CMake buildsystem and documents
+
 2021-06-08
     * Bump version number to 2.2.2 for the next development cycle
     * fix incomplete ALSA RT output plugin
