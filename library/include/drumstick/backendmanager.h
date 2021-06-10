@@ -103,6 +103,22 @@ namespace rt {
          */
         MIDIOutput* outputBackendByName(const QString name);
 
+        /**
+         * @brief findInput returns the backend corresponding
+         * to the provided name, or a suitable input instead.
+         * @param name The name of some input backend
+         * @return Input backend instance if available
+         */
+        MIDIInput* findInput(QString name);
+
+        /**
+         * @brief findOutput returns the backend corresponding
+         * to the provided name, or a suitable output instead.
+         * @param name The name of some output backend
+         * @return Output backend instance if available
+         */
+        MIDIOutput* findOutput(QString name);
+
         static const QString QSTR_DRUMSTICK;
         static const QString QSTR_DRUMSTICK_VERSION;
         static const QString QSTR_DRUMSTICKRT;

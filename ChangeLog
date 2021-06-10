@@ -1,3 +1,11 @@
+2021-06-10
+    * implementation of ticket #31: fallback OUT drivers for Drumstick::RT
+      two new methods in class BackendManager:
+      MIDIInput* findInput(QString name);
+      MIDIOutput* findOutput(QString name);
+      They return the requested backend or another suitable replacement.
+    * Bump version number to 2.3.0
+
 2021-06-09
     * New options: USE_PULSEAUDIO, USE_FLUIDSYNTH, USE_NETWORK
     * Revised CMake buildsystem and documents

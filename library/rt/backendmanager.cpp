@@ -51,6 +51,20 @@ namespace drumstick { namespace rt {
     public:
         QList<MIDIInput*> m_inputsList;
         QList<MIDIOutput*> m_outputsList;
+
+        QString m_inputBackend{QLatin1String("Network")};
+    #if defined(Q_OS_LINUX)
+        QStringList m_outputBackends{QLatin1String("SonivoxEAS"),QLatin1String("FluidSynth"),QLatin1String("ALSA")};
+    #elif defined(Q_OS_DARWIN)
+        QStringList m_outputBackends{QLatin1String("DLS Synth"),QLatin1String("FluidSynth"),QLatin1String("CoreMIDI")};
+    #elif defined(Q_OS_WINDOWS)
+        QStringList m_outputBackends{QLatin1String("Windows MM"),QLatin1String("FluidSynth")};
+    #elif defined(Q_OS_UNIX)
+        QStringList m_outputBackends{QLatin1String("FluidSynth"),QLatin1String("OSS")};
+    #else
+        QStringList m_outputBackends{m_inputBackend};
+    #endif
+
         ~BackendManagerPrivate()
         {
             clearLists();
@@ -246,6 +260,40 @@ namespace drumstick { namespace rt {
         foreach (MIDIOutput* i, d->m_outputsList) {
             if (i->backendName() == name) {
                 return i;
+            }
+        }
+        return nullptr;
+    }
+
+    MIDIInput* BackendManager::findInput(QString name)
+    {
+        QStringList names{name};
+        names << d->m_inputBackend;
+        names.removeDuplicates();
+        if (!names.isEmpty()) {
+            foreach(const QString& n, names) {
+                foreach(MIDIInput* input, d->m_inputsList) {
+                    if (input->backendName() == n)  {
+                        return input;
+                    }
+                }
+            }
+        }
+        return nullptr;
+    }
+
+    MIDIOutput* BackendManager::findOutput(QString name)
+    {
+        QStringList names{name};
+        names << d->m_outputBackends;
+        names.removeDuplicates();
+        if (!names.isEmpty()) {
+            foreach(const QString& n, names) {
+                foreach(MIDIOutput* output, d->m_outputsList) {
+                    if (output->backendName() == n)  {
+                        return output;
+                    }
+                }
             }
         }
         return nullptr;

@@ -75,9 +75,6 @@ public:
     int startingKey() const;
     void setStartingKey(int startingKey);
 
-    QString nativeInput() const;
-    QString nativeOutput() const;
-
     QVariantMap settingsMap() const;
 
     drumstick::widgets::LabelOrientation namesOrientation() const;
@@ -133,10 +130,6 @@ private:
     int m_baseOctave;
     int m_numKeys;
     int m_startingKey;
-    QString m_nativeInput;
-    QString m_nativeOutput;
-    QString m_defaultInput;
-    QString m_defaultOutput;
     QVariantMap m_settingsMap;
     QVariantMap m_defaultsMap;
     drumstick::widgets::LabelVisibility m_namesVisibility;

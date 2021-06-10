@@ -26,21 +26,6 @@ using namespace drumstick::widgets;
 
 VPianoSettings::VPianoSettings(QObject *parent) : QObject(parent)
 {
-    m_nativeInput = QLatin1String("Network");
-    m_defaultInput = QLatin1String("21928");
-#if defined(Q_OS_LINUX)
-    m_nativeOutput = QLatin1String("SonivoxEAS");
-    m_defaultOutput = QLatin1String("SonivoxEAS");
-#elif defined(Q_OS_MACOS)
-    m_nativeOutput = QLatin1String("DLS Synth");
-    m_defaultOutput = QLatin1String("DLS Synth");
-#elif defined(Q_OS_WIN)
-    m_nativeOutput = QLatin1String("Windows MM");
-    m_defaultOutput = QLatin1String("Microsoft GS Wavetable Synth");
-#else
-    m_nativeOutput = m_nativeInput;
-    m_defaultOutput = m_defaultInput;
-#endif
     ResetDefaults();
 }
 
@@ -115,10 +100,10 @@ void VPianoSettings::internalRead(QSettings &settings)
     settings.endGroup();
 
     settings.beginGroup("Connections");
-    m_lastInputBackend = settings.value("inputBackend", m_nativeInput).toString();
-    m_lastOutputBackend = settings.value("outputBackend", m_nativeOutput).toString();
-    m_lastInputConnection = settings.value("inputConnection", m_defaultInput).toString();
-    m_lastOutputConnection = settings.value("outputConnection", m_defaultOutput).toString();
+    m_lastInputBackend = settings.value("inputBackend").toString();
+    m_lastOutputBackend = settings.value("outputBackend").toString();
+    m_lastInputConnection = settings.value("inputConnection").toString();
+    m_lastOutputConnection = settings.value("outputConnection").toString();
     m_midiThru = settings.value("midiThru", false).toBool();
     m_advanced = settings.value("advanced", false).toBool();
     settings.endGroup();
@@ -280,16 +265,6 @@ void VPianoSettings::setNamesOrientation(const LabelOrientation namesOrientation
 QVariantMap VPianoSettings::settingsMap() const
 {
     return m_settingsMap;
-}
-
-QString VPianoSettings::nativeOutput() const
-{
-    return m_nativeOutput;
-}
-
-QString VPianoSettings::nativeInput() const
-{
-    return m_nativeInput;
 }
 
 int VPianoSettings::startingKey() const

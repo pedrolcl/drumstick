@@ -135,20 +135,14 @@ void VPiano::initialize()
     m_inputs = man.availableInputs();
     m_outputs = man.availableOutputs();
 
-    findInput(VPianoSettings::instance()->lastInputBackend());
+    m_midiIn = man.findInput(VPianoSettings::instance()->lastInputBackend());
     if (m_midiIn == nullptr) {
-        findInput(VPianoSettings::instance()->nativeInput());
-        if (m_midiIn == nullptr) {
-            qFatal("Unable to find a suitable input backend.");
-        }
+        qFatal("Unable to find a suitable input backend.");
     }
 
-    findOutput(VPianoSettings::instance()->lastOutputBackend());
+    m_midiOut = man.findOutput(VPianoSettings::instance()->lastOutputBackend());
     if (m_midiOut == nullptr) {
-        findOutput(VPianoSettings::instance()->nativeOutput());
-        if (m_midiOut == nullptr) {
-            qFatal("Unable to find a suitable output backend");
-        }
+        qFatal("Unable to find a suitable output backend");
     }
 
     drumstick::widgets::SettingsFactory settings;
@@ -185,10 +179,13 @@ void VPiano::initialize()
         }
     }
 
-    auto lastConnOut = VPianoSettings::instance()->lastOutputConnection();
-    if (m_midiOut != nullptr && !lastConnOut.isEmpty()) {
+    if (m_midiOut != nullptr) {
         m_midiOut->initialize(settings.getQSettings());
         auto connOut = m_midiOut->connections(VPianoSettings::instance()->advanced());
+        auto lastConnOut = VPianoSettings::instance()->lastOutputConnection();
+        if (lastConnOut.isEmpty()) {
+            lastConnOut = connOut.first().first;
+        }
         for(const MIDIConnection& conn : qAsConst(connOut)) {
             if (conn.first == lastConnOut) {
                 m_midiOut->open(conn);
@@ -423,38 +420,6 @@ void VPiano::readSettings()
     bgpalette.setColor(1, QColor(0x40,0x10,0x10));
     ui.pianokeybd->setBackgroundPalette(bgpalette);
     ui.pianokeybd->setVelocityTint(false);
-}
-
-void VPiano::findInput(QString name)
-{
-    if (name.isEmpty()) {
-        return;
-    }
-    foreach(MIDIInput* input, m_inputs) {
-        if (m_midiIn == nullptr && (input->backendName() == name))  {
-            m_midiIn = input;
-            break;
-        }
-    }
-    if (m_midiIn == nullptr) {
-        qWarning() << "Input backend not found: " << name;
-    }
-}
-
-void VPiano::findOutput(QString name)
-{
-    if (name.isEmpty()) {
-        return;
-    }
-    foreach(MIDIOutput* output, m_outputs) {
-        if (m_midiOut == nullptr && (output->backendName() == name))  {
-            m_midiOut = output;
-            break;
-        }
-    }
-    if (m_midiOut == nullptr) {
-        qWarning() << "Output backend not found: " << name;
-    }
 }
 
 void VPiano::setPortableConfig(const QString fileName)
