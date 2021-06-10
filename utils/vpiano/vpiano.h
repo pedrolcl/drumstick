@@ -33,9 +33,6 @@ public:
     virtual ~VPiano();
     void showEvent(QShowEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
-
-    void findInput(QStringList names);
-    void findOutput(QStringList names);
     void setPortableConfig(const QString fileName = QString());
 
 public slots:
