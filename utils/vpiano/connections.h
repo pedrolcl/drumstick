@@ -46,15 +46,15 @@ public slots:
     void refreshInputs(int index);
     void refreshOutputs(int index);
     void refresh();
+    void reopenDrivers();
     void accept() override;
     void reject() override;
 
 private:
-    void reopenDrivers();
-
     bool m_settingsChanged;
-    drumstick::rt::MIDIInput* m_midiIn;
-    drumstick::rt::MIDIOutput* m_midiOut;
+    drumstick::rt::MIDIInput *m_midiIn, *m_savedIn;
+    drumstick::rt::MIDIOutput *m_midiOut, *m_savedOut;
+    drumstick::rt::MIDIConnection m_connIn, m_connOut;
     Ui::ConnectionsClass ui;
 };
 

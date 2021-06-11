@@ -27,7 +27,9 @@ Connections::Connections(QWidget *parent)
     : QDialog(parent),
       m_settingsChanged(false),
       m_midiIn(nullptr),
-      m_midiOut(nullptr)
+      m_savedIn(nullptr),
+      m_midiOut(nullptr),
+      m_savedOut(nullptr)
 {
     ui.setupUi(this);
     ui.m_advanced->setChecked(VPianoSettings::instance()->advanced());
@@ -41,12 +43,14 @@ Connections::Connections(QWidget *parent)
 
 void Connections::setInput(MIDIInput *in)
 {
-    m_midiIn = in;
+    m_savedIn = m_midiIn = in;
+    m_connIn = in->currentConnection();
 }
 
 void Connections::setOutput(MIDIOutput *out)
 {
-    m_midiOut = out;
+    m_savedOut = m_midiOut = out;
+    m_connOut = out->currentConnection();
 }
 
 void Connections::setInputs(QList<MIDIInput *> ins)
@@ -80,49 +84,50 @@ MIDIOutput *Connections::getOutput()
 
 void Connections::reopenDrivers()
 {
-    MIDIConnection connOut, connIn;
     drumstick::widgets::SettingsFactory settings;
-    VPianoSettings::instance()->setAdvanced(ui.m_advanced->isChecked());
-    VPianoSettings::instance()->setMidiThru(ui.m_thru->isChecked());
     if (m_midiOut != nullptr) {
-        connOut = ui.m_outputPorts->currentData().value<MIDIConnection>();
-        if (connOut != m_midiOut->currentConnection() || m_settingsChanged) {
+        if (m_connOut != m_midiOut->currentConnection() || m_settingsChanged) {
             m_midiOut->close();
-            if (!connOut.first.isEmpty()) {
+            if (!m_connOut.first.isEmpty()) {
                 m_midiOut->initialize(settings.getQSettings());
-                m_midiOut->open(connOut);
+                m_midiOut->open(m_connOut);
             }
         }
-        VPianoSettings::instance()->setLastOutputBackend(m_midiOut->backendName());
-        VPianoSettings::instance()->setLastOutputConnection(connOut.first);
     }
     if (m_midiIn != nullptr) {
-        connIn = ui.m_inputPorts->currentData().value<MIDIConnection>();
-        if (connIn != m_midiIn->currentConnection() || m_settingsChanged) {
+        if (m_connIn != m_midiIn->currentConnection() || m_settingsChanged) {
             m_midiIn->close();
-            if (!connIn.first.isEmpty()) {
+            if (!m_connIn.first.isEmpty()) {
                 m_midiIn->initialize(settings.getQSettings());
-                m_midiIn->open(connIn);
+                m_midiIn->open(m_connIn);
             }
         }
         if (m_midiOut != nullptr) {
             m_midiIn->setMIDIThruDevice(m_midiOut);
             m_midiIn->enableMIDIThru(VPianoSettings::instance()->midiThru());
         }
-        VPianoSettings::instance()->setLastInputBackend(m_midiIn->backendName());
-        VPianoSettings::instance()->setLastInputConnection(connIn.first);
     }
     m_settingsChanged = false;
 }
 
 void Connections::accept()
 {
+    m_connIn = ui.m_inputPorts->currentData().value<MIDIConnection>();
+    m_connOut = ui.m_outputPorts->currentData().value<MIDIConnection>();
+    VPianoSettings::instance()->setAdvanced(ui.m_advanced->isChecked());
+    VPianoSettings::instance()->setMidiThru(ui.m_thru->isChecked());
     reopenDrivers();
+    VPianoSettings::instance()->setLastOutputBackend(m_midiOut->backendName());
+    VPianoSettings::instance()->setLastOutputConnection(m_midiOut->currentConnection().first);
+    VPianoSettings::instance()->setLastInputBackend(m_midiIn->backendName());
+    VPianoSettings::instance()->setLastInputConnection(m_midiIn->currentConnection().first);
     QDialog::accept();
 }
 
 void Connections::reject()
 {
+    m_midiIn = m_savedIn;
+    m_midiOut = m_savedOut;
     reopenDrivers();
     QDialog::reject();
 }
@@ -154,7 +159,11 @@ void Connections::refreshInputs(int index)
         for (const MIDIConnection& conn : conns) {
             ui.m_inputPorts->addItem(conn.first, QVariant::fromValue(conn));
         }
-        ui.m_inputPorts->setCurrentText(m_midiIn->currentConnection().first);
+        QString strconn = m_midiIn->currentConnection().first;
+        if (strconn.isEmpty()) {
+            strconn = conns.first().first;
+        }
+        ui.m_inputPorts->setCurrentText(strconn);
     }
 }
 
@@ -172,7 +181,11 @@ void Connections::refreshOutputs(int index)
         for(const MIDIConnection& conn : conns) {
             ui.m_outputPorts->addItem(conn.first, QVariant::fromValue(conn));
         }
-        ui.m_outputPorts->setCurrentText(m_midiOut->currentConnection().first);
+        QString strconn = m_midiOut->currentConnection().first;
+        if (strconn.isEmpty()) {
+            strconn = conns.first().first;
+        }
+        ui.m_outputPorts->setCurrentText(strconn);
     }
 }
 
