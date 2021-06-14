@@ -1,3 +1,6 @@
+2021-06-14
+    * Fixes after ticket #31 tests
+
 2021-06-10
     * implementation of ticket #31: fallback OUT drivers for Drumstick::RT
       two new methods in class BackendManager:
