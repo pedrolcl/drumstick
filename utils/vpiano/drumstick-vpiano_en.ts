@@ -38,6 +38,19 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>Connections</name>
+    <message>
+        <location filename="connections.cpp" line="103"/>
+        <source>MIDI Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="connections.cpp" line="124"/>
+        <source>MIDI Input</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ConnectionsClass</name>
     <message>
         <location filename="connections.ui" line="14"/>
@@ -354,17 +367,17 @@ under certain conditions; see the LICENSE file for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="483"/>
+        <location filename="vpiano.cpp" line="457"/>
         <source>Font to display note names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="559"/>
+        <location filename="vpiano.cpp" line="533"/>
         <source>Custom Note Names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="559"/>
+        <location filename="vpiano.cpp" line="533"/>
         <source>Names:</source>
         <translation type="unfinished"></translation>
     </message>
