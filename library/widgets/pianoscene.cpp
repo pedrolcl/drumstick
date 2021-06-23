@@ -729,6 +729,7 @@ bool PianoScene::event(QEvent *event)
 #endif
         if (d->m_touchEnabled && touchEvent->device()->type() == touchScreen) {
             QList<QTouchEvent::TouchPoint> touchPoints = touchEvent->touchPoints();
+            bool hasPressure = touchEvent->device()->capabilities().testFlag(QTouchDevice::Pressure);
             foreach(const QTouchEvent::TouchPoint& touchPoint, touchPoints) {
                 switch (touchPoint.state()) {
                 //case Qt::TouchPointPrimary:
@@ -737,14 +738,22 @@ bool PianoScene::event(QEvent *event)
                 case Qt::TouchPointReleased: {
                         PianoKey* key = getKeyForPos(touchPoint.scenePos());
                         if (key != nullptr && key->isPressed()) {
-                            keyOff(key, touchPoint.pressure());
+                            if (hasPressure) {
+                                keyOff(key, touchPoint.pressure());
+                            } else {
+                                keyOff(key);
+                            }
                         }
                         break;
                     }
                 case Qt::TouchPointPressed: {
                         PianoKey* key = getKeyForPos(touchPoint.scenePos());
                         if (key != nullptr && !key->isPressed()) {
-                            keyOn(key, touchPoint.pressure());
+                            if (hasPressure) {
+                                keyOn(key, touchPoint.pressure());
+                            } else {
+                                keyOn(key);
+                            }
                             key->ensureVisible();
                         }
                         break;
@@ -753,10 +762,18 @@ bool PianoScene::event(QEvent *event)
                         PianoKey* key = getKeyForPos(touchPoint.scenePos());
                         PianoKey* lastkey = getKeyForPos(touchPoint.lastScenePos());
                         if ((lastkey != nullptr) && (lastkey != key) && lastkey->isPressed()) {
-                            keyOff(lastkey, touchPoint.pressure());
+                            if (hasPressure) {
+                                keyOff(lastkey, touchPoint.pressure());
+                            } else {
+                                keyOff(lastkey);
+                            }
                         }
                         if ((key != nullptr) && !key->isPressed()) {
-                            keyOn(key, touchPoint.pressure());
+                            if (hasPressure) {
+                                keyOn(key, touchPoint.pressure());
+                            } else {
+                                keyOn(key);
+                            }
                         }
                         break;
                     }
