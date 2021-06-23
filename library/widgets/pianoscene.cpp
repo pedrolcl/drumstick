@@ -729,7 +729,12 @@ bool PianoScene::event(QEvent *event)
 #endif
         if (d->m_touchEnabled && touchEvent->device()->type() == touchScreen) {
             QList<QTouchEvent::TouchPoint> touchPoints = touchEvent->touchPoints();
-            bool hasPressure = touchEvent->device()->capabilities().testFlag(QTouchDevice::Pressure);
+            bool hasPressure =
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
+                        touchEvent->device()->capabilities().testFlag(QTouchDevice::Pressure);
+#else
+                        touchEvent->device()->capabilities().testFlag(QInputDevice::Capability::Pressure);
+#endif
             foreach(const QTouchEvent::TouchPoint& touchPoint, touchPoints) {
                 switch (touchPoint.state()) {
                 //case Qt::TouchPointPrimary:
