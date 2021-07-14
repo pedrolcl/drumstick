@@ -275,8 +275,14 @@ signals:
      */
     void signalSMFTrackEnd();
     /**
-     * Emitted to request the user to write the tempo track.
-     * This is the first track in a format 1 SMF.
+     * Emitted to request the user to prepare the tempo track.
+     *
+     * The signal handler should not call the writeTempo() or writeBpmTempo()
+     * methods directly, but instead it should fill the Conductor track with
+     * tempo and other SMF meta events like key and time signatures to be written
+     * later, at the signalSMFWriteTrack() handler.
+     *
+     * The Conductor track is the first track in a format 1 SMF.
      */
     void signalSMFWriteTempoTrack();
     /**

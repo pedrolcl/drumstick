@@ -242,10 +242,11 @@ export DRUMSTICKRT=$HOME/Source/Drumstick/build/lib/drumstick2/
 There are more examples in the source tree, under the utils/ directory, and
 you can also see applications using this library, like kmetronome, kmidimon and VMPK.
 
+@see https://dmidiplayer.sourceforge.io
 @see https://kmetronome.sourceforge.io
 @see https://kmidimon.sourceforge.io
-@see https://dmidiplayer.sourceforge.io
 @see https://vmpk.sourceforge.io
+@see https://wrk2mid.sourceforge.io
 
 @section Acknowledgments
 Parts of this documentation are copied from the ALSA library documentation,

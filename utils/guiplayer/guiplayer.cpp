@@ -31,6 +31,7 @@
 #include <QTextCodec>
 #include <QToolTip>
 #include <QUrl>
+#include <QTextCodec>
 #include <qmath.h>
 
 #include "guiplayer.h"
@@ -137,6 +138,7 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     connect(m_smf, &QSmf::signalSMFError, this, &GUIPlayer::smfErrorHandler);
 
     m_wrk = new QWrk(this);
+    m_wrk->setTextCodec(QTextCodec::codecForLocale());
     connect(m_wrk, &QWrk::signalWRKError, this, &GUIPlayer::wrkErrorHandler);
     connect(m_wrk, &QWrk::signalWRKUnknownChunk, this, &GUIPlayer::wrkUpdateLoadProgress);
     connect(m_wrk, &QWrk::signalWRKHeader, this, &GUIPlayer::wrkFileHeader);
@@ -675,8 +677,9 @@ void GUIPlayer::smfTrackEnded()
 
 void GUIPlayer::wrkUpdateLoadProgress()
 {
-    if (m_pd != nullptr)
+    if (m_pd != nullptr) {
         progressDialogUpdate(m_wrk->getFilePos());
+    }
 }
 
 void
@@ -695,21 +698,24 @@ GUIPlayer::appendWRKEvent(unsigned long ticks, SequencerEvent* ev)
 
 void GUIPlayer::wrkErrorHandler(const QString& errorStr)
 {
-    if (m_loadingMessages.length() < 1024)
+    if (m_loadingMessages.length() < 1024) {
         m_loadingMessages.append(QString("%1 at file offset %2<br>")
             .arg(errorStr).arg(m_wrk->getFilePos()));
+    }
 }
 
 void GUIPlayer::wrkFileHeader(int /*verh*/, int /*verl*/)
 {
     m_song->setHeader(1, 0, 120);
     wrkUpdateLoadProgress();
+//    qDebug() << Q_FUNC_INFO;
 }
 
 void GUIPlayer::wrkTimeBase(int timebase)
 {
     m_song->setDivision(timebase);
     wrkUpdateLoadProgress();
+//    qDebug() << Q_FUNC_INFO << timebase;
 }
 
 void GUIPlayer::wrkStreamEndEvent(long time)
@@ -718,6 +724,7 @@ void GUIPlayer::wrkStreamEndEvent(long time)
     if (ticks > m_tick)
         m_tick = ticks;
     wrkUpdateLoadProgress();
+//    qDebug() << Q_FUNC_INFO << time;
 }
 
 void GUIPlayer::wrkTrackHeader( const QString& /*name1*/,
@@ -732,69 +739,64 @@ void GUIPlayer::wrkTrackHeader( const QString& /*name1*/,
     rec.velocity = velocity;
     m_trackMap[trackno] = rec;
     wrkUpdateLoadProgress();
+//    qDebug() << Q_FUNC_INFO << trackno << channel << pitch << velocity;
 }
 
 void GUIPlayer::wrkNoteEvent(int track, long time, int chan, int pitch, int vol, int dur)
 {
-    int channel = chan;
     TrackMapRec rec = m_trackMap[track];
-    int key = pitch + rec.pitch;
-    int velocity = vol + rec.velocity;
-    if (rec.channel > -1)
-        channel = rec.channel;
+    int channel = (rec.channel > -1) ? rec.channel : chan;
+    int key = qBound(0, pitch + rec.pitch, 127);
+    int velocity = qBound(0, vol + rec.velocity, 127);
     SequencerEvent* ev = new NoteEvent(channel, key, velocity, dur);
     appendWRKEvent(time, ev);
+//    qDebug() << Q_FUNC_INFO << channel << key << velocity << dur;
 }
 
 void GUIPlayer::wrkKeyPressEvent(int track, long time, int chan, int pitch, int press)
 {
-    int channel = chan;
     TrackMapRec rec = m_trackMap[track];
     int key = pitch + rec.pitch;
-    if (rec.channel > -1)
-        channel = rec.channel;
+    int channel = (rec.channel > -1) ? rec.channel : chan;
     SequencerEvent* ev = new KeyPressEvent(channel, key, press);
     appendWRKEvent(time, ev);
+//    qDebug() << Q_FUNC_INFO;
 }
 
 void GUIPlayer::wrkCtlChangeEvent(int track, long time, int chan, int ctl, int value)
 {
-    int channel = chan;
     TrackMapRec rec = m_trackMap[track];
-    if (rec.channel > -1)
-        channel = rec.channel;
+    int channel = (rec.channel > -1) ? rec.channel : chan;
     SequencerEvent* ev = new ControllerEvent(channel, ctl, value);
     appendWRKEvent(time, ev);
+//    qDebug() << Q_FUNC_INFO;
 }
 
 void GUIPlayer::wrkPitchBendEvent(int track, long time, int chan, int value)
 {
-    int channel = chan;
     TrackMapRec rec = m_trackMap[track];
-    if (rec.channel > -1)
-        channel = rec.channel;
+    int channel = (rec.channel > -1) ? rec.channel : chan;
     SequencerEvent* ev = new PitchBendEvent(channel, value);
     appendWRKEvent(time, ev);
+//    qDebug() << Q_FUNC_INFO;
 }
 
 void GUIPlayer::wrkProgramEvent(int track, long time, int chan, int patch)
 {
-    int channel = chan;
     TrackMapRec rec = m_trackMap[track];
-    if (rec.channel > -1)
-        channel = rec.channel;
+    int channel = (rec.channel > -1) ? rec.channel : chan;
     SequencerEvent* ev = new ProgramChangeEvent(channel, patch);
     appendWRKEvent(time, ev);
+//    qDebug() << Q_FUNC_INFO;
 }
 
 void GUIPlayer::wrkChanPressEvent(int track, long time, int chan, int press)
 {
-    int channel = chan;
     TrackMapRec rec = m_trackMap[track];
-    if (rec.channel > -1)
-        channel = rec.channel;
+    int channel = (rec.channel > -1) ? rec.channel : chan;
     SequencerEvent* ev = new ChanPressEvent(channel, press);
     appendWRKEvent(time, ev);
+//    qDebug() << Q_FUNC_INFO;
 }
 
 void GUIPlayer::wrkSysexEvent(int track, long time, int bank)
@@ -805,6 +807,7 @@ void GUIPlayer::wrkSysexEvent(int track, long time, int bank)
     rec.bank = bank;
     m_savedSysexEvents.append(rec);
     wrkUpdateLoadProgress();
+//    qDebug() << Q_FUNC_INFO;
 }
 
 void GUIPlayer::wrkSysexEventBank(int bank, const QString& /*name*/,
@@ -820,6 +823,7 @@ void GUIPlayer::wrkSysexEventBank(int bank, const QString& /*name*/,
     }
     delete ev;
     wrkUpdateLoadProgress();
+//    qDebug() << Q_FUNC_INFO;
 }
 
 void GUIPlayer::wrkTempoEvent(long time, int tempo)
@@ -829,15 +833,15 @@ void GUIPlayer::wrkTempoEvent(long time, int tempo)
         m_initialTempo = qRound( bpm );
     SequencerEvent* ev = new TempoEvent(m_queueId, qRound ( 6e7 / bpm ) );
     appendWRKEvent(time, ev);
+//    qDebug() << Q_FUNC_INFO;
 }
 
 void GUIPlayer::wrkTrackPatch(int track, int patch)
 {
-    int channel = 0;
     TrackMapRec rec = m_trackMap[track];
-    if (rec.channel > -1)
-        channel = rec.channel;
+    int channel = (rec.channel > -1) ? rec.channel : 0;
     wrkProgramEvent(track, 0, channel, patch);
+//    qDebug() << Q_FUNC_INFO;
 }
 
 void GUIPlayer::wrkNewTrackHeader( const QString& /*name*/,
@@ -851,15 +855,14 @@ void GUIPlayer::wrkNewTrackHeader( const QString& /*name*/,
     rec.velocity = velocity;
     m_trackMap[trackno] = rec;
     wrkUpdateLoadProgress();
+//    qDebug() << Q_FUNC_INFO << trackno << channel << pitch << velocity;
 }
 
 void GUIPlayer::wrkTrackVol(int track, int vol)
 {
-    int channel = 0;
     int lsb, msb;
     TrackMapRec rec = m_trackMap[track];
-    if (rec.channel > -1)
-        channel = rec.channel;
+    int channel = (rec.channel > -1) ? rec.channel : 0;
     if (vol < 128)
         wrkCtlChangeEvent(track, 0, channel, MIDI_CTL_MSB_MAIN_VOLUME, vol);
     else {
@@ -868,20 +871,20 @@ void GUIPlayer::wrkTrackVol(int track, int vol)
         wrkCtlChangeEvent(track, 0, channel, MIDI_CTL_LSB_MAIN_VOLUME, lsb);
         wrkCtlChangeEvent(track, 0, channel, MIDI_CTL_MSB_MAIN_VOLUME, msb);
     }
+//    qDebug() << Q_FUNC_INFO;
 }
 
 void GUIPlayer::wrkTrackBank(int track, int bank)
 {
     // assume GM/GS bank method
-    int channel = 0;
     int lsb, msb;
     TrackMapRec rec = m_trackMap[track];
-    if (rec.channel > -1)
-        channel = rec.channel;
+    int channel = (rec.channel > -1) ? rec.channel : 0;
     lsb = bank % 0x80;
     msb = bank / 0x80;
     wrkCtlChangeEvent(track, 0, channel, MIDI_CTL_MSB_BANK, msb);
     wrkCtlChangeEvent(track, 0, channel, MIDI_CTL_LSB_BANK, lsb);
+//    qDebug() << Q_FUNC_INFO;
 }
 
 void GUIPlayer::wrkEndOfFile()
@@ -890,4 +893,5 @@ void GUIPlayer::wrkEndOfFile()
         m_initialTempo = 120;
     SequencerEvent* ev = new SystemEvent(SND_SEQ_EVENT_ECHO);
     appendWRKEvent(m_tick, ev);
+//    qDebug() << Q_FUNC_INFO;
 }

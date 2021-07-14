@@ -1,3 +1,8 @@
+2021-07-14
+    * Fixed WRK file processing in guiplayer utility
+    * updated documentation
+    * bumped version to 2.3.1 for the next development cycle
+
 2021-06-29
     * Release 2.3.0
 
