@@ -184,6 +184,7 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
 GUIPlayer::~GUIPlayer()
 {
     m_Client->stopSequencerInput();
+    m_Port->unsubscribeAll();
     m_Port->detach();
     m_Client->close();
     delete m_player;
