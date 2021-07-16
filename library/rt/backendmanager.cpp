@@ -133,7 +133,11 @@ namespace drumstick { namespace rt {
             d->appendDir(QString(envdir), result );
         }
         d->appendDir( QDir::homePath() + QDir::separator() + QSTR_DRUMSTICK, result );
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         d->appendDir( QLibraryInfo::location(QLibraryInfo::PluginsPath) + QDir::separator() + QSTR_DRUMSTICK, result );
+#else
+        d->appendDir( QLibraryInfo::path(QLibraryInfo::PluginsPath) + QDir::separator() + QSTR_DRUMSTICK, result );
+#endif
         foreach(const QString& path, QCoreApplication::libraryPaths()) {
             d->appendDir( path + QDir::separator() + QSTR_DRUMSTICK, result );
         }

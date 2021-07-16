@@ -199,7 +199,7 @@ namespace rt {
     #ifdef UNICODE
             WCHAR buffer[1024];
             midiOutGetErrorText(err, &buffer[0], sizeof(buffer));
-            errstr = QString::fromUtf16((const ushort*)buffer);
+            errstr = QString::fromWCharArray(buffer);
     #else
             char buffer[1024];
             midiOutGetErrorText(err, &buffer[0], sizeof(buffer));
