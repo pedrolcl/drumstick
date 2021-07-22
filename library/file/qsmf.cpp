@@ -593,9 +593,9 @@ void QSmf::writeMetaEvent(long deltaTime, int type)
 void QSmf::writeMidiEvent(long deltaTime, int type, int chan,
                           const QByteArray& data)
 {
-    int i, j, size;
+    unsigned int i, j, size;
     quint8 c;
-    writeVarLen(deltaTime);
+    writeVarLen(quint64(deltaTime));
     if ((type == system_exclusive) || (type == end_of_sysex))
     {
         c = type;
@@ -614,17 +614,18 @@ void QSmf::writeMidiEvent(long deltaTime, int type, int chan,
         d->m_LastStatus = c;
         putByte(c);
     }
+    c = quint8(data[0]);
     if (type == system_exclusive || type == end_of_sysex)
     {
         size = data.size();
-        if (data[0] == type)
+        if (type == c)
             --size;
         writeVarLen(size);
     }
-    j = (data[0] == type ? 1 : 0);
-    for (i = j; i < data.size(); ++i)
+    j = (c == type ? 1 : 0);
+    for (i = j; i < unsigned(data.size()); ++i)
     {
-        putByte(data[i]);
+        putByte(quint8(data[i]));
     }
 }
 

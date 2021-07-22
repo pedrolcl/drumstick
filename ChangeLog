@@ -1,3 +1,6 @@
+2021-07-22
+    * Fixed SMF system exclusive event write method
+
 2021-07-14
     * Fixed WRK file processing in guiplayer utility
     * updated documentation
