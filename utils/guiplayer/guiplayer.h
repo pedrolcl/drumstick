@@ -33,6 +33,7 @@ namespace drumstick {
         class MidiPort;
         class MidiQueue;
         class SequencerEvent;
+        class SysExEvent;
     }
     namespace File {
         class QSmf;
@@ -168,12 +169,7 @@ private:
     QString m_lastDirectory;
     QString m_loadingMessages;
 
-    struct SysexEventRec {
-        int track;
-        long time;
-        int bank;
-    };
-    QList<SysexEventRec> m_savedSysexEvents;
+    QHash<int, drumstick::ALSA::SysExEvent> m_savedSysexEvents;
 
     struct TrackMapRec {
         int channel;

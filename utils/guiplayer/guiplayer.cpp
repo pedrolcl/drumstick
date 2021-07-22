@@ -802,29 +802,27 @@ void GUIPlayer::wrkChanPressEvent(int track, long time, int chan, int press)
 
 void GUIPlayer::wrkSysexEvent(int track, long time, int bank)
 {
-    SysexEventRec rec;
-    rec.track = track;
-    rec.time = time;
-    rec.bank = bank;
-    m_savedSysexEvents.append(rec);
-    wrkUpdateLoadProgress();
-//    qDebug() << Q_FUNC_INFO;
+    Q_UNUSED(track)
+    qDebug() << Q_FUNC_INFO;
+    if (m_savedSysexEvents.contains(bank)) {
+        SysExEvent* ev = m_savedSysexEvents[bank].clone();
+        appendWRKEvent(time, ev);
+        wrkUpdateLoadProgress();
+    }
 }
 
 void GUIPlayer::wrkSysexEventBank(int bank, const QString& /*name*/,
         bool autosend, int /*port*/, const QByteArray& data)
 {
+    //qDebug() << Q_FUNC_INFO;
     SysExEvent* ev = new SysExEvent(data);
-    if (autosend)
-        appendWRKEvent(0, ev->clone());
-    foreach(const SysexEventRec& rec, m_savedSysexEvents) {
-        if (rec.bank == bank) {
-            appendWRKEvent(rec.time, ev->clone());
-        }
+    if (autosend) {
+        appendWRKEvent(0, ev);
+    } else {
+        m_savedSysexEvents[bank] = *ev;
+        delete ev;
     }
-    delete ev;
     wrkUpdateLoadProgress();
-//    qDebug() << Q_FUNC_INFO;
 }
 
 void GUIPlayer::wrkTempoEvent(long time, int tempo)
