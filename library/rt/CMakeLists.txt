@@ -28,7 +28,7 @@ set(drumstick-rt_HEADERS
     ../include/drumstick/backendmanager.h
 )
 
-if(APPLE)
+if(BUILD_FRAMEWORKS)
     set_source_files_properties(${drumstick-rt_HEADERS}
         PROPERTIES MACOSX_PACKAGE_LOCATION Headers/drumstick
     )
@@ -74,11 +74,16 @@ else() # STATIC_DRUMSTICK
         SOVERSION ${PROJECT_VERSION_MAJOR}
         EXPORT_NAME RT
       # macOS:
-        FRAMEWORK TRUE
-        FRAMEWORK_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
-        MACOSX_FRAMEWORK_IDENTIFIER "net.sourceforge.drumstick-rt"
         MACOSX_RPATH TRUE
     )
+    if (BUILD_FRAMEWORKS)
+        set_target_properties(drumstick-rt PROPERTIES
+            FRAMEWORK ${BUILD_FRAMEWORKS}
+            FRAMEWORK_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
+            MACOSX_FRAMEWORK_IDENTIFIER "net.sourceforge.drumstick-rt"
+            MACOSX_FRAMEWORK_INFO_PLIST "${CMAKE_SOURCE_DIR}/cmake_admin/CustomFrameworkInfo.plist.in"
+        )
+    endif()
 endif() # STATIC_DRUMSTICK
 
 install(TARGETS drumstick-rt

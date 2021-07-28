@@ -15,12 +15,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-#if (APPLE)
-#    set(CMAKE_MACOSX_RPATH 1)
-#    set(MACOSX_FRAMEWORK_IDENTIFIER “net.sourceforge”)
-#    set(MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
-#    set(MACOSX_FRAMEWORK_BUNDLE_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
-#endif()
 
 if (QT_VERSION VERSION_GREATER_EQUAL 6.0)
     find_package(Qt6 COMPONENTS Core5Compat REQUIRED)
@@ -37,10 +31,10 @@ set(drumstick-file_HEADERS
     ../include/drumstick/qwrk.h
 )
 
-if(APPLE)
+if(BUILD_FRAMEWORKS)
     set_source_files_properties(${drumstick-file_HEADERS}
         PROPERTIES MACOSX_PACKAGE_LOCATION Headers/drumstick
-)
+    )
 endif()
 
 set(drumstick-file_SRCS
@@ -83,14 +77,19 @@ if(STATIC_DRUMSTICK)
         STATIC_LIB "libdrumstick-file")
 else()
     set_target_properties(drumstick-file PROPERTIES
-        FRAMEWORK TRUE
         VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
         SOVERSION ${PROJECT_VERSION_MAJOR}
-        FRAMEWORK_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
-        MACOSX_FRAMEWORK_IDENTIFIER "net.sourceforge.drumstick-file"
         MACOSX_RPATH TRUE
         EXPORT_NAME File
     )
+    if(BUILD_FRAMEWORKS)
+        set_target_properties(drumstick-file PROPERTIES
+            FRAMEWORK ${BUILD_FRAMEWORKS}
+            FRAMEWORK_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
+            MACOSX_FRAMEWORK_IDENTIFIER "net.sourceforge.drumstick-file"
+            MACOSX_FRAMEWORK_INFO_PLIST "${CMAKE_SOURCE_DIR}/cmake_admin/CustomFrameworkInfo.plist.in"
+        )
+    endif()
 endif()
 
 install(TARGETS drumstick-file

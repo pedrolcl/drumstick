@@ -59,17 +59,28 @@ if (DEFINED PROJECT_WC_REVISION)
     add_definitions(-DREVISION=${PROJECT_WC_REVISION})
 endif()
 
+if (UNIX)
+    set(_DOCS_INIT ON)
+else()
+    set(_DOCS_INIT OFF)
+endif()
+
 set(_DBUS_INIT OFF)
 if (UNIX AND NOT APPLE)
-    set(_DOCS_INIT ON)
     set(_PULSE_INIT ON)
 else ()
-    set(_DOCS_INIT OFF)
     set(_PULSE_INIT OFF)
 endif ()
 
+if (APPLE)
+    set(_FRAMEWORKS_INIT ON)
+else()
+    set(_FRAMEWORKS_INIT OFF)
+endif()
+
 option(BUILD_DOCS "Build Doxygen documentation and man pages" ${_DOCS_INIT})
 option(BUILD_UTILS "Build Utilities and Examples" ON)
+option(BUILD_FRAMEWORKS "Build macOS style frameworks" ${_FRAMEWORKS_INIT})
 option(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)
 option(USE_DBUS "Include DBus support (required for RealtimeKit)" ${_DBUS_INIT})
 option(USE_PULSEAUDIO "Build Sonivox RT backend (if PulseAudio is available)" ${_PULSE_INIT})
@@ -82,7 +93,15 @@ if(STATIC_DRUMSTICK)
     message(STATUS "Building static libraries")
 else()
     set(BUILD_SHARED_LIBS ON)
-    message(STATUS "Building dynamic libraries")
+    if (BUILD_FRAMEWORKS)
+        message(STATUS "Building macOS style frameworks")
+    else()
+        message(STATUS "Building unix dynamic libraries")
+    endif()
+endif()
+
+if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.15)
+    set(CMAKE_FRAMEWORK ${BUILD_FRAMEWORKS})
 endif()
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
@@ -156,6 +175,7 @@ endif()
 message (STATUS "${PROJECT_NAME} v${PROJECT_VERSION}
     Install prefix: ${CMAKE_INSTALL_PREFIX}
     Build configuration: ${CMAKE_BUILD_TYPE}
+    System: ${CMAKE_SYSTEM}
     Processor: ${CMAKE_SYSTEM_PROCESSOR}
     Qt Version: ${QT_VERSION}
     D-Bus support: ${USE_DBUS}
@@ -164,7 +184,8 @@ message (STATUS "${PROJECT_NAME} v${PROJECT_VERSION}
     FluidSynth support: ${USE_FLUIDSYNTH}
     Building tests: ${BUILD_TESTING}
     Building docs: ${BUILD_DOCS}
-    Building utils: ${BUILD_UTILS}"
+    Building utils: ${BUILD_UTILS}
+    Building frameworks: ${BUILD_FRAMEWORKS}"
 )
 
 add_subdirectory(library)

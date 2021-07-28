@@ -1,3 +1,7 @@
+2021-07-28
+    * New option: BUILD_FRAMEWORKS for macOS style frameworks
+      instead of plain Unix libraries
+
 2021-07-22
     * Fixed SMF system exclusive event write method
 
