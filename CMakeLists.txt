@@ -175,7 +175,7 @@ endif()
 message (STATUS "${PROJECT_NAME} v${PROJECT_VERSION}
     Install prefix: ${CMAKE_INSTALL_PREFIX}
     Build configuration: ${CMAKE_BUILD_TYPE}
-    System: ${CMAKE_SYSTEM}
+    System: ${CMAKE_SYSTEM_NAME}
     Processor: ${CMAKE_SYSTEM_PROCESSOR}
     Qt Version: ${QT_VERSION}
     D-Bus support: ${USE_DBUS}
