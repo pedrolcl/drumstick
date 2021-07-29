@@ -103,6 +103,12 @@ Build unit tests (default)
 -DBUILD_TESTING=NO|OFF|0 
 Don't build unit tests
 
+-DBUILD_FRAMEWORKS=YES|ON|1
+Build macOS style frameworks (default)
+
+-DBUILD_FRAMEWORKS=NO|OFF|0
+Don't build macOS style frameworks, build Unix style dynamic libraries (.dylib)
+
 -DUSE_NETWORK=YES|ON|1  
 Build the ipMIDI Network RT backend (default)
 

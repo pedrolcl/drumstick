@@ -1,3 +1,6 @@
+2021-07-29
+    * Release 2.3.1
+
 2021-07-28
     * New option: BUILD_FRAMEWORKS for macOS style frameworks
       instead of plain Unix libraries
