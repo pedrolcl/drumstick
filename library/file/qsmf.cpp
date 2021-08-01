@@ -1229,5 +1229,14 @@ void QSmf::setTextCodec(QTextCodec *codec)
     d->m_codec = codec;
 }
 
+/**
+ * @brief drumstickLibraryVersion provides the Drumstick version as an edited QString
+ * @return Drumstick library version
+ */
+QString drumstickLibraryVersion()
+{
+    return QStringLiteral(QT_STRINGIFY(VERSION));
+}
+
 } // namespace File
 } // namespace drumstick

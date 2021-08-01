@@ -336,6 +336,8 @@ private:
     void writeTrackChunk(int track);
 };
 
+QString DRUMSTICK_EXPORT drumstickLibraryVersion();
+
 /** @} */
 
 }} /* namespace drumstick::File */

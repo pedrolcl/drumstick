@@ -133,6 +133,8 @@ namespace rt {
         QScopedPointer<BackendManagerPrivate> d;
     };
 
+    QString DRUMSTICK_EXPORT drumstickLibraryVersion();
+
 /** @} */
 
 }} // namespace drumstick::rt

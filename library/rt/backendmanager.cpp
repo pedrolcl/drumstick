@@ -312,5 +312,14 @@ namespace drumstick { namespace rt {
     const QString BackendManager::QSTR_DRUMSTICKRT_EXCLUDED = QStringLiteral("ExcludedNames");
     const QString BackendManager::QSTR_DRUMSTICKRT_PATH = QStringLiteral("BackendsPath");
 
+    /**
+     * @brief drumstickLibraryVersion provides the Drumstick version as an edited QString
+     * @return Drumstick library version
+     */
+    QString drumstickLibraryVersion()
+    {
+        return BackendManager::QSTR_DRUMSTICK_VERSION;
+    }
+
 } // namespace rt
 } // namespace drumstick

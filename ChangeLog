@@ -1,3 +1,8 @@
+2021-08-01
+    * bumped version to 2.4.0 for the next development cycle
+    * exported targets cleanups
+    * implemented ticket #32: missing library version functions in File and RT libs
+
 2021-07-29
     * Release 2.3.1
 
