@@ -45,6 +45,14 @@ set(vpiano_SRCS
     vpianosettings.h
 )
 
+if (WIN32)
+    set(TARGET_DESCRIPTION "Drumstick Virtual Piano")
+    set(TARGET_NAME drumstick-vpiano)
+    set(TARGET_ORIGINAL_FILENAME drumstick-vpiano.exe)
+    configure_file(${Drumstick_SOURCE_DIR}/versioninfo.rc.in versioninfo.rc @ONLY)
+    list(APPEND vpiano_SRCS versioninfo.rc)
+endif()
+
 add_executable(drumstick-vpiano MACOSX_BUNDLE WIN32
     ${vpiano_SRCS}
 )

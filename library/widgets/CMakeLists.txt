@@ -73,6 +73,14 @@ set(drumstick-widgets_FORMS
     sonivoxsettingsdialog.ui
 )
 
+if (WIN32)
+    set(TARGET_DESCRIPTION ${Drumstick_DESCRIPTION})
+    set(TARGET_NAME drumstick-widgets)
+    set(TARGET_ORIGINAL_FILENAME libdrumstick-widgets.dll)
+    configure_file(${Drumstick_SOURCE_DIR}/versioninfo.rc.in versioninfo.rc @ONLY)
+    list(APPEND drumstick-widgets_SRCS versioninfo.rc)
+endif()
+
 if (QT_VERSION VERSION_LESS 5.15.0)
     qt5_wrap_ui(drumstick-widgets_UI_SRCS ${drumstick-widgets_FORMS})
     qt5_wrap_cpp(drumstick-widgets_MOC_SRCS ${drumstick-widgets_OBJ_SRCS})

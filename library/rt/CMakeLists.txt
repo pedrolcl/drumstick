@@ -38,6 +38,14 @@ set(drumstick-rt_SRCS
     backendmanager.cpp
 )
 
+if (WIN32)
+    set(TARGET_DESCRIPTION ${Drumstick_DESCRIPTION})
+    set(TARGET_NAME drumstick-rt)
+    set(TARGET_ORIGINAL_FILENAME libdrumstick-rt.dll)
+    configure_file(${Drumstick_SOURCE_DIR}/versioninfo.rc.in versioninfo.rc @ONLY)
+    list(APPEND drumstick-rt_SRCS versioninfo.rc)
+endif()
+
 if (QT_VERSION VERSION_LESS 5.15.0)
     qt5_wrap_cpp(drumstick-rt_MOC_SRCS ${drumstick-rt_QOBJ_SRCS})
 else()

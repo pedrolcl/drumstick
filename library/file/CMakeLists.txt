@@ -42,6 +42,14 @@ set(drumstick-file_SRCS
     qwrk.cpp
 )
 
+if (WIN32)
+    set(TARGET_DESCRIPTION ${Drumstick_DESCRIPTION})
+    set(TARGET_NAME drumstick-file)
+    set(TARGET_ORIGINAL_FILENAME libdrumstick-file.dll)
+    configure_file(${Drumstick_SOURCE_DIR}/versioninfo.rc.in versioninfo.rc @ONLY)
+    list(APPEND drumstick-file_SRCS versioninfo.rc)
+endif()
+
 if (QT_VERSION VERSION_LESS 5.15.0)
     qt5_wrap_cpp(drumstick-file_MOC_SRCS ${drumstick-file_QTOBJ_SRCS})
 else()
