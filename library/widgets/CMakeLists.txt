@@ -119,6 +119,7 @@ set(TS_FILES
     translations/drumstick-widgets_es.ts
     translations/drumstick-widgets_fr.ts
     translations/drumstick-widgets_gl.ts
+    translations/drumstick-widgets_it.ts
     translations/drumstick-widgets_nl.ts
     translations/drumstick-widgets_ru.ts
     translations/drumstick-widgets_sr.ts
