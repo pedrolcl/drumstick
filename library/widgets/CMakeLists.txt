@@ -136,7 +136,7 @@ endif()
 
 add_custom_target(drumstick-widgets-translations ALL DEPENDS ${QM_FILES})
 
-if (UNIX AND NOT APPLE)
+if (UNIX)
     install( FILES ${QM_FILES}
              DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/drumstick )
 endif ()

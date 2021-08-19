@@ -34,6 +34,9 @@ write_basic_package_version_file( ${CMAKE_BINARY_DIR}/drumstick-config-version.c
     COMPATIBILITY AnyNewerVersion
 )
 
+install(FILES include/drumstick.h
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
 install( FILES
     ${CMAKE_BINARY_DIR}/drumstick-config.cmake
     ${CMAKE_BINARY_DIR}/drumstick-config-version.cmake

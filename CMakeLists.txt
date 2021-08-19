@@ -81,6 +81,7 @@ endif()
 option(BUILD_DOCS "Build Doxygen documentation and man pages" ${_DOCS_INIT})
 option(BUILD_UTILS "Build Utilities and Examples" ON)
 option(BUILD_FRAMEWORKS "Build macOS style frameworks" ${_FRAMEWORKS_INIT})
+# set CMAKE_MACOSX_BUNDLE OFF in macOS to avoid bundles
 option(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)
 option(USE_DBUS "Include DBus support (required for RealtimeKit)" ${_DBUS_INIT})
 option(USE_PULSEAUDIO "Build Sonivox RT backend (if PulseAudio is available)" ${_PULSE_INIT})

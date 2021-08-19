@@ -97,8 +97,6 @@ install(TARGETS drumstick-alsa
 
 install(FILES ${drumstick-alsa_HEADERS}
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/drumstick)
-install(FILES ../include/drumstick.h
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 install(EXPORT drumstick-alsa-targets
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/drumstick

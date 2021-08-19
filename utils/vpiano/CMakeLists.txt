@@ -53,7 +53,7 @@ if (WIN32)
     list(APPEND vpiano_SRCS versioninfo.rc)
 endif()
 
-add_executable(drumstick-vpiano MACOSX_BUNDLE WIN32
+add_executable(drumstick-vpiano
     ${vpiano_SRCS}
 )
 
@@ -78,7 +78,7 @@ endif()
 
 add_custom_target(drumstick-vpiano-translations ALL DEPENDS ${QM_FILES})
 
-if (UNIX AND NOT APPLE)
+if (UNIX)
     install( FILES ${QM_FILES}
              DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/drumstick )
 endif ()
