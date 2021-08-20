@@ -121,8 +121,9 @@ void VPianoSettings::internalRead(QSettings &settings)
     settings.endGroup();
 
     settings.beginGroup("TextSettings");
-    QFont f;
-    if (f.fromString(settings.value("namesFont", "sans serif, 50").toString())) {
+    QFont f = QGuiApplication::font();
+    f.setPointSize(50);
+    if (f.fromString(settings.value("namesFont", f.toString()).toString())) {
         setNamesFont(f);
     }
     setNamesOrientation(static_cast<LabelOrientation>(settings.value("namesOrientation", HorizontalOrientation).toInt()));

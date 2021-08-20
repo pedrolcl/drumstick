@@ -98,7 +98,7 @@ void MacSynthSettingsDialog::readSettings()
 
     SettingsFactory settings;
     settings->beginGroup("DLS Synth");
-    bool reverb = settings->value("reverb_dls", false).toBool();
+    bool reverb = settings->value("reverb_dls", true).toBool();
     bool def = settings->value("default_dls", true).toBool();
     QString soundfont = settings->value("soundfont_dls").toString();
     settings->endGroup();
