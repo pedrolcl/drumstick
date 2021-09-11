@@ -46,6 +46,7 @@
 #include <drumstick/alsaqueue.h>
 #include <drumstick/qsmf.h>
 #include <drumstick/qwrk.h>
+#include <drumstick/rmid.h>
 #include <drumstick/sequencererror.h>
 
 using namespace drumstick;
@@ -118,6 +119,9 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     m_Queue = m_Client->createQueue(QSTR_APPNAME);
     m_queueId = m_Queue->getId();
     m_portId = m_Port->getPortId();
+
+    m_rmi = new Rmidi(this);
+    connect(m_rmi, &Rmidi::signalRiffData, this, &GUIPlayer::dataHandler);
 
     m_smf = new QSmf(this);
     connect(m_smf, &QSmf::signalSMFHeader, this, &GUIPlayer::smfHeaderEvent);
@@ -337,6 +341,10 @@ void GUIPlayer::openFile(const QString& fileName)
                 progressDialogInit("MIDI", finfo.size());
                 m_smf->readFromFile(fileName);
             }
+            else if (ext == "rmi") {
+                progressDialogInit("RIFF MIDI", finfo.size());
+                m_rmi->readFromFile(fileName);
+            }
             progressDialogUpdate(finfo.size());
             if (m_song->isEmpty()) {
                 m_ui->lblName->clear();
@@ -373,9 +381,10 @@ void GUIPlayer::open()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
           "Open MIDI File", m_lastDirectory,
-          "All files (*.kar *.mid *.midi *.wrk);;"
+          "All files (*.kar *.mid *.midi *rmi *.wrk);;"
           "Karaoke files (*.kar);;"
           "MIDI Files (*.mid *.midi);;"
+          "RIFF MIDI Files (*.rmi);;"
           "Cakewalk files (*.wrk)" );
     if (! fileName.isEmpty() ) {
         stop();
@@ -448,6 +457,14 @@ void GUIPlayer::sequencerEvent(SequencerEvent *ev)
         }
     }
     delete ev;
+}
+
+void GUIPlayer::dataHandler(const QString &dataType, const QByteArray &data)
+{
+    if (dataType == "RMID") {
+        QDataStream ds(data);
+        m_smf->readFromStream(&ds);
+    }
 }
 
 void GUIPlayer::pitchShift(int value)

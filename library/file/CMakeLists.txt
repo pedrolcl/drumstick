@@ -23,12 +23,14 @@ endif()
 set(drumstick-file_QTOBJ_SRCS
     ../include/drumstick/qsmf.h
     ../include/drumstick/qwrk.h
+    ../include/drumstick/rmid.h
 )
 
 set(drumstick-file_HEADERS
     ../include/drumstick/macros.h
     ../include/drumstick/qsmf.h
     ../include/drumstick/qwrk.h
+    ../include/drumstick/rmid.h
 )
 
 if(BUILD_FRAMEWORKS)
@@ -40,6 +42,7 @@ endif()
 set(drumstick-file_SRCS
     qsmf.cpp
     qwrk.cpp
+    rmid.cpp
 )
 
 if (WIN32)

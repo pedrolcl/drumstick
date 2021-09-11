@@ -14,7 +14,7 @@ using Qt5 objects, idioms and style.
 
 Currently, there are four libraries designed to work together if/when needed:
 - \b Drumstick::ALSA is a Linux only C++/Qt wrapper around the ALSA Sequencer API. ALSA sequencer provides software support for MIDI technology on Linux.
-- \b Drumstick::File provides easy multiplatform file I/O for Standard MIDI Files (.mid) and Cakewalk (.wrk) file formats.
+- \b Drumstick::File provides easy multiplatform file I/O for Standard MIDI Files (.mid), RIFF MIDI (.rmi) and Cakewalk (.wrk) file formats.
 - \b Drumstick::RT is a realtime MIDI I/O library with pluggable backends. It uses Drumstick::ALSA on Linux, and other native frameworks on macOS and Windows.
 - \b Drumstick::Widgets contains MIDI widgets, including a Virtual Piano used by VMPK among other programs
 
@@ -293,6 +293,9 @@ whose authors are:
     @defgroup SMF Standard MIDI Files management (I/O)
     @brief Provides a mechanism to parse and encode Standard MIDI Files
 
+    @defgroup RMID RIFF MIDI Files management (Input)
+    @brief Provides a mechanism to parse RIFF MIDI Files
+
     @defgroup WRK Cakewalk WRK File Parser (Input)
     @brief Provides a mechanism to parse Cakewalk WRK Files.
 @}
@@ -319,6 +322,11 @@ SMF playback, command line interface program
 @example guiplayer.cpp
 SMF playback, graphic user interface program
 @include guiplayer.h
+
+@example dumprmi.cpp
+RMI read, print and extract
+@include main.cpp
+@include dumprmi.h
 
 @example dumpsmf.cpp
 SMF read and print

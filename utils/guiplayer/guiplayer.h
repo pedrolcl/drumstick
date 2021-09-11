@@ -38,6 +38,7 @@ namespace drumstick {
     namespace File {
         class QSmf;
         class QWrk;
+        class Rmidi;
     }
 }
 
@@ -102,6 +103,9 @@ public slots:
     void playerStopped();
     void sequencerEvent(drumstick::ALSA::SequencerEvent* ev);
 
+    /* RMI slots */
+    void dataHandler(const QString &dataType, const QByteArray &data);
+
     /* SMF slots */
     void smfHeaderEvent(int format, int ntrks, int division);
     void smfNoteOnEvent(int chan, int pitch, int vol);
@@ -157,6 +161,7 @@ private:
 
     drumstick::File::QSmf* m_smf;
     drumstick::File::QWrk* m_wrk;
+    drumstick::File::Rmidi* m_rmi;
     drumstick::ALSA::MidiClient* m_Client;
     drumstick::ALSA::MidiPort* m_Port;
     drumstick::ALSA::MidiQueue* m_Queue;

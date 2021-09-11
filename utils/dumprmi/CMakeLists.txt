@@ -14,16 +14,31 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-add_subdirectory(dumpsmf)
-add_subdirectory(dumprmi)
-add_subdirectory(dumpwrk)
-add_subdirectory(vpiano)
+set(dumprmi_SRCS
+    dumprmi.cpp
+    dumprmi.h
+    main.cpp
+)
 
-if(ALSA_FOUND)
-    add_subdirectory(dumpmid)
-    add_subdirectory(playsmf)
-    add_subdirectory(guiplayer)
-    add_subdirectory(sysinfo)
-    add_subdirectory(metronome)
-    add_subdirectory(drumgrid)
+set(dumprmi_qtobject_SRCS
+    dumprmi.h
+)
+
+if (QT_VERSION VERSION_LESS 5.15.0)
+    qt5_wrap_cpp(dumprmi_moc_SRCS ${dumprmi_qtobject_SRCS})
+else()
+    qt_wrap_cpp(dumprmi_moc_SRCS ${dumprmi_qtobject_SRCS})
 endif()
+
+add_executable(drumstick-dumprmi
+    ${dumprmi_moc_SRCS}
+    ${dumprmi_SRCS}
+)
+
+target_link_libraries(drumstick-dumprmi PRIVATE
+    Drumstick::File
+    Qt${QT_VERSION_MAJOR}::Core
+)
+
+install(TARGETS drumstick-dumprmi
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

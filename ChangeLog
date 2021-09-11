@@ -1,3 +1,7 @@
+2021-09-11
+    * implementation of ticket #29: RIFF RMID file support
+    * New utility: dumprmi
+
 2021-08-20 
     * Enable by default the internal reverb on macOS DLS Synth
     * Avoid hardcoded font family name in vpiano
