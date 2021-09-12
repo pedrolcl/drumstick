@@ -11,9 +11,11 @@ QMAKE_PKGCONFIG_PREFIX = $$INSTALLBASE
 QT -= gui
 # Input
 HEADERS += ../include/drumstick/macros.h \
+           ../include/drumstick/rmid.h \
            ../include/drumstick/qsmf.h \
            ../include/drumstick/qwrk.h
-SOURCES += qsmf.cpp \
+SOURCES += rmid.cpp \
+           qsmf.cpp \
            qwrk.cpp
 
 static {

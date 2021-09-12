@@ -3,6 +3,7 @@ include (../global.pri)
 DEFINES += VERSION=$$VERSION
 
 SUBDIRS += \
+   dumprmi \
    dumpsmf \
    dumpwrk \
    vpiano

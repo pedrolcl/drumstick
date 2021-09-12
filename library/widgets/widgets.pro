@@ -14,6 +14,8 @@ QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
 QMAKE_PKGCONFIG_PREFIX = $$INSTALLBASE
 QT += widgets network
 
+LIBS += -L$$OUT_PWD/../../build/lib -ldrumstick-rt
+
 FORMS += \
     fluidsettingsdialog.ui \
     networksettingsdialog.ui
@@ -21,6 +23,8 @@ FORMS += \
 HEADERS += \
     ../include/drumstick/pianokeybd.h \
     ../include/drumstick/pianopalette.h \
+    ../include/drumstick/rtmidiinput.h \
+    ../include/drumstick/rtmidioutput.h \
     ../include/drumstick/configurationdialogs.h \
     ../include/drumstick/settingsfactory.h \
     pianoscene.h \
