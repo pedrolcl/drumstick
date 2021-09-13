@@ -25,5 +25,6 @@ endif()
 
 add_subdirectory(fileTest1)
 add_subdirectory(fileTest2)
+add_subdirectory(fileTest3)
 add_subdirectory(rtTest)
 add_subdirectory(widgetsTest)

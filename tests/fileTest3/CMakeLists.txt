@@ -18,37 +18,18 @@ if (QT_VERSION VERSION_GREATER_EQUAL 6.0)
     find_package(Qt6 COMPONENTS Core5Compat REQUIRED)
 endif()
 
-set(dumprmi_SRCS
-    dumprmi.cpp
-    dumprmi.h
-    main.cpp
-)
+add_executable (fileTest3 filetest3.cpp)
 
-set(dumprmi_qtobject_SRCS
-    dumprmi.h
-)
-
-if (QT_VERSION VERSION_LESS 5.15.0)
-    qt5_wrap_cpp(dumprmi_moc_SRCS ${dumprmi_qtobject_SRCS})
-else()
-    qt_wrap_cpp(dumprmi_moc_SRCS ${dumprmi_qtobject_SRCS})
-endif()
-
-add_executable(drumstick-dumprmi
-    ${dumprmi_moc_SRCS}
-    ${dumprmi_SRCS}
-)
-
-target_link_libraries(drumstick-dumprmi PRIVATE
+target_link_libraries (fileTest3 PRIVATE
     Drumstick::File
     Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Test
 )
 
 if (QT_VERSION VERSION_GREATER_EQUAL 6.0)
-    target_link_libraries(drumstick-dumprmi PRIVATE
+    target_link_libraries(fileTest3 PRIVATE
         Qt6::Core5Compat
     )
 endif()
 
-install(TARGETS drumstick-dumprmi
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+add_test (fileTest3 ${PROJECT_BINARY_DIR}/bin/fileTest3)
