@@ -33,7 +33,7 @@
 namespace drumstick { namespace File {
 
 /**
- * @addtogroup RMID RIFF MIDI Files management (Input)
+ * @addtogroup RMID RIFF MIDI File Parser (Input)
  * @{
  */
 
@@ -83,8 +83,12 @@ signals:
 
     /**
      * @brief signalRiffData is emitted for each RMID data element
+     *
+     * The handler of this event should use the method QSmf::readFromStream() to
+     * parse the contents of the SMF data element.
+     *
      * @param dataType may only be "RMID" for RIFF RMID files
-     * @param data binary payload, in RMID files it is a Standard MIDI File structure
+     * @param data binary payload, in RMID files is a Standard MIDI File structure
      */
     void signalRiffData(const QString& dataType, const QByteArray& data);
 

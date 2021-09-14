@@ -40,11 +40,16 @@ namespace drumstick { namespace File {
  * @addtogroup RMID
  * @{
  *
- * Rmidi provides a mechanism to parse RIFF MIDI Files, without
- * the burden of a policy forcing to use some internal sequence representation.
+ * Rmidi provides a mechanism to parse RIFF RMID Files, without the burden of a policy forcing to use some internal sequence representation.
  *
- * This class is not related or based on the ALSA library.
+ * RIFF RMID is a wrapper format for MIDI data, as first specified by Microsoft, and later extended by MIDI.org (an arm of the MIDI Manufacturers Association) to permit the bundling of both MIDI files and Downloadable Sounds (DLS) files. According to Multimedia Programming Interface and Data Specifications 1.0, August 1991.: The 'RMID' format consists of a standard MIDI file enclosed in a RIFF chunk. Enclosing the MIDI file in a 'RIFF' chunk allows the file to be consistently identified; for example, an 'INFO' list can be included in the file.
  *
+ * This implementation does not yet support embedded DLS data. This format is deprecated in favor of Extensible Music Files (XMF).
+ *
+ * This class is not related or based on the ALSA library. To parse the SMF portion of the format, the QSmf class should be used.
+ *
+ * @see https://www.loc.gov/preservation/digital/formats/fdd/fdd000120.shtml
+ * @see http://web.archive.org/web/20110610135604/http://www.midi.org/about-midi/rp29spec(rmid).pdf
  * @}
  */
 

@@ -34,7 +34,7 @@ And you can also see independent applications using this library:
 
 Here is a diagram about the relationship between the libraries and the applications:
 
-![Drumstick ecosystem](doc/DrumstickEcosystem.png)
+![Drumstick ecosystem](doc/drumstick-ecosystem.png)
 
 The main web site of this project is [drumstick.sourceforge.io](https://drumstick.sourceforge.io)
 

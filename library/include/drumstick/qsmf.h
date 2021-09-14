@@ -41,7 +41,7 @@ namespace drumstick {
 namespace File {
 
 /**
- * @addtogroup SMF Standard MIDI Files management (I/O)
+ * @addtogroup SMF Standard MIDI Files Management (I/O)
  * @{
  */
 

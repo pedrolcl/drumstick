@@ -17,13 +17,13 @@
 find_program(XSLTPROC_EXECUTABLE xsltproc)
 if(XSLTPROC_EXECUTABLE)
     message(STATUS "XSLTPROC Found: ${XSLTPROC_EXECUTABLE}")
-    unset(RELEASE_DATE)
-    execute_process (
-        COMMAND bash -c "LANG=C;date +'%B %d, %Y'"
-        OUTPUT_VARIABLE RELEASE_DATE
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    #set(RELEASE_DATE "July 29, 2021")
+    if (NOT RELEASE_DATE)
+        execute_process (
+            COMMAND bash -c "LANG=C;date +'%B %d, %Y'"
+            OUTPUT_VARIABLE RELEASE_DATE
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+    endif()
     configure_file(drumstick-devel.doc.txt.in
         ${CMAKE_CURRENT_BINARY_DIR}/drumstick-devel.doc.txt IMMEDIATE @ONLY)
     configure_file(drumstick-drumgrid.xml.in 

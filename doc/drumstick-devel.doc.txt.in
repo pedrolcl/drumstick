@@ -290,10 +290,10 @@ whose authors are:
 @defgroup File MIDI File Formats
 @brief Support for some MIDI File Formats
 @{
-    @defgroup SMF Standard MIDI Files management (I/O)
+    @defgroup SMF Standard MIDI Files Management (I/O)
     @brief Provides a mechanism to parse and encode Standard MIDI Files
 
-    @defgroup RMID RIFF MIDI Files management (Input)
+    @defgroup RMID RIFF MIDI File Parser (Input)
     @brief Provides a mechanism to parse RIFF MIDI Files
 
     @defgroup WRK Cakewalk WRK File Parser (Input)
