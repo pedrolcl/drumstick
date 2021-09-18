@@ -261,7 +261,7 @@ if(UNIX)
         COMMAND cp -r doc drumstick-${PROJECT_VERSION}
         COMMAND cp -r icons drumstick-${PROJECT_VERSION}
         COMMAND cp -r tests drumstick-${PROJECT_VERSION}
-        COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog NEWS TODO *.md drumstick*.in drumstick.pro drumstick.xml configure* Doxyfile.in global.pri drumstick-${PROJECT_VERSION}
+        COMMAND cp CMakeLists.txt AUTHORS COPYING ChangeLog NEWS TODO *.md drumstick*.in drumstick.pro drumstick.xml configure* Doxyfile.in global.pri versioninfo.rc.in drumstick-${PROJECT_VERSION}
         COMMAND tar -cj --exclude=.[a-z]* -f drumstick-${PROJECT_VERSION}.tar.bz2 drumstick-${PROJECT_VERSION}
         COMMAND tar -cz --exclude=.[a-z]* -f drumstick-${PROJECT_VERSION}.tar.gz  drumstick-${PROJECT_VERSION}
         COMMAND zip -qr drumstick-${PROJECT_VERSION}.zip drumstick-${PROJECT_VERSION} -x '.[a-z]*'

@@ -1,3 +1,6 @@
+2021-09-19
+    * Release 2.4.0
+
 2021-09-11
     * implementation of ticket #29: RIFF RMID file support
     * New utility: dumprmi
