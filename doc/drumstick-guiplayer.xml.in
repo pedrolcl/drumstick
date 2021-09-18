@@ -60,7 +60,7 @@
             <varlistentry>
                 <term><option>FILE</option></term>
                 <listitem>
-                <para>The name of the input (mid/kar/wrk/ove) file.</para>
+                <para>The name of the input (mid/kar/wrk/rmi) file.</para>
                 </listitem>
             </varlistentry>
 
