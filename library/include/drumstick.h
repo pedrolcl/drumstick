@@ -40,6 +40,7 @@
 // File formats
 #include <drumstick/qsmf.h>
 #include <drumstick/qwrk.h>
+#include <drumstick/rmid.h>
 
 // RealTime interfaces
 #include <drumstick/rtmidiinput.h>
