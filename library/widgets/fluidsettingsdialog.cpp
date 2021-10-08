@@ -49,8 +49,6 @@ const QString FluidSettingsDialog::QSTR_CHORUS = QStringLiteral("Chorus");
 const QString FluidSettingsDialog::QSTR_REVERB = QStringLiteral("Reverb");
 const QString FluidSettingsDialog::QSTR_GAIN = QStringLiteral("Gain");
 const QString FluidSettingsDialog::QSTR_POLYPHONY = QStringLiteral("Polyphony");
-const double FluidSettingsDialog::DEFAULT_SAMPLERATE = 48000.0;
-const double FluidSettingsDialog::DEFAULT_GAIN = .5;
 
 FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -60,11 +58,20 @@ FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
     connect(ui->btnFile, &QToolButton::clicked, this, &FluidSettingsDialog::showFileDialog);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked,
             this, &FluidSettingsDialog::restoreDefaults);
-    ui->periodSize->setValidator(new QIntValidator(64, 8192, this));
-    ui->periods->setValidator(new QIntValidator(2, 64, this));
-    ui->sampleRate->setValidator(new QDoubleValidator(22050.0, 96000.0, 1, this));
-    ui->gain->setValidator(new QDoubleValidator(0.0, 10.0, 2, this));
-    ui->polyphony->setValidator(new QIntValidator(16, 4096, this));
+    auto periodSizeValidator = new QIntValidator(64, 8192, this);
+    ui->periodSize->setValidator(periodSizeValidator);
+    auto periodsValidator = new QIntValidator(2, 64, this);
+    ui->periods->setValidator(periodsValidator);
+    auto sampleRateValidator = new QDoubleValidator(8000.0, 96000.0, 1, this);
+    sampleRateValidator->setNotation(QDoubleValidator::StandardNotation);
+    sampleRateValidator->setLocale(QLocale::c());
+    ui->sampleRate->setValidator(sampleRateValidator);
+    auto gainValidator = new QDoubleValidator(0.0, 10.0, 2, this);
+    gainValidator->setNotation(QDoubleValidator::StandardNotation);
+    gainValidator->setLocale(QLocale::c());
+    ui->gain->setValidator(gainValidator);
+    auto polyphonyValidator = new QIntValidator(1, 65535, this);
+    ui->polyphony->setValidator(polyphonyValidator);
 
     drumstick::rt::BackendManager man;
     m_driver = man.outputBackendByName("FluidSynth");
@@ -86,29 +93,66 @@ FluidSettingsDialog::~FluidSettingsDialog()
     delete ui;
 }
 
+bool FluidSettingsDialog::checkRanges() const
+{
+    if (ui->periodSize->hasAcceptableInput()) {
+        ui->periodSize->deselect();
+    } else {
+        ui->periodSize->selectAll();
+    }
+    if (ui->periods->hasAcceptableInput()) {
+        ui->periods->deselect();
+    } else {
+        ui->periods->selectAll();
+    }
+    if (ui->gain->hasAcceptableInput()) {
+        ui->gain->deselect();
+    } else {
+        ui->gain->selectAll();
+    }
+    if (ui->polyphony->hasAcceptableInput()) {
+        ui->polyphony->deselect();
+    } else {
+        ui->polyphony->selectAll();
+    }
+    if (ui->sampleRate->hasAcceptableInput()) {
+        ui->sampleRate->deselect();
+    } else {
+        ui->sampleRate->selectAll();
+    }
+    return
+        ui->periodSize->hasAcceptableInput() &&
+        ui->periods->hasAcceptableInput() &&
+        ui->gain->hasAcceptableInput() &&
+        ui->polyphony->hasAcceptableInput() &&
+        ui->sampleRate->hasAcceptableInput();
+}
+
 void FluidSettingsDialog::accept()
 {
-    writeSettings();
-    if (m_driver != nullptr) {
-        QString title;
-        QVariant varStatus = m_driver->property("status");
-        if (varStatus.isValid()) {
-            title = varStatus.toBool() ? tr("FluidSynth Initialized") : tr("FluidSynth Initialization Failed");
-            QVariant varDiag = m_driver->property("diagnostics");
-            if (varDiag.isValid()) {
-                QString text = varDiag.toStringList().join(QChar::LineFeed).trimmed();
-                if (varStatus.toBool()) {
-                    if (!text.isEmpty()) {
-                        QMessageBox::information(this, title, text);
+    if (checkRanges()) {
+        writeSettings();
+        if (m_driver != nullptr) {
+            QString title;
+            QVariant varStatus = m_driver->property("status");
+            if (varStatus.isValid()) {
+                title = varStatus.toBool() ? tr("FluidSynth Initialized") : tr("FluidSynth Initialization Failed");
+                QVariant varDiag = m_driver->property("diagnostics");
+                if (varDiag.isValid()) {
+                    QString text = varDiag.toStringList().join(QChar::LineFeed).trimmed();
+                    if (varStatus.toBool()) {
+                        if (!text.isEmpty()) {
+                            QMessageBox::information(this, title, text);
+                        }
+                    } else {
+                        QMessageBox::critical(this, title, text);
+                        return;
                     }
-                } else {
-                    QMessageBox::critical(this, title, text);
-                    return;
                 }
             }
         }
+        QDialog::accept();
     }
-    QDialog::accept();
 }
 
 void FluidSettingsDialog::showEvent(QShowEvent *event)
@@ -123,7 +167,7 @@ QString FluidSettingsDialog::defaultAudioDriver() const
 #if defined(Q_OS_LINUX)
         QLatin1String("pulseaudio");
 #elif defined(Q_OS_WIN)
-        QLatin1String("dsound");
+        QLatin1String("wasapi");
 #elif defined(Q_OS_OSX)
         QLatin1String("coreaudio");
 #else

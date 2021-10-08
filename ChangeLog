@@ -1,3 +1,8 @@
+2021-10-8
+    * revised defaults and ranges for the FluidSynth RT backend parameters,
+      using the same values as the upstream library.
+    * fixed validation of parameters in the FluidSynth configuration dialog.
+
 2021-09-19
     * Release 2.4.0
 

@@ -53,13 +53,18 @@ const QString SynthEngine::QSTR_DEFAULT_AUDIODRIVER =
 #else
     QStringLiteral("oss");
 #endif
-const int SynthEngine::DEFAULT_PERIODS = 1;
-const int SynthEngine::DEFAULT_PERIODSIZE = 3072;
-const double SynthEngine::DEFAULT_SAMPLERATE = 48000.0;
+#if defined(Q_OS_WIN)
+const int SynthEngine::DEFAULT_PERIODS = 8;
+const int SynthEngine::DEFAULT_PERIODSIZE = 512;
+#else
+const int SynthEngine::DEFAULT_PERIODS = 16;
+const int SynthEngine::DEFAULT_PERIODSIZE = 64;
+#endif
+const double SynthEngine::DEFAULT_SAMPLERATE = 44100.0;
 const int SynthEngine::DEFAULT_CHORUS = 0;
-const int SynthEngine::DEFAULT_REVERB = 0;
-const double SynthEngine::DEFAULT_GAIN = .4;
-const int SynthEngine::DEFAULT_POLYPHONY = 32;
+const int SynthEngine::DEFAULT_REVERB = 1;
+const double SynthEngine::DEFAULT_GAIN = .5;
+const int SynthEngine::DEFAULT_POLYPHONY = 256;
 
 static void
 SynthEngine_log_function(int level, const char* message, void* data)
