@@ -1,5 +1,6 @@
 2021-10-10
     * fixed wrong license in two documents (images): should be CC-BY-SA
+    * removed obsolete images
 
 2021-10-8
     * revised defaults and ranges for the FluidSynth RT backend parameters,

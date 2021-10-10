@@ -30,7 +30,7 @@ And you can also see independent applications using this library:
 * [kmetronome](https://sourceforge.net/p/kmetronome): MIDI metronome for Linux.
 * [kmidimon](https://sourceforge.net/p/kmidimon): MIDI monitor for Linux.
 * [VMPK](https://sourceforge.net/p/vmpk): Multiplatform Virtual MIDI Piano Keyboard.
-* [wrk2mid](https://sourceforge.net/p/wrk2mmid): Command line utility to convert WRK files to SMF.
+* [wrk2mid](https://sourceforge.net/p/wrk2mid): Command line utility to convert WRK files to SMF.
 
 Here is a diagram about the relationship between the libraries and the applications:
 
