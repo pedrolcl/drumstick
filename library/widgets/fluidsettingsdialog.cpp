@@ -49,24 +49,26 @@ const QString FluidSettingsDialog::QSTR_CHORUS = QStringLiteral("Chorus");
 const QString FluidSettingsDialog::QSTR_REVERB = QStringLiteral("Reverb");
 const QString FluidSettingsDialog::QSTR_GAIN = QStringLiteral("Gain");
 const QString FluidSettingsDialog::QSTR_POLYPHONY = QStringLiteral("Polyphony");
+const QString FluidSettingsDialog::QSTR_BUFFERTIME = QStringLiteral("BufferTime");
+const QString FluidSettingsDialog::QSTR_PULSEAUDIO = QStringLiteral("pulseaudio");
 
 FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::FluidSettingsDialog)
 {
     ui->setupUi(this);
+    connect(ui->audioDriver, &QComboBox::currentTextChanged, this, &FluidSettingsDialog::audioDriverChanged);
+    connect(ui->bufferTime, QOverload<int>::of(&QSpinBox::valueChanged), this, &FluidSettingsDialog::bufferTimeChanged);
+    connect(ui->periodSize, QOverload<int>::of(&QSpinBox::valueChanged), this, &FluidSettingsDialog::bufferSizeChanged);
+    connect(ui->periods, QOverload<int>::of(&QSpinBox::valueChanged), this, &FluidSettingsDialog::bufferSizeChanged);
     connect(ui->btnFile, &QToolButton::clicked, this, &FluidSettingsDialog::showFileDialog);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked,
             this, &FluidSettingsDialog::restoreDefaults);
-    auto periodSizeValidator = new QIntValidator(64, 8192, this);
-    ui->periodSize->setValidator(periodSizeValidator);
-    auto periodsValidator = new QIntValidator(2, 64, this);
-    ui->periods->setValidator(periodsValidator);
     auto sampleRateValidator = new QDoubleValidator(8000.0, 96000.0, 1, this);
     sampleRateValidator->setNotation(QDoubleValidator::StandardNotation);
     sampleRateValidator->setLocale(QLocale::c());
     ui->sampleRate->setValidator(sampleRateValidator);
-    auto gainValidator = new QDoubleValidator(0.0, 10.0, 2, this);
+    auto gainValidator = new QDoubleValidator(0.1, 10.0, 2, this);
     gainValidator->setNotation(QDoubleValidator::StandardNotation);
     gainValidator->setLocale(QLocale::c());
     ui->gain->setValidator(gainValidator);
@@ -95,16 +97,6 @@ FluidSettingsDialog::~FluidSettingsDialog()
 
 bool FluidSettingsDialog::checkRanges() const
 {
-    if (ui->periodSize->hasAcceptableInput()) {
-        ui->periodSize->deselect();
-    } else {
-        ui->periodSize->selectAll();
-    }
-    if (ui->periods->hasAcceptableInput()) {
-        ui->periods->deselect();
-    } else {
-        ui->periods->selectAll();
-    }
     if (ui->gain->hasAcceptableInput()) {
         ui->gain->deselect();
     } else {
@@ -121,6 +113,7 @@ bool FluidSettingsDialog::checkRanges() const
         ui->sampleRate->selectAll();
     }
     return
+        ui->bufferTime->hasAcceptableInput() &&
         ui->periodSize->hasAcceptableInput() &&
         ui->periods->hasAcceptableInput() &&
         ui->gain->hasAcceptableInput() &&
@@ -164,12 +157,12 @@ void FluidSettingsDialog::showEvent(QShowEvent *event)
 QString FluidSettingsDialog::defaultAudioDriver() const
 {
     const QString QSTR_DEFAULT_AUDIODRIVER =
-#if defined(Q_OS_LINUX)
-        QLatin1String("pulseaudio");
-#elif defined(Q_OS_WIN)
+#if defined(Q_OS_WIN)
         QLatin1String("wasapi");
 #elif defined(Q_OS_OSX)
         QLatin1String("coreaudio");
+#elif defined(Q_OS_LINUX)
+        QSTR_PULSEAUDIO;
 #else
         QLatin1String("oss");
 #endif
@@ -205,6 +198,24 @@ void FluidSettingsDialog::chkDriverProperties(QSettings *settings)
     }
 }
 
+void drumstick::widgets::FluidSettingsDialog::initBuffer()
+{
+    if (ui->audioDriver->currentText() == QSTR_PULSEAUDIO) {
+        int bufferTime = ui->bufferTime->value();
+        int minBufTime = ui->bufferTime->minimum();
+        if (qEnvironmentVariableIsSet("PULSE_LATENCY_MSEC")) {
+            bufferTime = qEnvironmentVariable("PULSE_LATENCY_MSEC").toInt();
+        }
+        if (bufferTime < minBufTime) {
+            bufferTime = minBufTime;
+        }
+        ui->bufferTime->setValue( bufferTime );
+        bufferTimeChanged( bufferTime );
+    } else {
+        bufferSizeChanged();
+    }
+}
+
 void FluidSettingsDialog::readSettings()
 {
     SettingsFactory settings;
@@ -220,8 +231,9 @@ void FluidSettingsDialog::readSettings()
 
     settings->beginGroup(QSTR_PREFERENCES);
     ui->audioDriver->setCurrentText( settings->value(QSTR_AUDIODRIVER, defaultAudioDriver()).toString() );
-    ui->periodSize->setText( settings->value(QSTR_PERIODSIZE, DEFAULT_PERIODSIZE).toString() );
-    ui->periods->setText( settings->value(QSTR_PERIODS, DEFAULT_PERIODS).toString() );
+    ui->bufferTime->setValue( settings->value(QSTR_BUFFERTIME, DEFAULT_BUFFERTIME).toInt() );
+    ui->periodSize->setValue( settings->value(QSTR_PERIODSIZE, DEFAULT_PERIODSIZE).toInt() );
+    ui->periods->setValue( settings->value(QSTR_PERIODS, DEFAULT_PERIODS).toInt() );
     ui->sampleRate->setText( settings->value(QSTR_SAMPLERATE, DEFAULT_SAMPLERATE).toString() );
     ui->chorus->setChecked( settings->value(QSTR_CHORUS, DEFAULT_CHORUS).toInt() != 0 );
     ui->reverb->setChecked( settings->value(QSTR_REVERB, DEFAULT_REVERB).toInt() != 0 );
@@ -230,6 +242,8 @@ void FluidSettingsDialog::readSettings()
     ui->soundFont->setText( settings->value(QSTR_INSTRUMENTSDEFINITION, fs_defSoundFont).toString() );
     settings->endGroup();
 
+    initBuffer();
+    audioDriverChanged( ui->audioDriver->currentText() );
     chkDriverProperties(settings.getQSettings());
 }
 
@@ -238,6 +252,7 @@ void FluidSettingsDialog::writeSettings()
     SettingsFactory settings;
     QString audioDriver;
     QString soundFont(QSTR_SOUNDFONT);
+    int     bufferTime(DEFAULT_BUFFERTIME);
     int     periodSize(DEFAULT_PERIODSIZE);
     int     periods(DEFAULT_PERIODS);
     double  sampleRate(DEFAULT_SAMPLERATE);
@@ -251,8 +266,9 @@ void FluidSettingsDialog::writeSettings()
         audioDriver = defaultAudioDriver();
     }
     soundFont = ui->soundFont->text();
-    periodSize = ui->periodSize->text().toInt();
-    periods = ui->periods->text().toInt();
+    bufferTime = ui->bufferTime->value();
+    periodSize = ui->periodSize->value();
+    periods = ui->periods->value();
     sampleRate = ui->sampleRate->text().toDouble();
     chorus = (ui->chorus->isChecked() ? 1 : 0);
     reverb = (ui->reverb->isChecked() ? 1 : 0);
@@ -262,6 +278,7 @@ void FluidSettingsDialog::writeSettings()
     settings->beginGroup(QSTR_PREFERENCES);
     settings->setValue(QSTR_INSTRUMENTSDEFINITION, soundFont);
     settings->setValue(QSTR_AUDIODRIVER, audioDriver);
+    settings->setValue(QSTR_BUFFERTIME, bufferTime);
     settings->setValue(QSTR_PERIODSIZE, periodSize);
     settings->setValue(QSTR_PERIODS, periods);
     settings->setValue(QSTR_SAMPLERATE, sampleRate);
@@ -272,20 +289,25 @@ void FluidSettingsDialog::writeSettings()
     settings->endGroup();
     settings->sync();
 
+    if ( audioDriver == QSTR_PULSEAUDIO ) {
+        qputenv("PULSE_LATENCY_MSEC", QByteArray::number( bufferTime ) );
+    }
     chkDriverProperties(settings.getQSettings());
 }
 
 void FluidSettingsDialog::restoreDefaults()
 {
     ui->audioDriver->setCurrentText( defaultAudioDriver() );
-    ui->periodSize->setText( QString::number( DEFAULT_PERIODSIZE ));
-    ui->periods->setText( QString::number( DEFAULT_PERIODS ));
+    ui->bufferTime->setValue( DEFAULT_BUFFERTIME );
+    ui->periodSize->setValue( DEFAULT_PERIODSIZE );
+    ui->periods->setValue( DEFAULT_PERIODS );
     ui->sampleRate->setText( QString::number( DEFAULT_SAMPLERATE ));
     ui->chorus->setChecked( DEFAULT_CHORUS != 0 );
     ui->reverb->setChecked( DEFAULT_REVERB != 0 );
     ui->gain->setText( QString::number( DEFAULT_GAIN ) );
     ui->polyphony->setText( QString::number( DEFAULT_POLYPHONY ));
     ui->soundFont->setText( QSTR_SOUNDFONT );
+    initBuffer();
 }
 
 void FluidSettingsDialog::showFileDialog()
@@ -298,6 +320,42 @@ void FluidSettingsDialog::showFileDialog()
     if (!fileName.isEmpty()) {
         ui->soundFont->setText(fileName);
     }
+}
+
+void FluidSettingsDialog::audioDriverChanged(const QString &text)
+{
+    if (text == QSTR_PULSEAUDIO) {
+        ui->bufferTime->setDisabled(false);
+        ui->bufferTime->blockSignals(false);
+        ui->periodSize->setDisabled(true);
+        ui->periodSize->blockSignals(true);
+        ui->periods->setDisabled(true);
+        ui->periods->blockSignals(true);
+    } else {
+        ui->bufferTime->setDisabled(true);
+        ui->bufferTime->blockSignals(true);
+        ui->periodSize->setDisabled(false);
+        ui->periodSize->blockSignals(false);
+        ui->periods->setDisabled(false);
+        ui->periods->blockSignals(false);
+    }
+    initBuffer();
+}
+
+void FluidSettingsDialog::bufferTimeChanged(int value)
+{
+    double rate = ui->sampleRate->text().toDouble();
+    int size = qRound( value * rate / 1000.0 );
+    ui->periodSize->setValue( size );
+    ui->periods->setValue( ui->periods->minimum() );
+}
+
+void FluidSettingsDialog::bufferSizeChanged()
+{
+    double rate = ui->sampleRate->text().toDouble();
+    int size = ui->periods->value() * ui->periodSize->value();
+    int ms = qRound( 1000.0 * size / rate );
+    ui->bufferTime->setValue(ms);
 }
 
 void FluidSettingsDialog::changeSoundFont(const QString& fileName)

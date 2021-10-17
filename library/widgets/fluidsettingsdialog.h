@@ -57,6 +57,9 @@ public slots:
     void showEvent(QShowEvent *event) override;
     void restoreDefaults();
     void showFileDialog();
+    void audioDriverChanged(const QString &text);
+    void bufferTimeChanged(int value);
+    void bufferSizeChanged();
 
 public:
     static const QString QSTR_PREFERENCES;
@@ -72,7 +75,9 @@ public:
     static const QString QSTR_REVERB;
     static const QString QSTR_GAIN;
     static const QString QSTR_POLYPHONY;
+    static const QString QSTR_BUFFERTIME;
 
+    static const int DEFAULT_BUFFERTIME = 30;
     static const int DEFAULT_PERIODSIZE = 64;
     static const int DEFAULT_PERIODS = 16;
     static constexpr double DEFAULT_SAMPLERATE = 44100.0;
@@ -80,10 +85,12 @@ public:
     static const int DEFAULT_REVERB = 0;
     static constexpr double DEFAULT_GAIN = 0.5;
     static const int DEFAULT_POLYPHONY = 256;
+    static const QString QSTR_PULSEAUDIO;
 
 private:
     QString defaultAudioDriver() const;
     bool checkRanges() const;
+    void initBuffer();
 
     Ui::FluidSettingsDialog *ui;
     drumstick::rt::MIDIOutput *m_driver;

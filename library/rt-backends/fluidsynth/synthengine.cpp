@@ -35,6 +35,7 @@ const QString SynthEngine::QSTR_DATADIR2 = QStringLiteral("sounds/sf2");
 const QString SynthEngine::QSTR_SOUNDFONT = QStringLiteral("default.sf2");
 
 const QString SynthEngine::QSTR_AUDIODRIVER = QStringLiteral("AudioDriver");
+const QString SynthEngine::QSTR_BUFFERTIME = QStringLiteral("BufferTime");
 const QString SynthEngine::QSTR_PERIODSIZE = QStringLiteral("PeriodSize");
 const QString SynthEngine::QSTR_PERIODS = QStringLiteral("Periods");
 const QString SynthEngine::QSTR_SAMPLERATE = QStringLiteral("SampleRate");
@@ -123,6 +124,7 @@ void SynthEngine::initializeSynth()
     ::fluid_settings_setstr(m_settings, "audio.driver", qPrintable(fs_audiodriver));
     ::fluid_settings_setint(m_settings, "audio.period-size", fs_periodSize);
     ::fluid_settings_setint(m_settings, "audio.periods", fs_periods);
+    ::fluid_settings_setint(m_settings, "audio.pulseaudio.adjust-latency", 1);
     ::fluid_settings_setnum(m_settings, "synth.sample-rate", fs_sampleRate);
     ::fluid_settings_setint(m_settings, "synth.chorus.active", fs_chorus);
     ::fluid_settings_setint(m_settings, "synth.reverb.active", fs_reverb);

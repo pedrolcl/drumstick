@@ -112,12 +112,16 @@ void SonivoxSettingsDialog::readSettings()
     //qDebug() << Q_FUNC_INFO;
     SettingsFactory settings;
     settings->beginGroup(QSTR_PREFERENCES);
-    int bufferTime = settings->value(QSTR_BUFFERTIME, 60).toInt();
+    int bufferTime = settings->value(QSTR_BUFFERTIME, 30).toInt();
     int reverbType = settings->value(QSTR_REVERBTYPE, 1).toInt();
     int reverbAmt = settings->value(QSTR_REVERBAMT, 25800).toInt();
     int chorusType = settings->value(QSTR_CHORUSTYPE, -1).toInt();
     int chorusAmt = settings->value(QSTR_CHORUSAMT, 0).toInt();
     settings->endGroup();
+
+    if (qEnvironmentVariableIsSet("PULSE_LATENCY_MSEC")) {
+        bufferTime = qEnvironmentVariable("PULSE_LATENCY_MSEC").toInt();
+    }
 
     ui->spnTime->setValue(bufferTime);
     ui->dial_Reverb->setValue(reverbAmt);
@@ -126,6 +130,7 @@ void SonivoxSettingsDialog::readSettings()
     int chorusIndex = ui->combo_Chorus->findData(chorusType);
     ui->combo_Reverb->setCurrentIndex(reverbIndex);
     ui->combo_Chorus->setCurrentIndex(chorusIndex);
+
     chkDriverProperties(settings.getQSettings());
 }
 
@@ -141,6 +146,7 @@ void SonivoxSettingsDialog::writeSettings()
     settings->setValue(QSTR_CHORUSAMT, ui->dial_Chorus->value());
     settings->endGroup();
     settings->sync();
+    qputenv("PULSE_LATENCY_MSEC", QByteArray::number( ui->spnTime->value() ));
     chkDriverProperties(settings.getQSettings());
 }
 
@@ -163,7 +169,7 @@ void SonivoxSettingsDialog::chkDriverProperties(QSettings *settings)
 
 void SonivoxSettingsDialog::restoreDefaults()
 {
-    ui->spnTime->setValue(60);
+    ui->spnTime->setValue(30);
     ui->combo_Reverb->setCurrentIndex(1);
     ui->dial_Reverb->setValue(25800);
     ui->combo_Chorus->setCurrentIndex(4);

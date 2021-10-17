@@ -1,3 +1,8 @@
+2021-10-17
+    * Widgets: using buffer time in FluidSynth configuration dialog when
+      the driver is pulseaudio. Default is 30 ms on both FluidSynth and
+      Sonivox EAS.
+
 2021-10-10
     * fixed wrong license in two documents (images): should be CC-BY-SA
     * removed obsolete images
