@@ -185,7 +185,7 @@ void Connections::refreshInputs(int index)
             ui.m_inputPorts->addItem(conn.first, QVariant::fromValue(conn));
         }
         QString strconn = m_midiIn->currentConnection().first;
-        if (strconn.isEmpty()) {
+        if (strconn.isEmpty() && !conns.isEmpty()) {
             strconn = conns.first().first;
         }
         ui.m_inputPorts->setCurrentText(strconn);
@@ -207,7 +207,7 @@ void Connections::refreshOutputs(int index)
             ui.m_outputPorts->addItem(conn.first, QVariant::fromValue(conn));
         }
         QString strconn = m_midiOut->currentConnection().first;
-        if (strconn.isEmpty()) {
+        if (strconn.isEmpty() && !conns.isEmpty()) {
             strconn = conns.first().first;
         }
         ui.m_outputPorts->setCurrentText(strconn);

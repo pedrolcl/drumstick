@@ -1,3 +1,6 @@
+2021-10-20
+    * Vpiano: fix for a similar bug to vmpk ticket #74: crash in Linux.
+
 2021-10-17
     * Widgets: using buffer time in FluidSynth configuration dialog when
       the driver is pulseaudio. Default is 30 ms on both FluidSynth and

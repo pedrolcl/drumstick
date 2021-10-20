@@ -161,7 +161,9 @@ void VPiano::initialize()
             auto lastIn = VPianoSettings::instance()->lastInputConnection();
             auto itr = std::find_if(conin.constBegin(), conin.constEnd(), [lastIn](const MIDIConnection& s) { return s.first == lastIn; });
             if(itr == conin.constEnd()) {
-                conn = conin.first();
+                if (!conin.isEmpty()) {
+                    conn = conin.first();
+                }
             } else {
                 conn = (*itr);
             }
@@ -188,7 +190,9 @@ void VPiano::initialize()
         auto lastOut = VPianoSettings::instance()->lastOutputConnection();
         auto itr = std::find_if(connOut.constBegin(), connOut.constEnd(), [lastOut](const MIDIConnection& s) { return s.first == lastOut; });
         if(itr == connOut.constEnd()) {
-            conn = connOut.first();
+            if (!connOut.isEmpty()) {
+                conn = connOut.first();
+            }
         } else {
             conn = (*itr);
         }
