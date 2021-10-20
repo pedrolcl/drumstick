@@ -111,13 +111,11 @@ QString Rmidi::toString(quint32 ckid)
 QByteArray Rmidi::readByteArray(int size)
 {
     //qDebug() << Q_FUNC_INFO << size;
-#if defined(Q_CC_GNU) || defined(Q_CC_GCCE)
-    char buffer[size];
-#elif defined(Q_CC_MSVC)
-    char *buffer = (char *) alloca (size);
-#endif
+    char *buffer = new char[size];
     m_stream->readRawData(buffer, size);
-    return QByteArray(buffer);
+    QByteArray ba(buffer);
+    delete[] buffer;
+    return ba;
 }
 
 void Rmidi::skip(quint32 cktype, int size)

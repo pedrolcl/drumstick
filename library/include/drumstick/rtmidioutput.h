@@ -240,6 +240,6 @@ inline int MIDI_MSB(int x)
 }} // namespace drumstick::rt
 
 Q_DECLARE_INTERFACE(drumstick::rt::MIDIOutput, "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
-Q_DECLARE_METATYPE(drumstick::rt::MIDIConnection);
+Q_DECLARE_METATYPE(drumstick::rt::MIDIConnection)
 
 #endif /* MIDIOUTPUT_H */

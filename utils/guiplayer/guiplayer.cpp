@@ -494,7 +494,7 @@ void GUIPlayer::tempoSlider(int value)
     if (!m_player->isRunning())
         updateTempoLabel(qtempo.getRealBPM());
     // Slider tooltip
-    QString tip = QString("%1\%").arg(m_tempoFactor*100.0, 0, 'f', 0);
+    QString tip = QString("%1 %").arg(m_tempoFactor*100.0, 0, 'f', 0);
     m_ui->sliderTempo->setToolTip(tip);
     QToolTip::showText(QCursor::pos(), tip, this);
 }
@@ -524,6 +524,7 @@ void GUIPlayer::dropEvent( QDropEvent * event )
             if ( fileName.endsWith(".mid", Qt::CaseInsensitive) ||
                  fileName.endsWith(".midi", Qt::CaseInsensitive) ||
                  fileName.endsWith(".kar", Qt::CaseInsensitive) ||
+                 fileName.endsWith(".rmi", Qt::CaseInsensitive) ||
                  fileName.endsWith(".wrk", Qt::CaseInsensitive) ) {
                 stop();
                 event->accept();
