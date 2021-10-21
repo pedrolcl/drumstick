@@ -32,7 +32,7 @@ if (QT_VERSION VERSION_LESS 5.15.0)
     qt5_wrap_cpp(drumstick-rt-oss-in_MOC_SRCS ${drumstick-rt-oss-in_QTOBJ_SRCS}
         OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
 else()
-    qt5_wrap_cpp(drumstick-rt-oss-in_MOC_SRCS ${drumstick-rt-oss-in_QTOBJ_SRCS}
+    qt_wrap_cpp(drumstick-rt-oss-in_MOC_SRCS ${drumstick-rt-oss-in_QTOBJ_SRCS}
         OPTIONS -I ${Drumstick_SOURCE_DIR}/library/include)
 endif()
 
