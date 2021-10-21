@@ -32,7 +32,7 @@ namespace IconUtils
     QPixmap GetPixmap(QWidget* widget, const QString& fileName)
     {
         QPixmap pixmap(fileName);
-        QColor color = widget->palette().color(QPalette::Active, QPalette::Foreground);
+        QColor color = widget->palette().color(QPalette::Active, QPalette::WindowText);
         PaintPixmap(pixmap, color);
         return pixmap;
     }

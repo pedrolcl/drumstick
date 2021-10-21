@@ -19,6 +19,7 @@
 #include <QCommandLineParser>
 #include <QStringList>
 #include <QTextStream>
+#include <QIODevice>
 
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaqueue.h>

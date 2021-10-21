@@ -77,6 +77,10 @@ if(USE_DBUS)
     )
 endif()
 
+if(QT_VERSION VERSION_GREATER_EQUAL 6.0.0)
+    target_link_libraries(drumstick-alsa PRIVATE Qt6::Core5Compat)
+endif()
+
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-alsa PROPERTIES
         STATIC_LIB "libdrumstick-alsa")

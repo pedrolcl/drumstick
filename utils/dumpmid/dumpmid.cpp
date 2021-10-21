@@ -24,6 +24,7 @@
 #include <QString>
 #include <QTextStream>
 #include <QWriteLocker>
+#include <QIODevice>
 #include <QtDebug>
 #include <csignal>
 #include <drumstick/sequencererror.h>

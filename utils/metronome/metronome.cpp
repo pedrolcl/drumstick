@@ -23,6 +23,7 @@
 #include <QReadLocker>
 #include <QStringList>
 #include <QTextStream>
+#include <QIODevice>
 #include <QWriteLocker>
 #include <QtAlgorithms>
 #include <csignal>
