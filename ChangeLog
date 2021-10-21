@@ -1,3 +1,6 @@
+2021-10-21
+    * fix for ticket #35: build with Qt 5.11 is possible again
+
 2021-10-20
     * Vpiano: fix for a similar bug to vmpk ticket #74: crash in Linux.
 
