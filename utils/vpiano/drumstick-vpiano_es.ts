@@ -386,17 +386,17 @@ redistribuirlo bajo ciertas condiciones.</translation>
         <translation>do</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="457"/>
+        <location filename="vpiano.cpp" line="461"/>
         <source>Font to display note names</source>
         <translation>Fuente para mostrar nombres de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="533"/>
+        <location filename="vpiano.cpp" line="537"/>
         <source>Custom Note Names</source>
         <translation>Nombres personalizados de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="533"/>
+        <location filename="vpiano.cpp" line="537"/>
         <source>Names:</source>
         <translation>Nombres:</translation>
     </message>

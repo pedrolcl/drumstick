@@ -278,92 +278,102 @@
         <translation>Настройки драйвера FluidSynth</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="88"/>
+        <location filename="../fluidsettingsdialog.ui" line="123"/>
         <source>Sample Rate:</source>
         <translation>Скорость сэмплов:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="45"/>
+        <location filename="../fluidsettingsdialog.ui" line="106"/>
         <source>Period Size:</source>
         <translation>Размер периода:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="105"/>
+        <location filename="../fluidsettingsdialog.ui" line="159"/>
         <source># of Periods:</source>
         <translation>Число периодов:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="81"/>
+        <location filename="../fluidsettingsdialog.ui" line="39"/>
         <source>Audio Driver:</source>
         <translation>Аудиодрайвер:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="115"/>
+        <location filename="../fluidsettingsdialog.ui" line="169"/>
         <source>Polyphony:</source>
         <translation>Полифония:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="125"/>
+        <location filename="../fluidsettingsdialog.ui" line="89"/>
         <source>FluidSynth Version:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="148"/>
+        <location filename="../fluidsettingsdialog.ui" line="69"/>
         <source>Sound Font:</source>
         <translation>Sound Font:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="158"/>
+        <location filename="../fluidsettingsdialog.ui" line="116"/>
         <source>Initialization Status:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="65"/>
+        <location filename="../fluidsettingsdialog.ui" line="185"/>
+        <source>Buffer Time:</source>
+        <translation type="unfinished">Время буфера:</translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="192"/>
+        <source> ms</source>
+        <translation type="unfinished"> мс</translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="49"/>
         <source>Gain:</source>
         <translation>Усиление:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="55"/>
+        <location filename="../fluidsettingsdialog.ui" line="152"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="138"/>
+        <location filename="../fluidsettingsdialog.ui" line="139"/>
         <source>Chorus</source>
         <translation>Хорус</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="98"/>
+        <location filename="../fluidsettingsdialog.ui" line="62"/>
         <source>Reverb</source>
         <translation>Реверберация</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="96"/>
+        <location filename="../fluidsettingsdialog.cpp" line="132"/>
         <source>FluidSynth Initialized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="96"/>
+        <location filename="../fluidsettingsdialog.cpp" line="132"/>
         <source>FluidSynth Initialization Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="158"/>
+        <location filename="../fluidsettingsdialog.cpp" line="195"/>
         <source>Ready</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="158"/>
+        <location filename="../fluidsettingsdialog.cpp" line="195"/>
         <source>Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="253"/>
+        <location filename="../fluidsettingsdialog.cpp" line="319"/>
         <source>Select SoundFont</source>
         <translation>Выбрать SoundFont</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="253"/>
+        <location filename="../fluidsettingsdialog.cpp" line="319"/>
         <source>SoundFont Files (*.sf2)</source>
         <translation>Файлы SoundFont (*.sf2)</translation>
     </message>
@@ -488,94 +498,94 @@
 <context>
     <name>drumstick::widgets::PianoScene</name>
     <message>
-        <location filename="../pianoscene.cpp" line="1279"/>
-        <location filename="../pianoscene.cpp" line="1292"/>
+        <location filename="../pianoscene.cpp" line="1301"/>
+        <location filename="../pianoscene.cpp" line="1314"/>
         <source>C</source>
         <translation>До</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1280"/>
+        <location filename="../pianoscene.cpp" line="1302"/>
         <source>C♯</source>
         <translation>До♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1281"/>
-        <location filename="../pianoscene.cpp" line="1294"/>
+        <location filename="../pianoscene.cpp" line="1303"/>
+        <location filename="../pianoscene.cpp" line="1316"/>
         <source>D</source>
         <translation>Ре</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1282"/>
+        <location filename="../pianoscene.cpp" line="1304"/>
         <source>D♯</source>
         <translation>Ре♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1283"/>
-        <location filename="../pianoscene.cpp" line="1296"/>
+        <location filename="../pianoscene.cpp" line="1305"/>
+        <location filename="../pianoscene.cpp" line="1318"/>
         <source>E</source>
         <translation>Ми</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1284"/>
-        <location filename="../pianoscene.cpp" line="1297"/>
+        <location filename="../pianoscene.cpp" line="1306"/>
+        <location filename="../pianoscene.cpp" line="1319"/>
         <source>F</source>
         <translation>Фа</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1285"/>
+        <location filename="../pianoscene.cpp" line="1307"/>
         <source>F♯</source>
         <translation>Фа♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1286"/>
-        <location filename="../pianoscene.cpp" line="1299"/>
+        <location filename="../pianoscene.cpp" line="1308"/>
+        <location filename="../pianoscene.cpp" line="1321"/>
         <source>G</source>
         <translation>Соль</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1287"/>
+        <location filename="../pianoscene.cpp" line="1309"/>
         <source>G♯</source>
         <translation>Соль♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1288"/>
-        <location filename="../pianoscene.cpp" line="1301"/>
+        <location filename="../pianoscene.cpp" line="1310"/>
+        <location filename="../pianoscene.cpp" line="1323"/>
         <source>A</source>
         <translation>Ля</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1289"/>
+        <location filename="../pianoscene.cpp" line="1311"/>
         <source>A♯</source>
         <translation>Ля♯</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1290"/>
-        <location filename="../pianoscene.cpp" line="1303"/>
+        <location filename="../pianoscene.cpp" line="1312"/>
+        <location filename="../pianoscene.cpp" line="1325"/>
         <source>B</source>
         <translation>Си</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1293"/>
+        <location filename="../pianoscene.cpp" line="1315"/>
         <source>D♭</source>
         <translation>Ре♭</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1295"/>
+        <location filename="../pianoscene.cpp" line="1317"/>
         <source>E♭</source>
         <translation>Ми♭</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1298"/>
+        <location filename="../pianoscene.cpp" line="1320"/>
         <source>G♭</source>
         <translation>Соль♭</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1300"/>
+        <location filename="../pianoscene.cpp" line="1322"/>
         <source>A♭</source>
         <translation>Ля♭</translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1302"/>
+        <location filename="../pianoscene.cpp" line="1324"/>
         <source>B♭</source>
         <translation>Си♭</translation>
     </message>
@@ -623,12 +633,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="159"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="165"/>
         <source>Ready</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="159"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="165"/>
         <source>Failed</source>
         <translation type="unfinished"></translation>
     </message>

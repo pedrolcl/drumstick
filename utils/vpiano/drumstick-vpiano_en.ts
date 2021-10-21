@@ -367,17 +367,17 @@ under certain conditions; see the LICENSE file for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="457"/>
+        <location filename="vpiano.cpp" line="461"/>
         <source>Font to display note names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="533"/>
+        <location filename="vpiano.cpp" line="537"/>
         <source>Custom Note Names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="533"/>
+        <location filename="vpiano.cpp" line="537"/>
         <source>Names:</source>
         <translation type="unfinished"></translation>
     </message>
