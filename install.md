@@ -29,7 +29,7 @@ $ sudo ldconfig
 Minimum supported versions:
 
 * CMake 3.14
-* Qt 5.7
+* Qt5 >= 5.9, Qt6 >= 6.2
 * For Linux: ALSA 1.x
 * RT backends for
     * Linux: ALSA

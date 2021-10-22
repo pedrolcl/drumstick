@@ -106,13 +106,17 @@ if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.15)
     set(CMAKE_FRAMEWORK ${BUILD_FRAMEWORKS})
 endif()
 
-find_package(QT NAMES Qt5 Qt6 COMPONENTS Core REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core REQUIRED)
-message(STATUS "Found Qt version = ${QT_VERSION}")
-
-if (QT_VERSION VERSION_GREATER_EQUAL 6.0.0)
-    find_package(Qt6Core5Compat REQUIRED)
+find_package(QT NAMES Qt5 Qt6)
+if (QT_VERSION VERSION_LESS 6.0.0)
+    find_package(Qt5 5.9 COMPONENTS Core REQUIRED)
+else()
+    if (QT_VERSION VERSION_LESS 6.2.0)
+       message (FATAL_ERROR "Qt6 >= 6.2 is required, or use Qt5 >= 5.9")
+    endif()
+    find_package(Qt6 6.2 COMPONENTS Core Core5Compat REQUIRED)
 endif()
+
+message(STATUS "Found Qt version = ${QT_VERSION}")
 
 if(USE_DBUS)
     find_package(Qt${QT_VERSION_MAJOR}DBus REQUIRED)
