@@ -128,3 +128,7 @@ Build the FluidSynth RT output backend (default)
 
 -DUSE_FLUIDSYNTH=NO|OFF|0  
 Don't build the FluidSynth RT output backend
+
+-DUSE_QT=5|6
+Choose which Qt major version (5 or 6) to prefer. By default (if not set) uses whatever is found.
+note: Qt6 support is still experimental.

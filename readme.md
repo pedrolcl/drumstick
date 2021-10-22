@@ -14,12 +14,12 @@ Currently, there are four libraries designed to work together if/when needed:
 There are ten examples in the source tree, under the utils/ directory:
 
 * drumgrid: GUI program. Simple drum patterns. Depends on Drumstick::ALSA.
-* dumpmid: CLI program. Prints received MIDI events. Depends on Drumstick::ALSA.
+* dumpmid: CLI program. Prints received MIDI events. Depends on Drumstick::ALSA. See also [kmidimon](https://kmidimon.sourceforge.io)
 * dumprmi: CLI program. Prints and converts RIFF MIDI files. Depends on Drumstick::File.
 * dumpsmf: CLI program. Prints standard MIDI files. Depends on Drumstick::File.
-* dumpwrk: CLI program. Prints Cakewalk/Sonar MIDI files. Depends on Drumstick::File.
-* guiplayer: GUI program. Plays SMF and Cakewalk files. Depends on Drumstick::ALSA and Drumstick::File.
-* metronome: CLI program. Simple command line MIDI metronome. Depends on Drumstick::ALSA.
+* dumpwrk: CLI program. Prints Cakewalk/Sonar MIDI files. Depends on Drumstick::File. See also [wrk2mid](https://wrk2mid.sourceforge.io)
+* guiplayer: GUI program. Plays SMF and Cakewalk files. Depends on Drumstick::ALSA and Drumstick::File. See also [dmidiplayer](https://dmidiplayer.sourceforge.io)
+* metronome: CLI program. Simple command line MIDI metronome. Depends on Drumstick::ALSA. See also [kmetronome](https://kmetronome.sourceforge.io)
 * playsmf: CLI program. SMF player. Depends on Drumstick::ALSA and Drumstick::File.
 * sysinfo: CLI program. Prints information about the ALSA sequencer subsystem. Depends on Drumstick::ALSA.
 * vpiano: GUI program. A simple Virtual Piano Keyboard GUI application. Depends on Drumstick::RT. See also [VMPK](http://vmpk.sourceforge.io).
