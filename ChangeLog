@@ -1,5 +1,10 @@
+2021-10-22
+    * New build option USE_QT to choose among Qt major versions (5 or 6).
+      By default (if not set) it uses whatever is found.
+      note: Qt6 support is still experimental.
+
 2021-10-21
-    * fix for ticket #35: build with Qt 5.11 is possible again
+    * fix for ticket #35: build with Qt 5.11 is possible again.
 
 2021-10-20
     * Vpiano: fix for a similar bug to vmpk ticket #74: crash in Linux.
@@ -8,6 +13,7 @@
     * Widgets: using buffer time in FluidSynth configuration dialog when
       the driver is pulseaudio. Default is 30 ms on both FluidSynth and
       Sonivox EAS.
+    * RT FluidSynth backend: adjust-latency when using pulseaudio driver.
 
 2021-10-10
     * fixed wrong license in two documents (images): should be CC-BY-SA
