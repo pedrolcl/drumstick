@@ -305,7 +305,7 @@
     <message>
         <location filename="../fluidsettingsdialog.ui" line="89"/>
         <source>FluidSynth Version:</source>
-        <translation type="unfinished"></translation>
+        <translation>Verze FluidSynth:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="69"/>
@@ -315,17 +315,17 @@
     <message>
         <location filename="../fluidsettingsdialog.ui" line="116"/>
         <source>Initialization Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Stav inicializace:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="185"/>
         <source>Buffer Time:</source>
-        <translation type="unfinished">Čas vyrovnávací paměti:</translation>
+        <translation>Čas vyrovnávací paměti:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="192"/>
         <source> ms</source>
-        <translation type="unfinished"> ms</translation>
+        <translation> ms</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="49"/>
@@ -350,22 +350,22 @@
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="132"/>
         <source>FluidSynth Initialized</source>
-        <translation type="unfinished"></translation>
+        <translation>FluidSynth inicializován</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="132"/>
         <source>FluidSynth Initialization Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>FluidSynth se nepodařilo inicializovat</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="195"/>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Připraven</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="195"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Selhalo</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="319"/>
@@ -403,7 +403,7 @@
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="90"/>
         <source>Init. Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Stav inicializace:</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="69"/>
@@ -413,22 +413,22 @@
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="72"/>
         <source>DLS Synth Initialized</source>
-        <translation type="unfinished"></translation>
+        <translation>DLS Synth inicializován</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="72"/>
         <source>DLS Synth Initialization Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>DLS Synth se nepodařilo inicializovat</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="122"/>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Připraven</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="122"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Selhalo</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="163"/>
@@ -451,7 +451,7 @@
     <message>
         <location filename="../networksettingsdialog.ui" line="33"/>
         <source>Init. Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Stav inicializace:</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="50"/>
@@ -471,12 +471,12 @@
     <message>
         <location filename="../networksettingsdialog.cpp" line="76"/>
         <source>Network Initialized</source>
-        <translation type="unfinished"></translation>
+        <translation>Síť inicializována</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="76"/>
         <source>Network Initialization Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Síť se nepodařilo inicializovat</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="111"/>
@@ -487,12 +487,12 @@
     <message>
         <location filename="../networksettingsdialog.cpp" line="164"/>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Připraven</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="164"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Selhalo</translation>
     </message>
 </context>
 <context>
@@ -620,27 +620,27 @@
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="110"/>
         <source>Init. Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Stav inicializace:</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="85"/>
         <source>Sonivox Initialized</source>
-        <translation type="unfinished"></translation>
+        <translation>Sonivox inicializován</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="85"/>
         <source>Sonivox Initialization Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Sonivox se nepodařilo inicializovat</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="165"/>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Připraven</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="165"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Selhalo</translation>
     </message>
 </context>
 </TS>

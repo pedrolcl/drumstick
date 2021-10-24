@@ -12,7 +12,7 @@
 Name:           drumstick
 Version:        @PROJECT_VERSION@
 Release:        1
-License:        GPL v2 or later
+License:        GPL v3 or later
 Summary:        MIDI Sequencer C++ Library Bindings
 Group:          Productivity/Multimedia/Sound/Midi
 URL:            http://drumstick.sourceforge.net
