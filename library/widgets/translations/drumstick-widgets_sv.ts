@@ -206,7 +206,7 @@
     <message>
         <location filename="../pianopalette.cpp" line="241"/>
         <source>Single color highlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Enfärgsmarkering</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="242"/>
@@ -216,7 +216,7 @@
     <message>
         <location filename="../pianopalette.cpp" line="246"/>
         <source>Two colors highlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Tvåfärgsmarkering</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="247"/>
@@ -226,17 +226,17 @@
     <message>
         <location filename="../pianopalette.cpp" line="251"/>
         <source>MIDI Channels highlight</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI-kanalmarkering</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="252"/>
         <source>A different color to highlight each MIDI channel. Enable Omni mode in the MIDI IN connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Olika färger för att markera varje MIDI-kanal. Aktivera omniläget i MIDI-IN-anslutningen.</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="256"/>
         <source>Chromatic scale background</source>
-        <translation type="unfinished"></translation>
+        <translation>Bakgrund för kromatisk skala</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="257"/>
@@ -247,27 +247,27 @@
     <message>
         <location filename="../pianopalette.cpp" line="261"/>
         <source>Keys background</source>
-        <translation type="unfinished"></translation>
+        <translation>Tangentbakgrund</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="262"/>
         <source>One color for natural notes and another for accidentals</source>
-        <translation type="unfinished"></translation>
+        <translation>En färg för stamtoner och en annan för grentoner.</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="266"/>
         <source>Font foreground</source>
-        <translation type="unfinished"></translation>
+        <translation>Typsnittsförgrund</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="267"/>
         <source>Colors for note names</source>
-        <translation type="unfinished"></translation>
+        <translation>Färger för tonnamn</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="271"/>
         <source>Chromatic scale highlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Markering för kromatisk skala</translation>
     </message>
 </context>
 <context>
@@ -305,7 +305,7 @@
     <message>
         <location filename="../fluidsettingsdialog.ui" line="89"/>
         <source>FluidSynth Version:</source>
-        <translation type="unfinished"></translation>
+        <translation>FluidSynth-version:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="69"/>
@@ -315,17 +315,17 @@
     <message>
         <location filename="../fluidsettingsdialog.ui" line="116"/>
         <source>Initialization Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Initialiseringsstatus:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="185"/>
         <source>Buffer Time:</source>
-        <translation type="unfinished">Buffringstid:</translation>
+        <translation>Buffringstid:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="192"/>
         <source> ms</source>
-        <translation type="unfinished"> ms</translation>
+        <translation> ms</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="49"/>
@@ -350,22 +350,22 @@
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="132"/>
         <source>FluidSynth Initialized</source>
-        <translation type="unfinished"></translation>
+        <translation>FluidSynth initialiserad</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="132"/>
         <source>FluidSynth Initialization Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>FluidSynth-initialiseringen misslyckades</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="195"/>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Redo</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="195"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Misslyckades</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="319"/>
@@ -383,7 +383,7 @@
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="14"/>
         <source>macOS Synth Driver Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Syntdrivrutinsinställningar för macOS</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="56"/>
@@ -403,7 +403,7 @@
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="90"/>
         <source>Init. Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Initialiseringsstatus:</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="69"/>
@@ -413,22 +413,22 @@
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="72"/>
         <source>DLS Synth Initialized</source>
-        <translation type="unfinished"></translation>
+        <translation>DLS-synt initialiserad</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="72"/>
         <source>DLS Synth Initialization Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>DLS-syntinitialiseringen misslyckades</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="122"/>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Redo</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="122"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Misslyckades</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="163"/>
@@ -451,7 +451,7 @@
     <message>
         <location filename="../networksettingsdialog.ui" line="33"/>
         <source>Init. Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Initialiseringsstatus:</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="50"/>
@@ -471,12 +471,12 @@
     <message>
         <location filename="../networksettingsdialog.cpp" line="76"/>
         <source>Network Initialized</source>
-        <translation type="unfinished"></translation>
+        <translation>Nätverk initialiserat</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="76"/>
         <source>Network Initialization Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Nätverksinitialiseringen misslyckades</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="111"/>
@@ -487,12 +487,12 @@
     <message>
         <location filename="../networksettingsdialog.cpp" line="164"/>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Redo</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="164"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Misslyckades</translation>
     </message>
 </context>
 <context>
@@ -620,27 +620,27 @@
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="110"/>
         <source>Init. Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Initialiseringsstatus:</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="85"/>
         <source>Sonivox Initialized</source>
-        <translation type="unfinished"></translation>
+        <translation>Sonivox initialiserad</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="85"/>
         <source>Sonivox Initialization Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Sonivoxinitialisering misslyckades</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="165"/>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Redo</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="165"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Misslyckades</translation>
     </message>
 </context>
 </TS>
