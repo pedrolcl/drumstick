@@ -23,12 +23,13 @@ project( Drumstick
     DESCRIPTION "MIDI C++ Libraries for Qt"
     HOMEPAGE_URL "https://sourceforge.net/p/drumstick/"
 )
+
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_admin)
 include(SCMRevision)
 include(CTest)
 include(GNUInstallDirs)
 
-#set(RELEASE_DATE "September 19, 2021")
+set(RELEASE_DATE "October 24, 2021")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 

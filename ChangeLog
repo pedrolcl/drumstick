@@ -1,5 +1,6 @@
 2021-10-24
     * Widgets library Swedish translation updated. Thanks to Magnus Johansson.
+    * Release 2.4.1
 
 2021-10-22
     * New build option USE_QT to choose among Qt major versions (5 or 6).
