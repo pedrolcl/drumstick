@@ -80,15 +80,16 @@ FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
     if (m_driver != nullptr) {
         QVariant v = m_driver->property("audiodrivers");
         if (v.isValid()) {
+            ui->audioDriver->blockSignals(true);
             ui->audioDriver->clear();
             ui->audioDriver->addItems(v.toStringList());
+            ui->audioDriver->blockSignals(false);
         }
     }
 }
 
 FluidSettingsDialog::~FluidSettingsDialog()
 {
-    //qDebug() << Q_FUNC_INFO;
     if (m_driver != nullptr) {
         m_driver->close();
     }
@@ -180,9 +181,11 @@ void FluidSettingsDialog::chkDriverProperties(QSettings *settings)
         QVariant drivers = m_driver->property("audiodrivers");
         if (drivers.isValid()) {
             auto text = ui->audioDriver->currentText();
+            ui->audioDriver->blockSignals(true);
             ui->audioDriver->clear();
             ui->audioDriver->addItems(drivers.toStringList());
             ui->audioDriver->setCurrentText(text);
+            ui->audioDriver->blockSignals(false);
         }
         QVariant varVersion = m_driver->property("libversion");
         if (varVersion.isValid()) {
@@ -352,8 +355,12 @@ void FluidSettingsDialog::bufferTimeChanged(int value)
 
 void FluidSettingsDialog::bufferSizeChanged()
 {
+    QString audioDriver = ui->audioDriver->currentText();
     double rate = ui->sampleRate->text().toDouble();
-    int size = ui->periods->value() * ui->periodSize->value();
+    int size = ui->periodSize->value();
+    if (audioDriver != QSTR_PULSEAUDIO) {
+        size *= ui->periods->value();
+    }
     int ms = qRound( 1000.0 * size / rate );
     ui->bufferTime->setValue(ms);
 }
