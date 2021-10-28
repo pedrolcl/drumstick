@@ -59,6 +59,7 @@ enum WrkChunkType {
     LYRICS_CHUNK = 18,   ///< Events stream with lyrics
     TRKVOL_CHUNK = 19,   ///< Track volume
     SYSEX2_CHUNK = 20,   ///< System exclusive bank
+    MARKERS_CHUNK = 21,  ///< Markers
     STRTAB_CHUNK = 22,   ///< Table of text event types
     METERKEY_CHUNK = 23, ///< Meter/Key map
     TRKNAME_CHUNK = 24,  ///< Track name
@@ -581,6 +582,25 @@ Q_SIGNALS:
      */
     void signalWRKExpression2(int track, long time, int code, const QByteArray& text);
 
+    /**
+     * Emitted after reading a text marker
+     *
+     * @param time event time in ticks or smpte
+     * @param type tipe of time: 0=ticks or 1=smpte
+     * @param data marker text
+     */
+    void signalWRKMarker(long time, int type, const QString& data);
+
+    /**
+     * Emitted after reading a text marker
+     * This signal is emitted when getTextCodec() is nullptr
+     *
+     * @param time event time in ticks or smpte
+     * @param type tipe of time: 0=ticks or 1=smpte
+     * @param data marker text
+     */
+    void signalWRKMarker2(long time, int type, const QByteArray& data);
+
 private:
     quint8 readByte();
     quint16 to16bit(quint8 c1, quint8 c2);
@@ -629,6 +649,7 @@ private:
     void wrkRead();
     QByteArray readByteArray(int len);
     QByteArray readVarByteArray();
+    void processMarkers();
 
     struct RecTempo {
         long time;

@@ -620,6 +620,30 @@ QByteArray QWrk::readVarByteArray()
     return data;
 }
 
+void QWrk::processMarkers()
+{
+    QByteArray data;
+    QString name;
+    int num = read32bit();
+    for (int i = 0; (i < num) && (d->internalFilePos() < d->m_lastChunkPos) && !atEnd(); ++i) {
+        int smpte = readByte();
+        readGap(1);
+        long time = read24bit();
+        readGap(5);
+        int len = readByte();
+        if (d->m_codec == nullptr) {
+            data = readByteArray(len);
+        } else {
+            name = readString(len);
+        }
+        if (d->m_codec == nullptr) {
+            Q_EMIT signalWRKMarker2(time, smpte, data);
+        } else {
+            Q_EMIT signalWRKMarker(time, smpte, name);
+        }
+    }
+}
+
 /**
  * Current position in the data stream
  * @return current position
@@ -1373,6 +1397,9 @@ int QWrk::readChunk()
             break;
         case NSTREAM_CHUNK:
             processNewStream();
+            break;
+        case MARKERS_CHUNK:
+            processMarkers();
             break;
         default:
             processUnknown(ck);

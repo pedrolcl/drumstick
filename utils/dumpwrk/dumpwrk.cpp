@@ -52,76 +52,42 @@ QSpyWrk::QSpyWrk():
     m_engine = new QWrk(this);
     m_engine->setTextCodec(QTextCodec::codecForName("Windows-1252"));
 
-    connect(m_engine, SIGNAL(signalWRKError(const QString&)),
-                      SLOT(errorHandler(const QString&)));
-    connect(m_engine, SIGNAL(signalWRKUnknownChunk(int,const QByteArray&)),
-                      SLOT(unknownChunk(int,const QByteArray&)));
-    connect(m_engine, SIGNAL(signalWRKHeader(int,int)),
-                      SLOT(fileHeader(int,int)));
-    connect(m_engine, SIGNAL(signalWRKGlobalVars()),
-                      SLOT(globalVars()));
-    connect(m_engine, SIGNAL(signalWRKTrack(const QString&, const QString&, int,int,int,int,int,bool,bool,bool)),
-                      SLOT(trackHeader(const QString&, const QString&, int,int,int,int,int,bool,bool,bool)));
-    connect(m_engine, SIGNAL(signalWRKTimeBase(int)),
-                      SLOT(timeBase(int)));
-    connect(m_engine, SIGNAL(signalWRKNote(int,long,int,int,int,int)),
-                      SLOT(noteEvent(int,long,int,int,int,int)));
-    connect(m_engine, SIGNAL(signalWRKKeyPress(int,long,int,int,int)),
-                      SLOT(keyPressEvent(int,long,int,int,int)));
-    connect(m_engine, SIGNAL(signalWRKCtlChange(int,long,int,int,int)),
-                      SLOT(ctlChangeEvent(int,long,int,int,int)));
-    connect(m_engine, SIGNAL(signalWRKPitchBend(int,long,int,int)),
-                      SLOT(pitchBendEvent(int,long,int,int)));
-    connect(m_engine, SIGNAL(signalWRKProgram(int,long,int,int)),
-                      SLOT(programEvent(int,long,int,int)));
-    connect(m_engine, SIGNAL(signalWRKChanPress(int,long,int,int)),
-                      SLOT(chanPressEvent(int,long,int,int)));
-    connect(m_engine, SIGNAL(signalWRKSysexEvent(int,long,int)),
-                      SLOT(sysexEvent(int,long,int)));
-    connect(m_engine, SIGNAL(signalWRKSysex(int,const QString&,bool,int,const QByteArray&)),
-                      SLOT(sysexEventBank(int,const QString&,bool,int,const QByteArray&)));
-    connect(m_engine, SIGNAL(signalWRKText(int,long,int,const QString&)),
-                      SLOT(textEvent(int,long,int,const QString&)));
-    connect(m_engine, SIGNAL(signalWRKTimeSig(int,int,int)),
-                      SLOT(timeSigEvent(int,int,int)));
-    connect(m_engine, SIGNAL(signalWRKKeySig(int,int)),
-                      SLOT(keySigEvent(int,int)));
-    connect(m_engine, SIGNAL(signalWRKTempo(long,int)),
-                      SLOT(tempoEvent(long,int)));
-    connect(m_engine, SIGNAL(signalWRKThru(int,int,int,int,int,int)),
-                      SLOT(thruMode(int,int,int,int,int,int)));
-    connect(m_engine, SIGNAL(signalWRKTrackOffset(int,int)),
-                      SLOT(trackOffset(int,int)));
-    connect(m_engine, SIGNAL(signalWRKTrackReps(int,int)),
-                      SLOT(trackReps(int,int)));
-    connect(m_engine, SIGNAL(signalWRKTrackPatch(int,int)),
-                      SLOT(trackPatch(int,int)));
-    connect(m_engine, SIGNAL(signalWRKTimeFormat(int,int)),
-                      SLOT(timeFormat(int,int)));
-    connect(m_engine, SIGNAL(signalWRKComments(const QString&)),
-                      SLOT(comments(const QString&)));
-    connect(m_engine, SIGNAL(signalWRKVariableRecord(const QString&,const QByteArray&)),
-                      SLOT(variableRecord(const QString&,const QByteArray&)));
-    connect(m_engine, SIGNAL(signalWRKNewTrack(const QString&,int,int,int,int,int,bool,bool,bool)),
-                      SLOT(newTrackHeader(const QString&,int,int,int,int,int,bool,bool,bool)));
-    connect(m_engine, SIGNAL(signalWRKSoftVer(const QString&)),
-                      SLOT(softVersion(const QString&)));
-    connect(m_engine, SIGNAL(signalWRKTrackName(int,const QString&)),
-                      SLOT(trackName(int,const QString&)));
-    connect(m_engine, SIGNAL(signalWRKStringTable(const QStringList&)),
-                      SLOT(stringTable(const QStringList&)));
-    connect(m_engine, SIGNAL(signalWRKTrackVol(int,int)),
-                      SLOT(trackVol(int,int)));
-    connect(m_engine, SIGNAL(signalWRKTrackBank(int,int)),
-                      SLOT(trackBank(int,int)));
-    connect(m_engine, SIGNAL(signalWRKSegment(int,long,const QString&)),
-                      SLOT(segment(int,long,const QString&)));
-    connect(m_engine, SIGNAL(signalWRKChord(int,long,const QString&,const QByteArray&)),
-                      SLOT(chord(int,long,const QString&,const QByteArray&)));
-    connect(m_engine, SIGNAL(signalWRKExpression(int,long,int,const QString&)),
-                      SLOT(expression(int,long,int,const QString&)));
-    connect(m_engine, SIGNAL(signalWRKHairpin(int,long,int,int)),
-                      SLOT(hairpin(int,long,int,int)));
+    connect(m_engine, &QWrk::signalWRKError, this, &QSpyWrk::errorHandler);
+    connect(m_engine, &QWrk::signalWRKUnknownChunk, this, &QSpyWrk::unknownChunk);
+    connect(m_engine, &QWrk::signalWRKHeader, this, &QSpyWrk::fileHeader);
+    connect(m_engine, &QWrk::signalWRKGlobalVars, this, &QSpyWrk::globalVars);
+    connect(m_engine, &QWrk::signalWRKTrack, this, &QSpyWrk::trackHeader);
+    connect(m_engine, &QWrk::signalWRKTimeBase, this, &QSpyWrk::timeBase);
+    connect(m_engine, &QWrk::signalWRKNote, this, &QSpyWrk::noteEvent);
+    connect(m_engine, &QWrk::signalWRKKeyPress, this, &QSpyWrk::keyPressEvent);
+    connect(m_engine, &QWrk::signalWRKCtlChange, this, &QSpyWrk::ctlChangeEvent);
+    connect(m_engine, &QWrk::signalWRKPitchBend, this, &QSpyWrk::pitchBendEvent);
+    connect(m_engine, &QWrk::signalWRKProgram, this, &QSpyWrk::programEvent);
+    connect(m_engine, &QWrk::signalWRKChanPress, this, &QSpyWrk::chanPressEvent);
+    connect(m_engine, &QWrk::signalWRKSysexEvent, this, &QSpyWrk::sysexEvent);
+    connect(m_engine, &QWrk::signalWRKSysex, this, &QSpyWrk::sysexEventBank);
+    connect(m_engine, &QWrk::signalWRKText, this, &QSpyWrk::textEvent);
+    connect(m_engine, &QWrk::signalWRKTimeSig, this, &QSpyWrk::timeSigEvent);
+    connect(m_engine, &QWrk::signalWRKKeySig, this, &QSpyWrk::keySigEvent);
+    connect(m_engine, &QWrk::signalWRKTempo, this, &QSpyWrk::tempoEvent);
+    connect(m_engine, &QWrk::signalWRKThru, this, &QSpyWrk::thruMode);
+    connect(m_engine, &QWrk::signalWRKTrackOffset, this, &QSpyWrk::trackOffset);
+    connect(m_engine, &QWrk::signalWRKTrackReps, this, &QSpyWrk::trackReps);
+    connect(m_engine, &QWrk::signalWRKTrackPatch, this, &QSpyWrk::trackPatch);
+    connect(m_engine, &QWrk::signalWRKTimeFormat, this, &QSpyWrk::timeFormat);
+    connect(m_engine, &QWrk::signalWRKComments, this, &QSpyWrk::comments);
+    connect(m_engine, &QWrk::signalWRKVariableRecord, this, &QSpyWrk::variableRecord);
+    connect(m_engine, &QWrk::signalWRKNewTrack, this, &QSpyWrk::newTrackHeader);
+    connect(m_engine, &QWrk::signalWRKSoftVer, this, &QSpyWrk::softVersion);
+    connect(m_engine, &QWrk::signalWRKTrackName, this, &QSpyWrk::trackName);
+    connect(m_engine, &QWrk::signalWRKStringTable, this, &QSpyWrk::stringTable);
+    connect(m_engine, &QWrk::signalWRKTrackVol, this, &QSpyWrk::trackVol);
+    connect(m_engine, &QWrk::signalWRKTrackBank, this, &QSpyWrk::trackBank);
+    connect(m_engine, &QWrk::signalWRKSegment, this, &QSpyWrk::segment);
+    connect(m_engine, &QWrk::signalWRKChord, this, &QSpyWrk::chord);
+    connect(m_engine, &QWrk::signalWRKExpression, this, &QSpyWrk::expression);
+    connect(m_engine, &QWrk::signalWRKHairpin, this, &QSpyWrk::hairpin);
+    connect(m_engine, &QWrk::signalWRKMarker, this, &QSpyWrk::marker);
 
     cout.setRealNumberNotation(QTextStream::FixedNotation);
     cout.setRealNumberPrecision(4);
@@ -449,6 +415,11 @@ void QSpyWrk::expression(int track, long time, int code, const QString& text)
 void QSpyWrk::hairpin(int track, long time, int code, int dur)
 {
     dump(time, track, NO_CHANNEL, "Hairpin", QString("code=%1, dur=%2").arg(code).arg(dur));
+}
+
+void QSpyWrk::marker(long time, int smpte, const QString &text)
+{
+    dumpStr(time, smpte == 0 ? "Marker" : "SMPTE Marker", text);
 }
 
 void QSpyWrk::unknownChunk(int type, const QByteArray& data)

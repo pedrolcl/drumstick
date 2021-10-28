@@ -83,6 +83,7 @@
     void chord(int track, long time, const QString& name, const QByteArray& data);
     void expression(int track, long time, int code, const QString& text);
     void hairpin(int track, long time, int code, int dur);
+    void marker(long time, int smpte, const QString& text);
 
   private:
     bool m_verbosity;
