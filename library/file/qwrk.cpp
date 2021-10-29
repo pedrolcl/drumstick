@@ -622,8 +622,6 @@ QByteArray QWrk::readVarByteArray()
 
 void QWrk::processMarkers()
 {
-    QByteArray data;
-    QString name;
     int num = read32bit();
     for (int i = 0; (i < num) && (d->internalFilePos() < d->m_lastChunkPos) && !atEnd(); ++i) {
         int smpte = readByte();
@@ -632,13 +630,10 @@ void QWrk::processMarkers()
         readGap(5);
         int len = readByte();
         if (d->m_codec == nullptr) {
-            data = readByteArray(len);
-        } else {
-            name = readString(len);
-        }
-        if (d->m_codec == nullptr) {
+            QByteArray data = readByteArray(len);
             Q_EMIT signalWRKMarker2(time, smpte, data);
         } else {
+            QString name = readString(len);
             Q_EMIT signalWRKMarker(time, smpte, name);
         }
     }
