@@ -1118,8 +1118,12 @@ void QWrk::processVariableRecord(int max)
     QByteArray data;
     QString name = readVarString();
     readGap(31 - name.length());
-    for ( int i = 0; i < datalen; ++i )
+    for ( int i = 0; i < datalen; ++i ) {
         data += readByte();
+    }
+    while (data.endsWith('\0')) {
+        data.chop(1);
+    }
     Q_EMIT signalWRKVariableRecord(name, data);
 }
 
