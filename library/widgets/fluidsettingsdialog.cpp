@@ -86,10 +86,15 @@ FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
             ui->audioDriver->blockSignals(false);
         }
     }
+    ui->bufferTime->blockSignals(true);
+    ui->periodSize->blockSignals(true);
+    ui->periods->blockSignals(true);
+    //qDebug() << Q_FUNC_INFO;
 }
 
 FluidSettingsDialog::~FluidSettingsDialog()
 {
+    //qDebug() << Q_FUNC_INFO;
     if (m_driver != nullptr) {
         m_driver->close();
     }
@@ -98,6 +103,7 @@ FluidSettingsDialog::~FluidSettingsDialog()
 
 bool FluidSettingsDialog::checkRanges() const
 {
+    //qDebug() << Q_FUNC_INFO;
     if (ui->gain->hasAcceptableInput()) {
         ui->gain->deselect();
     } else {
@@ -124,6 +130,7 @@ bool FluidSettingsDialog::checkRanges() const
 
 void FluidSettingsDialog::accept()
 {
+    //qDebug() << Q_FUNC_INFO;
     if (checkRanges()) {
         writeSettings();
         if (m_driver != nullptr) {
@@ -172,6 +179,7 @@ QString FluidSettingsDialog::defaultAudioDriver() const
 
 void FluidSettingsDialog::chkDriverProperties(QSettings *settings)
 {
+    //qDebug() << Q_FUNC_INFO;
     if (m_driver != nullptr) {
         drumstick::rt::MIDIConnection conn;
         m_driver->close();
@@ -204,6 +212,7 @@ void FluidSettingsDialog::chkDriverProperties(QSettings *settings)
 void drumstick::widgets::FluidSettingsDialog::initBuffer()
 {
     if (ui->audioDriver->currentText() == QSTR_PULSEAUDIO) {
+        //qDebug() << Q_FUNC_INFO << QSTR_PULSEAUDIO;
         int bufferTime = ui->bufferTime->value();
         int minBufTime = ui->bufferTime->minimum();
         if (qEnvironmentVariableIsSet("PULSE_LATENCY_MSEC")) {
@@ -215,12 +224,14 @@ void drumstick::widgets::FluidSettingsDialog::initBuffer()
         ui->bufferTime->setValue( bufferTime );
         bufferTimeChanged( bufferTime );
     } else {
+        //qDebug() << Q_FUNC_INFO;
         bufferSizeChanged();
     }
 }
 
 void FluidSettingsDialog::readSettings()
 {
+    //qDebug() << Q_FUNC_INFO;
     SettingsFactory settings;
     QString fs_defSoundFont = QSTR_SOUNDFONT;
     QDir dir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
@@ -245,13 +256,13 @@ void FluidSettingsDialog::readSettings()
     ui->soundFont->setText( settings->value(QSTR_INSTRUMENTSDEFINITION, fs_defSoundFont).toString() );
     settings->endGroup();
 
-    initBuffer();
     audioDriverChanged( ui->audioDriver->currentText() );
     chkDriverProperties(settings.getQSettings());
 }
 
 void FluidSettingsDialog::writeSettings()
 {
+    //qDebug() << Q_FUNC_INFO;
     SettingsFactory settings;
     QString audioDriver;
     QString soundFont(QSTR_SOUNDFONT);
@@ -300,6 +311,7 @@ void FluidSettingsDialog::writeSettings()
 
 void FluidSettingsDialog::restoreDefaults()
 {
+    //qDebug() << Q_FUNC_INFO;
     ui->audioDriver->setCurrentText( defaultAudioDriver() );
     ui->bufferTime->setValue( DEFAULT_BUFFERTIME );
     ui->periodSize->setValue( DEFAULT_PERIODSIZE );
@@ -327,6 +339,7 @@ void FluidSettingsDialog::showFileDialog()
 
 void FluidSettingsDialog::audioDriverChanged(const QString &text)
 {
+    //qDebug() << Q_FUNC_INFO << text;
     if (text == QSTR_PULSEAUDIO) {
         ui->bufferTime->setDisabled(false);
         ui->bufferTime->blockSignals(false);
@@ -351,6 +364,7 @@ void FluidSettingsDialog::bufferTimeChanged(int value)
     int size = qRound( value * rate / 1000.0 );
     ui->periodSize->setValue( size );
     ui->periods->setValue( ui->periods->minimum() );
+    //qDebug() << Q_FUNC_INFO << "time:" << value << "rate:" << rate << "size:" << size;
 }
 
 void FluidSettingsDialog::bufferSizeChanged()
@@ -363,6 +377,7 @@ void FluidSettingsDialog::bufferSizeChanged()
     }
     int ms = qRound( 1000.0 * size / rate );
     ui->bufferTime->setValue(ms);
+    //qDebug() << Q_FUNC_INFO << "time:" << ms << "rate:" << rate << "size:" << size;
 }
 
 void FluidSettingsDialog::changeSoundFont(const QString& fileName)
