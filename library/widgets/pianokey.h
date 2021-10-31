@@ -56,6 +56,7 @@ namespace drumstick { namespace widgets {
         QRectF pixmapRect() const;
         bool getUsePixmap() const;
         void setUsePixmap(bool usePixmap);
+        void paintPixmap(QPixmap &pixmap, const QColor& color) const;
 
         static const PianoPalette keyPalette;
 

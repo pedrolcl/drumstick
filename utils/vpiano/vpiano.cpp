@@ -423,6 +423,8 @@ void VPiano::readSettings()
     PianoPalette bgpalette(PAL_KEYS);
     bgpalette.setColor(0, QColor("ivory"));
     bgpalette.setColor(1, QColor(0x40,0x10,0x10));
+    //bgpalette.setColor(0, QColorConstants::Black);
+    //bgpalette.setColor(1, QColorConstants::White);
     ui.pianokeybd->setBackgroundPalette(bgpalette);
     ui.pianokeybd->setVelocityTint(false);
 }

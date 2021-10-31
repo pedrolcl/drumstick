@@ -58,7 +58,8 @@ void PianoKey::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidge
     painter->setPen(blackPen);
     painter->drawRoundedRect(rect(), 20, 15, Qt::RelativeSize);
     if (m_usePixmap) {
-        painter->drawPixmap(rect(), getPixmap(), pixmapRect());
+        QPixmap p = getPixmap();
+        painter->drawPixmap(rect(), p, p.rect());
     }
 }
 
@@ -74,6 +75,11 @@ const QPixmap& PianoKey::getPixmap() const
 {
     static QPixmap blpixmap(QStringLiteral(":/vpiano/blkey.png"));
     static QPixmap whpixmap(QStringLiteral(":/vpiano/whkey.png"));
+    static bool isInitialized{false};
+    if (!isInitialized) {
+        paintPixmap(whpixmap, QColor::fromRgba(m_brush.color().rgba()^0xffffff));
+        isInitialized = true;
+    }
     if (m_pixmap.isNull()) {
         return m_black ? blpixmap : whpixmap;
     } else {
@@ -104,6 +110,16 @@ bool PianoKey::getUsePixmap() const
 void PianoKey::setUsePixmap(bool usePixmap)
 {
     m_usePixmap = usePixmap;
+}
+
+void PianoKey::paintPixmap(QPixmap &pixmap, const QColor& color) const
+{
+    if (!pixmap.isNull()) {
+        QPainter painter(&pixmap);
+        painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing);
+        painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+        painter.fillRect(pixmap.rect(), color);
+    }
 }
 
 } // namespace widgets
