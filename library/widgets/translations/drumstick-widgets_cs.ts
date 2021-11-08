@@ -348,32 +348,32 @@
         <translation>Dozvuk</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="132"/>
+        <location filename="../fluidsettingsdialog.cpp" line="140"/>
         <source>FluidSynth Initialized</source>
         <translation>FluidSynth inicializován</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="132"/>
+        <location filename="../fluidsettingsdialog.cpp" line="140"/>
         <source>FluidSynth Initialization Failed</source>
         <translation>FluidSynth se nepodařilo inicializovat</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="195"/>
+        <location filename="../fluidsettingsdialog.cpp" line="206"/>
         <source>Ready</source>
         <translation>Připraven</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="195"/>
+        <location filename="../fluidsettingsdialog.cpp" line="206"/>
         <source>Failed</source>
         <translation>Selhalo</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="319"/>
+        <location filename="../fluidsettingsdialog.cpp" line="334"/>
         <source>Select SoundFont</source>
         <translation>Vybrat zvukovou banku</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="319"/>
+        <location filename="../fluidsettingsdialog.cpp" line="334"/>
         <source>SoundFont Files (*.sf2)</source>
         <translation>Soubory zvukových bank (*.sf2)</translation>
     </message>

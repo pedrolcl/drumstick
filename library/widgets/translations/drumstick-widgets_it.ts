@@ -348,32 +348,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="132"/>
+        <location filename="../fluidsettingsdialog.cpp" line="140"/>
         <source>FluidSynth Initialized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="132"/>
+        <location filename="../fluidsettingsdialog.cpp" line="140"/>
         <source>FluidSynth Initialization Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="195"/>
+        <location filename="../fluidsettingsdialog.cpp" line="206"/>
         <source>Ready</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="195"/>
+        <location filename="../fluidsettingsdialog.cpp" line="206"/>
         <source>Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="319"/>
+        <location filename="../fluidsettingsdialog.cpp" line="334"/>
         <source>Select SoundFont</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="319"/>
+        <location filename="../fluidsettingsdialog.cpp" line="334"/>
         <source>SoundFont Files (*.sf2)</source>
         <translation type="unfinished"></translation>
     </message>

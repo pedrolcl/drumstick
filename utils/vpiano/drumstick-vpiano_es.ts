@@ -271,119 +271,124 @@ redistribuirlo bajo ciertas condiciones.</translation>
         <translation>Nombres de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="117"/>
+        <location filename="vpiano.ui" line="118"/>
         <source>&amp;Exit</source>
         <translation>&amp;Salir</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="122"/>
+        <location filename="vpiano.ui" line="123"/>
         <source>&amp;Preferences</source>
         <translation>&amp;Preferencias</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="127"/>
+        <location filename="vpiano.ui" line="128"/>
         <source>&amp;Connections</source>
         <translation>&amp;Conexiones</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="132"/>
+        <location filename="vpiano.ui" line="133"/>
         <source>About</source>
         <translation>Acerca de</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="137"/>
+        <location filename="vpiano.ui" line="138"/>
         <source>About Qt</source>
         <translation>Acerca de Qt</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="148"/>
+        <location filename="vpiano.ui" line="149"/>
         <source>Never</source>
         <translation>Nunca</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="156"/>
+        <location filename="vpiano.ui" line="157"/>
         <source>When Activated</source>
         <translation>Cuando se activen</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="164"/>
+        <location filename="vpiano.ui" line="165"/>
         <source>Always</source>
         <translation>Siempre</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="175"/>
+        <location filename="vpiano.ui" line="176"/>
         <source>Sharps</source>
         <translation>Sostenidos</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="186"/>
+        <location filename="vpiano.ui" line="187"/>
         <source>Flats</source>
         <translation>Bemoles</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="194"/>
+        <location filename="vpiano.ui" line="195"/>
         <source>Nothing</source>
         <translation>Nada</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="205"/>
+        <location filename="vpiano.ui" line="206"/>
         <source>Horizontal</source>
         <translation>Horizontal</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="213"/>
+        <location filename="vpiano.ui" line="214"/>
         <source>Vertical</source>
         <translation>Vertical</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="221"/>
+        <location filename="vpiano.ui" line="222"/>
         <source>Automatic</source>
         <translation>Automática</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="226"/>
+        <location filename="vpiano.ui" line="227"/>
         <source>Names Font</source>
         <translation>Fuente para  nombres</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="234"/>
+        <location filename="vpiano.ui" line="235"/>
         <source>Minimal</source>
         <translation>Mínimo</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="242"/>
+        <location filename="vpiano.ui" line="243"/>
         <source>C3</source>
         <translation>do3</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="253"/>
+        <location filename="vpiano.ui" line="254"/>
         <source>C4</source>
         <translation>do4</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="261"/>
+        <location filename="vpiano.ui" line="262"/>
         <source>C5</source>
         <translation>do5</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="272"/>
+        <location filename="vpiano.ui" line="273"/>
         <source>Standard</source>
         <translation>Estándar</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="280"/>
+        <location filename="vpiano.ui" line="281"/>
         <source>Custom with Sharps</source>
         <translation>Personalizadas con sostenidos</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="288"/>
+        <location filename="vpiano.ui" line="289"/>
         <source>Custom with Flats</source>
         <translation>Personalizadas con bemoles</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="296"/>
+        <location filename="vpiano.ui" line="297"/>
         <source>C</source>
         <translation>do</translation>
+    </message>
+    <message>
+        <location filename="vpiano.ui" line="305"/>
+        <source>Inverted Keys Color</source>
+        <translation>Teclas de color invertido</translation>
     </message>
     <message>
         <location filename="vpiano.cpp" line="461"/>

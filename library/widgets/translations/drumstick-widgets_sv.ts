@@ -348,32 +348,32 @@
         <translation>Eko</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="132"/>
+        <location filename="../fluidsettingsdialog.cpp" line="140"/>
         <source>FluidSynth Initialized</source>
         <translation>FluidSynth initialiserad</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="132"/>
+        <location filename="../fluidsettingsdialog.cpp" line="140"/>
         <source>FluidSynth Initialization Failed</source>
         <translation>FluidSynth-initialiseringen misslyckades</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="195"/>
+        <location filename="../fluidsettingsdialog.cpp" line="206"/>
         <source>Ready</source>
         <translation>Redo</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="195"/>
+        <location filename="../fluidsettingsdialog.cpp" line="206"/>
         <source>Failed</source>
         <translation>Misslyckades</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="319"/>
+        <location filename="../fluidsettingsdialog.cpp" line="334"/>
         <source>Select SoundFont</source>
         <translation>Välj ljudfont</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="319"/>
+        <location filename="../fluidsettingsdialog.cpp" line="334"/>
         <source>SoundFont Files (*.sf2)</source>
         <translation>SoundFont-filer (*.sf2)</translation>
     </message>
