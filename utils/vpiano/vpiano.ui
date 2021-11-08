@@ -101,6 +101,7 @@
     <addaction name="menuNote_Names"/>
     <addaction name="menuOctaves_Naming"/>
     <addaction name="actionNames_Font"/>
+    <addaction name="actionInverted_Keys_Color"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -294,6 +295,14 @@
    </property>
    <property name="text">
     <string>C</string>
+   </property>
+  </action>
+  <action name="actionInverted_Keys_Color">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Inverted Keys Color</string>
    </property>
   </action>
  </widget>

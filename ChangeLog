@@ -1,5 +1,10 @@
+2021-11-08
+    * Widgets: changed the white keys background picture depending on the key background color
+    * VPiano: new option to display inverted key colors
+
 2021-10-28
     * fix for ticket #37: WRK format markers are not decoded
+    * bump version to 2.5.0 for the new development cycle
 
 2021-10-24
     * Widgets library Swedish translation updated. Thanks to Magnus Johansson.

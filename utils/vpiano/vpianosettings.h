@@ -101,6 +101,9 @@ public:
     QStringList names_flats() const;
     void setNames_flats(const QStringList &names_flats);
 
+    bool invertedKeys() const;
+    void setInvertedKeys(bool newInvertedKeys);
+
 signals:
     void ValuesChanged();
 
@@ -140,6 +143,7 @@ private:
     QStringList m_names_sharps;
     QStringList m_names_flats;
     QFont m_namesFont;
+    bool m_invertedKeys;
 };
 
 #endif // PORTABLESETTINGS_H

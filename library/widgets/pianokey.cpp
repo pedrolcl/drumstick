@@ -16,11 +16,12 @@
     with this program; If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "pianokey.h"
 #include <QApplication>
 #include <QPainter>
 #include <QPalette>
 #include <drumstick/pianopalette.h>
+
+#include "pianokey.h"
 
 /**
  * @file pianokey.cpp
@@ -75,10 +76,10 @@ const QPixmap& PianoKey::getPixmap() const
 {
     static QPixmap blpixmap(QStringLiteral(":/vpiano/blkey.png"));
     static QPixmap whpixmap(QStringLiteral(":/vpiano/whkey.png"));
-    static bool isInitialized{false};
-    if (!isInitialized) {
-        paintPixmap(whpixmap, QColor::fromRgba(m_brush.color().rgba()^0xffffff));
-        isInitialized = true;
+    static QColor bgColor;
+    if (!m_black && (bgColor != m_brush.color())) {
+        bgColor = m_brush.color();
+        paintPixmap(whpixmap, QColor::fromRgba(bgColor.rgba()^0xffffff));
     }
     if (m_pixmap.isNull()) {
         return m_black ? blpixmap : whpixmap;

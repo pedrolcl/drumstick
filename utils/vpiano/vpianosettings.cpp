@@ -133,6 +133,7 @@ void VPianoSettings::internalRead(QSettings &settings)
     setNamesOctave(static_cast<LabelCentralOctave>(settings.value("namesOctave", OctaveC4).toInt()));
     setNames_sharps(settings.value("names_sharps", STD_NAMES_S).toStringList());
     setNames_flats(settings.value("names_flats", STD_NAMES_F).toStringList());
+    setInvertedKeys(settings.value("inverted_keys", false).toBool());
     settings.endGroup();
 
     emit ValuesChanged();
@@ -178,9 +179,20 @@ void VPianoSettings::internalSave(QSettings &settings)
     settings.setValue("namesOctave", m_namesOctave);
     settings.setValue("names_sharps", m_names_sharps);
     settings.setValue("names_flats", m_names_flats);
+    settings.setValue("inverted_keys", m_invertedKeys);
     settings.endGroup();
 
     settings.sync();
+}
+
+bool VPianoSettings::invertedKeys() const
+{
+    return m_invertedKeys;
+}
+
+void VPianoSettings::setInvertedKeys(bool newInvertedKeys)
+{
+    m_invertedKeys = newInvertedKeys;
 }
 
 QStringList VPianoSettings::names_flats() const

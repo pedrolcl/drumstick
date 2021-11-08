@@ -77,6 +77,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
     connect(ui.actionConnections, &QAction::triggered, this,  &VPiano::slotConnections);
     connect(ui.actionPreferences, &QAction::triggered, this,  &VPiano::slotPreferences);
     connect(ui.actionNames_Font, &QAction::triggered, this, &VPiano::slotChangeFont);
+    connect(ui.actionInverted_Keys_Color, &QAction::triggered, this, &VPiano::slotInvertedColors);
 
     QActionGroup* nameGroup = new QActionGroup(this);
     nameGroup->setExclusive(true);
@@ -413,20 +414,17 @@ void VPiano::readSettings()
     ui.pianokeybd->setBaseOctave(VPianoSettings::instance()->baseOctave());
     ui.pianokeybd->setNumKeys(VPianoSettings::instance()->numKeys(), VPianoSettings::instance()->startingKey());
 
-    ui.pianokeybd->setKeyPressedColor(Qt::red);
     /*
      * PianoKeybd::setKeyPressedColor(red) is equivalent to:
      *   PianoPalette hpalette(PAL_SINGLE);
      *   hpalette.setColor(0, Qt::red);
      *   ui.pianokeybd->setHighlightPalette(hpalette);
      */
-    PianoPalette bgpalette(PAL_KEYS);
-    bgpalette.setColor(0, QColor("ivory"));
-    bgpalette.setColor(1, QColor(0x40,0x10,0x10));
-    //bgpalette.setColor(0, QColorConstants::Black);
-    //bgpalette.setColor(1, QColorConstants::White);
-    ui.pianokeybd->setBackgroundPalette(bgpalette);
+    ui.pianokeybd->setKeyPressedColor(Qt::red);
     ui.pianokeybd->setVelocityTint(false);
+
+    ui.actionInverted_Keys_Color->setChecked(VPianoSettings::instance()->invertedKeys());
+    slotInvertedColors(ui.actionInverted_Keys_Color->isChecked());
 }
 
 void VPiano::setPortableConfig(const QString fileName)
@@ -560,4 +558,30 @@ void VPiano::slotNoteName(const QString& name)
     } else {
         ui.statusBar->showMessage(name);
     }
+}
+
+void VPiano::slotInvertedColors(bool checked)
+{
+    PianoPalette bgpal(PAL_KEYS);
+    PianoPalette fpal(PAL_FONT);
+    if (checked) {
+        bgpal.setColor(0, Qt::black);
+        bgpal.setColor(1, Qt::white);
+
+        fpal.setColor(0, Qt::white);
+        fpal.setColor(1, Qt::black);
+        fpal.setColor(2, Qt::white);
+        fpal.setColor(3, Qt::white);
+    } else {
+        bgpal.setColor(0, QColor("ivory"));
+        bgpal.setColor(1, QColor(0x40,0x10,0x10));
+
+        fpal.setColor(0, Qt::black);
+        fpal.setColor(1, Qt::white);
+        fpal.setColor(2, Qt::white);
+        fpal.setColor(3, Qt::white);
+    }
+    ui.pianokeybd->setBackgroundPalette(bgpal);
+    ui.pianokeybd->setForegroundPalette(fpal);
+    VPianoSettings::instance()->setInvertedKeys(checked);
 }
