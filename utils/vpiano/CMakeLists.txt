@@ -53,7 +53,15 @@ if (WIN32)
     list(APPEND vpiano_SRCS versioninfo.rc)
 endif()
 
-add_executable(drumstick-vpiano
+if (APPLE)
+    set(ICON_FILE "${PROJECT_SOURCE_DIR}/icons/drumstick.icns")
+    list(APPEND vpiano_SRCS ${ICON_FILE})
+    set_source_files_properties (${ICON_FILE} PROPERTIES
+        MACOSX_PACKAGE_LOCATION Resources
+    )
+endif()
+
+add_executable(drumstick-vpiano MACOSX_BUNDLE WIN32
     ${vpiano_SRCS}
 )
 
@@ -64,6 +72,20 @@ target_link_libraries(drumstick-vpiano PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     ${EXTRA_LIBS}
 )
+
+if (APPLE)
+    set_target_properties(drumstick-vpiano PROPERTIES
+        MACOSX_BUNDLE_INFO_STRING "Drumstick Virtual Piano"
+        MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+        MACOSX_BUNDLE_LONG_VERSION_STRING ${PROJECT_VERSION}
+        MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION}
+        MACOSX_BUNDLE_ICON_FILE "drumstick.icns"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "net.sourceforge.drumstick-vpiano"
+        MACOSX_BUNDLE_BUNDLE_NAME "drumstick-vpiano"
+        MACOSX_BUNDLE_COPYRIGHT "© 2008-2021 Pedro López-Cabanillas"
+        MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/cmake_admin/CustomBundleInfo.plist.in"
+    )
+endif()
 
 set(TS_FILES
     drumstick-vpiano_en.ts
