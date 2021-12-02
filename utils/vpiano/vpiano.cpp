@@ -155,7 +155,7 @@ void VPiano::initialize()
                 this, QOverload<int,int,int>::of(&VPiano::slotNoteOff),
                 Qt::QueuedConnection);
 
-        if (!VPianoSettings::instance()->lastInputConnection().isEmpty()) {
+        if (m_midiIn != nullptr) {
             m_midiIn->initialize(settings.getQSettings());
             MIDIConnection conn;
             auto conin = m_midiIn->connections(VPianoSettings::instance()->advanced());

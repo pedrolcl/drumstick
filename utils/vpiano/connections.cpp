@@ -110,8 +110,8 @@ void Connections::reopenDrivers()
     if (m_midiIn != nullptr) {
         if (m_connIn != m_midiIn->currentConnection() || m_settingsChanged) {
             m_midiIn->close();
+            m_midiIn->initialize(settings.getQSettings());
             if (!m_connIn.first.isEmpty()) {
-                m_midiIn->initialize(settings.getQSettings());
                 m_midiIn->open(m_connIn);
                 auto metaObj = m_midiIn->metaObject();
                 if ((metaObj->indexOfProperty("status") != -1) &&
@@ -179,7 +179,6 @@ void Connections::refreshInputs(int index)
     }
     ui.m_inputPorts->clear();
     if (m_midiIn != nullptr) {
-        ui.m_inputPorts->addItem(QString());
         const QList<MIDIConnection> conns = m_midiIn->connections(ui.m_advanced->isChecked());
         for (const MIDIConnection& conn : conns) {
             ui.m_inputPorts->addItem(conn.first, QVariant::fromValue(conn));

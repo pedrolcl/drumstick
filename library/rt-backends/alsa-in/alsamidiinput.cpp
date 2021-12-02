@@ -93,6 +93,7 @@ namespace drumstick { namespace rt {
                 m_initialized = true;
                 m_status = true;
                 m_diagnostics.clear();
+                m_client->startSequencerInput();
             }
         }
 
@@ -136,6 +137,7 @@ namespace drumstick { namespace rt {
             auto inputs = m_client->getAvailableInputs();
             m_clientFilter = !advanced;
             m_inputDevices.clear();
+            m_inputDevices << MIDIConnection();
             for (const PortInfo& p : qAsConst(inputs)) {
                 QString name = p.getClientName();
                 clientNames << name;
@@ -185,7 +187,6 @@ namespace drumstick { namespace rt {
                 m_currentInput = newDevice;
                 m_port->unsubscribeAll();
                 m_port->subscribeFrom(newDevice.second.toString());
-                m_client->startSequencerInput();
                 return true;
             }
             return false;
