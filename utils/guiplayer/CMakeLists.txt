@@ -67,6 +67,10 @@ target_link_libraries(drumstick-guiplayer PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
 )
 
+if(QT_VERSION VERSION_GREATER_EQUAL 6.0.0)
+    target_link_libraries(drumstick-guiplayer PRIVATE Qt6::Core5Compat)
+endif()
+
 set(TS_FILES
     drumstick-guiplayer_cs.ts
     drumstick-guiplayer_es.ts

@@ -21,6 +21,7 @@
 #include <QDataStream>
 #include <QString>
 #include <QtTest>
+#include <QTextCodec>
 #include <drumstick/qwrk.h>
 
 using namespace drumstick::File;

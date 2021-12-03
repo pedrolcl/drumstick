@@ -22,4 +22,8 @@ target_link_libraries (fileTest2 PRIVATE
     Qt${QT_VERSION_MAJOR}::Test
 )
 
+if(QT_VERSION VERSION_GREATER_EQUAL 6.0.0)
+    target_link_libraries(fileTest2 PRIVATE Qt6::Core5Compat)
+endif()
+
 add_test (fileTest2 ${PROJECT_BINARY_DIR}/bin/fileTest2)

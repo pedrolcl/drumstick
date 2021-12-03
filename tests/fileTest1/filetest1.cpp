@@ -21,6 +21,7 @@
 #include <QDataStream>
 #include <QString>
 #include <QtTest>
+#include <QTextCodec>
 #include <drumstick/qsmf.h>
 
 using namespace drumstick::File;

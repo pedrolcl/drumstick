@@ -31,7 +31,6 @@
 #include <QTextCodec>
 #include <QToolTip>
 #include <QUrl>
-#include <QTextCodec>
 #include <qmath.h>
 
 #include "guiplayer.h"

@@ -39,5 +39,9 @@ target_link_libraries(drumstick-dumpwrk PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
 )
 
+if(QT_VERSION VERSION_GREATER_EQUAL 6.0.0)
+    target_link_libraries(drumstick-dumpwrk PRIVATE Qt6::Core5Compat)
+endif()
+
 install(TARGETS drumstick-dumpwrk
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

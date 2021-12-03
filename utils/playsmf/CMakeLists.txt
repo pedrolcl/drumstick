@@ -40,5 +40,9 @@ target_link_libraries(drumstick-playsmf PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
 )
 
+if(QT_VERSION VERSION_GREATER_EQUAL 6.0.0)
+    target_link_libraries(drumstick-playsmf PRIVATE Qt6::Core5Compat)
+endif()
+
 install(TARGETS drumstick-playsmf
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
