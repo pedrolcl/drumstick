@@ -20,7 +20,7 @@
 #include <QCoreApplication>
 #include <QFile>
 #include <QReadLocker>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QThread>
 #include <QWriteLocker>
 #include <drumstick/alsaclient.h>
@@ -2442,17 +2442,18 @@ getRuntimeALSALibraryVersion()
 int
 getRuntimeALSALibraryNumber()
 {
-    QRegExp rx("(\\d+)");
+    QRegularExpression rx("(\\d+)");
     QString str = getRuntimeALSALibraryVersion();
     bool ok;
-    int pos = 0, result = 0, j = 0;
-    while ((pos = rx.indexIn(str, pos)) != -1 && j < 3) {
-        int v = rx.cap(1).toInt(&ok);
+    int result = 0, j = 0;
+    QRegularExpressionMatchIterator i = rx.globalMatch(str);
+    while (i.hasNext() && (j < 3)) {
+        QRegularExpressionMatch m = i.next();
+        int v = m.captured(1).toInt(&ok);
         if (ok) {
             result <<= 8;
             result += v;
         }
-        pos += rx.matchedLength();
         j++;
     }
     return result;
@@ -2467,13 +2468,16 @@ getRuntimeALSALibraryNumber()
 QString
 getRuntimeALSADriverVersion()
 {
-    QRegExp rx(".*Driver Version.*([\\d\\.]+).*");
+    QRegularExpression rx("([\\d\\.]+)");
     QString s;
     QFile f("/proc/asound/version");
     if (f.open(QFile::ReadOnly)) {
         QTextStream str(&f);
-        if (rx.exactMatch(str.readLine().trimmed()))
-            s = rx.cap(1);
+        QString sub = str.readLine().trimmed();
+        QRegularExpressionMatch m = rx.match(sub);
+        if (m.hasMatch()) {
+            s = m.captured(1);
+        }
     }
     return s;
 }
@@ -2486,17 +2490,18 @@ getRuntimeALSADriverVersion()
 int
 getRuntimeALSADriverNumber()
 {
-    QRegExp rx("(\\d+)");
+    QRegularExpression rx("(\\d+)");
     QString str = getRuntimeALSADriverVersion();
     bool ok;
-    int pos = 0, result = 0, j = 0;
-    while ((pos = rx.indexIn(str, pos)) != -1 && j < 3) {
-        int v = rx.cap(1).toInt(&ok);
+    int result = 0, j = 0;
+    QRegularExpressionMatchIterator i = rx.globalMatch(str);
+    while (i.hasNext() && (j < 3)) {
+        QRegularExpressionMatch m = i.next();
+        int v = m.captured(1).toInt(&ok);
         if (ok) {
             result <<= 8;
             result += v;
         }
-        pos += rx.matchedLength();
         j++;
     }
     return result;

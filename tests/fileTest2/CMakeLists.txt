@@ -14,10 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-if (QT_VERSION VERSION_GREATER_EQUAL 6.0)
-    find_package(Qt6 COMPONENTS Core5Compat REQUIRED)
-endif()
-
 add_executable (fileTest2 filetest2.cpp)
 
 target_link_libraries (fileTest2 PRIVATE
@@ -25,11 +21,5 @@ target_link_libraries (fileTest2 PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Test
 )
-
-if (QT_VERSION VERSION_GREATER_EQUAL 6.0)
-    target_link_libraries(fileTest2 PRIVATE
-        Qt6::Core5Compat
-    )
-endif()
 
 add_test (fileTest2 ${PROJECT_BINARY_DIR}/bin/fileTest2)

@@ -14,10 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-if (QT_VERSION VERSION_GREATER_EQUAL 6.0)
-    find_package(Qt6 COMPONENTS Core5Compat REQUIRED)
-endif()
-
 set(dumprmi_SRCS
     dumprmi.cpp
     dumprmi.h
@@ -43,12 +39,6 @@ target_link_libraries(drumstick-dumprmi PRIVATE
     Drumstick::File
     Qt${QT_VERSION_MAJOR}::Core
 )
-
-if (QT_VERSION VERSION_GREATER_EQUAL 6.0)
-    target_link_libraries(drumstick-dumprmi PRIVATE
-        Qt6::Core5Compat
-    )
-endif()
 
 install(TARGETS drumstick-dumprmi
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

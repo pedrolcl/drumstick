@@ -16,10 +16,6 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-if (QT_VERSION VERSION_GREATER_EQUAL 6.0)
-    find_package(Qt6 COMPONENTS Core5Compat REQUIRED)
-endif()
-
 set(drumstick-file_QTOBJ_SRCS
     ../include/drumstick/qsmf.h
     ../include/drumstick/qwrk.h
