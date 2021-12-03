@@ -29,7 +29,7 @@ include(SCMRevision)
 include(CTest)
 include(GNUInstallDirs)
 
-#set(RELEASE_DATE "October 24, 2021")
+#set(RELEASE_DATE "December 30, 2021")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
@@ -80,9 +80,20 @@ else()
     set(_FRAMEWORKS_INIT OFF)
 endif()
 
+# ALSA Sequencer is only available on Linux
+if (${CMAKE_SYSTEM} MATCHES "Linux")
+    set(_BUILD_ALSA_INIT ON)
+else()
+    set(_BUILD_ALSA_INIT OFF)
+endif()
+
 option(BUILD_DOCS "Build Doxygen documentation and man pages" ${_DOCS_INIT})
 option(BUILD_UTILS "Build Utilities and Examples" ON)
 option(BUILD_FRAMEWORKS "Build macOS style frameworks" ${_FRAMEWORKS_INIT})
+option(BUILD_ALSA "Build the libdrumstick-alsa library (Linux only)" ${_BUILD_ALSA_INIT})
+option(BUILD_FILE "Build the libdrumstick-file library" ON)
+option(BUILD_RT "Build the libdrumstick-rt library" ON)
+option(BUILD_WIDGETS "Build the libdrumstick-widgets library" ON)
 # set CMAKE_MACOSX_BUNDLE OFF in macOS to avoid bundles
 option(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)
 option(USE_DBUS "Include DBus support (required for RealtimeKit)" ${_DBUS_INIT})
@@ -90,6 +101,10 @@ option(USE_PULSEAUDIO "Build Sonivox RT backend (if PulseAudio is available)" ${
 option(USE_FLUIDSYNTH "Build FluidSynth RT backend (if available)" ON)
 option(USE_NETWORK "Build Network RT backend (if QtNetwork is available)" ON)
 option(USE_QT "Choose which Qt major version (5 or 6) to prefer. By default uses whatever is found")
+
+if (BUILD_WIDGETS AND NOT BUILD_RT)
+    message(FATAL_ERROR "libdrumstick-widgets requires libdrumstick-rt")
+endif()
 
 if(STATIC_DRUMSTICK)
     set(BUILD_SHARED_LIBS OFF)
@@ -128,18 +143,21 @@ else()
     if (QT_VERSION VERSION_LESS 6.2.0)
        message (FATAL_ERROR "Qt6 >= 6.2 is required, or use Qt5 >= 5.9")
     endif()
-    find_package(Qt6 6.2 COMPONENTS Core Core5Compat REQUIRED)
+    find_package(Qt6 6.2 COMPONENTS Core REQUIRED)
+    if (BUILD_FILE)
+        find_package(Qt6Core5Compat REQUIRED)
+    endif()
 endif()
 
 message(STATUS "Found Qt version = ${QT_VERSION}")
 
-if(USE_DBUS)
+if(BUILD_ALSA AND USE_DBUS)
     find_package(Qt${QT_VERSION_MAJOR}DBus REQUIRED)
     add_definitions(-DRTKIT_SUPPORT)
     message(STATUS "Found QtDBus version = ${Qt${QT_VERSION_MAJOR}DBus_VERSION}")
 endif()
 
-if(USE_NETWORK)
+if(BUILD_RT AND USE_NETWORK)
     find_package(Qt${QT_VERSION_MAJOR}Network REQUIRED)
     if(Qt${QT_VERSION_MAJOR}Network_FOUND)
         message(STATUS "Found QtNetwork version = ${Qt${QT_VERSION_MAJOR}Network_VERSION}")
@@ -155,6 +173,7 @@ else()
 	message(FATAL_ERROR "Program pkg-config not found")
 endif()
 
+# ALSA Sequencer is only available on Linux
 if(${CMAKE_SYSTEM} MATCHES "Linux")
     pkg_check_modules(ALSA REQUIRED IMPORTED_TARGET alsa>=1.0.0)
     if(ALSA_FOUND)
@@ -162,7 +181,7 @@ if(${CMAKE_SYSTEM} MATCHES "Linux")
     endif()
 endif()
 
-if(UNIX AND NOT APPLE)
+if(BUILD_RT AND PKG_CONFIG_FOUND AND UNIX AND NOT APPLE)
     if (USE_PULSEAUDIO)
         pkg_check_modules(PULSE QUIET IMPORTED_TARGET libpulse-simple)
     endif()
@@ -173,7 +192,7 @@ if(UNIX AND NOT APPLE)
     endif()
 endif()
 
-if (PKG_CONFIG_FOUND)
+if (BUILD_RT AND PKG_CONFIG_FOUND)
     if (USE_FLUIDSYNTH)
         pkg_check_modules(FLUIDSYNTH QUIET IMPORTED_TARGET fluidsynth>=1.1.1)
     endif()
@@ -207,6 +226,10 @@ message (STATUS "${PROJECT_NAME} v${PROJECT_VERSION}
     Network support: ${USE_NETWORK}
     PulseAudio support: ${USE_PULSEAUDIO}
     FluidSynth support: ${USE_FLUIDSYNTH}
+    Building libdrumstick-alsa: ${BUILD_ALSA}
+    Building libdrumstick-file: ${BUILD_FILE}
+    Building libdrumstick-rt: ${BUILD_RT}
+    Building libdrumstick-widgets: ${BUILD_WIDGETS}
     Building tests: ${BUILD_TESTING}
     Building docs: ${BUILD_DOCS}
     Building utils: ${BUILD_UTILS}

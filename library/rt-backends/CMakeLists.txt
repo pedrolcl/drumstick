@@ -21,7 +21,7 @@ if(FALSE)
     add_subdirectory(dummy-out)
 endif()
 
-if(ALSA_FOUND)
+if(BUILD_ALSA AND ALSA_FOUND)
     add_subdirectory(alsa-in)
     add_subdirectory(alsa-out)
 endif()

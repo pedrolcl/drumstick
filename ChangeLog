@@ -1,3 +1,7 @@
+2021-12-03
+    * RT, VPiano: Fixed ALSA backend, enable empty input connection.
+    * New build options: BUILD_ALSA, BUILD_FILE, BUILD_RT, BUILD_WIDGETS
+
 2021-11-08
     * Widgets: changed the white keys background picture depending on the key background color
     * VPiano: new option to display inverted key colors

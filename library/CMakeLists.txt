@@ -14,14 +14,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-if(ALSA_FOUND)
+if(BUILD_ALSA AND ALSA_FOUND)
     add_subdirectory(alsa)
 endif()
-add_subdirectory(file)
-add_subdirectory(rt)
-add_subdirectory(rt-backends)
-add_subdirectory(widgets)
-add_subdirectory(vpiano-plugin)
+if (BUILD_FILE)
+    add_subdirectory(file)
+endif()
+if (BUILD_RT)
+    add_subdirectory(rt)
+    add_subdirectory(rt-backends)
+    if (BUILD_WIDGETS)
+        add_subdirectory(widgets)
+        add_subdirectory(vpiano-plugin)
+    endif()
+endif()
 
 configure_file( drumstick-config.cmake
   ${CMAKE_BINARY_DIR}/drumstick-config.cmake

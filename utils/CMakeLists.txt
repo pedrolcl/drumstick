@@ -14,16 +14,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-add_subdirectory(dumpsmf)
-add_subdirectory(dumprmi)
-add_subdirectory(dumpwrk)
-add_subdirectory(vpiano)
+if (BUILD_FILE)
+    add_subdirectory(dumpsmf)
+    add_subdirectory(dumprmi)
+    add_subdirectory(dumpwrk)
+endif()
 
-if(ALSA_FOUND)
+if(BUILD_ALSA AND ALSA_FOUND)
     add_subdirectory(dumpmid)
-    add_subdirectory(playsmf)
-    add_subdirectory(guiplayer)
+    if(BUILD_FILE)
+        add_subdirectory(playsmf)
+        add_subdirectory(guiplayer)
+    endif()
     add_subdirectory(sysinfo)
     add_subdirectory(metronome)
     add_subdirectory(drumgrid)
+endif()
+
+if (BUILD_RT AND BUILD_WIDGETS)
+    add_subdirectory(vpiano)
 endif()
