@@ -59,9 +59,12 @@ target_include_directories(drumstick-rt-mac-in PRIVATE
 target_link_libraries(drumstick-rt-mac-in PUBLIC
     Drumstick::RT
     Qt${QT_VERSION_MAJOR}::Core
-    Qt${QT_VERSION_MAJOR}::Concurrent
     "-framework CoreMIDI -framework CoreFoundation -framework CoreServices -framework Foundation"
 )
+if (QT_VERSION VERSION_LESS 6.0.0)
+    target_link_libraries( drumstick-rt-mac-in PUBLIC
+        Qt${QT_VERSION_MAJOR}::Concurrent )
+endif()
 
 set_target_properties(drumstick-rt-mac-in PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/${DRUMSTICK_PLUGINS_DIR})

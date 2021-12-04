@@ -22,10 +22,10 @@
 
 #include <QStringList>
 #include <QMutex>
-//#include <QTextCodec>
 #include <QObject>
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
 #include <QtConcurrent>
-
+#endif
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreMIDI/CoreMIDI.h>
 
@@ -133,6 +133,7 @@ namespace rt {
             int num = MIDIGetNumberOfSources();
             m_clientFilter = !advanced;
             m_inputDevices.clear();
+            m_inputDevices << MIDIConnection();
             for (int i = 0; i < num; ++i) {
                 bool excluded = false;
                 MIDIEndpointRef dest = MIDIGetSource( i );
