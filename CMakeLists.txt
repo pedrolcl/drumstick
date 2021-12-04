@@ -94,7 +94,6 @@ option(BUILD_ALSA "Build the libdrumstick-alsa library (Linux only)" ${_BUILD_AL
 option(BUILD_FILE "Build the libdrumstick-file library" ON)
 option(BUILD_RT "Build the libdrumstick-rt library" ON)
 option(BUILD_WIDGETS "Build the libdrumstick-widgets library" ON)
-# set CMAKE_MACOSX_BUNDLE OFF in macOS to avoid bundles
 option(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)
 option(USE_DBUS "Include DBus support (required for RealtimeKit)" ${_DBUS_INIT})
 option(USE_PULSEAUDIO "Build Sonivox RT backend (if PulseAudio is available)" ${_PULSE_INIT})

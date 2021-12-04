@@ -61,7 +61,7 @@ if (APPLE)
     )
 endif()
 
-add_executable(drumstick-vpiano MACOSX_BUNDLE WIN32
+add_executable(drumstick-vpiano
     ${vpiano_SRCS}
 )
 
@@ -73,8 +73,14 @@ target_link_libraries(drumstick-vpiano PRIVATE
     ${EXTRA_LIBS}
 )
 
+if (WIN32)
+    set_target_properties( drumstick-vpiano PROPERTIES
+        WIN32_EXECUTABLE TRUE )
+endif()
+
 if (APPLE)
     set_target_properties(drumstick-vpiano PROPERTIES
+        MACOSX_BUNDLE TRUE
         MACOSX_BUNDLE_INFO_STRING "Drumstick Virtual Piano"
         MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
         MACOSX_BUNDLE_LONG_VERSION_STRING ${PROJECT_VERSION}
@@ -162,7 +168,7 @@ endif()
 
 install(TARGETS drumstick-vpiano
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        BUNDLE DESTINATION ${CMAKE_INSTALL_BINDIR})
+        BUNDLE DESTINATION ~/Applications )
 
 install(FILES drumstick-vpiano.desktop
         DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
