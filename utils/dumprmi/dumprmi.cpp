@@ -27,6 +27,9 @@
 #include <cstdlib>
 #include "dumprmi.h"
 
+DISABLE_WARNING_PUSH
+DISABLE_WARNING_DEPRECATED_DECLARATIONS
+
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
 #define right Qt::right
 #define left Qt::left
@@ -281,3 +284,5 @@ void DumpRmid::setExtract(bool enable)
 {
     m_extract = enable;
 }
+
+DISABLE_WARNING_POP

@@ -95,8 +95,8 @@ protected:
     void readPorts(MidiClient* seq);
     void freePorts();
 
-    const unsigned char* getEventFilter() __attribute__((deprecated));
-    void setEventFilter(unsigned char* filter) __attribute__((deprecated));
+    Q_DECL_DEPRECATED const unsigned char* getEventFilter();
+    Q_DECL_DEPRECATED void setEventFilter(unsigned char* filter);
 
 private:
     snd_seq_client_info_t* m_Info;

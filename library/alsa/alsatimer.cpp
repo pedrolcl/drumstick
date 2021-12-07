@@ -219,8 +219,8 @@ TimerInfo::getSizeOfInfo() const
 
 /**
  * Gets the maximum timer ticks
- * @deprecated
  * @return Maximum timer ticks
+ * @deprecated
  */
 long
 TimerInfo::getTicks()

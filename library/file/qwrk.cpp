@@ -25,6 +25,9 @@
 #include <cmath>
 #include <drumstick/qwrk.h>
 
+DISABLE_WARNING_PUSH
+DISABLE_WARNING_DEPRECATED_DECLARATIONS
+
 /**
  * @file qwrk.cpp
  * Implementation of a class managing Cakewalk WRK Files input
@@ -137,8 +140,10 @@ QWrk::~QWrk()
 { }
 
 /**
- * Gets the text codec used for text meta-events I/O
+ * Gets the text codec used for text meta-events I/O.
+ *
  * @return QTextCodec pointer
+ * @deprecated because the class QTextCodec was removed from QtCore since Qt6.
  */
 QTextCodec* QWrk::getTextCodec()
 {
@@ -150,6 +155,7 @@ QTextCodec* QWrk::getTextCodec()
  * The engine doesn't take ownership of the codec instance.
  *
  * @param codec QTextCodec pointer
+ * @deprecated because the class QTextCodec was removed from QtCore since Qt6.
  */
 void QWrk::setTextCodec(QTextCodec *codec)
 {
@@ -1445,3 +1451,5 @@ const QByteArray QWrk::HEADER = QByteArrayLiteral("CAKEWALK");
 
 } // namespace File
 } // namespace drumstick
+
+DISABLE_WARNING_POP

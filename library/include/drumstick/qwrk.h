@@ -77,7 +77,9 @@ enum WrkChunkType {
 /**
  * Cakewalk WRK file format (input only)
  *
- * This class is used to parse Cakewalk WRK Files
+ * This class is used to parse Cakewalk WRK Files.
+ * Signals with QString parameters are deprecated because the class QTextCodec was removed from QtCore since Qt6.
+ *
  * @since 0.3.0
  */
 class DRUMSTICK_EXPORT QWrk : public QObject
@@ -90,8 +92,8 @@ public:
 
     void readFromStream(QDataStream *stream);
     void readFromFile(const QString& fileName);
-    QTextCodec* getTextCodec();
-    void setTextCodec(QTextCodec *codec);
+    Q_DECL_DEPRECATED QTextCodec* getTextCodec();
+    Q_DECL_DEPRECATED void setTextCodec(QTextCodec *codec);
     long getFilePos();
 
     int getNow() const;
@@ -259,8 +261,10 @@ Q_SIGNALS:
      * @param time musical time
      * @param type Text type
      * @param data Text data
+     * @deprecated because the class QTextCodec was removed from QtCore since Qt6.
+     * use signalWRKText2() instead
      */
-    void signalWRKText(int track, long time, int type, const QString& data);
+    Q_DECL_DEPRECATED void signalWRKText(int track, long time, int type, const QString& data);
 
     /**
      * Emitted after reading a WRK Time signature
@@ -303,7 +307,10 @@ Q_SIGNALS:
      * @param selected true if track is selected
      * @param muted true if track is muted
      * @param loop true if loop is enabled
+     * @deprecated because the class QTextCodec was removed from QtCore since Qt6.
+     * use signalWRKTrack2() instead
      */
+    Q_DECL_DEPRECATED
     void signalWRKTrack(const QString& name1,
                         const QString& name2,
                         int trackno, int channel, int pitch,
@@ -387,8 +394,10 @@ Q_SIGNALS:
      * Emitted after reading a comments chunk
      *
      * @param data file text comments
+     * @deprecated because the class QTextCodec was removed from QtCore since Qt6.
+     * use signalWRKComments2() instead
      */
-    void signalWRKComments(const QString& data);
+    Q_DECL_DEPRECATED void signalWRKComments(const QString& data);
 
     /**
      * Emitted after reading a variable chunk.
@@ -419,7 +428,10 @@ Q_SIGNALS:
      * @param selected track is selected
      * @param muted track is muted
      * @param loop track loop enabled
+     * @deprecated because the class QTextCodec was removed from QtCore since Qt6.
+     * use signalWRKNewTrack2() instead
      */
+    Q_DECL_DEPRECATED
     void signalWRKNewTrack( const QString& name,
                             int trackno, int channel, int pitch,
                             int velocity, int port,
@@ -437,15 +449,19 @@ Q_SIGNALS:
      *
      * @param track track number
      * @param name track name
+     * @deprecated because the class QTextCodec was removed from QtCore since Qt6.
+     * use signalWRKTrackName2() instead
      */
-    void signalWRKTrackName(int track, const QString& name);
+    Q_DECL_DEPRECATED void signalWRKTrackName(int track, const QString& name);
 
     /**
      * Emitted after reading a string event types chunk.
      *
      * @param strs list of declared string event types
+     * @deprecated because the class QTextCodec was removed from QtCore since Qt6.
+     * use signalWRKStringTable2() instead
      */
-    void signalWRKStringTable(const QStringList& strs);
+    Q_DECL_DEPRECATED void signalWRKStringTable(const QStringList& strs);
 
     /**
      * Emitted after reading a segment prefix chunk.
@@ -453,8 +469,10 @@ Q_SIGNALS:
      * @param track track number
      * @param time segment time offset
      * @param name segment name
+     * @deprecated because the class QTextCodec was removed from QtCore since Qt6.
+     * use signalWRKSegment2() instead
      */
-    void signalWRKSegment(int track, long time, const QString& name);
+    Q_DECL_DEPRECATED void signalWRKSegment(int track, long time, const QString& name);
 
     /**
      * Emitted after reading a chord diagram chunk.
@@ -473,8 +491,10 @@ Q_SIGNALS:
      * @param time event time in ticks
      * @param code expression event code
      * @param text expression text
+     * @deprecated because the class QTextCodec was removed from QtCore since Qt6.
+     * use signalWRKExpression2() instead
      */
-    void signalWRKExpression(int track, long time, int code, const QString& text);
+    Q_DECL_DEPRECATED void signalWRKExpression(int track, long time, int code, const QString& text);
 
     /**
      * Emitted after reading a hairpin symbol (notation) chunk.
@@ -584,12 +604,16 @@ Q_SIGNALS:
 
     /**
      * Emitted after reading a text marker
+     * This is deprecated because the class QTextCodec was removed from QtCore since Qt6
+     * Use signalWRKMarker2() instead
      *
      * @param time event time in ticks or smpte
      * @param type tipe of time: 0=ticks or 1=smpte
      * @param data marker text
+     * @deprecated because the class QTextCodec was removed from QtCore since Qt6.
+     * use signalWRKMarker2() instead
      */
-    void signalWRKMarker(long time, int type, const QString& data);
+    Q_DECL_DEPRECATED void signalWRKMarker(long time, int type, const QString& data);
 
     /**
      * Emitted after reading a text marker

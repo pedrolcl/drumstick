@@ -1946,7 +1946,7 @@ ClientInfo::getErrorBounce()
 /**
  * Gets the client's event filter.
  * @return The client's event filter.
- * @deprecated
+ * @deprecated Use isFiltered() instead.
  */
 const unsigned char*
 ClientInfo::getEventFilter()
@@ -2017,7 +2017,7 @@ ClientInfo::setErrorBounce(bool val)
 /**
  * Sets the event filter.
  * @param filter The event filter.
- * @deprecated
+ * @deprecated Use addFilter() instead.
  */
 void
 ClientInfo::setEventFilter(unsigned char *filter)

@@ -128,8 +128,8 @@ public:
     void setTracks(int tracks);
     int  getFileFormat();
     void setFileFormat(int fileFormat);
-    QTextCodec* getTextCodec();
-    void setTextCodec(QTextCodec *codec);
+    Q_DECL_DEPRECATED QTextCodec* getTextCodec();
+    Q_DECL_DEPRECATED void setTextCodec(QTextCodec *codec);
 
 signals:
     /**
@@ -232,8 +232,16 @@ signals:
      * Emitted after reading a SMF text message
      * @param typ Text type
      * @param data Text data
+     * @deprecated because the class QTextCodec was removed from QtCore since Qt6.
+     * use signalSMFText2() instead.
      */
-    void signalSMFText(int typ, const QString& data);
+    Q_DECL_DEPRECATED void signalSMFText(int typ, const QString& data);
+    /**
+     * Emitted after reading a SMF text message
+     * @param typ Text type
+     * @param data Text data
+     */
+    void signalSMFText2(int typ, const QByteArray& data);
     /**
      * Emitted after reading a SMPT offset message
      * @param b0 Hours

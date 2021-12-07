@@ -29,7 +29,8 @@ $ sudo ldconfig
 Minimum supported versions:
 
 * CMake 3.14
-* Qt5 >= 5.9, Qt6 >= 6.2
+* Qt5 >= 5.9, Qt6 >= 6.2 
+  When using Qt6, Qt6Core5Compat is required for Drumstick::File
 * For Linux: ALSA 1.x
 * RT backends for
     * Linux: ALSA
@@ -104,10 +105,34 @@ Build unit tests (default)
 Don't build unit tests
 
 -DBUILD_FRAMEWORKS=YES|ON|1
-Build macOS style frameworks (default)
+Build macOS style frameworks (default on macOS)
 
--DBUILD_FRAMEWORKS=NO|OFF|0
+-DBUILD_FRAMEWORKS=NO|OFF|02
 Don't build macOS style frameworks, build Unix style dynamic libraries (.dylib)
+
+-DBUILD_ALSA=YES|ON|1
+Build Drumstick::ALSA (default on Linux)
+
+-DBUILD_ALSA=NO|OFF|0
+Don't build Drumstick::ALSA (default on non Linux Operating Systems)
+
+-DBUILD_FILE=YES|ON|1
+Build Drumstick::File (default)
+
+-DBUILD_FILE=NO|OFF|0
+Don't build Drumstick::File 
+
+-DBUILD_RT=YES|ON|1
+Build Drumstick::RT (default)
+
+-DBUILD_RT=NO|OFF|0
+Don't build Drumstick::RT
+
+-DBUILD_WIDGETS=YES|ON|1
+Build Drumstick::Widgets (default)
+
+-DBUILD_WIDGETS=NO|OFF|0
+Don't build Drumstick::Widgets
 
 -DUSE_NETWORK=YES|ON|1  
 Build the ipMIDI Network RT backend (default)
@@ -132,3 +157,5 @@ Don't build the FluidSynth RT output backend
 -DUSE_QT=5|6
 Choose which Qt major version (5 or 6) to prefer. By default (if not set) uses whatever is found.
 note: Qt6 support is still experimental.
+note2: When using Qt6, the Core5Compat additional library is required for Drumstick::File
+

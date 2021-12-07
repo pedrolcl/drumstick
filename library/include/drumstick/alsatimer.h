@@ -71,7 +71,7 @@ public:
     long getFrequency();
 
 protected:
-    long getTicks() __attribute__((deprecated));
+    Q_DECL_DEPRECATED long getTicks();
     
 private:
     snd_timer_info_t *m_Info;

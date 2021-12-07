@@ -25,6 +25,9 @@
 #include <drumstick/qsmf.h>
 #include <drumstick/rmid.h>
 
+DISABLE_WARNING_PUSH
+DISABLE_WARNING_DEPRECATED_DECLARATIONS
+
 using namespace drumstick::File;
 
 class FileTest3 : public QObject
@@ -299,3 +302,5 @@ void FileTest3::testCaseReadRmidi()
 QTEST_APPLESS_MAIN(FileTest3)
 
 #include "filetest3.moc"
+
+DISABLE_WARNING_POP

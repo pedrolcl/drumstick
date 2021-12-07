@@ -133,7 +133,7 @@ public:
     virtual SequencerEvent* clone() const;
 
 protected:
-    void free() __attribute__((deprecated));
+    Q_DECL_DEPRECATED void free();
 
     /**
      * ALSA sequencer event record.

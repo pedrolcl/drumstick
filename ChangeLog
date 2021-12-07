@@ -1,3 +1,8 @@
+2021-12-07
+    * Documentation/deprecation of Drumstick::File functions affected by QTextCodec
+    * Documented new build options and Qt6Core5Compat dependency for Drumstick::File
+    * Raised macOS deployment target to 10.13 (High Sierra)
+
 2021-12-03
     * RT, VPiano: Fixed ALSA backend, enable empty input connection.
     * New build options: BUILD_ALSA, BUILD_FILE, BUILD_RT, BUILD_WIDGETS

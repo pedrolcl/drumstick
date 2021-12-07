@@ -24,6 +24,9 @@
 #include <QTextCodec>
 #include <drumstick/qsmf.h>
 
+DISABLE_WARNING_PUSH
+DISABLE_WARNING_DEPRECATED_DECLARATIONS
+
 using namespace drumstick::File;
 
 class FileTest1 : public QObject
@@ -314,3 +317,5 @@ void FileTest1::testCaseReadSmf()
 QTEST_APPLESS_MAIN(FileTest1)
 
 #include "filetest1.moc"
+
+DISABLE_WARNING_POP

@@ -366,7 +366,7 @@ void SequencerEvent::setRaw8(const unsigned int n, const unsigned char value)
 
 /**
  * Releases the event record.
- * @deprecated
+ * @deprecated the event record is not allocated, so you don't have to call this function
  */
 void SequencerEvent::free()
 {

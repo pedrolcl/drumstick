@@ -26,6 +26,9 @@
 #include <drumstick/qsmf.h>
 #include <limits>
 
+DISABLE_WARNING_PUSH
+DISABLE_WARNING_DEPRECATED_DECLARATIONS
+
 /**
  * @file qsmf.cpp
  * Implementation of a class managing Standard MIDI Files input/output
@@ -1033,11 +1036,12 @@ void QSmf::metaEvent(quint8 b)
     case marker:
     case cue_point: {
             QString s;
-            if (d->m_codec == nullptr)
-                s = QString::fromLatin1(m);
-            else
+            if (d->m_codec == nullptr) {
+                emit signalSMFText2(b, m);
+            } else {
                 s = d->m_codec->toUnicode(m);
-            emit signalSMFText(b, s);
+                emit signalSMFText(b, s);
+            }
         }
         break;
     case forced_channel:
@@ -1211,6 +1215,7 @@ long QSmf::getFilePos()
  * Gets the text codec used for text meta-events I/O
  * @return QTextCodec pointer
  * @since 0.2.0
+ * @deprecated because the class QTextCodec was removed from QtCore since Qt6.
  */
 QTextCodec* QSmf::getTextCodec()
 {
@@ -1223,6 +1228,7 @@ QTextCodec* QSmf::getTextCodec()
  *
  * @param codec QTextCodec pointer
  * @since 0.2.0
+ * @deprecated because the class QTextCodec was removed from QtCore since Qt6.
  */
 void QSmf::setTextCodec(QTextCodec *codec)
 {
@@ -1240,3 +1246,5 @@ QString drumstickLibraryVersion()
 
 } // namespace File
 } // namespace drumstick
+
+DISABLE_WARNING_POP

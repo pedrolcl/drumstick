@@ -48,6 +48,9 @@
 #include <drumstick/rmid.h>
 #include <drumstick/sequencererror.h>
 
+DISABLE_WARNING_PUSH
+DISABLE_WARNING_DEPRECATED_DECLARATIONS
+
 using namespace drumstick;
 using namespace ALSA;
 using namespace File;
@@ -911,3 +914,5 @@ void GUIPlayer::wrkEndOfFile()
     appendWRKEvent(m_tick, ev);
 //    qDebug() << Q_FUNC_INFO;
 }
+
+DISABLE_WARNING_POP

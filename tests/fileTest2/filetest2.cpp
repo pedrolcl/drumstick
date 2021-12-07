@@ -24,6 +24,9 @@
 #include <QTextCodec>
 #include <drumstick/qwrk.h>
 
+DISABLE_WARNING_PUSH
+DISABLE_WARNING_DEPRECATED_DECLARATIONS
+
 using namespace drumstick::File;
 
 class FileTest2 : public QObject
@@ -235,3 +238,5 @@ void FileTest2::testCaseReadWrkFile()
 QTEST_APPLESS_MAIN(FileTest2)
 
 #include "filetest2.moc"
+
+DISABLE_WARNING_POP

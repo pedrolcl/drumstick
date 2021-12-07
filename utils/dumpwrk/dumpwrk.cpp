@@ -31,6 +31,9 @@
 #include <cstdlib>
 #include <drumstick/qwrk.h>
 
+DISABLE_WARNING_PUSH
+DISABLE_WARNING_DEPRECATED_DECLARATIONS
+
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
 #define right Qt::right
 #define left Qt::left
@@ -475,3 +478,5 @@ int main(int argc, char *argv[])
     }
     return spy.returnCode();
 }
+
+DISABLE_WARNING_POP
