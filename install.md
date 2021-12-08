@@ -39,42 +39,42 @@ Minimum supported versions:
     * Unix: OSS
     * Synthesizers (output backends): SonivoxEAS, FluidSynth, Apple DLS Synth
     * All: Network - ipMIDI (IPv4, IPv6)
-* shared-mime-info 0.30  
-See http://freedesktop.org/wiki/Software/shared-mime-info  
+* shared-mime-info 0.30
+See http://freedesktop.org/wiki/Software/shared-mime-info
 The utility "update-mime-database" must be executed after installing the library "drumstick-file" and the "drumstick.xml" file. This is automatically done by the cmake build system unless you defined DESTDIR. In this case, your package manager should perform it as a post-install step. 
-* Doxygen 1.5  
-See http://www.doxygen.org  
-If you want to generate the HTML documentation for the libraries  
+* Doxygen 1.5
+See http://www.doxygen.org
+If you want to generate the HTML documentation for the libraries
 
 If you want to generate and install the man pages, the build system can do it if you have installed in your system the following packages:
 
 * xsltproc program.
 * docbook XSLT stylesheets.
 
-The package names depend on the Linux distribution. For Debian they are: 
-xsltproc, docbook-xsl and docbook-xml. For openSUSE: libxslt, docbook_4, and 
+The package names depend on the Linux distribution. For Debian they are:
+xsltproc, docbook-xsl and docbook-xml. For openSUSE: libxslt, docbook_4, and
 docbook-xsl-stylesheets.
 
-RealtimeKit actions are called through DBus, so it is not a direct dependency. 
+RealtimeKit actions are called through DBus, so it is not a direct dependency.
 
 ## Optional CMake parameters
 
--DSTATIC_DRUMSTICK=YES|ON|1  
+-DSTATIC_DRUMSTICK=YES|ON|1
 Build static libraries instead of a shared object
 
--DSTATIC_DRUMSTICK=NO|OFF|0  
+-DSTATIC_DRUMSTICK=NO|OFF|0
 Build dynamic libraries (default)
 
--DCMAKE_BUILD_TYPE=Debug   
+-DCMAKE_BUILD_TYPE=Debug
 Compile with debug flags enabled
 
--DCMAKE_BUILD_TYPE=Release  
+-DCMAKE_BUILD_TYPE=Release
 Compile without debug flags, and optimization enabled
 
--DCMAKE_CXX_FLAGS="-W -Wall"  
-Specify custom compilation flags    
+-DCMAKE_CXX_FLAGS="-W -Wall"
+Specify custom compilation flags
 
--DCMAKE_INSTALL_PREFIX=/usr/local     
+-DCMAKE_INSTALL_PREFIX=/usr/local
 Specify the desired install prefix
 
 -DUSE_DBUS=YES|ON|1  
@@ -101,13 +101,13 @@ Don't build utilities and example programs
 -DBUILD_TESTING=YES|ON|1
 Build unit tests (default)
 
--DBUILD_TESTING=NO|OFF|0 
+-DBUILD_TESTING=NO|OFF|0
 Don't build unit tests
 
 -DBUILD_FRAMEWORKS=YES|ON|1
 Build macOS style frameworks (default on macOS)
 
--DBUILD_FRAMEWORKS=NO|OFF|02
+-DBUILD_FRAMEWORKS=NO|OFF|0
 Don't build macOS style frameworks, build Unix style dynamic libraries (.dylib)
 
 -DBUILD_ALSA=YES|ON|1
@@ -120,7 +120,7 @@ Don't build Drumstick::ALSA (default on non Linux Operating Systems)
 Build Drumstick::File (default)
 
 -DBUILD_FILE=NO|OFF|0
-Don't build Drumstick::File 
+Don't build Drumstick::File
 
 -DBUILD_RT=YES|ON|1
 Build Drumstick::RT (default)
@@ -134,28 +134,27 @@ Build Drumstick::Widgets (default)
 -DBUILD_WIDGETS=NO|OFF|0
 Don't build Drumstick::Widgets
 
--DUSE_NETWORK=YES|ON|1  
+-DUSE_NETWORK=YES|ON|1
 Build the ipMIDI Network RT backend (default)
 
--DUSE_NETWORK=NO|OFF|0  
-Don't build the ipMIDI Network RT backend 
+-DUSE_NETWORK=NO|OFF|0
+Don't build the ipMIDI Network RT backend
 
--DUSE_PULSEAUDIO=YES|ON|1  
+-DUSE_PULSEAUDIO=YES|ON|1
 Build the SonivoxEAS RT output backend (default)
 
--DUSE_PULSEAUDIO=NO|OFF|0  
-Don't build the SonivoxEAS RT output backend 
+-DUSE_PULSEAUDIO=NO|OFF|0
+Don't build the SonivoxEAS RT output backend
 
 Note: FluidSynth has also a PulseAudio driver, which is independent of the last option
 
--DUSE_FLUIDSYNTH=YES|ON|1  
+-DUSE_FLUIDSYNTH=YES|ON|1
 Build the FluidSynth RT output backend (default)
 
--DUSE_FLUIDSYNTH=NO|OFF|0  
+-DUSE_FLUIDSYNTH=NO|OFF|0
 Don't build the FluidSynth RT output backend
 
 -DUSE_QT=5|6
 Choose which Qt major version (5 or 6) to prefer. By default (if not set) uses whatever is found.
-note: Qt6 support is still experimental.
-note2: When using Qt6, the Core5Compat additional library is required for Drumstick::File
-
+notes: Qt6 support is still experimental.
+When using Qt6, the Core5Compat additional library is required for Drumstick::File
