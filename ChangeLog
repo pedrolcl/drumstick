@@ -1,3 +1,6 @@
+2021-12-10
+    * Release 2.5.0
+
 2021-12-07
     * Documentation/deprecation of Drumstick::File functions affected by QTextCodec
     * Documented new build options and Qt6Core5Compat dependency for Drumstick::File
