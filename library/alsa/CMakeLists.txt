@@ -34,6 +34,7 @@ set(drumstick-alsa_HEADERS
     ../include/drumstick/playthread.h
     ../include/drumstick/sequencererror.h
     ../include/drumstick/subscription.h
+    ../include/drumstick/macros.h
 )
 
 set(drumstick-alsa_SRCS
