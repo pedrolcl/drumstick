@@ -18,7 +18,7 @@ cmake_minimum_required(VERSION 3.14)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version")
 
 project( Drumstick
-    VERSION 2.5.0
+    VERSION 2.5.1
     LANGUAGES C CXX
     DESCRIPTION "MIDI C++ Libraries for Qt"
     HOMEPAGE_URL "https://sourceforge.net/p/drumstick/"
@@ -29,7 +29,7 @@ include(SCMRevision)
 include(CTest)
 include(GNUInstallDirs)
 
-set(RELEASE_DATE "December 10, 2021")
+#set(RELEASE_DATE "December 10, 2021")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 

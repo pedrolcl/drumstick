@@ -1,3 +1,10 @@
+2021-12-16
+    * Bump version for the next development cycle
+
+2021-12-12
+    * Fixed install: header macros.h missing when only BUILD_ALSA is selected.
+    * Fixed linking tests when using qmake
+
 2021-12-10
     * Release 2.5.0
 
