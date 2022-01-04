@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2008-2021, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2008-2022, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This file is part of the Drumstick project, see https://sf.net/p/drumstick
 
@@ -139,7 +139,7 @@ const char FileTest1::test_mid[] = {
   '\x00','\x78','\x4d','\x54','\x72','\x6b','\x00','\x00','\x00','\x99','\x00','\xff',
   '\x02','\x2f','\x43','\x6f','\x70','\x79','\x72','\x69','\x67','\x68','\x74','\x20',
   '\x28','\x43','\x29','\x20','\x32','\x30','\x30','\x36','\x2d','\x32','\x30','\x32',
-  '\x31','\x20','\x50','\x65','\x64','\x72','\x6f','\x20','\x4c','\xc3','\xb3','\x70',
+  '\x32','\x20','\x50','\x65','\x64','\x72','\x6f','\x20','\x4c','\xc3','\xb3','\x70',
   '\x65','\x7a','\x2d','\x43','\x61','\x62','\x61','\x6e','\x69','\x6c','\x6c','\x61',
   '\x73','\x00','\xff','\x51','\x03','\x09','\x27','\xc0','\x00','\xff','\x58','\x04',
   '\x03','\x02','\x24','\x08','\x00','\xff','\x59','\x02','\x02','\x00','\x00','\xf0',
@@ -152,7 +152,7 @@ const char FileTest1::test_mid[] = {
   '\x80','\x48','\x00','\x00','\xff','\x2f','\x00'
 };
 const int FileTest1::test_mid_len = sizeof(test_mid); //175;
-const QString FileTest1::COPYRIGHT = u8"Copyright (C) 2006-2021 Pedro López-Cabanillas";
+const QString FileTest1::COPYRIGHT = u8"Copyright (C) 2006-2022 Pedro López-Cabanillas";
 const QByteArray FileTest1::GSRESET = QByteArrayLiteral( "f04110421240007f0041f7" );
 const QList<int> FileTest1::NOTES = { 60, 62, 64, 65, 67, 69, 71, 72 };
 const int FileTest1::FORMAT = 0;
