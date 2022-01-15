@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Drumstick Virtual Piano</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="vpiano.qrc">
+    <normaloff>:/drumstick.png</normaloff>:/drumstick.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout">
     <item>

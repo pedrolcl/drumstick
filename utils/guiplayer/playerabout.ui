@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="guiplayer.qrc">
-    <normaloff>:/resources/drumstick.png</normaloff>:/resources/drumstick.png</iconset>
+    <normaloff>:/drumstick.png</normaloff>:/drumstick.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">

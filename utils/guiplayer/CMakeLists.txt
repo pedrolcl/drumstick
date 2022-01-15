@@ -94,4 +94,9 @@ install(TARGETS drumstick-guiplayer
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 install(FILES drumstick-guiplayer.desktop
-        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications"
+        RENAME net.sourceforge.drumstick-guiplayer.desktop)
+
+install(FILES drumstick-guiplayer.metainfo.xml
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/metainfo"
+        RENAME net.sourceforge.drumstick-guiplayer.metainfo.xml)

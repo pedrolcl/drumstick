@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="drumstick.png">../../icons/drumstick_32.png</file>
+    </qresource>
+</RCC>

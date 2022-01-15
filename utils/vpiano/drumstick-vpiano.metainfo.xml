@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>net.sourceforge.drumstick-vpiano</id>
+
+  <name>drumstick-vpiano</name>
+  <summary>Simple Virtual MIDI Piano</summary>
+
+  <metadata_license>FSFAP</metadata_license>
+  <project_license>GPL-3.0+</project_license>
+
+  <description>
+    <p>
+      Simple multiplatform virtual MIDI piano based on the Drumstick::RT library, also using Drumstick::Widgets.
+    </p>
+    <p>
+      This program is an example of the Drumstick libraries. For a fully featured virtual MIDI piano keyboard see: vmpk.sourceforge.io
+    </p>
+  </description>
+
+  <launchable type="desktop-id">net.sourceforge.drumstick-vpiano.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://drumstick.sourceforge.io/images/drumstick-vpiano.png</image>
+    </screenshot>
+  </screenshots>
+</component>

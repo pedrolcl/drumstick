@@ -28,6 +28,7 @@ set(drumgrid_SRCS
     drumgridabout.h
     drumgrid.cpp
     drumgrid.h
+    drumgrid.qrc
     drumgridmodel.cpp
     drumgridmodel.h
     drumgridmain.cpp
@@ -81,5 +82,9 @@ install(TARGETS drumstick-drumgrid
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 install(FILES drumstick-drumgrid.desktop
-        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications"
+        RENAME net.sourceforge.drumstick-drumgrid.desktop)
 
+install(FILES drumstick-drumgrid.metainfo.xml
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/metainfo"
+        RENAME net.sourceforge.drumstick-drumgrid.metainfo.xml)

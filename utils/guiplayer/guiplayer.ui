@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="guiplayer.qrc">
-    <normaloff>:/resources/drumstick.png</normaloff>:/resources/drumstick.png</iconset>
+    <normaloff>:/drumstick.png</normaloff>:/drumstick.png</iconset>
   </property>
   <widget class="QWidget" name="MainWidget">
    <property name="acceptDrops">
@@ -23,10 +23,6 @@
    </property>
    <property name="windowTitle">
     <string>Drumstick MIDI Player</string>
-   </property>
-   <property name="windowIcon">
-    <iconset resource="guiplayer.qrc">
-     <normaloff>:/resources/drumstick.png</normaloff>:/resources/drumstick.png</iconset>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0" rowspan="2" colspan="2">

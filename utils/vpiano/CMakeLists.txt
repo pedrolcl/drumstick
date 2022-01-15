@@ -37,6 +37,7 @@ set(vpiano_SRCS
     vpiano.cpp
     vpiano.h
     vpiano.ui
+    vpiano.qrc
     vpianoabout.cpp
     vpianoabout.h
     vpianoabout.ui
@@ -168,7 +169,12 @@ endif()
 
 install(TARGETS drumstick-vpiano
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        BUNDLE DESTINATION ~/Applications )
+        BUNDLE DESTINATION "Applications" )
 
 install(FILES drumstick-vpiano.desktop
-        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications"
+        RENAME net.sourceforge.drumstick-vpiano.desktop)
+
+install(FILES drumstick-vpiano.metainfo.xml
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/metainfo"
+        RENAME net.sourceforge.drumstick-vpiano.metainfo.xml)
