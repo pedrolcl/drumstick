@@ -82,10 +82,12 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     QLocale locale;
-    QTranslator qtTranslator;
-    qDebug() << "load Qt translator:" << locale.name() <<
-             qtTranslator.load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    QCoreApplication::installTranslator(&qtTranslator);
+    if ((locale.language() != QLocale::C) && (locale.language() != QLocale::English)) {
+        QTranslator qtTranslator;
+        qDebug() << "load Qt translator:" << locale <<
+                 qtTranslator.load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+        QCoreApplication::installTranslator(&qtTranslator);
+    }
 
 #if defined(Q_OS_WIN32)
     QString dataDir = QApplication::applicationDirPath() + "/";
@@ -95,15 +97,17 @@ int main(int argc, char *argv[])
     QString dataDir = QApplication::applicationDirPath() + "/../share/drumstick/";
 #endif
 
-    QTranslator libTranslator;
-    qDebug() << "load lib translator:" << locale.name() <<
-             libTranslator.load(locale, "drumstick-widgets", "_", dataDir);
-    QCoreApplication::installTranslator(&libTranslator);
+    if ((locale.language() != QLocale::C) && (locale.language() != QLocale::English)) {
+        QTranslator libTranslator;
+        qDebug() << "load lib translator:" << locale <<
+                 libTranslator.load(locale, "drumstick-widgets", "_", dataDir);
+        QCoreApplication::installTranslator(&libTranslator);
 
-    QTranslator appTranslator;
-    qDebug() << "load app translator:" << locale.name() <<
-             appTranslator.load(locale, "drumstick-vpiano", "_", dataDir);
-    QCoreApplication::installTranslator(&appTranslator);
+        QTranslator appTranslator;
+        qDebug() << "load app translator:" << locale <<
+                 appTranslator.load(locale, "drumstick-vpiano", "_", dataDir);
+        QCoreApplication::installTranslator(&appTranslator);
+    }
 
     QCommandLineParser parser;
     parser.setApplicationDescription(QString("%1 v.%2\n\n%3").arg(QCoreApplication::applicationName(),

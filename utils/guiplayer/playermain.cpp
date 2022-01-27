@@ -43,10 +43,12 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     QLocale locale;
-    QTranslator qtTranslator;
-    qDebug() << "load Qt translator:" << locale.name() <<
-             qtTranslator.load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    QCoreApplication::installTranslator(&qtTranslator);
+    if ((locale.language() != QLocale::C) && (locale.language() != QLocale::English)) {
+        QTranslator qtTranslator;
+        qDebug() << "load Qt translator:" << locale.name() <<
+                 qtTranslator.load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+        QCoreApplication::installTranslator(&qtTranslator);
+    }
 
 #if defined(Q_OS_WIN32)
     QString dataDir = QApplication::applicationDirPath() + "/";
@@ -56,10 +58,12 @@ int main(int argc, char *argv[])
     QString dataDir = QApplication::applicationDirPath() + "/../share/drumstick/";
 #endif
 
-    QTranslator appTranslator;
-    qDebug() << "load app translator:" << locale.name() <<
-             appTranslator.load(locale, "drumstick-guiplayer", "_", dataDir);
-    QCoreApplication::installTranslator(&appTranslator);
+    if ((locale.language() != QLocale::C) && (locale.language() != QLocale::English)) {
+        QTranslator appTranslator;
+        qDebug() << "load app translator:" << locale.name() <<
+                 appTranslator.load(locale, "drumstick-guiplayer", "_", dataDir);
+        QCoreApplication::installTranslator(&appTranslator);
+    }
 
     QCommandLineParser parser;
     parser.setApplicationDescription(PGM_DESCRIPTION);
