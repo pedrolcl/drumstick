@@ -1,3 +1,7 @@
+2022-01-28
+    * Widgets: Fluidsynth soundfonts dialog, updated filters
+    * RT: Fluidsynth backend initialization: failure report for invalid soundfonts
+
 2022-01-27
     * Avoid loading translations for English
 

@@ -86,208 +86,208 @@ p, li { white-space: pre-wrap; }
         <translation>Reproductor MIDI Drumstick</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="159"/>
+        <location filename="guiplayer.ui" line="155"/>
         <source>Playback time and current levels</source>
         <translation>Tiempo de reproducción y niveles actuales</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="200"/>
+        <location filename="guiplayer.ui" line="196"/>
         <source>00:00:00</source>
         <translation>00:00:00</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="207"/>
+        <location filename="guiplayer.ui" line="203"/>
         <source>Tempo:</source>
         <translation>Tempo:</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="230"/>
+        <location filename="guiplayer.ui" line="226"/>
         <source>Volume:</source>
         <translation>Volumen:</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="244"/>
+        <location filename="guiplayer.ui" line="240"/>
         <source>Pitch:</source>
         <translation>Transporte:</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="257"/>
+        <location filename="guiplayer.ui" line="253"/>
         <source>Pitch Control</source>
         <translation>Control de tono</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="260"/>
+        <location filename="guiplayer.ui" line="256"/>
         <source>Pitch transpose between -12 and +12 semitones</source>
         <translation>Transporte del tono entre -12 y +12 semitonos</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="276"/>
+        <location filename="guiplayer.ui" line="272"/>
         <source>Reset Volume</source>
         <translation>Restablecer volumen</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="279"/>
+        <location filename="guiplayer.ui" line="275"/>
         <source>Reset Volume to 100%</source>
         <translation>Restablecer volumen al 100%</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="299"/>
+        <location filename="guiplayer.ui" line="295"/>
         <source>Volume Slider</source>
         <translation>Deslizador de volumen</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="327"/>
+        <location filename="guiplayer.ui" line="323"/>
         <source>Playback progress</source>
         <translation>Progreso de reproducción</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="351"/>
+        <location filename="guiplayer.ui" line="347"/>
         <source>File Name:</source>
         <translation>Nombre de archivo:</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="364"/>
+        <location filename="guiplayer.ui" line="360"/>
         <source>Currently loaded MIDI file name</source>
         <translation>Nombre de archivo MIDI actual</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="385"/>
+        <location filename="guiplayer.ui" line="381"/>
         <source>Tempo Slider</source>
         <translation>Deslizador de tempo</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="422"/>
+        <location filename="guiplayer.ui" line="418"/>
         <source>Reset Tempo</source>
         <translation>Restablecer tempo</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="425"/>
+        <location filename="guiplayer.ui" line="421"/>
         <source>Reset Tempo to 100%</source>
         <translation>Restablecer el tempo al 100%</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="428"/>
+        <location filename="guiplayer.ui" line="424"/>
         <source>tempo=100%</source>
         <translation>tempo=100%</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="445"/>
+        <location filename="guiplayer.ui" line="441"/>
         <source>File</source>
         <translation>Archivo</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="457"/>
+        <location filename="guiplayer.ui" line="453"/>
         <source>Help</source>
         <translation>Ayuda</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="464"/>
+        <location filename="guiplayer.ui" line="460"/>
         <source>Settings</source>
         <translation>Preferencias</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="477"/>
+        <location filename="guiplayer.ui" line="473"/>
         <source>Tool Bar</source>
         <translation>Barra de herramientas</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="505"/>
+        <location filename="guiplayer.ui" line="501"/>
         <source>Open</source>
         <translation>Abrir</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="508"/>
+        <location filename="guiplayer.ui" line="504"/>
         <source>Open a MIDI file</source>
         <translation>Abrir un archivo MIDI</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="517"/>
+        <location filename="guiplayer.ui" line="513"/>
         <source>Quit</source>
         <translation>Terminar</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="520"/>
+        <location filename="guiplayer.ui" line="516"/>
         <source>Quit the application</source>
         <translation>Terminar la aplicación</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="529"/>
+        <location filename="guiplayer.ui" line="525"/>
         <source>Play</source>
         <translation>Reproducir</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="532"/>
+        <location filename="guiplayer.ui" line="528"/>
         <source>Start playing the current MIDI file</source>
         <translation>Iniciar la reproducción del archivo MIDI actual</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="550"/>
+        <location filename="guiplayer.ui" line="546"/>
         <source>Pause</source>
         <translation>Pausa</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="553"/>
+        <location filename="guiplayer.ui" line="549"/>
         <source>Pause the playback</source>
         <translation>Pausar la reproducción</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="565"/>
+        <location filename="guiplayer.ui" line="561"/>
         <source>Stop</source>
         <translation>Parar</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="568"/>
+        <location filename="guiplayer.ui" line="564"/>
         <source>Stop the playback</source>
         <translation>Parar la reproducción</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="580"/>
+        <location filename="guiplayer.ui" line="576"/>
         <source>About</source>
         <translation>Acerca de</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="583"/>
+        <location filename="guiplayer.ui" line="579"/>
         <source>Show the about box</source>
         <translation>Mostrar el cuadro de Acerca de</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="592"/>
+        <location filename="guiplayer.ui" line="588"/>
         <source>About Qt</source>
         <translation>Acerca de Qt</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="595"/>
+        <location filename="guiplayer.ui" line="591"/>
         <source>Show the about Qt dialog box</source>
         <translation>Mostrar el cuadro de Acerca de Qt</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="604"/>
+        <location filename="guiplayer.ui" line="600"/>
         <source>MIDI Setup</source>
         <translation>Ajustes MIDI</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="607"/>
+        <location filename="guiplayer.ui" line="603"/>
         <source>Select a connection for the MIDI output port</source>
         <translation>Seleccionar una conexión para el puerto de salida MIDI</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="618"/>
-        <location filename="guiplayer.ui" line="621"/>
+        <location filename="guiplayer.ui" line="614"/>
+        <location filename="guiplayer.ui" line="617"/>
         <source>Show Tool Bar</source>
         <translation>Mostrar la barra de herramientas</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="624"/>
+        <location filename="guiplayer.ui" line="620"/>
         <source>Show or hide the tool bar</source>
         <translation>Mostrar u ocultar la barra de herramientas</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="635"/>
+        <location filename="guiplayer.ui" line="631"/>
         <source>Show Status Bar</source>
         <translation>Mostrar la barra de estado</translation>
     </message>
     <message>
-        <location filename="guiplayer.ui" line="638"/>
+        <location filename="guiplayer.ui" line="634"/>
         <source>Show or hide the status bar</source>
         <translation>Mostar u ocultar la barra de estado</translation>
     </message>

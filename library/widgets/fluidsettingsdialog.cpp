@@ -331,7 +331,7 @@ void FluidSettingsDialog::showFileDialog()
     if (!dir.exists()) {
         dir = QDir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR2, QStandardPaths::LocateDirectory));
     }
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Select SoundFont"), dir.absolutePath(), tr("SoundFont Files (*.sf2)"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Select SoundFont"), dir.absolutePath(), tr("SoundFont Files (*.sf2 *.sf3 *.dls)"));
     if (!fileName.isEmpty()) {
         ui->soundFont->setText(fileName);
     }

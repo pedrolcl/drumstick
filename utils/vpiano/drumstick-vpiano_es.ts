@@ -213,7 +213,7 @@ Este programa es software libre, y usted puede
 redistribuirlo bajo ciertas condiciones.</translation>
     </message>
     <message>
-        <location filename="vpianomain.cpp" line="113"/>
+        <location filename="vpianomain.cpp" line="117"/>
         <source>Portable settings mode</source>
         <translation>Modo de ajustes portables</translation>
     </message>
@@ -226,167 +226,167 @@ redistribuirlo bajo ciertas condiciones.</translation>
         <translation>Piano virtual Drumstick</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="34"/>
+        <location filename="vpiano.ui" line="38"/>
         <source>File</source>
         <translation>Archivo</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="40"/>
+        <location filename="vpiano.ui" line="44"/>
         <source>Edit</source>
         <translation>Edición</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="47"/>
+        <location filename="vpiano.ui" line="51"/>
         <source>Help</source>
         <translation>Ayuda</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="54"/>
+        <location filename="vpiano.ui" line="58"/>
         <source>View</source>
         <translation>Ver</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="58"/>
+        <location filename="vpiano.ui" line="62"/>
         <source>Show Note Names</source>
         <translation>Mostrar nombres de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="67"/>
+        <location filename="vpiano.ui" line="71"/>
         <source>Black Keys Names</source>
         <translation>Nombres de las teclas negras</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="75"/>
+        <location filename="vpiano.ui" line="79"/>
         <source>Names Orientation</source>
         <translation>Orientación de los nombres</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="83"/>
+        <location filename="vpiano.ui" line="87"/>
         <source>Central Octave Name</source>
         <translation>Nombre de la octava central</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="92"/>
+        <location filename="vpiano.ui" line="96"/>
         <source>Note Names</source>
         <translation>Nombres de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="118"/>
+        <location filename="vpiano.ui" line="122"/>
         <source>&amp;Exit</source>
         <translation>&amp;Salir</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="123"/>
+        <location filename="vpiano.ui" line="127"/>
         <source>&amp;Preferences</source>
         <translation>&amp;Preferencias</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="128"/>
+        <location filename="vpiano.ui" line="132"/>
         <source>&amp;Connections</source>
         <translation>&amp;Conexiones</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="133"/>
+        <location filename="vpiano.ui" line="137"/>
         <source>About</source>
         <translation>Acerca de</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="138"/>
+        <location filename="vpiano.ui" line="142"/>
         <source>About Qt</source>
         <translation>Acerca de Qt</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="149"/>
+        <location filename="vpiano.ui" line="153"/>
         <source>Never</source>
         <translation>Nunca</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="157"/>
+        <location filename="vpiano.ui" line="161"/>
         <source>When Activated</source>
         <translation>Cuando se activen</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="165"/>
+        <location filename="vpiano.ui" line="169"/>
         <source>Always</source>
         <translation>Siempre</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="176"/>
+        <location filename="vpiano.ui" line="180"/>
         <source>Sharps</source>
         <translation>Sostenidos</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="187"/>
+        <location filename="vpiano.ui" line="191"/>
         <source>Flats</source>
         <translation>Bemoles</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="195"/>
+        <location filename="vpiano.ui" line="199"/>
         <source>Nothing</source>
         <translation>Nada</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="206"/>
+        <location filename="vpiano.ui" line="210"/>
         <source>Horizontal</source>
         <translation>Horizontal</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="214"/>
+        <location filename="vpiano.ui" line="218"/>
         <source>Vertical</source>
         <translation>Vertical</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="222"/>
+        <location filename="vpiano.ui" line="226"/>
         <source>Automatic</source>
         <translation>Automática</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="227"/>
+        <location filename="vpiano.ui" line="231"/>
         <source>Names Font</source>
         <translation>Fuente para  nombres</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="235"/>
+        <location filename="vpiano.ui" line="239"/>
         <source>Minimal</source>
         <translation>Mínimo</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="243"/>
+        <location filename="vpiano.ui" line="247"/>
         <source>C3</source>
         <translation>do3</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="254"/>
+        <location filename="vpiano.ui" line="258"/>
         <source>C4</source>
         <translation>do4</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="262"/>
+        <location filename="vpiano.ui" line="266"/>
         <source>C5</source>
         <translation>do5</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="273"/>
+        <location filename="vpiano.ui" line="277"/>
         <source>Standard</source>
         <translation>Estándar</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="281"/>
+        <location filename="vpiano.ui" line="285"/>
         <source>Custom with Sharps</source>
         <translation>Personalizadas con sostenidos</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="289"/>
+        <location filename="vpiano.ui" line="293"/>
         <source>Custom with Flats</source>
         <translation>Personalizadas con bemoles</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="297"/>
+        <location filename="vpiano.ui" line="301"/>
         <source>C</source>
         <translation>do</translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="305"/>
+        <location filename="vpiano.ui" line="309"/>
         <source>Inverted Keys Color</source>
         <translation>Teclas de color invertido</translation>
     </message>

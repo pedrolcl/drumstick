@@ -161,15 +161,10 @@ void SynthEngine::loadSoundFont()
 
 void SynthEngine::initialize()
 {
-    //qDebug() << Q_FUNC_INFO;
     initializeSynth();
     retrieveAudioDrivers();
     scanSoundFonts();
     loadSoundFont();
-    if (m_sfid < 0) {
-        m_soundFont = m_defSoundFont;
-        loadSoundFont();
-    }
     m_status = (m_synth != nullptr) && (m_driver != nullptr) && (m_sfid >= 0);
 }
 
@@ -240,7 +235,7 @@ void SynthEngine::scanSoundFonts(const QDir &initialDir)
     dir.setFilter(QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot);
     dir.setSorting(QDir::Name);
     QStringList filters;
-    filters << "*.sf2" << "*.SF2";
+    filters << "*.sf2" << "*.SF2" << "*.sf3" << "*.SF3" << "*.dls" << "*.DLS";
     QFileInfoList entries= dir.entryInfoList(filters);
     foreach(const QFileInfo &info, entries) {
         QString name = info.absoluteFilePath();

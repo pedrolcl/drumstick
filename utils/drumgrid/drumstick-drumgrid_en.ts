@@ -61,42 +61,42 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="drumgrid.ui" line="46"/>
+        <location filename="drumgrid.ui" line="50"/>
         <source>start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="drumgrid.ui" line="53"/>
+        <location filename="drumgrid.ui" line="57"/>
         <source>stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="drumgrid.ui" line="89"/>
+        <location filename="drumgrid.ui" line="93"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="drumgrid.ui" line="97"/>
+        <location filename="drumgrid.ui" line="101"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="drumgrid.ui" line="108"/>
+        <location filename="drumgrid.ui" line="112"/>
         <source>Connect...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="drumgrid.ui" line="113"/>
+        <location filename="drumgrid.ui" line="117"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="drumgrid.ui" line="118"/>
+        <location filename="drumgrid.ui" line="122"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="drumgrid.ui" line="123"/>
+        <location filename="drumgrid.ui" line="127"/>
         <source>About Qt</source>
         <translation type="unfinished"></translation>
     </message>

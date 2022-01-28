@@ -374,8 +374,12 @@
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="334"/>
+        <source>SoundFont Files (*.sf2 *.sf3 *.dls)</source>
+        <translation>Archivos SoundFont (*.sf2 *.sf3 *.dls)</translation>
+    </message>
+    <message>
         <source>SoundFont Files (*.sf2)</source>
-        <translation>Archivos SoundFont (*.sf2)</translation>
+        <translation type="vanished">Archivos SoundFont (*.sf2)</translation>
     </message>
 </context>
 <context>
