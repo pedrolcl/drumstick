@@ -16,21 +16,20 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "vpiano.h"
 #include <QApplication>
 #include <QCommandLineParser>
-#include <QDebug>
 #include <QFileInfo>
 #include <QLibraryInfo>
 #include <QTranslator>
-#include <drumstick/backendmanager.h>
-#include <drumstick/settingsfactory.h>
+#include <QDebug>
 
-const QString PGM_DESCRIPTION = QObject::tr(
+#include "vpiano.h"
+
+const char* PGM_DESCRIPTION = QT_TRANSLATE_NOOP("main",
      "Drumstick Simple Virtual Piano\n"
-     "Copyright (C) 2006-2022 Pedro López-Cabanillas\n"
-     "This program comes with ABSOLUTELY NO WARRANTY;\n"
-     "This is free software, and you are welcome to redistribute it\n"
+     "Copyright (C) 2006-2022 Pedro Lopez-Cabanillas\n"
+     "This program comes with ABSOLUTELY NO WARRANTY; "
+     "This is free software, and you are welcome to redistribute it "
      "under certain conditions; see the LICENSE file for details.");
 
 #if defined(LINUX_BACKEND)
@@ -69,24 +68,26 @@ Q_IMPORT_PLUGIN(OSSInput)
 Q_IMPORT_PLUGIN(OSSOutput)
 #endif
 
-using namespace drumstick::rt;
-
 int main(int argc, char *argv[])
 {
+    QApplication app(argc, argv);
     QCoreApplication::setOrganizationName("drumstick.sourceforge.net");
     QCoreApplication::setOrganizationDomain("drumstick.sourceforge.net");
-    QCoreApplication::setApplicationName("VPiano");
+    QCoreApplication::setApplicationName("drumstick-vpiano");
     QCoreApplication::setApplicationVersion(QStringLiteral(QT_STRINGIFY(VERSION)));
     QCoreApplication::setAttribute(Qt::AA_SynthesizeMouseForUnhandledTouchEvents, false);
     QCoreApplication::setAttribute(Qt::AA_SynthesizeTouchForUnhandledMouseEvents, false);
-    QApplication app(argc, argv);
 
     QLocale locale;
+    QTranslator qtTranslator;
     if ((locale.language() != QLocale::C) && (locale.language() != QLocale::English)) {
-        QTranslator qtTranslator;
-        qDebug() << "load Qt translator:" << locale <<
-                 qtTranslator.load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-        QCoreApplication::installTranslator(&qtTranslator);
+        if (qtTranslator.load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
+            if (!QCoreApplication::installTranslator(&qtTranslator)) {
+                qWarning() << "Failure installing qt translator" << locale;
+            }
+        } else {
+            qWarning() << "Unable to load Qt translator:" << locale;
+        }
     }
 
 #if defined(Q_OS_WIN32)
@@ -97,29 +98,32 @@ int main(int argc, char *argv[])
     QString dataDir = QApplication::applicationDirPath() + "/../share/drumstick/";
 #endif
 
+    QTranslator libTranslator, appTranslator;
     if ((locale.language() != QLocale::C) && (locale.language() != QLocale::English)) {
-        QTranslator libTranslator;
-        qDebug() << "load lib translator:" << locale <<
-                 libTranslator.load(locale, "drumstick-widgets", "_", dataDir);
-        QCoreApplication::installTranslator(&libTranslator);
-
-        QTranslator appTranslator;
-        qDebug() << "load app translator:" << locale <<
-                 appTranslator.load(locale, "drumstick-vpiano", "_", dataDir);
-        QCoreApplication::installTranslator(&appTranslator);
+        if (libTranslator.load(locale, "drumstick-widgets", "_", dataDir)) {
+            if (!QCoreApplication::installTranslator(&libTranslator)) {
+                qWarning() << "installing lib translator" << locale << "failed";
+            }
+        } else {
+            qWarning() << "Unable to load lib translator:" << locale << "from" << dataDir;
+        }
+        if (appTranslator.load(locale, "drumstick-vpiano", "_", dataDir)) {
+            if (!QCoreApplication::installTranslator(&appTranslator)) {
+                qWarning() << "installing app translator" << locale << "failed";
+            }
+        } else {
+            qWarning() << "Unable to load app translator:" << locale << "from" << dataDir;
+        }
     }
 
     QCommandLineParser parser;
     parser.setApplicationDescription(QString("%1 v.%2\n\n%3").arg(QCoreApplication::applicationName(),
-        QCoreApplication::applicationVersion(), PGM_DESCRIPTION));
+        QCoreApplication::applicationVersion(), QCoreApplication::translate("main", PGM_DESCRIPTION)));
     auto helpOption = parser.addHelpOption();
     auto versionOption = parser.addVersionOption();
-    QCommandLineOption portableOption({"p", "portable"}, QObject::tr("Portable settings mode"));
+    QCommandLineOption portableOption({"p", "portable"}, QCoreApplication::translate("main", "Portable settings mode"));
     parser.addOption(portableOption);
     parser.process(app);
-    if (parser.isSet(versionOption) || parser.isSet(helpOption)) {
-        return 0;
-    }
 
     try {
         VPiano w;
@@ -131,7 +135,7 @@ int main(int argc, char *argv[])
         w.show();
         return app.exec();
     } catch (...) {
-        qWarning() << "Fatal error from a MIDI backend.";
+        qWarning() << QCoreApplication::translate("main", "Fatal error from a MIDI backend.");
     }
-    return 0;
+    return EXIT_FAILURE;
 }

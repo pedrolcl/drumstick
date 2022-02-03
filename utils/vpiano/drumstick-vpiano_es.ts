@@ -198,24 +198,29 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>QCoreApplication</name>
+    <message>
+        <source>Portable settings mode</source>
+        <translation type="vanished">Modo de ajustes portables</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
-        <location filename="vpianomain.cpp" line="29"/>
         <source>Drumstick Simple Virtual Piano
 Copyright (C) 2006-2022 Pedro López-Cabanillas
 This program comes with ABSOLUTELY NO WARRANTY;
 This is free software, and you are welcome to redistribute it
 under certain conditions; see the LICENSE file for details.</source>
-        <translation>Drumstick Piano Virtual Sencillo
+        <translation type="vanished">Drumstick Piano Virtual Sencillo
 Copyright (C) 2006-2022 Pedro López-Cabanillas
 Este programa se ofrece SIN GARANTÍA ALGUNA.
 Este programa es software libre, y usted puede
 redistribuirlo bajo ciertas condiciones.</translation>
     </message>
     <message>
-        <location filename="vpianomain.cpp" line="117"/>
         <source>Portable settings mode</source>
-        <translation>Modo de ajustes portables</translation>
+        <translation type="vanished">Modo de ajustes portables</translation>
     </message>
 </context>
 <context>
@@ -404,6 +409,46 @@ redistribuirlo bajo ciertas condiciones.</translation>
         <location filename="vpiano.cpp" line="537"/>
         <source>Names:</source>
         <translation>Nombres:</translation>
+    </message>
+</context>
+<context>
+    <name>main</name>
+    <message>
+        <source>Drumstick Simple Virtual Piano
+Copyright (C) 2006-2022 Pedro Lopez-Cabanillas
+This program comes with ABSOLUTELY NO WARRANTY;
+This is free software, and you are welcome to redistribute it
+under certain conditions; see the LICENSE file for details.</source>
+        <oldsource>Drumstick Simple Virtual Piano
+Copyright (C) 2006-2022 Pedro López-Cabanillas
+This program comes with ABSOLUTELY NO WARRANTY;
+This is free software, and you are welcome to redistribute it
+under certain conditions; see the LICENSE file for details.</oldsource>
+        <translation type="vanished">Drumstick Piano Virtual Sencillo
+Copyright (C) 2006-2022 Pedro Lopez-Cabanillas
+Este programa se ofrece SIN GARANTÍA ALGUNA.
+Este programa es software libre, y usted puede
+redistribuirlo bajo ciertas condiciones; vea el archivo
+LICENSE para detalles.</translation>
+    </message>
+    <message>
+        <location filename="vpianomain.cpp" line="28"/>
+        <source>Drumstick Simple Virtual Piano
+Copyright (C) 2006-2022 Pedro Lopez-Cabanillas
+This program comes with ABSOLUTELY NO WARRANTY; This is free software, and you are welcome to redistribute it under certain conditions; see the LICENSE file for details.</source>
+        <translation>Drumstick Piano Virtual Sencillo
+Copyright (C) 2006-2022 Pedro Lopez-Cabanillas
+Este programa se ofrece SIN GARANTÍA ALGUNA. Este programa es software libre, y usted puede redistribuirlo bajo ciertas condiciones; vea el archivo LICENSE para detalles.</translation>
+    </message>
+    <message>
+        <location filename="vpianomain.cpp" line="124"/>
+        <source>Portable settings mode</source>
+        <translation>Modo de ajustes portables</translation>
+    </message>
+    <message>
+        <location filename="vpianomain.cpp" line="138"/>
+        <source>Fatal error from a MIDI backend.</source>
+        <translation>Error grave en el soporte MIDI.</translation>
     </message>
 </context>
 </TS>

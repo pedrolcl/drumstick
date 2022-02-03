@@ -116,4 +116,32 @@ p, li { white-space: pre-wrap; }
         <translation>Acerca de Qt</translation>
     </message>
 </context>
+<context>
+    <name>main</name>
+    <message>
+        <location filename="drumgridmain.cpp" line="31"/>
+        <source>Drumstick Drum Grid</source>
+        <translation>Drumstick matriz de percusión</translation>
+    </message>
+    <message>
+        <location filename="drumgridmain.cpp" line="32"/>
+        <source>Fatal error from the ALSA sequencer. This usually happens when the kernel doesn&apos;t have ALSA support, or the device node (/dev/snd/seq) doesn&apos;t exists, or the kernel module (snd_seq) is not loaded. Please check your ALSA/MIDI configuration.</source>
+        <translation>Error fatal en el secuenciador ALSA. Esto ocurre habitualmente cuando el núcleo no tiene soporte ALSA, o bién el nodo de dispositivo (/dev/snd/seq) no existe, o el módulo del núcleo (snd_seq) no se ha cargado. Por favor compruebe su configuración de MIDI ALSA.</translation>
+    </message>
+    <message>
+        <location filename="drumgridmain.cpp" line="77"/>
+        <source>MIDI Out Port.</source>
+        <translation>Puerto MIDI Out.</translation>
+    </message>
+    <message>
+        <location filename="drumgridmain.cpp" line="92"/>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <location filename="drumgridmain.cpp" line="94"/>
+        <source>Returned error was: </source>
+        <translation>El error devuelto fué: </translation>
+    </message>
+</context>
 </TS>

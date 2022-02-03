@@ -292,4 +292,42 @@ p, li { white-space: pre-wrap; }
         <translation>Mostar u ocultar la barra de estado</translation>
     </message>
 </context>
+<context>
+    <name>main</name>
+    <message>
+        <location filename="playermain.cpp" line="30"/>
+        <source>ALSA Sequencer based MIDI file player</source>
+        <translation>Reproductor de archivos MIDI basado en el secuenciador ALSA</translation>
+    </message>
+    <message>
+        <location filename="playermain.cpp" line="32"/>
+        <source>Fatal error from the ALSA sequencer. This usually happens when the kernel doesn&apos;t have ALSA support, or the device node (/dev/snd/seq) doesn&apos;t exists, or the kernel module (snd_seq) is not loaded. Please check your ALSA/MIDI configuration.</source>
+        <translation>Error fatal en el secuenciador ALSA. Esto ocurre habitualmente cuando el núcleo no tiene soporte ALSA, o bién el nodo de dispositivo (/dev/snd/seq) no existe, o el módulo del núcleo (snd_seq) no se ha cargado. Por favor compruebe su configuración de MIDI ALSA.</translation>
+    </message>
+    <message>
+        <location filename="playermain.cpp" line="77"/>
+        <source>MIDI Out Connection.</source>
+        <translation>Conexión MIDI Out.</translation>
+    </message>
+    <message>
+        <location filename="playermain.cpp" line="79"/>
+        <source>Input SMF/KAR/RMI/WRK file name.</source>
+        <translation>Archivo de entrada SMF/KAR/RMI/WRK.</translation>
+    </message>
+    <message>
+        <location filename="playermain.cpp" line="88"/>
+        <source>File not found: </source>
+        <translation>Archivo no encontrado: </translation>
+    </message>
+    <message>
+        <location filename="playermain.cpp" line="103"/>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <location filename="playermain.cpp" line="105"/>
+        <source>Returned error was: </source>
+        <translation>El error devuelto fué: </translation>
+    </message>
+</context>
 </TS>

@@ -183,23 +183,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>QObject</name>
-    <message>
-        <location filename="vpianomain.cpp" line="29"/>
-        <source>Drumstick Simple Virtual Piano
-Copyright (C) 2006-2022 Pedro López-Cabanillas
-This program comes with ABSOLUTELY NO WARRANTY;
-This is free software, and you are welcome to redistribute it
-under certain conditions; see the LICENSE file for details.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="vpianomain.cpp" line="117"/>
-        <source>Portable settings mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>VPiano</name>
     <message>
         <location filename="vpiano.ui" line="14"/>
@@ -384,6 +367,26 @@ under certain conditions; see the LICENSE file for details.</source>
     <message>
         <location filename="vpiano.cpp" line="537"/>
         <source>Names:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>main</name>
+    <message>
+        <location filename="vpianomain.cpp" line="28"/>
+        <source>Drumstick Simple Virtual Piano
+Copyright (C) 2006-2022 Pedro Lopez-Cabanillas
+This program comes with ABSOLUTELY NO WARRANTY; This is free software, and you are welcome to redistribute it under certain conditions; see the LICENSE file for details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="vpianomain.cpp" line="124"/>
+        <source>Portable settings mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="vpianomain.cpp" line="138"/>
+        <source>Fatal error from a MIDI backend.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

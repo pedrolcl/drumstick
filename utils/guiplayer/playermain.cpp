@@ -16,7 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "guiplayer.h"
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDebug>
@@ -26,28 +25,32 @@
 #include <QTranslator>
 #include <drumstick/sequencererror.h>
 
-const QString PGM_DESCRIPTION("ALSA Sequencer based MIDI file player");
+#include "guiplayer.h"
 
-const QString errorstr = "Fatal error from the ALSA sequencer. "
+const char* PGM_DESCRIPTION = QT_TRANSLATE_NOOP("main", "ALSA Sequencer based MIDI file player");
+
+const char* errorstr = QT_TRANSLATE_NOOP("main", "Fatal error from the ALSA sequencer. "
     "This usually happens when the kernel doesn't have ALSA support, "
     "or the device node (/dev/snd/seq) doesn't exists, "
     "or the kernel module (snd_seq) is not loaded. "
-    "Please check your ALSA/MIDI configuration.";
+    "Please check your ALSA/MIDI configuration.");
 
 int main(int argc, char *argv[])
 {
+    QApplication app(argc, argv);
     QCoreApplication::setOrganizationName(GUIPlayer::QSTR_DOMAIN);
     QCoreApplication::setOrganizationDomain(GUIPlayer::QSTR_DOMAIN);
     QCoreApplication::setApplicationName(GUIPlayer::QSTR_APPNAME);
     QCoreApplication::setApplicationVersion(QStringLiteral(QT_STRINGIFY(VERSION)));
-    QApplication app(argc, argv);
 
     QLocale locale;
+    QTranslator qtTranslator;
     if ((locale.language() != QLocale::C) && (locale.language() != QLocale::English)) {
-        QTranslator qtTranslator;
-        qDebug() << "load Qt translator:" << locale.name() <<
-                 qtTranslator.load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-        QCoreApplication::installTranslator(&qtTranslator);
+        if (qtTranslator.load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
+            QCoreApplication::installTranslator(&qtTranslator);
+        } else {
+            qWarning() << "Unable to load Qt translator:" << locale.name();
+        }
     }
 
 #if defined(Q_OS_WIN32)
@@ -58,25 +61,23 @@ int main(int argc, char *argv[])
     QString dataDir = QApplication::applicationDirPath() + "/../share/drumstick/";
 #endif
 
+    QTranslator appTranslator;
     if ((locale.language() != QLocale::C) && (locale.language() != QLocale::English)) {
-        QTranslator appTranslator;
-        qDebug() << "load app translator:" << locale.name() <<
-                 appTranslator.load(locale, "drumstick-guiplayer", "_", dataDir);
-        QCoreApplication::installTranslator(&appTranslator);
+        if (appTranslator.load(locale, "drumstick-guiplayer", "_", dataDir)) {
+            QCoreApplication::installTranslator(&appTranslator);
+        } else {
+            qWarning() << "Unable to load app translator:" << locale.name();
+        }
     }
 
     QCommandLineParser parser;
-    parser.setApplicationDescription(PGM_DESCRIPTION);
+    parser.setApplicationDescription(QCoreApplication::translate("main", PGM_DESCRIPTION));
     auto helpOption = parser.addHelpOption();
     auto versionOption = parser.addVersionOption();
-    QCommandLineOption portOption({"p", "port"}, "MIDI Out Connection.", "client:port");
+    QCommandLineOption portOption({"p", "port"}, QCoreApplication::translate("main", "MIDI Out Connection."), "client:port");
     parser.addOption(portOption);
-    parser.addPositionalArgument("file", "Input SMF/KAR/RMI/WRK file name.", "file");
+    parser.addPositionalArgument("file", QCoreApplication::translate("main", "Input SMF/KAR/RMI/WRK file name."), "file");
     parser.process(app);
-
-    if (parser.isSet(versionOption) || parser.isSet(helpOption)) {
-        return 0;
-    }
 
     QStringList fileNames, positionalArgs = parser.positionalArguments();
     foreach(const QString& a, positionalArgs) {
@@ -84,7 +85,7 @@ int main(int argc, char *argv[])
         if (f.exists())
             fileNames += f.canonicalFilePath();
         else
-            qWarning() << "File not found: " << a;
+            qWarning() << QCoreApplication::translate("main", "File not found: ") << a;
     }
 
     try {
@@ -99,10 +100,11 @@ int main(int argc, char *argv[])
         w.show();
         return app.exec();
     } catch (const drumstick::ALSA::SequencerError& ex) {
-        QMessageBox::critical(nullptr, "Error",
-            errorstr + " Returned error was: " + ex.qstrError() );
+        QMessageBox::critical(nullptr, QCoreApplication::translate("main", "Error"),
+            QCoreApplication::translate("main", errorstr) + "\n" +
+            QCoreApplication::translate("main", "Returned error was: ") + ex.qstrError() );
     } catch (...) {
-        qWarning() << errorstr;
+        qWarning() << QCoreApplication::translate("main", errorstr);
     }
-    return 0;
+    return EXIT_FAILURE;
 }
