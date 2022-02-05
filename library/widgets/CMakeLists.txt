@@ -135,7 +135,11 @@ else()
 endif()
 
 add_custom_command(TARGET drumstick-widgets POST_BUILD
-    COMMAND Qt${QT_VERSION_MAJOR}::lupdate ${CMAKE_CURRENT_SOURCE_DIR} -ts ${TS_FILES}
+    COMMAND Qt${QT_VERSION_MAJOR}::lupdate ${CMAKE_CURRENT_SOURCE_DIR}
+        -I ${PROJECT_SOURCE_DIR}/library/include
+        -I ${CMAKE_CURRENT_SOURCE_DIR}
+        -I ${CMAKE_CURRENT_BINARY_DIR}
+        -ts ${TS_FILES}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "Updating translations"
 )
