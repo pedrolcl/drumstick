@@ -23,4 +23,8 @@
       <image>https://drumstick.sourceforge.io/images/drumstick-guiplayer.png</image>
     </screenshot>
   </screenshots>
+
+  <releases>
+    <release version="2.5.1" date="2022-02-06" />
+  </releases>
 </component>
