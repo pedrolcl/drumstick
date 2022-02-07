@@ -1,3 +1,6 @@
+2022-02-07
+    * Release 2.5.1
+
 2022-02-03
     * Utils: fixed loading translations, program names and messages
     * cmake buildsystem: run qt::lupdate after building targets
