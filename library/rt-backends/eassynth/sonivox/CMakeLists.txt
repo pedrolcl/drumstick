@@ -74,3 +74,11 @@ set_target_properties( sonivox PROPERTIES
   POSITION_INDEPENDENT_CODE true
   VERSION 3.6.10 
 )
+
+if (STATIC_DRUMSTICK)
+    install( TARGETS sonivox
+        EXPORT drumstick-rt-targets
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} )
+endif()
