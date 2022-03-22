@@ -45,6 +45,8 @@
     </property>
     <addaction name="actionConnections"/>
     <addaction name="actionPreferences"/>
+    <addaction name="separator"/>
+    <addaction name="actionRaw_Computer_Keyboard"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -84,7 +86,7 @@
     </widget>
     <widget class="QMenu" name="menuOctaves_Naming">
      <property name="title">
-      <string>Central Octave Name</string>
+      <string>Central Octave C Note Name</string>
      </property>
      <addaction name="actionNoOctaves"/>
      <addaction name="actionC3"/>
@@ -309,6 +311,14 @@
     <string>Inverted Keys Color</string>
    </property>
   </action>
+  <action name="actionRaw_Computer_Keyboard">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Raw Computer Keyboard</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -317,6 +327,8 @@
    <header location="global">drumstick/pianokeybd.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="vpiano.qrc"/>
+ </resources>
  <connections/>
 </ui>

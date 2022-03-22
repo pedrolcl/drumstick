@@ -104,6 +104,9 @@ public:
     bool invertedKeys() const;
     void setInvertedKeys(bool newInvertedKeys);
 
+    bool rawKeyboard() const;
+    void setRawKeyboard(bool newRawKeyboard);
+
 signals:
     void ValuesChanged();
 
@@ -144,6 +147,7 @@ private:
     QStringList m_names_flats;
     QFont m_namesFont;
     bool m_invertedKeys;
+    bool m_rawKeyboard;
 };
 
 #endif // PORTABLESETTINGS_H

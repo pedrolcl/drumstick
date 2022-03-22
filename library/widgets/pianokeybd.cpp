@@ -434,7 +434,6 @@ void PianoKeybd::initialize()
 #endif
     setOptimizationFlag(DontSavePainterState, true);
     setOptimizationFlag(DontAdjustForAntialiasing, true);
-    resetRawKeyboardMap();
 }
 
 /**
@@ -876,6 +875,7 @@ KeyboardMap* PianoKeybd::getKeyboardMap()
 void PianoKeybd::resetRawKeyboardMap()
 {
     d->m_rawMap = &g_DefaultRawKeyMap;
+    d->m_scene->setKeyboardMap(&g_DefaultRawKeyMap);
 }
 
 /**
@@ -911,6 +911,7 @@ void PianoKeybd::resetKeyboardMap()
 void PianoKeybd::setRawKeyboardMap(KeyboardMap *m)
 {
     d->m_rawMap = m;
+    d->m_scene->setKeyboardMap(m);
 }
 
 /**

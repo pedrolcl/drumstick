@@ -679,14 +679,13 @@ PianoKey* PianoScene::getPianoKey( const int key ) const
  */
 void PianoScene::keyPressEvent ( QKeyEvent * keyEvent )
 {
-    if ( d->m_keyboardEnabled) {
-        if ( !d->m_rawkbd && !keyEvent->isAutoRepeat() ) { // ignore auto-repeats
-            int note = getNoteFromKey(keyEvent->key());
-            if (note > -1)
-                keyOn(note);
+    if ( d->m_keyboardEnabled && !keyEvent->isAutoRepeat()) { // ignore auto-repeats
+        int note = getNoteFromKey(d->m_rawkbd ? keyEvent->nativeScanCode() : keyEvent->key());
+        if (note > -1) {
+            keyOn(note);
+            keyEvent->accept();
+            return;
         }
-        keyEvent->accept();
-        return;
     }
     keyEvent->ignore();
 }
@@ -697,14 +696,13 @@ void PianoScene::keyPressEvent ( QKeyEvent * keyEvent )
  */
 void PianoScene::keyReleaseEvent ( QKeyEvent * keyEvent )
 {
-    if (d->m_keyboardEnabled) {
-        if ( !d->m_rawkbd && !keyEvent->isAutoRepeat() ) { // ignore auto-repeats
-            int note = getNoteFromKey(keyEvent->key());
-            if (note > -1)
-                keyOff(note);
+    if (d->m_keyboardEnabled && !keyEvent->isAutoRepeat() ) { // ignore auto-repeats
+        int note = getNoteFromKey(d->m_rawkbd ? keyEvent->nativeScanCode() : keyEvent->key());
+        if (note > -1) {
+            keyOff(note);
+            keyEvent->accept();
+            return;
         }
-        keyEvent->accept();
-        return;
     }
     keyEvent->ignore();
 }

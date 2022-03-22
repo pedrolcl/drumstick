@@ -118,6 +118,7 @@ void VPianoSettings::internalRead(QSettings &settings)
     setBaseOctave(settings.value("baseOctave", 1).toInt());
     setNumKeys(settings.value("numKeys", 88).toInt());
     setStartingKey(settings.value("startingKey", 9).toInt());
+    setRawKeyboard(settings.value("raw_keyboard", false).toBool());
     settings.endGroup();
 
     settings.beginGroup("TextSettings");
@@ -168,6 +169,7 @@ void VPianoSettings::internalSave(QSettings &settings)
     settings.setValue("baseOctave", m_baseOctave);
     settings.setValue("numKeys", m_numKeys);
     settings.setValue("startingKey", m_startingKey);
+    settings.setValue("raw_keyboard", m_rawKeyboard);
     settings.endGroup();
 
     settings.beginGroup("TextSettings");
@@ -183,6 +185,16 @@ void VPianoSettings::internalSave(QSettings &settings)
     settings.endGroup();
 
     settings.sync();
+}
+
+bool VPianoSettings::rawKeyboard() const
+{
+    return m_rawKeyboard;
+}
+
+void VPianoSettings::setRawKeyboard(bool newRawKeyboard)
+{
+    m_rawKeyboard = newRawKeyboard;
 }
 
 bool VPianoSettings::invertedKeys() const

@@ -1,3 +1,8 @@
+2022-03-22
+    * Widgets: pianokeybd internal raw computer keyboard processing
+    * Utils: vpiano gets a new raw keyboard option
+    * Bump version for the next development cycle
+
 2022-02-07
     * Release 2.5.1
 

@@ -57,6 +57,7 @@ public slots:
     void slotCustomNames(bool sharps);
     void slotNoteName(const QString& name);
     void slotInvertedColors(bool checked);
+    void slotRawKeyboard(bool checked);
 
 private:
     void initialize();

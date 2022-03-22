@@ -78,6 +78,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
     connect(ui.actionPreferences, &QAction::triggered, this,  &VPiano::slotPreferences);
     connect(ui.actionNames_Font, &QAction::triggered, this, &VPiano::slotChangeFont);
     connect(ui.actionInverted_Keys_Color, &QAction::triggered, this, &VPiano::slotInvertedColors);
+    connect(ui.actionRaw_Computer_Keyboard, &QAction::triggered, this, &VPiano::slotRawKeyboard);
 
     QActionGroup* nameGroup = new QActionGroup(this);
     nameGroup->setExclusive(true);
@@ -425,6 +426,9 @@ void VPiano::readSettings()
 
     ui.actionInverted_Keys_Color->setChecked(VPianoSettings::instance()->invertedKeys());
     slotInvertedColors(ui.actionInverted_Keys_Color->isChecked());
+
+    ui.actionRaw_Computer_Keyboard->setChecked(VPianoSettings::instance()->rawKeyboard());
+    slotRawKeyboard(ui.actionRaw_Computer_Keyboard->isChecked());
 }
 
 void VPiano::setPortableConfig(const QString fileName)
@@ -584,4 +588,16 @@ void VPiano::slotInvertedColors(bool checked)
     ui.pianokeybd->setBackgroundPalette(bgpal);
     ui.pianokeybd->setForegroundPalette(fpal);
     VPianoSettings::instance()->setInvertedKeys(checked);
+}
+
+void VPiano::slotRawKeyboard(bool checked)
+{
+    qDebug() << Q_FUNC_INFO << checked;
+    if (checked) {
+        ui.pianokeybd->resetRawKeyboardMap();
+    } else {
+        ui.pianokeybd->resetKeyboardMap();
+    }
+    ui.pianokeybd->setRawKeyboardMode(checked);
+    VPianoSettings::instance()->setRawKeyboard(checked);
 }
