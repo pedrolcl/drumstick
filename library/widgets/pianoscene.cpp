@@ -738,7 +738,7 @@ bool PianoScene::event(QEvent *event)
     case QEvent::TouchCancel:
     {
         QTouchEvent *touchEvent = static_cast<QTouchEvent*>(event);
-        qDebug() << Q_FUNC_INFO << touchEvent->type() << touchEvent->pointCount() << d->m_touched.count();
+        qDebug() << Q_FUNC_INFO << touchEvent->type() << /*touchEvent->pointCount() <<*/ d->m_touched.count();
         foreach(PianoKey *key, d->m_touched) {
             qDebug() << "key:" << key->getNote() << key->isPressed();
             if (key->isPressed()) {
@@ -752,7 +752,7 @@ bool PianoScene::event(QEvent *event)
     case QEvent::TouchUpdate:
     {
         QTouchEvent *touchEvent = static_cast<QTouchEvent*>(event);
-        qDebug() << Q_FUNC_INFO << touchEvent->type() << touchEvent->pointCount() << d->m_touched.count();
+        qDebug() << Q_FUNC_INFO << touchEvent->type() << /*touchEvent->pointCount() <<*/ d->m_touched.count();
     #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
         const auto touchScreen = QTouchDevice::DeviceType::TouchScreen;
     #else
@@ -847,10 +847,9 @@ bool PianoScene::event(QEvent *event)
                             touchPoint.scenePosition()
                         #endif
                     );
-                    qDebug() << "key:" << key->getNote() << key->isPressed();
                     PianoKey* lastkey = d->m_touched.value(touchPoint.id());
-                    qDebug() << "lastkey:" << key->getNote() << key->isPressed();
                     if ((lastkey != nullptr) && (lastkey != key)) {
+                        qDebug() << "lastkey:" << lastkey->getNote() << lastkey->isPressed();
                         if (lastkey->isPressed()) {
                             if (hasPressure) {
                                 keyOff(lastkey, touchPoint.pressure());
@@ -861,6 +860,7 @@ bool PianoScene::event(QEvent *event)
                         d->m_touched.remove(touchPoint.id());
                     }
                     if (key != nullptr) {
+                        qDebug() << "key:" << key->getNote() << key->isPressed();
                         if (!key->isPressed()) {
                             if (hasPressure) {
                                 keyOn(key, touchPoint.pressure());

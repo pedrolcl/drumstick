@@ -16,7 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-//#include <QDebug>
+#include <QDebug>
 #include <QDir>
 #include <QFileInfo>
 #include <QFontDialog>
@@ -51,6 +51,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
     const QList<const QTouchDevice*> devs = QTouchDevice::devices();
     for(const QTouchDevice *dev : devs) {
         if (dev->type() == QTouchDevice::TouchScreen) {
+            qDebug() << "platform:" << qApp->platformName() << "touch device:" << dev;
             mouseInputEnabled = false;
             touchInputEnabled = true;
             break;
@@ -59,13 +60,13 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
 #else
     foreach(const QInputDevice *dev, QInputDevice::devices()) {
         if (dev->type() == QInputDevice::DeviceType::TouchScreen) {
+            qDebug() << "platform:" << qApp->platformName() << "touch device:" << dev;
             mouseInputEnabled = false;
             touchInputEnabled = true;
             break;
         }
     }
 #endif
-    //qDebug() << "running on" << qApp->platformName();
     ui.pianokeybd->setMouseEnabled(mouseInputEnabled);
     ui.pianokeybd->setTouchEnabled(touchInputEnabled);
 
