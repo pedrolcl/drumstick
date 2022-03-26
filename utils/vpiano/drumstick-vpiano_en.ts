@@ -360,17 +360,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="465"/>
+        <location filename="vpiano.cpp" line="466"/>
         <source>Font to display note names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="541"/>
+        <location filename="vpiano.cpp" line="542"/>
         <source>Custom Note Names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="541"/>
+        <location filename="vpiano.cpp" line="542"/>
         <source>Names:</source>
         <translation type="unfinished"></translation>
     </message>

@@ -16,7 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
+//#include <QDebug>
 #include <QDir>
 #include <QFileInfo>
 #include <QFontDialog>
@@ -65,6 +65,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
         }
     }
 #endif
+    //qDebug() << "running on" << qApp->platformName();
     ui.pianokeybd->setMouseEnabled(mouseInputEnabled);
     ui.pianokeybd->setTouchEnabled(touchInputEnabled);
 
@@ -592,7 +593,7 @@ void VPiano::slotInvertedColors(bool checked)
 
 void VPiano::slotRawKeyboard(bool checked)
 {
-    qDebug() << Q_FUNC_INFO << checked;
+    //qDebug() << Q_FUNC_INFO << checked;
     if (checked) {
         ui.pianokeybd->resetRawKeyboardMap();
     } else {
