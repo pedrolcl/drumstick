@@ -588,9 +588,6 @@ PianoKey* PianoScene::getKeyForPos( const QPointF& p ) const
         if (key != nullptr)
             break;
     }
-//    if (key == nullptr) {
-//        qDebug() << Q_FUNC_INFO << "point not found:" << p;
-//    }
     return key;
 }
 
@@ -600,7 +597,7 @@ PianoKey* PianoScene::getKeyForPos( const QPointF& p ) const
  */
 void PianoScene::mouseMoveEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 {
-    if (d->m_mouseEnabled) {
+    if (d->m_mouseEnabled && (mouseEvent->source() == Qt::MouseEventNotSynthesized)) {
         if (d->m_mousePressed) {
             PianoKey* key = getKeyForPos(mouseEvent->scenePos());
             PianoKey* lastkey = getKeyForPos(mouseEvent->lastScenePos());
@@ -622,7 +619,7 @@ void PianoScene::mouseMoveEvent ( QGraphicsSceneMouseEvent * mouseEvent )
  */
 void PianoScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 {
-    if (d->m_mouseEnabled) {
+    if (d->m_mouseEnabled && (mouseEvent->source() == Qt::MouseEventNotSynthesized)) {
         PianoKey* key = getKeyForPos(mouseEvent->scenePos());
         if (key != nullptr && !key->isPressed()) {
             keyOn(key);
@@ -639,7 +636,7 @@ void PianoScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent )
  */
 void PianoScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent )
 {
-    if (d->m_mouseEnabled) {
+    if (d->m_mouseEnabled && (mouseEvent->source() == Qt::MouseEventNotSynthesized)) {
         d->m_mousePressed = false;
         PianoKey* key = getKeyForPos(mouseEvent->scenePos());
         if (key != nullptr && key->isPressed()) {
@@ -735,158 +732,6 @@ void PianoScene::keyReleaseEvent ( QKeyEvent * keyEvent )
  */
 bool PianoScene::event(QEvent *event)
 {
-/*
-#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-    const auto touchScreen = QTouchDevice::DeviceType::TouchScreen;
-#else
-    const auto touchScreen = QInputDevice::DeviceType::TouchScreen;
-#endif
-
-    switch(event->type()) {
-    case QEvent::TouchEnd:
-    case QEvent::TouchCancel:
-    {
-        QTouchEvent *touchEvent = static_cast<QTouchEvent*>(event);
-        if (d->m_touchEnabled && touchEvent->device()->type() == touchScreen) {
-            qDebug() << Q_FUNC_INFO << touchEvent->type() << d->m_touched.count();
-            foreach(PianoKey *key, d->m_touched) {
-                qDebug() << "key:" << key->getNote() << key->isPressed();
-                if (key->isPressed()) {
-                    keyOff(key);
-                }
-            }
-            d->m_touched.clear();
-            event->accept();
-            return true;
-        }
-        break;
-    }
-    case QEvent::TouchBegin:
-    case QEvent::TouchUpdate:
-    {
-        QTouchEvent *touchEvent = static_cast<QTouchEvent*>(event);
-        //qDebug() << Q_FUNC_INFO << touchEvent->type() << d->m_touched.count();
-        if (d->m_touchEnabled && touchEvent->device()->type() == touchScreen) {
-            QList<QTouchEvent::TouchPoint> touchPoints =
-                #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-                    touchEvent->touchPoints();
-                #else
-                    touchEvent->points();
-                #endif
-            bool hasPressure =
-                #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-                    touchEvent->device()->capabilities().testFlag(QTouchDevice::Pressure);
-                #else
-                    touchEvent->device()->capabilities().testFlag(QInputDevice::Capability::Pressure);
-                #endif
-            foreach(const QTouchEvent::TouchPoint& touchPoint, touchPoints) {
-                //qDebug() << touchPoint.id() << touchPoint.state();
-                switch (touchPoint.state()) {
-                //case Qt::TouchPointPrimary:
-//#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-//                case Qt::TouchPointStationary:
-//#else
-//                case QEventPoint::Stationary:
-//#endif
-//                    continue;
-#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-                case Qt::TouchPointReleased:
-#else
-                case QEventPoint::Released:
-#endif
-                {
-                    PianoKey* key = d->m_touched.value(touchPoint.id());
-                    if (key != nullptr) {
-                        //qDebug() << "key:" << key->getNote() << key->isPressed();
-                        if (key->isPressed()) {
-                            if (hasPressure) {
-                                keyOff(key, touchPoint.pressure());
-                            } else {
-                                keyOff(key);
-                            }
-                        }
-                        d->m_touched.remove(touchPoint.id());
-                    }
-                    break;
-                }
-#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-                case Qt::TouchPointPressed:
-#else
-                case QEventPoint::Pressed:
-#endif
-                {
-                    PianoKey* key = getKeyForPos(
-                        #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-                            touchPoint.scenePos()
-                        #else
-                            touchPoint.scenePosition()
-                        #endif
-                    );
-                    if (key != nullptr) {
-                        //qDebug() << "key:" << key->getNote() << key->isPressed();
-                        if (!key->isPressed()) {
-                            if (hasPressure) {
-                                keyOn(key, touchPoint.pressure());
-                            } else {
-                                keyOn(key);
-                            }
-                            key->ensureVisible();
-                        }
-                        d->m_touched[touchPoint.id()] = key;
-                    }
-                    break;
-                }
-#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-                case Qt::TouchPointMoved:
-#else
-                case QEventPoint::Updated:
-#endif
-                {
-                    PianoKey* key = getKeyForPos(
-                        #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-                            touchPoint.scenePos()
-                        #else
-                            touchPoint.scenePosition()
-                        #endif
-                    );
-                    PianoKey* lastkey = d->m_touched.value(touchPoint.id());
-                    if ((lastkey != nullptr) && (lastkey != key)) {
-                        //qDebug() << "lastkey:" << lastkey->getNote() << lastkey->isPressed();
-                        if (lastkey->isPressed()) {
-                            if (hasPressure) {
-                                keyOff(lastkey, touchPoint.pressure());
-                            } else {
-                                keyOff(lastkey);
-                            }
-                        }
-                        d->m_touched.remove(touchPoint.id());
-                    }
-                    if (key != nullptr) {
-                        //qDebug() << "key:" << key->getNote() << key->isPressed();
-                        if (!key->isPressed()) {
-                            if (hasPressure) {
-                                keyOn(key, touchPoint.pressure());
-                            } else {
-                                keyOn(key);
-                            }
-                        }
-                        d->m_touched[touchPoint.id()] = key;
-                    }
-                    break;
-                }
-                default:
-                    break;
-                }
-            }
-            event->accept();
-            return true;
-        }
-        break;
-    }
-    default:
-        break;
-    }
-*/
     return QGraphicsScene::event(event);
 }
 
@@ -1553,13 +1398,6 @@ bool PianoScene::touchScreenEvent(QTouchEvent *touchEvent)
     case QEvent::TouchEnd:
     case QEvent::TouchCancel:
     {
-//        qDebug() << Q_FUNC_INFO << touchEvent->type()
-//             #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-//                 << touchEvent->touchPoints().count()
-//             #else
-//                 << touchEvent->pointCount()
-//             #endif
-//                 << d->m_touched.count();
         foreach(PianoKey *key, d->m_touched) {
             //qDebug() << "key:" << key->getNote() << key->isPressed();
             if (key->isPressed()) {
@@ -1573,13 +1411,6 @@ bool PianoScene::touchScreenEvent(QTouchEvent *touchEvent)
     case QEvent::TouchBegin:
     case QEvent::TouchUpdate:
     {
-//        qDebug() << Q_FUNC_INFO << touchEvent->type()
-//             #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-//                 << touchEvent->touchPoints().count()
-//             #else
-//                 << touchEvent->pointCount()
-//             #endif
-//                 << d->m_touched.count();
         QList<QTouchEvent::TouchPoint> touchPoints =
             #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
                 touchEvent->touchPoints();
@@ -1593,17 +1424,8 @@ bool PianoScene::touchScreenEvent(QTouchEvent *touchEvent)
                 touchEvent->device()->capabilities().testFlag(QInputDevice::Capability::Pressure);
             #endif
         foreach(const QTouchEvent::TouchPoint& touchPoint, touchPoints) {
-//            qDebug() << touchPoint.id() << touchPoint.state();
-//                     /*<< "position:" << touchPoint.position()
-//                     << "pressPosition:" << touchPoint.pressPosition()
-//                     << "scene:" << touchPoint.scenePosition();*/
+            //qDebug() << touchPoint.id() << touchPoint.state();
             switch (touchPoint.state()) {
-            //#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-            //case Qt::TouchPointStationary:
-            //#else
-            //case QEventPoint::Stationary:
-            //#endif
-            //  continue;
 #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
             case Qt::TouchPointReleased:
 #else
