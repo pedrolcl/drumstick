@@ -107,6 +107,15 @@ public:
     bool rawKeyboard() const;
     void setRawKeyboard(bool newRawKeyboard);
 
+    bool keyboardInput() const;
+    void setKeyboardInput(bool newKeyboardInput);
+
+    bool mouseInput() const;
+    void setMouseInput(bool newMouseInput);
+
+    bool touchScreenInput() const;
+    void setTouchScreenInput(bool newTouchScreenInput);
+
 signals:
     void ValuesChanged();
 
@@ -148,6 +157,9 @@ private:
     QFont m_namesFont;
     bool m_invertedKeys;
     bool m_rawKeyboard;
+    bool m_keyboardInput;
+    bool m_mouseInput;
+    bool m_touchScreenInput;
 };
 
 #endif // PORTABLESETTINGS_H

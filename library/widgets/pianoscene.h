@@ -22,6 +22,7 @@
 #include <QGraphicsScene>
 #include <QScopedPointer>
 #include <QHash>
+#include <QTouchEvent>
 #include <drumstick/pianokeybd.h>
 #include <drumstick/pianopalette.h>
 #include "pianokey.h"
@@ -132,6 +133,8 @@ namespace drumstick { namespace widgets {
 
         void saveData(QByteArray& ba);
         void loadData(QByteArray& ba);
+
+        bool touchScreenEvent(QTouchEvent *touchEvent);
 
     signals:
         /**

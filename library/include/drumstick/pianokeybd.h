@@ -293,6 +293,7 @@ namespace drumstick { namespace widgets {
         void initDefaultMap();
         void initScene(int base, int num, int ini, const QColor& c = QColor());
         void resizeEvent(QResizeEvent *event) override;
+        bool viewportEvent(QEvent *ev) override;
 
     private:
         class PianoKeybdPrivate;

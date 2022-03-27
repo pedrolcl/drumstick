@@ -14,7 +14,7 @@
    <string>Drumstick Virtual Piano</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="vpiano.qrc">
+   <iconset resource="../drumgrid/drumgrid.qrc">
     <normaloff>:/drumstick.png</normaloff>:/drumstick.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -46,7 +46,10 @@
     <addaction name="actionConnections"/>
     <addaction name="actionPreferences"/>
     <addaction name="separator"/>
+    <addaction name="actionComputer_Keyboard_Input"/>
     <addaction name="actionRaw_Computer_Keyboard"/>
+    <addaction name="actionMouse_Input"/>
+    <addaction name="actionTouch_Screen_Input"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -319,6 +322,33 @@
     <string>Raw Computer Keyboard</string>
    </property>
   </action>
+  <action name="actionComputer_Keyboard_Input">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Computer  Keyboard Input</string>
+   </property>
+  </action>
+  <action name="actionMouse_Input">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Mouse Input</string>
+   </property>
+  </action>
+  <action name="actionTouch_Screen_Input">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Touch Screen Input</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -328,7 +358,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="vpiano.qrc"/>
+  <include location="../drumgrid/drumgrid.qrc"/>
  </resources>
  <connections/>
 </ui>

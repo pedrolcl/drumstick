@@ -119,6 +119,9 @@ void VPianoSettings::internalRead(QSettings &settings)
     setNumKeys(settings.value("numKeys", 88).toInt());
     setStartingKey(settings.value("startingKey", 9).toInt());
     setRawKeyboard(settings.value("raw_keyboard", false).toBool());
+    setKeyboardInput(settings.value("keyboard_input", true).toBool());
+    setMouseInput(settings.value("mouse_input", true).toBool());
+    setTouchScreenInput(settings.value("touchscreen_input", false).toBool());
     settings.endGroup();
 
     settings.beginGroup("TextSettings");
@@ -170,6 +173,9 @@ void VPianoSettings::internalSave(QSettings &settings)
     settings.setValue("numKeys", m_numKeys);
     settings.setValue("startingKey", m_startingKey);
     settings.setValue("raw_keyboard", m_rawKeyboard);
+    settings.setValue("keyboard_input", m_keyboardInput);
+    settings.setValue("mouse_input", m_mouseInput);
+    settings.setValue("touchscreen_input", m_touchScreenInput);
     settings.endGroup();
 
     settings.beginGroup("TextSettings");
@@ -185,6 +191,36 @@ void VPianoSettings::internalSave(QSettings &settings)
     settings.endGroup();
 
     settings.sync();
+}
+
+bool VPianoSettings::touchScreenInput() const
+{
+    return m_touchScreenInput;
+}
+
+void VPianoSettings::setTouchScreenInput(bool newTouchScreenInput)
+{
+    m_touchScreenInput = newTouchScreenInput;
+}
+
+bool VPianoSettings::mouseInput() const
+{
+    return m_mouseInput;
+}
+
+void VPianoSettings::setMouseInput(bool newMouseInput)
+{
+    m_mouseInput = newMouseInput;
+}
+
+bool VPianoSettings::keyboardInput() const
+{
+    return m_keyboardInput;
+}
+
+void VPianoSettings::setKeyboardInput(bool newKeyboardInput)
+{
+    m_keyboardInput = newKeyboardInput;
 }
 
 bool VPianoSettings::rawKeyboard() const

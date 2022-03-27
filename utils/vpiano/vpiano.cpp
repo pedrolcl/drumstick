@@ -45,31 +45,6 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
 {
     ui.setupUi(this);
 
-    bool mouseInputEnabled = true;
-    bool touchInputEnabled = false;
-#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-    const QList<const QTouchDevice*> devs = QTouchDevice::devices();
-    for(const QTouchDevice *dev : devs) {
-        if (dev->type() == QTouchDevice::TouchScreen) {
-            qDebug() << "platform:" << qApp->platformName() << "touch device:" << dev;
-            mouseInputEnabled = false;
-            touchInputEnabled = true;
-            break;
-        }
-    }
-#else
-    foreach(const QInputDevice *dev, QInputDevice::devices()) {
-        if (dev->type() == QInputDevice::DeviceType::TouchScreen) {
-            qDebug() << "platform:" << qApp->platformName() << "touch device:" << dev;
-            mouseInputEnabled = false;
-            touchInputEnabled = true;
-            break;
-        }
-    }
-#endif
-    ui.pianokeybd->setMouseEnabled(mouseInputEnabled);
-    ui.pianokeybd->setTouchEnabled(touchInputEnabled);
-
     connect(ui.pianokeybd, &PianoKeybd::noteOn, this, QOverload<int,int>::of(&VPiano::slotNoteOn));
     connect(ui.pianokeybd, &PianoKeybd::noteOff, this, QOverload<int,int>::of(&VPiano::slotNoteOff));
     connect(ui.pianokeybd, &PianoKeybd::signalName, this, &VPiano::slotNoteName);
@@ -81,6 +56,9 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
     connect(ui.actionNames_Font, &QAction::triggered, this, &VPiano::slotChangeFont);
     connect(ui.actionInverted_Keys_Color, &QAction::triggered, this, &VPiano::slotInvertedColors);
     connect(ui.actionRaw_Computer_Keyboard, &QAction::triggered, this, &VPiano::slotRawKeyboard);
+    connect(ui.actionComputer_Keyboard_Input, &QAction::triggered, this, &VPiano::slotKeyboardInput);
+    connect(ui.actionMouse_Input, &QAction::triggered, this, &VPiano::slotMouseInput);
+    connect(ui.actionTouch_Screen_Input, &QAction::triggered, this, &VPiano::slotTouchScreenInput);
 
     QActionGroup* nameGroup = new QActionGroup(this);
     nameGroup->setExclusive(true);
@@ -133,6 +111,36 @@ VPiano::~VPiano()
 void VPiano::initialize()
 {
     readSettings();
+
+    bool touchInputEnabled = false;
+    bool mouseInputEnabled = true;
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
+    const QList<const QTouchDevice*> devs = QTouchDevice::devices();
+    for(const QTouchDevice *dev : devs) {
+        if (dev->type() == QTouchDevice::TouchScreen) {
+            qDebug() << "platform:" << qApp->platformName()
+                     << "desktop:" << qgetenv("XDG_SESSION_DESKTOP")
+                     << "touch device:" << dev;
+            touchInputEnabled = true;
+            mouseInputEnabled = !dev->capabilities().testFlag(QTouchDevice::MouseEmulation);
+            break;
+        }
+    }
+#else
+    foreach(const QInputDevice *dev, QInputDevice::devices()) {
+        if (dev->type() == QInputDevice::DeviceType::TouchScreen) {
+            qDebug() << "platform:" << qApp->platformName()
+                     << "desktop:" << qgetenv("XDG_SESSION_DESKTOP")
+                     << "touch device:" << dev;
+            touchInputEnabled = true;
+            mouseInputEnabled = !dev->capabilities().testFlag(QInputDevice::Capability::MouseEmulation);
+            break;
+        }
+    }
+#endif
+    ui.actionTouch_Screen_Input->setChecked(touchInputEnabled);
+    //slotTouchScreenInput(touchInputEnabled);
+    ui.actionMouse_Input->setChecked(mouseInputEnabled);
 
     BackendManager man;
     man.refresh(VPianoSettings::instance()->settingsMap());
@@ -431,6 +439,15 @@ void VPiano::readSettings()
 
     ui.actionRaw_Computer_Keyboard->setChecked(VPianoSettings::instance()->rawKeyboard());
     slotRawKeyboard(ui.actionRaw_Computer_Keyboard->isChecked());
+
+    ui.actionComputer_Keyboard_Input->setChecked(VPianoSettings::instance()->keyboardInput());
+    slotKeyboardInput(ui.actionComputer_Keyboard_Input->isChecked());
+
+    ui.actionMouse_Input->setChecked(VPianoSettings::instance()->mouseInput());
+    slotMouseInput(ui.actionMouse_Input->isChecked());
+
+    ui.actionTouch_Screen_Input->setChecked(VPianoSettings::instance()->touchScreenInput());
+    slotTouchScreenInput(ui.actionTouch_Screen_Input->isChecked());
 }
 
 void VPiano::setPortableConfig(const QString fileName)
@@ -594,7 +611,7 @@ void VPiano::slotInvertedColors(bool checked)
 
 void VPiano::slotRawKeyboard(bool checked)
 {
-    //qDebug() << Q_FUNC_INFO << checked;
+    qDebug() << Q_FUNC_INFO << checked;
     if (checked) {
         ui.pianokeybd->resetRawKeyboardMap();
     } else {
@@ -602,4 +619,25 @@ void VPiano::slotRawKeyboard(bool checked)
     }
     ui.pianokeybd->setRawKeyboardMode(checked);
     VPianoSettings::instance()->setRawKeyboard(checked);
+}
+
+void VPiano::slotKeyboardInput(bool checked)
+{
+    qDebug() << Q_FUNC_INFO << checked;
+    ui.pianokeybd->setKeyboardEnabled(checked);
+    VPianoSettings::instance()->setKeyboardInput(checked);
+}
+
+void VPiano::slotMouseInput(bool checked)
+{
+    qDebug() << Q_FUNC_INFO << checked;
+    ui.pianokeybd->setMouseEnabled(checked);
+    VPianoSettings::instance()->setMouseInput(checked);
+}
+
+void VPiano::slotTouchScreenInput(bool checked)
+{
+    qDebug() << Q_FUNC_INFO << checked;
+    ui.pianokeybd->setTouchEnabled(checked);
+    VPianoSettings::instance()->setTouchScreenInput(checked);
 }

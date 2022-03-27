@@ -58,6 +58,9 @@ public slots:
     void slotNoteName(const QString& name);
     void slotInvertedColors(bool checked);
     void slotRawKeyboard(bool checked);
+    void slotKeyboardInput(bool checked);
+    void slotMouseInput(bool checked);
+    void slotTouchScreenInput(bool checked);
 
 private:
     void initialize();

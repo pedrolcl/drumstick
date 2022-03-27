@@ -447,6 +447,32 @@ void PianoKeybd::resizeEvent(QResizeEvent *event)
     fitInView(d->m_scene->sceneRect(), Qt::KeepAspectRatio);
 }
 
+bool PianoKeybd::viewportEvent(QEvent *ev)
+{
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
+    static const auto touchScreen = QTouchDevice::DeviceType::TouchScreen;
+#else
+    static const auto touchScreen = QInputDevice::DeviceType::TouchScreen;
+#endif
+    switch(ev->type()) {
+    case QEvent::TouchBegin:
+    case QEvent::TouchUpdate:
+    case QEvent::TouchEnd:
+    case QEvent::TouchCancel:
+    {
+        //qDebug() << Q_FUNC_INFO << ev->type();
+        QTouchEvent *touchEvent = static_cast<QTouchEvent*>(ev);
+        if (isTouchEnabled() && (touchEvent->device()->type() == touchScreen)) {
+            return d->m_scene->touchScreenEvent(touchEvent);
+        }
+        break;
+    }
+    default:
+        break;
+    }
+    return QGraphicsView::viewportEvent(ev);
+}
+
 /**
  * This method changes the number of displayed keys
  * and the starting key number, keeping the other settings the same.
