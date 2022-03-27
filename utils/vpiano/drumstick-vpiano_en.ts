@@ -375,17 +375,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="484"/>
+        <location filename="vpiano.cpp" line="485"/>
         <source>Font to display note names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="560"/>
+        <location filename="vpiano.cpp" line="561"/>
         <source>Custom Note Names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="560"/>
+        <location filename="vpiano.cpp" line="561"/>
         <source>Names:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -400,12 +400,12 @@ This program comes with ABSOLUTELY NO WARRANTY; This is free software, and you a
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpianomain.cpp" line="124"/>
+        <location filename="vpianomain.cpp" line="130"/>
         <source>Portable settings mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpianomain.cpp" line="138"/>
+        <location filename="vpianomain.cpp" line="144"/>
         <source>Fatal error from a MIDI backend.</source>
         <translation type="unfinished"></translation>
     </message>

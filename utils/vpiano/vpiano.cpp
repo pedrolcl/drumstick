@@ -112,6 +112,7 @@ void VPiano::initialize()
 {
     readSettings();
 
+    /*
     bool touchInputEnabled = false;
     bool mouseInputEnabled = true;
 #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
@@ -141,7 +142,7 @@ void VPiano::initialize()
     ui.actionTouch_Screen_Input->setChecked(touchInputEnabled);
     //slotTouchScreenInput(touchInputEnabled);
     ui.actionMouse_Input->setChecked(mouseInputEnabled);
-
+*/
     BackendManager man;
     man.refresh(VPianoSettings::instance()->settingsMap());
     m_inputs = man.availableInputs();

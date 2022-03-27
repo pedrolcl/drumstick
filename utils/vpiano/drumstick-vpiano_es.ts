@@ -420,17 +420,17 @@ redistribuirlo bajo ciertas condiciones.</translation>
         <translation>Entrada por pantalla táctil</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="484"/>
+        <location filename="vpiano.cpp" line="485"/>
         <source>Font to display note names</source>
         <translation>Fuente para mostrar nombres de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="560"/>
+        <location filename="vpiano.cpp" line="561"/>
         <source>Custom Note Names</source>
         <translation>Nombres personalizados de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="560"/>
+        <location filename="vpiano.cpp" line="561"/>
         <source>Names:</source>
         <translation>Nombres:</translation>
     </message>
@@ -465,12 +465,12 @@ Copyright (C) 2006-2022 Pedro Lopez-Cabanillas
 Este programa se ofrece SIN GARANTÍA ALGUNA. Este programa es software libre, y usted puede redistribuirlo bajo ciertas condiciones; vea el archivo LICENSE para detalles.</translation>
     </message>
     <message>
-        <location filename="vpianomain.cpp" line="124"/>
+        <location filename="vpianomain.cpp" line="130"/>
         <source>Portable settings mode</source>
         <translation>Modo de ajustes portables</translation>
     </message>
     <message>
-        <location filename="vpianomain.cpp" line="138"/>
+        <location filename="vpianomain.cpp" line="144"/>
         <source>Fatal error from a MIDI backend.</source>
         <translation>Error grave en el soporte MIDI.</translation>
     </message>

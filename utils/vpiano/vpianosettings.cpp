@@ -19,6 +19,7 @@
 #include "vpianosettings.h"
 #include <QDir>
 #include <QFileInfo>
+#include <QInputDevice>
 #include <drumstick/settingsfactory.h>
 
 using namespace drumstick::rt;
@@ -108,6 +109,33 @@ void VPianoSettings::internalRead(QSettings &settings)
     m_advanced = settings.value("advanced", false).toBool();
     settings.endGroup();
 
+    bool touchInputEnabled = false;
+    bool mouseInputEnabled = true;
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
+    const QList<const QTouchDevice*> devs = QTouchDevice::devices();
+    for(const QTouchDevice *dev : devs) {
+        if (dev->type() == QTouchDevice::TouchScreen) {
+            qDebug() << "platform:" << qApp->platformName()
+                     << "desktop:" << qgetenv("XDG_SESSION_DESKTOP")
+                     << "touch device:" << dev;
+            touchInputEnabled = true;
+            mouseInputEnabled = !dev->capabilities().testFlag(QTouchDevice::MouseEmulation);
+            break;
+        }
+    }
+#else
+    foreach(const QInputDevice *dev, QInputDevice::devices()) {
+        if (dev->type() == QInputDevice::DeviceType::TouchScreen) {
+            qDebug() << "platform:" << qApp->platformName()
+                     << "desktop:" << qgetenv("XDG_SESSION_DESKTOP")
+                     << "touch device:" << dev;
+            touchInputEnabled = true;
+            mouseInputEnabled = !dev->capabilities().testFlag(QInputDevice::Capability::MouseEmulation);
+            break;
+        }
+    }
+#endif
+
     settings.beginGroup("Preferences");
     setInChannel(settings.value("inputChannel", 0).toInt());
     setOutChannel(settings.value("outputChannel", 0).toInt());
@@ -120,8 +148,8 @@ void VPianoSettings::internalRead(QSettings &settings)
     setStartingKey(settings.value("startingKey", 9).toInt());
     setRawKeyboard(settings.value("raw_keyboard", false).toBool());
     setKeyboardInput(settings.value("keyboard_input", true).toBool());
-    setMouseInput(settings.value("mouse_input", true).toBool());
-    setTouchScreenInput(settings.value("touchscreen_input", false).toBool());
+    setMouseInput(settings.value("mouse_input", mouseInputEnabled).toBool());
+    setTouchScreenInput(settings.value("touchscreen_input", touchInputEnabled).toBool());
     settings.endGroup();
 
     settings.beginGroup("TextSettings");

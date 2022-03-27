@@ -81,7 +81,13 @@ int main(int argc, char *argv[])
     QLocale locale;
     QTranslator qtTranslator;
     if ((locale.language() != QLocale::C) && (locale.language() != QLocale::English)) {
-        if (qtTranslator.load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
+        QString qtTranslations =
+            #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
+                QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+            #else
+                QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+            #endif
+        if (qtTranslator.load(locale, "qt", "_", qtTranslations)) {
             if (!QCoreApplication::installTranslator(&qtTranslator)) {
                 qWarning() << "Failure installing qt translator" << locale;
             }
