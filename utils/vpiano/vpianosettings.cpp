@@ -19,7 +19,11 @@
 #include "vpianosettings.h"
 #include <QDir>
 #include <QFileInfo>
-#include <QInputDevice>
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
+    #include <QTouchDevice>
+#else
+    #include <QInputDevice>
+#endif
 #include <drumstick/settingsfactory.h>
 
 using namespace drumstick::rt;
