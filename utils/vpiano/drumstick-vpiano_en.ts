@@ -375,17 +375,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="485"/>
+        <location filename="vpiano.cpp" line="454"/>
         <source>Font to display note names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="561"/>
+        <location filename="vpiano.cpp" line="530"/>
         <source>Custom Note Names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="561"/>
+        <location filename="vpiano.cpp" line="530"/>
         <source>Names:</source>
         <translation type="unfinished"></translation>
     </message>

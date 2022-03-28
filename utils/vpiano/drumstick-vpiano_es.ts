@@ -420,17 +420,17 @@ redistribuirlo bajo ciertas condiciones.</translation>
         <translation>Entrada por pantalla táctil</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="485"/>
+        <location filename="vpiano.cpp" line="454"/>
         <source>Font to display note names</source>
         <translation>Fuente para mostrar nombres de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="561"/>
+        <location filename="vpiano.cpp" line="530"/>
         <source>Custom Note Names</source>
         <translation>Nombres personalizados de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="561"/>
+        <location filename="vpiano.cpp" line="530"/>
         <source>Names:</source>
         <translation>Nombres:</translation>
     </message>

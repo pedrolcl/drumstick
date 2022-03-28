@@ -1,6 +1,10 @@
+2022-03-28
+    * Widgets: fixed pianokeybd's touchscreen input on Linux, including X11 and Wayland.
+    * Utils: vpiano new menu options to allow enabling keyboard, mouse and touchscreen input.
+
 2022-03-22
-    * Widgets: pianokeybd internal raw computer keyboard processing
-    * Utils: vpiano gets a new raw keyboard option
+    * Widgets: pianokeybd internal raw computer keyboard input processing
+    * Utils: vpiano gets a new raw keyboard menu option
     * Bump version for the next development cycle
 
 2022-02-07

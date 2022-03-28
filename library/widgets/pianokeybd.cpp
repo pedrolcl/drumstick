@@ -447,6 +447,12 @@ void PianoKeybd::resizeEvent(QResizeEvent *event)
     fitInView(d->m_scene->sceneRect(), Qt::KeepAspectRatio);
 }
 
+/**
+ * This method overrides QGraphicsView::viewportEvent()
+ * Only touchscreen events are processed here.
+ * @param ev The viewport event
+ * @return true if the event has been consumed, false otherwise
+ */
 bool PianoKeybd::viewportEvent(QEvent *ev)
 {
 #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))

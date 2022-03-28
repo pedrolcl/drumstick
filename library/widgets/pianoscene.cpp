@@ -726,7 +726,8 @@ void PianoScene::keyReleaseEvent ( QKeyEvent * keyEvent )
 }
 
 /**
- * Processes events
+ * This method overrides QGraphicsScene::event().
+ * It does not add new logic, but calls the overrided function.
  * @param event The given event
  * @return true if the event was processed
  */
@@ -1388,9 +1389,9 @@ void PianoScene::loadData(QByteArray &ba)
 }
 
 /**
- * Processes touch screen events
- * @param touchEvent The given QTouchEvent
- * @return true if the event was processed
+ * Process touch screen events, called by the view
+ * @param touchEvent The given QTouchEvent*
+ * @return true if the event was consumed, false otherwise.
  */
 bool PianoScene::touchScreenEvent(QTouchEvent *touchEvent)
 {

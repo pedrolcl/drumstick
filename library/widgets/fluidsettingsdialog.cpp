@@ -216,7 +216,7 @@ void drumstick::widgets::FluidSettingsDialog::initBuffer()
         int bufferTime = ui->bufferTime->value();
         int minBufTime = ui->bufferTime->minimum();
         if (qEnvironmentVariableIsSet("PULSE_LATENCY_MSEC")) {
-            bufferTime = qEnvironmentVariable("PULSE_LATENCY_MSEC").toInt();
+            bufferTime = qEnvironmentVariableIntValue("PULSE_LATENCY_MSEC");
         }
         if (bufferTime < minBufTime) {
             bufferTime = minBufTime;

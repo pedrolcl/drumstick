@@ -119,9 +119,9 @@ void VPianoSettings::internalRead(QSettings &settings)
     const QList<const QTouchDevice*> devs = QTouchDevice::devices();
     for(const QTouchDevice *dev : devs) {
         if (dev->type() == QTouchDevice::TouchScreen) {
-            qDebug() << "platform:" << qApp->platformName()
+            /*qDebug() << "platform:" << qApp->platformName()
                      << "desktop:" << qgetenv("XDG_SESSION_DESKTOP")
-                     << "touch device:" << dev;
+                     << "touch device:" << dev;*/
             touchInputEnabled = true;
             mouseInputEnabled = !dev->capabilities().testFlag(QTouchDevice::MouseEmulation);
             break;
@@ -130,9 +130,9 @@ void VPianoSettings::internalRead(QSettings &settings)
 #else
     foreach(const QInputDevice *dev, QInputDevice::devices()) {
         if (dev->type() == QInputDevice::DeviceType::TouchScreen) {
-            qDebug() << "platform:" << qApp->platformName()
+            /*qDebug() << "platform:" << qApp->platformName()
                      << "desktop:" << qgetenv("XDG_SESSION_DESKTOP")
-                     << "touch device:" << dev;
+                     << "touch device:" << dev;*/
             touchInputEnabled = true;
             mouseInputEnabled = !dev->capabilities().testFlag(QInputDevice::Capability::MouseEmulation);
             break;

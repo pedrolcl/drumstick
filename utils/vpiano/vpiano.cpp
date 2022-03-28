@@ -112,37 +112,6 @@ void VPiano::initialize()
 {
     readSettings();
 
-    /*
-    bool touchInputEnabled = false;
-    bool mouseInputEnabled = true;
-#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-    const QList<const QTouchDevice*> devs = QTouchDevice::devices();
-    for(const QTouchDevice *dev : devs) {
-        if (dev->type() == QTouchDevice::TouchScreen) {
-            qDebug() << "platform:" << qApp->platformName()
-                     << "desktop:" << qgetenv("XDG_SESSION_DESKTOP")
-                     << "touch device:" << dev;
-            touchInputEnabled = true;
-            mouseInputEnabled = !dev->capabilities().testFlag(QTouchDevice::MouseEmulation);
-            break;
-        }
-    }
-#else
-    foreach(const QInputDevice *dev, QInputDevice::devices()) {
-        if (dev->type() == QInputDevice::DeviceType::TouchScreen) {
-            qDebug() << "platform:" << qApp->platformName()
-                     << "desktop:" << qgetenv("XDG_SESSION_DESKTOP")
-                     << "touch device:" << dev;
-            touchInputEnabled = true;
-            mouseInputEnabled = !dev->capabilities().testFlag(QInputDevice::Capability::MouseEmulation);
-            break;
-        }
-    }
-#endif
-    ui.actionTouch_Screen_Input->setChecked(touchInputEnabled);
-    //slotTouchScreenInput(touchInputEnabled);
-    ui.actionMouse_Input->setChecked(mouseInputEnabled);
-*/
     BackendManager man;
     man.refresh(VPianoSettings::instance()->settingsMap());
     m_inputs = man.availableInputs();

@@ -120,7 +120,7 @@ void SonivoxSettingsDialog::readSettings()
     settings->endGroup();
 
     if (qEnvironmentVariableIsSet("PULSE_LATENCY_MSEC")) {
-        bufferTime = qEnvironmentVariable("PULSE_LATENCY_MSEC").toInt();
+        bufferTime = qEnvironmentVariableIntValue("PULSE_LATENCY_MSEC");
     }
 
     ui->spnTime->setValue(bufferTime);
