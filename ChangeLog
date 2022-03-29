@@ -1,3 +1,6 @@
+2022-03-29
+    * Disabled runnig lupdate for every build
+
 2022-03-28
     * Widgets: fixed pianokeybd's touchscreen input on Linux, including X11 and Wayland.
     * Utils: vpiano new menu options to allow enabling keyboard, mouse and touchscreen input.

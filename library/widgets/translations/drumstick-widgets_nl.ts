@@ -498,94 +498,94 @@
 <context>
     <name>drumstick::widgets::PianoScene</name>
     <message>
-        <location filename="../pianoscene.cpp" line="1236"/>
-        <location filename="../pianoscene.cpp" line="1249"/>
+        <location filename="../pianoscene.cpp" line="1237"/>
+        <location filename="../pianoscene.cpp" line="1250"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1237"/>
+        <location filename="../pianoscene.cpp" line="1238"/>
         <source>C♯</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1238"/>
-        <location filename="../pianoscene.cpp" line="1251"/>
+        <location filename="../pianoscene.cpp" line="1239"/>
+        <location filename="../pianoscene.cpp" line="1252"/>
         <source>D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1239"/>
-        <source>D♯</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../pianoscene.cpp" line="1240"/>
-        <location filename="../pianoscene.cpp" line="1253"/>
-        <source>E</source>
+        <source>D♯</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="1241"/>
         <location filename="../pianoscene.cpp" line="1254"/>
-        <source>F</source>
+        <source>E</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="1242"/>
-        <source>F♯</source>
+        <location filename="../pianoscene.cpp" line="1255"/>
+        <source>F</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="1243"/>
-        <location filename="../pianoscene.cpp" line="1256"/>
-        <source>G</source>
+        <source>F♯</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="1244"/>
-        <source>G♯</source>
+        <location filename="../pianoscene.cpp" line="1257"/>
+        <source>G</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="1245"/>
-        <location filename="../pianoscene.cpp" line="1258"/>
-        <source>A</source>
+        <source>G♯</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="1246"/>
-        <source>A♯</source>
+        <location filename="../pianoscene.cpp" line="1259"/>
+        <source>A</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../pianoscene.cpp" line="1247"/>
-        <location filename="../pianoscene.cpp" line="1260"/>
+        <source>A♯</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../pianoscene.cpp" line="1248"/>
+        <location filename="../pianoscene.cpp" line="1261"/>
         <source>B</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1250"/>
+        <location filename="../pianoscene.cpp" line="1251"/>
         <source>D♭</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1252"/>
+        <location filename="../pianoscene.cpp" line="1253"/>
         <source>E♭</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1255"/>
+        <location filename="../pianoscene.cpp" line="1256"/>
         <source>G♭</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1257"/>
+        <location filename="../pianoscene.cpp" line="1258"/>
         <source>A♭</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pianoscene.cpp" line="1259"/>
+        <location filename="../pianoscene.cpp" line="1260"/>
         <source>B♭</source>
         <translation></translation>
     </message>
