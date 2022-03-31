@@ -76,7 +76,8 @@ public:
         m_hilightPalette(PianoPalette(PAL_SINGLE)),
         m_backgroundPalette(PianoPalette(PAL_KEYS)),
         m_foregroundPalette(PianoPalette(PAL_FONT)),
-        m_useKeyPix( true )
+        m_useKeyPix( true ),
+        m_usingNativeFilter( false )
     { }
 
     void saveData(QByteArray& buffer)
@@ -107,6 +108,7 @@ public:
         ds << m_useKeyPix;
         ds << m_keyPix[0];
         ds << m_keyPix[1];
+        ds << m_usingNativeFilter;
     }
 
     void loadData(QByteArray& buffer)
@@ -138,6 +140,7 @@ public:
         ds >> m_useKeyPix;
         ds >> m_keyPix[0];
         ds >> m_keyPix[1];
+        ds >> m_usingNativeFilter;
     }
 
     int m_baseOctave;
@@ -171,6 +174,7 @@ public:
     PianoPalette m_foregroundPalette;
     bool m_useKeyPix;
     QPixmap m_keyPix[2];
+    bool m_usingNativeFilter;
     /* not serialized */
     PianoKeybd* m_view;
     QMap<int, PianoKey *> m_touched;
@@ -683,7 +687,10 @@ PianoKey* PianoScene::getPianoKey( const int key ) const
  */
 void PianoScene::keyPressEvent ( QKeyEvent * keyEvent )
 {
-    if ( d->m_keyboardEnabled && !keyEvent->isAutoRepeat()) { // ignore auto-repeats
+    if ( d->m_keyboardEnabled &&
+         !d->m_usingNativeFilter &&
+         !keyEvent->isAutoRepeat() ) // ignore auto-repeats
+    {
         int keyid = d->m_rawkbd ?
 #if defined(Q_OS_MACOS)
                     keyEvent->nativeVirtualKey()
@@ -707,7 +714,10 @@ void PianoScene::keyPressEvent ( QKeyEvent * keyEvent )
  */
 void PianoScene::keyReleaseEvent ( QKeyEvent * keyEvent )
 {
-    if (d->m_keyboardEnabled && !keyEvent->isAutoRepeat() ) { // ignore auto-repeats
+    if ( d->m_keyboardEnabled &&
+         !d->m_usingNativeFilter &&
+         !keyEvent->isAutoRepeat() ) // ignore auto-repeats
+    {
         int keyid = d->m_rawkbd ?
 #if defined(Q_OS_MACOS)
                     keyEvent->nativeVirtualKey()
@@ -1523,6 +1533,26 @@ bool PianoScene::touchScreenEvent(QTouchEvent *touchEvent)
         break;
     } /* switch touchEvent->type() */
     return false;
+}
+
+/**
+ * @brief Enables or disables the application level usage of a native event filter
+ * @param newState of the application level usage of a native event filter
+ */
+void PianoScene::setUsingNativeFilter(const bool state)
+{
+    if (state != d->m_usingNativeFilter) {
+        d->m_usingNativeFilter = state;
+    }
+}
+
+/**
+ * @brief Returns whether the application is filtering native events
+ * @return true if the application is filtering native events
+ */
+bool PianoScene::isUsingNativeFilter() const
+{
+    return d->m_usingNativeFilter;
 }
 
 } // namespace widgets

@@ -136,6 +136,9 @@ namespace drumstick { namespace widgets {
 
         bool touchScreenEvent(QTouchEvent *touchEvent);
 
+        void setUsingNativeFilter(const bool state);
+        bool isUsingNativeFilter() const;
+
     signals:
         /**
          * This signal is emitted for each Note On MIDI event created using

@@ -1,3 +1,7 @@
+2022-03-31
+    * Widgets: pianokeybd has 2 new functions, setUsingNativeFilter() and isUsingNativeFilter().
+    * Bumped version to 2.6.0 for the next release.
+
 2022-03-29
     * Disabled runnig lupdate for every build
 

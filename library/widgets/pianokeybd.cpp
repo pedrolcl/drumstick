@@ -590,6 +590,33 @@ bool PianoKeybd::getUseKeyPictures() const
 }
 
 /**
+ * @brief Enables or disables the application level usage of a native event filter
+ *
+ * The native event filter should process low level keyboard events,
+ * calling the methods of the @ref rawKbdHandler interface. This method should be
+ * used in this case to indicate that the keyboard events should be ignored
+ * by the piano scene keyboard event handlers.
+ * Note: this is only necessary if the native filter does not block events.
+ * @param newState of the application level usage of a native event filter
+ */
+void PianoKeybd::setUsingNativeFilter(const bool newState)
+{
+    d->m_scene->setUsingNativeFilter( newState );
+}
+
+/**
+ * @brief Returns whether the application is filtering native events
+ *
+ * The native event filter should process low level keyboard events,
+ * calling the methods of the @ref RawKbdHandler interface.
+ * @return true if the application is filtering native events
+ */
+bool PianoKeybd::isUsingNativeFilter() const
+{
+    return d->m_scene->isUsingNativeFilter();
+}
+
+/**
  * Returns the base octave number.
  * @see setBaseOctave()
  * @return the base octave number

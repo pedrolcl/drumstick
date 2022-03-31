@@ -264,6 +264,9 @@ namespace drumstick { namespace widgets {
         void setUseKeyPictures(const bool enable);
         bool getUseKeyPictures() const;
 
+        void setUsingNativeFilter(const bool newState);
+        bool isUsingNativeFilter() const;
+
     signals:
         /**
          * This signal is emitted for each Note On MIDI event created using
