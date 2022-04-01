@@ -157,9 +157,9 @@ void VPianoSettings::internalRead(QSettings &settings)
     settings.endGroup();
 
     settings.beginGroup("TextSettings");
-    QFont f = QGuiApplication::font();
-    f.setPointSize(50);
-    if (f.fromString(settings.value("namesFont", f.toString()).toString())) {
+    QString defaultFont = QGuiApplication::font().family() + ",50";
+    QFont f;
+    if (f.fromString(settings.value("namesFont", defaultFont).toString())) {
         setNamesFont(f);
     }
     setNamesOrientation(static_cast<LabelOrientation>(settings.value("namesOrientation", HorizontalOrientation).toInt()));
@@ -211,7 +211,7 @@ void VPianoSettings::internalSave(QSettings &settings)
     settings.endGroup();
 
     settings.beginGroup("TextSettings");
-    settings.setValue("namesFont", m_namesFont.toString());
+    settings.setValue("namesFont", fontString(m_namesFont));
     settings.setValue("namesOrientation", m_namesOrientation);
     settings.setValue("namesVisibility", m_namesVisibility);
     settings.setValue("namesAlteration", m_namesAlteration);
@@ -223,6 +223,11 @@ void VPianoSettings::internalSave(QSettings &settings)
     settings.endGroup();
 
     settings.sync();
+}
+
+QString VPianoSettings::fontString(const QFont &f) const
+{
+    return QString("%1,%2").arg(f.family()).arg(f.pointSize());
 }
 
 bool VPianoSettings::touchScreenInput() const

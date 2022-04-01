@@ -130,6 +130,7 @@ private:
     explicit VPianoSettings(QObject *parent = nullptr);
     void internalRead(QSettings &settings);
     void internalSave(QSettings &settings);
+    QString fontString(const QFont& f) const;
 
     QByteArray m_geometry;
     QByteArray m_state;
