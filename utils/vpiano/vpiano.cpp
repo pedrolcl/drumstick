@@ -581,7 +581,7 @@ void VPiano::slotInvertedColors(bool checked)
 
 void VPiano::slotRawKeyboard(bool checked)
 {
-    qDebug() << Q_FUNC_INFO << checked;
+    //qDebug() << Q_FUNC_INFO << checked;
     if (checked) {
         ui.pianokeybd->resetRawKeyboardMap();
     } else {
@@ -593,21 +593,21 @@ void VPiano::slotRawKeyboard(bool checked)
 
 void VPiano::slotKeyboardInput(bool checked)
 {
-    qDebug() << Q_FUNC_INFO << checked;
+    //qDebug() << Q_FUNC_INFO << checked;
     ui.pianokeybd->setKeyboardEnabled(checked);
     VPianoSettings::instance()->setKeyboardInput(checked);
 }
 
 void VPiano::slotMouseInput(bool checked)
 {
-    qDebug() << Q_FUNC_INFO << checked;
+    //qDebug() << Q_FUNC_INFO << checked;
     ui.pianokeybd->setMouseEnabled(checked);
     VPianoSettings::instance()->setMouseInput(checked);
 }
 
 void VPiano::slotTouchScreenInput(bool checked)
 {
-    qDebug() << Q_FUNC_INFO << checked;
+    //qDebug() << Q_FUNC_INFO << checked;
     ui.pianokeybd->setTouchEnabled(checked);
     VPianoSettings::instance()->setTouchScreenInput(checked);
 }

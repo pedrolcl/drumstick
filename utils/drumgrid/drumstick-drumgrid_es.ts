@@ -129,17 +129,17 @@ p, li { white-space: pre-wrap; }
         <translation>Error fatal en el secuenciador ALSA. Esto ocurre habitualmente cuando el núcleo no tiene soporte ALSA, o bién el nodo de dispositivo (/dev/snd/seq) no existe, o el módulo del núcleo (snd_seq) no se ha cargado. Por favor compruebe su configuración de MIDI ALSA.</translation>
     </message>
     <message>
-        <location filename="drumgridmain.cpp" line="77"/>
+        <location filename="drumgridmain.cpp" line="83"/>
         <source>MIDI Out Port.</source>
         <translation>Puerto MIDI Out.</translation>
     </message>
     <message>
-        <location filename="drumgridmain.cpp" line="92"/>
+        <location filename="drumgridmain.cpp" line="98"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="drumgridmain.cpp" line="94"/>
+        <location filename="drumgridmain.cpp" line="100"/>
         <source>Returned error was: </source>
         <translation>El error devuelto fué: </translation>
     </message>

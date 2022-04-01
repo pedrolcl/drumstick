@@ -305,27 +305,27 @@ p, li { white-space: pre-wrap; }
         <translation>Error fatal en el secuenciador ALSA. Esto ocurre habitualmente cuando el núcleo no tiene soporte ALSA, o bién el nodo de dispositivo (/dev/snd/seq) no existe, o el módulo del núcleo (snd_seq) no se ha cargado. Por favor compruebe su configuración de MIDI ALSA.</translation>
     </message>
     <message>
-        <location filename="playermain.cpp" line="77"/>
+        <location filename="playermain.cpp" line="83"/>
         <source>MIDI Out Connection.</source>
         <translation>Conexión MIDI Out.</translation>
     </message>
     <message>
-        <location filename="playermain.cpp" line="79"/>
+        <location filename="playermain.cpp" line="85"/>
         <source>Input SMF/KAR/RMI/WRK file name.</source>
         <translation>Archivo de entrada SMF/KAR/RMI/WRK.</translation>
     </message>
     <message>
-        <location filename="playermain.cpp" line="88"/>
+        <location filename="playermain.cpp" line="94"/>
         <source>File not found: </source>
         <translation>Archivo no encontrado: </translation>
     </message>
     <message>
-        <location filename="playermain.cpp" line="103"/>
+        <location filename="playermain.cpp" line="109"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="playermain.cpp" line="105"/>
+        <location filename="playermain.cpp" line="111"/>
         <source>Returned error was: </source>
         <translation>El error devuelto fué: </translation>
     </message>
