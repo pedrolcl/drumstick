@@ -593,7 +593,7 @@ bool PianoKeybd::getUseKeyPictures() const
  * @brief Enables or disables the application level usage of a native event filter
  *
  * The native event filter should process low level keyboard events,
- * calling the methods of the @ref rawKbdHandler interface. This method should be
+ * calling the methods of the @ref RawKbdHandler interface. This method should be
  * used in this case to indicate that the keyboard events should be ignored
  * by the piano scene keyboard event handlers.
  * Note: this is only necessary if the native filter does not block events.

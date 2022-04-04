@@ -1,3 +1,6 @@
+2022-04-04
+    * Release 2.6.0
+
 2022-04-01
     * Utils: vpiano note labels font stability fix.
 
@@ -14,7 +17,7 @@
 
 2022-03-22
     * Widgets: pianokeybd internal raw computer keyboard input processing
-    * Utils: vpiano gets a new raw keyboard menu option
+    * Utils: vpiano gets and uses a new raw keyboard menu option
     * Bump version for the next development cycle
 
 2022-02-07

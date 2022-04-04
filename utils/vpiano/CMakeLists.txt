@@ -89,7 +89,7 @@ if (APPLE)
         MACOSX_BUNDLE_ICON_FILE "drumstick.icns"
         MACOSX_BUNDLE_GUI_IDENTIFIER "net.sourceforge.drumstick-vpiano"
         MACOSX_BUNDLE_BUNDLE_NAME "drumstick-vpiano"
-        MACOSX_BUNDLE_COPYRIGHT "© 2008-2021 Pedro López-Cabanillas"
+        MACOSX_BUNDLE_COPYRIGHT "© 2008-2022 Pedro López-Cabanillas"
         MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/cmake_admin/CustomBundleInfo.plist.in"
     )
 endif()

@@ -29,7 +29,7 @@ include(SCMRevision)
 include(CTest)
 include(GNUInstallDirs)
 
-set(RELEASE_DATE "February 7, 2022")
+set(RELEASE_DATE "April 4, 2022")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
@@ -214,7 +214,7 @@ if (${CMAKE_SYSTEM} MATCHES "Darwin" AND QT_VERSION VERSION_LESS 6.0.0)
 endif()
 
 # CMAKE_SYSTEM_PROCESSOR is broken on Windows with MSVC
-# cmake bug https://gitlab.kitware.com/cmake/cmake/-/issues/15170 still open in 2021/03
+# cmake bug https://gitlab.kitware.com/cmake/cmake/-/issues/15170 still open in 2022/04
 if (MSVC)
     string(TOLOWER ${MSVC_CXX_ARCHITECTURE_ID} CMAKE_SYSTEM_PROCESSOR)
 endif()

@@ -136,7 +136,7 @@ namespace drumstick { namespace widgets {
 
         bool touchScreenEvent(QTouchEvent *touchEvent);
 
-        void setUsingNativeFilter(const bool state);
+        void setUsingNativeFilter(const bool newState);
         bool isUsingNativeFilter() const;
 
     signals:

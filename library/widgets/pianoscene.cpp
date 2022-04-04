@@ -1539,10 +1539,10 @@ bool PianoScene::touchScreenEvent(QTouchEvent *touchEvent)
  * @brief Enables or disables the application level usage of a native event filter
  * @param newState of the application level usage of a native event filter
  */
-void PianoScene::setUsingNativeFilter(const bool state)
+void PianoScene::setUsingNativeFilter(const bool newState)
 {
-    if (state != d->m_usingNativeFilter) {
-        d->m_usingNativeFilter = state;
+    if (newState != d->m_usingNativeFilter) {
+        d->m_usingNativeFilter = newState;
     }
 }
 
