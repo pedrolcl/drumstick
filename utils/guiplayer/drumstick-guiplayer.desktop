@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Drumstick MIDI Player
+Name=Drumstick ALSA MIDI Player
 Exec=drumstick-guiplayer %f
 Icon=drumstick
 Terminal=false
@@ -7,5 +7,5 @@ Type=Application
 Categories=AudioVideo;Audio;Midi;Education;Music;
 Keywords=Music;Midi;Player;
 MimeType=audio/midi;audio/x-midi;audio/cakewalk;
-Comment=Drumstick MIDI Player
-Comment[es]=Reproductor MIDI de Drumstick  
+Comment=Simple MIDI Player
+Comment[es]=Reproductor MIDI simple

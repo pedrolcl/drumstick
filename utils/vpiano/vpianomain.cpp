@@ -77,6 +77,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion(QStringLiteral(QT_STRINGIFY(VERSION)));
     QCoreApplication::setAttribute(Qt::AA_SynthesizeMouseForUnhandledTouchEvents, false);
     QCoreApplication::setAttribute(Qt::AA_SynthesizeTouchForUnhandledMouseEvents, false);
+    QGuiApplication::setDesktopFileName("net.sourceforge.drumstick-vpiano");
 
     QLocale locale;
     QTranslator qtTranslator;

@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain(GUIPlayer::QSTR_DOMAIN);
     QCoreApplication::setApplicationName(GUIPlayer::QSTR_APPNAME);
     QCoreApplication::setApplicationVersion(QStringLiteral(QT_STRINGIFY(VERSION)));
+    QGuiApplication::setDesktopFileName("net.sourceforge.drumstick-guiplayer");
 
     QLocale locale;
     QTranslator qtTranslator;

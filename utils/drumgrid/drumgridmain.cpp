@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain(QSTR_DOMAIN);
     QCoreApplication::setApplicationName(QSTR_APPNAME);
     QCoreApplication::setApplicationVersion(QStringLiteral(QT_STRINGIFY(VERSION)));
+    QGuiApplication::setDesktopFileName("net.sourceforge.drumstick-drumgrid");
 
     QLocale locale;
     QTranslator qtTranslator;

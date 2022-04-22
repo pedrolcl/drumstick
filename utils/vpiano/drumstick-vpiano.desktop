@@ -6,5 +6,5 @@ Terminal=false
 Type=Application
 Categories=AudioVideo;Audio;Midi;Education;Music;
 Keywords=Music;Midi;Piano;Virtual;
-Comment=Drumstick Virtual Piano
-Comment[es]=Piano virtual de Drumstick  
+Comment=Virtual Piano
+Comment[es]=Piano virtual
