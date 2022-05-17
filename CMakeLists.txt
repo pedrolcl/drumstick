@@ -249,6 +249,18 @@ if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
 
+# pkg-config support
+if ( IS_ABSOLUTE "${CMAKE_INSTALL_LIBDIR}" )
+  set ( pkgconfig_libdir "${CMAKE_INSTALL_LIBDIR}" )
+else ()
+  set ( pkgconfig_libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}" )
+endif ()
+if ( IS_ABSOLUTE "${CMAKE_INSTALL_INCLUDEDIR}" )
+  set ( pkgconfig_includedir "${CMAKE_INSTALL_INCLUDEDIR}" )
+else ()
+  set ( pkgconfig_includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}" )
+endif ()
+
 if(UNIX AND NOT APPLE)
     if (BUILD_DOCS)
         find_package(Doxygen REQUIRED dot)
