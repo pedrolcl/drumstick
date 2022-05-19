@@ -120,7 +120,12 @@ namespace drumstick { namespace rt {
         QStringList libs;
         libs << "../lib/";
     #if defined(LIBSUFFIX)
-        libs << QString("../%1/").arg(QT_STRINGIFY(LIBSUFFIX));
+        QString libextra(QT_STRINGIFY(LIBSUFFIX));
+        if (QDir::isAbsolutePath(libextra)) {
+            d->appendDir( libextra + QDir::separator() + QSTR_DRUMSTICK, result );
+        } else {
+            libs << QString("../%1/").arg(libextra);
+        }
     #endif
         foreach(const QString& lib, libs) {
             d->appendDir( appPath + lib + QSTR_DRUMSTICK, result );

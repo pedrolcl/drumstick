@@ -1,3 +1,11 @@
+2022-05-19
+    * Another fix related to ticket #39: CMAKE_INSTALL_LIBDIR is passed to the compiler 
+      as a symbol named LIBSUFFIX (see library/rt/CMakeLists.txt:69). It needed to be tested
+      at runtime with QDir::isAbsolutePath().
+
+2022-05-17
+    * Fixed ticket #39: pkg-config files are broken when CMAKE_INSTALL_{INCLUDE,LIB}DIR is absolute
+
 2022-04-22
     * Using QGuiApplication::setDesktopFileName on utils to fix the wrong icon in KDE+Wayland
 
