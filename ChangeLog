@@ -1,3 +1,6 @@
+2022-05-20
+    * Release 2.6.1
+
 2022-05-19
     * Another fix related to ticket #39: CMAKE_INSTALL_LIBDIR is passed to the compiler 
       as a symbol named LIBSUFFIX (see library/rt/CMakeLists.txt:69). It needed to be tested

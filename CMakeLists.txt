@@ -29,7 +29,7 @@ include(SCMRevision)
 include(CTest)
 include(GNUInstallDirs)
 
-#set(RELEASE_DATE "April 4, 2022")
+set(RELEASE_DATE "May 20, 2022")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
