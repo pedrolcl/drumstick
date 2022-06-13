@@ -109,6 +109,7 @@
     <addaction name="menuNames_Orientation"/>
     <addaction name="menuNote_Names"/>
     <addaction name="menuOctaves_Naming"/>
+    <addaction name="actionOctave_Subscript_Designation"/>
     <addaction name="actionNames_Font"/>
     <addaction name="actionInverted_Keys_Color"/>
    </widget>
@@ -251,6 +252,12 @@
    <property name="text">
     <string>C3</string>
    </property>
+   <property name="iconText">
+    <string>C3</string>
+   </property>
+   <property name="toolTip">
+    <string>C3</string>
+   </property>
   </action>
   <action name="actionC4">
    <property name="checkable">
@@ -347,6 +354,14 @@
    </property>
    <property name="text">
     <string>Touch Screen Input</string>
+   </property>
+  </action>
+  <action name="actionOctave_Subscript_Designation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Octave Subscript Designation</string>
    </property>
   </action>
  </widget>

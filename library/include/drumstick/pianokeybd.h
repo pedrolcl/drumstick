@@ -267,6 +267,9 @@ namespace drumstick { namespace widgets {
         void setUsingNativeFilter(const bool newState);
         bool isUsingNativeFilter() const;
 
+        void setOctaveSubscript(const bool enable);
+        bool octaveSubscript() const;
+
     signals:
         /**
          * This signal is emitted for each Note On MIDI event created using

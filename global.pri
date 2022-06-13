@@ -1,7 +1,7 @@
-VERSION = 2.6.0
+VERSION = 2.7.0
 DEFINES += VERSION=$$VERSION
 VER_MAJ = 2
-VER_MIN = 6
+VER_MIN = 7
 VER_PAT = 0
 
 defineReplace(drumstickLib) {

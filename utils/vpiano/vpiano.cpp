@@ -59,6 +59,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
     connect(ui.actionComputer_Keyboard_Input, &QAction::triggered, this, &VPiano::slotKeyboardInput);
     connect(ui.actionMouse_Input, &QAction::triggered, this, &VPiano::slotMouseInput);
     connect(ui.actionTouch_Screen_Input, &QAction::triggered, this, &VPiano::slotTouchScreenInput);
+    connect(ui.actionOctave_Subscript_Designation, &QAction::triggered, this, &VPiano::slotOctaveSubscript);
 
     QActionGroup* nameGroup = new QActionGroup(this);
     nameGroup->setExclusive(true);
@@ -390,6 +391,10 @@ void VPiano::readSettings()
         break;
     }
 
+    bool octaveSubscript = VPianoSettings::instance()->octaveSubscript();
+    ui.pianokeybd->setOctaveSubscript(octaveSubscript);
+    ui.actionOctave_Subscript_Designation->setChecked(octaveSubscript);
+
     ui.statusBar->show();
 
     ui.pianokeybd->setBaseOctave(VPianoSettings::instance()->baseOctave());
@@ -610,4 +615,10 @@ void VPiano::slotTouchScreenInput(bool checked)
     //qDebug() << Q_FUNC_INFO << checked;
     ui.pianokeybd->setTouchEnabled(checked);
     VPianoSettings::instance()->setTouchScreenInput(checked);
+}
+
+void VPiano::slotOctaveSubscript(bool checked)
+{
+    ui.pianokeybd->setOctaveSubscript(checked);
+    VPianoSettings::instance()->setOctaveSubscript(checked);
 }

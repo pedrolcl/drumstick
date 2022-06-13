@@ -39,6 +39,7 @@ public:
     void adjust();
     void setOrientation(LabelOrientation  ori);
     void restoreColor();
+    void setHtml(const QString& text);
 
 private:
     LabelOrientation m_orientation = HorizontalOrientation;

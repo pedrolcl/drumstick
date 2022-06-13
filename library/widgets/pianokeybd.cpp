@@ -617,6 +617,31 @@ bool PianoKeybd::isUsingNativeFilter() const
 }
 
 /**
+ * @brief Enables or disables the octave subscript designation
+ *
+ * According to the Scientific pitch notation (SPN), also known as
+ * American standard pitch notation (ASPN), the octave designation
+ * should be written as a subscript.
+ */
+void PianoKeybd::setOctaveSubscript(const bool enable)
+{
+    d->m_scene->setOctaveSubscript( enable );
+}
+
+/**
+ * @brief Returns whether the octave subscript designation is enabled
+ *
+ * According to the Scientific pitch notation (SPN), also known as
+ * American standard pitch notation (ASPN), the octave designation
+ * should be written as a subscript.
+ * @return true if the octave subscript designation is enabled
+ */
+bool PianoKeybd::octaveSubscript() const
+{
+    return d->m_scene->octaveSubscript();
+}
+
+/**
  * Returns the base octave number.
  * @see setBaseOctave()
  * @return the base octave number

@@ -61,6 +61,7 @@ public slots:
     void slotKeyboardInput(bool checked);
     void slotMouseInput(bool checked);
     void slotTouchScreenInput(bool checked);
+    void slotOctaveSubscript(bool checked);
 
 private:
     void initialize();

@@ -77,7 +77,8 @@ public:
         m_backgroundPalette(PianoPalette(PAL_KEYS)),
         m_foregroundPalette(PianoPalette(PAL_FONT)),
         m_useKeyPix( true ),
-        m_usingNativeFilter( false )
+        m_usingNativeFilter( false ),
+        m_octaveSubscript( true )
     { }
 
     void saveData(QByteArray& buffer)
@@ -109,6 +110,7 @@ public:
         ds << m_keyPix[0];
         ds << m_keyPix[1];
         ds << m_usingNativeFilter;
+        ds << m_octaveSubscript;
     }
 
     void loadData(QByteArray& buffer)
@@ -141,6 +143,7 @@ public:
         ds >> m_keyPix[0];
         ds >> m_keyPix[1];
         ds >> m_usingNativeFilter;
+        ds >> m_octaveSubscript;
     }
 
     int m_baseOctave;
@@ -175,6 +178,7 @@ public:
     bool m_useKeyPix;
     QPixmap m_keyPix[2];
     bool m_usingNativeFilter;
+    bool m_octaveSubscript;
     /* not serialized */
     PianoKeybd* m_view;
     QMap<int, PianoKey *> m_touched;
@@ -902,6 +906,7 @@ QString PianoScene::noteName( PianoKey* key )
     int num = (note + d->m_transpose + 12) % 12;
     int adj = ((note + d->m_transpose < 0) ? 2 : 1) - d->m_octave + 1;
     int oct = d->m_baseOctave + ((note + d->m_transpose) / 12) - adj;
+    QString nameMask = QLatin1String(d->m_octaveSubscript ? "%1<sub>%2</sub>" : "%1%2");
     if (d->m_noteNames.isEmpty()) {
         QString name;
         if (!d->m_names_f.isEmpty() && !d->m_names_s.isEmpty()) {
@@ -925,7 +930,7 @@ QString PianoScene::noteName( PianoKey* key )
         if (d->m_octave==OctaveNothing) {
             return name;
         } else {
-            return QString("%1%2").arg(name).arg(oct);
+            return nameMask.arg(name).arg(oct);
         }
     } else {
         if (d->m_noteNames.length() == 128) {
@@ -938,7 +943,7 @@ QString PianoScene::noteName( PianoKey* key )
             if (d->m_octave==OctaveNothing) {
                 return d->m_noteNames.value(num);
             } else {
-                return QString("%1%2").arg(d->m_noteNames.value(num)).arg(oct);
+                return nameMask.arg(d->m_noteNames.value(num)).arg(oct);
             }
         }
         return QString();
@@ -957,7 +962,7 @@ void PianoScene::refreshLabels()
             lbl->setFont(font());
             lbl->setDefaultTextColor(d->m_foregroundPalette.getColor(key->isBlack() ? 1 : 0));
             lbl->setOrientation(d->m_orientation);
-            lbl->setPlainText(noteName(key));
+            lbl->setHtml(noteName(key));
             lbl->adjust();
             lbl->setVisible((d->m_showLabels == ShowAlways) ||
                 (d->m_showLabels == ShowMinimum && isOctaveStart(key->getNote())));
@@ -1553,6 +1558,27 @@ void PianoScene::setUsingNativeFilter(const bool newState)
 bool PianoScene::isUsingNativeFilter() const
 {
     return d->m_usingNativeFilter;
+}
+
+/**
+ * @brief Enables or disables the subscript octave designation
+ * @param enable the subscript octave designation
+ */
+void PianoScene::setOctaveSubscript(const bool enable)
+{
+    if (d->m_octaveSubscript != enable) {
+        d->m_octaveSubscript = enable;
+        refreshLabels();
+    }
+}
+
+/**
+ * @brief Returns whether the subscript octave designation is enabled
+ * @return true if the subscript octave designation is enabled
+ */
+bool PianoScene::octaveSubscript() const
+{
+    return d->m_octaveSubscript;
 }
 
 } // namespace widgets

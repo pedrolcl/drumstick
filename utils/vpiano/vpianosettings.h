@@ -116,6 +116,9 @@ public:
     bool touchScreenInput() const;
     void setTouchScreenInput(bool newTouchScreenInput);
 
+    bool octaveSubscript() const;
+    void setOctaveSubscript(bool newOctaveSubscript);
+
 signals:
     void ValuesChanged();
 
@@ -161,6 +164,7 @@ private:
     bool m_keyboardInput;
     bool m_mouseInput;
     bool m_touchScreenInput;
+    bool m_octaveSubscript;
 };
 
 #endif // PORTABLESETTINGS_H

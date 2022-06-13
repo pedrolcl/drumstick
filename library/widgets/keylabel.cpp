@@ -102,5 +102,14 @@ void KeyLabel::setPlainText(const QString &text)
     }
 }
 
+void KeyLabel::setHtml(const QString &text)
+{
+    QGraphicsTextItem::setHtml(text);
+    adjustSize();
+    if (m_orientation == AutomaticOrientation) {
+        calculateRotation();
+    }
+}
+
 } // namespace widgets
 } // namespace drumstick

@@ -1,3 +1,8 @@
+2022-06-13
+    * ticket #41 Widgets: Option to use subscript octave designation
+    * Utils: vpiano uses the subscript octave designation option
+    * version bumped to 2.7.0 for the next development cycle
+
 2022-05-20
     * Release 2.6.1
 

@@ -154,6 +154,7 @@ void VPianoSettings::internalRead(QSettings &settings)
     setKeyboardInput(settings.value("keyboard_input", true).toBool());
     setMouseInput(settings.value("mouse_input", mouseInputEnabled).toBool());
     setTouchScreenInput(settings.value("touchscreen_input", touchInputEnabled).toBool());
+    setOctaveSubscript(settings.value("octave_subscript", true).toBool());
     settings.endGroup();
 
     settings.beginGroup("TextSettings");
@@ -208,6 +209,7 @@ void VPianoSettings::internalSave(QSettings &settings)
     settings.setValue("keyboard_input", m_keyboardInput);
     settings.setValue("mouse_input", m_mouseInput);
     settings.setValue("touchscreen_input", m_touchScreenInput);
+    settings.setValue("octave_subscript", m_octaveSubscript);
     settings.endGroup();
 
     settings.beginGroup("TextSettings");
@@ -228,6 +230,16 @@ void VPianoSettings::internalSave(QSettings &settings)
 QString VPianoSettings::fontString(const QFont &f) const
 {
     return QString("%1,%2").arg(f.family()).arg(f.pointSize());
+}
+
+bool VPianoSettings::octaveSubscript() const
+{
+    return m_octaveSubscript;
+}
+
+void VPianoSettings::setOctaveSubscript(bool newOctaveSubscript)
+{
+    m_octaveSubscript = newOctaveSubscript;
 }
 
 bool VPianoSettings::touchScreenInput() const
