@@ -146,6 +146,57 @@ public:
         ds >> m_octaveSubscript;
     }
 
+    QString noteName( PianoKey* key, bool richText )
+    {
+        Q_ASSERT(key != nullptr);
+        int note = key->getNote();
+        int num = (note + m_transpose + 12) % 12;
+        int adj = ((note + m_transpose < 0) ? 2 : 1) - m_octave + 1;
+        int oct = m_baseOctave + ((note + m_transpose) / 12) - adj;
+        QString nameMask = QLatin1String(richText && m_octaveSubscript ? "%1<sub>%2</sub>" : "%1%2");
+        if (m_noteNames.isEmpty()) {
+            QString name;
+            if (!m_names_f.isEmpty() && !m_names_s.isEmpty()) {
+                switch(m_alterations) {
+                case ShowFlats:
+                    name = m_names_f.value(num);
+                    break;
+                case ShowSharps:
+                    name =  m_names_s.value(num);
+                    break;
+                case ShowNothing:
+                    if (key->isBlack()) {
+                        return QString();
+                    }
+                    name =  m_names_s.value(num);
+                    break;
+                default:
+                    break;
+                }
+            }
+            if (m_octave==OctaveNothing) {
+                return name;
+            } else {
+                return nameMask.arg(name).arg(oct);
+            }
+        } else {
+            if (m_noteNames.length() == 128) {
+                int n = m_baseOctave*12 + note + m_transpose;
+                //qDebug() << Q_FUNC_INFO << n << note;
+                if (n >= 0 && n < m_noteNames.length()) {
+                    return m_noteNames.value(n);
+                }
+            } else if (m_noteNames.length() >= 12) {
+                if (m_octave==OctaveNothing) {
+                    return m_noteNames.value(num);
+                } else {
+                    return nameMask.arg(m_noteNames.value(num)).arg(oct);
+                }
+            }
+            return QString();
+        }
+    }
+
     int m_baseOctave;
     int m_numKeys;
     int m_startKey;
@@ -324,7 +375,7 @@ void PianoScene::displayKeyOn(PianoKey* key)
 {
     key->setPressed(true);
     int n = key->getNote() + d->m_baseOctave*12 + d->m_transpose;
-    QString s = QString("#%1 (%2)").arg(n).arg(noteName(key));
+    QString s = QString("#%1 (%2)").arg(n).arg(d->noteName(key, false));
     emit signalName(s);
     KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().constFirst());
     if (lbl != nullptr) {
@@ -902,52 +953,7 @@ bool PianoScene::isOctaveStart(const int note)
 QString PianoScene::noteName( PianoKey* key )
 {
     Q_ASSERT(key != nullptr);
-    int note = key->getNote();
-    int num = (note + d->m_transpose + 12) % 12;
-    int adj = ((note + d->m_transpose < 0) ? 2 : 1) - d->m_octave + 1;
-    int oct = d->m_baseOctave + ((note + d->m_transpose) / 12) - adj;
-    QString nameMask = QLatin1String(d->m_octaveSubscript ? "%1<sub>%2</sub>" : "%1%2");
-    if (d->m_noteNames.isEmpty()) {
-        QString name;
-        if (!d->m_names_f.isEmpty() && !d->m_names_s.isEmpty()) {
-            switch(d->m_alterations) {
-            case ShowFlats:
-                name = d->m_names_f.value(num);
-                break;
-            case ShowSharps:
-                name =  d->m_names_s.value(num);
-                break;
-            case ShowNothing:
-                if (key->isBlack()) {
-                    return QString();
-                }
-                name =  d->m_names_s.value(num);
-                break;
-            default:
-                break;
-            }
-        }
-        if (d->m_octave==OctaveNothing) {
-            return name;
-        } else {
-            return nameMask.arg(name).arg(oct);
-        }
-    } else {
-        if (d->m_noteNames.length() == 128) {
-            int n = d->m_baseOctave*12 + note + d->m_transpose;
-            //qDebug() << Q_FUNC_INFO << n << note;
-            if (n >= 0 && n < d->m_noteNames.length()) {
-                return d->m_noteNames.value(n);
-            }
-        } else if (d->m_noteNames.length() >= 12) {
-            if (d->m_octave==OctaveNothing) {
-                return d->m_noteNames.value(num);
-            } else {
-                return nameMask.arg(d->m_noteNames.value(num)).arg(oct);
-            }
-        }
-        return QString();
-    }
+    return d->noteName(key, true);
 }
 
 /**
@@ -962,7 +968,7 @@ void PianoScene::refreshLabels()
             lbl->setFont(font());
             lbl->setDefaultTextColor(d->m_foregroundPalette.getColor(key->isBlack() ? 1 : 0));
             lbl->setOrientation(d->m_orientation);
-            lbl->setHtml(noteName(key));
+            lbl->setHtml(d->noteName(key, true));
             lbl->adjust();
             lbl->setVisible((d->m_showLabels == ShowAlways) ||
                 (d->m_showLabels == ShowMinimum && isOctaveStart(key->getNote())));
