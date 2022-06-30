@@ -822,4 +822,7 @@ private:
 
 }} /* namespace drumstick::ALSA */
 
+Q_DECLARE_METATYPE(drumstick::ALSA::SequencerEvent)
+Q_DECLARE_METATYPE(drumstick::ALSA::SequencerEvent*)
+
 #endif //DRUMSTICK_ALSAEVENT_H

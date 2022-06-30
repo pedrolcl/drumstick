@@ -1,3 +1,7 @@
+2022-06-30
+    * Drumstick::ALSA revision, registering SequencerEvent with qMetaType
+    * Utils: dumpmid small revision
+
 2022-06-13
     * ticket #41 Widgets: Option to use subscript octave designation
     * Utils: vpiano uses the subscript octave designation option

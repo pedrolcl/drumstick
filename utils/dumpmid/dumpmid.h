@@ -37,7 +37,7 @@
 #include <drumstick/alsaqueue.h>
 #include <drumstick/subscription.h>
 
-class QDumpMIDI : public QObject
+class QDumpMIDI : public QObject, public drumstick::ALSA::SequencerEventHandler
 {
     Q_OBJECT
 public:
@@ -49,6 +49,8 @@ public:
     void stop();
     bool stopped();
     void run();
+
+    virtual void handleSequencerEvent(drumstick::ALSA::SequencerEvent* ev);
 
 public slots:
     void subscription( drumstick::ALSA::MidiPort* port, drumstick::ALSA::Subscription* subs );

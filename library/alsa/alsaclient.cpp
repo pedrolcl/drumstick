@@ -259,7 +259,10 @@ public:
 MidiClient::MidiClient( QObject* parent ) :
     QObject(parent),
     d(new MidiClientPrivate)
-{ }
+{ 
+    qRegisterMetaType<drumstick::ALSA::SequencerEvent>();
+    qRegisterMetaType<drumstick::ALSA::SequencerEvent*>();
+}
 
 /**
  * Destructor.

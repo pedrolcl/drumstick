@@ -52,7 +52,11 @@ QDumpMIDI::QDumpMIDI()
     connect( m_Client, &MidiClient::eventReceived,
                  this, &QDumpMIDI::sequencerEvent,
                        Qt::DirectConnection );
+    /* note: there is no event loop to handle Qt::QueuedConnection */
 #endif
+    // enable here the callback event delivery
+    // m_Client->setHandler(this);
+
     m_Port = new MidiPort(this);
     m_Port->attach( m_Client );
     m_Port->setPortName("DumpMIDI port");
@@ -150,10 +154,18 @@ void QDumpMIDI::run()
     }
 }
 
+void QDumpMIDI::handleSequencerEvent(SequencerEvent *ev)
+{
+    //qDebug() << Q_FUNC_INFO;
+    dumpEvent(ev);
+    delete ev;
+}
+
 #ifdef USE_QEVENTS
 void
 QDumpMIDI::customEvent(QEvent *ev)
 {
+    //qDebug() << Q_FUNC_INFO;
     if (ev->type() == SequencerEventType) {
         SequencerEvent* sev = static_cast<SequencerEvent*>(ev);
         if (sev != nullptr) {
@@ -165,6 +177,7 @@ QDumpMIDI::customEvent(QEvent *ev)
 void
 QDumpMIDI::sequencerEvent(SequencerEvent *ev)
 {
+    //qDebug() << Q_FUNC_INFO;
     dumpEvent(ev);
     delete ev;
 }
@@ -481,7 +494,7 @@ int main(int argc, char **argv)
     }
 
     try {
-        test = new QDumpMIDI();
+        test = new QDumpMIDI;
         signal(SIGINT, signalHandler);
         signal(SIGTERM, signalHandler);
         if (parser.isSet(portOption)) {
