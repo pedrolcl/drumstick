@@ -76,7 +76,6 @@ namespace drumstick { namespace rt {
         }
 
         void initialize() {
-            //qDebug() << Q_FUNC_INFO << m_initialized;
             if (!m_initialized) {
                 m_client = new MidiClient(m_inp);
                 m_client->open();
@@ -94,11 +93,12 @@ namespace drumstick { namespace rt {
                 m_status = true;
                 m_diagnostics.clear();
                 m_client->startSequencerInput();
+                reloadDeviceList(false);
             }
+            //qDebug() << Q_FUNC_INFO << m_initialized;
         }
 
         void uninitialize() {
-            //qDebug() << Q_FUNC_INFO << m_initialized;
             if (m_initialized) {
                 if (m_port != nullptr) {
                     m_port->detach();
@@ -114,6 +114,7 @@ namespace drumstick { namespace rt {
                 m_status = false;
                 m_diagnostics.clear();
             }
+            //qDebug() << Q_FUNC_INFO << m_initialized;
         }
 
         bool clientIsAdvanced(int clientId)
@@ -180,6 +181,7 @@ namespace drumstick { namespace rt {
 
         bool setSubscription(const MIDIConnection &newDevice)
         {
+            //qDebug() << Q_FUNC_INFO << newDevice;
             if (!m_initialized) {
                 initialize();
             }
@@ -194,6 +196,7 @@ namespace drumstick { namespace rt {
 
         void clearSubscription()
         {
+            //qDebug() << Q_FUNC_INFO;
             if (!m_currentInput.first.isEmpty() && m_initialized) {
                 m_client->stopSequencerInput();
                 m_port->unsubscribeAll();
@@ -213,6 +216,7 @@ namespace drumstick { namespace rt {
 
         void handleSequencerEvent(SequencerEvent* ev) override
         {
+            //qDebug() << Q_FUNC_INFO;
             if ( !SequencerEvent::isConnectionChange(ev) && m_initialized)
                 switch(ev->getSequencerType()) {
                 case SND_SEQ_EVENT_NOTEOFF: {
@@ -343,6 +347,7 @@ namespace drumstick { namespace rt {
 
     void ALSAMIDIInput::open(const MIDIConnection& name)
     {
+        //qDebug() << Q_FUNC_INFO;
         auto b = d->setSubscription(name);
         if (!b) {
             d->m_diagnostics << "failed subscription to " + name.first;
@@ -351,6 +356,7 @@ namespace drumstick { namespace rt {
 
     void ALSAMIDIInput::close()
     {
+        //qDebug() << Q_FUNC_INFO;
         d->clearSubscription();
         d->uninitialize();
     }
