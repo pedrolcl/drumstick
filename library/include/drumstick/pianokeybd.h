@@ -32,6 +32,8 @@
 
 namespace drumstick { namespace widgets {
 
+    Q_NAMESPACE
+
     /**
      * @addtogroup Widgets
      * @{
@@ -111,6 +113,7 @@ namespace drumstick { namespace widgets {
         ShowActivated,      ///< Show names when notes are activated
         ShowAlways          ///< Show always note names
     };
+    Q_ENUM_NS(LabelVisibility)
 
     /**
      * @brief Labels for Alterations
@@ -120,6 +123,7 @@ namespace drumstick { namespace widgets {
         ShowFlats,          ///< Show flats on black keys
         ShowNothing         ///< Do not show names on black keys
     };
+    Q_ENUM_NS(LabelAlteration)
 
     /**
      * @brief Labels Orientation
@@ -129,6 +133,7 @@ namespace drumstick { namespace widgets {
         VerticalOrientation,    ///< Show vertical names
         AutomaticOrientation    ///< Show horizonal or vertical names depending on the size
     };
+    Q_ENUM_NS(LabelOrientation)
 
     /**
      * @brief Labels Naming
@@ -138,6 +143,7 @@ namespace drumstick { namespace widgets {
         CustomNamesWithSharps,  ///< Show custom names with sharps
         CustomNamesWithFlats    ///< Show custom names with flats
     };
+    Q_ENUM_NS(LabelNaming)
 
     /**
      * @brief Labels Central Octave
@@ -148,6 +154,7 @@ namespace drumstick { namespace widgets {
         OctaveC4,               ///< Central C, MIDI note #60 is C4
         OctaveC5                ///< Central C, MIDI note #60 is C5
     };
+    Q_ENUM_NS(LabelCentralOctave)
 
     /**
      * @brief The PianoKeybd class
@@ -162,11 +169,13 @@ namespace drumstick { namespace widgets {
         Q_PROPERTY( int numKeys READ numKeys WRITE setNumKeys )
         Q_PROPERTY( int rotation READ getRotation WRITE setRotation )
         Q_PROPERTY( QColor keyPressedColor READ getKeyPressedColor WRITE setKeyPressedColor )
-        Q_PROPERTY( LabelVisibility showLabels READ showLabels WRITE setShowLabels )
-        Q_PROPERTY( LabelAlteration alterations READ labelAlterations WRITE setLabelAlterations )
-        Q_PROPERTY( LabelOrientation labelOrientation READ labelOrientation WRITE setLabelOrientation )
-        Q_PROPERTY( LabelCentralOctave labelOctave READ labelOctave WRITE setLabelOctave )
+        Q_PROPERTY( drumstick::widgets::LabelVisibility showLabels READ showLabels WRITE setShowLabels )
+        Q_PROPERTY( drumstick::widgets::LabelAlteration alterations READ labelAlterations WRITE setLabelAlterations )
+        Q_PROPERTY( drumstick::widgets::LabelOrientation labelOrientation READ labelOrientation WRITE setLabelOrientation )
+        Q_PROPERTY( drumstick::widgets::LabelCentralOctave labelOctave READ labelOctave WRITE setLabelOctave )
         Q_PROPERTY( int transpose READ getTranspose WRITE setTranspose )
+        Q_PROPERTY( int startKey READ startKey WRITE setStartKey )
+        Q_PROPERTY( QFont labelFont READ font WRITE setFont )
 
 #ifndef Q_MOC_RUN
         Q_CLASSINFO("Author", "Pedro Lopez-Cabanillas <plcl@users.sf.net>")
@@ -178,12 +187,6 @@ namespace drumstick { namespace widgets {
         explicit PianoKeybd(QWidget *parent = nullptr);
         PianoKeybd(const int baseOctave, const int numKeys, const int startKey, QWidget *parent = nullptr);
         virtual ~PianoKeybd();
-
-        Q_ENUM(LabelVisibility);
-        Q_ENUM(LabelAlteration);
-        Q_ENUM(LabelOrientation);
-        Q_ENUM(LabelNaming);
-        Q_ENUM(LabelCentralOctave);
 
         void setFont(const QFont &font);
         PianoHandler* getPianoHandler() const;
@@ -269,6 +272,8 @@ namespace drumstick { namespace widgets {
 
         void setOctaveSubscript(const bool enable);
         bool octaveSubscript() const;
+
+        void setStartKey(const int startKey);
 
     signals:
         /**

@@ -641,6 +641,11 @@ bool PianoKeybd::octaveSubscript() const
     return d->m_scene->octaveSubscript();
 }
 
+void PianoKeybd::setStartKey(const int startKey)
+{
+    setNumKeys(numKeys(), startKey);
+}
+
 /**
  * Returns the base octave number.
  * @see setBaseOctave()

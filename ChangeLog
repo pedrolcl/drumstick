@@ -1,3 +1,8 @@
+2022-07-14
+    * ticket #42: Drumstick::Widgets - fixed piano designer plugin to show more properties
+    *   properties added: labelFont and startKey
+    *   properties fixed: showLabels, alterations, labelOrientation, labelOctave
+
 2022-06-30
     * Drumstick::ALSA revision, registering SequencerEvent with qMetaType
     * Utils: dumpmid small revision
