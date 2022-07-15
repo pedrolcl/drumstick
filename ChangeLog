@@ -1,3 +1,8 @@
+2022-07-15
+    * ticket #43: Drumstick::RT dummy plugins now include its own configuration dialogs.
+    *   Drumstick::Widgets include support for these dialogs, implemented in the already
+    *   existing functions of <drumstick/configurationdialogs.h>
+
 2022-07-14
     * ticket #42: Drumstick::Widgets - fixed piano designer plugin to show more properties
     *   properties added: labelFont and startKey

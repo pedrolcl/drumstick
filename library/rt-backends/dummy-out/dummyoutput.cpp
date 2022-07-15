@@ -16,6 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QMessageBox>
 #include "dummyoutput.h"
 
 namespace drumstick {
@@ -28,12 +29,12 @@ void DummyOutput::initialize(QSettings* settings)
 
 QString DummyOutput::backendName()
 {
-    return QStringLiteral("DUMMY");
+    return QStringLiteral("DummyOutput");
 }
 
 QString DummyOutput::publicName()
 {
-    return QStringLiteral("DUMMY Out");
+    return QStringLiteral("DummyOutput");
 }
 
 void DummyOutput::setPublicName(QString name)
@@ -122,5 +123,31 @@ void DummyOutput::sendSystemMsg(const int status)
     Q_UNUSED(status)
 }
 
+bool DummyOutput::configure(QWidget *parent)
+{
+    return QMessageBox::Ok == QMessageBox::information(parent, "Hello Configuration",
+                                                       "Hello world configuration dialog!",
+                                                       QMessageBox::Ok | QMessageBox::Cancel);
+}
+
+QStringList DummyOutput::getDiagnostics()
+{
+    return QStringList();
+}
+
+QString DummyOutput::getLibVersion()
+{
+    return QT_STRINGIFY(VERSION);
+}
+
+bool DummyOutput::getStatus()
+{
+    return true;
+}
+
+bool DummyOutput::getConfigurable()
+{
+    return true;
+}
 
 }}

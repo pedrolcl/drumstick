@@ -16,6 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QMessageBox>
 #include "dummyinput.h"
 
 namespace drumstick {
@@ -28,12 +29,12 @@ void DummyInput::initialize(QSettings* settings)
 
 QString DummyInput::backendName()
 {
-    return QStringLiteral("DUMMY");
+    return QStringLiteral("DummyInput");
 }
 
 QString DummyInput::publicName()
 {
-    return QStringLiteral("DUMMY In");
+    return QStringLiteral("DummyInput");
 }
 
 void DummyInput::setPublicName(QString name)
@@ -81,5 +82,31 @@ bool DummyInput::isEnabledMIDIThru()
     return false;
 }
 
+bool DummyInput::configure(QWidget *parent)
+{
+    return QMessageBox::Ok == QMessageBox::information(parent, "Hello Configuration",
+                                                       "Hello world configuration dialog!",
+                                                       QMessageBox::Ok | QMessageBox::Cancel);
+}
+
+QStringList DummyInput::getDiagnostics()
+{
+    return QStringList();
+}
+
+QString DummyInput::getLibVersion()
+{
+    return QT_STRINGIFY(VERSION);
+}
+
+bool DummyInput::getStatus()
+{
+    return true;
+}
+
+bool DummyInput::getConfigurable()
+{
+    return true;
+}
 
 }}

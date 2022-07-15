@@ -16,8 +16,10 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QMetaMethod>
 #include "fluidsettingsdialog.h"
 #include "networksettingsdialog.h"
+#include <drumstick/backendmanager.h>
 #include <drumstick/configurationdialogs.h>
 #if defined(Q_OS_LINUX)
 #include "sonivoxsettingsdialog.h"
@@ -45,7 +47,25 @@ namespace drumstick { namespace widgets {
  */
 bool inputDriverIsConfigurable(const QString driver)
 {
-    return (driver == "Network");
+    // internal configuration dialogs:
+    if (driver == "Network") {
+        return true;
+    }
+    // external configuration dialogs (residing on plugins):
+    drumstick::rt::BackendManager man;
+    auto obj = man.inputBackendByName(driver);
+    if (obj == nullptr) {
+        return false;
+    }
+    auto metaObj = obj->metaObject();
+    if ((metaObj->indexOfProperty("isconfigurable") != -1) &&
+        (metaObj->indexOfMethod("configure(QWidget*)") != -1)) {
+        auto configurable = obj->property("isconfigurable");
+        if (configurable.isValid()) {
+            return configurable.toBool();
+        }
+    }
+    return false;
 }
 
 /**
@@ -55,15 +75,34 @@ bool inputDriverIsConfigurable(const QString driver)
  */
 bool outputDriverIsConfigurable(const QString driver)
 {
-    return (driver == "Network")
+    // internal configuration dialogs
+    if ((driver == "Network")
 #if defined(Q_OS_LINUX)
             || (driver == "SonivoxEAS")
 #endif
 #if defined(Q_OS_MACOS)
             || (driver == "DLS Synth")
 #endif
-            || (driver == "FluidSynth");
+            || (driver == "FluidSynth")) {
+        return true;
+    }
+    // external configuration dialogs (residing on plugins)
+    drumstick::rt::BackendManager man;
+    auto obj = man.outputBackendByName(driver);
+    if (obj == nullptr) {
+        return false;
+    }
+    auto metaObj = obj->metaObject();
+    if ((metaObj->indexOfProperty("isconfigurable") != -1) &&
+        (metaObj->indexOfMethod("configure(QWidget*)") != -1)) {
+        auto configurable = obj->property("isconfigurable");
+        if (configurable.isValid()) {
+            return configurable.toBool();
+        }
+    }
+    return false;
 }
+
 /**
  * @brief Input Driver configuration dialog
  * Some RT input drivers can be configured. This function provides a
@@ -75,9 +114,26 @@ bool outputDriverIsConfigurable(const QString driver)
  */
 bool configureInputDriver(const QString driver, QWidget* parent)
 {
+    // internal configuration dialogs
     if (driver == "Network") {
         NetworkSettingsDialog dlg(true, parent);
         return (dlg.exec() == QDialog::Accepted);
+    }
+    // external configuration dialogs (residing on plugins):
+    drumstick::rt::BackendManager man;
+    auto obj = man.inputBackendByName(driver);
+    if (obj == nullptr) {
+        return false;
+    }
+    auto metaObj = obj->metaObject();
+    if ((metaObj->indexOfProperty("isconfigurable") != -1) &&
+        (metaObj->indexOfMethod("configure(QWidget*)") != -1)) {
+        auto configurable = obj->property("isconfigurable");
+        if (configurable.isValid() && configurable.toBool()) {
+            bool ret;
+            QMetaObject::invokeMethod(obj, "configure", Q_RETURN_ARG(bool, ret), Q_ARG(QWidget*, parent));
+            return ret;
+        }
     }
     return false;
 }
@@ -94,17 +150,17 @@ bool configureInputDriver(const QString driver, QWidget* parent)
  */
 bool configureOutputDriver(const QString driver, QWidget* parent)
 {
-    bool result = false;
+    // internal configuration dialogs
     if (driver == "Network") {
         NetworkSettingsDialog dlg(false, parent);
-        result = (dlg.exec() == QDialog::Accepted);
+        return (dlg.exec() == QDialog::Accepted);
     } else if (driver == "FluidSynth") {
         FluidSettingsDialog dlg(parent);
-        result = (dlg.exec() == QDialog::Accepted);
+        return (dlg.exec() == QDialog::Accepted);
 #if defined(Q_OS_LINUX)
     } else if (driver == "SonivoxEAS") {
         SonivoxSettingsDialog dlg(parent);
-        result = (dlg.exec() == QDialog::Accepted);
+        return (dlg.exec() == QDialog::Accepted);
 #endif
 #if defined(Q_OS_MACOS)
     } else if (driver == "DLS Synth") {
@@ -112,7 +168,23 @@ bool configureOutputDriver(const QString driver, QWidget* parent)
         return (dlg.exec() == QDialog::Accepted);
 #endif
     }
-    return result;
+    // external configuration dialogs (residing on plugins):
+    drumstick::rt::BackendManager man;
+    auto obj = man.outputBackendByName(driver);
+    if (obj == nullptr) {
+        return false;
+    }
+    auto metaObj = obj->metaObject();
+    if ((metaObj->indexOfProperty("isconfigurable") != -1) &&
+        (metaObj->indexOfMethod("configure(QWidget*)") != -1)) {
+        auto configurable = obj->property("isconfigurable");
+        if (configurable.isValid() && configurable.toBool()) {
+            bool ret;
+            QMetaObject::invokeMethod(obj, "configure", Q_RETURN_ARG(bool, ret), Q_ARG(QWidget*, parent));
+            return ret;
+        }
+    }
+    return false;
 }
 
 /**

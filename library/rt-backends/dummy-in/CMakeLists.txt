@@ -16,6 +16,8 @@
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+find_package(Qt${QT_VERSION_MAJOR}Widgets REQUIRED)
+
 set(drumstick-rt-dummy-in_QTOBJ_SRCS
     dummyinput.h
 )
@@ -52,6 +54,7 @@ endif()
 
 target_link_libraries(drumstick-rt-dummy-in PUBLIC
     Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Widgets
     Drumstick::RT
 )
 

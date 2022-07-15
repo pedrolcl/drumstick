@@ -20,7 +20,6 @@
 #define DUMMYINPUT_H
 
 #include <QObject>
-#include <QtPlugin>
 #include <drumstick/rtmidiinput.h>
 
 namespace drumstick {
@@ -31,6 +30,11 @@ namespace rt {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIInput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIInput)
+        Q_PROPERTY(QStringList diagnostics READ getDiagnostics)
+        Q_PROPERTY(QString libversion READ getLibVersion)
+        Q_PROPERTY(bool status READ getStatus)
+        Q_PROPERTY(bool isconfigurable READ getConfigurable)
+
     public:
         explicit DummyInput(QObject *parent = nullptr) : MIDIInput(parent) {}
         virtual ~DummyInput() = default;
@@ -50,6 +54,15 @@ namespace rt {
         virtual void setMIDIThruDevice(MIDIOutput *device);
         virtual void enableMIDIThru(bool enable);
         virtual bool isEnabledMIDIThru();
+
+    public slots:
+        bool configure(QWidget *parent);
+
+    private:
+        QStringList getDiagnostics();
+        QString getLibVersion();
+        bool getStatus();
+        bool getConfigurable();
     };
 
 }}

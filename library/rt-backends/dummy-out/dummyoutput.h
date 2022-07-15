@@ -30,6 +30,11 @@ namespace rt {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
         Q_INTERFACES(drumstick::rt::MIDIOutput)
+        Q_PROPERTY(QStringList diagnostics READ getDiagnostics)
+        Q_PROPERTY(QString libversion READ getLibVersion)
+        Q_PROPERTY(bool status READ getStatus)
+        Q_PROPERTY(bool isconfigurable READ getConfigurable)
+
     public:
         explicit DummyOutput(QObject *parent = nullptr) : MIDIOutput(parent) {}
         virtual ~DummyOutput() = default;
@@ -56,6 +61,14 @@ namespace rt {
         virtual void sendPitchBend(int chan, int value);
         virtual void sendSysex(const QByteArray &data);
         virtual void sendSystemMsg(const int status);
+
+        bool configure(QWidget *parent);
+
+    private:
+        QStringList getDiagnostics();
+        QString getLibVersion();
+        bool getStatus();
+        bool getConfigurable();
     };
 
 }}
