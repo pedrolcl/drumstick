@@ -54,17 +54,12 @@ const QString SynthEngine::QSTR_DEFAULT_AUDIODRIVER =
 #else
     QStringLiteral("oss");
 #endif
-#if defined(Q_OS_WIN)
 const int SynthEngine::DEFAULT_PERIODS = 8;
 const int SynthEngine::DEFAULT_PERIODSIZE = 512;
-#else
-const int SynthEngine::DEFAULT_PERIODS = 16;
-const int SynthEngine::DEFAULT_PERIODSIZE = 64;
-#endif
 const double SynthEngine::DEFAULT_SAMPLERATE = 44100.0;
 const int SynthEngine::DEFAULT_CHORUS = 0;
 const int SynthEngine::DEFAULT_REVERB = 1;
-const double SynthEngine::DEFAULT_GAIN = .5;
+const double SynthEngine::DEFAULT_GAIN = 1.0;
 const int SynthEngine::DEFAULT_POLYPHONY = 256;
 
 static void
@@ -81,7 +76,7 @@ SynthEngine::SynthEngine(QObject *parent)
       m_synth(nullptr),
       m_driver(nullptr)
 {
-    //qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO; 
     m_runtimeLibraryVersion = ::fluid_version_str();
     //qDebug() << "Compiled FluidSynth Version:" << QSTR_FLUIDSYNTH_VERSION;
     //qDebug() << "Runtime FluidSynth Version:" << m_runtimeLibraryVersion;
@@ -118,15 +113,13 @@ void SynthEngine::uninitialize()
 
 void SynthEngine::initializeSynth()
 {
-    //qDebug() << Q_FUNC_INFO;
     uninitialize();
+    //qDebug() << Q_FUNC_INFO << fs_audiodriver << fs_periodSize << fs_periods << qEnvironmentVariableIntValue("PULSE_LATENCY_MSEC");
     m_settings = ::new_fluid_settings();
     ::fluid_settings_setstr(m_settings, "audio.driver", qPrintable(fs_audiodriver));
     ::fluid_settings_setint(m_settings, "audio.period-size", fs_periodSize);
     ::fluid_settings_setint(m_settings, "audio.periods", fs_periods);
-    if (fs_audiodriver == "pulseaudio") {
-        ::fluid_settings_setint(m_settings, "audio.pulseaudio.adjust-latency", 1);
-    }
+    ::fluid_settings_setint(m_settings, "audio.pulseaudio.adjust-latency", 0);
     ::fluid_settings_setnum(m_settings, "synth.sample-rate", fs_sampleRate);
     ::fluid_settings_setint(m_settings, "synth.chorus.active", fs_chorus);
     ::fluid_settings_setint(m_settings, "synth.reverb.active", fs_reverb);
@@ -161,6 +154,7 @@ void SynthEngine::loadSoundFont()
 
 void SynthEngine::initialize()
 {
+    //qDebug() << Q_FUNC_INFO;
     initializeSynth();
     retrieveAudioDrivers();
     scanSoundFonts();
@@ -311,15 +305,20 @@ void SynthEngine::readSettings(QSettings *settings)
     fs_polyphony = settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toInt();
     settings->endGroup();
     //qDebug() << Q_FUNC_INFO << "audioDriver:" << fs_audiodriver << "buffer" << fs_periodSize << '*' << fs_periods;
+    int bufferTime = 1000 * fs_periodSize * fs_periods / fs_sampleRate;
+    qputenv("PULSE_LATENCY_MSEC", QByteArray::number( bufferTime ) );
+    //qDebug() << Q_FUNC_INFO << "$PULSE_LATENCY_MSEC=" << bufferTime;
 }
 
 void SynthEngine::close()
 {
+    //qDebug() << Q_FUNC_INFO;
     m_currentConnection = MIDIConnection();
 }
 
 void SynthEngine::open()
 {
+    //qDebug() << Q_FUNC_INFO;
     m_currentConnection = MIDIConnection(QSTR_FLUIDSYNTH, QSTR_FLUIDSYNTH);
 }
 

@@ -23,6 +23,7 @@
 #include <QStandardPaths>
 #include <QToolButton>
 #include <QMessageBox>
+#include <QVersionNumber>
 
 #include "fluidsettingsdialog.h"
 #include "ui_fluidsettingsdialog.h"
@@ -195,11 +196,8 @@ void FluidSettingsDialog::chkDriverProperties(QSettings *settings)
             ui->audioDriver->setCurrentText(text);
             ui->audioDriver->blockSignals(false);
         }
-        QVariant varVersion = m_driver->property("libversion");
-        if (varVersion.isValid()) {
-            ui->lblVersion->clear();
-            ui->lblVersion->setText(varVersion.toString());
-        }
+        ui->lblVersion->clear();
+        ui->lblVersion->setText(driverVersion());
         QVariant varStatus = m_driver->property("status");
         if (varStatus.isValid()) {
             ui->lblStatus->clear();
@@ -211,13 +209,10 @@ void FluidSettingsDialog::chkDriverProperties(QSettings *settings)
 
 void drumstick::widgets::FluidSettingsDialog::initBuffer()
 {
-    if (ui->audioDriver->currentText() == QSTR_PULSEAUDIO) {
-        //qDebug() << Q_FUNC_INFO << QSTR_PULSEAUDIO;
+    if ((ui->audioDriver->currentText() == QSTR_PULSEAUDIO) && driverVersionLessThan_2_2_8()) {
+        //qDebug() << Q_FUNC_INFO << QSTR_PULSEAUDIO << driverVersion();
         int bufferTime = ui->bufferTime->value();
         int minBufTime = ui->bufferTime->minimum();
-        if (qEnvironmentVariableIsSet("PULSE_LATENCY_MSEC")) {
-            bufferTime = qEnvironmentVariableIntValue("PULSE_LATENCY_MSEC");
-        }
         if (bufferTime < minBufTime) {
             bufferTime = minBufTime;
         }
@@ -227,6 +222,25 @@ void drumstick::widgets::FluidSettingsDialog::initBuffer()
         //qDebug() << Q_FUNC_INFO;
         bufferSizeChanged();
     }
+}
+
+QString FluidSettingsDialog::driverVersion() const
+{
+    static QString result;
+    if (m_driver != nullptr && result.isEmpty()) {
+        QVariant varVersion = m_driver->property("libversion");
+        if (varVersion.isValid()) {
+            result = varVersion.toString();
+        }
+    }
+    return result;
+}
+
+bool FluidSettingsDialog::driverVersionLessThan_2_2_8()
+{
+    static const QVersionNumber check_2_2_8 = QVersionNumber::fromString("2.2.8");
+    QVersionNumber driverV = QVersionNumber::fromString(driverVersion());
+    return driverV < check_2_2_8;
 }
 
 void FluidSettingsDialog::readSettings()
@@ -303,9 +317,6 @@ void FluidSettingsDialog::writeSettings()
     settings->endGroup();
     settings->sync();
 
-    if ( audioDriver == QSTR_PULSEAUDIO ) {
-        qputenv("PULSE_LATENCY_MSEC", QByteArray::number( bufferTime ) );
-    }
     chkDriverProperties(settings.getQSettings());
 }
 
@@ -340,11 +351,12 @@ void FluidSettingsDialog::showFileDialog()
 void FluidSettingsDialog::audioDriverChanged(const QString &text)
 {
     //qDebug() << Q_FUNC_INFO << text;
-    if (text == QSTR_PULSEAUDIO) {
+    if ((text == QSTR_PULSEAUDIO) && driverVersionLessThan_2_2_8()) {
         ui->bufferTime->setDisabled(false);
         ui->bufferTime->blockSignals(false);
         ui->periodSize->setDisabled(true);
         ui->periodSize->blockSignals(true);
+        ui->periods->setVisible(false);
         ui->periods->setDisabled(true);
         ui->periods->blockSignals(true);
     } else {
@@ -352,6 +364,7 @@ void FluidSettingsDialog::audioDriverChanged(const QString &text)
         ui->bufferTime->blockSignals(true);
         ui->periodSize->setDisabled(false);
         ui->periodSize->blockSignals(false);
+        ui->periods->setVisible(true);
         ui->periods->setDisabled(false);
         ui->periods->blockSignals(false);
     }
@@ -372,7 +385,7 @@ void FluidSettingsDialog::bufferSizeChanged()
     QString audioDriver = ui->audioDriver->currentText();
     double rate = ui->sampleRate->text().toDouble();
     int size = ui->periodSize->value();
-    if (audioDriver != QSTR_PULSEAUDIO) {
+    if ((audioDriver != QSTR_PULSEAUDIO) || !driverVersionLessThan_2_2_8()) {
         size *= ui->periods->value();
     }
     int ms = qRound( 1000.0 * size / rate );

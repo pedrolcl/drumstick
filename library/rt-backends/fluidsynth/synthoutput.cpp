@@ -35,11 +35,13 @@ SynthOutput::~SynthOutput()
 
 void SynthOutput::start()
 {
+    //qDebug() << Q_FUNC_INFO;
     m_synth->initialize();
 }
 
 void SynthOutput::stop()
 {
+    //qDebug() << Q_FUNC_INFO;
     m_synth->stop();
 }
 

@@ -77,13 +77,13 @@ public:
     static const QString QSTR_POLYPHONY;
     static const QString QSTR_BUFFERTIME;
 
-    static const int DEFAULT_BUFFERTIME = 30;
-    static const int DEFAULT_PERIODSIZE = 64;
-    static const int DEFAULT_PERIODS = 16;
+    static const int DEFAULT_BUFFERTIME = 50;
+    static const int DEFAULT_PERIODSIZE = 512;
+    static const int DEFAULT_PERIODS = 8;
     static constexpr double DEFAULT_SAMPLERATE = 44100.0;
     static const int DEFAULT_CHORUS = 0;
-    static const int DEFAULT_REVERB = 0;
-    static constexpr double DEFAULT_GAIN = 0.5;
+    static const int DEFAULT_REVERB = 1;
+    static constexpr double DEFAULT_GAIN = 1.0;
     static const int DEFAULT_POLYPHONY = 256;
     static const QString QSTR_PULSEAUDIO;
 
@@ -91,6 +91,8 @@ private:
     QString defaultAudioDriver() const;
     bool checkRanges() const;
     void initBuffer();
+    QString driverVersion() const;
+    bool driverVersionLessThan_2_2_8();
 
     Ui::FluidSettingsDialog *ui;
     drumstick::rt::MIDIOutput *m_driver;
