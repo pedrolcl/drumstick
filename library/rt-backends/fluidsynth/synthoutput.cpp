@@ -128,9 +128,7 @@ void SynthOutput::sendNoteOn(int chan, int note, int vel)
 
 void SynthOutput::sendKeyPressure(int chan, int note, int value)
 {
-    Q_UNUSED(chan)
-    Q_UNUSED(note)
-    Q_UNUSED(value)
+    m_synth->keyPressure(chan, note, value);
 }
 
 void SynthOutput::sendController(int chan, int control, int value)
@@ -145,8 +143,7 @@ void SynthOutput::sendProgram(int chan, int program)
 
 void SynthOutput::sendChannelPressure(int chan, int value)
 {
-    Q_UNUSED(chan)
-    Q_UNUSED(value)
+    m_synth->channelPressure(chan, value);
 }
 
 void SynthOutput::sendPitchBend(int chan, int value)
@@ -156,7 +153,7 @@ void SynthOutput::sendPitchBend(int chan, int value)
 
 void SynthOutput::sendSysex(const QByteArray &data)
 {
-    Q_UNUSED(data)
+    m_synth->sysex(data);
 }
 
 void SynthOutput::sendSystemMsg(const int status)

@@ -53,6 +53,9 @@ public:
     Q_INVOKABLE void noteOff(const int channel, const int midiNote, const int velocity);
     Q_INVOKABLE void controlChange(const int channel, const int ctl, const int value);
     Q_INVOKABLE void bender(const int channel, const int value);
+    Q_INVOKABLE void channelPressure(const int channel, const int value);
+    Q_INVOKABLE void keyPressure(const int channel, const int midiNote, const int value);
+    Q_INVOKABLE void sysex(const QByteArray& data);
     Q_INVOKABLE QString version() const { return QT_STRINGIFY(VERSION); }
 
     MIDIConnection currentConnection() const { return m_currentConnection; }

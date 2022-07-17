@@ -21,6 +21,7 @@
 #include <QFileInfo>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QVersionNumber>
 #include <drumstick/rtmidioutput.h>
 #include "synthengine.h"
 
@@ -175,6 +176,34 @@ void SynthEngine::controlChange(const int channel, const int midiCtl, const int 
 void SynthEngine::bender(const int channel, const int value)
 {
     ::fluid_synth_pitch_bend(m_synth, channel, value + 8192);
+}
+
+void SynthEngine::channelPressure(const int channel, const int value)
+{
+    ::fluid_synth_channel_pressure(m_synth, channel, value);
+}
+
+void SynthEngine::keyPressure(const int channel, const int midiNote, const int value)
+{
+    static const QVersionNumber versionCheck(2,0,0);
+    QVersionNumber fluidVersion = QVersionNumber::fromString(getLibVersion());
+    if (fluidVersion >= versionCheck) {
+        ::fluid_synth_key_pressure(m_synth, channel, midiNote, value);
+    }
+}
+
+void SynthEngine::sysex(const QByteArray &data)
+{
+    const char SYSEX = 0xf0;
+    const char EOX = 0xf7;
+    QByteArray d(data);
+    if (d.startsWith(SYSEX)) {
+        d.remove(0, 1);
+    }
+    if (d.endsWith(EOX)) {
+        d.chop(1);
+    }
+    ::fluid_synth_sysex(m_synth, d.data(), d.length(), nullptr, nullptr, nullptr, 0);
 }
 
 void SynthEngine::setSoundFont(const QString &value)

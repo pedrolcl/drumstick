@@ -238,7 +238,7 @@ QString FluidSettingsDialog::driverVersion() const
 
 bool FluidSettingsDialog::driverVersionLessThan_2_2_8()
 {
-    static const QVersionNumber check_2_2_8 = QVersionNumber::fromString("2.2.8");
+    static const QVersionNumber check_2_2_8(2, 2, 8);
     QVersionNumber driverV = QVersionNumber::fromString(driverVersion());
     return driverV < check_2_2_8;
 }

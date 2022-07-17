@@ -1,3 +1,7 @@
+2022-07-17
+    * fixed fluidsynth backend to support channel pressure and key pressure MIDI events
+    * revised backend and configuration dialog to reflect the changes in fluidsynth 2.2.8
+
 2022-07-15
     * ticket #43: Drumstick::RT dummy plugins now include its own configuration dialogs.
     *   Drumstick::Widgets include support for these dialogs, implemented in the already
