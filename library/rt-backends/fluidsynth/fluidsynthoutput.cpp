@@ -16,56 +16,56 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "synthoutput.h"
+#include "fluidsynthoutput.h"
 
 namespace drumstick { namespace rt {
 
-SynthOutput::SynthOutput(QObject *parent) : MIDIOutput(parent)
+FluidSynthOutput::FluidSynthOutput(QObject *parent) : MIDIOutput(parent)
 {
     //qDebug() << Q_FUNC_INFO;
-    m_synth = new SynthEngine;
+    m_synth = new FluidSynthEngine;
 }
 
-SynthOutput::~SynthOutput()
+FluidSynthOutput::~FluidSynthOutput()
 {
     //qDebug() << Q_FUNC_INFO;
     stop();
     delete m_synth;
 }
 
-void SynthOutput::start()
+void FluidSynthOutput::start()
 {
     //qDebug() << Q_FUNC_INFO;
     m_synth->initialize();
 }
 
-void SynthOutput::stop()
+void FluidSynthOutput::stop()
 {
     //qDebug() << Q_FUNC_INFO;
     m_synth->stop();
 }
 
-QStringList SynthOutput::getAudioDrivers()
+QStringList FluidSynthOutput::getAudioDrivers()
 {
     return m_synth->getAudioDrivers();
 }
 
-QStringList SynthOutput::getDiagnostics()
+QStringList FluidSynthOutput::getDiagnostics()
 {
     return m_synth->getDiagnostics();
 }
 
-QString SynthOutput::getLibVersion()
+QString FluidSynthOutput::getLibVersion()
 {
     return m_synth->getLibVersion();
 }
 
-bool SynthOutput::getStatus()
+bool FluidSynthOutput::getStatus()
 {
     return m_synth->getStatus();
 }
 
-void SynthOutput::initialize(QSettings *settings)
+void FluidSynthOutput::initialize(QSettings *settings)
 {
     //qDebug() << Q_FUNC_INFO;
     m_synth->readSettings(settings);
@@ -73,90 +73,92 @@ void SynthOutput::initialize(QSettings *settings)
     start();
 }
 
-QString SynthOutput::backendName()
+QString FluidSynthOutput::backendName()
 {
-    return SynthEngine::QSTR_FLUIDSYNTH;
+    return FluidSynthEngine::QSTR_FLUIDSYNTH;
 }
 
-QString SynthOutput::publicName()
+QString FluidSynthOutput::publicName()
 {
-    return SynthEngine::QSTR_FLUIDSYNTH;
+    return FluidSynthEngine::QSTR_FLUIDSYNTH;
 }
 
-void SynthOutput::setPublicName(QString name)
+void FluidSynthOutput::setPublicName(QString name)
 {
     Q_UNUSED(name)
 }
 
-QList<MIDIConnection> SynthOutput::connections(bool advanced)
+QList<MIDIConnection> FluidSynthOutput::connections(bool advanced)
 {
     Q_UNUSED(advanced)
-    return QList<MIDIConnection>{MIDIConnection(SynthEngine::QSTR_FLUIDSYNTH, SynthEngine::QSTR_FLUIDSYNTH)};
+    return QList<MIDIConnection>{MIDIConnection(FluidSynthEngine::QSTR_FLUIDSYNTH, FluidSynthEngine::QSTR_FLUIDSYNTH)};
 }
 
-void SynthOutput::setExcludedConnections(QStringList conns)
+void FluidSynthOutput::setExcludedConnections(QStringList conns)
 {
     Q_UNUSED(conns)
 }
 
-void SynthOutput::open(const MIDIConnection& name)
+void FluidSynthOutput::open(const MIDIConnection& name)
 {
     Q_UNUSED(name)
+    //qDebug() << Q_FUNC_INFO;
     m_synth->open();
 }
 
-void SynthOutput::close()
+void FluidSynthOutput::close()
 {
+    //qDebug() << Q_FUNC_INFO;
     m_synth->close();
     stop();
 }
 
-MIDIConnection SynthOutput::currentConnection()
+MIDIConnection FluidSynthOutput::currentConnection()
 {
     return m_synth->currentConnection();
 }
 
-void SynthOutput::sendNoteOff(int chan, int note, int vel)
+void FluidSynthOutput::sendNoteOff(int chan, int note, int vel)
 {
     m_synth->noteOff(chan, note, vel);
 }
 
-void SynthOutput::sendNoteOn(int chan, int note, int vel)
+void FluidSynthOutput::sendNoteOn(int chan, int note, int vel)
 {
     m_synth->noteOn(chan, note, vel);
 }
 
-void SynthOutput::sendKeyPressure(int chan, int note, int value)
+void FluidSynthOutput::sendKeyPressure(int chan, int note, int value)
 {
     m_synth->keyPressure(chan, note, value);
 }
 
-void SynthOutput::sendController(int chan, int control, int value)
+void FluidSynthOutput::sendController(int chan, int control, int value)
 {
     m_synth->controlChange(chan, control, value);
 }
 
-void SynthOutput::sendProgram(int chan, int program)
+void FluidSynthOutput::sendProgram(int chan, int program)
 {
     m_synth->setInstrument(chan, program);
 }
 
-void SynthOutput::sendChannelPressure(int chan, int value)
+void FluidSynthOutput::sendChannelPressure(int chan, int value)
 {
     m_synth->channelPressure(chan, value);
 }
 
-void SynthOutput::sendPitchBend(int chan, int value)
+void FluidSynthOutput::sendPitchBend(int chan, int value)
 {
     m_synth->bender(chan, value);
 }
 
-void SynthOutput::sendSysex(const QByteArray &data)
+void FluidSynthOutput::sendSysex(const QByteArray &data)
 {
     m_synth->sysex(data);
 }
 
-void SynthOutput::sendSystemMsg(const int status)
+void FluidSynthOutput::sendSystemMsg(const int status)
 {
     Q_UNUSED(status)
 }

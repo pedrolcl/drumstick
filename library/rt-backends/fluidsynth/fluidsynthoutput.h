@@ -23,12 +23,12 @@
 #include <QThread>
 #include <QPointer>
 #include <drumstick/rtmidioutput.h>
-#include "synthengine.h"
+#include "fluidsynthengine.h"
 
 namespace drumstick {
 namespace rt {
 
-    class SynthOutput : public MIDIOutput
+    class FluidSynthOutput : public MIDIOutput
     {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID "net.sourceforge.drumstick.rt.MIDIOutput/2.0")
@@ -39,8 +39,8 @@ namespace rt {
         Q_PROPERTY(bool status READ getStatus)
 
     public:
-        explicit SynthOutput(QObject *parent = nullptr);
-        virtual ~SynthOutput();
+        explicit FluidSynthOutput(QObject *parent = nullptr);
+        virtual ~FluidSynthOutput();
 
         void start();
         void stop();
@@ -69,7 +69,7 @@ namespace rt {
         virtual void sendSystemMsg(const int status) override;
 
     private:
-        QPointer<SynthEngine> m_synth;
+        QPointer<FluidSynthEngine> m_synth;
 
     private:
         QStringList getAudioDrivers();

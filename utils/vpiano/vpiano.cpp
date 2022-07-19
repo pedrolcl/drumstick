@@ -125,7 +125,7 @@ void VPiano::initialize()
 
     m_midiOut = man.findOutput(VPianoSettings::instance()->lastOutputBackend());
     if (m_midiOut == nullptr) {
-        qFatal("Unable to find a suitable output backend");
+        qFatal("Unable to find a suitable output backend. You may need to set the DRUMSTICKRT environment variable.");
     }
 
     drumstick::widgets::SettingsFactory settings;

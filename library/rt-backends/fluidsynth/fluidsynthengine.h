@@ -30,14 +30,14 @@
 
 namespace drumstick { namespace rt {
 
-class SynthEngine : public QObject
+class FluidSynthEngine : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString soundFont READ soundFont WRITE setSoundFont)
 
 public:
-    explicit SynthEngine(QObject *parent = nullptr);
-    virtual ~SynthEngine();
+    explicit FluidSynthEngine(QObject *parent = nullptr);
+    virtual ~FluidSynthEngine();
 
     QString soundFont() const { return m_soundFont; }
     void setSoundFont(const QString &value);
@@ -100,7 +100,6 @@ private:
     void retrieveAudioDrivers();
     void initializeSynth();
     void loadSoundFont();
-    void internalInitialize();
 
     int m_sfid;
     MIDIConnection m_currentConnection;

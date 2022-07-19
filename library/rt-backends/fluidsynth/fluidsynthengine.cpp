@@ -23,29 +23,29 @@
 #include <QStandardPaths>
 #include <QVersionNumber>
 #include <drumstick/rtmidioutput.h>
-#include "synthengine.h"
+#include "fluidsynthengine.h"
 
 namespace drumstick { namespace rt {
 
-const QString SynthEngine::QSTR_FLUIDSYNTH_VERSION = QStringLiteral(FLUIDSYNTH_VERSION);
-const QString SynthEngine::QSTR_FLUIDSYNTH = QStringLiteral("FluidSynth");
-const QString SynthEngine::QSTR_PREFERENCES = QStringLiteral("FluidSynth");
-const QString SynthEngine::QSTR_INSTRUMENTSDEFINITION = QStringLiteral("InstrumentsDefinition");
-const QString SynthEngine::QSTR_DATADIR = QStringLiteral("soundfonts");
-const QString SynthEngine::QSTR_DATADIR2 = QStringLiteral("sounds/sf2");
-const QString SynthEngine::QSTR_SOUNDFONT = QStringLiteral("default.sf2");
+const QString FluidSynthEngine::QSTR_FLUIDSYNTH_VERSION = QStringLiteral(FLUIDSYNTH_VERSION);
+const QString FluidSynthEngine::QSTR_FLUIDSYNTH = QStringLiteral("FluidSynth");
+const QString FluidSynthEngine::QSTR_PREFERENCES = QStringLiteral("FluidSynth");
+const QString FluidSynthEngine::QSTR_INSTRUMENTSDEFINITION = QStringLiteral("InstrumentsDefinition");
+const QString FluidSynthEngine::QSTR_DATADIR = QStringLiteral("soundfonts");
+const QString FluidSynthEngine::QSTR_DATADIR2 = QStringLiteral("sounds/sf2");
+const QString FluidSynthEngine::QSTR_SOUNDFONT = QStringLiteral("default.sf2");
 
-const QString SynthEngine::QSTR_AUDIODRIVER = QStringLiteral("AudioDriver");
-const QString SynthEngine::QSTR_BUFFERTIME = QStringLiteral("BufferTime");
-const QString SynthEngine::QSTR_PERIODSIZE = QStringLiteral("PeriodSize");
-const QString SynthEngine::QSTR_PERIODS = QStringLiteral("Periods");
-const QString SynthEngine::QSTR_SAMPLERATE = QStringLiteral("SampleRate");
-const QString SynthEngine::QSTR_CHORUS = QStringLiteral("Chorus");
-const QString SynthEngine::QSTR_REVERB = QStringLiteral("Reverb");
-const QString SynthEngine::QSTR_GAIN = QStringLiteral("Gain");
-const QString SynthEngine::QSTR_POLYPHONY = QStringLiteral("Polyphony");
+const QString FluidSynthEngine::QSTR_AUDIODRIVER = QStringLiteral("AudioDriver");
+const QString FluidSynthEngine::QSTR_BUFFERTIME = QStringLiteral("BufferTime");
+const QString FluidSynthEngine::QSTR_PERIODSIZE = QStringLiteral("PeriodSize");
+const QString FluidSynthEngine::QSTR_PERIODS = QStringLiteral("Periods");
+const QString FluidSynthEngine::QSTR_SAMPLERATE = QStringLiteral("SampleRate");
+const QString FluidSynthEngine::QSTR_CHORUS = QStringLiteral("Chorus");
+const QString FluidSynthEngine::QSTR_REVERB = QStringLiteral("Reverb");
+const QString FluidSynthEngine::QSTR_GAIN = QStringLiteral("Gain");
+const QString FluidSynthEngine::QSTR_POLYPHONY = QStringLiteral("Polyphony");
 
-const QString SynthEngine::QSTR_DEFAULT_AUDIODRIVER =
+const QString FluidSynthEngine::QSTR_DEFAULT_AUDIODRIVER =
 #if defined(Q_OS_LINUX)
     QStringLiteral("pulseaudio");
 #elif defined(Q_OS_WIN)
@@ -55,22 +55,22 @@ const QString SynthEngine::QSTR_DEFAULT_AUDIODRIVER =
 #else
     QStringLiteral("oss");
 #endif
-const int SynthEngine::DEFAULT_PERIODS = 8;
-const int SynthEngine::DEFAULT_PERIODSIZE = 512;
-const double SynthEngine::DEFAULT_SAMPLERATE = 44100.0;
-const int SynthEngine::DEFAULT_CHORUS = 0;
-const int SynthEngine::DEFAULT_REVERB = 1;
-const double SynthEngine::DEFAULT_GAIN = 1.0;
-const int SynthEngine::DEFAULT_POLYPHONY = 256;
+const int FluidSynthEngine::DEFAULT_PERIODS = 8;
+const int FluidSynthEngine::DEFAULT_PERIODSIZE = 512;
+const double FluidSynthEngine::DEFAULT_SAMPLERATE = 44100.0;
+const int FluidSynthEngine::DEFAULT_CHORUS = 0;
+const int FluidSynthEngine::DEFAULT_REVERB = 1;
+const double FluidSynthEngine::DEFAULT_GAIN = 1.0;
+const int FluidSynthEngine::DEFAULT_POLYPHONY = 256;
 
 static void
 SynthEngine_log_function(int level, const char* message, void* data)
 {
-    SynthEngine *classInstance = static_cast<SynthEngine*>(data);
+    FluidSynthEngine *classInstance = static_cast<FluidSynthEngine*>(data);
     classInstance->appendDiagnostics(level, message);
 }
 
-SynthEngine::SynthEngine(QObject *parent)
+FluidSynthEngine::FluidSynthEngine(QObject *parent)
     : QObject(parent),
       m_sfid(0),
       m_settings(nullptr),
@@ -87,13 +87,13 @@ SynthEngine::SynthEngine(QObject *parent)
     ::fluid_set_log_function(fluid_log_level::FLUID_INFO, &SynthEngine_log_function, this);
 }
 
-SynthEngine::~SynthEngine()
+FluidSynthEngine::~FluidSynthEngine()
 {
     //qDebug() << Q_FUNC_INFO;
     uninitialize();
 }
 
-void SynthEngine::uninitialize()
+void FluidSynthEngine::uninitialize()
 {
     //qDebug() << Q_FUNC_INFO;
     if (m_driver != nullptr) {
@@ -112,7 +112,7 @@ void SynthEngine::uninitialize()
     m_diagnostics.clear();
 }
 
-void SynthEngine::initializeSynth()
+void FluidSynthEngine::initializeSynth()
 {
     uninitialize();
     //qDebug() << Q_FUNC_INFO << fs_audiodriver << fs_periodSize << fs_periods << qEnvironmentVariableIntValue("PULSE_LATENCY_MSEC");
@@ -130,22 +130,22 @@ void SynthEngine::initializeSynth()
     m_driver = ::new_fluid_audio_driver(m_settings, m_synth);
 }
 
-void SynthEngine::setInstrument(int channel, int pgm)
+void FluidSynthEngine::setInstrument(int channel, int pgm)
 {
     ::fluid_synth_program_change(m_synth, channel, pgm);
 }
 
-void SynthEngine::noteOn(int channel, int midiNote, int velocity)
+void FluidSynthEngine::noteOn(int channel, int midiNote, int velocity)
 {
     ::fluid_synth_noteon(m_synth, channel, midiNote, velocity);
 }
 
-void SynthEngine::noteOff(int channel, int midiNote, int /*velocity*/)
+void FluidSynthEngine::noteOff(int channel, int midiNote, int /*velocity*/)
 {
     ::fluid_synth_noteoff(m_synth, channel, midiNote);
 }
 
-void SynthEngine::loadSoundFont()
+void FluidSynthEngine::loadSoundFont()
 {
     if (m_sfid != -1) {
         ::fluid_synth_sfunload(m_synth, unsigned(m_sfid), 1);
@@ -153,7 +153,7 @@ void SynthEngine::loadSoundFont()
     m_sfid = ::fluid_synth_sfload(m_synth, qPrintable(m_soundFont), 1);
 }
 
-void SynthEngine::initialize()
+void FluidSynthEngine::initialize()
 {
     //qDebug() << Q_FUNC_INFO;
     initializeSynth();
@@ -163,27 +163,27 @@ void SynthEngine::initialize()
     m_status = (m_synth != nullptr) && (m_driver != nullptr) && (m_sfid >= 0);
 }
 
-void SynthEngine::panic()
+void FluidSynthEngine::panic()
 {
     ::fluid_synth_system_reset(m_synth);
 }
 
-void SynthEngine::controlChange(const int channel, const int midiCtl, const int value)
+void FluidSynthEngine::controlChange(const int channel, const int midiCtl, const int value)
 {
     ::fluid_synth_cc(m_synth, channel, midiCtl, value);
 }
 
-void SynthEngine::bender(const int channel, const int value)
+void FluidSynthEngine::bender(const int channel, const int value)
 {
     ::fluid_synth_pitch_bend(m_synth, channel, value + 8192);
 }
 
-void SynthEngine::channelPressure(const int channel, const int value)
+void FluidSynthEngine::channelPressure(const int channel, const int value)
 {
     ::fluid_synth_channel_pressure(m_synth, channel, value);
 }
 
-void SynthEngine::keyPressure(const int channel, const int midiNote, const int value)
+void FluidSynthEngine::keyPressure(const int channel, const int midiNote, const int value)
 {
     static const QVersionNumber versionCheck(2,0,0);
     QVersionNumber fluidVersion = QVersionNumber::fromString(getLibVersion());
@@ -192,7 +192,7 @@ void SynthEngine::keyPressure(const int channel, const int midiNote, const int v
     }
 }
 
-void SynthEngine::sysex(const QByteArray &data)
+void FluidSynthEngine::sysex(const QByteArray &data)
 {
     const char SYSEX = 0xf0;
     const char EOX = 0xf7;
@@ -206,7 +206,7 @@ void SynthEngine::sysex(const QByteArray &data)
     ::fluid_synth_sysex(m_synth, d.data(), d.length(), nullptr, nullptr, nullptr, 0);
 }
 
-void SynthEngine::setSoundFont(const QString &value)
+void FluidSynthEngine::setSoundFont(const QString &value)
 {
     if (value != m_soundFont) {
         m_soundFont = value;
@@ -214,7 +214,7 @@ void SynthEngine::setSoundFont(const QString &value)
     }
 }
 
-void SynthEngine::appendDiagnostics(int level, const char *message)
+void FluidSynthEngine::appendDiagnostics(int level, const char *message)
 {
     static const QMap<int,QString> prefix {
         {fluid_log_level::FLUID_DBG,  tr("Debug")},
@@ -225,34 +225,34 @@ void SynthEngine::appendDiagnostics(int level, const char *message)
     m_diagnostics.append(prefix[level]+": "+message);
 }
 
-void SynthEngine::stop()
+void FluidSynthEngine::stop()
 {
     //qDebug() << Q_FUNC_INFO;
     uninitialize();
 }
 
-QStringList SynthEngine::getAudioDrivers()
+QStringList FluidSynthEngine::getAudioDrivers()
 {
     return m_audioDriversList;
 }
 
-QStringList SynthEngine::getDiagnostics()
+QStringList FluidSynthEngine::getDiagnostics()
 {
     return m_diagnostics;
 }
 
-QString SynthEngine::getLibVersion()
+QString FluidSynthEngine::getLibVersion()
 {
     return m_runtimeLibraryVersion;
 }
 
-bool SynthEngine::getStatus()
+bool FluidSynthEngine::getStatus()
 {
     return m_status;
 }
 
 
-void SynthEngine::scanSoundFonts(const QDir &initialDir)
+void FluidSynthEngine::scanSoundFonts(const QDir &initialDir)
 {
     QDir dir(initialDir);
     dir.setFilter(QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot);
@@ -270,7 +270,7 @@ void SynthEngine::scanSoundFonts(const QDir &initialDir)
     }
 }
 
-void SynthEngine::retrieveAudioDrivers()
+void FluidSynthEngine::retrieveAudioDrivers()
 {
     if (m_settings != nullptr) {
         m_audioDriversList.clear();
@@ -282,7 +282,7 @@ void SynthEngine::retrieveAudioDrivers()
     }
 }
 
-void SynthEngine::scanSoundFonts()
+void FluidSynthEngine::scanSoundFonts()
 {
     m_soundFontsList.clear();
     QStringList paths = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
@@ -303,7 +303,7 @@ void SynthEngine::scanSoundFonts()
     }
 }
 
-void SynthEngine::readSettings(QSettings *settings)
+void FluidSynthEngine::readSettings(QSettings *settings)
 {
     QDir dir;
 #if defined(Q_OS_OSX)
@@ -339,13 +339,14 @@ void SynthEngine::readSettings(QSettings *settings)
     //qDebug() << Q_FUNC_INFO << "$PULSE_LATENCY_MSEC=" << bufferTime;
 }
 
-void SynthEngine::close()
+void FluidSynthEngine::close()
 {
     //qDebug() << Q_FUNC_INFO;
     m_currentConnection = MIDIConnection();
 }
 
-void SynthEngine::open()
+void FluidSynthEngine::
+open()
 {
     //qDebug() << Q_FUNC_INFO;
     m_currentConnection = MIDIConnection(QSTR_FLUIDSYNTH, QSTR_FLUIDSYNTH);

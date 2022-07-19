@@ -17,13 +17,13 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(drumstick-rt-fluidsynth_QTOBJ_SRCS
-    synthengine.h
-    synthoutput.h
+    fluidsynthengine.h
+    fluidsynthoutput.h
 )
 
 set(drumstick-rt-fluidsynth_SRCS
-    synthengine.cpp
-    synthoutput.cpp
+    fluidsynthengine.cpp
+    fluidsynthoutput.cpp
 )
 
 if (QT_VERSION VERSION_LESS 5.15.0)
