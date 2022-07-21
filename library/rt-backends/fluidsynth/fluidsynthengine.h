@@ -86,6 +86,7 @@ public:
     static const QString QSTR_POLYPHONY;
     static const QString QSTR_DEFAULT_AUDIODRIVER;
     static const QString QSTR_BUFFERTIME;
+	static const QString QSTR_PULSEAUDIO;
 
     static const int DEFAULT_PERIODS;
     static const int DEFAULT_PERIODSIZE;

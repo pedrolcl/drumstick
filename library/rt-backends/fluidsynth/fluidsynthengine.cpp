@@ -34,6 +34,7 @@ const QString FluidSynthEngine::QSTR_INSTRUMENTSDEFINITION = QStringLiteral("Ins
 const QString FluidSynthEngine::QSTR_DATADIR = QStringLiteral("soundfonts");
 const QString FluidSynthEngine::QSTR_DATADIR2 = QStringLiteral("sounds/sf2");
 const QString FluidSynthEngine::QSTR_SOUNDFONT = QStringLiteral("default.sf2");
+const QString FluidSynthEngine::QSTR_PULSEAUDIO = QStringLiteral("pulseaudio");
 
 const QString FluidSynthEngine::QSTR_AUDIODRIVER = QStringLiteral("AudioDriver");
 const QString FluidSynthEngine::QSTR_BUFFERTIME = QStringLiteral("BufferTime");
@@ -47,9 +48,9 @@ const QString FluidSynthEngine::QSTR_POLYPHONY = QStringLiteral("Polyphony");
 
 const QString FluidSynthEngine::QSTR_DEFAULT_AUDIODRIVER =
 #if defined(Q_OS_LINUX)
-    QStringLiteral("pulseaudio");
+    QSTR_PULSEAUDIO;
 #elif defined(Q_OS_WIN)
-    QStringLiteral("dsound");
+    QStringLiteral("wasapi");
 #elif defined(Q_OS_OSX)
     QStringLiteral("coreaudio");
 #else
@@ -120,7 +121,9 @@ void FluidSynthEngine::initializeSynth()
     ::fluid_settings_setstr(m_settings, "audio.driver", qPrintable(fs_audiodriver));
     ::fluid_settings_setint(m_settings, "audio.period-size", fs_periodSize);
     ::fluid_settings_setint(m_settings, "audio.periods", fs_periods);
-    ::fluid_settings_setint(m_settings, "audio.pulseaudio.adjust-latency", 0);
+	if (fs_audiodriver == QSTR_PULSEAUDIO) {
+		::fluid_settings_setint(m_settings, "audio.pulseaudio.adjust-latency", 0);
+	}
     ::fluid_settings_setnum(m_settings, "synth.sample-rate", fs_sampleRate);
     ::fluid_settings_setint(m_settings, "synth.chorus.active", fs_chorus);
     ::fluid_settings_setint(m_settings, "synth.reverb.active", fs_reverb);
@@ -334,9 +337,11 @@ void FluidSynthEngine::readSettings(QSettings *settings)
     fs_polyphony = settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toInt();
     settings->endGroup();
     //qDebug() << Q_FUNC_INFO << "audioDriver:" << fs_audiodriver << "buffer" << fs_periodSize << '*' << fs_periods;
-    int bufferTime = 1000 * fs_periodSize * fs_periods / fs_sampleRate;
-    qputenv("PULSE_LATENCY_MSEC", QByteArray::number( bufferTime ) );
-    //qDebug() << Q_FUNC_INFO << "$PULSE_LATENCY_MSEC=" << bufferTime;
+	if (fs_audiodriver == QSTR_PULSEAUDIO) {
+		int bufferTime = 1000 * fs_periodSize * fs_periods / fs_sampleRate;
+		qputenv("PULSE_LATENCY_MSEC", QByteArray::number( bufferTime ) );
+		//qDebug() << Q_FUNC_INFO << "$PULSE_LATENCY_MSEC=" << bufferTime;
+	}
 }
 
 void FluidSynthEngine::close()
