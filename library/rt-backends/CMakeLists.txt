@@ -26,7 +26,7 @@ if(BUILD_ALSA AND ALSA_FOUND)
     add_subdirectory(alsa-out)
 endif()
 
-if (PULSE_FOUND)
+if (PULSE_FOUND AND sonivox_FOUND)
     add_subdirectory(eassynth)
 endif()
 

@@ -46,15 +46,17 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8") #/source-charset:utf-8 /execution-charset:utf-8
 endif()
 
+#[==[
 if(UNIX AND NOT APPLE)
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-        #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
-        #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -pedantic")
-        #set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--as-needed")
-        #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
-        #set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--as-needed -Wl,--no-undefined")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -pedantic")
+        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--as-needed")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--as-needed -Wl,--no-undefined")
     endif()
-endif()
+endif() 
+]==]
 
 add_definitions(-DVERSION=${PROJECT_VERSION})
 if (DEFINED PROJECT_WC_REVISION)
@@ -99,6 +101,7 @@ option(USE_DBUS "Include DBus support (required for RealtimeKit)" ${_DBUS_INIT})
 option(USE_PULSEAUDIO "Build Sonivox RT backend (if PulseAudio is available)" ${_PULSE_INIT})
 option(USE_FLUIDSYNTH "Build FluidSynth RT backend (if available)" ON)
 option(USE_NETWORK "Build Network RT backend (if QtNetwork is available)" ON)
+option(USE_SONIVOX "Build Sonivox RT backend (if Sonivox is available)" ON)
 option(USE_QT "Choose which Qt major version (5 or 6) to prefer. By default uses whatever is found")
 
 if (BUILD_WIDGETS AND NOT BUILD_RT)
@@ -206,6 +209,15 @@ if (BUILD_RT AND PKG_CONFIG_FOUND)
     endif()
 endif()
 
+if (BUILD_RT AND USE_SONIVOX)
+    find_package(sonivox CONFIG QUIET)
+    if(sonivox_FOUND)
+        message(STATUS "Found Sonivox version = ${sonivox_VERSION}")
+    else()
+        message(STATUS "Warning: Sonivox library not available. EasSynth RT backend won't be built.")
+    endif()
+endif()
+
 if (${CMAKE_SYSTEM} MATCHES "Darwin" AND QT_VERSION VERSION_LESS 6.0.0)
     find_package(Qt${QT_VERSION_MAJOR}Concurrent REQUIRED)
     if (Qt${QT_VERSION_MAJOR}Concurrent_FOUND)
@@ -229,6 +241,7 @@ message (STATUS "${PROJECT_NAME} v${PROJECT_VERSION}
     Network support: ${USE_NETWORK}
     PulseAudio support: ${USE_PULSEAUDIO}
     FluidSynth support: ${USE_FLUIDSYNTH}
+    Sonivox support: ${USE_SONIVOX}
     Building libdrumstick-alsa: ${BUILD_ALSA}
     Building libdrumstick-file: ${BUILD_FILE}
     Building libdrumstick-rt: ${BUILD_RT}
