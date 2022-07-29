@@ -290,27 +290,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="playermain.cpp" line="83"/>
+        <location filename="playermain.cpp" line="84"/>
         <source>MIDI Out Connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="playermain.cpp" line="85"/>
+        <location filename="playermain.cpp" line="86"/>
         <source>Input SMF/KAR/RMI/WRK file name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="playermain.cpp" line="94"/>
+        <location filename="playermain.cpp" line="95"/>
         <source>File not found: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="playermain.cpp" line="109"/>
+        <location filename="playermain.cpp" line="110"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="playermain.cpp" line="111"/>
+        <location filename="playermain.cpp" line="112"/>
         <source>Returned error was: </source>
         <translation type="unfinished"></translation>
     </message>

@@ -114,17 +114,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="drumgridmain.cpp" line="83"/>
+        <location filename="drumgridmain.cpp" line="84"/>
         <source>MIDI Out Port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="drumgridmain.cpp" line="98"/>
+        <location filename="drumgridmain.cpp" line="99"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="drumgridmain.cpp" line="100"/>
+        <location filename="drumgridmain.cpp" line="101"/>
         <source>Returned error was: </source>
         <translation type="unfinished"></translation>
     </message>

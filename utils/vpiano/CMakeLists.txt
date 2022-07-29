@@ -105,13 +105,13 @@ else()
     qt_add_translation(QM_FILES ${TS_FILES})
 endif()
 
-#add_custom_command(TARGET drumstick-vpiano POST_BUILD
-#    COMMAND Qt${QT_VERSION_MAJOR}::lupdate ${CMAKE_CURRENT_SOURCE_DIR} -ts ${TS_FILES}
-#    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-#    COMMENT "Updating translations"
-#)
+add_custom_target( update-vpiano-translations
+    COMMAND Qt${QT_VERSION_MAJOR}::lupdate ${CMAKE_CURRENT_SOURCE_DIR} -ts ${TS_FILES}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "Updating vpiano translations"
+)
 
-add_custom_target(drumstick-vpiano-translations ALL DEPENDS ${QM_FILES})
+add_custom_target( drumstick-vpiano-translations ALL DEPENDS ${QM_FILES} )
 
 if (UNIX)
     install( FILES ${QM_FILES}

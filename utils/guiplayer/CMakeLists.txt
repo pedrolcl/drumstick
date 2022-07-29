@@ -83,13 +83,13 @@ else()
     qt_add_translation(QM_FILES ${TS_FILES})
 endif()
 
-#add_custom_command(TARGET drumstick-guiplayer POST_BUILD
-#    COMMAND Qt${QT_VERSION_MAJOR}::lupdate ${CMAKE_CURRENT_SOURCE_DIR} -ts ${TS_FILES}
-#    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-#    COMMENT "Updating translations"
-#)
+add_custom_target( update-guiplayer-translations
+    COMMAND Qt${QT_VERSION_MAJOR}::lupdate ${CMAKE_CURRENT_SOURCE_DIR} -ts ${TS_FILES}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "Updating guiplayer translations"
+)
 
-add_custom_target(drumstick-guiplayer-translations ALL DEPENDS ${QM_FILES})
+add_custom_target( drumstick-guiplayer-translations ALL DEPENDS ${QM_FILES} )
 
 if (UNIX AND NOT APPLE)
     install( FILES ${QM_FILES}

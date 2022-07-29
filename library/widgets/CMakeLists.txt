@@ -134,17 +134,17 @@ else()
     qt_add_translation(QM_FILES ${TS_FILES})
 endif()
 
-#add_custom_command(TARGET drumstick-widgets POST_BUILD
-#    COMMAND Qt${QT_VERSION_MAJOR}::lupdate ${CMAKE_CURRENT_SOURCE_DIR}
-#        -I ${PROJECT_SOURCE_DIR}/library/include
-#        -I ${CMAKE_CURRENT_SOURCE_DIR}
-#        -I ${CMAKE_CURRENT_BINARY_DIR}
-#        -ts ${TS_FILES}
-#    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-#    COMMENT "Updating translations"
-#)
+add_custom_target( update-widget-translations
+    COMMAND Qt${QT_VERSION_MAJOR}::lupdate ${CMAKE_CURRENT_SOURCE_DIR}
+        -I ${PROJECT_SOURCE_DIR}/library/include
+        -I ${CMAKE_CURRENT_SOURCE_DIR}
+        -I ${CMAKE_CURRENT_BINARY_DIR}
+        -ts ${TS_FILES}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "Updating widget translations"
+)
 
-add_custom_target(drumstick-widgets-translations ALL DEPENDS ${QM_FILES})
+add_custom_target( drumstick-widgets-translations ALL DEPENDS ${QM_FILES} )
 
 if (UNIX)
     install( FILES ${QM_FILES}

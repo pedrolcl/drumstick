@@ -621,7 +621,9 @@ bool PianoKeybd::isUsingNativeFilter() const
  *
  * According to the Scientific pitch notation (SPN), also known as
  * American standard pitch notation (ASPN), the octave designation
- * should be written as a subscript.
+ * should be written as a subscript. But it is an user choice.
+ * 
+ * @param enable or disable using subscript octave numbers
  */
 void PianoKeybd::setOctaveSubscript(const bool enable)
 {

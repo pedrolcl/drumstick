@@ -262,6 +262,17 @@ if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
 
+# translations
+add_custom_target( update-translations
+    COMMENT "Updating translations" )
+
+add_dependencies( update-translations 
+     update-widget-translations
+     update-drumgrid-translations
+     update-guiplayer-translations
+     update-vpiano-translations
+)
+
 # pkg-config support
 if ( IS_ABSOLUTE "${CMAKE_INSTALL_LIBDIR}" )
   set ( pkgconfig_libdir "${CMAKE_INSTALL_LIBDIR}" )

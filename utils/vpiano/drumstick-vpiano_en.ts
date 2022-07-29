@@ -235,157 +235,164 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="127"/>
+        <location filename="vpiano.ui" line="128"/>
         <source>&amp;Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="132"/>
+        <location filename="vpiano.ui" line="133"/>
         <source>&amp;Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="137"/>
+        <location filename="vpiano.ui" line="138"/>
         <source>&amp;Connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="142"/>
+        <location filename="vpiano.ui" line="143"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="147"/>
+        <location filename="vpiano.ui" line="148"/>
         <source>About Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="158"/>
+        <location filename="vpiano.ui" line="159"/>
         <source>Never</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="166"/>
+        <location filename="vpiano.ui" line="167"/>
         <source>When Activated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="174"/>
+        <location filename="vpiano.ui" line="175"/>
         <source>Always</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="185"/>
+        <location filename="vpiano.ui" line="186"/>
         <source>Sharps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="196"/>
+        <location filename="vpiano.ui" line="197"/>
         <source>Flats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="204"/>
+        <location filename="vpiano.ui" line="205"/>
         <source>Nothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="215"/>
+        <location filename="vpiano.ui" line="216"/>
         <source>Horizontal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="223"/>
+        <location filename="vpiano.ui" line="224"/>
         <source>Vertical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="231"/>
+        <location filename="vpiano.ui" line="232"/>
         <source>Automatic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="236"/>
+        <location filename="vpiano.ui" line="237"/>
         <source>Names Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="244"/>
+        <location filename="vpiano.ui" line="245"/>
         <source>Minimal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="252"/>
+        <location filename="vpiano.ui" line="253"/>
+        <location filename="vpiano.ui" line="256"/>
+        <location filename="vpiano.ui" line="259"/>
         <source>C3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="263"/>
+        <location filename="vpiano.ui" line="270"/>
         <source>C4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="271"/>
+        <location filename="vpiano.ui" line="278"/>
         <source>C5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="282"/>
+        <location filename="vpiano.ui" line="289"/>
         <source>Standard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="290"/>
+        <location filename="vpiano.ui" line="297"/>
         <source>Custom with Sharps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="298"/>
+        <location filename="vpiano.ui" line="305"/>
         <source>Custom with Flats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="306"/>
+        <location filename="vpiano.ui" line="313"/>
         <source>C</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="314"/>
+        <location filename="vpiano.ui" line="321"/>
         <source>Inverted Keys Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="322"/>
+        <location filename="vpiano.ui" line="329"/>
         <source>Raw Computer Keyboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="333"/>
+        <location filename="vpiano.ui" line="340"/>
         <source>Computer  Keyboard Input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="341"/>
+        <location filename="vpiano.ui" line="348"/>
         <source>Mouse Input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.ui" line="349"/>
+        <location filename="vpiano.ui" line="356"/>
         <source>Touch Screen Input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="454"/>
+        <location filename="vpiano.ui" line="364"/>
+        <source>Octave Subscript Designation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="vpiano.cpp" line="459"/>
         <source>Font to display note names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="530"/>
+        <location filename="vpiano.cpp" line="535"/>
         <source>Custom Note Names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="530"/>
+        <location filename="vpiano.cpp" line="535"/>
         <source>Names:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -400,12 +407,12 @@ This program comes with ABSOLUTELY NO WARRANTY; This is free software, and you a
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpianomain.cpp" line="130"/>
+        <location filename="vpianomain.cpp" line="131"/>
         <source>Portable settings mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpianomain.cpp" line="144"/>
+        <location filename="vpianomain.cpp" line="145"/>
         <source>Fatal error from a MIDI backend.</source>
         <translation type="unfinished"></translation>
     </message>
