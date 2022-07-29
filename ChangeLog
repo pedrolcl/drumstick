@@ -1,3 +1,16 @@
+2022-07-28
+    * ticket #44: removed sonivox library sources from the source tree
+    *   new option USE_SONIVOX to let the user decide to build the sonivox backend or not
+    *   using find_package(sonivox) to integrate the external sonivox library as a dependency
+
+2022-07-21
+    * fluidsynth: default windows audio driver is now wasapi. Fixed pulseaudio settings.
+
+2022-07-19
+    * fluidsynth backend files and classes renamed with more specific names. 
+    * vpiano error message citing the DRUMSTICKRT environment variable. 
+    * some work to update the documentation components diagram (unfinished).
+
 2022-07-17
     * fixed fluidsynth backend to support channel pressure and key pressure MIDI events
     * revised backend and configuration dialog to reflect the changes in fluidsynth 2.2.8
