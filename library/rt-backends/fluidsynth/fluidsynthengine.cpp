@@ -197,8 +197,8 @@ void FluidSynthEngine::keyPressure(const int channel, const int midiNote, const 
 
 void FluidSynthEngine::sysex(const QByteArray &data)
 {
-    const char SYSEX = 0xf0;
-    const char EOX = 0xf7;
+    const unsigned char SYSEX = 0xf0;
+    const unsigned char EOX = 0xf7;
     QByteArray d(data);
     if (d.startsWith(SYSEX)) {
         d.remove(0, 1);
