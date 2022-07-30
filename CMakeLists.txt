@@ -263,15 +263,23 @@ if(BUILD_TESTING)
 endif()
 
 # translations
-add_custom_target( update-translations
-    COMMENT "Updating translations" )
+add_custom_target( update-translations COMMENT "Updating translations" )
 
-add_dependencies( update-translations 
-     update-widget-translations
-     update-drumgrid-translations
-     update-guiplayer-translations
-     update-vpiano-translations
-)
+if (BUILD_WIDGETS)
+    add_dependencies( update-translations update-widget-translations )
+endif()
+
+if (BUILD_UTILS)
+    if (BUILD_RT AND BUILD_WIDGETS)
+        add_dependencies( update-translations update-vpiano-translations )
+    endif()
+    if(BUILD_ALSA AND ALSA_FOUND)
+        add_dependencies( update-translations update-drumgrid-translations )
+        if(BUILD_FILE)
+            add_dependencies( update-translations update-guiplayer-translations )
+        endif()
+    endif()
+endif()
 
 # pkg-config support
 if ( IS_ABSOLUTE "${CMAKE_INSTALL_LIBDIR}" )
