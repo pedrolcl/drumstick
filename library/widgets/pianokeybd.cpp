@@ -482,6 +482,11 @@ bool PianoKeybd::viewportEvent(QEvent *ev)
 /**
  * This method changes the number of displayed keys
  * and the starting key number, keeping the other settings the same.
+ * The common industrial piano layout has 88 keys, and starts with A, so
+ * the default starting key value is 9. But any natural note/key
+ * number is possible as starting note key.
+ * The key/note values are: C=0, D=2, E=4, F=5, G=7, A=9, B=11.
+ * @see numKeys(), startKey(), setStartKey()
  * @param numKeys The new number of keys
  * @param startKey The number of the starting key
  */
@@ -621,9 +626,11 @@ bool PianoKeybd::isUsingNativeFilter() const
  *
  * According to the Scientific pitch notation (SPN), also known as
  * American standard pitch notation (ASPN), the octave designation
- * should be written as a subscript. But it is an user choice.
+ * should be written as a subscript, but it is an user choice.
  * 
+ * @see octaveSubscript()
  * @param enable or disable using subscript octave numbers
+ * @since 2.7.0
  */
 void PianoKeybd::setOctaveSubscript(const bool enable)
 {
@@ -636,13 +643,26 @@ void PianoKeybd::setOctaveSubscript(const bool enable)
  * According to the Scientific pitch notation (SPN), also known as
  * American standard pitch notation (ASPN), the octave designation
  * should be written as a subscript.
+ * @see setOctaveSubscript()
  * @return true if the octave subscript designation is enabled
+ * @since 2.7.0
  */
 bool PianoKeybd::octaveSubscript() const
 {
     return d->m_scene->octaveSubscript();
 }
 
+/** 
+ * @brief Sets the initial/starting note key
+ * 
+ * The common industrial piano keys layout (88 keys) starts with A, so
+ * the default starting key value is 9. But any natural note/key
+ * number is possible as starting note key.
+ * The key/note values are: C=0, D=2, E=4, F=5, G=7, A=9, B=11.
+ * @see setNumKeys()
+ * @since 2.7.0
+ * @param startKey is a note/key number between 0 and 11
+ */
 void PianoKeybd::setStartKey(const int startKey)
 {
     setNumKeys(numKeys(), startKey);
