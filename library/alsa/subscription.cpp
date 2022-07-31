@@ -324,7 +324,6 @@ Subscription::Subscription(MidiClient* seq)
 
 /**
  * Destructor
- * @return
  */
 Subscription::~Subscription()
 {

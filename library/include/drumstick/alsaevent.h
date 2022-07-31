@@ -230,10 +230,6 @@ public:
     explicit NoteEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
     /**
      * Constructor
-     * @param ch MIDI Channel
-     * @param key a MIDI note number
-     * @param vel a MIDI velocity value
-     * @param dur duration of the note in ticks
      */
     NoteEvent(const int ch, const int key, const int vel, const int dur);
     /**
@@ -267,9 +263,6 @@ public:
     explicit NoteOnEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
     /**
      * Constructor
-     * @param ch MIDI Channel
-     * @param key a MIDI note number
-     * @param vel a MIDI velocity value
      */
     NoteOnEvent(const int ch, const int key, const int vel);
     virtual NoteOnEvent* clone() const override;
@@ -290,9 +283,6 @@ public:
     explicit NoteOffEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
     /**
      * Constructor
-     * @param ch MIDI Channel
-     * @param key a MIDI note number
-     * @param vel a MIDI velocity value
      */
     NoteOffEvent(const int ch, const int key, const int vel);
     virtual NoteOffEvent* clone() const override;
@@ -313,9 +303,6 @@ public:
     explicit KeyPressEvent(const snd_seq_event_t* event) : KeyEvent(event) {}
     /**
      * Constructor
-     * @param ch MIDI Channel
-     * @param key a MIDI note number
-     * @param vel a MIDI velocity value
      */
     KeyPressEvent(const int ch, const int key, const int vel);
     virtual KeyPressEvent* clone() const override;
@@ -336,9 +323,6 @@ public:
     explicit ControllerEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
     /**
      * Constructor
-     * @param ch MIDI Channel
-     * @param cc a MIDI controller
-     * @param val a value
      */
     ControllerEvent(const int ch, const int cc, const int val);
     /**
@@ -383,8 +367,6 @@ public:
     explicit ProgramChangeEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
     /**
      * Constructor
-     * @param ch MIDI Channel
-     * @param val a value
      */
     ProgramChangeEvent(const int ch, const int val);
     /**
@@ -415,8 +397,6 @@ public:
     explicit PitchBendEvent(const snd_seq_event_t* event) : ChannelEvent(event) {}
     /**
      * Constructor
-     * @param ch MIDI Channel
-     * @param val a value
      */
     PitchBendEvent(const int ch, const int val);
     /**
@@ -447,8 +427,6 @@ public:
     explicit ChanPressEvent( const snd_seq_event_t* event ) : ChannelEvent(event) {}
     /**
      * Constructor
-     * @param ch MIDI Channel
-     * @param val a value
      */
     ChanPressEvent( const int ch, const int val );
     /**

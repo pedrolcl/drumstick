@@ -151,7 +151,7 @@ namespace drumstick { namespace rt {
 
     /**
      * @brief BackendManager::refresh finds the installed backends applying the provided settings.
-     * @param settings
+     * @param settings Program settings
      */
     void BackendManager::refresh(QSettings *settings)
     {
@@ -169,7 +169,7 @@ namespace drumstick { namespace rt {
     /**
      * @brief BackendManager::refresh finds the installed backends searching the list of paths
      * provided by the function defaultPaths() applying the provided settings map as well.
-     * @param map
+     * @param map Program settings relevant section
      */
     void BackendManager::refresh(const QVariantMap &map)
     {

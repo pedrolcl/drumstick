@@ -416,7 +416,7 @@ KeyEvent* KeyEvent::clone() const
  * @param vel Note velocity.
  * @param dur Note duration.
  */
-NoteEvent::NoteEvent(int ch, int key, int vel, int dur) : KeyEvent()
+NoteEvent::NoteEvent(const int ch, const int key, const int vel, const int dur) : KeyEvent()
 {
     snd_seq_ev_set_note(&m_event, ch, key, vel, dur);
 }

@@ -748,7 +748,6 @@ TimerParams::TimerParams(const TimerParams& other)
 
 /**
  * Destructor
- * @return
  */
 TimerParams::~TimerParams()
 {

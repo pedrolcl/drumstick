@@ -254,7 +254,6 @@ public:
  * from the ALSA sequencer subsystem.
  *
  * @param parent The optional parent object
- * @return a MidiClient instance
  */
 MidiClient::MidiClient( QObject* parent ) :
     QObject(parent),

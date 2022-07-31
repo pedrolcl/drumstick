@@ -61,13 +61,11 @@ namespace rt {
 
         /**
          * @brief refresh the list of backends
-         * @param settings Program settings
          */
         void refresh(QSettings* settings = nullptr);
 
         /**
          * @brief refresh the list of backends
-         * @param map Program settings relevant section
          */
         void refresh(const QVariantMap& map);
 
