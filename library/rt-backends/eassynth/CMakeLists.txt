@@ -34,6 +34,7 @@ target_link_libraries( drumstick-rt-eassynth PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     PkgConfig::PULSE
     sonivox::sonivox
+    Drumstick::RT
 )
 
 target_include_directories(drumstick-rt-eassynth PRIVATE

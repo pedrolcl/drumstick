@@ -1,3 +1,7 @@
+2022-08-13
+    * Fix for ticket #45 sonivox library dependency is optional, and usually forgotten
+    * Fixed underlinking in some RT backends
+
 2022-07-28
     * ticket #44: removed sonivox library sources from the source tree
     *   new option USE_SONIVOX to let the user decide to build the sonivox backend or not

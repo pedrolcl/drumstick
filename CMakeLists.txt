@@ -17,7 +17,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project( Drumstick
-    VERSION 2.7.0
+    VERSION 2.7.1
     LANGUAGES CXX
     DESCRIPTION "MIDI C++ Libraries for Qt"
     HOMEPAGE_URL "https://sourceforge.net/p/drumstick/"
@@ -28,7 +28,7 @@ include(SCMRevision)
 include(CTest)
 include(GNUInstallDirs)
 
-set(RELEASE_DATE "Jul 31, 2022")
+#set(RELEASE_DATE "Jul 31, 2022")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
@@ -46,13 +46,14 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
 endif()
 
 #[==[
+compiler and linker extra checks:
 if(UNIX AND NOT APPLE)
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -pedantic")
-        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--as-needed")
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
-        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--as-needed -Wl,--no-undefined")
+        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--as-needed -Wl,-z,defs")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed -Wl,-z,defs")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--as-needed -Wl,--no-undefined -Wl,-z,defs")
     endif()
 endif() 
 ]==]
@@ -95,7 +96,7 @@ option(BUILD_ALSA "Build the libdrumstick-alsa library (Linux only)" ${_BUILD_AL
 option(BUILD_FILE "Build the libdrumstick-file library" ON)
 option(BUILD_RT "Build the libdrumstick-rt library" ON)
 option(BUILD_WIDGETS "Build the libdrumstick-widgets library" ON)
-option(STATIC_DRUMSTICK "Build static libraries instead of dynamic" OFF)
+option(STATIC_DRUMSTICK "Build and link static libraries instead of shared" OFF)
 option(USE_DBUS "Include DBus support (required for RealtimeKit)" ${_DBUS_INIT})
 option(USE_PULSEAUDIO "Build Sonivox RT backend (if PulseAudio is available)" ${_PULSE_INIT})
 option(USE_FLUIDSYNTH "Build FluidSynth RT backend (if available)" ON)
@@ -122,6 +123,12 @@ endif()
 
 if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.15)
     set(CMAKE_FRAMEWORK ${BUILD_FRAMEWORKS})
+endif()
+
+if (UNIX AND NOT APPLE)
+    if ((USE_PULSEAUDIO AND NOT USE_SONIVOX) OR (USE_SONIVOX AND NOT USE_PULSEAUDIO))
+        message(FATAL_ERROR "Wrong combination of USE_SONIVOX and USE_PULSEAUDIO options")
+    endif()
 endif()
 
 if (USE_QT)
@@ -163,7 +170,7 @@ if(BUILD_RT AND USE_NETWORK)
     if(Qt${QT_VERSION_MAJOR}Network_FOUND)
         message(STATUS "Found QtNetwork version = ${Qt${QT_VERSION_MAJOR}Network_VERSION}")
     else()
-        message(STATUS "Warning: QtNetwork library not available. Network RT backend won't be built.")
+        message(FATAL_ERROR "QtNetwork library not available. Network RT backend can't be built.")
     endif()
 endif()
 
@@ -175,36 +182,34 @@ else()
 endif()
 
 # ALSA Sequencer is only available on Linux
-if(${CMAKE_SYSTEM} MATCHES "Linux")
+if (BUILD_ALSA AND (${CMAKE_SYSTEM} MATCHES "Linux"))
     pkg_check_modules(ALSA REQUIRED IMPORTED_TARGET alsa>=1.0.0)
     if(ALSA_FOUND)
         message(STATUS "Found ALSA version = ${ALSA_VERSION}")
+    else()
+        message(FATAL_ERROR "library libdrumstick-alsa requested, but ALSA Sequencer was not found")
     endif()
-endif()
-
-if (BUILD_ALSA AND NOT ALSA_FOUND)
-    message(FATAL_ERROR "library libdrumstick-alsa requested, but ALSA Sequencer was not found")
 endif()
 
 if(BUILD_RT AND PKG_CONFIG_FOUND AND UNIX AND NOT APPLE)
     if (USE_PULSEAUDIO)
         pkg_check_modules(PULSE QUIET IMPORTED_TARGET libpulse-simple)
-    endif()
-    if(PULSE_FOUND)
-        message(STATUS "Found PulseAudio version = ${PULSE_VERSION}")
-    else()
-        message(STATUS "Warning: PulseAudio library not available. Sonivox RT backend won't be built.")
+        if(PULSE_FOUND)
+            message(STATUS "Found PulseAudio version = ${PULSE_VERSION}")
+        else()
+            message(FATAL_ERROR "PulseAudio library not available. Sonivox RT backend can't be built.")
+        endif()
     endif()
 endif()
 
 if (BUILD_RT AND PKG_CONFIG_FOUND)
     if (USE_FLUIDSYNTH)
         pkg_check_modules(FLUIDSYNTH QUIET IMPORTED_TARGET fluidsynth>=1.1.1)
-    endif()
-    if(FLUIDSYNTH_FOUND)
-        message(STATUS "Found FluidSynth version = ${FLUIDSYNTH_VERSION}")
-    else()
-        message(STATUS "Warning: FluidSynth library not available. FluidSynth RT backend won't be built.")
+        if(FLUIDSYNTH_FOUND)
+            message(STATUS "Found FluidSynth version = ${FLUIDSYNTH_VERSION}")
+        else()
+            message(FATAL_ERROR "FluidSynth library not available. FluidSynth RT backend can't be built.")
+        endif()
     endif()
 endif()
 
@@ -213,7 +218,7 @@ if (BUILD_RT AND USE_SONIVOX)
     if(sonivox_FOUND)
         message(STATUS "Found Sonivox version = ${sonivox_VERSION}")
     else()
-        message(STATUS "Warning: Sonivox library not available. EasSynth RT backend won't be built.")
+        message(FATAL_ERROR "Sonivox library not available. SonivoxEas Synth RT backend can't be built.")
     endif()
 endif()
 

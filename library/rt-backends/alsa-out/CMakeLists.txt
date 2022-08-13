@@ -52,6 +52,7 @@ endif()
 target_link_libraries(drumstick-rt-alsa-out PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Drumstick::ALSA
+    Drumstick::RT
 )
 
 set_target_properties(drumstick-rt-alsa-out PROPERTIES

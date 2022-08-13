@@ -54,6 +54,7 @@ target_include_directories(drumstick-rt-oss-out PRIVATE
 
 target_link_libraries(drumstick-rt-oss-out PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
+    Drumstick::RT
 )
 
 set_target_properties(drumstick-rt-oss-out PROPERTIES
