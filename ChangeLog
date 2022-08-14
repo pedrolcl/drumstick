@@ -1,6 +1,12 @@
+2022-08-14
+    * Release 2.7.1
+
 2022-08-13
-    * Fix for ticket #45 sonivox library dependency is optional, and usually forgotten
+    * Fix for ticket #45: sonivox library dependency is optional, and easily forgotten
     * Fixed underlinking in some RT backends
+
+2022-07-31    
+    * Release 2.7.0
 
 2022-07-28
     * ticket #44: removed sonivox library sources from the source tree

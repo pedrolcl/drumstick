@@ -37,8 +37,8 @@ Minimum supported versions:
     * macOS: CoreMIDI
     * Windows: WinMM
     * Unix: OSS
-    * Synthesizers (output backends): SonivoxEAS, FluidSynth, Apple DLS Synth
-    * All: Network - ipMIDI (IPv4, IPv6)
+    * Synthesizers (output backends): Sonivox, FluidSynth, Apple DLS Synth
+    * All: Network - ipMIDI (IPv4, IPv6): QtNetwork
 * shared-mime-info 0.30
 See http://freedesktop.org/wiki/Software/shared-mime-info
 The utility "update-mime-database" must be executed after installing the library "drumstick-file" and the "drumstick.xml" file. This is automatically done by the cmake build system unless you defined DESTDIR. In this case, your package manager should perform it as a post-install step. 
@@ -136,12 +136,14 @@ Don't build Drumstick::Widgets
 
 -DUSE_NETWORK=YES|ON|1
 Build the ipMIDI Network RT backend (default)
+Triggers a fatal error at configuration time if libQtNetwork is not available.
 
 -DUSE_NETWORK=NO|OFF|0
 Don't build the ipMIDI Network RT backend
 
 -DUSE_PULSEAUDIO=YES|ON|1
 Build the SonivoxEAS RT output backend (default)
+Triggers a fatal error at configuration time if libpulse-simple is not available.
 
 -DUSE_PULSEAUDIO=NO|OFF|0
 Don't build the SonivoxEAS RT output backend
@@ -150,6 +152,7 @@ Note: FluidSynth has also a PulseAudio driver, which is independent of the last 
 
 -DUSE_FLUIDSYNTH=YES|ON|1
 Build the FluidSynth RT output backend (default)
+Triggers a fatal error at configuration time if libfluidsynth is not available.
 
 -DUSE_FLUIDSYNTH=NO|OFF|0
 Don't build the FluidSynth RT output backend
@@ -158,3 +161,10 @@ Don't build the FluidSynth RT output backend
 Choose which Qt major version (5 or 6) to prefer. By default (if not set) uses whatever is found.
 notes: Qt6 support is still experimental.
 When using Qt6, the Core5Compat additional library is required for Drumstick::File
+
+-DUSE_SONIVOX=YES|ON|1
+Build Sonivox RT backend (default)
+Triggers a fatal error at configuration time if libsonivox is not available.
+
+-DUSE_SONIVOX==NO|OFF|0
+Don't build SonivoxEAS RT output backend
