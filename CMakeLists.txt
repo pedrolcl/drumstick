@@ -101,7 +101,7 @@ option(USE_DBUS "Include DBus support (required for RealtimeKit)" ${_DBUS_INIT})
 option(USE_PULSEAUDIO "Build Sonivox RT backend (if PulseAudio is available)" ${_PULSE_INIT})
 option(USE_FLUIDSYNTH "Build FluidSynth RT backend (if available)" ON)
 option(USE_NETWORK "Build Network RT backend (if QtNetwork is available)" ON)
-option(USE_SONIVOX "Build Sonivox RT backend (if Sonivox is available)" ON)
+option(USE_SONIVOX "Build Sonivox RT backend (if Sonivox is available)" ${_PULSE_INIT})
 option(USE_QT "Choose which Qt major version (5 or 6) to prefer. By default uses whatever is found")
 
 if (BUILD_WIDGETS AND NOT BUILD_RT)
