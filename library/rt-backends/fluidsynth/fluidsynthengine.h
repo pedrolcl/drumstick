@@ -101,6 +101,7 @@ private:
     void retrieveAudioDrivers();
     void initializeSynth();
     void loadSoundFont();
+    void retrieveDefaultSoundfont();
 
     int m_sfid;
     MIDIConnection m_currentConnection;

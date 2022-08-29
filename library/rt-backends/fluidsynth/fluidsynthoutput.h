@@ -37,6 +37,7 @@ namespace rt {
         Q_PROPERTY(QStringList diagnostics READ getDiagnostics)
         Q_PROPERTY(QString libversion READ getLibVersion)
         Q_PROPERTY(bool status READ getStatus)
+        Q_PROPERTY(QString soundfont READ getSoundFont)
 
     public:
         explicit FluidSynthOutput(QObject *parent = nullptr);
@@ -76,7 +77,7 @@ namespace rt {
         QStringList getDiagnostics();
         QString getLibVersion();
         bool getStatus();
-
+        QString getSoundFont();
     };
 
 }} // namespace drumstick::rt

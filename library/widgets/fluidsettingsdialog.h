@@ -66,7 +66,6 @@ public:
     static const QString QSTR_INSTRUMENTSDEFINITION;
     static const QString QSTR_DATADIR;
     static const QString QSTR_DATADIR2;
-    static const QString QSTR_SOUNDFONT;
     static const QString QSTR_AUDIODRIVER;
     static const QString QSTR_PERIODSIZE;
     static const QString QSTR_PERIODS;
@@ -96,6 +95,7 @@ private:
 
     Ui::FluidSettingsDialog *ui;
     drumstick::rt::MIDIOutput *m_driver;
+    QString m_defSoundFont;
 };
 
 }} // namespace drumstick::widgets

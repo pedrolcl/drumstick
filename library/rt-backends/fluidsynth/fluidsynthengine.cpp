@@ -156,12 +156,31 @@ void FluidSynthEngine::loadSoundFont()
     m_sfid = ::fluid_synth_sfload(m_synth, qPrintable(m_soundFont), 1);
 }
 
+void FluidSynthEngine::retrieveDefaultSoundfont()
+{
+    /* find the default configured soundfont */
+    if (m_defSoundFont.isEmpty()) {
+        char *psValue = nullptr;
+        int ok = ::fluid_settings_dupstr(m_settings, "synth.default-soundfont", &psValue);
+        if (ok == FLUID_OK) {
+            m_defSoundFont = QString(psValue);
+            ::fluid_free(psValue);
+        }
+    }
+}
+
 void FluidSynthEngine::initialize()
 {
     //qDebug() << Q_FUNC_INFO;
     initializeSynth();
     retrieveAudioDrivers();
-    scanSoundFonts();
+    retrieveDefaultSoundfont();
+    if (m_defSoundFont.isEmpty()) {
+        scanSoundFonts();
+    }
+    if (m_soundFont.isEmpty() && !m_defSoundFont.isEmpty()) {
+        m_soundFont = m_defSoundFont;
+    }
     loadSoundFont();
     m_status = (m_synth != nullptr) && (m_driver != nullptr) && (m_sfid >= 0);
 }
@@ -287,44 +306,30 @@ void FluidSynthEngine::retrieveAudioDrivers()
 
 void FluidSynthEngine::scanSoundFonts()
 {
-    m_soundFontsList.clear();
-    QStringList paths = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
+    if (m_defSoundFont.isEmpty()) {
+        m_soundFontsList.clear();
+        QStringList paths = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
 #if defined(Q_OS_OSX)
-    paths << (QCoreApplication::applicationDirPath() + QLatin1String("../Resources"));
+        paths << (QCoreApplication::applicationDirPath() + QLatin1String("../Resources"));
 #endif
-    foreach(const QString& p, paths) {
-       QDir d(p + QDir::separator() + QSTR_DATADIR);
-       if (!d.exists()) {
-           d = QDir(p + QDir::separator() + QSTR_DATADIR2);
-       }
-       if (d.exists()) {
-            scanSoundFonts(d);
-       }
-    }
-    if (m_defSoundFont.isEmpty() && m_soundFontsList.length() > 0) {
-        m_defSoundFont = m_soundFontsList.first();
+        foreach(const QString& p, paths) {
+           QDir d(p + QDir::separator() + QSTR_DATADIR);
+           if (!d.exists()) {
+               d = QDir(p + QDir::separator() + QSTR_DATADIR2);
+           }
+           if (d.exists()) {
+                scanSoundFonts(d);
+           }
+        }
+        if (m_soundFontsList.length() > 0) {
+            m_defSoundFont = m_soundFontsList.first();
+        }
     }
 }
 
 void FluidSynthEngine::readSettings(QSettings *settings)
 {
-    QDir dir;
-#if defined(Q_OS_OSX)
-    dir = QDir(QCoreApplication::applicationDirPath() + QLatin1String("/../Resources"));
-#elif defined(Q_OS_UNIX)
-    dir = QDir(QCoreApplication::applicationDirPath() + QLatin1String("/../share/soundfonts/"));
-    if (!dir.exists()) {
-        dir = QDir(QCoreApplication::applicationDirPath() + QLatin1String("/../share/sounds/sf2/"));
-    }
-#else
-    dir = QDir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
-#endif
-    QFileInfo sf2(dir, QSTR_SOUNDFONT);
-    if (sf2.exists()) {
-        m_defSoundFont = sf2.absoluteFilePath();
-    }
     m_sfid = -1;
-    //qDebug() << "defSoundFont:" << m_defSoundFont;
     settings->beginGroup(QSTR_PREFERENCES);
     m_soundFont = settings->value(QSTR_INSTRUMENTSDEFINITION, m_defSoundFont).toString();
     fs_audiodriver = settings->value(QSTR_AUDIODRIVER, QSTR_DEFAULT_AUDIODRIVER).toString();

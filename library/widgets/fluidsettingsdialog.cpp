@@ -41,7 +41,6 @@ const QString FluidSettingsDialog::QSTR_PREFERENCES = QStringLiteral("FluidSynth
 const QString FluidSettingsDialog::QSTR_INSTRUMENTSDEFINITION = QStringLiteral("InstrumentsDefinition");
 const QString FluidSettingsDialog::QSTR_DATADIR = QStringLiteral("soundfonts");
 const QString FluidSettingsDialog::QSTR_DATADIR2 = QStringLiteral("sounds/sf2");
-const QString FluidSettingsDialog::QSTR_SOUNDFONT = QStringLiteral("default.sf2");
 const QString FluidSettingsDialog::QSTR_AUDIODRIVER = QStringLiteral("AudioDriver");
 const QString FluidSettingsDialog::QSTR_PERIODSIZE = QStringLiteral("PeriodSize");
 const QString FluidSettingsDialog::QSTR_PERIODS = QStringLiteral("Periods");
@@ -85,6 +84,10 @@ FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
             ui->audioDriver->clear();
             ui->audioDriver->addItems(v.toStringList());
             ui->audioDriver->blockSignals(false);
+        }
+        v = m_driver->property("soundfont");
+        if (v.isValid()) {
+            m_defSoundFont = v.toString();
         }
     }
     ui->bufferTime->blockSignals(true);
@@ -247,16 +250,6 @@ void FluidSettingsDialog::readSettings()
 {
     //qDebug() << Q_FUNC_INFO;
     SettingsFactory settings;
-    QString fs_defSoundFont = QSTR_SOUNDFONT;
-    QDir dir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
-    if (!dir.exists()) {
-        dir = QDir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR2, QStandardPaths::LocateDirectory));
-    }
-    QFileInfo sf2(dir, QSTR_SOUNDFONT);
-    if (sf2.exists()) {
-        fs_defSoundFont = sf2.absoluteFilePath();
-    }
-
     settings->beginGroup(QSTR_PREFERENCES);
     ui->audioDriver->setCurrentText( settings->value(QSTR_AUDIODRIVER, defaultAudioDriver()).toString() );
     ui->bufferTime->setValue( settings->value(QSTR_BUFFERTIME, DEFAULT_BUFFERTIME).toInt() );
@@ -267,7 +260,7 @@ void FluidSettingsDialog::readSettings()
     ui->reverb->setChecked( settings->value(QSTR_REVERB, DEFAULT_REVERB).toInt() != 0 );
     ui->gain->setText( settings->value(QSTR_GAIN, DEFAULT_GAIN).toString() );
     ui->polyphony->setText( settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toString() );
-    ui->soundFont->setText( settings->value(QSTR_INSTRUMENTSDEFINITION, fs_defSoundFont).toString() );
+    ui->soundFont->setText( settings->value(QSTR_INSTRUMENTSDEFINITION, m_defSoundFont).toString() );
     settings->endGroup();
 
     audioDriverChanged( ui->audioDriver->currentText() );
@@ -279,7 +272,7 @@ void FluidSettingsDialog::writeSettings()
     //qDebug() << Q_FUNC_INFO;
     SettingsFactory settings;
     QString audioDriver;
-    QString soundFont(QSTR_SOUNDFONT);
+    QString soundFont(m_defSoundFont);
     int     bufferTime(DEFAULT_BUFFERTIME);
     int     periodSize(DEFAULT_PERIODSIZE);
     int     periods(DEFAULT_PERIODS);
@@ -332,7 +325,7 @@ void FluidSettingsDialog::restoreDefaults()
     ui->reverb->setChecked( DEFAULT_REVERB != 0 );
     ui->gain->setText( QString::number( DEFAULT_GAIN ) );
     ui->polyphony->setText( QString::number( DEFAULT_POLYPHONY ));
-    ui->soundFont->setText( QSTR_SOUNDFONT );
+    ui->soundFont->setText( m_defSoundFont );
     initBuffer();
 }
 

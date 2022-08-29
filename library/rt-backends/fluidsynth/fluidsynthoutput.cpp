@@ -65,6 +65,11 @@ bool FluidSynthOutput::getStatus()
     return m_synth->getStatus();
 }
 
+QString FluidSynthOutput::getSoundFont()
+{
+    return m_synth->soundFont();
+}
+
 void FluidSynthOutput::initialize(QSettings *settings)
 {
     //qDebug() << Q_FUNC_INFO;
