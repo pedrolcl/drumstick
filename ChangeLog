@@ -1,5 +1,8 @@
+2022-09-08
+    * Italian translations updated. Thanks to Giovanni Mariani.
+
 2022-08-29
-    * fix for ticket #46: FluidSynth backend should honor the default soundfont
+    * fix for ticket #46: FluidSynth backend should honor its default soundfont.
 
 2022-08-14
     * Release 2.7.1
@@ -8,7 +11,7 @@
     * Fix for ticket #45: sonivox library dependency is optional, and easily forgotten
     * Fixed underlinking in some RT backends
 
-2022-07-31    
+2022-07-31
     * Release 2.7.0
 
 2022-07-28

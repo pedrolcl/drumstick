@@ -63,6 +63,7 @@ target_link_libraries(drumstick-drumgrid PRIVATE
 set(TS_FILES
     drumstick-drumgrid_en.ts
     drumstick-drumgrid_es.ts
+    drumstick-drumgrid_it.ts
 )
 
 if (QT_VERSION VERSION_LESS 5.15.0)

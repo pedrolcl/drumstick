@@ -74,6 +74,7 @@ endif()
 set(TS_FILES
     drumstick-guiplayer_cs.ts
     drumstick-guiplayer_es.ts
+    drumstick-guiplayer_it.ts
     drumstick-guiplayer_ru.ts
 )
 

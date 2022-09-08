@@ -97,6 +97,7 @@ endif()
 set(TS_FILES
     drumstick-vpiano_en.ts
     drumstick-vpiano_es.ts
+    drumstick-vpiano_it.ts
 )
 
 if (QT_VERSION VERSION_LESS 5.15.0)
