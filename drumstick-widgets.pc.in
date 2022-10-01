@@ -5,7 +5,7 @@ includedir=@pkgconfig_includedir@
 
 Name: drumstick-widgets
 Version: @PROJECT_VERSION@
-Description: MIDI Widgets C++ Library for Qt5
+Description: MIDI Widgets C++ Library for Qt
 URL: http://sourceforge.net/projects/drumstick
 Libs: -L${libdir} -ldrumstick-widgets
 Cflags: -I${includedir}

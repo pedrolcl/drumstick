@@ -5,7 +5,7 @@ includedir=@pkgconfig_includedir@
 
 Name: drumstick-alsa
 Version: @PROJECT_VERSION@
-Description: MIDI Sequencer C++ Library Bindings for ALSA and Qt5
+Description: MIDI Sequencer C++ Library Bindings for ALSA and Qt
 URL: http://sourceforge.net/projects/drumstick
 Libs: -L${libdir} -ldrumstick-alsa
 Cflags: -I${includedir}

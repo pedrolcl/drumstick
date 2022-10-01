@@ -1,6 +1,6 @@
 # spec file for package drumstick (Version @PROJECT_VERSION@)
 #
-# MIDI Sequencer C++ Library Bindings for Qt5
+# MIDI Sequencer C++ Library Bindings for Qt
 # Copyright (C) 2005-2022 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 #
 # This file and all modifications and additions to the pristine
@@ -44,7 +44,7 @@ Summary:        MIDI Sequencer C++ Library
 Group:          System/Libraries
 
 %description -n libdrumstick-file2
-MIDI Sequencer C++ Library Bindings for Qt5
+MIDI Sequencer C++ Library Bindings for Qt
 This library includes classes providing file input and output in formats 
 commonly used by MIDI programs. Currently, SMF (standard MIDI file) 
 read/write and WRK (Cakewalk) file read are supported.
@@ -59,9 +59,9 @@ Summary:        MIDI Sequencer C++ Library
 Group:          System/Libraries
 
 %description -n libdrumstick-alsa2
-MIDI Sequencer C++ Library Bindings for Qt5 and ALSA.
+MIDI Sequencer C++ Library Bindings for Qt and ALSA.
 This library includes the ALSA Sequencer library classes, providing MIDI 
-recording and playback functionality to C++/Qt5 programs.
+recording and playback functionality to C++/Qt programs.
 
 
 Authors:
@@ -73,9 +73,9 @@ Summary:        MIDI Realtime IO C++ Library
 Group:          System/Libraries
 
 %description -n libdrumstick-rt2
-MIDI Realtime IO C++ Library for Qt5
+MIDI Realtime IO C++ Library for Qt
 This library includes the RT library classes, providing MIDI 
-realtime IO functionality to C++/Qt5 programs.
+realtime IO functionality to C++/Qt programs.
 
 
 Authors:
@@ -87,9 +87,9 @@ Summary:        MIDI Widgets C++ Library
 Group:          System/Libraries
 
 %description -n libdrumstick-widgets2
-MIDI Widgets C++ Library for Qt5
+MIDI Widgets C++ Library for Qt
 This library includes the Widgets library, providing
-GUI, MIDI related, components for C++/Qt5 programs.
+GUI, MIDI related, components for C++/Qt programs.
 
 Authors:
 --------

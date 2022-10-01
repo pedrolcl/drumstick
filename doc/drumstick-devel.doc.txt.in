@@ -10,7 +10,7 @@ To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/
 @section Abstract
 
 This is the reference documentation for drumstick. These libraries are a set of C++ MIDI related classes,
-using Qt5 objects, idioms and style.
+using Qt objects, idioms and style.
 
 Currently, there are four libraries designed to work together if/when needed:
 - \b Drumstick::ALSA is a Linux only C++/Qt wrapper around the ALSA Sequencer API. ALSA sequencer provides software support for MIDI technology on Linux.
