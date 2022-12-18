@@ -18,10 +18,12 @@ set(dumprmi_SRCS
     dumprmi.cpp
     dumprmi.h
     main.cpp
+    riff.cpp
 )
 
 set(dumprmi_qtobject_SRCS
     dumprmi.h
+    riff.h
 )
 
 if (QT_VERSION VERSION_LESS 5.15.0)

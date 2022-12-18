@@ -18,6 +18,7 @@
 
 #include <drumstick/qsmf.h>
 #include <drumstick/rmid.h>
+#include "riff.h"
 
 class DumpRmid : public QObject
 {
@@ -30,6 +31,7 @@ public:
     void dumpStr(const QString& event, const QString& data);
     int  numErrors();
     void setExtract(bool enable);
+    void extractFileData(const QString& fileSuffix, const QByteArray& data);
 
 public slots:
     void headerEvent(int format, int ntrks, int division);
@@ -59,10 +61,15 @@ public slots:
     void infoHandler(const QString& infoType, const QByteArray& data);
     void dataHandler(const QString& dataType, const QByteArray& data);
 
+    void processDLS(QString name, QString version, QString copyright);
+    void processInstrument(int bank, int pc, QString name);
+    void processPercussion(int bank, int pc, QString name);
+
 private:
     int m_currentTrack;
     drumstick::File::Rmidi *m_engine;
     drumstick::File::QSmf *m_smf;
+    Riff *m_riff;
     int m_rc;
     bool m_extract;
     QString m_fileName;

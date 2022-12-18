@@ -87,8 +87,8 @@ signals:
      * The handler of this event should use the method QSmf::readFromStream() to
      * parse the contents of the SMF data element.
      *
-     * @param dataType may only be "RMID" for RIFF RMID files
-     * @param data binary payload, in RMID files is a Standard MIDI File structure
+     * @param dataType may be "RMID" (SMF) or "DLS"
+     * @param data binary payload, in RMID files is either a Standard MIDI File or a DLS structure
      */
     void signalRiffData(const QString& dataType, const QByteArray& data);
 
@@ -97,6 +97,7 @@ private:
     void processINFO(int size);
     void processList(int size);
     void processRMID(int size);
+    void processRIFF(int size);
     void processData(const QString& dataType, int size);
     void skip(quint32 cktype, int size);
     quint32 readExpectedChunk(quint32 cktype);

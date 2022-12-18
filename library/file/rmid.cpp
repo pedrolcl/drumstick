@@ -59,6 +59,7 @@ const quint32 CKID_INFO = 0x4f464e49;
 const quint32 CKID_RMID = 0x44494d52;
 const quint32 CKID_data = 0x61746164;
 const quint32 CKID_DISP = 0x50534944;
+const quint32 CKID_DLS  = 0x20534C44;
 
 /**
  * Constructor
@@ -218,10 +219,37 @@ void Rmidi::processRMID(int size)
         case CKID_DISP:
             skip(chunkID, length);
             break;
+        case CKID_RIFF:
+            processRIFF(length);
+            break;
         default:
             skip(chunkID, length);
         }
         size -= length;
+    }
+}
+
+void Rmidi::processRIFF(int size)
+{
+    quint32 chunkID = readChunkID();
+    quint32 length = size - 4;
+    switch(chunkID) {
+    case CKID_RMID:
+        //qDebug() << "RMID format";
+        processRMID(length);
+        break;
+    case CKID_DLS:
+        //qDebug() << "DLS format";
+        if (m_stream->device() != nullptr && m_stream->device()->pos() >= 12) {
+            m_stream->device()->seek(m_stream->device()->pos() - 12);
+            processData("DLS", length + 12);
+        } else {
+            skip(chunkID, length);
+        }
+        break;
+    default:
+        qWarning() << "Unsupported format";
+        skip(chunkID, length);
     }
 }
 
@@ -236,20 +264,9 @@ void Rmidi::processData(const QString& dataType, int size)
 void Rmidi::read()
 {
     //qDebug() << Q_FUNC_INFO;
-    quint32 chunkID;
     quint32 length = readExpectedChunk(CKID_RIFF);
     if (length > 0) {
-        chunkID = readChunkID();
-        length -= 4;
-        switch(chunkID) {
-        case CKID_RMID:
-            //qDebug() << "RMI format";
-            processRMID(length);
-            break;
-        default:
-            qWarning() << "Unsupported format";
-            skip(chunkID, length);
-        }
+        processRIFF(length);
     }
 }
 

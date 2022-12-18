@@ -17,7 +17,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project( Drumstick
-    VERSION 2.7.2
+    VERSION 2.7.3
     LANGUAGES CXX
     DESCRIPTION "MIDI C++ Libraries for Qt"
     HOMEPAGE_URL "https://sourceforge.net/p/drumstick/"
@@ -28,7 +28,7 @@ include(SCMRevision)
 include(CTest)
 include(GNUInstallDirs)
 
-set(RELEASE_DATE "October 1, 2022")
+#set(RELEASE_DATE "October 1, 2022")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 

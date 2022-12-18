@@ -1,3 +1,9 @@
+2022-12-18
+    * Improved RMID file support
+    *   Extract DLS embedded data
+    *   Decode DLS instrument names
+    *   New mime type
+
 2022-10-1
     * Release 2.7.2
 

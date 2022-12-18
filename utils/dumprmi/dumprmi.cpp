@@ -47,7 +47,7 @@ DumpRmid::DumpRmid():
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
     m_engine = new Rmidi(this);
     m_smf = new QSmf(this);
-    m_smf->setTextCodec(codec);
+    m_riff = new Riff(this);    m_smf->setTextCodec(codec);
 
     connect(m_engine, &Rmidi::signalRiffInfo, this, &DumpRmid::infoHandler);
     connect(m_engine, &Rmidi::signalRiffData, this, &DumpRmid::dataHandler);
@@ -75,6 +75,10 @@ DumpRmid::DumpRmid():
     connect(m_smf, &QSmf::signalSMFKeySig, this, &DumpRmid::keySigEvent);
     connect(m_smf, &QSmf::signalSMFTempo, this, &DumpRmid::tempoEvent);
     connect(m_smf, &QSmf::signalSMFError, this, &DumpRmid::errorHandler);
+
+    connect(m_riff, &Riff::signalDLS, this, &DumpRmid::processDLS);
+    connect(m_riff, &Riff::signalInstrument, this, &DumpRmid::processInstrument);
+    connect(m_riff, &Riff::signalPercussion, this, &DumpRmid::processPercussion);
 
     cout.setRealNumberNotation(QTextStream::FixedNotation);
     cout.setRealNumberPrecision(4);
@@ -248,21 +252,60 @@ void DumpRmid::infoHandler(const QString &infoType, const QByteArray &data)
     }
 }
 
+void DumpRmid::extractFileData(const QString &fileSuffix, const QByteArray &data)
+{
+    QFileInfo finfo(m_fileName);
+    QString outfile = QDir::current().absoluteFilePath(finfo.baseName() + fileSuffix);
+    QFile file(outfile);
+    file.open(QFile::WriteOnly);
+    file.write(data);
+    file.close();
+}
+
 void DumpRmid::dataHandler(const QString &dataType, const QByteArray &data)
 {
-    if (dataType == "RMID") {
-        if (m_extract) {
-            QFileInfo finfo(m_fileName);
-            QString outfile = QDir::current().absoluteFilePath(finfo.baseName() + ".mid");
-            QFile file(outfile);
-            file.open(QFile::WriteOnly);
-            file.write(data);
-            file.close();
-        } else {
+    if (m_extract) {
+        if (dataType == "RMID") {
+            extractFileData(QLatin1String(".mid"), data);
+        } else if (dataType == "DLS") {
+            extractFileData(QLatin1String(".dls"), data);
+        }
+    } else {
+        if (dataType == "RMID") {
             QDataStream ds(data);
             m_smf->readFromStream(&ds);
+        } else if (dataType == "DLS") {
+            cout << " __bank ____PC name_____________________" << endl;
+            QDataStream ds(data);
+            m_riff->readFromStream(&ds);
         }
     }
+}
+
+void DumpRmid::processDLS(QString name, QString version, QString copyright)
+{
+    cout << "DLS: " << name;
+    if (!version.isEmpty()) {
+        cout << " version: " << version;
+    }
+    if (!copyright.isNull()) {
+        cout << " copyright: " << copyright;
+    }
+    cout << endl;
+}
+
+void DumpRmid::processInstrument(int bank, int pc, QString name)
+{
+    cout << right << qSetFieldWidth(7) << bank;
+    cout << right << qSetFieldWidth(7) << pc;
+    cout << left << qSetFieldWidth(0) << " " << name << endl;
+}
+
+void DumpRmid::processPercussion(int bank, int pc, QString name)
+{
+    cout << right << qSetFieldWidth(7) << bank;
+    cout << right << qSetFieldWidth(7) << pc;
+    cout << left << qSetFieldWidth(0) << " " << name << endl;
 }
 
 void DumpRmid::run(QString fileName)

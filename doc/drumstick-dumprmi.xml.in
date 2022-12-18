@@ -49,8 +49,8 @@
         <title>Description</title>
         <para>
         This program is a Drumstick example and utility program. You can use it
-        to decode a RIFF MIDI file as text, or to extract the MIDI data to a
-        standard MIDI file.
+        to decode a RIFF MIDI file as text, or to extract the embedded data to
+        standard MIDI and DLS files.
         </para>
     </refsect1>
 
@@ -92,7 +92,7 @@
                     <option>-e|--extract</option>
                 </term>
                 <listitem>
-                    <para>Extracts the MIDI data to a separate Standard MIDI file.</para>
+                    <para>Extracts the embedded data to a separate Standard MIDI file, and to a DLS file.</para>
                 </listitem>
             </varlistentry>
 
