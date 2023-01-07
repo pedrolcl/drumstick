@@ -1,5 +1,5 @@
 # MIDI Sequencer C++ Library
-# Copyright (C) 2005-2022 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+# Copyright (C) 2005-2023 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -89,7 +89,7 @@ if (APPLE)
         MACOSX_BUNDLE_ICON_FILE "drumstick.icns"
         MACOSX_BUNDLE_GUI_IDENTIFIER "net.sourceforge.drumstick-vpiano"
         MACOSX_BUNDLE_BUNDLE_NAME "drumstick-vpiano"
-        MACOSX_BUNDLE_COPYRIGHT "© 2008-2022 Pedro López-Cabanillas"
+        MACOSX_BUNDLE_COPYRIGHT "© 2008-2023 Pedro López-Cabanillas"
         MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/cmake_admin/CustomBundleInfo.plist.in"
     )
 endif()
