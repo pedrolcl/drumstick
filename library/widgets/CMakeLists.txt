@@ -35,14 +35,7 @@ set(drumstick-widgets_OBJ_SRCS
     ../include/drumstick/rtmidiinput.h
     ../include/drumstick/rtmidioutput.h
     pianoscene.h
-    fluidsettingsdialog.h
-    macsynthsettingsdialog.h
-    sonivoxsettingsdialog.h
 )
-
-if (USE_NETWORK)
-    list(APPEND drumstick-widgets_OBJ_SRCS networksettingsdialog.h)
-endif()
 
 if(BUILD_FRAMEWORKS)
     set_source_files_properties(${drumstick-widgets_HEADERS}
@@ -64,6 +57,7 @@ set(drumstick-widgets_SRCS
 )
 
 if (USE_FLUIDSYNTH)
+    list( APPEND drumstick-widgets_OBJ_SRCS fluidsettingsdialog.h )
     list( APPEND drumstick-widgets_SRCS
         fluidsettingsdialog.cpp
         fluidsettingsdialog.h
@@ -72,6 +66,7 @@ if (USE_FLUIDSYNTH)
 endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    list( APPEND drumstick-widgets_OBJ_SRCS macsynthsettingsdialog.h )
     list( APPEND drumstick-widgets_SRCS
         macsynthsettingsdialog.cpp
         macsynthsettingsdialog.h
@@ -80,7 +75,8 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 endif()
 
 if (USE_NETWORK)
-    list(APPEND drumstick-widgets_SRCS
+    list( APPEND drumstick-widgets_OBJ_SRCS networksettingsdialog.h )
+    list( APPEND drumstick-widgets_SRCS
         networksettingsdialog.cpp
         networksettingsdialog.h
     )
@@ -88,6 +84,7 @@ if (USE_NETWORK)
 endif()
 
 if (USE_SONIVOX)
+    list( APPEND drumstick-widgets_OBJ_SRCS sonivoxsettingsdialog.h )
     list( APPEND drumstick-widgets_SRCS
         sonivoxsettingsdialog.cpp
         sonivoxsettingsdialog.h

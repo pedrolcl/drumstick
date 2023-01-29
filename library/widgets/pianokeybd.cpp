@@ -31,6 +31,11 @@
  * @see https://doc.qt.io/qt-5/qgraphicsview.html
  */
 
+inline void initResources()
+{
+    Q_INIT_RESOURCE(pianokeybd);
+}
+
 namespace drumstick { namespace widgets {
 
 /**
@@ -434,6 +439,7 @@ void PianoKeybd::initialize()
 #endif
     setOptimizationFlag(DontSavePainterState, true);
     setOptimizationFlag(DontAdjustForAntialiasing, true);
+    initResources();
 }
 
 /**
