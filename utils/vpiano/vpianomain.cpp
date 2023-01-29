@@ -60,7 +60,7 @@ Q_IMPORT_PLUGIN(DummyOutput)
 #endif
 
 #if defined(FLUIDSYNTH_BACKEND)
-Q_IMPORT_PLUGIN(SynthOutput)
+Q_IMPORT_PLUGIN(FluidSynthOutput)
 #endif
 
 #if defined(OSS_BACKEND)

@@ -17,8 +17,10 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(Qt${QT_VERSION_MAJOR}Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR}Network REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR}LinguistTools REQUIRED)
+if (USE_NETWORK)
+    find_package(Qt${QT_VERSION_MAJOR}Network REQUIRED)
+endif()
 
 set(drumstick-widgets_HEADERS
     ../include/drumstick/pianokeybd.h
@@ -34,10 +36,13 @@ set(drumstick-widgets_OBJ_SRCS
     ../include/drumstick/rtmidioutput.h
     pianoscene.h
     fluidsettingsdialog.h
-    networksettingsdialog.h
     macsynthsettingsdialog.h
     sonivoxsettingsdialog.h
 )
+
+if (USE_NETWORK)
+    list(APPEND drumstick-widgets_OBJ_SRCS networksettingsdialog.h)
+endif()
 
 if(BUILD_FRAMEWORKS)
     set_source_files_properties(${drumstick-widgets_HEADERS}
@@ -47,14 +52,8 @@ endif()
 
 set(drumstick-widgets_SRCS
     configurationdialogs.cpp
-    fluidsettingsdialog.cpp
-    fluidsettingsdialog.h
     keylabel.cpp
     keylabel.h
-    macsynthsettingsdialog.cpp
-    macsynthsettingsdialog.h
-    networksettingsdialog.cpp
-    networksettingsdialog.h
     pianokey.cpp
     pianokey.h
     pianokeybd.cpp
@@ -62,16 +61,39 @@ set(drumstick-widgets_SRCS
     pianoscene.cpp
     pianoscene.h
     settingsfactory.cpp
-    sonivoxsettingsdialog.cpp
-    sonivoxsettingsdialog.h
 )
 
-set(drumstick-widgets_FORMS
-    fluidsettingsdialog.ui
-    macsynthsettingsdialog.ui
-    networksettingsdialog.ui
-    sonivoxsettingsdialog.ui
-)
+if (USE_FLUIDSYNTH)
+    list( APPEND drumstick-widgets_SRCS
+        fluidsettingsdialog.cpp
+        fluidsettingsdialog.h
+    )
+    list( APPEND drumstick-widgets_FORMS fluidsettingsdialog.ui )
+endif()
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    list( APPEND drumstick-widgets_SRCS
+        macsynthsettingsdialog.cpp
+        macsynthsettingsdialog.h
+    )
+    list( APPEND drumstick-widgets_FORMS macsynthsettingsdialog.ui )
+endif()
+
+if (USE_NETWORK)
+    list(APPEND drumstick-widgets_SRCS
+        networksettingsdialog.cpp
+        networksettingsdialog.h
+    )
+    list( APPEND drumstick-widgets_FORMS networksettingsdialog.ui )
+endif()
+
+if (USE_SONIVOX)
+    list( APPEND drumstick-widgets_SRCS
+        sonivoxsettingsdialog.cpp
+        sonivoxsettingsdialog.h
+    )
+    list( APPEND drumstick-widgets_FORMS sonivoxsettingsdialog.ui )
+endif()
 
 if (WIN32)
     set(TARGET_DESCRIPTION ${Drumstick_DESCRIPTION})

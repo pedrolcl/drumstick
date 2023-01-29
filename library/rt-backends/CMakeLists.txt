@@ -35,7 +35,7 @@ if(Qt${QT_VERSION_MAJOR}Network_FOUND)
     add_subdirectory(net-out)
 endif()
 
-if(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE AND NOT EMSCRIPTEN)
     add_subdirectory(oss-in)
     add_subdirectory(oss-out)
 endif()
