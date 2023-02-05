@@ -75,7 +75,9 @@ target_link_libraries(drumstick-rt PRIVATE
 
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-rt PROPERTIES
-        STATIC_LIB "libdrumstick-rt")
+        STATIC_LIB "libdrumstick-rt"
+        EXPORT_NAME RT
+    )
 else() # STATIC_DRUMSTICK
     set_target_properties(drumstick-rt PROPERTIES
         VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}

@@ -172,7 +172,9 @@ endif ()
 
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-widgets PROPERTIES
-        STATIC_LIB "libdrumstick-widgets")
+        STATIC_LIB "libdrumstick-widgets"
+        EXPORT_NAME Widgets
+    )
 else() # STATIC_DRUMSTICK
     set_target_properties(drumstick-widgets PROPERTIES
         VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}

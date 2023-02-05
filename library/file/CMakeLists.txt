@@ -81,7 +81,9 @@ endif()
 
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-file PROPERTIES
-        STATIC_LIB "libdrumstick-file")
+        STATIC_LIB "libdrumstick-file"
+        EXPORT_NAME File
+    )
 else()
     set_target_properties(drumstick-file PROPERTIES
         VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}

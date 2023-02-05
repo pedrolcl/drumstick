@@ -80,7 +80,9 @@ endif()
 
 if(STATIC_DRUMSTICK)
     set_target_properties(drumstick-alsa PROPERTIES
-        STATIC_LIB "libdrumstick-alsa")
+        STATIC_LIB "libdrumstick-alsa"
+        EXPORT_NAME ALSA
+    )
 else()
     set_target_properties(drumstick-alsa PROPERTIES
         VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
