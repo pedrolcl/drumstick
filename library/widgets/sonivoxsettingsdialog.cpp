@@ -19,6 +19,9 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QDir>
+#include <QStandardPaths>
+#include <QFileDialog>
 
 #include "sonivoxsettingsdialog.h"
 #include "ui_sonivoxsettingsdialog.h"
@@ -38,6 +41,9 @@ const QString SonivoxSettingsDialog::QSTR_REVERBTYPE = QStringLiteral("ReverbTyp
 const QString SonivoxSettingsDialog::QSTR_REVERBAMT = QStringLiteral("ReverbAmt");
 const QString SonivoxSettingsDialog::QSTR_CHORUSTYPE = QStringLiteral("ChorusType");
 const QString SonivoxSettingsDialog::QSTR_CHORUSAMT = QStringLiteral("ChorusAmt");
+const QString SonivoxSettingsDialog::QSTR_SOUNDFONT = QStringLiteral("InstrumentsDefinition");
+const QString SonivoxSettingsDialog::QSTR_DATADIR = QStringLiteral("soundfonts");
+const QString SonivoxSettingsDialog::QSTR_DATADIR2 = QStringLiteral("sounds/sf2");
 
 SonivoxSettingsDialog::SonivoxSettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -57,6 +63,7 @@ SonivoxSettingsDialog::SonivoxSettingsDialog(QWidget *parent) :
     ui->combo_Chorus->addItem(QStringLiteral("Preset 4"), 3);
     ui->combo_Chorus->addItem(QStringLiteral("None"), -1);
     ui->combo_Chorus->setCurrentIndex(4);
+    connect(ui->btn_soundfont, &QToolButton::clicked, this, &SonivoxSettingsDialog::showFileDialog);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::pressed,
             this, &SonivoxSettingsDialog::restoreDefaults);
 
@@ -117,6 +124,7 @@ void SonivoxSettingsDialog::readSettings()
     int reverbAmt = settings->value(QSTR_REVERBAMT, 25800).toInt();
     int chorusType = settings->value(QSTR_CHORUSTYPE, -1).toInt();
     int chorusAmt = settings->value(QSTR_CHORUSAMT, 0).toInt();
+    QString soundfont = settings->value(QSTR_SOUNDFONT, QString()).toString();
     settings->endGroup();
 
     if (qEnvironmentVariableIsSet("PULSE_LATENCY_MSEC")) {
@@ -124,6 +132,7 @@ void SonivoxSettingsDialog::readSettings()
     }
 
     ui->spnTime->setValue(bufferTime);
+    ui->soundfont_dls->setText(soundfont);
     ui->dial_Reverb->setValue(reverbAmt);
     ui->dial_Chorus->setValue(chorusAmt);
     int reverbIndex = ui->combo_Reverb->findData(reverbType);
@@ -144,6 +153,7 @@ void SonivoxSettingsDialog::writeSettings()
     settings->setValue(QSTR_CHORUSTYPE, ui->combo_Chorus->currentData());
     settings->setValue(QSTR_REVERBAMT, ui->dial_Reverb->value());
     settings->setValue(QSTR_CHORUSAMT, ui->dial_Chorus->value());
+    settings->setValue(QSTR_SOUNDFONT, ui->soundfont_dls->text());
     settings->endGroup();
     settings->sync();
     qputenv("PULSE_LATENCY_MSEC", QByteArray::number( ui->spnTime->value() ));
@@ -157,23 +167,42 @@ void SonivoxSettingsDialog::chkDriverProperties(QSettings *settings)
         //drumstick::rt::MIDIConnection conn;
         m_driver->close();
         m_driver->initialize(settings);
-        //m_driver->open(conn);
-    }
-    QVariant varStatus = m_driver->property("status");
-    if (varStatus.isValid()) {
-        ui->lblStatusText->clear();
-        ui->lblStatusText->setText(varStatus.toBool() ? tr("Ready") : tr("Failed") );
-        ui->lblStatusIcon->setPixmap(varStatus.toBool() ? QPixmap(":/checked.png") : QPixmap(":/error.png") );
+        QVariant varStatus = m_driver->property("status");
+        if (varStatus.isValid()) {
+            ui->lblStatusText->clear();
+            ui->lblStatusText->setText(varStatus.toBool() ? tr("Ready") : tr("Failed") );
+            ui->lblStatusIcon->setPixmap(varStatus.toBool() ? QPixmap(":/checked.png") : QPixmap(":/error.png") );
+        }
     }
 }
 
 void SonivoxSettingsDialog::restoreDefaults()
 {
     ui->spnTime->setValue(30);
+    ui->soundfont_dls->clear();
     ui->combo_Reverb->setCurrentIndex(1);
     ui->dial_Reverb->setValue(25800);
     ui->combo_Chorus->setCurrentIndex(4);
     ui->dial_Chorus->setValue(0);
+}
+
+void SonivoxSettingsDialog::showFileDialog()
+{
+    QDir dir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR, QStandardPaths::LocateDirectory));
+    if (!dir.exists()) {
+        dir = QDir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR2, QStandardPaths::LocateDirectory));
+    }
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Select SoundFont"), dir.absolutePath(), tr("SoundFont Files (*.dls)"));
+    if (!fileName.isEmpty()) {
+        ui->soundfont_dls->setText(fileName);
+    }
+}
+
+void SonivoxSettingsDialog::changeSoundFont(const QString& fileName)
+{
+    readSettings();
+    ui->soundfont_dls->setText(fileName);
+    writeSettings();
 }
 
 } // namespace widgets

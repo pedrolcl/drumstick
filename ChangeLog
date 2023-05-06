@@ -1,3 +1,7 @@
+2023-05-06
+    * RT Sonivox backend: enabled DLS file loading
+    * Widgets: Sonivox dialog updated
+
 2022-12-18
     * Improved RMID file support
     *   Extract DLS embedded data

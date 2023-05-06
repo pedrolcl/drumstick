@@ -27,6 +27,7 @@
 #include <eas_reverb.h>
 #include <pulse/simple.h>
 #include "synthrenderer.h"
+#include "filewrapper.h"
 
 namespace drumstick {
 namespace rt {
@@ -38,14 +39,15 @@ const QString SynthRenderer::QSTR_REVERBAMT = QStringLiteral("ReverbAmt");
 const QString SynthRenderer::QSTR_CHORUSTYPE = QStringLiteral("ChorusType");
 const QString SynthRenderer::QSTR_CHORUSAMT = QStringLiteral("ChorusAmt");
 const QString SynthRenderer::QSTR_SONIVOXEAS = QStringLiteral("SonivoxEAS");
+const QString SynthRenderer::QSTR_SOUNDFONT = QStringLiteral("InstrumentsDefinition");
 
 SynthRenderer::SynthRenderer(QObject *parent) : QObject(parent),
     m_Stopped(true),
     m_rendering(nullptr),
+    m_easData(nullptr),
+    m_streamHandle(nullptr),
     m_bufferTime(60)
-{
-    initEAS();
-}
+{ }
 
 void
 SynthRenderer::initEAS()
@@ -62,11 +64,27 @@ SynthRenderer::initEAS()
         m_diagnostics << "EAS_Config returned null";
         return;
     }
+    m_sampleRate = easConfig->sampleRate;
+    m_bufferSize = easConfig->mixBufferSize;
+    m_channels = easConfig->numChannels;
 
     eas_res = EAS_Init(&dataHandle);
     if (eas_res != EAS_SUCCESS) {
       m_diagnostics << QString("EAS_Init error: %1").arg( eas_res );
       return;
+    }
+    m_easData = dataHandle;
+
+    if (!m_soundfont.isEmpty()) {
+        FileWrapper dlsFile(m_soundfont);
+        if (dlsFile.ok()) {
+            eas_res = EAS_LoadDLSCollection(dataHandle, nullptr, dlsFile.getLocator());
+            if (eas_res != EAS_SUCCESS) {
+                m_diagnostics << QString("EAS_LoadDLSCollection(%1) error: %2").arg(m_soundfont).arg(eas_res);
+            }
+        } else {
+            m_diagnostics << QString("Failed to open %1").arg(m_soundfont);
+        }
     }
 
     eas_res = EAS_OpenMIDIStream(dataHandle, &handle, nullptr);
@@ -75,13 +93,9 @@ SynthRenderer::initEAS()
       EAS_Shutdown(dataHandle);
       return;
     }
-
-    m_easData = dataHandle;
     m_streamHandle = handle;
     Q_ASSERT(m_streamHandle != nullptr);
-    m_sampleRate = easConfig->sampleRate;
-    m_bufferSize = easConfig->mixBufferSize;
-    m_channels = easConfig->numChannels;
+
     m_status = true;
     //qDebug() << Q_FUNC_INFO << "EAS bufferSize=" << m_bufferSize << " sampleRate=" << m_sampleRate << " channels=" << m_channels;
 }
@@ -153,19 +167,25 @@ SynthRenderer::uninitPulse()
 
 SynthRenderer::~SynthRenderer()
 {
-    uninitEAS();
+    //qDebug() << Q_FUNC_INFO;
 }
 
 void
 SynthRenderer::initialize(QSettings *settings)
 {
+    //qDebug() << Q_FUNC_INFO;
+
     settings->beginGroup(QSTR_PREFERENCES);
     m_bufferTime = settings->value(QSTR_BUFFERTIME, 60).toInt();
     int reverbType = settings->value(QSTR_REVERBTYPE, EAS_PARAM_REVERB_HALL).toInt();
     int reverbAmt = settings->value(QSTR_REVERBAMT, 25800).toInt();
     int chorusType = settings->value(QSTR_CHORUSTYPE, -1).toInt();
     int chorusAmt = settings->value(QSTR_CHORUSAMT, 0).toInt();
+    m_soundfont = settings->value(QSTR_SOUNDFONT, QString()).toString();
     settings->endGroup();
+
+    initEAS();
+    initSoundfont();
     initReverb(reverbType);
     setReverbWet(reverbAmt);
     initChorus(chorusType);
@@ -184,6 +204,7 @@ SynthRenderer::stop()
 {
     QWriteLocker locker(&m_mutex);
     //qDebug() << Q_FUNC_INFO;
+    uninitEAS();
     m_Stopped = true;
 }
 
@@ -241,6 +262,23 @@ SynthRenderer::writeMIDIData(const QByteArray& message)
             if (eas_res != EAS_SUCCESS) {
                 m_diagnostics << QString("EAS_WriteMIDIStream error: %1").arg(eas_res);
             }
+        }
+    }
+}
+
+void SynthRenderer::initSoundfont()
+{
+    //qDebug() << Q_FUNC_INFO;
+    if (!m_soundfont.isEmpty()) {
+        for(int ch = 0; ch < MIDI_STD_CHANNELS; ++ch) {
+            if (ch == MIDI_GM_STD_DRUM_CHANNEL) {
+                sendMessage(MIDI_STATUS_CONTROLCHANGE + ch, MIDI_CONTROL_MSB_BANK_SELECT, 0);
+                sendMessage(MIDI_STATUS_CONTROLCHANGE + ch, MIDI_CONTROL_LSB_BANK_SELECT, 127);
+            } else {
+                sendMessage(MIDI_STATUS_CONTROLCHANGE + ch, MIDI_CONTROL_MSB_BANK_SELECT, 0);
+                sendMessage(MIDI_STATUS_CONTROLCHANGE + ch, MIDI_CONTROL_LSB_BANK_SELECT, 0);
+            }
+            sendMessage(MIDI_STATUS_PROGRAMCHANGE + ch, 0);
         }
     }
 }

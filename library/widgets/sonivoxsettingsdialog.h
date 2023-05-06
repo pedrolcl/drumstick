@@ -50,6 +50,7 @@ namespace widgets {
         void readSettings();
         void writeSettings();
         void chkDriverProperties(QSettings *settings);
+        void changeSoundFont(const QString& fileName);
 
         static const QString QSTR_PREFERENCES;
         static const QString QSTR_BUFFERTIME;
@@ -57,11 +58,15 @@ namespace widgets {
         static const QString QSTR_REVERBAMT;
         static const QString QSTR_CHORUSTYPE;
         static const QString QSTR_CHORUSAMT;
+        static const QString QSTR_SOUNDFONT;
+        static const QString QSTR_DATADIR;
+        static const QString QSTR_DATADIR2;
 
     public slots:
         void accept() override;
         void showEvent(QShowEvent *event) override;
         void restoreDefaults();
+        void showFileDialog();
 
     private:
         Ui::SonivoxSettingsDialog *ui;

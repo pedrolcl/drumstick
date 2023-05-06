@@ -3,11 +3,13 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DQT_NO_DEBUG_OUTPUT")
 set( HEADERS
     synthcontroller.h
     synthrenderer.h
+    filewrapper.h
 )
 
 set( SOURCES
     synthcontroller.cpp 
     synthrenderer.cpp
+    filewrapper.cpp
 )
 
 if (QT_VERSION VERSION_LESS 5.15.0)
@@ -19,13 +21,13 @@ else()
 endif()
 
 if(STATIC_DRUMSTICK)
-    add_library( drumstick-rt-eassynth STATIC ${MOC_SRCS} ${SOURCES} )
+    add_library( drumstick-rt-eassynth STATIC ${MOC_SRCS} ${SOURCES} ${HEADERS})
     target_compile_definitions(drumstick-rt-eassynth
         PRIVATE QT_STATICPLUGIN)
     set_target_properties(drumstick-rt-eassynth PROPERTIES
          STATIC_LIB "libdrumstick-rt-eassynth")
 else()
-    add_library( drumstick-rt-eassynth MODULE ${MOC_SRCS} ${SOURCES} )
+    add_library( drumstick-rt-eassynth MODULE ${MOC_SRCS} ${SOURCES} ${HEADERS})
     target_compile_definitions(drumstick-rt-eassynth
         PRIVATE QT_PLUGIN)
 endif()

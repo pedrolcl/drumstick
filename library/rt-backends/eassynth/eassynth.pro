@@ -13,9 +13,12 @@ LIBS += -L../../../../build/lib \
         -ldrumstick-rt
 
 HEADERS += synthcontroller.h \
-           synthrenderer.h
+           synthrenderer.h \
+           filewrapper.h
 
-SOURCES += synthcontroller.cpp synthrenderer.cpp
+SOURCES += synthcontroller.cpp \
+           synthrenderer.cpp \
+           filewrapper.cpp
 
 CONFIG += link_pkgconfig
 packagesExist(libpulse-simple) {

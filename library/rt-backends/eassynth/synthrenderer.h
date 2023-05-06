@@ -60,6 +60,7 @@ namespace drumstick { namespace rt {
         static const QString QSTR_CHORUSTYPE;
         static const QString QSTR_CHORUSAMT;
         static const QString QSTR_SONIVOXEAS;
+        static const QString QSTR_SOUNDFONT;
 
     private:
         void initEAS();
@@ -67,6 +68,7 @@ namespace drumstick { namespace rt {
         void uninitEAS();
         void uninitPulse();
         void writeMIDIData(const QByteArray& message);
+        void initSoundfont();
 
     public slots:
         void run();
@@ -82,7 +84,7 @@ namespace drumstick { namespace rt {
         int m_sampleRate, m_bufferSize, m_channels;
         EAS_DATA_HANDLE m_easData;
         EAS_HANDLE m_streamHandle;
-        EAS_HANDLE m_fileHandle;
+        QString m_soundfont;
         /* pulseaudio */
         int m_bufferTime;
         pa_simple *m_pulseHandle;
