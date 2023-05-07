@@ -1,6 +1,9 @@
+2023-05-07
+    * Implemented change soundfont function for the SonivoxEAS backend.
+
 2023-05-06
     * RT Sonivox backend: enabled DLS file loading
-    * Widgets: Sonivox dialog updated
+    * Widgets: Sonivox configuration dialog updated
 
 2022-12-18
     * Improved RMID file support

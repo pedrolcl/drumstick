@@ -179,7 +179,7 @@ bool configureOutputDriver(const QString driver, QWidget* parent)
         (metaObj->indexOfMethod("configure(QWidget*)") != -1)) {
         auto configurable = obj->property("isconfigurable");
         if (configurable.isValid() && configurable.toBool()) {
-            bool ret;
+            bool ret{true};
             QMetaObject::invokeMethod(obj, "configure", Q_RETURN_ARG(bool, ret), Q_ARG(QWidget*, parent));
             return ret;
         }
@@ -201,6 +201,9 @@ void changeSoundFont(const QString driver, const QString fileName, QWidget* pare
 {
     if (driver == "FluidSynth") {
         FluidSettingsDialog dlg(parent);
+        dlg.changeSoundFont(fileName);
+    } else if (driver == "SonivoxEAS") {
+        SonivoxSettingsDialog dlg(parent);
         dlg.changeSoundFont(fileName);
 #if defined(Q_OS_MACOS)
     } else if (driver == "DLS Synth") {
