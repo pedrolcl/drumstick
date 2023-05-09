@@ -16,8 +16,8 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MIDIIOWRAPPER_H
-#define MIDIIOWRAPPER_H
+#ifndef FILEWRAPPER_H
+#define FILEWRAPPER_H
 
 #include <QString>
 #include <QFile>
@@ -36,10 +36,10 @@ public:
 
 private:
     bool m_ok;
-    QFile m_file;
     off64_t m_Base;
     int64_t  m_Length;
     EAS_FILE m_easFile;
+    QFile m_file;
 };
 
-#endif // MIDIIOWRAPPER_H
+#endif // FILEWRAPPER_H

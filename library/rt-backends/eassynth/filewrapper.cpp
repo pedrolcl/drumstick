@@ -29,31 +29,33 @@ size(void *handle) {
     return static_cast<FileWrapper*>(handle)->size();
 }
 
-FileWrapper::FileWrapper(const QString& path)
-    : FileWrapper(path.toLocal8Bit().data())
+FileWrapper::FileWrapper(const QString &path)
+    : m_ok{false}
+    , m_Base{0}
+    , m_Length{0}
+    , m_easFile{}
 {
-    //qDebug() << Q_FUNC_INFO << path;
-}
-
-FileWrapper::FileWrapper(const char *path)
-    : m_ok(false)
-{
+    qDebug() << Q_FUNC_INFO << path;
     m_file.setFileName(path);
     m_ok = m_file.open(QIODevice::ReadOnly);
     if (m_ok) {
         //qDebug("FileWrapper. opened %s", path);
-        m_Base = 0;
         m_Length = m_file.size();
         m_easFile.handle = this;
         m_easFile.readAt = ::readAt;
         m_easFile.size = ::size;
-    }/* else {
-        qDebug("FileWrapper. Failed to open %s", path);
-    }*/
+    }
+}
+
+FileWrapper::FileWrapper(const char *path)
+    : FileWrapper(QString::fromLocal8Bit(path))
+{
+    qDebug("FileWrapper(path=%s)", path);
 }
 
 FileWrapper::~FileWrapper() {
     //qDebug("~FileWrapper");
+    m_file.close();
 }
 
 int
