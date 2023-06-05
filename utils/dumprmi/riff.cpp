@@ -16,8 +16,9 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QFile>
 #include <QDebug>
+#include <QFile>
+#include <array>
 
 #include "riff.h"
 
@@ -70,14 +71,10 @@ quint32 Riff::read32bit()
 
 QString Riff::readstr(int size)
 {
-#if defined(Q_CC_GNU) || defined(Q_CC_GCCE)
-    char buffer[size+1];
-#elif defined(Q_CC_MSVC)
-    char *buffer = (char *) alloca (size+1);
-#endif
-    m_IOStream->readRawData(buffer, size);
-    buffer[size] = 0;
-    return QString(buffer).trimmed();
+    QScopedPointer<char> buffer(new char[size + 1]);
+    m_IOStream->readRawData(buffer.data(), size);
+    buffer.data()[size] = 0;
+    return QString(buffer.data()).trimmed();
 }
 
 void Riff::skip(int size)
@@ -134,7 +131,6 @@ QString Riff::readDLSVersion()
 
 void Riff::processINFO(int size)
 {
-    QString str;
     quint32 chunkID = 0;
     quint32 length = 0;
     while (size > 0) {

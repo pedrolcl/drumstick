@@ -168,5 +168,15 @@ bool SynthController::getStatus()
     return m_renderer->getStatus();
 }
 
+QString SynthController::getLibVersion()
+{
+    return m_renderer->getLibVersion();
+}
+
+QString SynthController::getSoundFont()
+{
+    return m_renderer->getSoundFont();
+}
+
 } // namespace rt
 } // namespace drumstick

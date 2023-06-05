@@ -20,7 +20,9 @@
 #include <QObject>
 #include <QReadLocker>
 #include <QString>
+#include <QSysInfo>
 #include <QTextStream>
+#include <QVersionNumber>
 #include <QWriteLocker>
 
 #include <eas_chorus.h>
@@ -67,6 +69,7 @@ SynthRenderer::initEAS()
     m_sampleRate = easConfig->sampleRate;
     m_bufferSize = easConfig->mixBufferSize;
     m_channels = easConfig->numChannels;
+    m_libVersion = easConfig->libVersion;
 
     eas_res = EAS_Init(&dataHandle);
     if (eas_res != EAS_SUCCESS) {
@@ -296,6 +299,22 @@ QStringList SynthRenderer::getDiagnostics() const
 void SynthRenderer::setCondition(QWaitCondition *cond)
 {
     m_rendering = cond;
+}
+
+QString SynthRenderer::getLibVersion()
+{
+    quint8 v1, v2, v3, v4;
+    v1 = (m_libVersion >> 24) & 0xff;
+    v2 = (m_libVersion >> 16) & 0xff;
+    v3 = (m_libVersion >> 8) & 0xff;
+    v4 = m_libVersion & 0xff;
+    QVersionNumber vn{v1, v2, v3, v4};
+    return vn.toString();
+}
+
+QString SynthRenderer::getSoundFont()
+{
+    return m_soundfont;
 }
 
 void

@@ -167,6 +167,11 @@ void SonivoxSettingsDialog::chkDriverProperties(QSettings *settings)
         //drumstick::rt::MIDIConnection conn;
         m_driver->close();
         m_driver->initialize(settings);
+        QVariant varVersion = m_driver->property("libversion");
+        if (varVersion.isValid()) {
+            ui->lblLibraryText->clear();
+            ui->lblLibraryText->setText(varVersion.toString());
+        }
         QVariant varStatus = m_driver->property("status");
         if (varStatus.isValid()) {
             ui->lblStatusText->clear();

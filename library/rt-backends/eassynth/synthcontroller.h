@@ -35,6 +35,8 @@ namespace rt {
         Q_INTERFACES(drumstick::rt::MIDIOutput)
         Q_PROPERTY(QStringList diagnostics READ getDiagnostics)
         Q_PROPERTY(bool status READ getStatus)
+        Q_PROPERTY(QString libversion READ getLibVersion)
+        Q_PROPERTY(QString soundfont READ getSoundFont)
 
     public:
         explicit SynthController(QObject *parent = nullptr);
@@ -74,6 +76,8 @@ namespace rt {
     private:
         QStringList getDiagnostics();
         bool getStatus();
+        QString getLibVersion();
+        QString getSoundFont();
     };
 
 }}

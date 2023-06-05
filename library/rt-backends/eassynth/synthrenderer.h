@@ -52,6 +52,8 @@ namespace drumstick { namespace rt {
         bool getStatus() const;
         QStringList getDiagnostics() const;
         void setCondition(QWaitCondition *cond);
+        QString getLibVersion();
+        QString getSoundFont();
 
         static const QString QSTR_PREFERENCES;
         static const QString QSTR_BUFFERTIME;
@@ -91,6 +93,7 @@ namespace drumstick { namespace rt {
         /* object properties */
         bool m_status;
         QStringList m_diagnostics;
+        EAS_U32 m_libVersion;
     };
 
 }} /* drumstick::rt */
