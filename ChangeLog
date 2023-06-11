@@ -1,3 +1,6 @@
+2023-06-11
+    * Fix for ticket #48: SMF Parser does not report enough errors
+
 2023-05-07
     * Implemented change soundfont function for the SonivoxEAS backend.
 
@@ -39,8 +42,8 @@
     * fluidsynth: default windows audio driver is now wasapi. Fixed pulseaudio settings.
 
 2022-07-19
-    * fluidsynth backend files and classes renamed with more specific names. 
-    * vpiano error message citing the DRUMSTICKRT environment variable. 
+    * fluidsynth backend files and classes renamed with more specific names.
+    * vpiano error message citing the DRUMSTICKRT environment variable.
     * some work to update the documentation components diagram (unfinished).
 
 2022-07-17
@@ -70,7 +73,7 @@
     * Release 2.6.1
 
 2022-05-19
-    * Another fix related to ticket #39: CMAKE_INSTALL_LIBDIR is passed to the compiler 
+    * Another fix related to ticket #39: CMAKE_INSTALL_LIBDIR is passed to the compiler
       as a symbol named LIBSUFFIX (see library/rt/CMakeLists.txt:69). It needed to be tested
       at runtime with QDir::isAbsolutePath().
     * Bumped version to 2.6.1 for the next release.
@@ -186,7 +189,7 @@
     * implementation of ticket #29: RIFF RMID file support
     * New utility: dumprmi
 
-2021-08-20 
+2021-08-20
     * Enable by default the internal reverb on macOS DLS Synth
     * Avoid hardcoded font family name in vpiano
 
@@ -323,7 +326,7 @@
     * Implemented ticket #26: customizable texture for black and white keys
 
 2021-02-17
-    * Implemented ticket #25: chromatic scale highlight palette 
+    * Implemented ticket #25: chromatic scale highlight palette
 
 2021-02-10
     * fix for ticket #27: error parsing a wrk file
@@ -380,7 +383,7 @@
 2019-12-19
     * Revised ALSA RT plugins. ALSA Client is now created only when needed
 
-2019-12-16 
+2019-12-16
     * Modernization of the cmake buildsystem, producing cmake configuration scripts
 
 2019-09-01
@@ -561,13 +564,13 @@
     * release 0.5.0
 
 2010-09-08
-    * remaining warnings removed 
+    * remaining warnings removed
     * guiplayer simplified, and optimizations
     * compile with -fvisibility=hidden if it is available
     * compile always with -fexceptions
     * fixes in both buildsystems, cmake and qmake
 
-2010-09-02 
+2010-09-02
     * Use RealtimeKit support for the MIDI input thread.
 
 2010-08-31
@@ -580,7 +583,7 @@
 2010-07-12
     * removed PCH build option
     * release 0.4.1
-    
+
 2010-07-11
     * Fixed bug in class SequencerInputThread: realtime priority must be applied
       in run() instead of start() to avoid changing the scheduling policy of the
@@ -592,11 +595,11 @@
     * smfplayer renamed as guiplayer, with a new windows layout and
       supporting Cakewalk WRK files playback
     * release 0.4.0
-    
+
 2010-07-03
     * subdirectory "tests" renamed as "utils".
     * visibility attribute for public classes.
-    
+
 2010-06-10
     * Compile fix for 0.3.2
     * release 0.3.2a
@@ -616,30 +619,30 @@
 2010-04-19
     * Release 0.3.1
     * Allow to build drumstick-file library under Windows
-    * New method MidiClient::parseAddress() replacing the ALSA function 
+    * New method MidiClient::parseAddress() replacing the ALSA function
       snd_seq_parse_address() in MidiPort::subscribeTo() and similar methods.
-    * Fixed MidiClient::getAvailableInputs() and getAvailableOutputs() forcing 
+    * Fixed MidiClient::getAvailableInputs() and getAvailableOutputs() forcing
       to always retrieve the clients list.
 
 2010-03-09
     * Release 0.3.0
     * API changes:
-      SequencerEvent::isChannel() returns true for SND_SEQ_EVENT_NOTE 
+      SequencerEvent::isChannel() returns true for SND_SEQ_EVENT_NOTE
       QueueTimer::setId(const TimerId& id) new method overload
       Timer::bestGlobalTimerId() new static function
       getRuntimeALSALibraryVersion() new global function
       getRuntimeALSALibraryNumber() new global function
       getRuntimeALSADriverVersion() new global function
       getRuntimeALSADriverNumber() new global function
-    
+
 2010-03-02
     * New class QWrk, for reading Cakewalk files
 
 2010-02-17
-    * Split: drumstick-file and drumstick-alsa 
+    * Split: drumstick-file and drumstick-alsa
 
 2010-01-07
-    * Renamed to 'drumstick' and moved to a new project repository 
+    * Renamed to 'drumstick' and moved to a new project repository
 
 2009-12-27
     * Release 0.2.0

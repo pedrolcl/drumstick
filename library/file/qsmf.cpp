@@ -211,9 +211,9 @@ void QSmf::readTrack()
 
     quint64 lookfor;
     quint8 c, c1, type;
-    bool sysexcontinue; // 1 if last message was an unfinished SysEx
-    bool running; // 1 when running status used
-    quint8 status; // status value (e.g. 0x90==note-on)
+    bool sysexcontinue; // true if last message was an unfinished SysEx
+    bool running;       // true when running status is used
+    quint8 status;      // status value (e.g. 0x90==note-on)
     int needed;
     double delta_secs;
     quint64 delta_ticks, save_time, save_tempo;
@@ -385,10 +385,12 @@ void QSmf::readTrack()
             badByte(c, d->m_IOStream->device()->pos() - 1);
             break;
         }
-        if ((d->m_ToBeRead > lookfor) && endOfSmf())
-        {
+        if ((d->m_ToBeRead > lookfor) && endOfSmf()) {
             SMFError("Unexpected end of input");
         }
+    }
+    if (d->m_ToBeRead > 0) {
+        SMFError(QStringLiteral("Track ended before reading last %1 bytes").arg(d->m_ToBeRead));
     }
     emit signalSMFTrackEnd();
 }
@@ -403,6 +405,10 @@ void QSmf::SMFRead()
     for ( i = d->m_Tracks; (i > 0) && !endOfSmf(); i--)
     {
         readTrack();
+    }
+    if (i > 0) {
+        SMFError(
+            QStringLiteral("%1 tracks out of a total of %2 are missing").arg(i).arg(d->m_Tracks));
     }
 }
 
