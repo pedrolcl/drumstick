@@ -81,10 +81,18 @@ void AlsaTest1::testEvents()
     QCOMPARE(sysexEvent.getData(), sysexData.data());
     QCOMPARE(sysexEvent.getLength(), (unsigned) sysexData.length());
 
+    SysExEvent otherEvent = sysexEvent;
+    QCOMPARE(otherEvent.getData(), sysexData.data());
+    QCOMPARE(otherEvent.getLength(), (unsigned) sysexData.length());
+
     QString text = "This can be a copyright, song name, instrument, lyric...";
     TextEvent textEvent(text, 3);
     QCOMPARE(textEvent.getText(), text);
     QCOMPARE(textEvent.getLength(), (unsigned) text.length());
+
+    TextEvent otherText = textEvent;
+    QCOMPARE(otherText.getText(), text);
+    QCOMPARE(otherText.getLength(), (unsigned) text.length());
 }
 
 QTEST_APPLESS_MAIN(AlsaTest1)

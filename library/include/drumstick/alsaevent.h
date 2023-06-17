@@ -490,6 +490,7 @@ public:
     explicit SysExEvent(const QByteArray& data);
     SysExEvent(const SysExEvent& other);
     SysExEvent(const unsigned int datalen, char* dataptr);
+    SysExEvent &operator=(const SysExEvent &other);
     virtual SysExEvent* clone() const override;
 };
 
@@ -507,6 +508,7 @@ public:
     explicit TextEvent(const QString& text, const int textType = 1);
     TextEvent(const TextEvent& other);
     TextEvent(const unsigned int datalen, char* dataptr);
+    TextEvent &operator=(const TextEvent &other);
     QString getText() const;
     int getTextType() const;
     virtual TextEvent* clone() const override;
