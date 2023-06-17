@@ -30,6 +30,16 @@
  * BackendManager class declaration
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_RT_EXPORT
+#else
+#if defined(drumstick_rt_EXPORTS)
+#define DRUMSTICK_RT_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_RT_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 namespace drumstick {
 /**
  * @ingroup RT
@@ -42,99 +52,98 @@ namespace rt {
      * @{
      */
 
-    /**
+/**
      * @brief The BackendManager class manages lists of dynamic and static
      * backends for applications based on drumstick-rt
      */
-    class DRUMSTICK_EXPORT BackendManager
-    {
-    public:
-        /**
+class DRUMSTICK_RT_EXPORT BackendManager
+{
+public:
+    /**
          * @brief BackendManager constructor
          */
-        explicit BackendManager();
+    explicit BackendManager();
 
-        /**
+    /**
          * @brief ~BackendManager destructor
          */
-        virtual ~BackendManager();
+    virtual ~BackendManager();
 
-        /**
+    /**
          * @brief refresh the list of backends
          */
-        void refresh(QSettings* settings = nullptr);
+    void refresh(QSettings *settings = nullptr);
 
-        /**
+    /**
          * @brief refresh the list of backends
          */
-        void refresh(const QVariantMap& map);
+    void refresh(const QVariantMap &map);
 
-        /**
+    /**
          * @brief availableInputs
          * @return list of available MIDI inputs
          */
-        QList<MIDIInput*> availableInputs();
+    QList<MIDIInput *> availableInputs();
 
-        /**
+    /**
          * @brief availableOutputs
          * @return list of available MIDI outputs
          */
-        QList<MIDIOutput*> availableOutputs();
+    QList<MIDIOutput *> availableOutputs();
 
-        /**
+    /**
          * @brief defaultPaths
          * @return list of paths for backends search
          */
-        QStringList defaultPaths();
+    QStringList defaultPaths();
 
-        /**
+    /**
          * @brief inputBackendByName
          * @param name The name of some input backend
          * @return Input backend instance if available
          */
-        MIDIInput* inputBackendByName(const QString name);
+    MIDIInput *inputBackendByName(const QString name);
 
-        /**
+    /**
          * @brief outputBackendByName
          * @param name The name of some output backend
          * @return Output backend instance if available
          */
-        MIDIOutput* outputBackendByName(const QString name);
+    MIDIOutput *outputBackendByName(const QString name);
 
-        /**
+    /**
          * @brief findInput returns the backend corresponding
          * to the provided name, or a suitable input instead.
          * @param name The name of some input backend
          * @return Input backend instance if available
          */
-        MIDIInput* findInput(QString name);
+    MIDIInput *findInput(QString name);
 
-        /**
+    /**
          * @brief findOutput returns the backend corresponding
          * to the provided name, or a suitable output instead.
          * @param name The name of some output backend
          * @return Output backend instance if available
          */
-        MIDIOutput* findOutput(QString name);
+    MIDIOutput *findOutput(QString name);
 
-        static const QString QSTR_DRUMSTICK;
-        static const QString QSTR_DRUMSTICK_VERSION;
-        static const QString QSTR_DRUMSTICKRT;
-        static const QString QSTR_DRUMSTICKRT_GROUP;
-        static const QString QSTR_DRUMSTICKRT_PUBLICNAMEIN;
-        static const QString QSTR_DRUMSTICKRT_PUBLICNAMEOUT;
-        static const QString QSTR_DRUMSTICKRT_EXCLUDED;
-        static const QString QSTR_DRUMSTICKRT_PATH;
+    static const QString QSTR_DRUMSTICK;
+    static const QString QSTR_DRUMSTICK_VERSION;
+    static const QString QSTR_DRUMSTICKRT;
+    static const QString QSTR_DRUMSTICKRT_GROUP;
+    static const QString QSTR_DRUMSTICKRT_PUBLICNAMEIN;
+    static const QString QSTR_DRUMSTICKRT_PUBLICNAMEOUT;
+    static const QString QSTR_DRUMSTICKRT_EXCLUDED;
+    static const QString QSTR_DRUMSTICKRT_PATH;
 
-    private:
-        class BackendManagerPrivate;
-        QScopedPointer<BackendManagerPrivate> d;
-    };
+private:
+    class BackendManagerPrivate;
+    QScopedPointer<BackendManagerPrivate> d;
+};
 
-    QString DRUMSTICK_EXPORT drumstickLibraryVersion();
+QString DRUMSTICK_RT_EXPORT drumstickLibraryVersion();
 
 /** @} */
-
 }} // namespace drumstick::rt
 
 #endif // BACKENDMANAGER_H

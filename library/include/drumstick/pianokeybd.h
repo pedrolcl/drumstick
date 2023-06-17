@@ -30,6 +30,16 @@
  * Piano Keyboard Widget
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_WIDGETS_EXPORT
+#else
+#if defined(drumstick_widgets_EXPORTS)
+#define DRUMSTICK_WIDGETS_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_WIDGETS_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 namespace drumstick { namespace widgets {
 
     Q_NAMESPACE
@@ -97,8 +107,8 @@ namespace drumstick { namespace widgets {
      */
     typedef QHash<int, int> KeyboardMap;
 
-    extern DRUMSTICK_EXPORT KeyboardMap g_DefaultKeyMap;    ///< Global Key Map Variable
-    extern DRUMSTICK_EXPORT KeyboardMap g_DefaultRawKeyMap; ///< Global Raw Key Map Variable
+    extern DRUMSTICK_WIDGETS_EXPORT KeyboardMap g_DefaultKeyMap;    ///< Global Key Map Variable
+    extern DRUMSTICK_WIDGETS_EXPORT KeyboardMap g_DefaultRawKeyMap; ///< Global Raw Key Map Variable
 
     const int DEFAULTSTARTINGKEY = 9;   ///< Default starting key (A)
     const int DEFAULTBASEOCTAVE = 1;    ///< Default base octave
@@ -162,7 +172,7 @@ namespace drumstick { namespace widgets {
      * This class is a widget providing the look and behavior of a musical piano keyboard.
      * It is implemented as a QGraphicsView displaying the contents of a QGraphicsScene (PianoScene).
      */
-    class DRUMSTICK_EXPORT PianoKeybd : public QGraphicsView, public RawKbdHandler
+    class DRUMSTICK_WIDGETS_EXPORT PianoKeybd : public QGraphicsView, public RawKbdHandler
     {
         Q_OBJECT
         Q_PROPERTY( int baseOctave READ baseOctave WRITE setBaseOctave )

@@ -34,6 +34,16 @@ namespace drumstick { namespace ALSA {
  * Classes managing ALSA Sequencer queues
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_ALSA_EXPORT
+#else
+#if defined(drumstick_alsa_EXPORTS)
+#define DRUMSTICK_ALSA_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_ALSA_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 class MidiClient;
 class TimerId;
 
@@ -46,7 +56,7 @@ class TimerId;
  *
  * This class is used to hold some properties about an ALSA queue object.
  */
-class DRUMSTICK_EXPORT QueueInfo
+class DRUMSTICK_ALSA_EXPORT QueueInfo
 {
     friend class MidiQueue;
 
@@ -79,7 +89,7 @@ private:
  *
  * This class is used to retrieve some status information from an ALSA queue.
  */
-class DRUMSTICK_EXPORT QueueStatus
+class DRUMSTICK_ALSA_EXPORT QueueStatus
 {
     friend class MidiQueue;
 
@@ -116,7 +126,7 @@ private:
  * factor the quotient of both quantities = value / base. Currently (ALSA <= 1.0.20)
  * you can only use the base constant 0x10000 (decimal 65536).
  */
-class DRUMSTICK_EXPORT QueueTempo
+class DRUMSTICK_ALSA_EXPORT QueueTempo
 {
     friend class MidiQueue;
 
@@ -156,7 +166,7 @@ private:
  * This class is used to hold some properties about the Timer used with an ALSA
  * queue object.
  */
-class DRUMSTICK_EXPORT QueueTimer
+class DRUMSTICK_ALSA_EXPORT QueueTimer
 {
     friend class MidiQueue;
 
@@ -187,7 +197,7 @@ private:
  *
  * This class represents an ALSA sequencer queue object.
  */
-class DRUMSTICK_EXPORT MidiQueue : public QObject
+class DRUMSTICK_ALSA_EXPORT MidiQueue : public QObject
 {
     Q_OBJECT
 public:

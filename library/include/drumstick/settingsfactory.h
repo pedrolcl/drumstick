@@ -28,6 +28,16 @@
  * SettingsFactory class declaration
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_WIDGETS_EXPORT
+#else
+#if defined(drumstick_widgets_EXPORTS)
+#define DRUMSTICK_WIDGETS_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_WIDGETS_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 /**
  * @class QSettings
  * @brief The QSettings class provides persistent platform-independent application settings.
@@ -45,16 +55,16 @@ namespace drumstick { namespace widgets {
      * This class creates and returns a QSettings object globally configured
      * instance using native or file storage.
      */
-    class DRUMSTICK_EXPORT SettingsFactory
-    {
-    public:
-        QSettings* getQSettings();
-        QSettings* operator->();
-        static void setFileName(const QString name);
+class DRUMSTICK_WIDGETS_EXPORT SettingsFactory
+{
+public:
+    QSettings *getQSettings();
+    QSettings *operator->();
+    static void setFileName(const QString name);
 
-    private:
-        QScopedPointer<QSettings> m_settings{nullptr};
-        static QString s_fileName;
+private:
+    QScopedPointer<QSettings> m_settings{nullptr};
+    static QString s_fileName;
     };
 
     /** @} */

@@ -30,6 +30,16 @@ namespace drumstick { namespace ALSA {
  * Sequencer output thread
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_ALSA_EXPORT
+#else
+#if defined(drumstick_alsa_EXPORTS)
+#define DRUMSTICK_ALSA_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_ALSA_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 class MidiClient;
 class MidiQueue;
 
@@ -45,7 +55,7 @@ class MidiQueue;
  *
  * Examples: guiplayer.cpp and playsmf.cpp
  */
-class DRUMSTICK_EXPORT  SequencerOutputThread : public QThread
+class DRUMSTICK_ALSA_EXPORT SequencerOutputThread : public QThread
 {
     Q_OBJECT
 

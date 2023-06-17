@@ -33,162 +33,174 @@
  * Realtime MIDI input interface
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_RT_EXPORT
+#else
+#if defined(drumstick_rt_EXPORTS)
+#define DRUMSTICK_RT_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_RT_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 namespace drumstick { namespace rt {
 
-    /**
+/**
      * @addtogroup RT
      * @{
      *
      * @class MIDIInput
      * @brief MIDI IN interface
      */
-    class DRUMSTICK_EXPORT MIDIInput : public QObject
-    {
-        Q_OBJECT
+class DRUMSTICK_RT_EXPORT MIDIInput : public QObject
+{
+    Q_OBJECT
 
-    public:
-        /**
+public:
+    /**
          * @brief MIDIInput constructor
          * @param parent
          */
-        explicit MIDIInput(QObject *parent = nullptr) : QObject(parent) {}
-        /**
+    explicit MIDIInput(QObject *parent = nullptr)
+        : QObject(parent)
+    {}
+    /**
          * @brief ~MIDIInput destructor
          */
-        virtual ~MIDIInput() = default;
-        /**
+    virtual ~MIDIInput() = default;
+    /**
          * @brief initialize
          * @param settings
          */
-        virtual void initialize(QSettings* settings) = 0;
-        /**
+    virtual void initialize(QSettings *settings) = 0;
+    /**
          * @brief backendName
          * @return plugin name
          */
-        virtual QString backendName() = 0;
-        /**
+    virtual QString backendName() = 0;
+    /**
          * @brief publicName
          * @return MIDI port name
          */
-        virtual QString publicName() = 0;
-        /**
+    virtual QString publicName() = 0;
+    /**
          * @brief setPublicName
          * @param name MIDI port name
          */
-        virtual void setPublicName(QString name) = 0;
-        /**
+    virtual void setPublicName(QString name) = 0;
+    /**
          * @brief connections
          * @param advanced whether the advanced connections are included or not
          * @return list of available MIDI ports
          */
-        virtual QList<MIDIConnection> connections(bool advanced = false) = 0;
-        /**
+    virtual QList<MIDIConnection> connections(bool advanced = false) = 0;
+    /**
          * @brief setExcludedConnections
          * @param conns
          */
-        virtual void setExcludedConnections(QStringList conns) = 0;
-        /**
+    virtual void setExcludedConnections(QStringList conns) = 0;
+    /**
          * @brief open the MIDI port by name
          * @param conn Connection to open
          */
-        virtual void open(const MIDIConnection& conn) = 0;
-        /**
+    virtual void open(const MIDIConnection &conn) = 0;
+    /**
          * @brief close the MIDI port
          */
-        virtual void close() = 0;
-        /**
+    virtual void close() = 0;
+    /**
          * @brief currentConnection
          * @return name of the current connection if it is opened
          */
-        virtual MIDIConnection currentConnection() = 0;
-        /**
+    virtual MIDIConnection currentConnection() = 0;
+    /**
          * @brief setMIDIThruDevice
          * @param device
          */
-        virtual void setMIDIThruDevice(MIDIOutput* device) = 0;
-        /**
+    virtual void setMIDIThruDevice(MIDIOutput *device) = 0;
+    /**
          * @brief enableMIDIThru
          * @param enable
          */
-        virtual void enableMIDIThru(bool enable) = 0;
-        /**
+    virtual void enableMIDIThru(bool enable) = 0;
+    /**
          * @brief isEnabledMIDIThru
          * @return MIDI Thru is enabled
          */
-        virtual bool isEnabledMIDIThru() = 0;
+    virtual bool isEnabledMIDIThru() = 0;
 
-    Q_SIGNALS:
-        /**
+Q_SIGNALS:
+    /**
          * @brief midiNoteOff 0x8
          * @param chan
          * @param note
          * @param vel
          */
-        void midiNoteOff(const int chan, const int note, const int vel);
+    void midiNoteOff(const int chan, const int note, const int vel);
 
-        /**
+    /**
          * @brief midiNoteOn 0x9
          * @param chan
          * @param note
          * @param vel
          */
-        void midiNoteOn(const int chan, const int note, const int vel);
+    void midiNoteOn(const int chan, const int note, const int vel);
 
-        /**
+    /**
          * @brief midiKeyPressure 0xA
          * @param chan
          * @param note
          * @param value
          */
-        void midiKeyPressure(const int chan, const int note, const int value);
+    void midiKeyPressure(const int chan, const int note, const int value);
 
-        /**
+    /**
          * @brief midiController 0xB
          * @param chan
          * @param control
          * @param value
          */
-        void midiController(const int chan, const int control, const int value);
+    void midiController(const int chan, const int control, const int value);
 
-        /**
+    /**
          * @brief midiProgram 0xC
          * @param chan
          * @param program
          */
-        void midiProgram(const int chan, const int program);
+    void midiProgram(const int chan, const int program);
 
-        /**
+    /**
          * @brief midiChannelPressure 0xD
          * @param chan
          * @param value
          */
-        void midiChannelPressure(const int chan, const int value);
+    void midiChannelPressure(const int chan, const int value);
 
-        /**
+    /**
          * @brief midiPitchBend 0xE
          * @param chan
          * @param value
          */
-        void midiPitchBend(const int chan, const int value);
+    void midiPitchBend(const int chan, const int value);
 
-        /**
+    /**
          * @brief midiSysex
          * @param data 0xF0 ... 0xF7
          */
-        void midiSysex(const QByteArray &data);
+    void midiSysex(const QByteArray &data);
 
-        /**
+    /**
          * @brief midiSystemCommon
          * @param status 0xF (1..6)
          */
-        void midiSystemCommon(const int status);
+    void midiSystemCommon(const int status);
 
-        /**
+    /**
          * @brief midiSystemRealtime
          * @param status 0xF (8..F)
          */
-        void midiSystemRealtime(const int status);
-    };
+    void midiSystemRealtime(const int status);
+};
 
 /** @} */
 

@@ -29,6 +29,16 @@ namespace drumstick { namespace ALSA {
  * Classes managing ALSA Sequencer ports.
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_ALSA_EXPORT
+#else
+#if defined(drumstick_alsa_EXPORTS)
+#define DRUMSTICK_ALSA_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_ALSA_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 class MidiClient;
 
 /**
@@ -38,7 +48,7 @@ class MidiClient;
  * @class PortInfo
  * Port information container
  */
-class DRUMSTICK_EXPORT PortInfo
+class DRUMSTICK_ALSA_EXPORT PortInfo
 {
     friend class MidiPort;
     friend class ClientInfo;
@@ -111,7 +121,7 @@ typedef QList<PortInfo> PortInfoList;
  *
  * This class represents an ALSA sequencer port.
  */
-class DRUMSTICK_EXPORT MidiPort : public QObject
+class DRUMSTICK_ALSA_EXPORT MidiPort : public QObject
 {
     Q_OBJECT
     friend class MidiClient;

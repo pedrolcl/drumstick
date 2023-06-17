@@ -19,9 +19,9 @@
 #ifndef SEQUENCERERROR_H
 #define SEQUENCERERROR_H
 
-#include <exception>
 #include <QString>
 #include "macros.h"
+#include <exception>
 
 /**
  * @file sequencererror.h
@@ -37,7 +37,18 @@
  * @see https://en.cppreference.com/w/cpp/error/exception
  */
 
-namespace drumstick { namespace ALSA {
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_ALSA_EXPORT
+#else
+#if defined(drumstick_alsa_EXPORTS)
+#define DRUMSTICK_ALSA_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_ALSA_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
+namespace drumstick {
+namespace ALSA {
 
 /**
  * @addtogroup ALSAError ALSA Sequencer Exception
@@ -50,7 +61,7 @@ namespace drumstick { namespace ALSA {
  * The class SequencerError represents an exception object reported when the
  * ALSA library returns an error code. It is only used for severe errors.
  */
-class DRUMSTICK_EXPORT SequencerError : std::exception
+class DRUMSTICK_ALSA_EXPORT SequencerError : std::exception
 {
 public:
     /**
@@ -91,6 +102,7 @@ private:
 
 /** @} */
 
-}} // namespace drumstick::ALSA
+} // namespace ALSA
+} // namespace drumstick
 
 #endif // SEQUENCERERROR_H

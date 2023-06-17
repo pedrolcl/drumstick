@@ -17,10 +17,11 @@
 */
 
 #include <QMetaMethod>
-#include "fluidsettingsdialog.h"
-#include "networksettingsdialog.h"
 #include <drumstick/backendmanager.h>
 #include <drumstick/configurationdialogs.h>
+
+#include "fluidsettingsdialog.h"
+#include "networksettingsdialog.h"
 #if defined(Q_OS_LINUX)
 #include "sonivoxsettingsdialog.h"
 #endif

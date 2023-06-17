@@ -37,6 +37,16 @@ namespace drumstick { namespace ALSA {
  * @{
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_ALSA_EXPORT
+#else
+#if defined(drumstick_alsa_EXPORTS)
+#define DRUMSTICK_ALSA_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_ALSA_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 /**
  * 8-bit unsigned number to be used as a MIDI message parameter
  */
@@ -54,7 +64,7 @@ const QEvent::Type SequencerEventType = QEvent::Type(QEvent::User + 4154); // :-
  * All event classes share this base class. It provides several common
  * properties and methods.
  */
-class DRUMSTICK_EXPORT SequencerEvent : public QEvent
+class DRUMSTICK_ALSA_EXPORT SequencerEvent : public QEvent
 {
 public:
     SequencerEvent();
@@ -145,7 +155,7 @@ protected:
 /**
  * Base class for the events having a Channel property
  */
-class DRUMSTICK_EXPORT ChannelEvent : public SequencerEvent
+class DRUMSTICK_ALSA_EXPORT ChannelEvent : public SequencerEvent
 {
 public:
     /** Default constructor */
@@ -174,7 +184,7 @@ public:
 /**
  * Base class for the events having Key and Velocity properties.
  */
-class DRUMSTICK_EXPORT KeyEvent : public ChannelEvent
+class DRUMSTICK_ALSA_EXPORT KeyEvent : public ChannelEvent
 {
 public:
     /** Default constructor */
@@ -218,7 +228,7 @@ public:
  * Note events are converted into two MIDI events, a note-on and a note-off
  * over the wire.
  */
-class DRUMSTICK_EXPORT NoteEvent : public KeyEvent
+class DRUMSTICK_ALSA_EXPORT NoteEvent : public KeyEvent
 {
 public:
     /** Default constructor */
@@ -251,7 +261,7 @@ public:
 /**
  * Event representing a note-on MIDI event
  */
-class DRUMSTICK_EXPORT NoteOnEvent : public KeyEvent
+class DRUMSTICK_ALSA_EXPORT NoteOnEvent : public KeyEvent
 {
 public:
     /** Default constructor */
@@ -271,7 +281,7 @@ public:
 /**
  * Event representing a note-off MIDI event
  */
-class DRUMSTICK_EXPORT NoteOffEvent : public KeyEvent
+class DRUMSTICK_ALSA_EXPORT NoteOffEvent : public KeyEvent
 {
 public:
     /** Default constructor */
@@ -291,7 +301,7 @@ public:
 /**
  * Event representing a MIDI key pressure, or polyphonic after-touch event
  */
-class DRUMSTICK_EXPORT KeyPressEvent : public KeyEvent
+class DRUMSTICK_ALSA_EXPORT KeyPressEvent : public KeyEvent
 {
 public:
     /** Default constructor */
@@ -311,7 +321,7 @@ public:
 /**
  * Event representing a MIDI control change event
  */
-class DRUMSTICK_EXPORT ControllerEvent : public ChannelEvent
+class DRUMSTICK_ALSA_EXPORT ControllerEvent : public ChannelEvent
 {
 public:
     /** Default constructor */
@@ -355,7 +365,7 @@ public:
 /**
  * Event representing a MIDI program change event
  */
-class DRUMSTICK_EXPORT ProgramChangeEvent : public ChannelEvent
+class DRUMSTICK_ALSA_EXPORT ProgramChangeEvent : public ChannelEvent
 {
 public:
     /** Default constructor */
@@ -385,7 +395,7 @@ public:
 /**
  * Event representing a MIDI bender, or pitch wheel event
  */
-class DRUMSTICK_EXPORT PitchBendEvent : public ChannelEvent
+class DRUMSTICK_ALSA_EXPORT PitchBendEvent : public ChannelEvent
 {
 public:
     /** Default constructor */
@@ -415,7 +425,7 @@ public:
 /**
  * Event representing a MIDI channel pressure or after-touch event
  */
-class DRUMSTICK_EXPORT ChanPressEvent : public ChannelEvent
+class DRUMSTICK_ALSA_EXPORT ChanPressEvent : public ChannelEvent
 {
 public:
     /** Default constructor */
@@ -445,7 +455,7 @@ public:
 /**
  * Base class for variable length events
  */
-class DRUMSTICK_EXPORT VariableEvent : public SequencerEvent
+class DRUMSTICK_ALSA_EXPORT VariableEvent : public SequencerEvent
 {
 public:
     VariableEvent();
@@ -472,7 +482,7 @@ protected:
 /**
  * Event representing a MIDI system exclusive event
  */
-class DRUMSTICK_EXPORT SysExEvent : public VariableEvent
+class DRUMSTICK_ALSA_EXPORT SysExEvent : public VariableEvent
 {
 public:
     SysExEvent();
@@ -489,7 +499,7 @@ public:
  * This event type is not intended to be transmitted over the wire to an
  * external device, but it is useful for sequencer programs or MIDI applications
  */
-class DRUMSTICK_EXPORT TextEvent : public VariableEvent
+class DRUMSTICK_ALSA_EXPORT TextEvent : public VariableEvent
 {
 public:
     TextEvent();
@@ -507,7 +517,7 @@ protected:
 /**
  * Generic event
  */
-class DRUMSTICK_EXPORT SystemEvent : public SequencerEvent
+class DRUMSTICK_ALSA_EXPORT SystemEvent : public SequencerEvent
 {
 public:
     /** Default constructor */
@@ -526,7 +536,7 @@ public:
  *
  * This event is used to schedule changes to the ALSA queues
  */
-class DRUMSTICK_EXPORT QueueControlEvent : public SequencerEvent
+class DRUMSTICK_ALSA_EXPORT QueueControlEvent : public SequencerEvent
 {
 public:
     /** Default constructor */
@@ -603,7 +613,7 @@ public:
 /**
  * Generic event having a value property
  */
-class DRUMSTICK_EXPORT ValueEvent : public SequencerEvent
+class DRUMSTICK_ALSA_EXPORT ValueEvent : public SequencerEvent
 {
 public:
     /** Default constructor */
@@ -630,7 +640,7 @@ public:
 /**
  * ALSA Event representing a tempo change for an ALSA queue
  */
-class DRUMSTICK_EXPORT TempoEvent : public QueueControlEvent
+class DRUMSTICK_ALSA_EXPORT TempoEvent : public QueueControlEvent
 {
 public:
     /** Default constructor */
@@ -647,7 +657,7 @@ public:
 /**
  * ALSA Event representing a subscription between two ALSA clients and ports
  */
-class DRUMSTICK_EXPORT SubscriptionEvent : public SequencerEvent
+class DRUMSTICK_ALSA_EXPORT SubscriptionEvent : public SequencerEvent
 {
 public:
     /** Default constructor */
@@ -693,7 +703,7 @@ public:
 /**
  * ALSA Event representing a change on some ALSA sequencer client on the system
  */
-class DRUMSTICK_EXPORT ClientEvent : public SequencerEvent
+class DRUMSTICK_ALSA_EXPORT ClientEvent : public SequencerEvent
 {
 public:
     /** Default constructor */
@@ -714,7 +724,7 @@ public:
 /**
  * ALSA Event representing a change on some ALSA sequencer port on the system
  */
-class DRUMSTICK_EXPORT PortEvent : public ClientEvent
+class DRUMSTICK_ALSA_EXPORT PortEvent : public ClientEvent
 {
 public:
     /** Default constructor */
@@ -736,7 +746,7 @@ public:
  * Auxiliary class to remove events from an ALSA queue
  * @see MidiClient::removeEvents()
  */
-class DRUMSTICK_EXPORT RemoveEvents
+class DRUMSTICK_ALSA_EXPORT RemoveEvents
 {
 public:
     friend class MidiClient;
@@ -772,7 +782,7 @@ private:
 /**
  * Auxiliary class to translate between raw MIDI streams and ALSA events
  */
-class DRUMSTICK_EXPORT MidiCodec : public QObject
+class DRUMSTICK_ALSA_EXPORT MidiCodec : public QObject
 {
     Q_OBJECT
 public:

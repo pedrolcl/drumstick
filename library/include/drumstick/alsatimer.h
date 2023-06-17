@@ -37,6 +37,16 @@ namespace drumstick { namespace ALSA {
  * Classes managing ALSA Timers
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_ALSA_EXPORT
+#else
+#if defined(drumstick_alsa_EXPORTS)
+#define DRUMSTICK_ALSA_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_ALSA_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 class TimerQuery;
 class TimerId;
 class TimerGlobalInfo;
@@ -50,7 +60,7 @@ class TimerGlobalInfo;
  *
  * This class is used to hold properties about ALSA Timers.
  */
-class DRUMSTICK_EXPORT TimerInfo
+class DRUMSTICK_ALSA_EXPORT TimerInfo
 {
     friend class Timer;
 
@@ -82,7 +92,7 @@ private:
  *
  * This class provides an unique identifier for a Timer.
  */
-class DRUMSTICK_EXPORT TimerId
+class DRUMSTICK_ALSA_EXPORT TimerId
 {
     friend class TimerQuery;
     friend class TimerGlobalInfo;
@@ -123,7 +133,7 @@ typedef QList<TimerId> TimerIdList;
  *
  * This class provides global timer parameters.
  */
-class DRUMSTICK_EXPORT TimerGlobalInfo
+class DRUMSTICK_ALSA_EXPORT TimerGlobalInfo
 {
     friend class TimerQuery;
 
@@ -157,7 +167,7 @@ private:
  *
  * This class provides a mechanism to enumerate the available system timers.
  */
-class DRUMSTICK_EXPORT TimerQuery
+class DRUMSTICK_ALSA_EXPORT TimerQuery
 {
 public:
     TimerQuery(const QString& deviceName, int openMode);
@@ -188,7 +198,7 @@ private:
  *
  * This class provides several parameters about a Timer.
  */
-class DRUMSTICK_EXPORT TimerParams
+class DRUMSTICK_ALSA_EXPORT TimerParams
 {
     friend class Timer;
 
@@ -223,7 +233,7 @@ private:
  *
  * This class provides some status information about a Timer.
  */
-class DRUMSTICK_EXPORT TimerStatus
+class DRUMSTICK_ALSA_EXPORT TimerStatus
 {
     friend class Timer;
 
@@ -252,7 +262,7 @@ private:
  * This abstract class is used to define an interface that other class can
  * implement to receive timer events.
  */
-class DRUMSTICK_EXPORT TimerEventHandler
+class DRUMSTICK_ALSA_EXPORT TimerEventHandler
 {
 public:
     /** Destructor */
@@ -270,7 +280,7 @@ public:
  *
  * This class represents an ALSA timer object.
  */
-class DRUMSTICK_EXPORT Timer : public QObject
+class DRUMSTICK_ALSA_EXPORT Timer : public QObject
 {
     Q_OBJECT
     

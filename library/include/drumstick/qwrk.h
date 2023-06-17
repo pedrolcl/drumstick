@@ -31,6 +31,16 @@ class QDataStream;
  * Cakewalk WRK Files Input
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_FILE_EXPORT
+#else
+#if defined(drumstick_file_EXPORTS)
+#define DRUMSTICK_FILE_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_FILE_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 namespace drumstick { namespace File {
 
 /**
@@ -82,7 +92,7 @@ enum WrkChunkType {
  *
  * @since 0.3.0
  */
-class DRUMSTICK_EXPORT QWrk : public QObject
+class DRUMSTICK_FILE_EXPORT QWrk : public QObject
 {
     Q_OBJECT
     Q_ENUM(WrkChunkType)

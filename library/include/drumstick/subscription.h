@@ -33,6 +33,16 @@ namespace drumstick { namespace ALSA {
  * Classes managing ALSA sequencer subscriptions
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_ALSA_EXPORT
+#else
+#if defined(drumstick_alsa_EXPORTS)
+#define DRUMSTICK_ALSA_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_ALSA_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 class MidiClient;
 
 /**
@@ -44,7 +54,7 @@ class MidiClient;
  *
  * This class is used to enumerate the subscribers of a given (root) port.
  */
-class DRUMSTICK_EXPORT Subscriber
+class DRUMSTICK_ALSA_EXPORT Subscriber
 {
     friend class PortInfo;
 public:
@@ -83,7 +93,7 @@ private:
  *
  * This class represents a connection between two ports.
  */
-class DRUMSTICK_EXPORT Subscription
+class DRUMSTICK_ALSA_EXPORT Subscription
 {
 public:
     Subscription();

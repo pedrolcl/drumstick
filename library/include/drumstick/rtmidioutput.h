@@ -31,6 +31,16 @@
  * Realtime MIDI output interface
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_RT_EXPORT
+#else
+#if defined(drumstick_rt_EXPORTS)
+#define DRUMSTICK_RT_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_RT_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 namespace drumstick { namespace rt {
 
 /**
@@ -108,7 +118,7 @@ inline int MIDI_MSB(int x)
     /**
      * @brief MIDI OUT interface
      */
-    class DRUMSTICK_EXPORT MIDIOutput : public QObject
+    class DRUMSTICK_RT_EXPORT MIDIOutput : public QObject
     {
         Q_OBJECT
 

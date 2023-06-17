@@ -30,6 +30,16 @@
  * Piano Palette declarations
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_WIDGETS_EXPORT
+#else
+#if defined(drumstick_widgets_EXPORTS)
+#define DRUMSTICK_WIDGETS_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_WIDGETS_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 namespace drumstick { namespace widgets {
 
 /**
@@ -57,7 +67,7 @@ enum PalettePolicy {
  *
  * PianoPalette represents a set of colors used to paint the PianoKeybd widgets
  */
-class DRUMSTICK_EXPORT PianoPalette
+class DRUMSTICK_WIDGETS_EXPORT PianoPalette
 {
     Q_GADGET
     Q_DECLARE_TR_FUNCTIONS(PianoPalette)

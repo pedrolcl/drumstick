@@ -30,6 +30,16 @@
  * RIFF MIDI Files Input
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_FILE_EXPORT
+#else
+#if defined(drumstick_file_EXPORTS)
+#define DRUMSTICK_FILE_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_FILE_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 namespace drumstick { namespace File {
 
 /**
@@ -43,7 +53,7 @@ namespace drumstick { namespace File {
  * This class is used to parse RIFF MIDI Files
  * @since 2.4.0
  */
-class DRUMSTICK_EXPORT Rmidi : public QObject
+class DRUMSTICK_FILE_EXPORT Rmidi : public QObject
 {
     Q_OBJECT
 

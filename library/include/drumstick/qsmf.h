@@ -33,6 +33,16 @@ class QDataStream;
  * Standard MIDI Files Input/Output
  */
 
+#if defined(DRUMSTICK_STATIC)
+#define DRUMSTICK_FILE_EXPORT
+#else
+#if defined(drumstick_file_EXPORTS)
+#define DRUMSTICK_FILE_EXPORT Q_DECL_EXPORT
+#else
+#define DRUMSTICK_FILE_EXPORT Q_DECL_IMPORT
+#endif
+#endif
+
 namespace drumstick {
 /**
  * @ingroup File
@@ -89,7 +99,7 @@ const quint8 minor_mode =         1; /**< Minor mode scale */
  *
  * This class is used to parse and encode Standard MIDI Files (SMF)
  */
-class DRUMSTICK_EXPORT QSmf : public QObject
+class DRUMSTICK_FILE_EXPORT QSmf : public QObject
 {
     Q_OBJECT
 
@@ -344,7 +354,7 @@ private:
     void writeTrackChunk(int track);
 };
 
-QString DRUMSTICK_EXPORT drumstickLibraryVersion();
+QString DRUMSTICK_FILE_EXPORT drumstickLibraryVersion();
 
 /** @} */
 

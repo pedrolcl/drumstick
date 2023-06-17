@@ -23,24 +23,7 @@
 
 /**
  * @file macros.h
- * Drumstick visibility macros
  */
-
-#if !defined(DRUMSTICK_EXPORT) 
-#  if defined(DRUMSTICK_STATIC)
-#    define DRUMSTICK_EXPORT
-#  else
-#    if defined(drumstick_alsa_EXPORTS) || defined(drumstick_file_EXPORTS) || defined(drumstick_rt_EXPORTS) || defined(drumstick_widgets_EXPORTS)
-#      define DRUMSTICK_EXPORT Q_DECL_EXPORT
-#    else
-#      if defined(Q_OS_WIN)
-#        define DRUMSTICK_EXPORT Q_DECL_IMPORT
-#      else
-#        define DRUMSTICK_EXPORT Q_DECL_EXPORT
-#      endif
-#    endif
-#  endif
-#endif
 
 #if defined(_MSC_VER)
     #define DISABLE_WARNING_PUSH           __pragma(warning( push ))
