@@ -26,7 +26,12 @@ target_link_libraries (rtTest PRIVATE
     Qt${QT_VERSION_MAJOR}::Test
     Drumstick::RT )
 
-add_test (rtTest ${PROJECT_BINARY_DIR}/bin/rtTest)
+
+if ((EXISTS "/dev/snd/") AND (EXISTS "/dev/snd/seq"))
+
+    add_test (rtTest ${PROJECT_BINARY_DIR}/bin/rtTest)
+
+endif()
 
 if(STATIC_DRUMSTICK)
     if (FALSE)

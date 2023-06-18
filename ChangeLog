@@ -1,3 +1,10 @@
+2023-06-18
+    * Unit tests: conditionally run the ALSA test and run the Widgets test using the QPA platform "offscreen"
+
+2023-06-17
+    * Fix for ticket #49: Link failure when Qt6 is compiled with visibility protected
+    * ALSA: assignment operator for sysex and text events
+
 2023-06-11
     * Fix for ticket #48: SMF Parser does not report enough errors
 
@@ -9,7 +16,7 @@
     * Widgets: Sonivox configuration dialog updated
 
 2022-12-18
-    * Improved RMID file support
+    * File: Improved RMID file support
     *   Extract DLS embedded data
     *   Decode DLS instrument names
     *   New mime type

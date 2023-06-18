@@ -30,3 +30,4 @@ target_link_libraries (widgetsTest PRIVATE
 
 add_test (widgetsTest ${PROJECT_BINARY_DIR}/bin/widgetsTest)
 
+set_tests_properties(widgetsTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")

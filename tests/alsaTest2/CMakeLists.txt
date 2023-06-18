@@ -22,4 +22,10 @@ target_link_libraries (alsaTest2 PRIVATE
     Qt${QT_VERSION_MAJOR}::Test
 )
 
-add_test (alsaTest2 ${PROJECT_BINARY_DIR}/bin/alsaTest2)
+if ((EXISTS "/dev/snd/")
+    AND (EXISTS "/dev/snd/seq")
+    AND (EXISTS "/dev/snd/timer"))
+
+    add_test (alsaTest2 ${PROJECT_BINARY_DIR}/bin/alsaTest2)
+
+endif()

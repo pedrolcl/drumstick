@@ -57,6 +57,7 @@ private:
 
 WidgetsTest::WidgetsTest() = default;
 //{
+//    qDebug() << "platform:" << qApp->platformName();
 //    for( PianoPalette& pal : m_paletteList) {
 //        ...  pal.paletteId();
 //    }
