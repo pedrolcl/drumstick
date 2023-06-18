@@ -67,6 +67,12 @@ target_include_directories(drumstick-alsa PUBLIC
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+#message(STATUS "ALSA -- HAVE_DBUS: ${HAVE_DBUS}")
+
+target_compile_definitions(drumstick-alsa PRIVATE
+    $<$<BOOL:${HAVE_DBUS}>:-DRTKIT_SUPPORT>
+)
+
 target_link_libraries(drumstick-alsa PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     PkgConfig::ALSA

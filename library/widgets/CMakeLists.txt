@@ -18,9 +18,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(Qt${QT_VERSION_MAJOR}Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR}LinguistTools REQUIRED)
-if (USE_NETWORK)
-    find_package(Qt${QT_VERSION_MAJOR}Network REQUIRED)
-endif()
 
 set(drumstick-widgets_HEADERS
     ../include/drumstick/pianokeybd.h
@@ -56,7 +53,7 @@ set(drumstick-widgets_SRCS
     settingsfactory.cpp
 )
 
-if (USE_FLUIDSYNTH)
+if (HAVE_FLUIDSYNTH)
     list( APPEND drumstick-widgets_OBJ_SRCS fluidsettingsdialog.h )
     list( APPEND drumstick-widgets_SRCS
         fluidsettingsdialog.cpp
@@ -74,7 +71,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     list( APPEND drumstick-widgets_FORMS macsynthsettingsdialog.ui )
 endif()
 
-if (USE_NETWORK)
+if (HAVE_NETWORK)
     list( APPEND drumstick-widgets_OBJ_SRCS networksettingsdialog.h )
     list( APPEND drumstick-widgets_SRCS
         networksettingsdialog.cpp
@@ -83,7 +80,7 @@ if (USE_NETWORK)
     list( APPEND drumstick-widgets_FORMS networksettingsdialog.ui )
 endif()
 
-if (USE_SONIVOX)
+if (HAVE_SONIVOX)
     list( APPEND drumstick-widgets_OBJ_SRCS sonivoxsettingsdialog.h )
     list( APPEND drumstick-widgets_SRCS
         sonivoxsettingsdialog.cpp
@@ -118,6 +115,12 @@ add_library(drumstick-widgets
     ${drumstick-widgets_HEADERS}
 )
 
+target_compile_definitions(drumstick-widgets PRIVATE
+    $<$<BOOL:${HAVE_NETWORK}>:-DENABLE_NETWORK>
+    $<$<BOOL:${HAVE_FLUIDSYNTH}>:-DENABLE_FLUIDSYNTH>
+    $<$<BOOL:${HAVE_SONIVOX}>:-DENABLE_SONIVOX>
+)
+
 add_library(Drumstick::Widgets ALIAS drumstick-widgets)
 
 target_include_directories(drumstick-widgets PUBLIC
@@ -127,7 +130,7 @@ target_include_directories(drumstick-widgets PUBLIC
 
 target_link_libraries(drumstick-widgets PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
-    Qt${QT_VERSION_MAJOR}::Network
+    $<$<BOOL:${HAVE_NETWORK}>:Qt${QT_VERSION_MAJOR}::Network>
     Drumstick::RT
 )
 

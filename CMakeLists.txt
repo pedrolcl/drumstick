@@ -56,7 +56,7 @@ if(UNIX AND NOT APPLE)
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed -Wl,-z,defs")
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--as-needed -Wl,--no-undefined -Wl,-z,defs")
     endif()
-endif() 
+endif()
 
 add_definitions(-DVERSION=${PROJECT_VERSION})
 if (DEFINED PROJECT_WC_REVISION)
@@ -159,16 +159,21 @@ endif()
 
 message(STATUS "Found Qt version = ${QT_VERSION}")
 
+set(HAVE_DBUS OFF)
 if(BUILD_ALSA AND USE_DBUS)
     find_package(Qt${QT_VERSION_MAJOR}DBus REQUIRED)
-    add_definitions(-DRTKIT_SUPPORT)
-    message(STATUS "Found QtDBus version = ${Qt${QT_VERSION_MAJOR}DBus_VERSION}")
+    if (${Qt${QT_VERSION_MAJOR}DBus_FOUND})
+        set(HAVE_DBUS ON)
+        message(STATUS "Found QtDBus version = ${Qt${QT_VERSION_MAJOR}DBus_VERSION}")
+    endif()
 endif()
 
+set(HAVE_NETWORK OFF)
 if(BUILD_RT AND USE_NETWORK)
     find_package(Qt${QT_VERSION_MAJOR}Network REQUIRED)
     if(Qt${QT_VERSION_MAJOR}Network_FOUND)
         message(STATUS "Found QtNetwork version = ${Qt${QT_VERSION_MAJOR}Network_VERSION}")
+        set(HAVE_NETWORK ON)
     else()
         message(FATAL_ERROR "QtNetwork library not available. Network RT backend can't be built.")
     endif()
@@ -176,9 +181,9 @@ endif()
 
 find_package(PkgConfig REQUIRED)
 if(PKG_CONFIG_FOUND)
-	message(STATUS "Program pkg-config ${PKG_CONFIG_VERSION_STRING} found (${PKG_CONFIG_EXECUTABLE})")
+    message(STATUS "Program pkg-config ${PKG_CONFIG_VERSION_STRING} found (${PKG_CONFIG_EXECUTABLE})")
 else()
-	message(FATAL_ERROR "Program pkg-config not found")
+    message(FATAL_ERROR "Program pkg-config not found")
 endif()
 
 # ALSA Sequencer is only available on Linux
@@ -191,32 +196,38 @@ if (BUILD_ALSA AND (${CMAKE_SYSTEM} MATCHES "Linux"))
     endif()
 endif()
 
+set(HAVE_PULSEAUDIO OFF)
 if(BUILD_RT AND PKG_CONFIG_FOUND AND UNIX AND NOT APPLE)
     if (USE_PULSEAUDIO)
         pkg_check_modules(PULSE QUIET IMPORTED_TARGET libpulse-simple)
         if(PULSE_FOUND)
             message(STATUS "Found PulseAudio version = ${PULSE_VERSION}")
+            set(HAVE_PULSEAUDIO ON)
         else()
             message(FATAL_ERROR "PulseAudio library not available. Sonivox RT backend can't be built.")
         endif()
     endif()
 endif()
 
+set(HAVE_FLUIDSYNTH OFF)
 if (BUILD_RT AND PKG_CONFIG_FOUND)
     if (USE_FLUIDSYNTH)
         pkg_check_modules(FLUIDSYNTH QUIET IMPORTED_TARGET fluidsynth>=1.1.1)
         if(FLUIDSYNTH_FOUND)
             message(STATUS "Found FluidSynth version = ${FLUIDSYNTH_VERSION}")
+            set(HAVE_FLUIDSYNTH ON)
         else()
             message(FATAL_ERROR "FluidSynth library not available. FluidSynth RT backend can't be built.")
         endif()
     endif()
 endif()
 
+set(HAVE_SONIVOX OFF)
 if (BUILD_RT AND USE_SONIVOX)
     find_package(sonivox CONFIG QUIET)
     if(sonivox_FOUND)
         message(STATUS "Found Sonivox version = ${sonivox_VERSION}")
+        set(HAVE_SONIVOX ON)
     else()
         message(FATAL_ERROR "Sonivox library not available. SonivoxEas Synth RT backend can't be built.")
     endif()
@@ -241,11 +252,11 @@ message (STATUS "${PROJECT_NAME} v${PROJECT_VERSION}
     System: ${CMAKE_SYSTEM_NAME}
     Processor: ${CMAKE_SYSTEM_PROCESSOR}
     Qt Version: ${QT_VERSION}
-    D-Bus support: ${USE_DBUS}
-    Network support: ${USE_NETWORK}
-    PulseAudio support: ${USE_PULSEAUDIO}
-    FluidSynth support: ${USE_FLUIDSYNTH}
-    Sonivox support: ${USE_SONIVOX}
+    D-Bus support: ${HAVE_DBUS}
+    Network support: ${HAVE_NETWORK}
+    PulseAudio support: ${HAVE_PULSEAUDIO}
+    FluidSynth support: ${HAVE_FLUIDSYNTH}
+    Sonivox support: ${HAVE_SONIVOX}
     Building libdrumstick-alsa: ${BUILD_ALSA}
     Building libdrumstick-file: ${BUILD_FILE}
     Building libdrumstick-rt: ${BUILD_RT}
