@@ -886,9 +886,24 @@
                       </DDependency>
                      </instance>
                     </item>
+                    <item>
+                     <instance type="DAnnotation">
+                      <DAnnotation>
+                       <base-DElement>
+                        <DElement>
+                         <uid>{8fe5d783-b263-4d71-b3e4-27aa127038d3}</uid>
+                        </DElement>
+                       </base-DElement>
+                       <text>Drumstick Family Portrait</text>
+                       <pos>x:610;y:740</pos>
+                       <rect>x:0;y:0;w:206.625;h:38</rect>
+                       <visual-role>1</visual-role>
+                      </DAnnotation>
+                     </instance>
+                    </item>
                    </qlist>
                   </elements>
-                  <last-modified>1687107756637</last-modified>
+                  <last-modified>1687112362973</last-modified>
                   <toolbarid>General</toolbarid>
                  </MDiagram>
                 </base-MDiagram>
