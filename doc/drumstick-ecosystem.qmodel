@@ -521,7 +521,7 @@
                           </qlist>
                          </stereotypes>
                          <name>FluidSynth</name>
-                         <pos>x:830;y:255</pos>
+                         <pos>x:770;y:290</pos>
                          <rect>x:-60;y:-30;w:120;h:60</rect>
                          <visual-role>5</visual-role>
                         </DObject>
@@ -547,7 +547,7 @@
                          </stereotypes>
                          <a>{2994929f-78c5-41d4-9e8a-91fa5efd55a1}</a>
                          <b>{ab6b12b1-092f-4c69-af23-353a42267d8e}</b>
-                         <name>synth backend</name>
+                         <name>fluidsynth backend</name>
                         </DRelation>
                        </base-DRelation>
                       </DDependency>
@@ -570,7 +570,7 @@
                           </qlist>
                          </stereotypes>
                          <name>drumstick-drumgrid</name>
-                         <pos>x:5;y:-30</pos>
+                         <pos>x:65;y:590</pos>
                          <rect>x:-65;y:-25;w:130;h:50</rect>
                          <visual-role>6</visual-role>
                         </DObject>
@@ -596,7 +596,7 @@
                           </qlist>
                          </stereotypes>
                          <name>drumstick-dumpmid</name>
-                         <pos>x:5;y:80</pos>
+                         <pos>x:65;y:690</pos>
                          <rect>x:-65;y:-25;w:130;h:50</rect>
                          <visual-role>6</visual-role>
                         </DObject>
@@ -622,7 +622,7 @@
                           </qlist>
                          </stereotypes>
                          <name>drumstick-dumprmi</name>
-                         <pos>x:340;y:100</pos>
+                         <pos>x:345;y:690</pos>
                          <rect>x:-60;y:-25;w:120;h:50</rect>
                          <visual-role>6</visual-role>
                         </DObject>
@@ -648,7 +648,7 @@
                           </qlist>
                          </stereotypes>
                          <name>drumstick-dumpsmf</name>
-                         <pos>x:345;y:-10</pos>
+                         <pos>x:350;y:590</pos>
                          <rect>x:-65;y:-25;w:130;h:50</rect>
                          <visual-role>6</visual-role>
                         </DObject>
@@ -674,7 +674,7 @@
                           </qlist>
                          </stereotypes>
                          <name>drumstick-dumpwrk</name>
-                         <pos>x:345;y:45</pos>
+                         <pos>x:350;y:640</pos>
                          <rect>x:-65;y:-25;w:130;h:50</rect>
                          <visual-role>6</visual-role>
                         </DObject>
@@ -700,7 +700,7 @@
                           </qlist>
                          </stereotypes>
                          <name>drumstick-guiplayer</name>
-                         <pos>x:195;y:45</pos>
+                         <pos>x:210;y:590</pos>
                          <rect>x:-60;y:-25;w:120;h:50</rect>
                          <visual-role>6</visual-role>
                         </DObject>
@@ -726,7 +726,7 @@
                           </qlist>
                          </stereotypes>
                          <name>drumstick-metronome</name>
-                         <pos>x:10;y:25</pos>
+                         <pos>x:60;y:640</pos>
                          <rect>x:-70;y:-25;w:140;h:50</rect>
                          <visual-role>6</visual-role>
                         </DObject>
@@ -752,7 +752,7 @@
                           </qlist>
                          </stereotypes>
                          <name>drumstick-playsmf</name>
-                         <pos>x:195;y:100</pos>
+                         <pos>x:210;y:640</pos>
                          <rect>x:-60;y:-25;w:120;h:50</rect>
                          <visual-role>6</visual-role>
                         </DObject>
@@ -778,7 +778,7 @@
                           </qlist>
                          </stereotypes>
                          <name>drumstick-sysinfo</name>
-                         <pos>x:-5;y:135</pos>
+                         <pos>x:75;y:740</pos>
                          <rect>x:-55;y:-25;w:110;h:50</rect>
                          <visual-role>6</visual-role>
                         </DObject>
@@ -804,7 +804,7 @@
                           </qlist>
                          </stereotypes>
                          <name>drumstick-vpiano</name>
-                         <pos>x:500;y:110</pos>
+                         <pos>x:580;y:590</pos>
                          <rect>x:-55;y:-25;w:110;h:50</rect>
                          <visual-role>6</visual-role>
                         </DObject>
@@ -820,16 +820,16 @@
                         <DRelation>
                          <base-DElement>
                           <DElement>
-                           <uid>{7db699dc-c2ac-4d51-af15-231845ad51ab}</uid>
+                           <uid>{65af6152-469e-4d0d-be75-28d7f00fc250}</uid>
                           </DElement>
                          </base-DElement>
-                         <object>{f6379331-118a-4707-a620-d3799ac3ede5}</object>
+                         <object>{9a757733-49f7-4e55-9bcc-c308d1c54201}</object>
                          <stereotypes>
                           <qlist>
                            <item>uses</item>
                           </qlist>
                          </stereotypes>
-                         <a>{eb9f530d-3a00-43bd-a9a5-85f53073e99d}</a>
+                         <a>{dc419392-dc46-420d-8fb9-6ad679983c44}</a>
                          <b>{2994929f-78c5-41d4-9e8a-91fa5efd55a1}</b>
                         </DRelation>
                        </base-DRelation>
@@ -837,221 +837,50 @@
                      </instance>
                     </item>
                     <item>
+                     <instance type="DComponent">
+                      <DComponent>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{3a67e99b-bb26-4633-8cd8-d28d1a26a1b2}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{80b7aab0-c13e-42cc-bada-b832ec1f3bac}</object>
+                         <stereotypes>
+                          <qlist>
+                           <item>library</item>
+                           <item>ext</item>
+                          </qlist>
+                         </stereotypes>
+                         <name>Sonivox</name>
+                         <pos>x:770;y:225</pos>
+                         <rect>x:-55;y:-30;w:110;h:60</rect>
+                         <visual-role>5</visual-role>
+                        </DObject>
+                       </base-DObject>
+                      </DComponent>
+                     </instance>
+                    </item>
+                    <item>
                      <instance type="DDependency">
                       <DDependency>
                        <base-DRelation>
                         <DRelation>
                          <base-DElement>
                           <DElement>
-                           <uid>{264c4dc2-28e0-4512-b43f-5f76f5250eef}</uid>
+                           <uid>{740fe38a-bd3d-4c32-a2d1-5d46bbdbf57d}</uid>
                           </DElement>
                          </base-DElement>
-                         <object>{489fcf99-a676-41b3-a7c5-7175d10dd637}</object>
+                         <object>{cf94b2fb-5221-48a3-8f76-8d133d08c87e}</object>
                          <stereotypes>
                           <qlist>
                            <item>uses</item>
                           </qlist>
                          </stereotypes>
-                         <a>{eb9f530d-3a00-43bd-a9a5-85f53073e99d}</a>
-                         <b>{dc419392-dc46-420d-8fb9-6ad679983c44}</b>
-                        </DRelation>
-                       </base-DRelation>
-                      </DDependency>
-                     </instance>
-                    </item>
-                    <item>
-                     <instance type="DDependency">
-                      <DDependency>
-                       <base-DRelation>
-                        <DRelation>
-                         <base-DElement>
-                          <DElement>
-                           <uid>{3f38816c-d65a-4f1a-b1a6-53eff7b8d7de}</uid>
-                          </DElement>
-                         </base-DElement>
-                         <object>{771c007a-17ed-40e4-a961-b27a97f18edb}</object>
-                         <a>{920d8abf-9f68-4d8c-b54a-311e2cc382dc}</a>
-                         <b>{e90a6748-6ab9-4521-97cd-fe505b32e046}</b>
-                        </DRelation>
-                       </base-DRelation>
-                      </DDependency>
-                     </instance>
-                    </item>
-                    <item>
-                     <instance type="DDependency">
-                      <DDependency>
-                       <base-DRelation>
-                        <DRelation>
-                         <base-DElement>
-                          <DElement>
-                           <uid>{367c762e-f599-47c5-b043-6b0bbdc3534d}</uid>
-                          </DElement>
-                         </base-DElement>
-                         <object>{cd19df01-0f7e-4a6e-b721-406a9cf7a450}</object>
-                         <a>{1a4d2187-6066-4a79-832c-c0df6a7c55f5}</a>
-                         <b>{e90a6748-6ab9-4521-97cd-fe505b32e046}</b>
-                        </DRelation>
-                       </base-DRelation>
-                      </DDependency>
-                     </instance>
-                    </item>
-                    <item>
-                     <instance type="DDependency">
-                      <DDependency>
-                       <base-DRelation>
-                        <DRelation>
-                         <base-DElement>
-                          <DElement>
-                           <uid>{c8dcab23-784a-43d0-891d-b73cb9473dd8}</uid>
-                          </DElement>
-                         </base-DElement>
-                         <object>{ab26cfbd-6c82-4eb9-a61d-c50607009fb5}</object>
-                         <a>{ecf1699c-d490-453d-9492-7504d10f61d1}</a>
-                         <b>{e90a6748-6ab9-4521-97cd-fe505b32e046}</b>
-                        </DRelation>
-                       </base-DRelation>
-                      </DDependency>
-                     </instance>
-                    </item>
-                    <item>
-                     <instance type="DDependency">
-                      <DDependency>
-                       <base-DRelation>
-                        <DRelation>
-                         <base-DElement>
-                          <DElement>
-                           <uid>{01f79e09-56a7-466d-bd29-f1a974ddea41}</uid>
-                          </DElement>
-                         </base-DElement>
-                         <object>{4c3a153d-4a55-4dcd-8fe1-0c6c8c370d83}</object>
-                         <a>{7b87f863-4bc5-46be-a706-328bf1d62d05}</a>
-                         <b>{e90a6748-6ab9-4521-97cd-fe505b32e046}</b>
-                        </DRelation>
-                       </base-DRelation>
-                      </DDependency>
-                     </instance>
-                    </item>
-                    <item>
-                     <instance type="DDependency">
-                      <DDependency>
-                       <base-DRelation>
-                        <DRelation>
-                         <base-DElement>
-                          <DElement>
-                           <uid>{d3ba1491-a149-4cc7-8fc9-8f349824025d}</uid>
-                          </DElement>
-                         </base-DElement>
-                         <object>{6d635bf3-0198-4a3a-b764-ef506a19b033}</object>
-                         <a>{7654f16f-0d5d-47ea-862b-2b4c747010db}</a>
-                         <b>{e90a6748-6ab9-4521-97cd-fe505b32e046}</b>
-                        </DRelation>
-                       </base-DRelation>
-                      </DDependency>
-                     </instance>
-                    </item>
-                    <item>
-                     <instance type="DDependency">
-                      <DDependency>
-                       <base-DRelation>
-                        <DRelation>
-                         <base-DElement>
-                          <DElement>
-                           <uid>{e54a6e0c-8025-4201-a090-6ce0d13a0b13}</uid>
-                          </DElement>
-                         </base-DElement>
-                         <object>{a1399f85-d3f0-4a62-812c-90b74643c72a}</object>
-                         <a>{7654f16f-0d5d-47ea-862b-2b4c747010db}</a>
-                         <b>{69e44e37-e180-42f8-883b-0cbbd0f6bbf9}</b>
-                        </DRelation>
-                       </base-DRelation>
-                      </DDependency>
-                     </instance>
-                    </item>
-                    <item>
-                     <instance type="DDependency">
-                      <DDependency>
-                       <base-DRelation>
-                        <DRelation>
-                         <base-DElement>
-                          <DElement>
-                           <uid>{ba25b906-bde3-46d1-b343-428bc080bd99}</uid>
-                          </DElement>
-                         </base-DElement>
-                         <object>{1e01fe4b-7cfb-45f2-9b35-592f2bad5bd5}</object>
-                         <a>{5ab4394e-4271-4bcd-a15f-760a0036e768}</a>
-                         <b>{e90a6748-6ab9-4521-97cd-fe505b32e046}</b>
-                        </DRelation>
-                       </base-DRelation>
-                      </DDependency>
-                     </instance>
-                    </item>
-                    <item>
-                     <instance type="DDependency">
-                      <DDependency>
-                       <base-DRelation>
-                        <DRelation>
-                         <base-DElement>
-                          <DElement>
-                           <uid>{016594a6-dfa6-4dfe-945f-649d640a1dc4}</uid>
-                          </DElement>
-                         </base-DElement>
-                         <object>{bf4fba48-b400-462a-bad0-858a4026538a}</object>
-                         <a>{5ab4394e-4271-4bcd-a15f-760a0036e768}</a>
-                         <b>{69e44e37-e180-42f8-883b-0cbbd0f6bbf9}</b>
-                        </DRelation>
-                       </base-DRelation>
-                      </DDependency>
-                     </instance>
-                    </item>
-                    <item>
-                     <instance type="DDependency">
-                      <DDependency>
-                       <base-DRelation>
-                        <DRelation>
-                         <base-DElement>
-                          <DElement>
-                           <uid>{93b85aa6-35cb-4a25-b96c-fe77f850d71b}</uid>
-                          </DElement>
-                         </base-DElement>
-                         <object>{497629f1-df9f-4037-9687-c5501ec2919c}</object>
-                         <a>{c842aec5-16f0-4c80-8035-e9c1e2f7cbf3}</a>
-                         <b>{69e44e37-e180-42f8-883b-0cbbd0f6bbf9}</b>
-                        </DRelation>
-                       </base-DRelation>
-                      </DDependency>
-                     </instance>
-                    </item>
-                    <item>
-                     <instance type="DDependency">
-                      <DDependency>
-                       <base-DRelation>
-                        <DRelation>
-                         <base-DElement>
-                          <DElement>
-                           <uid>{d4b8dc11-cc55-4d71-98c9-4410d535c26c}</uid>
-                          </DElement>
-                         </base-DElement>
-                         <object>{9a1cd774-8ef4-4fdc-809d-0ad4d618cfa3}</object>
-                         <a>{24bee20f-b32c-4e0b-89d5-3947970433f2}</a>
-                         <b>{69e44e37-e180-42f8-883b-0cbbd0f6bbf9}</b>
-                        </DRelation>
-                       </base-DRelation>
-                      </DDependency>
-                     </instance>
-                    </item>
-                    <item>
-                     <instance type="DDependency">
-                      <DDependency>
-                       <base-DRelation>
-                        <DRelation>
-                         <base-DElement>
-                          <DElement>
-                           <uid>{87e98263-e930-4cf1-b68f-d879c4436315}</uid>
-                          </DElement>
-                         </base-DElement>
-                         <object>{eff1644b-3cdc-4db9-93e6-bd26f9cc89a2}</object>
-                         <a>{f951c315-e613-41ea-9aa3-727deefef10f}</a>
-                         <b>{69e44e37-e180-42f8-883b-0cbbd0f6bbf9}</b>
+                         <a>{2994929f-78c5-41d4-9e8a-91fa5efd55a1}</a>
+                         <b>{3a67e99b-bb26-4633-8cd8-d28d1a26a1b2}</b>
+                         <name>sonivox backend</name>
                         </DRelation>
                        </base-DRelation>
                       </DDependency>
@@ -1059,7 +888,7 @@
                     </item>
                    </qlist>
                   </elements>
-                  <last-modified>1658230226423</last-modified>
+                  <last-modified>1687107756637</last-modified>
                   <toolbarid>General</toolbarid>
                  </MDiagram>
                 </base-MDiagram>
@@ -1273,9 +1102,37 @@
                                </stereotypes>
                               </MElement>
                              </base-MElement>
-                             <name>synth backend</name>
+                             <name>fluidsynth backend</name>
                              <a>{1d4b22db-c088-4d2e-b3de-0114fc13636e}</a>
                              <b>{30a7d630-9f71-493c-9420-2e6ec46e353f}</b>
+                            </MRelation>
+                           </base-MRelation>
+                          </MDependency>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                      <item>
+                       <handle>
+                        <uid>{cf94b2fb-5221-48a3-8f76-8d133d08c87e}</uid>
+                        <target>
+                         <instance type="MDependency">
+                          <MDependency>
+                           <base-MRelation>
+                            <MRelation>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{cf94b2fb-5221-48a3-8f76-8d133d08c87e}</uid>
+                               <stereotypes>
+                                <qlist>
+                                 <item>uses</item>
+                                </qlist>
+                               </stereotypes>
+                              </MElement>
+                             </base-MElement>
+                             <name>sonivox backend</name>
+                             <a>{1d4b22db-c088-4d2e-b3de-0114fc13636e}</a>
+                             <b>{80b7aab0-c13e-42cc-bada-b832ec1f3bac}</b>
                             </MRelation>
                            </base-MRelation>
                           </MDependency>
@@ -1313,6 +1170,41 @@
                    </MElement>
                   </base-MElement>
                   <name>Drumstick::Widgets</name>
+                  <relations>
+                   <handles>
+                    <handles>
+                     <qlist>
+                      <item>
+                       <handle>
+                        <uid>{9a757733-49f7-4e55-9bcc-c308d1c54201}</uid>
+                        <target>
+                         <instance type="MDependency">
+                          <MDependency>
+                           <base-MRelation>
+                            <MRelation>
+                             <base-MElement>
+                              <MElement>
+                               <uid>{9a757733-49f7-4e55-9bcc-c308d1c54201}</uid>
+                               <stereotypes>
+                                <qlist>
+                                 <item>uses</item>
+                                </qlist>
+                               </stereotypes>
+                              </MElement>
+                             </base-MElement>
+                             <a>{738f1658-0bb6-497d-8345-2cd495314a08}</a>
+                             <b>{1d4b22db-c088-4d2e-b3de-0114fc13636e}</b>
+                            </MRelation>
+                           </base-MRelation>
+                          </MDependency>
+                         </instance>
+                        </target>
+                       </handle>
+                      </item>
+                     </qlist>
+                    </handles>
+                   </handles>
+                  </relations>
                  </MObject>
                 </base-MObject>
                </MComponent>
@@ -2397,6 +2289,33 @@
                  </MObject>
                 </base-MObject>
                </MItem>
+              </instance>
+             </target>
+            </handle>
+           </item>
+           <item>
+            <handle>
+             <uid>{80b7aab0-c13e-42cc-bada-b832ec1f3bac}</uid>
+             <target>
+              <instance type="MComponent">
+               <MComponent>
+                <base-MObject>
+                 <MObject>
+                  <base-MElement>
+                   <MElement>
+                    <uid>{80b7aab0-c13e-42cc-bada-b832ec1f3bac}</uid>
+                    <stereotypes>
+                     <qlist>
+                      <item>library</item>
+                      <item>ext</item>
+                     </qlist>
+                    </stereotypes>
+                   </MElement>
+                  </base-MElement>
+                  <name>Sonivox</name>
+                 </MObject>
+                </base-MObject>
+               </MComponent>
               </instance>
              </target>
             </handle>
