@@ -1,3 +1,6 @@
+2023-06-24
+    * Widgets: clip note children (labels)
+
 2023-06-18
     * Unit tests: conditionally run the ALSA test and run the Widgets test using the QPA platform "offscreen"
 

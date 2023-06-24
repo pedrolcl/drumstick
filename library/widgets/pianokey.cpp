@@ -41,6 +41,7 @@ PianoKey::PianoKey(const QRectF &rect, const bool black, const int note)
 {
     m_brush = keyPalette.getColor(black ? 1 : 0);
     setAcceptedMouseButtons(Qt::NoButton);
+    setFlag(QGraphicsItem::ItemClipsChildrenToShape);
 }
 
 void PianoKey::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
