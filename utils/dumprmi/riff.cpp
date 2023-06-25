@@ -18,6 +18,7 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QScopedPointer>
 #include <array>
 
 #include "riff.h"
@@ -71,7 +72,7 @@ quint32 Riff::read32bit()
 
 QString Riff::readstr(int size)
 {
-    QScopedPointer<char> buffer(new char[size + 1]);
+    QScopedPointer<char, QScopedPointerArrayDeleter<char>> buffer(new char[size + 1]);
     m_IOStream->readRawData(buffer.data(), size);
     buffer.data()[size] = 0;
     return QString(buffer.data()).trimmed();
