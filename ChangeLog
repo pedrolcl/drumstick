@@ -1,3 +1,11 @@
+2023-06-25
+    * Release 2.8.0
+
+2023-06-25
+    * Widgets: fixed compiler definitions
+    * dumprmi utility: fixed QScopedPointer template for arrays
+    * Updated doxygen settings for Doxygen 1.9.5
+
 2023-06-24
     * Widgets: clip note children (labels)
 
@@ -6,7 +14,7 @@
 
 2023-06-17
     * Fix for ticket #49: Link failure when Qt6 is compiled with visibility protected
-    * ALSA: assignment operator for sysex and text events
+    * ALSA: added assignment operators for sysex and text events
 
 2023-06-11
     * Fix for ticket #48: SMF Parser does not report enough errors
