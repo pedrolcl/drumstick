@@ -46,7 +46,6 @@ endif()
 
 #[==[
 compiler and linker extra checks:
-]==]
 if(UNIX AND NOT APPLE)
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
@@ -56,6 +55,7 @@ if(UNIX AND NOT APPLE)
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--as-needed -Wl,--no-undefined -Wl,-z,defs")
     endif()
 endif()
+#]==]
 
 add_definitions(-DVERSION=${PROJECT_VERSION})
 if (DEFINED PROJECT_WC_REVISION)
@@ -240,7 +240,7 @@ if (${CMAKE_SYSTEM} MATCHES "Darwin" AND QT_VERSION VERSION_LESS 6.0.0)
 endif()
 
 # CMAKE_SYSTEM_PROCESSOR is broken on Windows with MSVC
-# cmake bug https://gitlab.kitware.com/cmake/cmake/-/issues/15170 still open in 2022/08
+# cmake bug https://gitlab.kitware.com/cmake/cmake/-/issues/15170 still open in 2023/06
 if (MSVC)
     string(TOLOWER ${MSVC_CXX_ARCHITECTURE_ID} CMAKE_SYSTEM_PROCESSOR)
 endif()
