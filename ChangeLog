@@ -2,7 +2,7 @@
     * Release 2.8.0
 
 2023-06-25
-    * Widgets: fixed compiler definitions
+    * Widgets: fixed compiler definitions, removed object headers duplicity
     * dumprmi utility: fixed QScopedPointer template for arrays
     * Updated doxygen settings for Doxygen 1.9.5
 
