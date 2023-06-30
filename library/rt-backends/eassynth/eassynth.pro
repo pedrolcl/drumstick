@@ -1,16 +1,15 @@
 TEMPLATE = lib
 TARGET = drumstick-rt-eassynth
-DESTDIR = ../../../../build/lib/drumstick2
-include (../../../../global.pri)
+DESTDIR = ../../../build/lib/drumstick2
+include (../../../global.pri)
 CONFIG += c++11 plugin link_prl
 static {
     CONFIG += staticlib create_prl
 }
-DEPENDPATH += ../../../include
-INCLUDEPATH += ../../../include
+DEPENDPATH += . ../../include
+INCLUDEPATH += . ../../include
 QT -= gui
-LIBS += -L../../../../build/lib \
-        -ldrumstick-rt
+LIBS += -L$$OUT_PWD/../../../build/lib -ldrumstick-rt
 
 HEADERS += synthcontroller.h \
            synthrenderer.h \

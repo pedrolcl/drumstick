@@ -1,5 +1,8 @@
 QT += testlib
 QT -= gui
+equals(QT_MAJOR_VERSION, 6) {
+    QT += core5compat
+}
 TARGET = fileTest2
 CONFIG += qt warn_on depend_includepath testcase
 CONFIG += c++11 cmdline

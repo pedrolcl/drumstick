@@ -27,7 +27,7 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_admin)
 include(SCMRevision)
 include(CTest)
 include(GNUInstallDirs)
-set(RELEASE_DATE "June 25, 2023")
+set(RELEASE_DATE "July 1, 2023")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 

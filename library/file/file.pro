@@ -9,6 +9,9 @@ DEFINES += drumstick_file_EXPORTS
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
 QMAKE_PKGCONFIG_PREFIX = $$INSTALLBASE
 QT -= gui
+equals(QT_MAJOR_VERSION, 6) {
+    QT += core5compat
+}
 # Input
 HEADERS += ../include/drumstick/macros.h \
            ../include/drumstick/rmid.h \

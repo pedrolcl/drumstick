@@ -22,7 +22,7 @@ else {
     packagesExist(fluidsynth) {
         SUBDIRS += fluidsynth
     }
-    packagesExist(libpulse-simple) {
+    packagesExist(libpulse-simple):packagesExist(sonivox) {
         SUBDIRS += eassynth
     }
 }

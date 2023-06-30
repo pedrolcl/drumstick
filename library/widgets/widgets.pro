@@ -9,7 +9,7 @@ static {
     CONFIG += staticlib
 }
 LRELEASE_DIR=.
-DEFINES += drumstick_widgets_EXPORTS
+DEFINES += drumstick_widgets_EXPORTS ENABLE_NETWORK
 QMAKE_CXXFLAGS += $$QMAKE_CXXFLAGS_HIDESYMS
 QMAKE_PKGCONFIG_PREFIX = $$INSTALLBASE
 QT += widgets network
@@ -85,4 +85,11 @@ macx:!static {
     QMAKE_TARGET_BUNDLE_PREFIX = net.sourceforge
     QMAKE_BUNDLE = drumstick-widgets
     QMAKE_INFO_PLIST = ../Info.plist.lib
+}
+
+packagesExist(fluidsynth) {
+    DEFINES += ENABLE_FLUIDSYNTH
+}
+packagesExist(libpulse-simple):packagesExist(sonivox) {
+    DEFINES += ENABLE_SONIVOX
 }

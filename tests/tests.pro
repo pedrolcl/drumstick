@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 SUBDIRS += fileTest1 \
            fileTest2 \
+           fileTest3 \
            rtTest \
            widgetsTest
 

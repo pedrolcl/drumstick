@@ -1,6 +1,9 @@
 TEMPLATE = app
 TARGET = drumstick-guiplayer
 QT += gui widgets #dbus
+equals(QT_MAJOR_VERSION, 6) {
+    QT += core5compat
+}
 CONFIG += qt c++11 thread exceptions
 CONFIG += lrelease
 static {
@@ -25,4 +28,4 @@ TRANSLATIONS += \
     drumstick-guiplayer_cs.ts \
     drumstick-guiplayer_en.ts \
     drumstick-guiplayer_es.ts \
-    drumstick-guiplayer_ru.ts 
+    drumstick-guiplayer_ru.ts

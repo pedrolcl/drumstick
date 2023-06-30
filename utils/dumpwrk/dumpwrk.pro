@@ -1,6 +1,9 @@
 TEMPLATE = app
 TARGET = drumstick-dumpwrk
 CONFIG += c++11 cmdline qt
+equals(QT_MAJOR_VERSION, 6) {
+    QT += core5compat
+}
 static {
     CONFIG += link_prl
     DEFINES += DRUMSTICK_STATIC

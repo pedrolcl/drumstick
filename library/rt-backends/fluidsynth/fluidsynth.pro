@@ -3,14 +3,14 @@ TARGET = $$qtLibraryTarget(drumstick-rt-fluidsynth)
 DESTDIR = ../../../build/lib/drumstick2
 include (../../../global.pri)
 CONFIG += c++11 plugin #create_prl
-DEPENDPATH += ../../include
-INCLUDEPATH += ../../include
+DEPENDPATH += . ../../include
+INCLUDEPATH += . ../../include
 QT -= gui
 
-HEADERS += synthengine.h \
-           synthoutput.h
+HEADERS += fluidsynthengine.h \
+           fluidsynthoutput.h
 
-SOURCES += synthoutput.cpp synthengine.cpp
+SOURCES += fluidsynthoutput.cpp fluidsynthengine.cpp
 
 LIBS += -L$$OUT_PWD/../../../build/lib -ldrumstick-rt
 
