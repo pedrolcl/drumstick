@@ -20,7 +20,7 @@
 #include <QByteArray>
 #include <QVarLengthArray>
 #include <qmath.h>
-#include <Windows.h>
+#include <windows.h>
 #include <mmsystem.h>
 #include "winmidioutput.h"
 

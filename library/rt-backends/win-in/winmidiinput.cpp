@@ -18,7 +18,7 @@
 
 #include <QString>
 #include <QMap>
-#include <Windows.h>
+#include <windows.h>
 #include <mmsystem.h>
 
 #include "winmidiinput.h"
