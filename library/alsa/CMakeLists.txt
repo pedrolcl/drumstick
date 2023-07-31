@@ -70,7 +70,7 @@ target_include_directories(drumstick-alsa PUBLIC
 #message(STATUS "ALSA -- HAVE_DBUS: ${HAVE_DBUS}")
 
 target_compile_definitions(drumstick-alsa PRIVATE
-    $<$<BOOL:${HAVE_DBUS}>:-DRTKIT_SUPPORT>
+    $<$<BOOL:${HAVE_DBUS}>:RTKIT_SUPPORT>
 )
 
 target_link_libraries(drumstick-alsa PRIVATE
