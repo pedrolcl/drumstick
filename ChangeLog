@@ -1,3 +1,6 @@
+2023-08-17
+    * CMake config check to avoid mixing Qt6 with Qt5
+
 2023-07-31
     * Fix for GH ticket #13: errors while building drumstick 2.8.0
 

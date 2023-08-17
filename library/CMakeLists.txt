@@ -31,12 +31,13 @@ if (BUILD_RT)
     endif()
 endif()
 
-configure_file( drumstick-config.cmake
+configure_file( drumstick-config.cmake.in
   ${CMAKE_BINARY_DIR}/drumstick-config.cmake
   @ONLY
 )
 
 include(CMakePackageConfigHelpers)
+
 write_basic_package_version_file( ${CMAKE_BINARY_DIR}/drumstick-config-version.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
