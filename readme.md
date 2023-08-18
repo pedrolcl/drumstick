@@ -38,6 +38,29 @@ Here is a diagram about the relationship between the libraries and applications:
 
 ![Drumstick ecosystem](doc/drumstick-ecosystem.png)
 
+Here is another view in table format of the relationships:
+
+|             | Drumstick::ALSA    | Drumstick::File    | Drumstick::RT      | Drumstick::Widgets |
+|-------------|:------------------:|:------------------:|:------------------:|:------------------:|
+|Utilities:   |                    |                    |                    |                    |
+| drumgrid    | :o:                | :x:                | :x:                | :x:                |
+| dumpmid     | :o:                | :x:                | :x:                | :x:                |
+| dumprmi     | :x:                | :o:                | :x:                | :x:                |
+| dumpsmf     | :x:                | :o:                | :x:                | :x:                |
+| dumpwrk     | :x:                | :o:                | :x:                | :x:                |
+| guiplayer   | :o:                | :o:                | :x:                | :x:                |
+| metronome   | :o:                | :x:                | :x:                | :x:                |
+| playsmf     | :o:                | :o:                | :x:                | :x:                |
+| sysinfo     | :o:                | :x:                | :x:                | :x:                |
+| vpiano      | :x:                | :x:                | :o:                | :o:                |
+|Applications:|                    |                    |                    |                    |
+| dmidiplayer | :x:                | :o:                | :o:                | :o:                |
+| VMPK        | :x:                | :x:                | :o:                | :o:                |
+| kmetronome  | :o:                | :x:                | :x:                | :x:                |
+| kmidimon    | :o:                | :o:                | :x:                | :x:                |
+| wrk2mid     | :x:                | :o:                | :x:                | :x:                |
+
+
 The main web site of this project is [drumstick.sourceforge.io](https://drumstick.sourceforge.io)
 
 See also:
