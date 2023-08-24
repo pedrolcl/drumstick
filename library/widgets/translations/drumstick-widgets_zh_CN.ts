@@ -195,79 +195,79 @@
         <location filename="../pianopalette.cpp" line="228"/>
         <location filename="../pianopalette.cpp" line="367"/>
         <source>N*</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="229"/>
         <location filename="../pianopalette.cpp" line="368"/>
         <source>#*</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="241"/>
         <source>Single color highlight</source>
-        <translation type="unfinished"></translation>
+        <translation>单色高亮</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="242"/>
         <source>A single color to highlight all note events</source>
-        <translation></translation>
+        <translation>用一种颜色高亮所有音符事件</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="246"/>
         <source>Two colors highlight</source>
-        <translation type="unfinished"></translation>
+        <translation>双色高亮</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="247"/>
         <source>One color to highlight natural notes and a different one for accidentals</source>
-        <translation></translation>
+        <translation>一种颜色用于突出自然音，另一种颜色用于变化音</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="251"/>
         <source>MIDI Channels highlight</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 通道高亮</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="252"/>
         <source>A different color to highlight each MIDI channel. Enable Omni mode in the MIDI IN connection</source>
-        <translation type="unfinished"></translation>
+        <translation>用不同颜色突出显示每个 MIDI 通道。在 MIDI 输入 连接中启用全通道模式</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="256"/>
         <source>Chromatic scale background</source>
-        <translation type="unfinished"></translation>
+        <translation>半音阶背景色</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="257"/>
         <location filename="../pianopalette.cpp" line="272"/>
         <source>One color for each note in the chromatic scale</source>
-        <translation></translation>
+        <translation>半音阶中的每个音符都用一种颜色表示</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="261"/>
         <source>Keys background</source>
-        <translation type="unfinished"></translation>
+        <translation>琴键背景色</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="262"/>
         <source>One color for natural notes and another for accidentals</source>
-        <translation type="unfinished"></translation>
+        <translation>一种颜色用于自然音，另一种用于变化音</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="266"/>
         <source>Font foreground</source>
-        <translation type="unfinished"></translation>
+        <translation>字体前景色</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="267"/>
         <source>Colors for note names</source>
-        <translation type="unfinished"></translation>
+        <translation>用于音符名称的颜色</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="271"/>
         <source>Chromatic scale highlight</source>
-        <translation type="unfinished"></translation>
+        <translation>半音阶高亮</translation>
     </message>
 </context>
 <context>
@@ -275,62 +275,62 @@
     <message>
         <location filename="../fluidsettingsdialog.ui" line="14"/>
         <source>FluidSynth Driver Settings</source>
-        <translation></translation>
+        <translation>FluidSynth 驱动设置</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="123"/>
         <source>Sample Rate:</source>
-        <translation></translation>
+        <translation>采样率：</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="106"/>
         <source>Period Size:</source>
-        <translation></translation>
+        <translation>周期大小：</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="159"/>
         <source># of Periods:</source>
-        <translation></translation>
+        <translation>周期数量：</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="39"/>
         <source>Audio Driver:</source>
-        <translation></translation>
+        <translation>音频驱动：</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="169"/>
         <source>Polyphony:</source>
-        <translation></translation>
+        <translation>复音数：</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="89"/>
         <source>FluidSynth Version:</source>
-        <translation type="unfinished"></translation>
+        <translation>FluidSynth 版本：</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="69"/>
         <source>Sound Font:</source>
-        <translation></translation>
+        <translation>音色库：</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="116"/>
         <source>Initialization Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>初始化状态：</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="185"/>
         <source>Buffer Time:</source>
-        <translation type="unfinished"></translation>
+        <translation>缓冲时间：</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="192"/>
         <source> ms</source>
-        <translation type="unfinished"></translation>
+        <translation> 毫秒</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="49"/>
         <source>Gain:</source>
-        <translation></translation>
+        <translation>增益调节：</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="152"/>
@@ -340,42 +340,42 @@
     <message>
         <location filename="../fluidsettingsdialog.ui" line="139"/>
         <source>Chorus</source>
-        <translation></translation>
+        <translation>合唱（Chorus）</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="62"/>
         <source>Reverb</source>
-        <translation></translation>
+        <translation>混响（Reverb）</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="141"/>
+        <location filename="../fluidsettingsdialog.cpp" line="144"/>
         <source>FluidSynth Initialized</source>
-        <translation type="unfinished"></translation>
+        <translation>FluidSynth 已初始化</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="141"/>
+        <location filename="../fluidsettingsdialog.cpp" line="144"/>
         <source>FluidSynth Initialization Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>FluidSynth 初始化失败</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="204"/>
+        <location filename="../fluidsettingsdialog.cpp" line="207"/>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>就绪</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="204"/>
+        <location filename="../fluidsettingsdialog.cpp" line="207"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>失败</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="345"/>
+        <location filename="../fluidsettingsdialog.cpp" line="338"/>
         <source>Select SoundFont</source>
-        <translation></translation>
+        <translation>选择音色库</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="345"/>
+        <location filename="../fluidsettingsdialog.cpp" line="338"/>
         <source>SoundFont Files (*.sf2 *.sf3 *.dls)</source>
-        <translation type="unfinished"></translation>
+        <translation>音色库文件 (*.sf2 *.sf3 *.dls)</translation>
     </message>
 </context>
 <context>
@@ -383,12 +383,12 @@
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="14"/>
         <source>macOS Synth Driver Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>macOS Synth 驱动设置</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="56"/>
         <source>SoundFont:</source>
-        <translation></translation>
+        <translation>音色库：</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="76"/>
@@ -398,47 +398,47 @@
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="83"/>
         <source>Use Internal Reverb</source>
-        <translation></translation>
+        <translation>使用内部混响</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="90"/>
         <source>Init. Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>初始化状态：</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="69"/>
         <source>Default Apple DLS Sound Set</source>
-        <translation></translation>
+        <translation>使用苹果 DLS 音效</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="72"/>
         <source>DLS Synth Initialized</source>
-        <translation type="unfinished"></translation>
+        <translation>DLS Synth 已初始化</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="72"/>
         <source>DLS Synth Initialization Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>DLS Synth 初始化失败</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="122"/>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>就绪</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="122"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>失败</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="163"/>
         <source>Select SoundFont</source>
-        <translation></translation>
+        <translation>选择音色库</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="163"/>
         <source>SoundFont Files (*.sf2 *.dls)</source>
-        <translation></translation>
+        <translation>音色库文件 (*.sf2 *.dls)</translation>
     </message>
 </context>
 <context>
@@ -446,53 +446,53 @@
     <message>
         <location filename="../networksettingsdialog.ui" line="14"/>
         <source>Network Driver Settings</source>
-        <translation></translation>
+        <translation>网络驱动设置</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="33"/>
         <source>Init. Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>初始化状态：</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="50"/>
         <source>Use IPv6</source>
-        <translation></translation>
+        <translation>使用 IPv6</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="57"/>
         <source>Network Interface:</source>
-        <translation></translation>
+        <translation>网络接口：</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="70"/>
         <source>Address</source>
-        <translation></translation>
+        <translation>地址</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="76"/>
         <source>Network Initialized</source>
-        <translation type="unfinished"></translation>
+        <translation>网络已初始化</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="76"/>
         <source>Network Initialization Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>网络初始化失败</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="111"/>
         <location filename="../networksettingsdialog.cpp" line="174"/>
         <source>Any</source>
-        <translation></translation>
+        <translation>任意</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="164"/>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>就绪</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="164"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>失败</translation>
     </message>
 </context>
 <context>
@@ -593,54 +593,79 @@
 <context>
     <name>drumstick::widgets::SonivoxSettingsDialog</name>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="14"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="20"/>
         <source>Sonivox EAS Synth</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="26"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="107"/>
         <source>Chorus</source>
-        <translation></translation>
+        <translation>合唱（Chorus）</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="43"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="97"/>
         <source>Reverb</source>
-        <translation></translation>
+        <translation>混响（Reverb）</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="71"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="32"/>
+        <source>SoundFont:</source>
+        <translation>音色库：</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.ui" line="58"/>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.ui" line="75"/>
+        <source>Sonivox Library Version:</source>
+        <translation>Sonivox 库版本：</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.ui" line="208"/>
         <source>Buffer Time:</source>
-        <translation></translation>
+        <translation>缓冲时间：</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="81"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="218"/>
         <source> ms</source>
-        <translation></translation>
+        <translation> 毫秒</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="110"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="168"/>
         <source>Init. Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>初始化状态：</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="85"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="92"/>
         <source>Sonivox Initialized</source>
-        <translation type="unfinished"></translation>
+        <translation>Sonivox 已初始化</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="85"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="92"/>
         <source>Sonivox Initialization Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Sonivox 初始化失败</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="165"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="178"/>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>就绪</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="165"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="178"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>失败</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.cpp" line="200"/>
+        <source>Select SoundFont</source>
+        <translation>选择音色库</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.cpp" line="200"/>
+        <source>SoundFont Files (*.dls)</source>
+        <translation>音色库文件 (*.dls)</translation>
     </message>
 </context>
 </TS>
