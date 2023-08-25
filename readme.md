@@ -43,22 +43,22 @@ Here is another view in table format of the relationships:
 |             | Drumstick::ALSA    | Drumstick::File    | Drumstick::RT      | Drumstick::Widgets |
 |-------------|:------------------:|:------------------:|:------------------:|:------------------:|
 |Utilities:   |                    |                    |                    |                    |
-| drumgrid    | :o:                | :x:                | :x:                | :x:                |
-| dumpmid     | :o:                | :x:                | :x:                | :x:                |
-| dumprmi     | :x:                | :o:                | :x:                | :x:                |
-| dumpsmf     | :x:                | :o:                | :x:                | :x:                |
-| dumpwrk     | :x:                | :o:                | :x:                | :x:                |
-| guiplayer   | :o:                | :o:                | :x:                | :x:                |
-| metronome   | :o:                | :x:                | :x:                | :x:                |
-| playsmf     | :o:                | :o:                | :x:                | :x:                |
-| sysinfo     | :o:                | :x:                | :x:                | :x:                |
-| vpiano      | :x:                | :x:                | :o:                | :o:                |
+| drumgrid    | :white_check_mark: | :x:                | :x:                | :x:                |
+| dumpmid     | :white_check_mark: | :x:                | :x:                | :x:                |
+| dumprmi     | :x:                | :white_check_mark: | :x:                | :x:                |
+| dumpsmf     | :x:                | :white_check_mark: | :x:                | :x:                |
+| dumpwrk     | :x:                | :white_check_mark: | :x:                | :x:                |
+| guiplayer   | :white_check_mark: | :white_check_mark: | :x:                | :x:                |
+| metronome   | :white_check_mark: | :x:                | :x:                | :x:                |
+| playsmf     | :white_check_mark: | :white_check_mark: | :x:                | :x:                |
+| sysinfo     | :white_check_mark: | :x:                | :x:                | :x:                |
+| vpiano      | :x:                | :x:                | :white_check_mark: | :white_check_mark: |
 |Applications:|                    |                    |                    |                    |
-| dmidiplayer | :x:                | :o:                | :o:                | :o:                |
-| VMPK        | :x:                | :x:                | :o:                | :o:                |
-| kmetronome  | :o:                | :x:                | :x:                | :x:                |
-| kmidimon    | :o:                | :o:                | :x:                | :x:                |
-| wrk2mid     | :x:                | :o:                | :x:                | :x:                |
+| dmidiplayer | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| VMPK        | :x:                | :x:                | :white_check_mark: | :white_check_mark: |
+| kmetronome  | :white_check_mark: | :x:                | :x:                | :x:                |
+| kmidimon    | :white_check_mark: | :white_check_mark: | :x:                | :x:                |
+| wrk2mid     | :x:                | :white_check_mark: | :x:                | :x:                |
 
 
 The main web site of this project is [drumstick.sourceforge.io](https://drumstick.sourceforge.io)
