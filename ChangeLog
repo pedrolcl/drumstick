@@ -1,3 +1,9 @@
+2023-08-25
+    * Release 2.8.1
+
+2023-08-24
+    * Chinese translation updated. Thanks to Hycinth
+
 2023-08-17
     * CMake config check to avoid mixing Qt6 with Qt5
 
