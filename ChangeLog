@@ -1,3 +1,10 @@
+2023-12-06
+    * Preparations for release 2.9.0:
+        Building with Qt6 by default.
+        For Qt5 compatibility, a new option USE_QT5 must be set.
+        Upgraded compiler/runtime requirements to C++17.
+        Upgraded CMake requirement to 3.16
+
 2023-08-25
     * Release 2.8.1
 

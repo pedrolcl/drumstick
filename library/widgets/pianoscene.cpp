@@ -823,7 +823,7 @@ void PianoScene::setKeyPressedColor(const QColor& color)
         d->m_hilightPalette = PianoPalette(PAL_SINGLE);
         d->m_hilightPalette.setColor(0, color);
         QBrush hilightBrush(color);
-        for (PianoKey* key : qAsConst(d->m_keys)) {
+        for (PianoKey *key : std::as_const(d->m_keys)) {
             key->setPressedBrush(hilightBrush);
         }
     }
@@ -836,7 +836,7 @@ void PianoScene::resetKeyPressedColor()
 {
     d->m_hilightPalette.resetColors();
     QBrush hilightBrush(getKeyPressedColor());
-    for (PianoKey* key : qAsConst(d->m_keys)) {
+    for (PianoKey *key : std::as_const(d->m_keys)) {
         key->setPressedBrush(hilightBrush);
     }
 }
@@ -855,7 +855,7 @@ int PianoScene::getMinNote() const
  */
 void PianoScene::hideOrShowKeys()
 {
-    for (PianoKey* key : qAsConst(d->m_keys)) {
+    for (PianoKey *key : std::as_const(d->m_keys)) {
         int n = d->m_baseOctave*12 + key->getNote() + d->m_transpose;
         bool b = !(n > d->m_maxNote) && !(n < d->m_minNote);
         key->setVisible(b);
@@ -961,7 +961,7 @@ QString PianoScene::noteName( PianoKey* key )
  */
 void PianoScene::refreshLabels()
 {
-    for (KeyLabel* lbl : qAsConst(d->m_labels)) {
+    for (KeyLabel *lbl : std::as_const(d->m_labels)) {
         PianoKey* key = dynamic_cast<PianoKey*>(lbl->parentItem());
         if (key != nullptr) {
             lbl->setVisible(false);
@@ -981,7 +981,7 @@ void PianoScene::refreshLabels()
  */
 void PianoScene::refreshKeys()
 {
-    for (PianoKey* key : qAsConst(d->m_keys)) {
+    for (PianoKey *key : std::as_const(d->m_keys)) {
         if (d->m_showColorScale && (d->m_backgroundPalette.paletteId() == PAL_SCALE)) {
             int degree = key->getNote() % 12;
             key->setBrush(d->m_backgroundPalette.getColor(degree));
@@ -1374,7 +1374,7 @@ bool PianoScene::showColorScale() const
 void PianoScene::setKeyPicture(const bool natural, const QPixmap &pix)
 {
     d->m_keyPix[int(natural)] = pix;
-    for (PianoKey* key : qAsConst(d->m_keys)) {
+    for (PianoKey *key : std::as_const(d->m_keys)) {
         if (key->isBlack() == !natural) {
             key->setPixmap(pix);
         }
@@ -1389,7 +1389,7 @@ QPixmap PianoScene::getKeyPicture(const bool natural)
 void PianoScene::setUseKeyPictures(const bool enable)
 {
     d->m_useKeyPix = enable;
-    for (PianoKey* key : qAsConst(d->m_keys)) {
+    for (PianoKey *key : std::as_const(d->m_keys)) {
         key->setUsePixmap(enable);
     }
 }

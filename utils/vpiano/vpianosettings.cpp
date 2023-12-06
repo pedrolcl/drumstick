@@ -98,7 +98,7 @@ void VPianoSettings::internalRead(QSettings &settings)
             keys.append(it.key());
         }
     }
-    for(const QString& key : qAsConst(keys)) {
+    for (const QString &key : std::as_const(keys)) {
         QVariant defval = m_defaultsMap.contains(key) ? m_defaultsMap[key] : QString();
         m_settingsMap.insert(key, settings.value(key, defval));
     }

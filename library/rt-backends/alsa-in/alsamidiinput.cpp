@@ -139,7 +139,7 @@ namespace drumstick { namespace rt {
             m_clientFilter = !advanced;
             m_inputDevices.clear();
             m_inputDevices << MIDIConnection();
-            for (const PortInfo& p : qAsConst(inputs)) {
+            for (const PortInfo &p : std::as_const(inputs)) {
                 QString name = p.getClientName();
                 clientNames << name;
                 if (namesMap.contains(name)) {
@@ -157,7 +157,7 @@ namespace drumstick { namespace rt {
                     continue;
                 if ( name.startsWith(m_publicName) )
                     continue;
-                for (const QString& n : qAsConst(m_excludedNames)) {
+                for (const QString &n : std::as_const(m_excludedNames)) {
                     if (name.startsWith(n)) {
                         excluded = true;
                         break;

@@ -1,37 +1,39 @@
-# MIDI C++ Library
-# Copyright (C) 2005-2023 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#[===========================================================================[
+MIDI C++ Library
+Copyright (C) 2005-2023 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
-cmake_minimum_required(VERSION 3.14)
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+#]===========================================================================]
+
+cmake_minimum_required(VERSION 3.16)
 
 project( Drumstick
-    VERSION 2.8.1
+    VERSION 2.9.0
     LANGUAGES CXX
     DESCRIPTION "MIDI C++ Libraries for Qt"
-    HOMEPAGE_URL "https://sourceforge.net/p/drumstick/"
+    HOMEPAGE_URL "https://drumstick.sourceforge.io"
 )
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_admin)
 include(SCMRevision)
 include(CTest)
 include(GNUInstallDirs)
-set(RELEASE_DATE "August 25, 2023")
+#set(RELEASE_DATE "December 25, 2023")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -101,7 +103,7 @@ option(USE_PULSEAUDIO "Build Sonivox RT backend (if PulseAudio is available)" ${
 option(USE_FLUIDSYNTH "Build FluidSynth RT backend (if available)" ON)
 option(USE_NETWORK "Build Network RT backend (if QtNetwork is available)" ON)
 option(USE_SONIVOX "Build Sonivox RT backend (if Sonivox is available)" ${_PULSE_INIT})
-option(USE_QT "Choose which Qt major version (5 or 6) to prefer. By default uses whatever is found")
+option(USE_QT5 "Prefer building with Qt5 instead of Qt6")
 
 if (BUILD_WIDGETS AND NOT BUILD_RT)
     message(FATAL_ERROR "libdrumstick-widgets requires libdrumstick-rt")
@@ -130,18 +132,10 @@ if (UNIX AND NOT APPLE)
     endif()
 endif()
 
-if (USE_QT)
-    if (NOT (USE_QT EQUAL 5 OR USE_QT EQUAL 6))
-        message(FATAL_ERROR "Wrong Qt major version. Only 5 and 6 are valid options")
-    endif()
-endif()
-
-if (USE_QT EQUAL 5)
-    find_package(QT NAMES Qt5)
-elseif (USE_QT EQUAL 6)
-    find_package(QT NAMES Qt6)
+if (USE_QT5)
+    find_package(QT NAMES Qt5 REQUIRED)
 else()
-    find_package(QT NAMES Qt5 Qt6)
+    find_package(QT NAMES Qt6 REQUIRED)
 endif()
 
 if (QT_VERSION VERSION_LESS 6.0.0)
@@ -246,6 +240,7 @@ if (MSVC)
 endif()
 
 message (STATUS "${PROJECT_NAME} v${PROJECT_VERSION}
+    CMake version: ${CMAKE_VERSION}
     Install prefix: ${CMAKE_INSTALL_PREFIX}
     Build configuration: ${CMAKE_BUILD_TYPE}
     System: ${CMAKE_SYSTEM_NAME}
