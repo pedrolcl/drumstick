@@ -67,6 +67,8 @@ public:
     QString getLibVersion();
     bool getStatus();
 
+    Q_INVOKABLE void writeSettings(QSettings *settings);
+
     static const QString QSTR_FLUIDSYNTH_VERSION;
 
     static const QString QSTR_FLUIDSYNTH;

@@ -1,5 +1,6 @@
 2023-12-08
     * fix for GH #15: new SettingsFactory public static methods: fileName() and format().
+    * fix for GH #16: new slot writeSettings() for some backends: Sonivox, FluidSynth, Network.
 
 2023-12-06
     * Preparations for release 2.9.0:

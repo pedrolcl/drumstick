@@ -158,6 +158,11 @@ void SynthController::sendSystemMsg(const int status)
     Q_UNUSED(status)
 }
 
+void SynthController::writeSettings(QSettings *settings)
+{
+    m_renderer->writeSettings(settings);
+}
+
 QStringList SynthController::getDiagnostics()
 {
     return m_renderer->getDiagnostics();

@@ -31,7 +31,12 @@ const int NetMIDIInput::LAST_PORT = 21948;
 NetMIDIInput::NetMIDIInput(QObject *parent):
     MIDIInput(parent),
     d(new NetMIDIInputPrivate(this))
-{ }
+{}
+
+void NetMIDIInput::writeSettings(QSettings *settings)
+{
+    d->writeSettings(settings);
+}
 
 void NetMIDIInput::initialize(QSettings *settings)
 {

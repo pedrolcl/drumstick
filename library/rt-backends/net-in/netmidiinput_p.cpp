@@ -106,6 +106,17 @@ void NetMIDIInputPrivate::initialize(QSettings *settings)
     }
 }
 
+void NetMIDIInputPrivate::writeSettings(QSettings *settings)
+{
+    if (settings != nullptr) {
+        settings->beginGroup("Network");
+        settings->setValue("interface", m_iface.name());
+        settings->setValue("ipv6", m_ipv6);
+        settings->setValue("address", m_groupAddress.toString());
+        settings->endGroup();
+    }
+}
+
 void NetMIDIInputPrivate::setMIDIThruDevice(MIDIOutput* device)
 {
     m_out = device;

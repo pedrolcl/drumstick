@@ -66,6 +66,8 @@ namespace drumstick { namespace rt {
         virtual void sendSysex(const QByteArray &data) override;
         virtual void sendSystemMsg(const int status) override;
 
+        void writeSettings(QSettings *settings);
+
     private:
         class NetMIDIOutputPrivate;
         NetMIDIOutputPrivate * const d;

@@ -40,6 +40,9 @@ namespace rt {
     public:
         explicit NetMIDIInput(QObject *parent = nullptr);
 
+    public slots:
+        void writeSettings(QSettings *settings);
+
         // MIDIInput interface
     public:
         virtual void initialize(QSettings* settings) override;

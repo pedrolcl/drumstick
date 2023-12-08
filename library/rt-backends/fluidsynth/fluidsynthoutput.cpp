@@ -168,5 +168,10 @@ void FluidSynthOutput::sendSystemMsg(const int status)
     Q_UNUSED(status)
 }
 
+void FluidSynthOutput::writeSettings(QSettings *settings)
+{
+    m_synth->writeSettings(settings);
+}
+
 } // namespace rt
 } // namespace drumstick

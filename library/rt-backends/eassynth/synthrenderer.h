@@ -54,6 +54,7 @@ namespace drumstick { namespace rt {
         void setCondition(QWaitCondition *cond);
         QString getLibVersion();
         QString getSoundFont();
+        void writeSettings(QSettings *settings);
 
         static const QString QSTR_PREFERENCES;
         static const QString QSTR_BUFFERTIME;
@@ -63,6 +64,12 @@ namespace drumstick { namespace rt {
         static const QString QSTR_CHORUSAMT;
         static const QString QSTR_SONIVOXEAS;
         static const QString QSTR_SOUNDFONT;
+
+        static const int DEF_BUFFERTIME;
+        static const int DEF_REVERBTYPE;
+        static const int DEF_REVERBAMT;
+        static const int DEF_CHORUSTYPE;
+        static const int DEF_CHORUSAMT;
 
     private:
         void initEAS();
@@ -88,12 +95,16 @@ namespace drumstick { namespace rt {
         EAS_HANDLE m_streamHandle;
         QString m_soundfont;
         /* pulseaudio */
-        int m_bufferTime;
+        int m_bufferTime{DEF_BUFFERTIME};
         pa_simple *m_pulseHandle;
         /* object properties */
         bool m_status;
         QStringList m_diagnostics;
         EAS_U32 m_libVersion;
+        int m_reverbType{DEF_REVERBTYPE};
+        int m_reverbAmt{DEF_REVERBAMT};
+        int m_chorusType{DEF_CHORUSTYPE};
+        int m_chorusAmt{DEF_CHORUSAMT};
     };
 
 }} /* drumstick::rt */

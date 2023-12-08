@@ -43,6 +43,12 @@ const QString SynthRenderer::QSTR_CHORUSAMT = QStringLiteral("ChorusAmt");
 const QString SynthRenderer::QSTR_SONIVOXEAS = QStringLiteral("SonivoxEAS");
 const QString SynthRenderer::QSTR_SOUNDFONT = QStringLiteral("InstrumentsDefinition");
 
+const int SynthRenderer::DEF_BUFFERTIME = 60;
+const int SynthRenderer::DEF_REVERBTYPE = EAS_PARAM_REVERB_HALL;
+const int SynthRenderer::DEF_REVERBAMT = 25800;
+const int SynthRenderer::DEF_CHORUSTYPE = -1;
+const int SynthRenderer::DEF_CHORUSAMT = 0;
+
 SynthRenderer::SynthRenderer(QObject *parent) : QObject(parent),
     m_Stopped(true),
     m_rendering(nullptr),
@@ -179,11 +185,11 @@ SynthRenderer::initialize(QSettings *settings)
     //qDebug() << Q_FUNC_INFO;
 
     settings->beginGroup(QSTR_PREFERENCES);
-    m_bufferTime = settings->value(QSTR_BUFFERTIME, 60).toInt();
-    int reverbType = settings->value(QSTR_REVERBTYPE, EAS_PARAM_REVERB_HALL).toInt();
-    int reverbAmt = settings->value(QSTR_REVERBAMT, 25800).toInt();
-    int chorusType = settings->value(QSTR_CHORUSTYPE, -1).toInt();
-    int chorusAmt = settings->value(QSTR_CHORUSAMT, 0).toInt();
+    m_bufferTime = settings->value(QSTR_BUFFERTIME, DEF_BUFFERTIME).toInt();
+    int reverbType = settings->value(QSTR_REVERBTYPE, DEF_REVERBTYPE).toInt();
+    int reverbAmt = settings->value(QSTR_REVERBAMT, DEF_REVERBAMT).toInt();
+    int chorusType = settings->value(QSTR_CHORUSTYPE, DEF_CHORUSTYPE).toInt();
+    int chorusAmt = settings->value(QSTR_CHORUSAMT, DEF_CHORUSAMT).toInt();
     m_soundfont = settings->value(QSTR_SOUNDFONT, QString()).toString();
     settings->endGroup();
 
@@ -317,6 +323,20 @@ QString SynthRenderer::getSoundFont()
     return m_soundfont;
 }
 
+void SynthRenderer::writeSettings(QSettings *settings)
+{
+    if (settings != nullptr) {
+        settings->beginGroup(QSTR_PREFERENCES);
+        settings->setValue(QSTR_BUFFERTIME, m_bufferTime);
+        settings->setValue(QSTR_REVERBTYPE, m_reverbType);
+        settings->setValue(QSTR_REVERBAMT, m_reverbAmt);
+        settings->setValue(QSTR_CHORUSTYPE, m_chorusType);
+        settings->setValue(QSTR_CHORUSAMT, m_chorusAmt);
+        settings->setValue(QSTR_SOUNDFONT, m_soundfont);
+        settings->endGroup();
+    }
+}
+
 void
 SynthRenderer::initReverb(int reverb_type)
 {
@@ -327,6 +347,8 @@ SynthRenderer::initReverb(int reverb_type)
         eas_res = EAS_SetParameter(m_easData, EAS_MODULE_REVERB, EAS_PARAM_REVERB_PRESET, (EAS_I32) reverb_type);
         if (eas_res != EAS_SUCCESS) {
             m_diagnostics << QString("EAS_SetParameter error: %1").arg(eas_res);
+        } else {
+            m_reverbType = reverb_type;
         }
     }
     eas_res = EAS_SetParameter(m_easData, EAS_MODULE_REVERB, EAS_PARAM_REVERB_BYPASS, sw);
@@ -345,6 +367,8 @@ SynthRenderer::initChorus(int chorus_type)
         eas_res = EAS_SetParameter(m_easData, EAS_MODULE_CHORUS, EAS_PARAM_CHORUS_PRESET, (EAS_I32) chorus_type);
         if (eas_res != EAS_SUCCESS) {
             m_diagnostics << QString("EAS_SetParameter error: %1").arg(eas_res);
+        } else {
+            m_chorusType = chorus_type;
         }
     }
     eas_res = EAS_SetParameter(m_easData, EAS_MODULE_CHORUS, EAS_PARAM_CHORUS_BYPASS, sw);
@@ -359,6 +383,8 @@ SynthRenderer::setReverbWet(int amount)
     EAS_RESULT eas_res = EAS_SetParameter(m_easData, EAS_MODULE_REVERB, EAS_PARAM_REVERB_WET, (EAS_I32) amount);
     if (eas_res != EAS_SUCCESS) {
         m_diagnostics << QString("EAS_SetParameter error: %1").arg(eas_res);
+    } else {
+        m_reverbAmt = amount;
     }
 }
 
@@ -368,6 +394,8 @@ SynthRenderer::setChorusLevel(int amount)
     EAS_RESULT eas_res = EAS_SetParameter(m_easData, EAS_MODULE_CHORUS, EAS_PARAM_CHORUS_LEVEL, (EAS_I32) amount);
     if (eas_res != EAS_SUCCESS) {
         m_diagnostics << QString("EAS_SetParameter error: %1").arg(eas_res);
+    } else {
+        m_chorusAmt = amount;
     }
 }
 

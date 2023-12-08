@@ -69,6 +69,9 @@ namespace rt {
         virtual void sendSysex(const QByteArray &data) override;
         virtual void sendSystemMsg(const int status) override;
 
+    public slots:
+        void writeSettings(QSettings *settings);
+
     private:
         QPointer<FluidSynthEngine> m_synth;
 

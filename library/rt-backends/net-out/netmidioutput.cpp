@@ -86,6 +86,17 @@ public:
         }
     }
 
+    void writeSettings(QSettings *settings)
+    {
+        if (settings != nullptr) {
+            settings->beginGroup("Network");
+            settings->setValue("interface", m_iface.name());
+            settings->setValue("ipv6", m_ipv6);
+            settings->setValue("address", m_groupAddress.toString());
+            settings->endGroup();
+        }
+    }
+
     void open(const MIDIConnection& portName)
     {
         //qDebug() << Q_FUNC_INFO << portName;
@@ -266,6 +277,11 @@ void NetMIDIOutput::sendSysex(const QByteArray &data)
 void NetMIDIOutput::sendSystemMsg(const int status)
 {
     d->sendMessage(status);
+}
+
+void NetMIDIOutput::writeSettings(QSettings *settings)
+{
+    d->writeSettings(settings);
 }
 
 QStringList NetMIDIOutput::getDiagnostics()

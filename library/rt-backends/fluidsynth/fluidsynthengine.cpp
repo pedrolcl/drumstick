@@ -273,6 +273,24 @@ bool FluidSynthEngine::getStatus()
     return m_status;
 }
 
+void FluidSynthEngine::writeSettings(QSettings *settings)
+{
+    if (settings != nullptr) {
+        settings->beginGroup(QSTR_PREFERENCES);
+        settings->setValue(QSTR_INSTRUMENTSDEFINITION, m_soundFont);
+        settings->setValue(QSTR_AUDIODRIVER, fs_audiodriver);
+        settings->setValue(QSTR_PERIODSIZE, fs_periodSize);
+        settings->setValue(QSTR_PERIODS, fs_periods);
+        settings->setValue(QSTR_SAMPLERATE, fs_sampleRate);
+        settings->setValue(QSTR_CHORUS, fs_chorus);
+        settings->setValue(QSTR_REVERB, fs_reverb);
+        settings->setValue(QSTR_GAIN, fs_gain);
+        settings->setValue(QSTR_POLYPHONY, fs_polyphony);
+        int bufferTime = 1000 * fs_periodSize * fs_periods / fs_sampleRate;
+        settings->setValue(QSTR_BUFFERTIME, bufferTime);
+        settings->endGroup();
+    }
+}
 
 void FluidSynthEngine::scanSoundFonts(const QDir &initialDir)
 {
