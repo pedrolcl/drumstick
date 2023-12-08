@@ -1,3 +1,6 @@
+2023-12-08
+    * fix for GH #15: new SettingsFactory public static methods: fileName() and format().
+
 2023-12-06
     * Preparations for release 2.9.0:
         Building with Qt6 by default.

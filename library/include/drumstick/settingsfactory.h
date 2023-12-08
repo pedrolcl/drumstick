@@ -46,29 +46,30 @@
 
 namespace drumstick { namespace widgets {
 
-    /**
-     * @addtogroup Widgets
-     * @{
-     *
-     * @class SettingsFactory
-     * @brief The SettingsFactory class holds a global QSettings object.
-     * This class creates and returns a QSettings object globally configured
-     * instance using native or file storage.
-     */
+/**
+ * @addtogroup Widgets
+ * @{
+ *
+ * @class SettingsFactory
+ * @brief The SettingsFactory class holds a global QSettings object.
+ * This class creates and returns a QSettings object globally configured
+ * instance using native or file storage.
+ */
 class DRUMSTICK_WIDGETS_EXPORT SettingsFactory
 {
 public:
     QSettings *getQSettings();
     QSettings *operator->();
     static void setFileName(const QString name);
+    static QString fileName();
+    static QSettings::Format format();
 
 private:
     QScopedPointer<QSettings> m_settings{nullptr};
     static QString s_fileName;
-    };
+};
 
-    /** @} */
-
+/** @} */
 }} // namespace drumstick::widgets
 
 #endif // SETTINGS_H

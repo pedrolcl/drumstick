@@ -28,19 +28,41 @@ namespace drumstick { namespace widgets {
 
 /**
  * @brief SettingsFactory::s_fileName is a global string providing the file name
- * of the persisting settings using the INI file format
+ * of the persistent settings using the INI file format
  */
 QString SettingsFactory::s_fileName;
 
 /**
  * @brief SettingsFactory::setFileName sets the global file name for the
- * persisting settings and sets the INI format as well
+ * persistent settings and sets the INI format as well
  * @param name the new file name
  */
 void SettingsFactory::setFileName(const QString name)
 {
     SettingsFactory::s_fileName = name;
-    QSettings::setDefaultFormat(QSettings::IniFormat);
+    if (name.isEmpty()) {
+        QSettings::setDefaultFormat(QSettings::NativeFormat);
+    } else {
+        QSettings::setDefaultFormat(QSettings::IniFormat);
+    }
+}
+
+/**
+ * @brief SettingsFactory::fileName returns the file name of the persistent settings
+ * @return QString the global file name of the persistent settings
+ */
+QString SettingsFactory::fileName()
+{
+    return s_fileName;
+}
+
+/**
+ * @brief SettingsFactory::format returns the storage format of the persistent settings
+ * @return QSettings::Format the storage format of the persistent settings
+ */
+QSettings::Format SettingsFactory::format()
+{
+    return QSettings::defaultFormat();
 }
 
 /**
@@ -56,6 +78,7 @@ SettingsFactory::getQSettings()
         } else {
             m_settings.reset(new QSettings(s_fileName, QSettings::IniFormat));
         }
+        m_settings->setAtomicSyncRequired(true);
     }
     return m_settings.data();
 }
