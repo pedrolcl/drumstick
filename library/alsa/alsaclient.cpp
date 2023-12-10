@@ -688,7 +688,7 @@ MidiClient::doEvents()
                     }
                 } else {
                     // finally, process signals
-                    emit eventReceived(event->clone());
+                    Q_EMIT eventReceived(event->clone());
                 }
             }
             delete event;

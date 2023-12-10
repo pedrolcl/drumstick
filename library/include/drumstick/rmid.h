@@ -64,7 +64,7 @@ public:
     void readFromFile(QString fileName);
     void readFromStream(QDataStream* ds);
 
-signals:
+Q_SIGNALS:
     /**
      * @brief signalRMidInfo is emitted for each RIFF INFO element
      * @param infoType Type of data (chunk ID) as defined in the spec (Source: www.midi.org rp29spec.pdf).

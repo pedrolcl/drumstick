@@ -119,10 +119,10 @@ public:
     bool octaveSubscript() const;
     void setOctaveSubscript(bool newOctaveSubscript);
 
-signals:
+Q_SIGNALS:
     void ValuesChanged();
 
-public slots:
+public Q_SLOTS:
     void ResetDefaults();
     void ReadSettings();
     void ReadFromFile(const QString &filepath);

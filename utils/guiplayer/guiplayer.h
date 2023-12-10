@@ -87,7 +87,7 @@ public:
     static const QString QSTR_DOMAIN;
     static const QString QSTR_APPNAME;
 
-public slots:
+public Q_SLOTS:
     void about();
     void play();
     void pause();

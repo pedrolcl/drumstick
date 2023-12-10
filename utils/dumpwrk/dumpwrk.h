@@ -39,7 +39,7 @@
 
     static const QString NO_CHANNEL;
 
-  public slots:
+  public Q_SLOTS:
     void unknownChunk(int type, const QByteArray& data);
     void fileHeader(int verh, int verl);
     void trackHeader(const QString& name1, const QString& name2,

@@ -348,7 +348,7 @@ public:
 protected:
     void doEvents();
 
-signals:    
+Q_SIGNALS:    
     /**
      * This signal is emitted when the timer has expired, if there is not an
      * event hander installed.

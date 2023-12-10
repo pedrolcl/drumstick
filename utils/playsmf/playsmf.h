@@ -54,7 +54,7 @@ public:
     void dumpStr(const QString& event, const QString& data);
     void shutupSound();
 
-public slots:
+public Q_SLOTS:
     void headerEvent(int format, int ntrks, int division);
     void noteOnEvent(int chan, int pitch, int vol);
     void noteOffEvent(int chan, int pitch, int vol);

@@ -376,7 +376,7 @@ void PianoScene::displayKeyOn(PianoKey* key)
     key->setPressed(true);
     int n = key->getNote() + d->m_baseOctave*12 + d->m_transpose;
     QString s = QString("#%1 (%2)").arg(n).arg(d->noteName(key, false));
-    emit signalName(s);
+    Q_EMIT signalName(s);
     KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().constFirst());
     if (lbl != nullptr) {
         lbl->setDefaultTextColor(d->m_foregroundPalette.getColor(key->isBlack() ? 3 : 2));
@@ -424,7 +424,7 @@ void PianoScene::showKeyOff( PianoKey* key, int vel)
 {
     Q_UNUSED(vel)
     key->setPressed(false);
-    emit signalName(QString());
+    Q_EMIT signalName(QString());
     KeyLabel* lbl = dynamic_cast<KeyLabel*>(key->childItems().constFirst());
     if (lbl != nullptr) {
         lbl->restoreColor();
@@ -496,7 +496,7 @@ void PianoScene::triggerNoteOn( const int note, const int vel )
         if (d->m_handler != nullptr) {
             d->m_handler->noteOn(n, vel);
         } else {
-            emit noteOn(n, vel);
+            Q_EMIT noteOn(n, vel);
         }
     }
 }
@@ -515,7 +515,7 @@ void PianoScene::triggerNoteOff( const int note, const int vel )
         if (d->m_handler != nullptr) {
             d->m_handler->noteOff(n, vel);
         } else {
-            emit noteOff(n, vel);
+            Q_EMIT noteOff(n, vel);
         }
     }
 }

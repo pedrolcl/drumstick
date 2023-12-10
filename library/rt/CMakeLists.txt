@@ -69,6 +69,7 @@ target_include_directories(drumstick-rt PUBLIC
 
 target_compile_definitions(drumstick-rt
     PRIVATE LIBSUFFIX=${CMAKE_INSTALL_LIBDIR}
+    QT_NO_SIGNALS_SLOTS_KEYWORDS
 )
 
 target_link_libraries(drumstick-rt PRIVATE

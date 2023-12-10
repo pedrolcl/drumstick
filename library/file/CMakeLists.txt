@@ -74,6 +74,10 @@ target_link_libraries(drumstick-file PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
 )
 
+target_compile_definitions(drumstick-file PRIVATE
+    QT_NO_SIGNALS_SLOTS_KEYWORDS
+)
+
 if (QT_VERSION VERSION_GREATER_EQUAL 6.0)
     target_link_libraries(drumstick-file PRIVATE
         Qt6::Core5Compat

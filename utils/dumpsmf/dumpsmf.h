@@ -31,7 +31,7 @@
     void dumpStr(const QString& event, const QString& data);
     int  numErrors();
 
-  public slots:
+  public Q_SLOTS:
     void headerEvent(int format, int ntrks, int division);
     void trackStartEvent();
     void trackEndEvent();

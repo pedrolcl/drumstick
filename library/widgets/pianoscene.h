@@ -142,7 +142,7 @@ public:
     void setOctaveSubscript(const bool enable);
     bool octaveSubscript() const;
 
-signals:
+Q_SIGNALS:
     /**
          * This signal is emitted for each Note On MIDI event created using
          * the computer keyboard, mouse or touch screen. It is not emitted if

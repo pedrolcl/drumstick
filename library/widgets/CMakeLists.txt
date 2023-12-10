@@ -119,6 +119,7 @@ target_compile_definitions(drumstick-widgets PRIVATE
     $<$<BOOL:${HAVE_NETWORK}>:ENABLE_NETWORK>
     $<$<BOOL:${HAVE_FLUIDSYNTH}>:ENABLE_FLUIDSYNTH>
     $<$<BOOL:${HAVE_SONIVOX}>:ENABLE_SONIVOX>
+    QT_NO_SIGNALS_SLOTS_KEYWORDS
 )
 
 add_library(Drumstick::Widgets ALIAS drumstick-widgets)

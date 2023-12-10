@@ -178,7 +178,7 @@ public:
     void setTimestampReal(bool value);
     void setTimestampQueue(int queueId);
 
-signals:
+Q_SIGNALS:
     /**
      * Signal emitted when an internal subscription is done.
      * @param port MIDI port object pointer

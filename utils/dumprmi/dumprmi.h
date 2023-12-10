@@ -33,7 +33,7 @@ public:
     void setExtract(bool enable);
     void extractFileData(const QString& fileSuffix, const QByteArray& data);
 
-public slots:
+public Q_SLOTS:
     void headerEvent(int format, int ntrks, int division);
     void trackStartEvent();
     void trackEndEvent();

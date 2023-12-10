@@ -35,7 +35,7 @@ public:
     void closeEvent(QCloseEvent *event) override;
     void setPortableConfig(const QString fileName = QString());
 
-public slots:
+public Q_SLOTS:
     void readSettings();
     void writeSettings();
 

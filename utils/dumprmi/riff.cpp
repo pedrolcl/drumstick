@@ -169,9 +169,9 @@ void Riff::processPHDR(int size)
         bank = read16bit();
         skip(14);
         if (bank < 128)
-            emit signalInstrument(bank, pc, QString(name));
+            Q_EMIT signalInstrument(bank, pc, QString(name));
         else
-            emit signalPercussion(bank, pc, QString(name));
+            Q_EMIT signalPercussion(bank, pc, QString(name));
         //qDebug() << "Instrument: " << bank << pc << name;
     }
     skip(38);
@@ -246,9 +246,9 @@ void Riff::processINS(int size)
     }
     //qDebug() << "Instrument:" << bank << pc << m_name;
     if (perc)
-        emit signalPercussion(bank, pc, m_name);
+        Q_EMIT signalPercussion(bank, pc, m_name);
     else
-        emit signalInstrument(bank, pc, m_name);
+        Q_EMIT signalInstrument(bank, pc, m_name);
     m_name.clear();
     m_copyright.clear();
 }
@@ -312,7 +312,7 @@ void Riff::processDLS(int size)
         size -= length;
     }
     //qDebug() << "DLS:" << m_name << m_version << m_copyright;
-    emit signalDLS(m_name, m_version, m_copyright);
+    Q_EMIT signalDLS(m_name, m_version, m_copyright);
 }
 
 void Riff::processSF(int size)
@@ -332,7 +332,7 @@ void Riff::processSF(int size)
         size -= length;
     }
     //qDebug() << "SoundFont:" << m_name << m_version << m_copyright;
-    emit signalSoundFont(m_name, m_version, m_copyright);
+    Q_EMIT signalSoundFont(m_name, m_version, m_copyright);
 }
 
 void Riff::read()

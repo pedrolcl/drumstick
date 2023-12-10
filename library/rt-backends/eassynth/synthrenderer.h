@@ -79,10 +79,10 @@ namespace drumstick { namespace rt {
         void writeMIDIData(const QByteArray& message);
         void initSoundfont();
 
-    public slots:
+    public Q_SLOTS:
         void run();
 
-    signals:
+    Q_SIGNALS:
         void finished();
 
     private:

@@ -95,7 +95,7 @@ public:
      */
     virtual void stop();
 
-signals:
+Q_SIGNALS:
     /**
      * Signal emitted when the sequence play-back has finished.
      */
@@ -106,7 +106,7 @@ signals:
      */
     void playbackStopped();
 
-public slots:
+public Q_SLOTS:
     void start( QThread::Priority priority = InheritPriority );
 
 protected:

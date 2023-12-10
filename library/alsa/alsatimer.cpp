@@ -1291,7 +1291,7 @@ Timer::doEvents()
         if ( m_handler != nullptr )
             m_handler->handleTimerEvent(tr.val, msecs);
         else
-            emit timerExpired(tr.val, msecs);
+            Q_EMIT timerExpired(tr.val, msecs);
     }
 }
 

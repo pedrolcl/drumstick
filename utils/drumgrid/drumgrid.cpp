@@ -195,7 +195,7 @@ void DrumGrid::sequencerEvent(SequencerEvent *ev)
         break;
     case SND_SEQ_EVENT_USR1:
         m_beat++;
-        emit signalUpdate(m_bar, m_beat-1);
+        Q_EMIT signalUpdate(m_bar, m_beat-1);
         break;
     }
     delete ev;

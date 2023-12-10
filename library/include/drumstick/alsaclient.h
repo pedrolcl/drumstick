@@ -305,7 +305,7 @@ public:
     void setRealTimeInput(bool enabled);
     bool realTimeInputEnabled();
 
-signals:
+Q_SIGNALS:
     /** Signal emitted when an event is received
      * @param ev pointer to the received event
      */

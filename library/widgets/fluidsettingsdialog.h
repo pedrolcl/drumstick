@@ -52,7 +52,7 @@ public:
     void changeSoundFont(const QString& fileName);
     void chkDriverProperties(QSettings* settings);
 
-public slots:
+public Q_SLOTS:
     void accept() override;
     void showEvent(QShowEvent *event) override;
     void restoreDefaults();

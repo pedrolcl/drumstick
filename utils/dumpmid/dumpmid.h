@@ -52,7 +52,7 @@ public:
 
     virtual void handleSequencerEvent(drumstick::ALSA::SequencerEvent* ev);
 
-public slots:
+public Q_SLOTS:
     void subscription( drumstick::ALSA::MidiPort* port, drumstick::ALSA::Subscription* subs );
 
 #ifdef USE_QEVENTS

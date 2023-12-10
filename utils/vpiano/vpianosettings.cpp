@@ -54,7 +54,7 @@ void VPianoSettings::ResetDefaults()
         { BackendManager::QSTR_DRUMSTICKRT_PUBLICNAMEIN, QStringLiteral("Virtual Piano IN")},
         { BackendManager::QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QStringLiteral("Virtual Piano OUT")}
     };
-    emit ValuesChanged();
+    Q_EMIT ValuesChanged();
 }
 
 void VPianoSettings::ReadSettings()
@@ -173,7 +173,7 @@ void VPianoSettings::internalRead(QSettings &settings)
     setInvertedKeys(settings.value("inverted_keys", false).toBool());
     settings.endGroup();
 
-    emit ValuesChanged();
+    Q_EMIT ValuesChanged();
 }
 
 void VPianoSettings::internalSave(QSettings &settings)

@@ -285,7 +285,7 @@ namespace drumstick { namespace widgets {
 
         void setStartKey(const int startKey);
 
-    signals:
+    Q_SIGNALS:
         /**
          * This signal is emitted for each Note On MIDI event created using
          * the computer keyboard, mouse or touch screen. It is not emitted if

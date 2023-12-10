@@ -39,7 +39,7 @@ public:
     drumstick::rt::MIDIInput *getInput();
     drumstick::rt::MIDIOutput *getOutput();
 
-public slots:
+public Q_SLOTS:
     void configureInputDriver();
     void configureOutputDriver();
     void clickedAdvanced(bool value);

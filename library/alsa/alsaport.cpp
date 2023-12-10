@@ -626,7 +626,7 @@ MidiPort::setMidiClient( MidiClient* seq )
     if (m_MidiClient != seq)
     {
         m_MidiClient = seq;
-        emit midiClientChanged( this, m_MidiClient );
+        Q_EMIT midiClientChanged( this, m_MidiClient );
         applyPortInfo();
     }
 }
@@ -640,7 +640,7 @@ MidiPort::subscribe(Subscription* subs)
 {
     subs->subscribe(m_MidiClient);
     m_Subscriptions.append(*subs);
-    emit subscribed(this, subs);
+    Q_EMIT subscribed(this, subs);
 }
 
 /**
@@ -1124,7 +1124,7 @@ MidiPort::attach( MidiClient* seq )
         m_MidiClient = seq;
         m_MidiClient->portAttach(this);
         m_Attached = true;
-        emit attached(this);
+        Q_EMIT attached(this);
     }
 }
 
@@ -1137,7 +1137,7 @@ MidiPort::detach()
     if (m_Attached && (m_MidiClient != nullptr)) {
         m_MidiClient->portDetach(this);
         m_Attached = false;
-        emit detached(this);
+        Q_EMIT detached(this);
     }
 }
 

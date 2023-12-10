@@ -72,6 +72,7 @@ target_include_directories(drumstick-alsa PUBLIC
 #message(STATUS "ALSA -- HAVE_DBUS: ${HAVE_DBUS}")
 
 target_compile_definitions(drumstick-alsa PRIVATE
+    QT_NO_SIGNALS_SLOTS_KEYWORDS
     $<$<BOOL:${HAVE_DBUS}>:RTKIT_SUPPORT>
 )
 

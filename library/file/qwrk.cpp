@@ -1300,7 +1300,7 @@ void QWrk::processNewStream()
 
 void QWrk::processEndChunk()
 {
-    emit signalWRKEnd();
+    Q_EMIT signalWRKEnd();
 }
 
 int QWrk::readChunk()

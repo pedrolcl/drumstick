@@ -141,7 +141,7 @@ public:
     Q_DECL_DEPRECATED QTextCodec* getTextCodec();
     Q_DECL_DEPRECATED void setTextCodec(QTextCodec *codec);
 
-signals:
+Q_SIGNALS:
     /**
      * Emitted for a SMF read or write error
      * @param errorStr Error string

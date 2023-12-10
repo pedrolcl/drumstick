@@ -37,7 +37,7 @@ public:
             m_out->sendNoteOff(chan, note, vel);
         }
         if (m_in != nullptr) {
-            emit m_in->midiNoteOff(chan, note, vel);
+            Q_EMIT m_in->midiNoteOff(chan, note, vel);
         }
     }
 
@@ -48,7 +48,7 @@ public:
             m_out->sendNoteOn(chan, note, vel);
         }
         if (m_in != nullptr) {
-            emit m_in->midiNoteOn(chan, note, vel);
+            Q_EMIT m_in->midiNoteOn(chan, note, vel);
         }
     }
 
@@ -59,7 +59,7 @@ public:
             m_out->sendKeyPressure(chan, note, value);
         }
         if (m_in != nullptr) {
-            emit m_in->midiKeyPressure(chan, note, value);
+            Q_EMIT m_in->midiKeyPressure(chan, note, value);
         }
     }
 
@@ -70,7 +70,7 @@ public:
             m_out->sendController(chan, control, value);
         }
         if (m_in != nullptr) {
-            emit m_in->midiController(chan, control, value);
+            Q_EMIT m_in->midiController(chan, control, value);
         }
     }
 
@@ -81,7 +81,7 @@ public:
             m_out->sendProgram(chan, program);
         }
         if (m_in != nullptr) {
-            emit m_in->midiProgram(chan, program);
+            Q_EMIT m_in->midiProgram(chan, program);
         }
     }
 
@@ -92,7 +92,7 @@ public:
             m_out->sendChannelPressure(chan, value);
         }
         if (m_in != nullptr) {
-            emit m_in->midiChannelPressure(chan, value);
+            Q_EMIT m_in->midiChannelPressure(chan, value);
         }
     }
 
@@ -103,7 +103,7 @@ public:
             m_out->sendPitchBend(chan, value);
         }
         if (m_in != nullptr) {
-            emit m_in->midiPitchBend(chan, value);
+            Q_EMIT m_in->midiPitchBend(chan, value);
         }
     }
 
@@ -114,7 +114,7 @@ public:
             m_out->sendSysex(data);
         }
         if (m_in != nullptr) {
-            emit m_in->midiSysex(data);
+            Q_EMIT m_in->midiSysex(data);
         }
     }
 
@@ -125,7 +125,7 @@ public:
             m_out->sendSystemMsg(status);
         }
         if (m_in != nullptr) {
-            emit m_in->midiSystemCommon(status);
+            Q_EMIT m_in->midiSystemCommon(status);
         }
     }
 
@@ -136,7 +136,7 @@ public:
             m_out->sendSystemMsg(byte);
         }
         if (m_in != nullptr) {
-            emit m_in->midiSystemRealtime(byte);
+            Q_EMIT m_in->midiSystemRealtime(byte);
         }
     }
 

@@ -185,7 +185,7 @@ void QSmf::readHeader()
         d->m_Tracks = read16bit();
         d->m_Division = read16bit();
     }
-    emit signalSMFHeader(d->m_fileFormat, d->m_Tracks, d->m_Division);
+    Q_EMIT signalSMFHeader(d->m_fileFormat, d->m_Tracks, d->m_Division);
 
     /* flush any extra stuff, in case the length of header is not */
     while ((d->m_ToBeRead > 0) && !endOfSmf())
@@ -237,7 +237,7 @@ void QSmf::readTrack()
     d->m_OldRealTime = 0;
     d->m_CurrTempo = findTempo();
 
-    emit signalSMFTrackStart();
+    Q_EMIT signalSMFTrackStart();
 
     while (!endOfSmf() && (d->m_Interactive || d->m_ToBeRead > 0))
     {
@@ -392,7 +392,7 @@ void QSmf::readTrack()
     if (d->m_ToBeRead > 0) {
         SMFError(QStringLiteral("Track ended before reading last %1 bytes").arg(d->m_ToBeRead));
     }
-    emit signalSMFTrackEnd();
+    Q_EMIT signalSMFTrackEnd();
 }
 
 /**
@@ -427,7 +427,7 @@ void QSmf::SMFWrite()
     d->m_LastStatus = 0;
     if (d->m_fileFormat == 1)
     {
-        emit signalSMFWriteTempoTrack();
+        Q_EMIT signalSMFWriteTempoTrack();
     }
     for (i = 0; i < d->m_Tracks; ++i)
     {
@@ -515,7 +515,7 @@ void QSmf::writeTrackChunk(int track)
     write32bit(trklength);
     d->m_NumBytesWritten = 0;
 
-    emit signalSMFWriteTrack(track);
+    Q_EMIT signalSMFWriteTrack(track);
 
     place_marker = d->m_IOStream->device()->pos();
     d->m_IOStream->device()->seek(offset);
@@ -976,7 +976,7 @@ double QSmf::ticksToSecs(quint64 ticks, quint16 division, quint64 tempo)
 
 void QSmf::SMFError(const QString& s)
 {
-    emit signalSMFError(s);
+    Q_EMIT signalSMFError(s);
 }
 
 void QSmf::channelMessage(quint8 status, quint8 c1, quint8 c2)
@@ -997,26 +997,26 @@ void QSmf::channelMessage(quint8 status, quint8 c1, quint8 c2)
     switch (status & midi_command_mask)
     {
     case note_off:
-        emit signalSMFNoteOff(chan, c1, c2);
+        Q_EMIT signalSMFNoteOff(chan, c1, c2);
         break;
     case note_on:
-        emit signalSMFNoteOn(chan, c1, c2);
+        Q_EMIT signalSMFNoteOn(chan, c1, c2);
         break;
     case poly_aftertouch:
-        emit signalSMFKeyPress(chan, c1, c2);
+        Q_EMIT signalSMFKeyPress(chan, c1, c2);
         break;
     case control_change:
-        emit signalSMFCtlChange(chan, c1, c2);
+        Q_EMIT signalSMFCtlChange(chan, c1, c2);
         break;
     case program_chng:
-        emit signalSMFProgram(chan, c1);
+        Q_EMIT signalSMFProgram(chan, c1);
         break;
     case channel_aftertouch:
-        emit signalSMFChanPress(chan, c1);
+        Q_EMIT signalSMFChanPress(chan, c1);
         break;
     case pitch_wheel:
         k = c1 + (c2 << 7) - 8192;
-        emit signalSMFPitchBend(chan, k);
+        Q_EMIT signalSMFPitchBend(chan, k);
         break;
     default:
         SMFError(QString("Invalid MIDI status %1. Unhandled event").arg(status));
@@ -1032,7 +1032,7 @@ void QSmf::metaEvent(quint8 b)
     switch (b)
     {
     case sequence_number:
-        emit signalSMFSequenceNum(to16bit(m[0], m[1]));
+        Q_EMIT signalSMFSequenceNum(to16bit(m[0], m[1]));
         break;
     case text_event:
     case copyright_notice:
@@ -1043,25 +1043,25 @@ void QSmf::metaEvent(quint8 b)
     case cue_point: {
             QString s;
             if (d->m_codec == nullptr) {
-                emit signalSMFText2(b, m);
+                Q_EMIT signalSMFText2(b, m);
             } else {
                 s = d->m_codec->toUnicode(m);
-                emit signalSMFText(b, s);
+                Q_EMIT signalSMFText(b, s);
             }
         }
         break;
     case forced_channel:
-        emit signalSMFforcedChannel(m[0]);
+        Q_EMIT signalSMFforcedChannel(m[0]);
         break;
     case forced_port:
-        emit signalSMFforcedPort(m[0]);
+        Q_EMIT signalSMFforcedPort(m[0]);
         break;
     case end_of_track:
-        emit signalSMFendOfTrack();
+        Q_EMIT signalSMFendOfTrack();
         break;
     case set_tempo:
         d->m_CurrTempo = to32bit(0, m[0], m[1], m[2]);
-        emit signalSMFTempo(d->m_CurrTempo);
+        Q_EMIT signalSMFTempo(d->m_CurrTempo);
         rec = d->m_TempoList.last();
         if (rec.tempo == d->m_CurrTempo)
         {
@@ -1074,28 +1074,28 @@ void QSmf::metaEvent(quint8 b)
         addTempo(d->m_CurrTempo, d->m_CurrTime);
         break;
     case smpte_offset:
-        emit signalSMFSmpte(m[0], m[1], m[2], m[3], m[4]);
+        Q_EMIT signalSMFSmpte(m[0], m[1], m[2], m[3], m[4]);
         break;
     case time_signature:
-        emit signalSMFTimeSig(m[0], m[1], m[2], m[3]);
+        Q_EMIT signalSMFTimeSig(m[0], m[1], m[2], m[3]);
         break;
     case key_signature:
-        emit signalSMFKeySig(m[0], m[1]);
+        Q_EMIT signalSMFKeySig(m[0], m[1]);
         break;
     case sequencer_specific:
-        emit signalSMFSeqSpecific(m);
+        Q_EMIT signalSMFSeqSpecific(m);
         break;
     default:
-        emit signalSMFMetaUnregistered(b, m);
+        Q_EMIT signalSMFMetaUnregistered(b, m);
         break;
     }
-    emit signalSMFMetaMisc(b, m);
+    Q_EMIT signalSMFMetaMisc(b, m);
 }
 
 void QSmf::sysEx()
 {
     QByteArray varr(d->m_MsgBuff);
-    emit signalSMFSysex(varr);
+    Q_EMIT signalSMFSysex(varr);
 }
 
 void QSmf::badByte(quint8 b, int p)

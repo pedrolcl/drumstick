@@ -48,7 +48,7 @@ public:
 
     static const QString DEFVAL;
 
-public slots:
+public Q_SLOTS:
     void changeCell(const QModelIndex &index);
     void changeCell(const QModelIndex &index, const QString& newValue);
 

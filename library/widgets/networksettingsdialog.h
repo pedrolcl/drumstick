@@ -49,7 +49,7 @@ namespace widgets {
         static const QString QSTR_ADDRESS_IPV4;
         static const QString QSTR_ADDRESS_IPV6;
 
-    public slots:
+    public Q_SLOTS:
         void accept() override;
         void showEvent(QShowEvent *event) override;
         void restoreDefaults();

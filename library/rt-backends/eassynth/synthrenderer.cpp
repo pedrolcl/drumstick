@@ -256,7 +256,7 @@ SynthRenderer::run()
         m_status = false;
     }
     //qDebug() << Q_FUNC_INFO << "ended";
-    emit finished();
+    Q_EMIT finished();
 }
 
 void

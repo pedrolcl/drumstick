@@ -181,7 +181,7 @@ void Rmidi::processINFO(int size)
         size -= length;
         QString cktype = toString(chunkID);
         QByteArray data = readByteArray(length);
-        emit signalRiffInfo(cktype, data);
+        Q_EMIT signalRiffInfo(cktype, data);
     }
 }
 
@@ -258,7 +258,7 @@ void Rmidi::processData(const QString& dataType, int size)
     //qDebug() << Q_FUNC_INFO << size;
     QByteArray memdata(size, '\0');
     m_stream->readRawData(memdata.data(), size);
-    emit signalRiffData(dataType, memdata);
+    Q_EMIT signalRiffData(dataType, memdata);
 }
 
 void Rmidi::read()

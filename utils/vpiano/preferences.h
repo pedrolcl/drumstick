@@ -30,7 +30,7 @@ public:
     explicit Preferences(QWidget *parent = nullptr);
     void apply();
 
-public slots:
+public Q_SLOTS:
     void slotButtonClicked(QAbstractButton *button);
     void accept() override;
 

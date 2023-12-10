@@ -62,7 +62,7 @@ namespace widgets {
         static const QString QSTR_DATADIR;
         static const QString QSTR_DATADIR2;
 
-    public slots:
+    public Q_SLOTS:
         void accept() override;
         void showEvent(QShowEvent *event) override;
         void restoreDefaults();

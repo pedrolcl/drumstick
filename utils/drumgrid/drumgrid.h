@@ -89,7 +89,7 @@ public:
     static const int VOLUME_CC;
     static const int PAN_CC;
 
-public slots:
+public Q_SLOTS:
     void slotAbout();
     void updateView();
     void sequencerEvent(drumstick::ALSA::SequencerEvent *ev);
@@ -101,7 +101,7 @@ public slots:
     void shortcutPressed(const QString& value);
     void updateDisplay(int bar, int beat);
 
-signals:
+Q_SIGNALS:
     void signalUpdate(int bar, int beat);
 
 private:

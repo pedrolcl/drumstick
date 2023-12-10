@@ -112,7 +112,7 @@ void DrumGridModel::changeCell(const QModelIndex &index)
 void DrumGridModel::changeCell(const QModelIndex &index, const QString& newValue)
 {
     m_lastValue = m_modelData[index.row()][index.column()] = newValue;
-    emit dataChanged(index, index);
+    Q_EMIT dataChanged(index, index);
 }
 
 QStringList DrumGridModel::patternData(int row)
