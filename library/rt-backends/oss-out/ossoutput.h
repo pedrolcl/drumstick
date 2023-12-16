@@ -47,7 +47,7 @@ namespace drumstick { namespace rt {
         virtual void close() override;
         virtual MIDIConnection currentConnection() override;
 
-    public slots:
+    public Q_SLOTS:
         virtual void sendNoteOff(int chan, int note, int vel) override;
         virtual void sendNoteOn(int chan, int note, int vel) override;
         virtual void sendKeyPressure(int chan, int note, int value) override;
@@ -57,6 +57,7 @@ namespace drumstick { namespace rt {
         virtual void sendPitchBend(int chan, int value) override;
         virtual void sendSysex(const QByteArray &data) override;
         virtual void sendSystemMsg(const int status) override;
+
     private:
         class OSSOutputPrivate;
         OSSOutputPrivate *d;

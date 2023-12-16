@@ -50,7 +50,7 @@ public:
     void readFromFile(QString fileName);
     void readFromStream(QDataStream* ds);
 
-signals:
+Q_SIGNALS:
     void signalSoundFont(QString name, QString version, QString copyright);
     void signalDLS(QString name, QString version, QString copyright);
     void signalInstrument(int bank, int pc, QString name);

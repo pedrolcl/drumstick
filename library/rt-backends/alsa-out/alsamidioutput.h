@@ -49,7 +49,7 @@ namespace rt {
 
         static const QString DEFAULT_PUBLIC_NAME;
 
-    public slots:
+    public Q_SLOTS:
         virtual void sendNoteOn(int chan, int note, int vel) override;
         virtual void sendNoteOff(int chan, int note, int vel) override;
         virtual void sendController(int chan, int control, int value) override;

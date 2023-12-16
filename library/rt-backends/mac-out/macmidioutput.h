@@ -47,7 +47,7 @@ namespace rt {
         virtual void close();
         virtual MIDIConnection currentConnection();
 
-    public slots:
+    public Q_SLOTS:
         virtual void sendNoteOff(int chan, int note, int vel);
         virtual void sendNoteOn(int chan, int note, int vel);
         virtual void sendKeyPressure(int chan, int note, int value);

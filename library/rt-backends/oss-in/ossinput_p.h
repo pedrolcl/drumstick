@@ -56,7 +56,7 @@ public:
     //void parse();
     void setMIDIThruDevice(MIDIOutput* device);
 
-public slots:
+public Q_SLOTS:
     void processIncomingMessages(int);
 };
 

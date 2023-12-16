@@ -33,7 +33,7 @@ public:
     virtual ~MIDIParser();
     void setMIDIThruDevice(MIDIOutput* device);
 
-public slots:
+public Q_SLOTS:
     void parse(unsigned char byte);
     void parse(QByteArray bytes);
 

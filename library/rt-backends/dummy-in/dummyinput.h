@@ -55,7 +55,7 @@ namespace rt {
         virtual void enableMIDIThru(bool enable);
         virtual bool isEnabledMIDIThru();
 
-    public slots:
+    public Q_SLOTS:
         bool configure(QWidget *parent);
 
     private:

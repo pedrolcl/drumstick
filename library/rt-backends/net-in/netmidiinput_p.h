@@ -58,7 +58,7 @@ public:
     void setMIDIThruDevice(MIDIOutput* device);
     void writeSettings(QSettings *settings);
 
-public slots:
+public Q_SLOTS:
     void processIncomingMessages();
 };
 

@@ -58,7 +58,7 @@ namespace rt {
         virtual void close() override;
         virtual MIDIConnection currentConnection() override;
 
-    public slots:
+    public Q_SLOTS:
         virtual void sendNoteOff(int chan, int note, int vel) override;
         virtual void sendNoteOn(int chan, int note, int vel) override;
         virtual void sendKeyPressure(int chan, int note, int value) override;
@@ -69,7 +69,6 @@ namespace rt {
         virtual void sendSysex(const QByteArray &data) override;
         virtual void sendSystemMsg(const int status) override;
 
-    public slots:
         void writeSettings(QSettings *settings);
 
     private:
