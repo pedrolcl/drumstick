@@ -50,7 +50,7 @@ namespace rt {
         virtual void close();
         virtual MIDIConnection currentConnection();
 
-    public slots:
+    public Q_SLOTS:
         virtual void sendNoteOff(int chan, int note, int vel);
         virtual void sendNoteOn(int chan, int note, int vel);
         virtual void sendKeyPressure(int chan, int note, int value);
@@ -60,6 +60,8 @@ namespace rt {
         virtual void sendPitchBend(int chan, int value);
         virtual void sendSysex(const QByteArray &data);
         virtual void sendSystemMsg(const int status);
+
+        void writeSettings(QSettings *settings);
 
     private:
         class MacSynthOutputPrivate;

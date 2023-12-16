@@ -51,7 +51,7 @@ public:
     void writeSettings();
     void changeSoundFont(const QString& fileName);
 
-public slots:
+public Q_SLOTS:
     void accept() override;
     void showEvent(QShowEvent *event) override;
     void restoreDefaults();
