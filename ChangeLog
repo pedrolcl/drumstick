@@ -1,5 +1,6 @@
 2023-12-23
     * Documentation updated
+    * Release 2.9.0
 
 2023-12-08
     * fix for GH #15: new SettingsFactory public static methods: fileName() and format().
