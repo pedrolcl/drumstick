@@ -21,7 +21,7 @@ if(XSLTPROC_EXECUTABLE)
     message(STATUS "XSLTPROC Found: ${XSLTPROC_EXECUTABLE}")
     if (NOT RELEASE_DATE)
         execute_process (
-            COMMAND bash -c "LANG=C;date +'%B %d, %Y'"
+            COMMAND bash -c "LANG=en;date +'%B %d, %Y'"
             OUTPUT_VARIABLE RELEASE_DATE
             OUTPUT_STRIP_TRAILING_WHITESPACE
         )

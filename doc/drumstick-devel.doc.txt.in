@@ -42,7 +42,7 @@ and is available only on Linux, because ALSA Sequencer is an exclusive
 Linux technology.
 Here is how a simple program playing notes using Drumstick::ALSA looks like:
 
-@code
+@code{.cpp}
 #include <QCoreApplication>
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaevent.h>
@@ -94,7 +94,7 @@ using MIDI require only real time functionality. In this case, you may use the
 Drumstick::RT library, which is multiplatform. An example equivalent to the
 former one, but implemented using the Drumstick::RT library looks like this:
 
-@code
+@code{.cpp}
 #include <QCoreApplication>
 #include <QThread>
 #include <QDebug>
@@ -129,7 +129,7 @@ If you are targeting only Linux, you may be interested on another (better) way t
 using Drumstick::ALSA again, because ALSA Sequencer is capable of event scheduling
 (that is why it is called a Sequencer).
 
-@code
+@code{.cpp}
 #include <QCoreApplication>
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaport.h>
@@ -188,8 +188,8 @@ To build a program using Drumstick, you may use CMake or Qmake. Using CMake you 
 first to build or install Drumstick on your development machine, and create a project
 file like the following, with the name: "CMakeLists.txt"
 
-@code
-cmake_minimum_required(VERSION 3.9)
+@code{.cmake}
+cmake_minimum_required(VERSION 3.16)
 project(example LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -214,27 +214,25 @@ Assuming that you have Qt 5.12.9 installed at your $HOME/Qt directory, and Drums
 installed at $HOME/Drumstick, then you can configure and build your project with these commands:
 (your current directory is your project's)
 
-@code
+@code{.sh}
 mkdir build
-cd build
-cmake .. -DCMAKE_PREFIX_PATH="$HOME/Qt/5.12.9/gcc_64;$HOME/Drumstick"
-cmake --build .
+cmake -S . -B build -DCMAKE_PREFIX_PATH="$HOME/Qt/5.12.9/gcc_64;$HOME/Drumstick"
+cmake --build build
 @endcode
 
-If you prefer to download the Drumstick sources and build it, you can also build your project 
+If you prefer to download the Drumstick sources and build it, you can also build your project
 without needing to install Drumstick. In this case:
 
-@code
+@code{.sh}
 mkdir build
-cd build
-cmake .. -DCMAKE_PREFIX_PATH=$HOME/Qt/5.12.9/gcc_64 -DDrumstick_DIR=$HOME/Source/Drumstick/build
+cmake -S . -B build -DCMAKE_PREFIX_PATH=$HOME/Qt/5.12.9/gcc_64 -DDrumstick_DIR=$HOME/Source/Drumstick/build
 cmake --build .
 @endcode
 
 To run your Drumstick::RT programs without installing Drumstick and your program, you may need
 to use an environment variable to indicate the location of the plugins, like this:
 
-@code
+@code{.sh}
 export DRUMSTICKRT=$HOME/Source/Drumstick/build/lib/drumstick2/
 ./example
 @endcode
@@ -348,4 +346,4 @@ A Virtual Piano Keyboard GUI application. See another one at http://vmpk.sourcef
 @include vpiano.h
 
 */
- 
+
