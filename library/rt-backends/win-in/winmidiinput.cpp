@@ -18,6 +18,7 @@
 
 #include <QString>
 #include <QMap>
+#include <QDebug>
 #include <windows.h>
 #include <mmsystem.h>
 
@@ -57,6 +58,10 @@ namespace rt {
         bool m_status;
         QStringList m_diagnostics;
 
+        #define SYSEX_BUF_SIZE 32768
+        MIDIHDR inMidiHeader;
+        unsigned char inSysexBuf[SYSEX_BUF_SIZE];
+
         explicit WinMIDIInputPrivate(WinMIDIInput *inp):
             m_inp(inp),
             m_out(nullptr),
@@ -81,6 +86,29 @@ namespace rt {
                     if (res != MMSYSERR_NOERROR) {
                         logError("midiInOpen()",res);
                     } else {
+
+                    /* Double buffering configuration, to manage Sysexes */
+                    /* Store pointer to our input buffer for System Exclusive messages in MIDIHDR */
+                    inMidiHeader.lpData = (LPSTR)&inSysexBuf[0];
+
+                    /* Store its size in the MIDIHDR */
+                    inMidiHeader.dwBufferLength = SYSEX_BUF_SIZE;
+
+                    /* Flags must be set to 0 */
+                    inMidiHeader.dwFlags = 0;
+
+                    res = midiInPrepareHeader(m_handle, &inMidiHeader, sizeof(MIDIHDR));
+                    if (res != MMSYSERR_NOERROR){
+                        qDebug() << "Error preparing MIDI input header. result=" << res;
+                    }
+
+                    res = midiInAddBuffer(m_handle, &inMidiHeader, sizeof(MIDIHDR));
+                    if (res != MMSYSERR_NOERROR){
+                        qDebug() << "Error adding MIDI input buffer. result=" << res;
+                    }
+                    /*** ***/
+
+
                         res = midiInStart(m_handle);
                         if (res != MMSYSERR_NOERROR) {
                             logError("midiInStart()",res);
@@ -243,8 +271,22 @@ namespace rt {
             object->m_diagnostics << "Errors input";
             break;
         case MIM_LONGDATA:
+	{
             object->m_diagnostics << "Sysex data input";
+            // Extract MIDI SysEx message information
+            MIDIHDR* pMidiHdr = reinterpret_cast<MIDIHDR*>(dwParam1);
+
+            // Check for SysEx messages
+            if (pMidiHdr->dwBytesRecorded > 0 && (unsigned char)pMidiHdr->lpData[0] == 0xF0) // Start of SysEx
+            {
+                QByteArray sysExByteArray(reinterpret_cast<const char*>(pMidiHdr->lpData), static_cast<int>(pMidiHdr->dwBytesRecorded));
+                object->emitSysex(sysExByteArray);
+            }
+
+            /* Queue the MIDIHDR for more input */
+            midiInAddBuffer(hMidiIn, pMidiHdr, sizeof(MIDIHDR));
             break;
+        }
         case MIM_DATA:
         case MIM_MOREDATA: {
                 int status = dwParam1 & 0xf0;
