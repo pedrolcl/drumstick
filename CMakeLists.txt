@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 cmake_minimum_required(VERSION 3.16)
 
 project( Drumstick
-    VERSION 2.9.0
+    VERSION 2.9.1
     LANGUAGES CXX
     DESCRIPTION "MIDI C++ Libraries for Qt"
     HOMEPAGE_URL "https://drumstick.sourceforge.io"
@@ -29,7 +29,7 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_admin)
 include(SCMRevision)
 include(CTest)
 include(GNUInstallDirs)
-set(RELEASE_DATE "December 23, 2023")
+#set(RELEASE_DATE "December 23, 2023")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
