@@ -13,6 +13,8 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: RelWithDebInfo
+  SONIVOX_LOCATION: ${{github.workspace}}/SonivoxV3
+  INSTALL_LOCATION: ${{github.workspace}}/DrumstickV2
 
 jobs:
   build:
@@ -22,7 +24,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+
+    - uses: dawidd6/action-download-artifact@v3
+      with:
+        name: SonivoxV3
+        github_token: ${{secrets.GH_PAT}}
+        repo: pedrolcl/sonivox
+        workflow: cmake.yml
+
+    - name: Extract downloaded files
+      run: tar xvf SonivoxV3.tar
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
@@ -31,12 +43,19 @@ jobs:
         modules: qt5compat
 
     - name: Dependencies
-      run: sudo apt-get update && sudo apt-get install -yq pkg-config libasound2-dev libpulse-dev libfluidsynth-dev #libsonivox-dev
+      run: sudo apt-get update && sudo apt-get install -yq pkg-config libasound2-dev libpulse-dev libfluidsynth-dev
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DUSE_SONIVOX=OFF -DUSE_PULSEAUDIO=OFF -DBUILD_DOCS=OFF
+      run: cmake -B ${{github.workspace}}/build \
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+        -DCMAKE_PREFIX_PATH=${{env.SONIVOX_LOCATION}} \
+        -DCMAKE_INSTALL_PREFIX=${{env.INSTALL_LOCATION}} \
+        -DUSE_SONIVOX=ON \
+        -DUSE_PULSEAUDIO=ON \
+        -DBUILD_DOCS=OFF \
+        -BUILD_UTILS=OFF
 
     - name: Build
       # Build your program with the given configuration
@@ -47,3 +66,19 @@ jobs:
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure -R "^(alsa|file|widgets)"
+
+    - name: Install
+      run: cmake --install ${{github.workspace}}/build
+
+    - name: Create Archive
+      run: |
+        cd ${{github.workspace}}
+        tar cvf DrumstickV2.tar DrumstickV2
+      
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: DrumstickV2
+        path: DrumstickV2.tar
+        retention-days: 90
+        overwrite: true
