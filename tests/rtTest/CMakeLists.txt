@@ -28,11 +28,12 @@ target_link_libraries (rtTest PRIVATE
     Qt${QT_VERSION_MAJOR}::Test
     Drumstick::RT )
 
-
-if ((EXISTS "/dev/snd/") AND (EXISTS "/dev/snd/seq"))
-
+if (${CMAKE_SYSTEM} MATCHES "Linux")
+    if (BUILD_ALSA AND ALSA_FOUND AND (EXISTS "/dev/snd/") AND (EXISTS "/dev/snd/seq"))
+        add_test (rtTest ${PROJECT_BINARY_DIR}/bin/rtTest)
+    endif()
+else()
     add_test (rtTest ${PROJECT_BINARY_DIR}/bin/rtTest)
-
 endif()
 
 if(STATIC_DRUMSTICK)
