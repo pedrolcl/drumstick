@@ -56,10 +56,16 @@ target_include_directories(drumstick-rt-fluidsynth PRIVATE
     ${Drumstick_SOURCE_DIR}/library/include
 )
 
+if(HAVE_PIPEWIRE)
+target_compile_definitions(drumstick-rt-fluidsynth
+    PRIVATE USE_PIPEWIRE)
+endif()
+
 target_link_libraries(drumstick-rt-fluidsynth PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Drumstick::RT
     PkgConfig::FLUIDSYNTH
+    $<$<BOOL:${HAVE_PIPEWIRE}>:PkgConfig::PIPEWIRE>
 )
 
 set_target_properties(drumstick-rt-fluidsynth PROPERTIES

@@ -170,3 +170,9 @@ Triggers a fatal error at configuration time if libsonivox is not available.
 
 -DUSE_SONIVOX=NO|OFF|0  
 Don't build SonivoxEAS RT output backend.
+
+-DUSE_PIPEWIRE=YES|ON|1
+Build FluidSynth RT backend with PipeWire support (default in Unix)
+
+-DUSE_PIPEWIRE=NO|OFF|0
+Don't link PipeWire support 

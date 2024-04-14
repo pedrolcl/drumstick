@@ -37,11 +37,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# cmake bug https://gitlab.kitware.com/cmake/cmake/issues/18396 closed in cmake 3.14
-if(APPLE AND ${CMAKE_VERSION} VERSION_LESS 3.14)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-endif()
-
 if (WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8") #/source-charset:utf-8 /execution-charset:utf-8
 endif()
@@ -73,8 +68,10 @@ endif()
 set(_DBUS_INIT OFF)
 if (UNIX AND NOT APPLE)
     set(_PULSE_INIT ON)
+    set(_PW_INIT ON)
 else ()
     set(_PULSE_INIT OFF)
+    set(_PW_INIT OFF)
 endif ()
 
 if (APPLE)
@@ -100,6 +97,7 @@ option(BUILD_WIDGETS "Build the libdrumstick-widgets library" ON)
 option(STATIC_DRUMSTICK "Build and link static libraries instead of shared" OFF)
 option(USE_DBUS "Include DBus support (required for RealtimeKit)" ${_DBUS_INIT})
 option(USE_PULSEAUDIO "Build Sonivox RT backend (if PulseAudio is available)" ${_PULSE_INIT})
+option(USE_PIPEWIRE "Build RT backends with PipeWire support" ${_PW_INIT})
 option(USE_FLUIDSYNTH "Build FluidSynth RT backend (if available)" ON)
 option(USE_NETWORK "Build Network RT backend (if QtNetwork is available)" ON)
 option(USE_SONIVOX "Build Sonivox RT backend (if Sonivox is available)" ${_PULSE_INIT})
@@ -202,6 +200,19 @@ if(BUILD_RT AND PKG_CONFIG_FOUND AND UNIX AND NOT APPLE)
     endif()
 endif()
 
+set(HAVE_PIPEWIRE OFF)
+if(BUILD_RT AND PKG_CONFIG_FOUND AND UNIX AND NOT APPLE)
+    if (USE_PIPEWIRE)
+        pkg_check_modules (PIPEWIRE QUIET IMPORTED_TARGET libpipewire-0.3)
+        if (PIPEWIRE_FOUND)
+            message(STATUS "Found PipeWire library version = ${PIPEWIRE_VERSION}")
+            set (HAVE_PIPEWIRE ON)
+        else()
+            set (HAVE_PIPEWIRE OFF)
+        endif ()
+    endif ()
+endif()
+
 set(HAVE_FLUIDSYNTH OFF)
 if (BUILD_RT AND PKG_CONFIG_FOUND)
     if (USE_FLUIDSYNTH)
@@ -249,6 +260,7 @@ message (STATUS "${PROJECT_NAME} v${PROJECT_VERSION}
     D-Bus support: ${HAVE_DBUS}
     Network support: ${HAVE_NETWORK}
     PulseAudio support: ${HAVE_PULSEAUDIO}
+    PipeWire support: ${HAVE_PIPEWIRE}
     FluidSynth support: ${HAVE_FLUIDSYNTH}
     Sonivox support: ${HAVE_SONIVOX}
     Building libdrumstick-alsa: ${BUILD_ALSA}
