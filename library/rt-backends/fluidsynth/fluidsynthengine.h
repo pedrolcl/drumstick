@@ -105,7 +105,7 @@ private:
     void loadSoundFont();
     void retrieveDefaultSoundfont();
 
-    int m_sfid;
+    QList<int> m_sfids;
     MIDIConnection m_currentConnection;
     QString m_runtimeLibraryVersion;
     QString m_soundFont;

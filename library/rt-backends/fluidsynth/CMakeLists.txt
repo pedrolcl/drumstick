@@ -57,8 +57,7 @@ target_include_directories(drumstick-rt-fluidsynth PRIVATE
 )
 
 if(HAVE_PIPEWIRE)
-target_compile_definitions(drumstick-rt-fluidsynth
-    PRIVATE USE_PIPEWIRE)
+    target_compile_definitions(drumstick-rt-fluidsynth PRIVATE USE_PIPEWIRE)
 endif()
 
 target_link_libraries(drumstick-rt-fluidsynth PRIVATE

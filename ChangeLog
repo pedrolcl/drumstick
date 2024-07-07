@@ -1,15 +1,20 @@
+2024-07-07
+    * fix for ticket #24
+        RT: FluidSynth backend, ability to set several soundfonts
+        Widgets: FluidSynth settings dialog, select several soundfonts.
+
 2024-04-14
     * RT: preliminary support for PipeWire:
         initialization of the FluidSynth backend
 
 2024-03-06
-    * github workflows:
+    * fix for #21: github workflows:
         check-branches, rejects PRs targeting master
         cmake-win: build and test on Windows with msys2 using mingw and clang
         cmake: build and test on Linux
 
 2024-01-08
-    * preliminary support for Sysexes under windows. Thanks to Luca Santini
+    * Fix for #19: preliminary support for Sysexes under windows. Thanks to Luca Santini
 
 2023-12-23
     * Documentation updated

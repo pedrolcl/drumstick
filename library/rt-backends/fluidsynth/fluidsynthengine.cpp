@@ -73,12 +73,11 @@ SynthEngine_log_function(int level, const char* message, void* data)
 
 FluidSynthEngine::FluidSynthEngine(QObject *parent)
     : QObject(parent),
-      m_sfid(0),
       m_settings(nullptr),
       m_synth(nullptr),
       m_driver(nullptr)
 {
-    //qDebug() << Q_FUNC_INFO; 
+    //qDebug() << Q_FUNC_INFO;
     m_runtimeLibraryVersion = ::fluid_version_str();
     //qDebug() << "Compiled FluidSynth Version:" << QSTR_FLUIDSYNTH_VERSION;
     //qDebug() << "Runtime FluidSynth Version:" << m_runtimeLibraryVersion;
@@ -150,10 +149,21 @@ void FluidSynthEngine::noteOff(int channel, int midiNote, int /*velocity*/)
 
 void FluidSynthEngine::loadSoundFont()
 {
-    if (m_sfid != -1) {
-        ::fluid_synth_sfunload(m_synth, unsigned(m_sfid), 1);
+    if (!m_sfids.isEmpty()) {
+        foreach (const int id, m_sfids) {
+            if (id > -1) {
+                ::fluid_synth_sfunload(m_synth, unsigned(id), 1);
+            }
+        }
+        m_sfids.clear();
     }
-    m_sfid = ::fluid_synth_sfload(m_synth, qPrintable(m_soundFont), 1);
+    const QStringList soundfonts = m_soundFont.split(';', Qt::SkipEmptyParts);
+    foreach (const QString &sf, soundfonts) {
+        int id = ::fluid_synth_sfload(m_synth, qPrintable(sf), 1);
+        if (id > -1) {
+            m_sfids.append(id);
+        }
+    }
 }
 
 void FluidSynthEngine::retrieveDefaultSoundfont()
@@ -182,7 +192,7 @@ void FluidSynthEngine::initialize()
         m_soundFont = m_defSoundFont;
     }
     loadSoundFont();
-    m_status = (m_synth != nullptr) && (m_driver != nullptr) && (m_sfid >= 0);
+    m_status = (m_synth != nullptr) && (m_driver != nullptr) && (!m_sfids.isEmpty());
 }
 
 void FluidSynthEngine::panic()
@@ -347,7 +357,7 @@ void FluidSynthEngine::scanSoundFonts()
 
 void FluidSynthEngine::readSettings(QSettings *settings)
 {
-    m_sfid = -1;
+    m_sfids.clear();
     settings->beginGroup(QSTR_PREFERENCES);
     m_soundFont = settings->value(QSTR_INSTRUMENTSDEFINITION, m_defSoundFont).toString();
     fs_audiodriver = settings->value(QSTR_AUDIODRIVER, QSTR_DEFAULT_AUDIODRIVER).toString();
