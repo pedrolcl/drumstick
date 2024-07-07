@@ -2,13 +2,11 @@ name: "Linux Build and Test"
 
 on:
   push:
-    branches: 
-    - master
-    - devel
+    branches: [ "master", "devel" ]
   pull_request:
-    branches: 
-    - master
-    - devel
+    branches: [ "master", "devel" ]
+  workflow_dispatch:
+    branches: [ "master", "devel" ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)

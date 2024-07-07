@@ -7,6 +7,8 @@ on:
     branches: [ "devel", "master" ]
   pull_request:
     branches: [ "devel", "master" ]
+  workflow_dispatch:
+    branches: [ "master", "devel" ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
