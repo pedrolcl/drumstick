@@ -26,7 +26,7 @@ jobs:
 
     - uses: dawidd6/action-download-artifact@v3
       with:
-        name: SonivoxV3
+        name: SonivoxV3-linux
         github_token: ${{secrets.GH_PAT}}
         repo: pedrolcl/sonivox
         workflow: cmake.yml
@@ -46,13 +46,13 @@ jobs:
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build 
-        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} 
-        -DCMAKE_PREFIX_PATH=${{env.SONIVOX_LOCATION}} 
-        -DCMAKE_INSTALL_PREFIX=${{env.INSTALL_LOCATION}} 
-        -DUSE_SONIVOX=ON 
-        -DUSE_PULSEAUDIO=ON 
-        -DBUILD_DOCS=OFF 
+      run: cmake -B ${{github.workspace}}/build
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DCMAKE_PREFIX_PATH=${{env.SONIVOX_LOCATION}}
+        -DCMAKE_INSTALL_PREFIX=${{env.INSTALL_LOCATION}}
+        -DUSE_SONIVOX=ON
+        -DUSE_PULSEAUDIO=ON
+        -DBUILD_DOCS=OFF
         -DBUILD_UTILS=OFF
 
     - name: Build
