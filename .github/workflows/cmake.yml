@@ -29,7 +29,7 @@ jobs:
         name: SonivoxV3-linux
         github_token: ${{secrets.GH_PAT}}
         repo: pedrolcl/sonivox
-        workflow: cmake.yml
+        workflow: cmake-linux.yml
 
     - name: Extract downloaded files
       run: tar xvf SonivoxV3.tar
