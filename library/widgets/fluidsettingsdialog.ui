@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>319</width>
-    <height>431</height>
+    <width>431</width>
+    <height>567</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,6 +38,9 @@
         <property name="text">
          <string>Audio Driver:</string>
         </property>
+        <property name="buddy">
+         <cstring>audioDriver</cstring>
+        </property>
        </widget>
       </item>
       <item row="11" column="1">
@@ -55,13 +58,6 @@
       </item>
       <item row="8" column="1">
        <widget class="QLineEdit" name="polyphony"/>
-      </item>
-      <item row="6" column="0" colspan="2">
-       <widget class="QCheckBox" name="reverb">
-        <property name="text">
-         <string>Reverb</string>
-        </property>
-       </widget>
       </item>
       <item row="9" column="0">
        <widget class="QLabel" name="lblSoundFont">
@@ -133,13 +129,6 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="audioDriver"/>
       </item>
-      <item row="5" column="0" colspan="2">
-       <widget class="QCheckBox" name="chorus">
-        <property name="text">
-         <string>Chorus</string>
-        </property>
-       </widget>
-      </item>
       <item row="10" column="1">
        <widget class="QLabel" name="lblVersion"/>
       </item>
@@ -184,6 +173,9 @@
         <property name="text">
          <string>Buffer Time:</string>
         </property>
+        <property name="buddy">
+         <cstring>bufferTime</cstring>
+        </property>
        </widget>
       </item>
       <item row="1" column="1">
@@ -202,6 +194,231 @@
         </property>
        </widget>
       </item>
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="chorus">
+        <property name="text">
+         <string>Chorus</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QCheckBox" name="reverb">
+        <property name="text">
+         <string>Reverb</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QFrame" name="chorus_frame">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <layout class="QGridLayout" name="chorus_layout">
+         <item row="0" column="3">
+          <widget class="QDial" name="chorus_speed">
+           <property name="toolTip">
+            <string>0.36</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>50</number>
+           </property>
+           <property name="value">
+            <number>2</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QDial" name="chorus_depth">
+           <property name="toolTip">
+            <string>3.6</string>
+           </property>
+           <property name="maximum">
+            <number>2560</number>
+           </property>
+           <property name="value">
+            <number>42</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QDial" name="chorus_level">
+           <property name="toolTip">
+            <string>0.5</string>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>6</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QDial" name="chorus_nr">
+           <property name="toolTip">
+            <string>4</string>
+           </property>
+           <property name="value">
+            <number>3</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="lblDepth">
+           <property name="text">
+            <string>Depth</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="lblLevel">
+           <property name="text">
+            <string>Level</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="lblNR">
+           <property name="text">
+            <string>NR</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QLabel" name="lblSpeed">
+           <property name="text">
+            <string>Speed</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QFrame" name="reverb_frame">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <layout class="QGridLayout" name="reverb_layout">
+         <item row="0" column="0">
+          <widget class="QDial" name="reverb_damp">
+           <property name="toolTip">
+            <string>0.3</string>
+           </property>
+           <property name="maximum">
+            <number>10</number>
+           </property>
+           <property name="pageStep">
+            <number>1</number>
+           </property>
+           <property name="value">
+            <number>3</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QDial" name="reverb_size">
+           <property name="toolTip">
+            <string>0.5</string>
+           </property>
+           <property name="maximum">
+            <number>10</number>
+           </property>
+           <property name="pageStep">
+            <number>1</number>
+           </property>
+           <property name="value">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QDial" name="reverb_width">
+           <property name="toolTip">
+            <string>0.8</string>
+           </property>
+           <property name="maximum">
+            <number>1000</number>
+           </property>
+           <property name="value">
+            <number>8</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QDial" name="reverb_level">
+           <property name="toolTip">
+            <string>0.5</string>
+           </property>
+           <property name="maximum">
+            <number>10</number>
+           </property>
+           <property name="pageStep">
+            <number>1</number>
+           </property>
+           <property name="value">
+            <number>7</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="lblDamp">
+           <property name="text">
+            <string>Damp</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="lblRLevel">
+           <property name="text">
+            <string>Level</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="lblSize">
+           <property name="text">
+            <string>Size</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QLabel" name="lblWidth">
+           <property name="text">
+            <string>Width</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -209,11 +426,20 @@
  </widget>
  <tabstops>
   <tabstop>audioDriver</tabstop>
+  <tabstop>bufferTime</tabstop>
   <tabstop>periodSize</tabstop>
   <tabstop>periods</tabstop>
   <tabstop>sampleRate</tabstop>
   <tabstop>chorus</tabstop>
+  <tabstop>chorus_depth</tabstop>
+  <tabstop>chorus_level</tabstop>
+  <tabstop>chorus_nr</tabstop>
+  <tabstop>chorus_speed</tabstop>
   <tabstop>reverb</tabstop>
+  <tabstop>reverb_damp</tabstop>
+  <tabstop>reverb_level</tabstop>
+  <tabstop>reverb_size</tabstop>
+  <tabstop>reverb_width</tabstop>
   <tabstop>gain</tabstop>
   <tabstop>polyphony</tabstop>
   <tabstop>soundFont</tabstop>
@@ -228,8 +454,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>257</x>
+     <y>477</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -244,12 +470,44 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>325</x>
+     <y>477</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chorus</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>chorus_frame</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>82</x>
+     <y>211</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>201</x>
+     <y>215</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>reverb</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>reverb_frame</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>81</x>
+     <y>273</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>272</y>
     </hint>
    </hints>
   </connection>

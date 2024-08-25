@@ -51,6 +51,7 @@ public:
     void writeSettings();
     void changeSoundFont(const QString& fileName);
     void chkDriverProperties(QSettings* settings);
+    void setWidgetTip(QWidget *w, const QString &tip);
 
 public Q_SLOTS:
     void accept() override;
@@ -76,15 +77,34 @@ public:
     static const QString QSTR_POLYPHONY;
     static const QString QSTR_BUFFERTIME;
 
+    static const QString QSTR_CHORUS_DEPTH;
+    static const QString QSTR_CHORUS_LEVEL;
+    static const QString QSTR_CHORUS_NR;
+    static const QString QSTR_CHORUS_SPEED;
+    static const QString QSTR_REVERB_DAMP;
+    static const QString QSTR_REVERB_LEVEL;
+    static const QString QSTR_REVERB_SIZE;
+    static const QString QSTR_REVERB_WIDTH;
+
     static const int DEFAULT_BUFFERTIME = 50;
     static const int DEFAULT_PERIODSIZE = 512;
     static const int DEFAULT_PERIODS = 8;
     static constexpr double DEFAULT_SAMPLERATE = 44100.0;
-    static const int DEFAULT_CHORUS = 0;
+    static const int DEFAULT_CHORUS = 1;
     static const int DEFAULT_REVERB = 1;
     static constexpr double DEFAULT_GAIN = 1.0;
     static const int DEFAULT_POLYPHONY = 256;
     static const QString QSTR_PULSEAUDIO;
+
+    static constexpr qreal DEFAULT_CHORUS_DEPTH = 4.3;
+    static constexpr qreal DEFAULT_CHORUS_LEVEL = 0.6;
+    static constexpr int DEFAULT_CHORUS_NR = 3;
+    static constexpr qreal DEFAULT_CHORUS_SPEED = 0.2;
+
+    static constexpr qreal DEFAULT_REVERB_DAMP = 0.3;
+    static constexpr qreal DEFAULT_REVERB_LEVEL = 0.7;
+    static constexpr qreal DEFAULT_REVERB_SIZE = 0.5;
+    static constexpr qreal DEFAULT_REVERB_WIDTH = 0.8;
 
 private:
     QString defaultAudioDriver() const;

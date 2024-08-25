@@ -46,6 +46,15 @@ const QString FluidSynthEngine::QSTR_REVERB = QStringLiteral("Reverb");
 const QString FluidSynthEngine::QSTR_GAIN = QStringLiteral("Gain");
 const QString FluidSynthEngine::QSTR_POLYPHONY = QStringLiteral("Polyphony");
 
+const QString FluidSynthEngine::QSTR_CHORUS_DEPTH = QStringLiteral("chorus_depth");
+const QString FluidSynthEngine::QSTR_CHORUS_LEVEL = QStringLiteral("chorus_level");
+const QString FluidSynthEngine::QSTR_CHORUS_NR = QStringLiteral("chorus_nr");
+const QString FluidSynthEngine::QSTR_CHORUS_SPEED = QStringLiteral("chorus_speed");
+const QString FluidSynthEngine::QSTR_REVERB_DAMP = QStringLiteral("reverb_damp");
+const QString FluidSynthEngine::QSTR_REVERB_LEVEL = QStringLiteral("reverb_level");
+const QString FluidSynthEngine::QSTR_REVERB_SIZE = QStringLiteral("reverb_size");
+const QString FluidSynthEngine::QSTR_REVERB_WIDTH = QStringLiteral("reverb_width");
+
 const QString FluidSynthEngine::QSTR_DEFAULT_AUDIODRIVER =
 #if defined(Q_OS_LINUX)
     QSTR_PULSEAUDIO;
@@ -123,6 +132,17 @@ void FluidSynthEngine::initializeSynth()
 	if (fs_audiodriver == QSTR_PULSEAUDIO) {
 		::fluid_settings_setint(m_settings, "audio.pulseaudio.adjust-latency", 0);
 	}
+
+    ::fluid_settings_setnum(m_settings, "synth.reverb.damp", fs_reverb_damp);
+    ::fluid_settings_setnum(m_settings, "synth.reverb.level", fs_reverb_level);
+    ::fluid_settings_setnum(m_settings, "synth.reverb.room-size", fs_reverb_size);
+    ::fluid_settings_setnum(m_settings, "synth.reverb.width", fs_reverb_width);
+
+    ::fluid_settings_setnum(m_settings, "synth.chorus.depth", fs_chorus_depth);
+    ::fluid_settings_setnum(m_settings, "synth.chorus.level", fs_chorus_level);
+    ::fluid_settings_setint(m_settings, "synth.chorus.nr", fs_chorus_nr);
+    ::fluid_settings_setnum(m_settings, "synth.chorus.speed", fs_chorus_speed);
+
     ::fluid_settings_setnum(m_settings, "synth.sample-rate", fs_sampleRate);
     ::fluid_settings_setint(m_settings, "synth.chorus.active", fs_chorus);
     ::fluid_settings_setint(m_settings, "synth.reverb.active", fs_reverb);
@@ -298,6 +318,17 @@ void FluidSynthEngine::writeSettings(QSettings *settings)
         settings->setValue(QSTR_POLYPHONY, fs_polyphony);
         int bufferTime = 1000 * fs_periodSize * fs_periods / fs_sampleRate;
         settings->setValue(QSTR_BUFFERTIME, bufferTime);
+
+        settings->setValue(QSTR_REVERB_DAMP, fs_reverb_damp);
+        settings->setValue(QSTR_REVERB_LEVEL, fs_reverb_level);
+        settings->setValue(QSTR_REVERB_SIZE, fs_reverb_size);
+        settings->setValue(QSTR_REVERB_WIDTH, fs_reverb_width);
+
+        settings->setValue(QSTR_CHORUS_DEPTH, fs_chorus_depth);
+        settings->setValue(QSTR_CHORUS_LEVEL, fs_chorus_level);
+        settings->setValue(QSTR_CHORUS_NR, fs_chorus_nr);
+        settings->setValue(QSTR_CHORUS_SPEED, fs_chorus_speed);
+
         settings->endGroup();
     }
 }
@@ -368,6 +399,17 @@ void FluidSynthEngine::readSettings(QSettings *settings)
     fs_reverb = settings->value(QSTR_REVERB, DEFAULT_REVERB).toInt();
     fs_gain = settings->value(QSTR_GAIN, DEFAULT_GAIN).toDouble();
     fs_polyphony = settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toInt();
+
+    fs_reverb_damp = settings->value(QSTR_REVERB_DAMP, DEFAULT_REVERB_DAMP).toDouble();
+    fs_reverb_level = settings->value(QSTR_REVERB_LEVEL, DEFAULT_REVERB_LEVEL).toDouble();
+    fs_reverb_size = settings->value(QSTR_REVERB_SIZE, DEFAULT_REVERB_SIZE).toDouble();
+    fs_reverb_width = settings->value(QSTR_REVERB_WIDTH, DEFAULT_REVERB_WIDTH).toDouble();
+
+    fs_chorus_depth = settings->value(QSTR_CHORUS_DEPTH, DEFAULT_CHORUS_DEPTH).toDouble();
+    fs_chorus_level = settings->value(QSTR_CHORUS_LEVEL, DEFAULT_CHORUS_LEVEL).toDouble();
+    fs_chorus_nr = settings->value(QSTR_CHORUS_NR, DEFAULT_CHORUS_NR).toInt();
+    fs_chorus_speed = settings->value(QSTR_CHORUS_SPEED, DEFAULT_CHORUS_SPEED).toDouble();
+
     settings->endGroup();
     //qDebug() << Q_FUNC_INFO << "audioDriver:" << fs_audiodriver << "buffer" << fs_periodSize << '*' << fs_periods;
 	if (fs_audiodriver == QSTR_PULSEAUDIO) {
