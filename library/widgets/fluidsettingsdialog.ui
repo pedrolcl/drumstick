@@ -214,26 +214,10 @@
          <bool>false</bool>
         </property>
         <layout class="QGridLayout" name="chorus_layout">
-         <item row="0" column="3">
-          <widget class="QDial" name="chorus_speed">
-           <property name="toolTip">
-            <string>0.36</string>
-           </property>
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="maximum">
-            <number>50</number>
-           </property>
-           <property name="value">
-            <number>2</number>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QDial" name="chorus_depth">
            <property name="toolTip">
-            <string>3.6</string>
+            <string>4.2</string>
            </property>
            <property name="maximum">
             <number>2560</number>
@@ -246,7 +230,7 @@
          <item row="0" column="1">
           <widget class="QDial" name="chorus_level">
            <property name="toolTip">
-            <string>0.5</string>
+            <string>0.6</string>
            </property>
            <property name="maximum">
             <number>100</number>
@@ -259,10 +243,26 @@
          <item row="0" column="2">
           <widget class="QDial" name="chorus_nr">
            <property name="toolTip">
-            <string>4</string>
+            <string>3</string>
            </property>
            <property name="value">
             <number>3</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QDial" name="chorus_speed">
+           <property name="toolTip">
+            <string>0.2</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>50</number>
+           </property>
+           <property name="value">
+            <number>2</number>
            </property>
           </widget>
          </item>
@@ -331,6 +331,22 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="1">
+          <widget class="QDial" name="reverb_level">
+           <property name="toolTip">
+            <string>0.7</string>
+           </property>
+           <property name="maximum">
+            <number>10</number>
+           </property>
+           <property name="pageStep">
+            <number>1</number>
+           </property>
+           <property name="value">
+            <number>7</number>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="2">
           <widget class="QDial" name="reverb_size">
            <property name="toolTip">
@@ -357,22 +373,6 @@
            </property>
            <property name="value">
             <number>8</number>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QDial" name="reverb_level">
-           <property name="toolTip">
-            <string>0.5</string>
-           </property>
-           <property name="maximum">
-            <number>10</number>
-           </property>
-           <property name="pageStep">
-            <number>1</number>
-           </property>
-           <property name="value">
-            <number>7</number>
            </property>
           </widget>
          </item>
