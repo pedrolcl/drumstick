@@ -278,17 +278,17 @@
         <translation>Флуид-синт — поставке</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="123"/>
+        <location filename="../fluidsettingsdialog.ui" line="119"/>
         <source>Sample Rate:</source>
         <translation>Учестаност узорковања:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="106"/>
+        <location filename="../fluidsettingsdialog.ui" line="102"/>
         <source>Period Size:</source>
         <translation>Величина периода:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="159"/>
+        <location filename="../fluidsettingsdialog.ui" line="148"/>
         <source># of Periods:</source>
         <translation># периода:</translation>
     </message>
@@ -298,82 +298,158 @@
         <translation>Зв. посредник:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="169"/>
+        <location filename="../fluidsettingsdialog.ui" line="158"/>
         <source>Polyphony:</source>
         <translation>Полифонија:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="89"/>
+        <location filename="../fluidsettingsdialog.ui" line="85"/>
         <source>FluidSynth Version:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="69"/>
+        <location filename="../fluidsettingsdialog.ui" line="65"/>
         <source>Sound Font:</source>
         <translation>Звукотека:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="116"/>
+        <location filename="../fluidsettingsdialog.ui" line="112"/>
         <source>Initialization Status:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="185"/>
+        <location filename="../fluidsettingsdialog.ui" line="174"/>
         <source>Buffer Time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="192"/>
+        <location filename="../fluidsettingsdialog.ui" line="184"/>
         <source> ms</source>
         <translation type="unfinished">мс</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="49"/>
+        <source>3</source>
+        <translation type="obsolete">3</translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="284"/>
+        <source>Modulation depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="287"/>
+        <source>Depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="297"/>
+        <location filename="../fluidsettingsdialog.ui" line="431"/>
+        <source>Output amplitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="300"/>
+        <location filename="../fluidsettingsdialog.ui" line="434"/>
+        <source>Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="310"/>
+        <source>Voice count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="313"/>
+        <source>NR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="323"/>
+        <source>Modulation speed in Hz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="326"/>
+        <source>Speed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="418"/>
+        <source>Damping amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="421"/>
+        <source>Damp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="444"/>
+        <source>Room size (wet amount)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="447"/>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="457"/>
+        <source>Stereo spread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="460"/>
+        <source>Width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="52"/>
         <source>Gain:</source>
         <translation>Јачина:</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="152"/>
+        <location filename="../fluidsettingsdialog.ui" line="141"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="139"/>
+        <location filename="../fluidsettingsdialog.ui" line="200"/>
         <source>Chorus</source>
         <translation>Хорус</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="62"/>
+        <location filename="../fluidsettingsdialog.ui" line="207"/>
         <source>Reverb</source>
         <translation>Јека</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="141"/>
+        <location filename="../fluidsettingsdialog.cpp" line="178"/>
         <source>FluidSynth Initialized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="141"/>
+        <location filename="../fluidsettingsdialog.cpp" line="178"/>
         <source>FluidSynth Initialization Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="204"/>
+        <location filename="../fluidsettingsdialog.cpp" line="241"/>
         <source>Ready</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="204"/>
+        <location filename="../fluidsettingsdialog.cpp" line="241"/>
         <source>Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="345"/>
+        <location filename="../fluidsettingsdialog.cpp" line="432"/>
         <source>Select SoundFont</source>
         <translation>Избор звукотеке</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="345"/>
+        <location filename="../fluidsettingsdialog.cpp" line="434"/>
         <source>SoundFont Files (*.sf2 *.sf3 *.dls)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -597,53 +673,78 @@
 <context>
     <name>drumstick::widgets::SonivoxSettingsDialog</name>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="14"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="20"/>
         <source>Sonivox EAS Synth</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="26"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="107"/>
         <source>Chorus</source>
         <translation>Хорус</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="43"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="97"/>
         <source>Reverb</source>
         <translation>Јека</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="71"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="32"/>
+        <source>SoundFont:</source>
+        <translation type="unfinished">Звукотека:</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.ui" line="58"/>
+        <source>...</source>
+        <translation type="unfinished">...</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.ui" line="75"/>
+        <source>Sonivox Library Version:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.ui" line="208"/>
         <source>Buffer Time:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="81"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="218"/>
         <source> ms</source>
         <translation>мс</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="110"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="168"/>
         <source>Init. Status:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="85"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="92"/>
         <source>Sonivox Initialized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="85"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="92"/>
         <source>Sonivox Initialization Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="165"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="178"/>
         <source>Ready</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="165"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="178"/>
         <source>Failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.cpp" line="200"/>
+        <source>Select SoundFont</source>
+        <translation type="unfinished">Избор звукотеке</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.cpp" line="200"/>
+        <source>SoundFont Files (*.dls)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

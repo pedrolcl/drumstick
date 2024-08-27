@@ -278,17 +278,17 @@
         <translation>FluidSynth 驱动设置</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="123"/>
+        <location filename="../fluidsettingsdialog.ui" line="119"/>
         <source>Sample Rate:</source>
         <translation>采样率：</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="106"/>
+        <location filename="../fluidsettingsdialog.ui" line="102"/>
         <source>Period Size:</source>
         <translation>周期大小：</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="159"/>
+        <location filename="../fluidsettingsdialog.ui" line="148"/>
         <source># of Periods:</source>
         <translation>周期数量：</translation>
     </message>
@@ -298,82 +298,158 @@
         <translation>音频驱动：</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="169"/>
+        <location filename="../fluidsettingsdialog.ui" line="158"/>
         <source>Polyphony:</source>
         <translation>复音数：</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="89"/>
+        <location filename="../fluidsettingsdialog.ui" line="85"/>
         <source>FluidSynth Version:</source>
         <translation>FluidSynth 版本：</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="69"/>
+        <location filename="../fluidsettingsdialog.ui" line="65"/>
         <source>Sound Font:</source>
         <translation>音色库：</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="116"/>
+        <location filename="../fluidsettingsdialog.ui" line="112"/>
         <source>Initialization Status:</source>
         <translation>初始化状态：</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="185"/>
+        <location filename="../fluidsettingsdialog.ui" line="174"/>
         <source>Buffer Time:</source>
         <translation>缓冲时间：</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="192"/>
+        <location filename="../fluidsettingsdialog.ui" line="184"/>
         <source> ms</source>
         <translation> 毫秒</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="49"/>
+        <source>3</source>
+        <translation type="obsolete">3</translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="284"/>
+        <source>Modulation depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="287"/>
+        <source>Depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="297"/>
+        <location filename="../fluidsettingsdialog.ui" line="431"/>
+        <source>Output amplitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="300"/>
+        <location filename="../fluidsettingsdialog.ui" line="434"/>
+        <source>Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="310"/>
+        <source>Voice count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="313"/>
+        <source>NR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="323"/>
+        <source>Modulation speed in Hz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="326"/>
+        <source>Speed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="418"/>
+        <source>Damping amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="421"/>
+        <source>Damp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="444"/>
+        <source>Room size (wet amount)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="447"/>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="457"/>
+        <source>Stereo spread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="460"/>
+        <source>Width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fluidsettingsdialog.ui" line="52"/>
         <source>Gain:</source>
         <translation>增益调节：</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="152"/>
+        <location filename="../fluidsettingsdialog.ui" line="141"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="139"/>
+        <location filename="../fluidsettingsdialog.ui" line="200"/>
         <source>Chorus</source>
         <translation>合唱（Chorus）</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.ui" line="62"/>
+        <location filename="../fluidsettingsdialog.ui" line="207"/>
         <source>Reverb</source>
         <translation>混响（Reverb）</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="144"/>
+        <location filename="../fluidsettingsdialog.cpp" line="178"/>
         <source>FluidSynth Initialized</source>
         <translation>FluidSynth 已初始化</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="144"/>
+        <location filename="../fluidsettingsdialog.cpp" line="178"/>
         <source>FluidSynth Initialization Failed</source>
         <translation>FluidSynth 初始化失败</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="207"/>
+        <location filename="../fluidsettingsdialog.cpp" line="241"/>
         <source>Ready</source>
         <translation>就绪</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="207"/>
+        <location filename="../fluidsettingsdialog.cpp" line="241"/>
         <source>Failed</source>
         <translation>失败</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="338"/>
+        <location filename="../fluidsettingsdialog.cpp" line="432"/>
         <source>Select SoundFont</source>
         <translation>选择音色库</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="338"/>
+        <location filename="../fluidsettingsdialog.cpp" line="434"/>
         <source>SoundFont Files (*.sf2 *.sf3 *.dls)</source>
         <translation>音色库文件 (*.sf2 *.sf3 *.dls)</translation>
     </message>

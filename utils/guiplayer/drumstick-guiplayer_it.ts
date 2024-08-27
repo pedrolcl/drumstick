@@ -292,4 +292,42 @@ p, li { white-space: pre-wrap; }
         <translation>Mosta o nasconde la barra di stato</translation>
     </message>
 </context>
+<context>
+    <name>main</name>
+    <message>
+        <location filename="playermain.cpp" line="30"/>
+        <source>ALSA Sequencer based MIDI file player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="playermain.cpp" line="32"/>
+        <source>Fatal error from the ALSA sequencer. This usually happens when the kernel doesn&apos;t have ALSA support, or the device node (/dev/snd/seq) doesn&apos;t exists, or the kernel module (snd_seq) is not loaded. Please check your ALSA/MIDI configuration.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="playermain.cpp" line="84"/>
+        <source>MIDI Out Connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="playermain.cpp" line="86"/>
+        <source>Input SMF/KAR/RMI/WRK file name.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="playermain.cpp" line="95"/>
+        <source>File not found: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="playermain.cpp" line="110"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="playermain.cpp" line="112"/>
+        <source>Returned error was: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>
