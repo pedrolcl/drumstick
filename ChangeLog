@@ -1,3 +1,6 @@
+2024-08-28
+    * Release 2.9.1
+
 2024-08-25
     * fix for ticket #25
         RT: FluidSynth backend, ability to configure chorus and reverb parameters
