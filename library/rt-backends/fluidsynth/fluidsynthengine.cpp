@@ -35,6 +35,7 @@ const QString FluidSynthEngine::QSTR_DATADIR = QStringLiteral("soundfonts");
 const QString FluidSynthEngine::QSTR_DATADIR2 = QStringLiteral("sounds/sf2");
 const QString FluidSynthEngine::QSTR_SOUNDFONT = QStringLiteral("default.sf2");
 const QString FluidSynthEngine::QSTR_PULSEAUDIO = QStringLiteral("pulseaudio");
+const QString FluidSynthEngine::QSTR_JACK = QStringLiteral("jack");
 
 const QString FluidSynthEngine::QSTR_AUDIODRIVER = QStringLiteral("AudioDriver");
 const QString FluidSynthEngine::QSTR_BUFFERTIME = QStringLiteral("BufferTime");
@@ -131,7 +132,9 @@ void FluidSynthEngine::initializeSynth()
     ::fluid_settings_setint(m_settings, "audio.periods", fs_periods);
 	if (fs_audiodriver == QSTR_PULSEAUDIO) {
 		::fluid_settings_setint(m_settings, "audio.pulseaudio.adjust-latency", 0);
-	}
+    } else if (fs_audiodriver == QSTR_JACK) {
+        ::fluid_settings_setint(m_settings, "audio.jack.autoconnect", 1);
+    }
 
     ::fluid_settings_setnum(m_settings, "synth.reverb.damp", fs_reverb_damp);
     ::fluid_settings_setnum(m_settings, "synth.reverb.level", fs_reverb_level);

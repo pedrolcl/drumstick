@@ -89,6 +89,7 @@ public:
     static const QString QSTR_DEFAULT_AUDIODRIVER;
     static const QString QSTR_BUFFERTIME;
 	static const QString QSTR_PULSEAUDIO;
+    static const QString QSTR_JACK;
 
     static const QString QSTR_CHORUS_DEPTH;
     static const QString QSTR_CHORUS_LEVEL;
