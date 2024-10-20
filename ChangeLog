@@ -1,3 +1,11 @@
+2024-10-20
+    * fix for GH #28
+    ALSA: emitted signal with invalid pointer
+
+2024-08-30
+    * fix for GH #27
+    RT: FluidSynth backend, using "audio.jack.autoconnect" when the audio driver is "jack"
+
 2024-08-28
     * Release 2.9.1
 

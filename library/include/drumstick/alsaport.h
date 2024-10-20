@@ -182,7 +182,7 @@ Q_SIGNALS:
     /**
      * Signal emitted when an internal subscription is done.
      * @param port MIDI port object pointer
-     * @param subs Subscription object pointer
+     * @param subs Subscription object pointer. Receiver gets the ownership of the pointer.
      */
     void subscribed(drumstick::ALSA::MidiPort* port, drumstick::ALSA::Subscription* subs);
     /**

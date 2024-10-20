@@ -103,6 +103,7 @@ QDumpMIDI::subscription(MidiPort*, Subscription* subs)
     qDebug() << "Subscription made from"
              << subs->getSender()->client << ":"
              << subs->getSender()->port;
+    delete subs;
 }
 
 void QDumpMIDI::subscribe(const QString& portName)

@@ -640,7 +640,7 @@ MidiPort::subscribe(Subscription* subs)
 {
     subs->subscribe(m_MidiClient);
     m_Subscriptions.append(*subs);
-    Q_EMIT subscribed(this, subs);
+    Q_EMIT subscribed(this, subs->clone());
 }
 
 /**
