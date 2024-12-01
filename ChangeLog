@@ -1,3 +1,7 @@
+2024-12-1
+    * fix for GH #26
+    RT, Widgets: issues with the new reverb/chorus settings
+
 2024-10-20
     * fix for GH #28
     ALSA: emitted signal with invalid pointer

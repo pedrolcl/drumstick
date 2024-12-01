@@ -84,29 +84,36 @@ FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
     auto polyphonyValidator = new QIntValidator(1, 65535, this);
     ui->polyphony->setValidator(polyphonyValidator);
     connect(ui->chorus_depth, &QAbstractSlider::valueChanged, this, [=](int val) {
-        setWidgetTip(ui->chorus_depth, QString::number(val / 10.0));
+        //qDebug() << "chorus depth" << val;
+        setWidgetTip(ui->chorus_depth, QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2));
     });
     connect(ui->chorus_level, &QAbstractSlider::valueChanged, this, [=](int val) {
-        setWidgetTip(ui->chorus_level, QString::number(val / 10.0));
+        //qDebug() << "chorus level" << val;
+        setWidgetTip(ui->chorus_level, QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2));
     });
     connect(ui->chorus_nr, &QAbstractSlider::valueChanged, this, [=](int val) {
         setWidgetTip(ui->chorus_nr, QString::number(val));
     });
     connect(ui->chorus_speed, &QAbstractSlider::valueChanged, this, [=](int val) {
-        setWidgetTip(ui->chorus_speed, QString::number(val / 10.0));
+        //qDebug() << "chorus speed" << val;
+        setWidgetTip(ui->chorus_speed, QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2));
     });
 
     connect(ui->reverb_damp, &QAbstractSlider::valueChanged, this, [=](int val) {
-        setWidgetTip(ui->reverb_damp, QString::number(val / 10.0));
+        //qDebug() << "reverb damp" << val;
+        setWidgetTip(ui->reverb_damp, QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2));
     });
     connect(ui->reverb_level, &QAbstractSlider::valueChanged, this, [=](int val) {
-        setWidgetTip(ui->reverb_level, QString::number(val / 10.0));
+        //qDebug() << "reverb level" << val;
+        setWidgetTip(ui->reverb_level, QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2));
     });
     connect(ui->reverb_size, &QAbstractSlider::valueChanged, this, [=](int val) {
-        setWidgetTip(ui->reverb_size, QString::number(val / 10.0));
+        //qDebug() << "reverb size" << val;
+        setWidgetTip(ui->reverb_size, QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2));
     });
     connect(ui->reverb_width, &QAbstractSlider::valueChanged, this, [=](int val) {
-        setWidgetTip(ui->reverb_width, QString::number(val / 10.0));
+        //qDebug() << "reverb width" << val;
+        setWidgetTip(ui->reverb_width, QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2));
     });
 
     drumstick::rt::BackendManager man;
@@ -246,6 +253,7 @@ void FluidSettingsDialog::chkDriverProperties(QSettings *settings)
 
 void FluidSettingsDialog::setWidgetTip(QWidget *w, const QString &tip)
 {
+    //qDebug() << Q_FUNC_INFO << tip;
     w->setToolTip(tip);
     QToolTip::showText(w->parentWidget()->mapToGlobal(w->pos()), tip);
 }
@@ -300,20 +308,22 @@ void FluidSettingsDialog::readSettings()
     ui->polyphony->setText( settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toString() );
     ui->soundFont->setText( settings->value(QSTR_INSTRUMENTSDEFINITION, m_defSoundFont).toString() );
 
-    ui->chorus_depth->setValue(settings->value(QSTR_CHORUS_DEPTH, DEFAULT_CHORUS_DEPTH).toFloat()
-                               * 10);
-    ui->chorus_level->setValue(settings->value(QSTR_CHORUS_LEVEL, DEFAULT_CHORUS_LEVEL).toFloat()
-                               * 10);
+    ui->chorus_depth->setValue(settings->value(QSTR_CHORUS_DEPTH, DEFAULT_CHORUS_DEPTH).toDouble()
+                               * CHORUS_REVERB_VALUE_SCALE);
+    ui->chorus_level->setValue(settings->value(QSTR_CHORUS_LEVEL, DEFAULT_CHORUS_LEVEL).toDouble()
+                               * CHORUS_REVERB_VALUE_SCALE);
     ui->chorus_nr->setValue(settings->value(QSTR_CHORUS_NR, DEFAULT_CHORUS_NR).toInt());
-    ui->chorus_speed->setValue(settings->value(QSTR_CHORUS_SPEED, DEFAULT_CHORUS_SPEED).toFloat()
-                               * 10);
+    ui->chorus_speed->setValue(settings->value(QSTR_CHORUS_SPEED, DEFAULT_CHORUS_SPEED).toDouble()
+                               * CHORUS_REVERB_VALUE_SCALE);
 
-    ui->reverb_damp->setValue(settings->value(QSTR_REVERB_DAMP, DEFAULT_REVERB_DAMP).toFloat() * 10);
-    ui->reverb_level->setValue(settings->value(QSTR_REVERB_LEVEL, DEFAULT_REVERB_LEVEL).toFloat()
-                               * 10);
-    ui->reverb_size->setValue(settings->value(QSTR_REVERB_SIZE, DEFAULT_REVERB_SIZE).toFloat() * 10);
-    ui->reverb_width->setValue(settings->value(QSTR_REVERB_WIDTH, DEFAULT_REVERB_WIDTH).toFloat()
-                               * 10);
+    ui->reverb_damp->setValue(settings->value(QSTR_REVERB_DAMP, DEFAULT_REVERB_DAMP).toDouble()
+                              * CHORUS_REVERB_VALUE_SCALE);
+    ui->reverb_level->setValue(settings->value(QSTR_REVERB_LEVEL, DEFAULT_REVERB_LEVEL).toDouble()
+                               * CHORUS_REVERB_VALUE_SCALE);
+    ui->reverb_size->setValue(settings->value(QSTR_REVERB_SIZE, DEFAULT_REVERB_SIZE).toDouble()
+                              * CHORUS_REVERB_VALUE_SCALE);
+    ui->reverb_width->setValue(settings->value(QSTR_REVERB_WIDTH, DEFAULT_REVERB_WIDTH).toDouble()
+                               * CHORUS_REVERB_VALUE_SCALE);
 
     ui->chorus->setChecked(settings->value(QSTR_CHORUS, DEFAULT_CHORUS).toInt() != 0);
     ui->reverb->setChecked(settings->value(QSTR_REVERB, DEFAULT_REVERB).toInt() != 0);
@@ -363,14 +373,14 @@ void FluidSettingsDialog::writeSettings()
     gain = ui->gain->text().toDouble();
     polyphony = ui->polyphony->text().toInt();
 
-    chorus_depth = ui->chorus_depth->value() / 10.0;
-    chorus_level = ui->chorus_level->value() / 10.0;
+    chorus_depth = ui->chorus_depth->value() / CHORUS_REVERB_VALUE_SCALE;
+    chorus_level = ui->chorus_level->value() / CHORUS_REVERB_VALUE_SCALE;
     chorus_nr = ui->chorus_nr->value();
-    chorus_speed = ui->chorus_speed->value() / 10.0;
-    reverb_damp = ui->reverb_damp->value() / 10.0;
-    reverb_level = ui->reverb_level->value() / 10.0;
-    reverb_size = ui->reverb_size->value() / 10.0;
-    reverb_width = ui->reverb_width->value() / 10.0;
+    chorus_speed = ui->chorus_speed->value() / CHORUS_REVERB_VALUE_SCALE;
+    reverb_damp = ui->reverb_damp->value() / CHORUS_REVERB_VALUE_SCALE;
+    reverb_level = ui->reverb_level->value() / CHORUS_REVERB_VALUE_SCALE;
+    reverb_size = ui->reverb_size->value() / CHORUS_REVERB_VALUE_SCALE;
+    reverb_width = ui->reverb_width->value() / CHORUS_REVERB_VALUE_SCALE;
 
     settings->beginGroup(QSTR_PREFERENCES);
     settings->setValue(QSTR_INSTRUMENTSDEFINITION, soundFont);
@@ -408,14 +418,14 @@ void FluidSettingsDialog::restoreDefaults()
     ui->gain->setText(QString::number(DEFAULT_GAIN));
     ui->polyphony->setText(QString::number(DEFAULT_POLYPHONY));
     ui->soundFont->setText(m_defSoundFont);
-    ui->chorus_depth->setValue(DEFAULT_CHORUS_DEPTH * 10);
-    ui->chorus_level->setValue(DEFAULT_CHORUS_LEVEL * 10);
+    ui->chorus_depth->setValue(DEFAULT_CHORUS_DEPTH * CHORUS_REVERB_VALUE_SCALE);
+    ui->chorus_level->setValue(DEFAULT_CHORUS_LEVEL * CHORUS_REVERB_VALUE_SCALE);
     ui->chorus_nr->setValue(DEFAULT_CHORUS_NR);
-    ui->chorus_speed->setValue(DEFAULT_CHORUS_SPEED * 10);
-    ui->reverb_damp->setValue(DEFAULT_REVERB_DAMP * 10);
-    ui->reverb_level->setValue(DEFAULT_REVERB_LEVEL * 10);
-    ui->reverb_size->setValue(DEFAULT_REVERB_SIZE * 10);
-    ui->reverb_width->setValue(DEFAULT_REVERB_WIDTH * 10);
+    ui->chorus_speed->setValue(DEFAULT_CHORUS_SPEED * CHORUS_REVERB_VALUE_SCALE);
+    ui->reverb_damp->setValue(DEFAULT_REVERB_DAMP * CHORUS_REVERB_VALUE_SCALE);
+    ui->reverb_level->setValue(DEFAULT_REVERB_LEVEL * CHORUS_REVERB_VALUE_SCALE);
+    ui->reverb_size->setValue(DEFAULT_REVERB_SIZE * CHORUS_REVERB_VALUE_SCALE);
+    ui->reverb_width->setValue(DEFAULT_REVERB_WIDTH * CHORUS_REVERB_VALUE_SCALE);
     ui->chorus->setChecked(DEFAULT_CHORUS != 0);
     ui->reverb->setChecked(DEFAULT_REVERB != 0);
     initBuffer();

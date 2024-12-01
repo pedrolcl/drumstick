@@ -113,7 +113,7 @@ public:
     static constexpr qreal DEFAULT_REVERB_SIZE = 0.5;
     static constexpr qreal DEFAULT_REVERB_WIDTH = 0.8;
 
-    static constexpr qreal DEFAULT_CHORUS_DEPTH = 4.3;
+    static constexpr qreal DEFAULT_CHORUS_DEPTH = 4.25;
     static constexpr qreal DEFAULT_CHORUS_LEVEL = 0.6;
     static constexpr int DEFAULT_CHORUS_NR = 3;
     static constexpr qreal DEFAULT_CHORUS_SPEED = 0.2;
