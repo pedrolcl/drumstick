@@ -45,14 +45,18 @@ using namespace drumstick::ALSA;
 QDumpMIDI::QDumpMIDI()
     : QObject(), m_Stopped(false)
 {
+    bool ok{false};
     m_Client = new MidiClient(this);
     m_Client->open();
     m_Client->setClientName("DumpMIDI");
 #ifndef USE_QEVENTS // using signals instead
-    connect( m_Client, &MidiClient::eventReceived,
-                 this, &QDumpMIDI::sequencerEvent,
-                       Qt::DirectConnection );
+    ok = connect(m_Client,
+                 &MidiClient::eventReceived,
+                 this,
+                 &QDumpMIDI::sequencerEvent,
+                 static_cast<Qt::ConnectionType>(Qt::DirectConnection | Qt::UniqueConnection));
     /* note: there is no event loop to handle Qt::QueuedConnection */
+    qDebug() << "Connecting signal MidiClient::eventReceived()" << (ok ? "succeeded" : "failed");
 #endif
     // enable here the callback event delivery
     // m_Client->setHandler(this);
@@ -70,8 +74,8 @@ QDumpMIDI::QDumpMIDI()
     //m_Port->setTimestampReal(true);
     m_Port->setTimestampQueue(m_Queue->getId());
 #endif
-    connect( m_Port, &MidiPort::subscribed, this, &QDumpMIDI::subscription);
-    qDebug() << "Trying to subscribe from Announce";
+    ok = connect(m_Port, &MidiPort::subscribed, this, &QDumpMIDI::subscription, Qt::UniqueConnection);
+    qDebug() << "Connecting signal MidiPort::subscribed()" << (ok ? "succeeded" : "failed");
     m_Port->subscribeFromAnnounce();
 }
 

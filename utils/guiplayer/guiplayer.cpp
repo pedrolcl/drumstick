@@ -107,7 +107,11 @@ GUIPlayer::GUIPlayer(QWidget *parent, Qt::WindowFlags flags)
     m_Client->open();
     m_Client->setPoolOutput(50); // small size, for near real-time pitchShift
     m_Client->setClientName("MIDI Player");
-    connect( m_Client, &MidiClient::eventReceived, this, &GUIPlayer::sequencerEvent, Qt::QueuedConnection );
+    connect(m_Client,
+            &MidiClient::eventReceived,
+            this,
+            &GUIPlayer::sequencerEvent,
+            static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
 
     m_Port = new MidiPort(this);
     m_Port->attach( m_Client );

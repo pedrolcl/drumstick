@@ -1,3 +1,7 @@
+2024-12-2
+    Follow-up of the fix for GH #28: emit signals only when there are connected receivers
+    Updated documentation of MidiClient::eventReceived and MidiPort::subscribed to recommend Qt::UniqueConnection
+
 2024-12-1
     * fix for GH #26
     RT, Widgets: issues with the new reverb/chorus settings

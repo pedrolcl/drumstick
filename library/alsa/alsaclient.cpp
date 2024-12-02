@@ -688,7 +688,9 @@ MidiClient::doEvents()
                     }
                 } else {
                     // finally, process signals
-                    Q_EMIT eventReceived(event->clone());
+                    if (receivers(SIGNAL(eventReceived(drumstick::ALSA::SequencerEvent *))) > 0) {
+                        Q_EMIT eventReceived(event->clone());
+                    }
                 }
             }
             delete event;

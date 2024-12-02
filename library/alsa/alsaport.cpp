@@ -640,7 +640,10 @@ MidiPort::subscribe(Subscription* subs)
 {
     subs->subscribe(m_MidiClient);
     m_Subscriptions.append(*subs);
-    Q_EMIT subscribed(this, subs->clone());
+    if (receivers(SIGNAL(subscribed(drumstick::ALSA::MidiPort *, drumstick::ALSA::Subscription *)))
+        > 0) {
+        Q_EMIT subscribed(this, subs->clone());
+    }
 }
 
 /**

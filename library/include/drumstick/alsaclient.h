@@ -306,8 +306,9 @@ public:
     bool realTimeInputEnabled();
 
 Q_SIGNALS:
-    /** Signal emitted when an event is received
-     * @param ev pointer to the received event
+    /** Signal emitted when an event is received. It is recommended to use Qt::UniqueConnection
+     *  with this signal.
+     * @param ev pointer to the received event. Receiver gets the ownership of the SequencerEvent pointer.
      */
     void eventReceived(drumstick::ALSA::SequencerEvent* ev);
 

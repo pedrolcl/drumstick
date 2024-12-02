@@ -117,7 +117,11 @@ DrumGrid::DrumGrid(QWidget *parent)
     m_Client = new MidiClient(this);
     m_Client->open();
     m_Client->setClientName("DrumGrid");
-    connect( m_Client, &MidiClient::eventReceived, this, &DrumGrid::sequencerEvent, Qt::QueuedConnection );
+    connect(m_Client,
+            &MidiClient::eventReceived,
+            this,
+            &DrumGrid::sequencerEvent,
+            static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
     m_Port = new MidiPort(this);
     m_Port->attach( m_Client );
     m_Port->setPortName("DrumGrid Output Port");
