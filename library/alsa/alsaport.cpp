@@ -16,6 +16,8 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QMetaMethod>
+
 #include "errorcheck.h"
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaqueue.h>
@@ -638,10 +640,10 @@ MidiPort::setMidiClient( MidiClient* seq )
 void
 MidiPort::subscribe(Subscription* subs)
 {
+    static const QMetaMethod subscribedSignal = QMetaMethod::fromSignal(&MidiPort::subscribed);
     subs->subscribe(m_MidiClient);
     m_Subscriptions.append(*subs);
-    if (receivers(SIGNAL(subscribed(drumstick::ALSA::MidiPort *, drumstick::ALSA::Subscription *)))
-        > 0) {
+    if (isSignalConnected(subscribedSignal)) {
         Q_EMIT subscribed(this, subs->clone());
     }
 }

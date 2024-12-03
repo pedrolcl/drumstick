@@ -16,16 +16,19 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "errorcheck.h"
 #include <QCoreApplication>
 #include <QFile>
+#include <QMetaMethod>
 #include <QReadLocker>
 #include <QRegularExpression>
 #include <QThread>
 #include <QWriteLocker>
+
 #include <drumstick/alsaclient.h>
 #include <drumstick/alsaevent.h>
 #include <drumstick/alsaqueue.h>
+
+#include "errorcheck.h"
 
 #if defined(RTKIT_SUPPORT)
 #include <QDBusConnection>
@@ -587,6 +590,7 @@ MidiClient::getSequencerType()
 void
 MidiClient::doEvents()
 {
+    static const QMetaMethod receivedSignal = QMetaMethod::fromSignal(&MidiClient::eventReceived);
     do {
         int err = 0;
         snd_seq_event_t* evp = nullptr;
@@ -688,7 +692,7 @@ MidiClient::doEvents()
                     }
                 } else {
                     // finally, process signals
-                    if (receivers(SIGNAL(eventReceived(drumstick::ALSA::SequencerEvent *))) > 0) {
+                    if (isSignalConnected(receivedSignal)) {
                         Q_EMIT eventReceived(event->clone());
                     }
                 }
