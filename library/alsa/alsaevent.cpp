@@ -16,8 +16,14 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QMetaEnum>
+#include <QMetaObject>
+
+#include <cxxabi.h>
+
 #include "errorcheck.h"
 #include <drumstick/alsaevent.h>
+
 /**
  * @file alsaevent.cpp
  * Implementation of classes managing ALSA Sequencer events.
@@ -91,7 +97,6 @@ namespace drumstick { namespace ALSA {
  * @see https://www.alsa-project.org/alsa-doc/alsa-lib/group___m_i_d_i___event.html
  * @}
  */
-
 
 /**
  * Default constructor.
@@ -1261,6 +1266,34 @@ void
 MidiCodec::resizeBuffer(int bufsize)
 {
     DRUMSTICK_ALSA_CHECK_WARNING(snd_midi_event_resize_buffer(m_Info, bufsize));
+}
+
+QString typeOfEvent(const SequencerEvent &v)
+{
+    int status;
+    char *realname = abi::__cxa_demangle(typeid(v).name(), 0, 0, &status);
+    QString name(realname && realname[0] ? realname : "drumstick::ALSA::SequencerEvent");
+    free(realname);
+    return name;
+}
+
+QString typeOfEvent2(const SequencerEvent &ev)
+{
+    QMetaEnum me = QMetaEnum::fromType<ALSASequencerEventType>();
+    QString name = me.valueToKey(ev.getSequencerType());
+    return name;
+}
+
+QDebug operator<<(QDebug d, const SequencerEvent &event)
+{
+    d << typeOfEvent(event);
+    return d;
+}
+
+QDebug operator<<(QDebug d, const SequencerEvent *event)
+{
+    d << typeOfEvent(*event);
+    return d;
 }
 
 } // namespace ALSA

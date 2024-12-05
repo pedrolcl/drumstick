@@ -56,7 +56,9 @@ QDumpMIDI::QDumpMIDI()
                  &QDumpMIDI::sequencerEvent,
                  static_cast<Qt::ConnectionType>(Qt::DirectConnection | Qt::UniqueConnection));
     /* note: there is no event loop to handle Qt::QueuedConnection */
-    qDebug() << "Connecting signal MidiClient::eventReceived()" << (ok ? "succeeded" : "failed");
+    if (!ok) {
+        qWarning() << "Connecting signal MidiClient::eventReceived() failed";
+    }
 #endif
     // enable here the callback event delivery
     // m_Client->setHandler(this);
@@ -75,8 +77,12 @@ QDumpMIDI::QDumpMIDI()
     m_Port->setTimestampQueue(m_Queue->getId());
 #endif
     ok = connect(m_Port, &MidiPort::subscribed, this, &QDumpMIDI::subscription, Qt::UniqueConnection);
-    qDebug() << "Connecting signal MidiPort::subscribed()" << (ok ? "succeeded" : "failed");
+    if (!ok) {
+        qWarning() << "Connecting signal MidiPort::subscribed() failed";
+    }
+#ifdef SUBSCRIBE_ANNOUNCE
     m_Port->subscribeFromAnnounce();
+#endif
 }
 
 QDumpMIDI::~QDumpMIDI()
@@ -113,7 +119,7 @@ QDumpMIDI::subscription(MidiPort*, Subscription* subs)
 void QDumpMIDI::subscribe(const QString& portName)
 {
     try {
-        qDebug() << "Trying to subscribe" << portName.toLocal8Bit().data();
+        //qDebug() << "Trying to subscribe" << portName.toLocal8Bit().data();
         m_Port->subscribeFrom(portName);
     } catch (const SequencerError& err) {
         cerr << "SequencerError exception. Error code: " << err.code()
@@ -161,7 +167,7 @@ void QDumpMIDI::run()
 
 void QDumpMIDI::handleSequencerEvent(SequencerEvent *ev)
 {
-    //qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO << ev;
     dumpEvent(ev);
     delete ev;
 }
@@ -182,7 +188,7 @@ QDumpMIDI::customEvent(QEvent *ev)
 void
 QDumpMIDI::sequencerEvent(SequencerEvent *ev)
 {
-    //qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO << ev;
     dumpEvent(ev);
     delete ev;
 }

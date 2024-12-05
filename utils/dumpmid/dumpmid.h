@@ -24,6 +24,10 @@
 #undef USE_QEVENTS
 //#define USE_QEVENTS
 
+/* Subscribe to Announce port to receive client and port events */
+#undef SUBSCRIBE_ANNOUNCE
+//#define SUBSCRIBE_ANNOUNCE
+
 /* To get timestamped events from ALSA, you need a running queue */
 //#undef WANT_TIMESTAMPS
 #define WANT_TIMESTAMPS

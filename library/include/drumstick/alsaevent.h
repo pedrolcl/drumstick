@@ -29,6 +29,120 @@ extern "C" {
 
 namespace drumstick { namespace ALSA {
 
+Q_NAMESPACE
+
+enum ALSASequencerEventType {
+    /** system status; event data type = #snd_seq_result_t */
+    System = SND_SEQ_EVENT_SYSTEM,
+
+    /** note on and off with duration; event data type = #snd_seq_ev_note_t */
+    Note = SND_SEQ_EVENT_NOTE,
+    /** note on; event data type = #snd_seq_ev_note_t */
+    NoteOn = SND_SEQ_EVENT_NOTEON,
+    /** note off; event data type = #snd_seq_ev_note_t */
+    NoteOff = SND_SEQ_EVENT_NOTEOFF,
+    /** key pressure change (aftertouch); event data type = #snd_seq_ev_note_t */
+    KeyPress = SND_SEQ_EVENT_KEYPRESS,
+
+    /** controller; event data type = #snd_seq_ev_ctrl_t */
+    Controller = SND_SEQ_EVENT_CONTROLLER,
+    /** program change; event data type = #snd_seq_ev_ctrl_t */
+    ProgramChange = SND_SEQ_EVENT_PGMCHANGE,
+    /** channel pressure; event data type = #snd_seq_ev_ctrl_t */
+    ChanPress = SND_SEQ_EVENT_CHANPRESS,
+    /** pitchwheel; event data type = #snd_seq_ev_ctrl_t; data is from -8192 to 8191) */
+    PitchBend = SND_SEQ_EVENT_PITCHBEND,
+    /** 14 bit controller value; event data type = #snd_seq_ev_ctrl_t */
+    Control14 = SND_SEQ_EVENT_CONTROL14,
+
+    /** SPP with LSB and MSB values; event data type = #snd_seq_ev_ctrl_t */
+    SongPos = SND_SEQ_EVENT_SONGPOS,
+    /** Song Select with song ID number; event data type = #snd_seq_ev_ctrl_t */
+    SongSel = SND_SEQ_EVENT_SONGSEL,
+    /** midi time code quarter frame; event data type = #snd_seq_ev_ctrl_t */
+    QuarterFrame = SND_SEQ_EVENT_QFRAME,
+    /** SMF Time Signature event; event data type = #snd_seq_ev_ctrl_t */
+    TimeSignature = SND_SEQ_EVENT_TIMESIGN,
+    /** SMF Key Signature event; event data type = #snd_seq_ev_ctrl_t */
+    KeySignature = SND_SEQ_EVENT_KEYSIGN,
+
+    /** MIDI Real Time Start message; event data type = #snd_seq_ev_queue_control_t */
+    RtStart = SND_SEQ_EVENT_START,
+    /** MIDI Real Time Continue message; event data type = #snd_seq_ev_queue_control_t */
+    RtContinue = SND_SEQ_EVENT_CONTINUE,
+    /** MIDI Real Time Stop message; event data type = #snd_seq_ev_queue_control_t */
+    RtStop = SND_SEQ_EVENT_STOP,
+    /** (SMF) Tempo event; event data type = #snd_seq_ev_queue_control_t */
+    Tempo = SND_SEQ_EVENT_TEMPO,
+    /** MIDI Real Time Clock message; event data type = #snd_seq_ev_queue_control_t */
+    Clock = SND_SEQ_EVENT_CLOCK,
+    /** MIDI Real Time Tick message; event data type = #snd_seq_ev_queue_control_t */
+    Tick = SND_SEQ_EVENT_TICK,
+
+    /** Reset to power-on state; event data type = none */
+    Reset = SND_SEQ_EVENT_RESET,
+    /** Active sensing event; event data type = none */
+    ActiveSensing = SND_SEQ_EVENT_SENSING,
+
+    /** Echo-back event; event data type = any type */
+    Echo = SND_SEQ_EVENT_ECHO,
+
+    /** New client has connected; event data type = #snd_seq_addr_t */
+    ClientStart = SND_SEQ_EVENT_CLIENT_START,
+    /** Client has left the system; event data type = #snd_seq_addr_t */
+    ClientExit = SND_SEQ_EVENT_CLIENT_EXIT,
+    /** Client status/info has changed; event data type = #snd_seq_addr_t */
+    ClientChange = SND_SEQ_EVENT_CLIENT_CHANGE,
+    /** New port was created; event data type = #snd_seq_addr_t */
+    PortStart = SND_SEQ_EVENT_PORT_START,
+    /** Port was deleted from system; event data type = #snd_seq_addr_t */
+    PortExit = SND_SEQ_EVENT_PORT_EXIT,
+    /** Port status/info has changed; event data type = #snd_seq_addr_t */
+    PortChange = SND_SEQ_EVENT_PORT_CHANGE,
+
+    /** Ports connected; event data type = #snd_seq_connect_t */
+    PortSubscribed = SND_SEQ_EVENT_PORT_SUBSCRIBED,
+    /** Ports disconnected; event data type = #snd_seq_connect_t */
+    PortUnsubscribed = SND_SEQ_EVENT_PORT_UNSUBSCRIBED,
+
+    /** user-defined event; event data type = any (fixed size) */
+    User0 = SND_SEQ_EVENT_USR0,
+    /** user-defined event; event data type = any (fixed size) */
+    User1 = SND_SEQ_EVENT_USR1,
+    /** user-defined event; event data type = any (fixed size) */
+    User2 = SND_SEQ_EVENT_USR2,
+    /** user-defined event; event data type = any (fixed size) */
+    User3 = SND_SEQ_EVENT_USR3,
+    /** user-defined event; event data type = any (fixed size) */
+    User4 = SND_SEQ_EVENT_USR4,
+    /** user-defined event; event data type = any (fixed size) */
+    User5 = SND_SEQ_EVENT_USR5,
+    /** user-defined event; event data type = any (fixed size) */
+    User6 = SND_SEQ_EVENT_USR6,
+    /** user-defined event; event data type = any (fixed size) */
+    User7 = SND_SEQ_EVENT_USR7,
+    /** user-defined event; event data type = any (fixed size) */
+    User8 = SND_SEQ_EVENT_USR8,
+    /** user-defined event; event data type = any (fixed size) */
+    User9 = SND_SEQ_EVENT_USR9,
+
+    /** system exclusive data (variable length);  event data type = #snd_seq_ev_ext_t */
+    Sysex = SND_SEQ_EVENT_SYSEX,
+
+    /** reserved for user apps;  event data type = #snd_seq_ev_ext_t */
+    Var0 = SND_SEQ_EVENT_USR_VAR0,
+    /** reserved for user apps; event data type = #snd_seq_ev_ext_t */
+    Var1 = SND_SEQ_EVENT_USR_VAR1,
+    /** reserved for user apps; event data type = #snd_seq_ev_ext_t */
+    Var2 = SND_SEQ_EVENT_USR_VAR2,
+    /** reserved for user apps; event data type = #snd_seq_ev_ext_t */
+    Var3 = SND_SEQ_EVENT_USR_VAR3,
+    /** reserved for user apps; event data type = #snd_seq_ev_ext_t */
+    Var4 = SND_SEQ_EVENT_USR_VAR4
+};
+
+Q_ENUM_NS(ALSASequencerEventType);
+
 /**
  * @file alsaevent.h
  * Classes managing ALSA Sequencer events.
@@ -807,6 +921,9 @@ public:
 private:
     snd_midi_event_t* m_Info;
 };
+
+QDebug operator<<(QDebug d, const SequencerEvent &event);
+QDebug operator<<(QDebug d, const SequencerEvent *event);
 
 /** @} */
 

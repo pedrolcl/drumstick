@@ -685,7 +685,7 @@ MidiClient::doEvents()
             } else {
                 // second, process the event listeners
                 if (d->m_eventsEnabled) {
-                   QObjectList::Iterator it;
+                    QObjectList::Iterator it;
                     for(it=d->m_listeners.begin(); it!=d->m_listeners.end(); ++it) {
                         QObject* sub = (*it);
                         QCoreApplication::postEvent(sub, event->clone());
