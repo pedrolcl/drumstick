@@ -16,9 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QMetaEnum>
-#include <QMetaObject>
-
 #include <cxxabi.h>
 
 #include "errorcheck.h"
@@ -1277,22 +1274,17 @@ QString typeOfEvent(const SequencerEvent &v)
     return name;
 }
 
-QString typeOfEvent2(const SequencerEvent &ev)
-{
-    QMetaEnum me = QMetaEnum::fromType<ALSASequencerEventType>();
-    QString name = me.valueToKey(ev.getSequencerType());
-    return name;
-}
-
 QDebug operator<<(QDebug d, const SequencerEvent &event)
 {
-    d << typeOfEvent(event);
+    QDebugStateSaver saver(d);
+    d.noquote() << typeOfEvent(event);
     return d;
 }
 
 QDebug operator<<(QDebug d, const SequencerEvent *event)
 {
-    d << typeOfEvent(*event);
+    QDebugStateSaver saver(d);
+    d.noquote().nospace() << typeOfEvent(*event) << "*";
     return d;
 }
 

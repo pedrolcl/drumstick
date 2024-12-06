@@ -1,5 +1,8 @@
+2024-12-6
+    ALSA: new QDebug output operator accepting SequencerEvent instances
+
 2024-12-2
-    Follow-up of the fix for GH #28: emit signals only when there are connected receivers
+    ALSA: Follow-up of the fix for GH #28: emit signals only when there are connected receivers
     Updated documentation of MidiClient::eventReceived and MidiPort::subscribed to recommend Qt::UniqueConnection
 
 2024-12-1

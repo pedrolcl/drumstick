@@ -472,9 +472,9 @@ QDumpMIDI* test;
 void signalHandler(int sig)
 {
     if (sig == SIGINT)
-        qDebug() << "Caught a SIGINT. Exiting";
+        qDebug() << "Received a SIGINT. Exiting";
     else if (sig == SIGTERM)
-        qDebug() << "Caught a SIGTERM. Exiting";
+        qDebug() << "Received a SIGTERM. Exiting";
     test->stop();
 }
 
