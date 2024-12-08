@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>431</width>
-    <height>567</height>
+    <width>560</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,7 +57,17 @@
        </widget>
       </item>
       <item row="8" column="1">
-       <widget class="QLineEdit" name="polyphony"/>
+       <widget class="QSpinBox" name="polyphony">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>65535</number>
+        </property>
+        <property name="value">
+         <number>256</number>
+        </property>
+       </widget>
       </item>
       <item row="9" column="0">
        <widget class="QLabel" name="lblSoundFont">
@@ -163,10 +173,104 @@
        </widget>
       </item>
       <item row="7" column="1">
-       <widget class="QLineEdit" name="gain"/>
+       <widget class="QDoubleSpinBox" name="gain">
+        <property name="maximum">
+         <double>10.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QLineEdit" name="sampleRate"/>
+       <widget class="QComboBox" name="sampleRate">
+        <property name="currentText">
+         <string>44100</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>8000</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>11025</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>16000</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>22050</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>24000</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>32000</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>40000</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>44100</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>48000</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>56000</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>64000</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>72000</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>80000</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>88000</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>88200</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>96000</string>
+         </property>
+        </item>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="lblBuffer">
@@ -214,27 +318,8 @@
          <bool>false</bool>
         </property>
         <layout class="QGridLayout" name="chorus_layout">
-         <item row="0" column="0">
-          <widget class="QDial" name="chorus_depth">
-           <property name="toolTip">
-            <string notr="true">4.25</string>
-           </property>
-           <property name="maximum">
-            <number>25600</number>
-           </property>
-           <property name="value">
-            <number>425</number>
-           </property>
-           <property name="notchesVisible">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
+         <item row="1" column="1">
           <widget class="QDial" name="chorus_level">
-           <property name="toolTip">
-            <string notr="true">0.6</string>
-           </property>
            <property name="maximum">
             <number>1000</number>
            </property>
@@ -246,11 +331,8 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
+         <item row="1" column="2">
           <widget class="QDial" name="chorus_nr">
-           <property name="toolTip">
-            <string notr="true">3</string>
-           </property>
            <property name="value">
             <number>3</number>
            </property>
@@ -259,11 +341,21 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
-          <widget class="QDial" name="chorus_speed">
-           <property name="toolTip">
-            <string notr="true">0.2</string>
+         <item row="1" column="0">
+          <widget class="QDial" name="chorus_depth">
+           <property name="maximum">
+            <number>25600</number>
            </property>
+           <property name="value">
+            <number>425</number>
+           </property>
+           <property name="notchesVisible">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QDial" name="chorus_speed">
            <property name="minimum">
             <number>1</number>
            </property>
@@ -278,20 +370,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="lblDepth">
-           <property name="toolTip">
-            <string>Modulation depth</string>
-           </property>
-           <property name="text">
-            <string>Depth</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignmentFlag::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
+         <item row="2" column="1">
           <widget class="QLabel" name="lblLevel">
            <property name="toolTip">
             <string>Output amplitude</string>
@@ -304,7 +383,20 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
+         <item row="2" column="0">
+          <widget class="QLabel" name="lblDepth">
+           <property name="toolTip">
+            <string>Modulation depth</string>
+           </property>
+           <property name="text">
+            <string>Depth</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
           <widget class="QLabel" name="lblNR">
            <property name="toolTip">
             <string>Voice count</string>
@@ -317,13 +409,53 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="3">
+         <item row="2" column="3">
           <widget class="QLabel" name="lblSpeed">
            <property name="toolTip">
             <string>Modulation speed in Hz</string>
            </property>
            <property name="text">
             <string>Speed</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_CDepth">
+           <property name="text">
+            <string>4.25</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_CLevel">
+           <property name="text">
+            <string>0.60</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_CNR">
+           <property name="text">
+            <string>3</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLabel" name="label_CSpeed">
+           <property name="text">
+            <string>0.20</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -339,49 +471,8 @@
          <bool>false</bool>
         </property>
         <layout class="QGridLayout" name="reverb_layout">
-         <item row="0" column="0">
-          <widget class="QDial" name="reverb_damp">
-           <property name="toolTip">
-            <string notr="true">0.3</string>
-           </property>
-           <property name="maximum">
-            <number>100</number>
-           </property>
-           <property name="pageStep">
-            <number>10</number>
-           </property>
-           <property name="value">
-            <number>30</number>
-           </property>
-           <property name="notchesVisible">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QDial" name="reverb_level">
-           <property name="toolTip">
-            <string notr="true">0.7</string>
-           </property>
-           <property name="maximum">
-            <number>100</number>
-           </property>
-           <property name="pageStep">
-            <number>10</number>
-           </property>
-           <property name="value">
-            <number>70</number>
-           </property>
-           <property name="notchesVisible">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
+         <item row="1" column="2">
           <widget class="QDial" name="reverb_size">
-           <property name="toolTip">
-            <string notr="true">0.5</string>
-           </property>
            <property name="maximum">
             <number>100</number>
            </property>
@@ -396,49 +487,20 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
-          <widget class="QDial" name="reverb_width">
+         <item row="2" column="3">
+          <widget class="QLabel" name="lblWidth">
            <property name="toolTip">
-            <string notr="true">0.8</string>
-           </property>
-           <property name="maximum">
-            <number>100</number>
-           </property>
-           <property name="value">
-            <number>80</number>
-           </property>
-           <property name="notchesVisible">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="lblDamp">
-           <property name="toolTip">
-            <string>Damping amount</string>
+            <string>Stereo spread</string>
            </property>
            <property name="text">
-            <string>Damp</string>
+            <string>Width</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <widget class="QLabel" name="lblRLevel">
-           <property name="toolTip">
-            <string>Output amplitude</string>
-           </property>
-           <property name="text">
-            <string>Level</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignmentFlag::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
+         <item row="2" column="2">
           <widget class="QLabel" name="lblSize">
            <property name="toolTip">
             <string>Room size (wet amount)</string>
@@ -451,13 +513,111 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="3">
-          <widget class="QLabel" name="lblWidth">
+         <item row="1" column="1">
+          <widget class="QDial" name="reverb_level">
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="pageStep">
+            <number>10</number>
+           </property>
+           <property name="value">
+            <number>70</number>
+           </property>
+           <property name="notchesVisible">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="lblDamp">
            <property name="toolTip">
-            <string>Stereo spread</string>
+            <string>Damping amount</string>
            </property>
            <property name="text">
-            <string>Width</string>
+            <string>Damp</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QDial" name="reverb_width">
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>80</number>
+           </property>
+           <property name="notchesVisible">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="lblRLevel">
+           <property name="toolTip">
+            <string>Output amplitude</string>
+           </property>
+           <property name="text">
+            <string>Level</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QDial" name="reverb_damp">
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="pageStep">
+            <number>10</number>
+           </property>
+           <property name="value">
+            <number>30</number>
+           </property>
+           <property name="notchesVisible">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_RDamp">
+           <property name="text">
+            <string>0.30</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_RLevel">
+           <property name="text">
+            <string>0.70</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_RSize">
+           <property name="text">
+            <string>0.50</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLabel" name="label_RWidth">
+           <property name="text">
+            <string>0.80</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -502,8 +662,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>257</x>
-     <y>477</y>
+     <x>266</x>
+     <y>649</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -518,8 +678,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>325</x>
-     <y>477</y>
+     <x>334</x>
+     <y>649</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -534,8 +694,8 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>82</x>
-     <y>211</y>
+     <x>101</x>
+     <y>262</y>
     </hint>
     <hint type="destinationlabel">
      <x>201</x>
@@ -550,12 +710,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>81</x>
-     <y>273</y>
+     <x>100</x>
+     <y>406</y>
     </hint>
     <hint type="destinationlabel">
-     <x>199</x>
-     <y>272</y>
+     <x>344</x>
+     <y>463</y>
     </hint>
    </hints>
   </connection>

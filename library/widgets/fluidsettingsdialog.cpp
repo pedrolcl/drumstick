@@ -73,47 +73,37 @@ FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
     connect(ui->btnFile, &QToolButton::clicked, this, &FluidSettingsDialog::showFileDialog);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked,
             this, &FluidSettingsDialog::restoreDefaults);
-    auto sampleRateValidator = new QDoubleValidator(8000.0, 96000.0, 1, this);
-    sampleRateValidator->setNotation(QDoubleValidator::StandardNotation);
-    sampleRateValidator->setLocale(QLocale::c());
-    ui->sampleRate->setValidator(sampleRateValidator);
-    auto gainValidator = new QDoubleValidator(0.1, 10.0, 2, this);
-    gainValidator->setNotation(QDoubleValidator::StandardNotation);
-    gainValidator->setLocale(QLocale::c());
-    ui->gain->setValidator(gainValidator);
-    auto polyphonyValidator = new QIntValidator(1, 65535, this);
-    ui->polyphony->setValidator(polyphonyValidator);
     connect(ui->chorus_depth, &QAbstractSlider::valueChanged, this, [=](int val) {
-        //qDebug() << "chorus depth" << val;
-        setWidgetTip(ui->chorus_depth, QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2));
+        QString v = QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2);
+        ui->label_CDepth->setText(v);
     });
     connect(ui->chorus_level, &QAbstractSlider::valueChanged, this, [=](int val) {
-        //qDebug() << "chorus level" << val;
-        setWidgetTip(ui->chorus_level, QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2));
+        QString v = QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2);
+        ui->label_CLevel->setText(v);
     });
     connect(ui->chorus_nr, &QAbstractSlider::valueChanged, this, [=](int val) {
-        setWidgetTip(ui->chorus_nr, QString::number(val));
+        QString v = QString::number(val);
+        ui->label_CNR->setText(v);
     });
     connect(ui->chorus_speed, &QAbstractSlider::valueChanged, this, [=](int val) {
-        //qDebug() << "chorus speed" << val;
-        setWidgetTip(ui->chorus_speed, QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2));
+        QString v = QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2);
+        ui->label_CSpeed->setText(v);
     });
-
     connect(ui->reverb_damp, &QAbstractSlider::valueChanged, this, [=](int val) {
-        //qDebug() << "reverb damp" << val;
-        setWidgetTip(ui->reverb_damp, QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2));
+        QString v = QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2);
+        ui->label_RDamp->setText(v);
     });
     connect(ui->reverb_level, &QAbstractSlider::valueChanged, this, [=](int val) {
-        //qDebug() << "reverb level" << val;
-        setWidgetTip(ui->reverb_level, QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2));
+        QString v = QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2);
+        ui->label_RLevel->setText(v);
     });
     connect(ui->reverb_size, &QAbstractSlider::valueChanged, this, [=](int val) {
-        //qDebug() << "reverb size" << val;
-        setWidgetTip(ui->reverb_size, QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2));
+        QString v = QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2);
+        ui->label_RSize->setText(v);
     });
     connect(ui->reverb_width, &QAbstractSlider::valueChanged, this, [=](int val) {
-        //qDebug() << "reverb width" << val;
-        setWidgetTip(ui->reverb_width, QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2));
+        QString v = QString::number(val / CHORUS_REVERB_VALUE_SCALE, 'f', 2);
+        ui->label_RWidth->setText(v);
     });
 
     drumstick::rt::BackendManager man;
@@ -134,12 +124,10 @@ FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
     ui->bufferTime->blockSignals(true);
     ui->periodSize->blockSignals(true);
     ui->periods->blockSignals(true);
-    //qDebug() << Q_FUNC_INFO;
 }
 
 FluidSettingsDialog::~FluidSettingsDialog()
 {
-    //qDebug() << Q_FUNC_INFO;
     if (m_driver != nullptr) {
         m_driver->close();
     }
@@ -148,34 +136,12 @@ FluidSettingsDialog::~FluidSettingsDialog()
 
 bool FluidSettingsDialog::checkRanges() const
 {
-    //qDebug() << Q_FUNC_INFO;
-    if (ui->gain->hasAcceptableInput()) {
-        ui->gain->deselect();
-    } else {
-        ui->gain->selectAll();
-    }
-    if (ui->polyphony->hasAcceptableInput()) {
-        ui->polyphony->deselect();
-    } else {
-        ui->polyphony->selectAll();
-    }
-    if (ui->sampleRate->hasAcceptableInput()) {
-        ui->sampleRate->deselect();
-    } else {
-        ui->sampleRate->selectAll();
-    }
-    return
-        ui->bufferTime->hasAcceptableInput() &&
-        ui->periodSize->hasAcceptableInput() &&
-        ui->periods->hasAcceptableInput() &&
-        ui->gain->hasAcceptableInput() &&
-        ui->polyphony->hasAcceptableInput() &&
-        ui->sampleRate->hasAcceptableInput();
+    return ui->bufferTime->hasAcceptableInput() && ui->periodSize->hasAcceptableInput()
+           && ui->periods->hasAcceptableInput();
 }
 
 void FluidSettingsDialog::accept()
 {
-    //qDebug() << Q_FUNC_INFO;
     if (checkRanges()) {
         writeSettings();
         if (m_driver != nullptr) {
@@ -224,7 +190,6 @@ QString FluidSettingsDialog::defaultAudioDriver() const
 
 void FluidSettingsDialog::chkDriverProperties(QSettings *settings)
 {
-    //qDebug() << Q_FUNC_INFO;
     if (m_driver != nullptr) {
         drumstick::rt::MIDIConnection conn;
         m_driver->close();
@@ -253,7 +218,6 @@ void FluidSettingsDialog::chkDriverProperties(QSettings *settings)
 
 void FluidSettingsDialog::setWidgetTip(QWidget *w, const QString &tip)
 {
-    //qDebug() << Q_FUNC_INFO << tip;
     w->setToolTip(tip);
     QToolTip::showText(w->parentWidget()->mapToGlobal(w->pos()), tip);
 }
@@ -261,7 +225,6 @@ void FluidSettingsDialog::setWidgetTip(QWidget *w, const QString &tip)
 void drumstick::widgets::FluidSettingsDialog::initBuffer()
 {
     if ((ui->audioDriver->currentText() == QSTR_PULSEAUDIO) && driverVersionLessThan_2_2_8()) {
-        //qDebug() << Q_FUNC_INFO << QSTR_PULSEAUDIO << driverVersion();
         int bufferTime = ui->bufferTime->value();
         int minBufTime = ui->bufferTime->minimum();
         if (bufferTime < minBufTime) {
@@ -270,7 +233,6 @@ void drumstick::widgets::FluidSettingsDialog::initBuffer()
         ui->bufferTime->setValue( bufferTime );
         bufferTimeChanged( bufferTime );
     } else {
-        //qDebug() << Q_FUNC_INFO;
         bufferSizeChanged();
     }
 }
@@ -296,16 +258,15 @@ bool FluidSettingsDialog::driverVersionLessThan_2_2_8()
 
 void FluidSettingsDialog::readSettings()
 {
-    //qDebug() << Q_FUNC_INFO;
     SettingsFactory settings;
     settings->beginGroup(QSTR_PREFERENCES);
     ui->audioDriver->setCurrentText( settings->value(QSTR_AUDIODRIVER, defaultAudioDriver()).toString() );
     ui->bufferTime->setValue( settings->value(QSTR_BUFFERTIME, DEFAULT_BUFFERTIME).toInt() );
     ui->periodSize->setValue( settings->value(QSTR_PERIODSIZE, DEFAULT_PERIODSIZE).toInt() );
     ui->periods->setValue( settings->value(QSTR_PERIODS, DEFAULT_PERIODS).toInt() );
-    ui->sampleRate->setText( settings->value(QSTR_SAMPLERATE, DEFAULT_SAMPLERATE).toString() );
-    ui->gain->setText( settings->value(QSTR_GAIN, DEFAULT_GAIN).toString() );
-    ui->polyphony->setText( settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toString() );
+    ui->sampleRate->setCurrentText(settings->value(QSTR_SAMPLERATE, DEFAULT_SAMPLERATE).toString());
+    ui->gain->setValue(settings->value(QSTR_GAIN, DEFAULT_GAIN).toDouble());
+    ui->polyphony->setValue(settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toInt());
     ui->soundFont->setText( settings->value(QSTR_INSTRUMENTSDEFINITION, m_defSoundFont).toString() );
 
     ui->chorus_depth->setValue(settings->value(QSTR_CHORUS_DEPTH, DEFAULT_CHORUS_DEPTH).toDouble()
@@ -336,7 +297,6 @@ void FluidSettingsDialog::readSettings()
 
 void FluidSettingsDialog::writeSettings()
 {
-    //qDebug() << Q_FUNC_INFO;
     SettingsFactory settings;
     QString audioDriver;
     QString soundFont(m_defSoundFont);
@@ -367,11 +327,11 @@ void FluidSettingsDialog::writeSettings()
     bufferTime = ui->bufferTime->value();
     periodSize = ui->periodSize->value();
     periods = ui->periods->value();
-    sampleRate = ui->sampleRate->text().toDouble();
+    sampleRate = ui->sampleRate->currentText().toDouble();
     chorus = (ui->chorus->isChecked() ? 1 : 0);
     reverb = (ui->reverb->isChecked() ? 1 : 0);
-    gain = ui->gain->text().toDouble();
-    polyphony = ui->polyphony->text().toInt();
+    gain = ui->gain->value();
+    polyphony = ui->polyphony->value();
 
     chorus_depth = ui->chorus_depth->value() / CHORUS_REVERB_VALUE_SCALE;
     chorus_level = ui->chorus_level->value() / CHORUS_REVERB_VALUE_SCALE;
@@ -409,14 +369,13 @@ void FluidSettingsDialog::writeSettings()
 
 void FluidSettingsDialog::restoreDefaults()
 {
-    //qDebug() << Q_FUNC_INFO;
     ui->audioDriver->setCurrentText(defaultAudioDriver());
     ui->bufferTime->setValue(DEFAULT_BUFFERTIME);
     ui->periodSize->setValue(DEFAULT_PERIODSIZE);
     ui->periods->setValue(DEFAULT_PERIODS);
-    ui->sampleRate->setText(QString::number(DEFAULT_SAMPLERATE));
-    ui->gain->setText(QString::number(DEFAULT_GAIN));
-    ui->polyphony->setText(QString::number(DEFAULT_POLYPHONY));
+    ui->sampleRate->setCurrentText(QString::number(DEFAULT_SAMPLERATE));
+    ui->gain->setValue(DEFAULT_GAIN);
+    ui->polyphony->setValue(DEFAULT_POLYPHONY);
     ui->soundFont->setText(m_defSoundFont);
     ui->chorus_depth->setValue(DEFAULT_CHORUS_DEPTH * CHORUS_REVERB_VALUE_SCALE);
     ui->chorus_level->setValue(DEFAULT_CHORUS_LEVEL * CHORUS_REVERB_VALUE_SCALE);
@@ -449,7 +408,6 @@ void FluidSettingsDialog::showFileDialog()
 
 void FluidSettingsDialog::audioDriverChanged(const QString &text)
 {
-    //qDebug() << Q_FUNC_INFO << text;
     if ((text == QSTR_PULSEAUDIO) && driverVersionLessThan_2_2_8()) {
         ui->bufferTime->setDisabled(false);
         ui->bufferTime->blockSignals(false);
@@ -472,24 +430,22 @@ void FluidSettingsDialog::audioDriverChanged(const QString &text)
 
 void FluidSettingsDialog::bufferTimeChanged(int value)
 {
-    double rate = ui->sampleRate->text().toDouble();
+    double rate = ui->sampleRate->currentText().toDouble();
     int size = qRound( value * rate / 1000.0 );
     ui->periodSize->setValue( size );
     ui->periods->setValue( ui->periods->minimum() );
-    //qDebug() << Q_FUNC_INFO << "time:" << value << "rate:" << rate << "size:" << size;
 }
 
 void FluidSettingsDialog::bufferSizeChanged()
 {
     QString audioDriver = ui->audioDriver->currentText();
-    double rate = ui->sampleRate->text().toDouble();
+    double rate = ui->sampleRate->currentText().toDouble();
     int size = ui->periodSize->value();
     if ((audioDriver != QSTR_PULSEAUDIO) || !driverVersionLessThan_2_2_8()) {
         size *= ui->periods->value();
     }
     int ms = qRound( 1000.0 * size / rate );
     ui->bufferTime->setValue(ms);
-    //qDebug() << Q_FUNC_INFO << "time:" << ms << "rate:" << rate << "size:" << size;
 }
 
 void FluidSettingsDialog::changeSoundFont(const QString& fileName)

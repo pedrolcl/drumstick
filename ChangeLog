@@ -1,3 +1,6 @@
+2024-12-8
+    Widgets: revised user interface for the fluidsynth settings
+
 2024-12-6
     ALSA: new QDebug output operator accepting SequencerEvent instances
 
@@ -7,7 +10,7 @@
 
 2024-12-1
     * fix for GH #26
-    RT, Widgets: issues with the new reverb/chorus settings
+    RT, Widgets: issues with the new reverb/chorus fluidsynth settings
 
 2024-10-20
     * fix for GH #28
