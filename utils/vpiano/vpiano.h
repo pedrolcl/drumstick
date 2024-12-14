@@ -19,10 +19,13 @@
 #ifndef VPIANO_H
 #define VPIANO_H
 
-#include <QMainWindow>
 #include <QCloseEvent>
+#include <QMainWindow>
+
+#include <drumstick/backendmanager.h>
 #include <drumstick/rtmidiinput.h>
 #include <drumstick/rtmidioutput.h>
+
 #include "ui_vpiano.h"
 
 class VPiano : public QMainWindow
@@ -67,6 +70,7 @@ private:
     void initialize();
     void useCustomNoteNames();
 
+    drumstick::rt::BackendManager *m_manager;
     QList<drumstick::rt::MIDIInput*> m_inputs;
     QList<drumstick::rt::MIDIOutput*> m_outputs;
     drumstick::rt::MIDIInput * m_midiIn;
