@@ -66,6 +66,12 @@ namespace rt {
             reloadDeviceList(true);
         }
 
+        ~WinMIDIOutputPrivate()
+        {
+            qDebug() << Q_FUNC_INFO;
+            close();
+        }
+
         void reloadDeviceList(bool advanced)
         {
             MMRESULT res;
@@ -246,6 +252,7 @@ namespace rt {
 
     WinMIDIOutput::~WinMIDIOutput()
     {
+        qDebug() << Q_FUNC_INFO;
         delete d;
     }
 

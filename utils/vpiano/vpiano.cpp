@@ -105,6 +105,7 @@ VPiano::VPiano( QWidget * parent, Qt::WindowFlags flags)
 
 VPiano::~VPiano()
 {
+    qDebug() << Q_FUNC_INFO;
     m_midiIn->close();
     m_midiOut->close();
 }

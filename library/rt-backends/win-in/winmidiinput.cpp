@@ -73,6 +73,12 @@ namespace rt {
             reloadDeviceList(true);
         }
 
+        ~WinMIDIInputPrivate()
+        {
+            qDebug() << Q_FUNC_INFO << m_publicName;
+            close();
+        }
+
         void open(const MIDIConnection &conn) {
             MMRESULT res;
             m_status = false;
@@ -121,6 +127,7 @@ namespace rt {
         }
 
         void close() {
+            qDebug() << Q_FUNC_INFO;
             MMRESULT res;
             m_status = false;
             m_diagnostics.clear();
@@ -128,12 +135,15 @@ namespace rt {
                 res = midiInStop(m_handle);
                 if (res != MMSYSERR_NOERROR)
                     logError("midiInStop()", res);
+                qDebug() << "midiInStop() OK";
                 res = midiInReset( m_handle );
                 if (res != MMSYSERR_NOERROR)
                     logError("midiInReset()", res);
+                qDebug() << "midiInReset() OK";
                 res = midiInClose( m_handle );
                 if (res != MMSYSERR_NOERROR)
                     logError("midiInClose()", res);
+                qDebug() << "midiInClose() OK";
                 m_handle = nullptr;
             }
             m_currentInput = MIDIConnection();
@@ -308,6 +318,7 @@ namespace rt {
 
     WinMIDIInput::~WinMIDIInput()
     {
+        qDebug() << Q_FUNC_INFO;
         delete d;
     }
 

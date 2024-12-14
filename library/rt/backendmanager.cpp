@@ -51,6 +51,7 @@ namespace drumstick { namespace rt {
     public:
         QList<MIDIInput*> m_inputsList;
         QList<MIDIOutput*> m_outputsList;
+        QList<QPluginLoader*> m_loaders;
 
         QString m_inputBackend{QLatin1String("Network")};
     #if defined(Q_OS_LINUX)
@@ -71,8 +72,17 @@ namespace drumstick { namespace rt {
         }
         void clearLists()
         {
+            qDebug() << Q_FUNC_INFO << "loaders:" << m_loaders.count();
+            while(!m_loaders.empty()) {
+                QPluginLoader* pluginLoader = m_loaders.takeFirst();
+                qDebug() << "unloading:" << pluginLoader->fileName();
+                pluginLoader->unload();
+                delete pluginLoader;
+            }
+            qDebug() << "inputs:" << m_inputsList.count() << "outputs:" << m_outputsList.count();
             m_inputsList.clear();
             m_outputsList.clear();
+            m_loaders.clear();
         }
         void appendDir(const QString& candidate, QStringList& result)
         {
@@ -178,6 +188,8 @@ namespace drumstick { namespace rt {
         QStringList names;
         QStringList paths;
 
+        qDebug() << Q_FUNC_INFO;
+
         d->appendDir(map.value(QSTR_DRUMSTICKRT_PATH).toString(), paths);
         name_in = map.value(QSTR_DRUMSTICKRT_PUBLICNAMEIN).toString();
         name_out = map.value(QSTR_DRUMSTICKRT_PUBLICNAMEOUT).toString();
@@ -195,11 +207,14 @@ namespace drumstick { namespace rt {
             QDir pluginsDir(dir);
             foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
                 if (QLibrary::isLibrary(fileName)) {
-                    QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-                    QObject *obj = loader.instance();
+                    QPluginLoader *loader = new QPluginLoader(pluginsDir.absoluteFilePath(fileName));
+                    qDebug() << "plugin loader created for" << fileName;
+                    d->m_loaders << loader;
+                    QObject *obj = loader->instance();
                     if (obj != nullptr) {
                         MIDIInput *input = qobject_cast<MIDIInput*>(obj);
                         if (input != nullptr && !d->m_inputsList.contains(input)) {
+                            qDebug() << "input plugin instantiated:" << name_in;
                             if (!name_in.isEmpty()) {
                                 input->setPublicName(name_in);
                             }
@@ -208,6 +223,7 @@ namespace drumstick { namespace rt {
                         } else {
                             MIDIOutput *output = qobject_cast<MIDIOutput*>(obj);
                             if (output != nullptr && !d->m_outputsList.contains(output)) {
+                                qDebug() << "output plugin instantiated:" << name_out;
                                 if (!name_out.isEmpty()) {
                                     output->setPublicName(name_out);
                                 }
