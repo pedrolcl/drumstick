@@ -18,7 +18,6 @@
 
 #include <QString>
 #include <QMap>
-#include <QDebug>
 #include <windows.h>
 #include <mmsystem.h>
 
@@ -75,7 +74,6 @@ namespace rt {
 
         ~WinMIDIInputPrivate()
         {
-            qDebug() << Q_FUNC_INFO << m_publicName;
             close();
         }
 
@@ -92,32 +90,29 @@ namespace rt {
                     if (res != MMSYSERR_NOERROR) {
                         logError("midiInOpen()",res);
                     } else {
+                        /* Double buffering configuration, to manage Sysexes */
+                        /* Store pointer to our input buffer for System Exclusive messages in MIDIHDR */
+                        inMidiHeader.lpData = (LPSTR)&inSysexBuf[0];
 
-                    /* Double buffering configuration, to manage Sysexes */
-                    /* Store pointer to our input buffer for System Exclusive messages in MIDIHDR */
-                    inMidiHeader.lpData = (LPSTR)&inSysexBuf[0];
+                        /* Store its size in the MIDIHDR */
+                        inMidiHeader.dwBufferLength = SYSEX_BUF_SIZE;
 
-                    /* Store its size in the MIDIHDR */
-                    inMidiHeader.dwBufferLength = SYSEX_BUF_SIZE;
+                        /* Flags must be set to 0 */
+                        inMidiHeader.dwFlags = 0;
 
-                    /* Flags must be set to 0 */
-                    inMidiHeader.dwFlags = 0;
+                        res = midiInPrepareHeader(m_handle, &inMidiHeader, sizeof(MIDIHDR));
+                        if (res != MMSYSERR_NOERROR){
+                            logError("midiInPrepareHeader()", res);
+                        }
 
-                    res = midiInPrepareHeader(m_handle, &inMidiHeader, sizeof(MIDIHDR));
-                    if (res != MMSYSERR_NOERROR){
-                        qDebug() << "Error preparing MIDI input header. result=" << res;
-                    }
-
-                    res = midiInAddBuffer(m_handle, &inMidiHeader, sizeof(MIDIHDR));
-                    if (res != MMSYSERR_NOERROR){
-                        qDebug() << "Error adding MIDI input buffer. result=" << res;
-                    }
-                    /*** ***/
-
+                        res = midiInAddBuffer(m_handle, &inMidiHeader, sizeof(MIDIHDR));
+                        if (res != MMSYSERR_NOERROR){
+                            logError("midiInAddBuffer()", res);
+                        }
 
                         res = midiInStart(m_handle);
                         if (res != MMSYSERR_NOERROR) {
-                            logError("midiInStart()",res);
+                            logError("midiInStart()", res);
                         }
                     }
                     m_currentInput = conn;
@@ -127,23 +122,22 @@ namespace rt {
         }
 
         void close() {
-            qDebug() << Q_FUNC_INFO;
             MMRESULT res;
             m_status = false;
             m_diagnostics.clear();
             if (m_handle != nullptr) {
+                res = midiInUnprepareHeader(m_handle, &inMidiHeader, sizeof(MIDIHDR));
+                if (res != MMSYSERR_NOERROR)
+                    logError("midiInUnprepareHeader()", res);
                 res = midiInStop(m_handle);
                 if (res != MMSYSERR_NOERROR)
                     logError("midiInStop()", res);
-                qDebug() << "midiInStop() OK";
                 res = midiInReset( m_handle );
                 if (res != MMSYSERR_NOERROR)
                     logError("midiInReset()", res);
-                qDebug() << "midiInReset() OK";
                 res = midiInClose( m_handle );
                 if (res != MMSYSERR_NOERROR)
                     logError("midiInClose()", res);
-                qDebug() << "midiInClose() OK";
                 m_handle = nullptr;
             }
             m_currentInput = MIDIConnection();
@@ -281,7 +275,7 @@ namespace rt {
             object->m_diagnostics << "Errors input";
             break;
         case MIM_LONGDATA:
-	{
+        {
             object->m_diagnostics << "Sysex data input";
             // Extract MIDI SysEx message information
             MIDIHDR* pMidiHdr = reinterpret_cast<MIDIHDR*>(dwParam1);
@@ -292,9 +286,11 @@ namespace rt {
                 QByteArray sysExByteArray(reinterpret_cast<const char*>(pMidiHdr->lpData), static_cast<int>(pMidiHdr->dwBytesRecorded));
                 object->emitSysex(sysExByteArray);
             }
-
-            /* Queue the MIDIHDR for more input */
-            midiInAddBuffer(hMidiIn, pMidiHdr, sizeof(MIDIHDR));
+            
+            if (object->m_status) {
+                /* Queue the MIDIHDR for more input */
+                midiInAddBuffer(hMidiIn, pMidiHdr, sizeof(MIDIHDR));
+            }
             break;
         }
         case MIM_DATA:
@@ -318,7 +314,6 @@ namespace rt {
 
     WinMIDIInput::~WinMIDIInput()
     {
-        qDebug() << Q_FUNC_INFO;
         delete d;
     }
 

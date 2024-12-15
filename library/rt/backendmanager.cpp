@@ -73,11 +73,11 @@ namespace drumstick { namespace rt {
 
         void clearLists()
         {
-            qDebug() << Q_FUNC_INFO << "loaders:" << m_loaders.count()
-                     << "inputs:" << m_inputsList.count() << "outputs:" << m_outputsList.count();
+            // qDebug() << Q_FUNC_INFO << "loaders:" << m_loaders.count()
+            //          << "inputs:" << m_inputsList.count() << "outputs:" << m_outputsList.count();
             while (!m_loaders.empty()) {
                 QPluginLoader* pluginLoader = m_loaders.takeFirst();
-                qDebug() << "unloading:" << pluginLoader->fileName();
+                //qDebug() << "unloading:" << pluginLoader->fileName();
                 pluginLoader->unload();
                 delete pluginLoader;
             }
@@ -112,7 +112,7 @@ namespace drumstick { namespace rt {
     BackendManager::BackendManager()
         : d{new BackendManagerPrivate}
     {
-        qDebug() << Q_FUNC_INFO;
+        //qDebug() << Q_FUNC_INFO;
         QVariantMap defaultSettings {
             { QSTR_DRUMSTICKRT_PUBLICNAMEIN, QStringLiteral("MIDI In")},
             { QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QStringLiteral("MIDI Out")}
@@ -125,7 +125,7 @@ namespace drumstick { namespace rt {
      */
     BackendManager::~BackendManager()
     {
-        qDebug() << Q_FUNC_INFO;
+        //qDebug() << Q_FUNC_INFO;
     }
 
     /**
@@ -181,7 +181,7 @@ namespace drumstick { namespace rt {
      */
     void BackendManager::refresh(QSettings *settings)
     {
-        qDebug() << Q_FUNC_INFO;
+        //qDebug() << Q_FUNC_INFO;
         QVariantMap tmpMap;
         settings->beginGroup(QSTR_DRUMSTICKRT_GROUP);
         const QStringList allKeys = settings->allKeys();
@@ -213,7 +213,7 @@ namespace drumstick { namespace rt {
         names << (name_out.isEmpty() ? QStringLiteral("MIDI Out") : name_out);
         paths << defaultPaths();
 
-        qDebug() << Q_FUNC_INFO << "names:" << names << "paths:" << paths;
+        //qDebug() << Q_FUNC_INFO << "names:" << names << "paths:" << paths;
 
         // Dynamic backends
         foreach(const QString& dir, paths) {
@@ -222,13 +222,13 @@ namespace drumstick { namespace rt {
                 auto absolutePath = pluginsDir.absoluteFilePath(fileName);
                 if (QLibrary::isLibrary(absolutePath) && d->isLoaderNeeded(absolutePath)) {
                     QPluginLoader *loader = new QPluginLoader(absolutePath);
-                    qDebug() << "plugin loader created:" << loader->fileName();
+                    //qDebug() << "plugin loader created:" << loader->fileName();
                     d->m_loaders << loader;
                     QObject *obj = loader->instance();
                     if (obj != nullptr) {
                         MIDIInput *input = qobject_cast<MIDIInput *>(obj);
                         if (input != nullptr && !d->m_inputsList.contains(input)) {
-                            qDebug() << "input plugin instantiated:" << name_in;
+                            //qDebug() << "input plugin instantiated:" << name_in;
                             if (!name_in.isEmpty()) {
                                 input->setPublicName(name_in);
                             }
@@ -237,7 +237,7 @@ namespace drumstick { namespace rt {
                         } else {
                             MIDIOutput *output = qobject_cast<MIDIOutput *>(obj);
                             if (output != nullptr && !d->m_outputsList.contains(output)) {
-                                qDebug() << "output plugin instantiated:" << name_out;
+                                //qDebug() << "output plugin instantiated:" << name_out;
                                 if (!name_out.isEmpty()) {
                                     output->setPublicName(name_out);
                                 }

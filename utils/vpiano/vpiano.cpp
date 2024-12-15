@@ -16,7 +16,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
 #include <QDir>
 #include <QFileInfo>
 #include <QFontDialog>
@@ -107,7 +106,6 @@ VPiano::VPiano(QWidget *parent, Qt::WindowFlags flags)
 
 VPiano::~VPiano()
 {
-    qDebug() << Q_FUNC_INFO;
     m_midiIn->close();
     m_midiOut->close();
     delete m_manager;
@@ -115,8 +113,6 @@ VPiano::~VPiano()
 
 void VPiano::initialize()
 {
-    qDebug() << Q_FUNC_INFO;
-
     readSettings();
 
     m_manager->refresh(VPianoSettings::instance()->settingsMap());

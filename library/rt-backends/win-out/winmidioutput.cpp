@@ -68,7 +68,6 @@ namespace rt {
 
         ~WinMIDIOutputPrivate()
         {
-            qDebug() << Q_FUNC_INFO;
             close();
         }
 
@@ -252,7 +251,6 @@ namespace rt {
 
     WinMIDIOutput::~WinMIDIOutput()
     {
-        qDebug() << Q_FUNC_INFO;
         delete d;
     }
 
