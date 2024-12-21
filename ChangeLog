@@ -1,3 +1,14 @@
+2024-12-21
+    * Preparations for release 2.10.0
+
+2024-12-15
+    * Fixed cleanup of Windows MIDI input plugin
+      related to #30 and also #19 / #20
+
+2024-12-14
+    * fixed backendmanager usage in vpiano
+      optization in BackendManager::refresh() to keep plugins loader
+
 2024-12-8
     Widgets: revised user interface for the fluidsynth settings
 
