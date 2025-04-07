@@ -206,32 +206,32 @@
     <message>
         <location filename="../pianopalette.cpp" line="241"/>
         <source>Single color highlight</source>
-        <translation>Enfärgsmarkering</translation>
+        <translation>Enfärgad markering</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="242"/>
         <source>A single color to highlight all note events</source>
-        <translation>En färg för att markera alla tonhändelser</translation>
+        <translation>En enda färg för att markera alla nothändelser</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="246"/>
         <source>Two colors highlight</source>
-        <translation>Tvåfärgsmarkering</translation>
+        <translation>Tvåfärgad markering</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="247"/>
         <source>One color to highlight natural notes and a different one for accidentals</source>
-        <translation>En färg för att markera stamtoner och en annan för grentoner</translation>
+        <translation>En färg för att markera stamnoter och en annan för grennoter</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="251"/>
         <source>MIDI Channels highlight</source>
-        <translation>MIDI-kanalmarkering</translation>
+        <translation>Markering av MIDI-kanaler</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="252"/>
         <source>A different color to highlight each MIDI channel. Enable Omni mode in the MIDI IN connection</source>
-        <translation>Olika färger för att markera varje MIDI-kanal. Aktivera omniläget i MIDI-IN-anslutningen.</translation>
+        <translation>En annan färg för att markera varje MIDI-kanal. Aktivera Omni-läget i MIDI IN-anslutningen</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="256"/>
@@ -242,7 +242,7 @@
         <location filename="../pianopalette.cpp" line="257"/>
         <location filename="../pianopalette.cpp" line="272"/>
         <source>One color for each note in the chromatic scale</source>
-        <translation>En färg för varje ton i den kromatiska skalan</translation>
+        <translation>En färg för varje not i den kromatiska skalan</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="261"/>
@@ -252,22 +252,22 @@
     <message>
         <location filename="../pianopalette.cpp" line="262"/>
         <source>One color for natural notes and another for accidentals</source>
-        <translation>En färg för stamtoner och en annan för grentoner.</translation>
+        <translation>En färg för stamnoter och en annan för grennoter.</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="266"/>
         <source>Font foreground</source>
-        <translation>Typsnittsförgrund</translation>
+        <translation>Teckensnittsförgrund</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="267"/>
         <source>Colors for note names</source>
-        <translation>Färger för tonnamn</translation>
+        <translation>Färger för notnamn</translation>
     </message>
     <message>
         <location filename="../pianopalette.cpp" line="271"/>
         <source>Chromatic scale highlight</source>
-        <translation>Markering för kromatisk skala</translation>
+        <translation>Markering av kromatisk skala</translation>
     </message>
 </context>
 <context>
@@ -290,7 +290,7 @@
     <message>
         <location filename="../fluidsettingsdialog.ui" line="148"/>
         <source># of Periods:</source>
-        <translation>Antal perioder:</translation>
+        <translation># av perioder:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="39"/>
@@ -310,12 +310,12 @@
     <message>
         <location filename="../fluidsettingsdialog.ui" line="65"/>
         <source>Sound Font:</source>
-        <translation>Ljudfont:</translation>
+        <translation>Sound Font:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="112"/>
         <source>Initialization Status:</source>
-        <translation>Initialiseringsstatus:</translation>
+        <translation>Initieringsstatus:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="174"/>
@@ -334,79 +334,79 @@
     <message>
         <location filename="../fluidsettingsdialog.ui" line="284"/>
         <source>Modulation depth</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulationsdjup</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="287"/>
         <source>Depth</source>
-        <translation type="unfinished"></translation>
+        <translation>Djup</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="297"/>
         <location filename="../fluidsettingsdialog.ui" line="431"/>
         <source>Output amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation>Utgångsamplitud</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="300"/>
         <location filename="../fluidsettingsdialog.ui" line="434"/>
         <source>Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Nivå</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="310"/>
         <source>Voice count</source>
-        <translation type="unfinished"></translation>
+        <translation>Röstantal</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="313"/>
         <source>NR</source>
-        <translation type="unfinished"></translation>
+        <translation>NR</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="323"/>
         <source>Modulation speed in Hz</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulationshastighet i Hz</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="326"/>
         <source>Speed</source>
-        <translation type="unfinished"></translation>
+        <translation>Hastighet</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="418"/>
         <source>Damping amount</source>
-        <translation type="unfinished"></translation>
+        <translation>Dämpningsmängd</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="421"/>
         <source>Damp</source>
-        <translation type="unfinished"></translation>
+        <translation>Dämpa</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="444"/>
         <source>Room size (wet amount)</source>
-        <translation type="unfinished"></translation>
+        <translation>Rumsstorlek (dämpmängd)</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="447"/>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Storlek</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="457"/>
         <source>Stereo spread</source>
-        <translation type="unfinished"></translation>
+        <translation>Stereospridning</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="460"/>
         <source>Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Bredd</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="52"/>
         <source>Gain:</source>
-        <translation>Volym:</translation>
+        <translation>Ökning:</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="141"/>
@@ -421,17 +421,17 @@
     <message>
         <location filename="../fluidsettingsdialog.ui" line="207"/>
         <source>Reverb</source>
-        <translation>Eko</translation>
+        <translation>Reverb</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="178"/>
         <source>FluidSynth Initialized</source>
-        <translation>FluidSynth initialiserad</translation>
+        <translation>FluidSynth initierad</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="178"/>
         <source>FluidSynth Initialization Failed</source>
-        <translation>FluidSynth-initialiseringen misslyckades</translation>
+        <translation>FluidSynth-initiering misslyckades</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="241"/>
@@ -446,12 +446,12 @@
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="432"/>
         <source>Select SoundFont</source>
-        <translation>Välj ljudfont</translation>
+        <translation>Välj SoundFont</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="434"/>
         <source>SoundFont Files (*.sf2 *.sf3 *.dls)</source>
-        <translation type="unfinished"></translation>
+        <translation>SoundFont-filer (*.sf2 *.sf3 *.dls)</translation>
     </message>
     <message>
         <source>SoundFont Files (*.sf2)</source>
@@ -463,12 +463,12 @@
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="14"/>
         <source>macOS Synth Driver Settings</source>
-        <translation>Syntdrivrutinsinställningar för macOS</translation>
+        <translation>macOS Synth-drivrutinsinställningar</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="56"/>
         <source>SoundFont:</source>
-        <translation>Ljudfont:</translation>
+        <translation>SoundFont:</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="76"/>
@@ -478,27 +478,27 @@
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="83"/>
         <source>Use Internal Reverb</source>
-        <translation>Använd internt eko</translation>
+        <translation>Använd internreverb</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="90"/>
         <source>Init. Status:</source>
-        <translation>Initialiseringsstatus:</translation>
+        <translation>Initieringsstatus:</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.ui" line="69"/>
         <source>Default Apple DLS Sound Set</source>
-        <translation>Förvald Apple DLS ljuduppsättning</translation>
+        <translation>Standard Apple DLS-ljuduppsättning</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="72"/>
         <source>DLS Synth Initialized</source>
-        <translation>DLS-synt initialiserad</translation>
+        <translation>DLS-synt initierad</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="72"/>
         <source>DLS Synth Initialization Failed</source>
-        <translation>DLS-syntinitialiseringen misslyckades</translation>
+        <translation>DLS-syntinitiering misslyckades</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="122"/>
@@ -513,7 +513,7 @@
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="163"/>
         <source>Select SoundFont</source>
-        <translation>Välj ljudfont</translation>
+        <translation>Välj SoundFont</translation>
     </message>
     <message>
         <location filename="../macsynthsettingsdialog.cpp" line="163"/>
@@ -526,17 +526,17 @@
     <message>
         <location filename="../networksettingsdialog.ui" line="14"/>
         <source>Network Driver Settings</source>
-        <translation>Drivrutinsinställningar för nätverk</translation>
+        <translation>Inställningar för nätverksdrivrutiner</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="33"/>
         <source>Init. Status:</source>
-        <translation>Initialiseringsstatus:</translation>
+        <translation>Initieringsstatus:</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="50"/>
         <source>Use IPv6</source>
-        <translation></translation>
+        <translation>Använd IPv6</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.ui" line="57"/>
@@ -551,12 +551,12 @@
     <message>
         <location filename="../networksettingsdialog.cpp" line="76"/>
         <source>Network Initialized</source>
-        <translation>Nätverk initialiserat</translation>
+        <translation>Nätverk initierat</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="76"/>
         <source>Network Initialization Failed</source>
-        <translation>Nätverksinitialiseringen misslyckades</translation>
+        <translation>Nätverksinitiering misslyckades</translation>
     </message>
     <message>
         <location filename="../networksettingsdialog.cpp" line="111"/>
@@ -667,7 +667,7 @@
     <message>
         <location filename="../pianoscene.cpp" line="1281"/>
         <source>B♭</source>
-        <translation>B</translation>
+        <translation>Bess</translation>
     </message>
 </context>
 <context>
@@ -675,7 +675,7 @@
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="20"/>
         <source>Sonivox EAS Synth</source>
-        <translation>Sonivox EAS Synt</translation>
+        <translation>Sonivox EAS-synt</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="107"/>
@@ -685,22 +685,22 @@
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="97"/>
         <source>Reverb</source>
-        <translation>Eko</translation>
+        <translation>Reverb</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="32"/>
         <source>SoundFont:</source>
-        <translation type="unfinished">Ljudfont:</translation>
+        <translation>SoundFont:</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="58"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="75"/>
         <source>Sonivox Library Version:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sonivox biblioteksversion:</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="208"/>
@@ -715,17 +715,17 @@
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="168"/>
         <source>Init. Status:</source>
-        <translation>Initialiseringsstatus:</translation>
+        <translation>Initieringsstatus:</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="92"/>
         <source>Sonivox Initialized</source>
-        <translation>Sonivox initialiserad</translation>
+        <translation>Sonivox initierad</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="92"/>
         <source>Sonivox Initialization Failed</source>
-        <translation>Sonivoxinitialisering misslyckades</translation>
+        <translation>Sonivox-initiering misslyckades</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="178"/>
@@ -740,12 +740,12 @@
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="200"/>
         <source>Select SoundFont</source>
-        <translation type="unfinished">Välj ljudfont</translation>
+        <translation>Välj SoundFont</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="200"/>
         <source>SoundFont Files (*.dls)</source>
-        <translation type="unfinished"></translation>
+        <translation>SoundFont-filer (*.dls)</translation>
     </message>
 </context>
 </TS>
