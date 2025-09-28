@@ -136,12 +136,18 @@ public:
     static const QString QSTR_DRUMSTICKRT_EXCLUDED;
     static const QString QSTR_DRUMSTICKRT_PATH;
 
+    friend BackendManager *lastBackendManagerInstance();
+
 private:
+    static BackendManager *m_instance;
+
     class BackendManagerPrivate;
     QScopedPointer<BackendManagerPrivate> d;
 };
 
 QString DRUMSTICK_RT_EXPORT drumstickLibraryVersion();
+
+BackendManager DRUMSTICK_RT_EXPORT *lastBackendManagerInstance();
 
 /** @} */
 }} // namespace drumstick::rt

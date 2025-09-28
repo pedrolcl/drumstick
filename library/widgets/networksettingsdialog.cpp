@@ -46,11 +46,11 @@ NetworkSettingsDialog::NetworkSettingsDialog(const bool forInput, QWidget *paren
             this, &NetworkSettingsDialog::restoreDefaults);
     connect(ui->checkIPv6, &QCheckBox::toggled, this, &NetworkSettingsDialog::toggledIPv6);
 
-    drumstick::rt::BackendManager man;
+    drumstick::rt::BackendManager *man = drumstick::rt::lastBackendManagerInstance();
     if (m_input) {
-        m_driver = man.inputBackendByName("Network");
+        m_driver = man->inputBackendByName("Network");
     } else {
-        m_driver = man.outputBackendByName("Network");
+        m_driver = man->outputBackendByName("Network");
     }
 }
 

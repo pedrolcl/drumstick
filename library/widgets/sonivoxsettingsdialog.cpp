@@ -67,8 +67,8 @@ SonivoxSettingsDialog::SonivoxSettingsDialog(QWidget *parent) :
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::pressed,
             this, &SonivoxSettingsDialog::restoreDefaults);
 
-    drumstick::rt::BackendManager man;
-    m_driver = man.outputBackendByName("SonivoxEAS");
+    drumstick::rt::BackendManager *man = drumstick::rt::lastBackendManagerInstance();
+    m_driver = man->outputBackendByName("SonivoxEAS");
     //qDebug() << Q_FUNC_INFO;
 }
 

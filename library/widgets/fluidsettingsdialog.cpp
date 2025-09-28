@@ -106,8 +106,8 @@ FluidSettingsDialog::FluidSettingsDialog(QWidget *parent) :
         ui->label_RWidth->setText(v);
     });
 
-    drumstick::rt::BackendManager man;
-    m_driver = man.outputBackendByName("FluidSynth");
+    drumstick::rt::BackendManager *man = drumstick::rt::lastBackendManagerInstance();
+    m_driver = man->outputBackendByName("FluidSynth");
     if (m_driver != nullptr) {
         QVariant v = m_driver->property("audiodrivers");
         if (v.isValid()) {

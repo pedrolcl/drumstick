@@ -57,8 +57,8 @@ bool inputDriverIsConfigurable(const QString driver)
         return true;
     }
     // external configuration dialogs (residing on plugins):
-    drumstick::rt::BackendManager man;
-    auto obj = man.inputBackendByName(driver);
+    drumstick::rt::BackendManager *man = drumstick::rt::lastBackendManagerInstance();
+    auto obj = man->inputBackendByName(driver);
     if (obj == nullptr) {
         return false;
     }
@@ -95,8 +95,8 @@ bool outputDriverIsConfigurable(const QString driver)
         return true;
     }
     // external configuration dialogs (residing on plugins)
-    drumstick::rt::BackendManager man;
-    auto obj = man.outputBackendByName(driver);
+    drumstick::rt::BackendManager *man = drumstick::rt::lastBackendManagerInstance();
+    auto obj = man->outputBackendByName(driver);
     if (obj == nullptr) {
         return false;
     }
@@ -130,8 +130,8 @@ bool configureInputDriver(const QString driver, QWidget* parent)
     }
 #endif
     // external configuration dialogs (residing on plugins):
-    drumstick::rt::BackendManager man;
-    auto obj = man.inputBackendByName(driver);
+    drumstick::rt::BackendManager *man = drumstick::rt::lastBackendManagerInstance();
+    auto obj = man->inputBackendByName(driver);
     if (obj == nullptr) {
         return false;
     }
@@ -186,8 +186,8 @@ bool configureOutputDriver(const QString driver, QWidget* parent)
     }
 #endif
     // external configuration dialogs (residing on plugins):
-    drumstick::rt::BackendManager man;
-    auto obj = man.outputBackendByName(driver);
+    drumstick::rt::BackendManager *man = drumstick::rt::lastBackendManagerInstance();
+    auto obj = man->outputBackendByName(driver);
     if (obj == nullptr) {
         return false;
     }
