@@ -26,11 +26,11 @@ jobs:
 
     - uses: dawidd6/action-download-artifact@v3
       with:
-        name: SonivoxV3-linux
+        name: SonivoxV3-Linux-x64-r44s16
         github_token: ${{secrets.GH_PAT}}
         repo: pedrolcl/sonivox
         allow_forks: false
-        workflow: cmake-linux.yml
+        workflow: linux-ci.yml
 
     - name: Extract downloaded files
       run: tar xvf SonivoxV3.tar
