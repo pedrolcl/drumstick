@@ -52,6 +52,7 @@ namespace drumstick { namespace rt {
         QList<QPluginLoader *> m_loaders;
         QList<MIDIInput *> m_inputsList;
         QList<MIDIOutput *> m_outputsList;
+        static BackendManager *m_instance;
 
         QString m_inputBackend{QLatin1String("Network")};
 #if defined(Q_OS_LINUX)
@@ -118,7 +119,7 @@ namespace drumstick { namespace rt {
             { QSTR_DRUMSTICKRT_PUBLICNAMEOUT, QStringLiteral("MIDI Out")}
         };
         refresh(defaultSettings);
-        BackendManager::m_instance = this;
+        BackendManager::BackendManagerPrivate::m_instance = this;
     }
 
     /**
@@ -362,7 +363,7 @@ namespace drumstick { namespace rt {
     const QString BackendManager::QSTR_DRUMSTICKRT_EXCLUDED = QStringLiteral("ExcludedNames");
     const QString BackendManager::QSTR_DRUMSTICKRT_PATH = QStringLiteral("BackendsPath");
 
-    BackendManager *BackendManager::m_instance = nullptr;
+    BackendManager *BackendManager::BackendManagerPrivate::m_instance = nullptr;
 
     /**
      * @brief drumstickLibraryVersion provides the Drumstick version as an edited QString
@@ -375,10 +376,10 @@ namespace drumstick { namespace rt {
 
     BackendManager *lastBackendManagerInstance()
     {
-        if (BackendManager::m_instance == nullptr) {
+        if (BackendManager::BackendManagerPrivate::m_instance == nullptr) {
             return new BackendManager;
         }
-        return BackendManager::m_instance;
+        return BackendManager::BackendManagerPrivate::m_instance;
     }
 
 } // namespace rt

@@ -139,8 +139,6 @@ public:
     friend BackendManager *lastBackendManagerInstance();
 
 private:
-    static BackendManager *m_instance;
-
     class BackendManagerPrivate;
     QScopedPointer<BackendManagerPrivate> d;
 };
