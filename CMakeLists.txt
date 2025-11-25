@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 cmake_minimum_required(VERSION 3.16)
 
 project( Drumstick
-    VERSION 2.10.0
+    VERSION 2.10.1
     LANGUAGES CXX
     DESCRIPTION "MIDI C++ Libraries for Qt"
     HOMEPAGE_URL "https://drumstick.sourceforge.io"
@@ -30,7 +30,7 @@ include(SCMRevision)
 include(CTest)
 include(GNUInstallDirs)
 
-set(RELEASE_DATE "December 22, 2024")
+# set(RELEASE_DATE "December 22, 2024")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
@@ -217,7 +217,7 @@ endif()
 set(HAVE_FLUIDSYNTH OFF)
 if (BUILD_RT AND PKG_CONFIG_FOUND)
     if (USE_FLUIDSYNTH)
-        pkg_check_modules(FLUIDSYNTH QUIET IMPORTED_TARGET fluidsynth>=1.1.1)
+        pkg_check_modules(FLUIDSYNTH QUIET IMPORTED_TARGET fluidsynth>=2.5.0)
         if(FLUIDSYNTH_FOUND)
             message(STATUS "Found FluidSynth version = ${FLUIDSYNTH_VERSION}")
             set(HAVE_FLUIDSYNTH ON)
@@ -229,7 +229,7 @@ endif()
 
 set(HAVE_SONIVOX OFF)
 if (BUILD_RT AND USE_SONIVOX)
-    find_package(sonivox CONFIG QUIET)
+    find_package(sonivox 4 CONFIG QUIET)
     if(sonivox_FOUND)
         message(STATUS "Found Sonivox version = ${sonivox_VERSION}")
         set(HAVE_SONIVOX ON)

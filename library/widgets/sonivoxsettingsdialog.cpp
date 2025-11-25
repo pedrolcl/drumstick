@@ -197,7 +197,10 @@ void SonivoxSettingsDialog::showFileDialog()
     if (!dir.exists()) {
         dir = QDir(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QSTR_DATADIR2, QStandardPaths::LocateDirectory));
     }
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Select SoundFont"), dir.absolutePath(), tr("SoundFont Files (*.dls)"));
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Select SoundFont"),
+                                                    dir.absolutePath(),
+                                                    tr("SoundFont Files (*.dls *.sf2)"));
     if (!fileName.isEmpty()) {
         ui->soundfont_dls->setText(fileName);
     }

@@ -11,7 +11,7 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: RelWithDebInfo
-  SONIVOX_LOCATION: ${{github.workspace}}/SonivoxV3
+  SONIVOX_LOCATION: ${{github.workspace}}/SonivoxV4
   INSTALL_LOCATION: ${{github.workspace}}/DrumstickV2
 
 jobs:
@@ -24,21 +24,22 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - uses: dawidd6/action-download-artifact@v3
+    - uses: dawidd6/action-download-artifact@v11
       with:
-        name: SonivoxV3-Linux-x64-r44s16
+        name: SonivoxV4-Linux-x64-r44s16
         github_token: ${{secrets.GH_PAT}}
         repo: pedrolcl/sonivox
         allow_forks: false
         workflow: linux-ci.yml
+        branch: devel
 
     - name: Extract downloaded files
-      run: tar xvf SonivoxV3.tar
+      run: tar xvf SonivoxV4.tar
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.5.*'
+        version: '6.10.*'
         modules: qt5compat
 
     - name: Dependencies
