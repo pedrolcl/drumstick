@@ -136,7 +136,7 @@ public:
     static const QString QSTR_DRUMSTICKRT_EXCLUDED;
     static const QString QSTR_DRUMSTICKRT_PATH;
 
-    friend BackendManager *lastBackendManagerInstance();
+    friend BackendManager DRUMSTICK_RT_EXPORT *lastBackendManagerInstance();
 
 private:
     class BackendManagerPrivate;
