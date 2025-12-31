@@ -1,6 +1,6 @@
 /*
     Virtual Piano test using the MIDI Sequencer C++ library 
-    Copyright (C) 2006-2024, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2025, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 
 const char* PGM_DESCRIPTION = QT_TRANSLATE_NOOP("main",
      "Drumstick Simple Virtual Piano\n"
-     "Copyright (C) 2006-2024 Pedro Lopez-Cabanillas\n"
+     "Copyright (C) 2006-2025 Pedro Lopez-Cabanillas\n"
      "This program comes with ABSOLUTELY NO WARRANTY; "
      "This is free software, and you are welcome to redistribute it "
      "under certain conditions; see the LICENSE file for details.");

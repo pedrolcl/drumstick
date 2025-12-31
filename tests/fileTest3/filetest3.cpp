@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2008-2024, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2008-2025, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This file is part of the Drumstick project, see https://sf.net/p/drumstick
 
