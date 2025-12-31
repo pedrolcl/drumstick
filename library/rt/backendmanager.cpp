@@ -374,6 +374,12 @@ namespace drumstick { namespace rt {
         return BackendManager::QSTR_DRUMSTICK_VERSION;
     }
 
+    /**
+     * @brief lastBackendManagerInstance provides the latest BackendManager instance,
+     * or a new instance if needed.
+     * @return a BackendManager instance pointer
+     * @since 2.11
+     */
     BackendManager *lastBackendManagerInstance()
     {
         if (BackendManager::BackendManagerPrivate::m_instance == nullptr) {
