@@ -27,7 +27,7 @@ jobs:
       with:
         name: SonivoxV4-Linux-x64-r44s16
         github_token: ${{secrets.GH_PAT}}
-        repo: pedrolcl/sonivox
+        repo: EmbeddedSynth/sonivox
         allow_forks: false
         workflow: linux-ci.yml
         branch: devel
@@ -38,7 +38,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.8.*'
+        version: '6.10.*'
         modules: qt5compat
 
     - name: Dependencies
