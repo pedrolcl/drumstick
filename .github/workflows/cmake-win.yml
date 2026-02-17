@@ -19,16 +19,16 @@ jobs:
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
     # You can convert this to a matrix build if you need cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-    runs-on: windows-latest
     strategy:
         fail-fast: false
         matrix:
           include:
             # { icon: '⬛', sys: mingw32 } # There are no 32 bit packages for Qt6 in msys2 anymore
-            - { icon: '🟦', sys: mingw64 }
-            - { icon: '🟨', sys: ucrt64  }
-            - { icon: '🟧', sys: clang64 }
-            - { icon: '🟩', sys: clangarm64 }
+            - { icon: '🟦', sys: mingw64,    os: windows-latest }
+            - { icon: '🟨', sys: ucrt64,     os: windows-latest  }
+            - { icon: '🟧', sys: clang64,    os: windows-latest }
+            - { icon: '🟩', sys: clangarm64, os: windows-11-arm }
+    runs-on: ${{ matrix.os }}
     name: 🚧${{ matrix.icon }} ${{ matrix.sys }}
     defaults:
       run:
