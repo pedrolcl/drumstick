@@ -40,8 +40,7 @@ jobs:
     - name: '${{ matrix.icon }} Setup MSYS2'
       uses: msys2/setup-msys2@v2
       with:
-        release: false
-        update: true
+        release: true
         msystem: ${{matrix.sys}}
         install: >-
           git
