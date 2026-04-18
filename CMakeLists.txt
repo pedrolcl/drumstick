@@ -1,6 +1,6 @@
 #[===========================================================================[
 MIDI C++ Library
-Copyright (C) 2005-2025 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+Copyright (C) 2005-2026 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 cmake_minimum_required(VERSION 3.16)
 
 project( Drumstick
-    VERSION 2.11.0
+    VERSION 2.11.1
     LANGUAGES CXX
     DESCRIPTION "MIDI C++ Libraries for Qt"
     HOMEPAGE_URL "https://drumstick.sourceforge.io"
