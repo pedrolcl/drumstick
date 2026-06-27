@@ -714,9 +714,9 @@ void QWrk::processTrackChunk()
     QByteArray data[2];
     int trackno;
     int channel;
-    int pitch;
-    int velocity;
-    int port;
+    qint8 pitch;
+    qint8 velocity;
+    qint8 port;
     bool selected;
     bool muted;
     bool loop;
