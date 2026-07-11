@@ -23,7 +23,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - uses: dawidd6/action-download-artifact@v11
+    - uses: dawidd6/action-download-artifact@v21
       with:
         name: SonivoxV4-Linux-x64-r44s16
         github_token: ${{secrets.GH_PAT}}
