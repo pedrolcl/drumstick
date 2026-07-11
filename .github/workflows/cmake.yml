@@ -76,7 +76,7 @@ jobs:
         tar cvf DrumstickV2.tar DrumstickV2
 
     - name: Upload Artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: DrumstickV2
         path: DrumstickV2.tar
