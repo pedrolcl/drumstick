@@ -18,11 +18,14 @@ jobs:
     steps:
     - uses: actions/checkout@v7
 
+    - name: Dependencies
+      run: sudo apt-get update && sudo apt-get install -yq autoconf autoconf-archive automake libtool pkg-config libasound2-dev libpulse-dev
+
     - name: VCPKG Build
       uses: johnwason/vcpkg-action@v8
       id: vcpkg
       with:
-        pkgs: zlib sonivox fluidsynth
+        pkgs: zlib sonivox fluidsynth sndfile
         triplet: x64-linux-release
         token: ${{ github.token }}      
         
@@ -31,9 +34,6 @@ jobs:
       with:
         version: '6.10.*'
         modules: qt5compat
-
-    - name: Dependencies
-      run: sudo apt-get update && sudo apt-get install -yq pkg-config libasound2-dev libpulse-dev
 
     - name: Configure CMake
       run: cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -B ${{github.workspace}}/build
