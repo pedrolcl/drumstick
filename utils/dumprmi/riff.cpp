@@ -41,10 +41,14 @@ static QString toString(quint32 ckid)
 void Riff::readFromFile(QString fileName)
 {
     QFile file(m_fileName = fileName);
-    file.open(QIODevice::ReadOnly);
-    QDataStream ds(&file);
-    readFromStream(&ds);
-    file.close();
+    auto ok = file.open(QIODevice::ReadOnly);
+    if (ok) {
+        QDataStream ds(&file);
+        readFromStream(&ds);
+        file.close();
+    } else {
+        qCritical() << "cannot open file" << fileName;
+    }
 }
 
 void Riff::readFromStream(QDataStream* ds)

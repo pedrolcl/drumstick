@@ -17,11 +17,13 @@
 */
 
 #include <QDataStream>
+#include <QDebug>
 #include <QFile>
 #include <QIODevice>
 #include <QStringList>
 #include <QTextCodec>
 #include <QTextStream>
+
 #include <cmath>
 #include <drumstick/qwrk.h>
 
@@ -701,10 +703,14 @@ void QWrk::readFromStream(QDataStream *stream)
 void QWrk::readFromFile(const QString& fileName)
 {
     QFile file(fileName);
-    file.open(QIODevice::ReadOnly);
-    QDataStream ds(&file);
-    readFromStream(&ds);
-    file.close();
+    auto ok = file.open(QIODevice::ReadOnly);
+    if (ok) {
+        QDataStream ds(&file);
+        readFromStream(&ds);
+        file.close();
+    } else {
+        qCritical() << "cannot open file" << fileName;
+    }
 }
 
 void QWrk::processTrackChunk()
