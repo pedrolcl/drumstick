@@ -64,12 +64,14 @@ namespace drumstick { namespace rt {
         static const QString QSTR_CHORUSAMT;
         static const QString QSTR_SONIVOXEAS;
         static const QString QSTR_SOUNDFONT;
+        static const QString QSTR_SYNTHLIB;
 
         static const int DEF_BUFFERTIME;
         static const int DEF_REVERBTYPE;
         static const int DEF_REVERBAMT;
         static const int DEF_CHORUSTYPE;
         static const int DEF_CHORUSAMT;
+        static const int DEF_SYNTHLIB;
 
     private:
         void initEAS();
@@ -105,6 +107,7 @@ namespace drumstick { namespace rt {
         int m_reverbAmt{DEF_REVERBAMT};
         int m_chorusType{DEF_CHORUSTYPE};
         int m_chorusAmt{DEF_CHORUSAMT};
+        int m_synthLib{DEF_SYNTHLIB};
     };
 
 }} /* drumstick::rt */

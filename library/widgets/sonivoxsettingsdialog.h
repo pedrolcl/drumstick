@@ -61,6 +61,10 @@ namespace widgets {
         static const QString QSTR_SOUNDFONT;
         static const QString QSTR_DATADIR;
         static const QString QSTR_DATADIR2;
+        static const QString QSTR_SYNTHLIB;
+
+        static const int SYNTHLIB_WT;
+        static const int SYNTHLIB_FM;
 
     public Q_SLOTS:
         void accept() override;
