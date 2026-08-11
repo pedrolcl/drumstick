@@ -153,6 +153,8 @@ void SonivoxSettingsDialog::readSettings()
     default:
         break;
     }
+    ui->btn_soundfont->setEnabled(synthLib == 1);
+    ui->soundfont_dls->setEnabled(synthLib == 1);
 
     chkDriverProperties(settings.getQSettings());
 }

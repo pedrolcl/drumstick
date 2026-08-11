@@ -98,15 +98,19 @@ SynthRenderer::initEAS()
         }
     }
 
-    if (!m_soundfont.isEmpty()) {
-        FileWrapper dlsFile(m_soundfont);
-        if (dlsFile.ok()) {
-            eas_res = EAS_LoadDLSCollection(dataHandle, nullptr, dlsFile.getLocator());
-            if (eas_res != EAS_SUCCESS) {
-                m_diagnostics << QString("EAS_LoadDLSCollection(%1) error: %2").arg(m_soundfont).arg(eas_res);
+    if (m_synthLib == EAS_SNDLIB_WT) {
+        if (!m_soundfont.isEmpty()) {
+            FileWrapper dlsFile(m_soundfont);
+            if (dlsFile.ok()) {
+                eas_res = EAS_LoadDLSCollection(dataHandle, nullptr, dlsFile.getLocator());
+                if (eas_res != EAS_SUCCESS) {
+                    m_diagnostics << QString("EAS_LoadDLSCollection(%1) error: %2")
+                                         .arg(m_soundfont)
+                                         .arg(eas_res);
+                }
+            } else {
+                m_diagnostics << QString("Failed to open %1").arg(m_soundfont);
             }
-        } else {
-            m_diagnostics << QString("Failed to open %1").arg(m_soundfont);
         }
     }
 
