@@ -397,17 +397,17 @@ p, li { white-space: pre-wrap; }
         <translation>Nome dell&apos;ottava in pedice</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="459"/>
+        <location filename="vpiano.cpp" line="460"/>
         <source>Font to display note names</source>
         <translation>Carattere per mostrare i nomi delle note</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="535"/>
+        <location filename="vpiano.cpp" line="536"/>
         <source>Custom Note Names</source>
         <translation>Nomi delle note personalizzati</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="535"/>
+        <location filename="vpiano.cpp" line="536"/>
         <source>Names:</source>
         <translation>Nomi:</translation>
     </message>

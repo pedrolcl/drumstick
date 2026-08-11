@@ -427,17 +427,17 @@ redistribuirlo bajo ciertas condiciones.</translation>
         <translation>Designación de subíndice de octava</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="459"/>
+        <location filename="vpiano.cpp" line="460"/>
         <source>Font to display note names</source>
         <translation>Fuente para mostrar nombres de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="535"/>
+        <location filename="vpiano.cpp" line="536"/>
         <source>Custom Note Names</source>
         <translation>Nombres personalizados de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="535"/>
+        <location filename="vpiano.cpp" line="536"/>
         <source>Names:</source>
         <translation>Nombres:</translation>
     </message>
