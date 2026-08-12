@@ -58,7 +58,7 @@ jobs:
     - name: '${{ matrix.icon }} Test'
       working-directory: ${{github.workspace}}/build
       run: |
-        export PATH=$PWD/lib${PATH:+:}"$PATH"
+        $env:Path += ";$pwd\lib"
         ctest -C ${{env.BUILD_TYPE}}
 
     - name: '${{ matrix.icon }} Install'
