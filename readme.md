@@ -1,8 +1,8 @@
 # Drumstick Libraries
 
-[![Linux Build and Test](https://github.com/pedrolcl/drumstick/actions/workflows/cmake.yml/badge.svg?branch=devel)](https://github.com/pedrolcl/drumstick/actions/workflows/cmake.yml)  
-
-[![Windows Build and Test](https://github.com/pedrolcl/drumstick/actions/workflows/cmake-win.yml/badge.svg)](https://github.com/pedrolcl/drumstick/actions/workflows/cmake-win.yml)  
+[![Linux CI](https://github.com/pedrolcl/drumstick/actions/workflows/linux.yml/badge.svg)](https://github.com/pedrolcl/drumstick/actions/workflows/linux.yml)  
+[![Windows MSVC CI](https://github.com/pedrolcl/drumstick/actions/workflows/win-msvc.yml/badge.svg)](https://github.com/pedrolcl/drumstick/actions/workflows/win-msvc.yml)  
+[![Windows MSYS2 CI](https://github.com/pedrolcl/drumstick/actions/workflows/win-msys.yml/badge.svg)](https://github.com/pedrolcl/drumstick/actions/workflows/win-msys.yml)  
 
 Drumstick is a set of MIDI libraries using C++/Qt idioms and style. Includes a C++ wrapper around the ALSA library sequencer interface: ALSA sequencer provides software support for MIDI technology on Linux. A complementary library provides classes for processing SMF (Standard MIDI files: .MID/.KAR), RIFF RMID (*.rmi) and Cakewalk (.WRK) file formats. A multiplatform realtime MIDI I/O library and a GUI Widgets libraries are also provided for Linux, Windows, and Mac OSX.
 
