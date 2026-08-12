@@ -67,7 +67,7 @@ jobs:
     - name: '${{ matrix.icon }} Upload Artifacts'
       uses: actions/upload-artifact@v7
       with:
-        name: ${{env.INSTALL_LOCATION}}-msvc-${{matrix.arch}}
+        name: DrumstickV2-msvc-${{matrix.arch}}
         path: ${{env.INSTALL_LOCATION}}
         retention-days: 90
         overwrite: true
