@@ -24,28 +24,29 @@ jobs:
     name: '${{ matrix.icon }} Linux ${{ matrix.arch }}'
 
     steps:
-    - uses: actions/checkout@v7
+    - name: '${{ matrix.icon }} Checkout'
+      uses: actions/checkout@v7
 
-    - name: Dependencies
+    - name: '${{ matrix.icon }} Dependencies'
       run: |
         sudo apt-get update
-        sudo apt-get install -yq autoconf autoconf-archive automake libtool pkg-config libasound2-dev libpulse-dev libfluidsynth-dev
+        sudo apt-get install -yq autoconf autoconf-archive automake libtool pkg-config libasound2-dev libpulse-dev
 
-    - name: VCPKG Build
+    - name: '${{ matrix.icon }} VCPKG Build'
       uses: johnwason/vcpkg-action@v8
       id: vcpkg
       with:
-        pkgs: zlib sonivox
+        pkgs: zlib sonivox fluidsynth[sndfile]
         triplet: ${{ matrix.triplet }}
         token: ${{ github.token }}      
-        
-    - name: Install Qt
+
+    - name: '${{ matrix.icon }} Install Qt'
       uses: jurplel/install-qt-action@v4
       with:
         version: '6.11.*'
         modules: qt5compat
 
-    - name: Configure CMake
+    - name: '${{ matrix.icon }} Configure CMake'
       run: cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -B ${{github.workspace}}/build
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         -DCMAKE_INSTALL_PREFIX=${{env.INSTALL_LOCATION}}
@@ -55,22 +56,22 @@ jobs:
         -DBUILD_DOCS=OFF
         -DBUILD_UTILS=OFF
 
-    - name: Build
+    - name: '${{ matrix.icon }} Build'
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-    - name: Test
+    - name: '${{ matrix.icon }} Test'
       working-directory: ${{github.workspace}}/build
       run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure -R "^(alsa|file|widgets)"
 
-    - name: Install
+    - name: '${{ matrix.icon }} Install'
       run: cmake --install ${{github.workspace}}/build
 
-    - name: Create Archive
+    - name: '${{ matrix.icon }} Create Archive'
       run: |
         cd ${{github.workspace}}
         tar cvzf DrumstickV2.tar.gz DrumstickV2
 
-    - name: Upload Artifacts
+    - name: '${{ matrix.icon }} Upload Artifacts'
       uses: actions/upload-artifact@v7
       with:
         name: DrumstickV2-${{ matrix.arch }}
