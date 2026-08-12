@@ -13,15 +13,15 @@ env:
 
 jobs:
   build:
-  strategy:
-    fail-fast: false
-    matrix:
-      arch: ["x86_64", "aarch64"]
-      include:
-        - { icon: '🟥', arch: "x86_64", os: "ubuntu-24.04", triplet: "x64-linux" }
-        - { icon: '🟩', arch: "aarch64", os: "ubuntu-24.04-arm", triplet: "arm64-linux" }
-      runs-on: ${{ matrix.os }}
-      name: 🚧${{ matrix.icon }} Linux ${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: ["x86_64", "aarch64"]
+        include:
+          - { icon: '🟥', arch: "x86_64", os: "ubuntu-24.04", triplet: "x64-linux" }
+          - { icon: '🟩', arch: "aarch64", os: "ubuntu-24.04-arm", triplet: "arm64-linux" }
+    runs-on: ${{ matrix.os }}
+    name: '${{ matrix.icon }} Linux ${{ matrix.arch }}'
 
     steps:
     - uses: actions/checkout@v7
@@ -33,7 +33,7 @@ jobs:
       uses: johnwason/vcpkg-action@v8
       id: vcpkg
       with:
-        pkgs: zlib sonivox fluidsynth[sndlib,pulseaudio]
+        pkgs: zlib sonivox fluidsynth[sndfile,pulseaudio]
         triplet: ${{ matrix.triplet }}
         token: ${{ github.token }}      
         
