@@ -1,4 +1,4 @@
-name: Windows Build and Test
+name: "Windows MSYS2 CI"
 
 on:
   push:
@@ -14,16 +14,16 @@ env:
 jobs:
   build:
     strategy:
-        fail-fast: false
-        matrix:
-          include:
-            # { icon: '⬛', sys: mingw32 } # There are no 32 bit packages for Qt6 in msys2 anymore
-            - { icon: '🟦', sys: mingw64,    os: windows-latest }
-            - { icon: '🟨', sys: ucrt64,     os: windows-latest  }
-            - { icon: '🟧', sys: clang64,    os: windows-latest }
-            - { icon: '🟩', sys: clangarm64, os: windows-11-arm }
+      fail-fast: false
+      matrix:
+        include:
+          # { icon: '⬛', sys: mingw32 } # There are no 32 bit packages for Qt6 in msys2 anymore
+          - { icon: '🟦', sys: mingw64,    os: windows-latest }
+          - { icon: '🟨', sys: ucrt64,     os: windows-latest  }
+          - { icon: '🟧', sys: clang64,    os: windows-latest }
+          - { icon: '🟩', sys: clangarm64, os: windows-11-arm }
     runs-on: ${{ matrix.os }}
-    name: 🚧${{ matrix.icon }} ${{ matrix.sys }}
+    name: ${{ matrix.icon }} msys2 ${{ matrix.sys }}
     defaults:
       run:
         shell: msys2 {0}
@@ -65,12 +65,12 @@ jobs:
       run: cmake --install build --config ${{env.BUILD_TYPE}}
 
     - name: '${{ matrix.icon }} Create Archive'
-      run: tar cvf ${{env.INSTALL_LOCATION}}.tar ${{env.INSTALL_LOCATION}}
+      run: tar cvzf ${{env.INSTALL_LOCATION}}.tar.gz ${{env.INSTALL_LOCATION}}
 
     - name: '${{ matrix.icon }} Upload Artifacts'
       uses: actions/upload-artifact@v7
       with:
-        name: ${{env.INSTALL_LOCATION}}-${{matrix.sys}}
-        path: ${{env.INSTALL_LOCATION}}.tar
+        name: ${{env.INSTALL_LOCATION}}-msys2-${{matrix.sys}}
+        path: ${{env.INSTALL_LOCATION}}.tar.gz
         retention-days: 90
         overwrite: true
