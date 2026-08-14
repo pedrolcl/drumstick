@@ -18,8 +18,8 @@ jobs:
       matrix:
         arch: ["x86_64", "aarch64"]
         include:
-          - { icon: '🟥', arch: "x86_64", os: "ubuntu-26.04", triplet: "x64-linux" }
-          - { icon: '🟩', arch: "aarch64", os: "ubuntu-26.04-arm", triplet: "arm64-linux" }
+          - { icon: '🟥', arch: "x86_64", os: "ubuntu-26.04", triplet: "x64-linux-release" }
+          - { icon: '🟩', arch: "aarch64", os: "ubuntu-26.04-arm", triplet: "arm64-linux-release" }
     runs-on: ${{ matrix.os }}
     name: '${{ matrix.icon }} Linux ${{ matrix.arch }}'
 
@@ -38,7 +38,8 @@ jobs:
       with:
         pkgs: zlib sonivox fluidsynth #[sndfile] fails in arm64, needs: -DOPT_NEON=OFF, -DOPT_NEON64=OFF
         triplet: ${{ matrix.triplet }}
-        token: ${{ github.token }}      
+        token: ${{ github.token }}
+        revision: master
 
     - name: '${{ matrix.icon }} Install Qt'
       uses: jurplel/install-qt-action@v4
@@ -69,12 +70,13 @@ jobs:
     - name: '${{ matrix.icon }} Create Archive'
       run: |
         cd ${{github.workspace}}
-        tar cvzf DrumstickV2.tar.gz DrumstickV2
+        tar cvzf DrumstickV2-${{ matrix.arch }}.tar.gz DrumstickV2
 
     - name: '${{ matrix.icon }} Upload Artifacts'
       uses: actions/upload-artifact@v7
       with:
         name: DrumstickV2-${{ matrix.arch }}
-        path: DrumstickV2.tar.gz
+        path: DrumstickV2-${{ matrix.arch }}.tar.gz
         retention-days: 90
         overwrite: true
+        archive: false

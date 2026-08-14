@@ -65,12 +65,14 @@ jobs:
       run: cmake --install build --config ${{env.BUILD_TYPE}}
 
     - name: '${{ matrix.icon }} Create Archive'
-      run: tar cvzf ${{env.INSTALL_LOCATION}}.tar.gz ${{env.INSTALL_LOCATION}}
+      run: tar cvzf ${{env.INSTALL_LOCATION}}-msys2-${{matrix.sys}}.tar.gz ${{env.INSTALL_LOCATION}}
 
     - name: '${{ matrix.icon }} Upload Artifacts'
       uses: actions/upload-artifact@v7
       with:
         name: ${{env.INSTALL_LOCATION}}-msys2-${{matrix.sys}}
-        path: ${{env.INSTALL_LOCATION}}.tar.gz
+        path: ${{env.INSTALL_LOCATION}}-msys2-${{matrix.sys}}.tar.gz
         retention-days: 90
         overwrite: true
+        archive: false
+

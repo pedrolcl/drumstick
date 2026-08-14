@@ -32,6 +32,7 @@ jobs:
         pkgs: fluidsynth[sndfile]
         triplet: ${{ matrix.triplet }}
         token: ${{ github.token }}
+        revision: master
 
     - name: '${{ matrix.icon }} Setup MSVC'
       uses: TheMrMilchmann/setup-msvc-dev@v4
@@ -71,3 +72,4 @@ jobs:
         path: ${{env.INSTALL_LOCATION}}
         retention-days: 90
         overwrite: true
+        archive: true
