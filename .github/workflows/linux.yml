@@ -30,13 +30,13 @@ jobs:
     - name: '${{ matrix.icon }} Dependencies'
       run: |
         sudo apt-get update
-        sudo apt-get install -yq autoconf autoconf-archive automake libtool pkg-config libasound2-dev libpulse-dev
+        sudo apt-get install -yq autoconf autoconf-archive automake libtool pkg-config libasound2-dev libpulse-dev libsndfile1-dev
 
     - name: '${{ matrix.icon }} VCPKG Build'
       uses: johnwason/vcpkg-action@v8
       id: vcpkg
       with:
-        pkgs: zlib sonivox fluidsynth[sndfile] # maybe fails in arm64, needs: -DOPT_NEON=OFF, -DOPT_NEON64=OFF
+        pkgs: zlib sonivox fluidsynth #[sndfile]fails in arm64, mpg123 should have: -DOPT_NEON=OFF, -DOPT_NEON64=OFF
         triplet: ${{ matrix.triplet }}
         token: ${{ github.token }}
         revision: master
