@@ -36,7 +36,7 @@ jobs:
       uses: johnwason/vcpkg-action@v8
       id: vcpkg
       with:
-        pkgs: zlib sonivox fluidsynth #[sndfile] fails in arm64, needs: -DOPT_NEON=OFF, -DOPT_NEON64=OFF
+        pkgs: zlib sonivox fluidsynth[sndfile] # maybe fails in arm64, needs: -DOPT_NEON=OFF, -DOPT_NEON64=OFF
         triplet: ${{ matrix.triplet }}
         token: ${{ github.token }}
         revision: master
@@ -44,7 +44,7 @@ jobs:
     - name: '${{ matrix.icon }} Install Qt'
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.11.*'
+        version: '6.11.1'
         modules: qt5compat
 
     - name: '${{ matrix.icon }} Configure CMake'
