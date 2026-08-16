@@ -18,8 +18,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 cmake_minimum_required(VERSION 3.16)
 
-cmake_policy(SET CMP0072 NEW)
-cmake_policy(SET CMP0153 OLD)
+if (POLICY CMP0072)
+    cmake_policy(SET CMP0072 NEW)
+endif()
+if (POLICY CMP0153)
+    cmake_policy(SET CMP0153 OLD)
+endif()
 
 project( Drumstick
     VERSION 2.11.1
