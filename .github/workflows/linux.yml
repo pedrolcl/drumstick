@@ -32,6 +32,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install -yq autoconf autoconf-archive automake libtool pkg-config libasound2-dev libpulse-dev libsndfile1-dev
 
+    - name: '${{ matrix.icon }} Set up CMake'
+      uses: jwlawson/actions-setup-cmake@v2
+      with:
+        cmake-version: '4.3.x' # https://github.com/microsoft/vcpkg/issues/53135
+
     - name: '${{ matrix.icon }} VCPKG Build'
       uses: johnwason/vcpkg-action@v8
       id: vcpkg
