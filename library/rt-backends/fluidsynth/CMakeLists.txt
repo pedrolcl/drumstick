@@ -63,7 +63,7 @@ endif()
 target_link_libraries(drumstick-rt-fluidsynth PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Drumstick::RT
-    PkgConfig::FLUIDSYNTH
+    FluidSynth::libfluidsynth
     $<$<BOOL:${HAVE_PIPEWIRE}>:PkgConfig::PIPEWIRE>
 )
 
