@@ -41,7 +41,7 @@ jobs:
       uses: johnwason/vcpkg-action@v8
       id: vcpkg
       with:
-        pkgs: zlib sonivox fluidsynth #[sndfile]fails in arm64, mpg123 should have: -DOPT_NEON=OFF, -DOPT_NEON64=OFF
+        pkgs: zlib sonivox fluidsynth[sndfile]
         triplet: ${{ matrix.triplet }}
         token: ${{ github.token }}
         revision: master
