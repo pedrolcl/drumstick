@@ -1,6 +1,10 @@
+2026-08-22
+    * Release 2.11.1
+
 2026-08-10
-    * sonivox backend: user selectable FM and WT synths
-    * avoid warnings when ignoring QFile::open() returned result
+    * RT, sonivox backend: user selectable FM and WT synths
+    * File: avoid warnings when ignoring QFile::open() returned result
+    * Widgets: update Sonivox configuration dialog
 
 2026-06-27
     * File: WRK format - fix interpretation of some track parameters
