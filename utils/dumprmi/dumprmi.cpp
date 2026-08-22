@@ -1,6 +1,6 @@
 /*
     Standard RIFF MIDI File dump program
-    Copyright (C) 2006-2025, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2026, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,13 +18,15 @@
 
 #include <QCommandLineParser>
 #include <QCoreApplication>
-#include <QFileInfo>
+#include <QDebug>
 #include <QDir>
+#include <QFileInfo>
 #include <QObject>
 #include <QString>
 #include <QTextCodec>
 #include <QTextStream>
 #include <cstdlib>
+
 #include "dumprmi.h"
 
 DISABLE_WARNING_PUSH
@@ -257,9 +259,13 @@ void DumpRmid::extractFileData(const QString &fileSuffix, const QByteArray &data
     QFileInfo finfo(m_fileName);
     QString outfile = QDir::current().absoluteFilePath(finfo.baseName() + fileSuffix);
     QFile file(outfile);
-    file.open(QFile::WriteOnly);
-    file.write(data);
-    file.close();
+    auto ok = file.open(QFile::WriteOnly);
+    if (ok) {
+        file.write(data);
+        file.close();
+    } else {
+        qCritical() << "cannot open file" << outfile;
+    }
 }
 
 void DumpRmid::dataHandler(const QString &dataType, const QByteArray &data)

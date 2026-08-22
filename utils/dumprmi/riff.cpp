@@ -1,6 +1,6 @@
 /*
     Standard RIFF MIDI File dump program
-    Copyright (C) 2006-2025, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2026, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -41,10 +41,14 @@ static QString toString(quint32 ckid)
 void Riff::readFromFile(QString fileName)
 {
     QFile file(m_fileName = fileName);
-    file.open(QIODevice::ReadOnly);
-    QDataStream ds(&file);
-    readFromStream(&ds);
-    file.close();
+    auto ok = file.open(QIODevice::ReadOnly);
+    if (ok) {
+        QDataStream ds(&file);
+        readFromStream(&ds);
+        file.close();
+    } else {
+        qCritical() << "cannot open file" << fileName;
+    }
 }
 
 void Riff::readFromStream(QDataStream* ds)

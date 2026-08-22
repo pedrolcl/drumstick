@@ -1,6 +1,6 @@
 /*
     Drumstick RT (realtime MIDI In/Out)
-    Copyright (C) 2009-2025 Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2009-2026 Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -151,8 +151,11 @@ void FluidSynthEngine::initializeSynth()
     ::fluid_settings_setint(m_settings, "synth.reverb.active", fs_reverb);
     ::fluid_settings_setnum(m_settings, "synth.gain", fs_gain);
     ::fluid_settings_setint(m_settings, "synth.polyphony", fs_polyphony);
+
     m_synth = ::new_fluid_synth(m_settings);
     m_driver = ::new_fluid_audio_driver(m_settings, m_synth);
+
+    //::fluid_synth_set_interp_method(m_synth, -1, fluid_interp::FLUID_INTERP_MID);
 }
 
 void FluidSynthEngine::setInstrument(int channel, int pgm)

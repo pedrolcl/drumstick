@@ -1,6 +1,6 @@
 /*
     WRK File component
-    Copyright (C) 2010-2025, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2010-2026, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,11 +17,13 @@
 */
 
 #include <QDataStream>
+#include <QDebug>
 #include <QFile>
 #include <QIODevice>
 #include <QStringList>
 #include <QTextCodec>
 #include <QTextStream>
+
 #include <cmath>
 #include <drumstick/qwrk.h>
 
@@ -701,10 +703,14 @@ void QWrk::readFromStream(QDataStream *stream)
 void QWrk::readFromFile(const QString& fileName)
 {
     QFile file(fileName);
-    file.open(QIODevice::ReadOnly);
-    QDataStream ds(&file);
-    readFromStream(&ds);
-    file.close();
+    auto ok = file.open(QIODevice::ReadOnly);
+    if (ok) {
+        QDataStream ds(&file);
+        readFromStream(&ds);
+        file.close();
+    } else {
+        qCritical() << "cannot open file" << fileName;
+    }
 }
 
 void QWrk::processTrackChunk()
@@ -714,9 +720,9 @@ void QWrk::processTrackChunk()
     QByteArray data[2];
     int trackno;
     int channel;
-    int pitch;
-    int velocity;
-    int port;
+    qint8 pitch;
+    qint8 velocity;
+    qint8 port;
     bool selected;
     bool muted;
     bool loop;

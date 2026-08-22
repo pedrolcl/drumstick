@@ -1,6 +1,6 @@
 /*
     Virtual Piano test using the MIDI Sequencer C++ library
-    Copyright (C) 2006-2025, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2026, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -44,6 +44,9 @@ const QString SonivoxSettingsDialog::QSTR_CHORUSAMT = QStringLiteral("ChorusAmt"
 const QString SonivoxSettingsDialog::QSTR_SOUNDFONT = QStringLiteral("InstrumentsDefinition");
 const QString SonivoxSettingsDialog::QSTR_DATADIR = QStringLiteral("soundfonts");
 const QString SonivoxSettingsDialog::QSTR_DATADIR2 = QStringLiteral("sounds/sf2");
+const QString SonivoxSettingsDialog::QSTR_SYNTHLIB = QStringLiteral("SynthLib");
+const int SonivoxSettingsDialog::SYNTHLIB_WT = 1;
+const int SonivoxSettingsDialog::SYNTHLIB_FM = 2;
 
 SonivoxSettingsDialog::SonivoxSettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -124,6 +127,7 @@ void SonivoxSettingsDialog::readSettings()
     int reverbAmt = settings->value(QSTR_REVERBAMT, 25800).toInt();
     int chorusType = settings->value(QSTR_CHORUSTYPE, -1).toInt();
     int chorusAmt = settings->value(QSTR_CHORUSAMT, 0).toInt();
+    int synthLib = settings->value(QSTR_SYNTHLIB, SYNTHLIB_WT).toInt();
     QString soundfont = settings->value(QSTR_SOUNDFONT, QString()).toString();
     settings->endGroup();
 
@@ -139,6 +143,18 @@ void SonivoxSettingsDialog::readSettings()
     int chorusIndex = ui->combo_Chorus->findData(chorusType);
     ui->combo_Reverb->setCurrentIndex(reverbIndex);
     ui->combo_Chorus->setCurrentIndex(chorusIndex);
+    switch (synthLib) {
+    case 1:
+        ui->rbWT->setChecked(true);
+        break;
+    case 2:
+        ui->rbFM->setChecked(true);
+        break;
+    default:
+        break;
+    }
+    ui->btn_soundfont->setEnabled(synthLib == 1);
+    ui->soundfont_dls->setEnabled(synthLib == 1);
 
     chkDriverProperties(settings.getQSettings());
 }
@@ -154,6 +170,7 @@ void SonivoxSettingsDialog::writeSettings()
     settings->setValue(QSTR_REVERBAMT, ui->dial_Reverb->value());
     settings->setValue(QSTR_CHORUSAMT, ui->dial_Chorus->value());
     settings->setValue(QSTR_SOUNDFONT, ui->soundfont_dls->text());
+    settings->setValue(QSTR_SYNTHLIB, ui->rbFM->isChecked() ? SYNTHLIB_FM : SYNTHLIB_WT);
     settings->endGroup();
     settings->sync();
     qputenv("PULSE_LATENCY_MSEC", QByteArray::number( ui->spnTime->value() ));

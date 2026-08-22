@@ -1,6 +1,6 @@
 /*
     Standard MIDI File component
-    Copyright (C) 2006-2025, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2026, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     Based on midifile.c by Tim Thompson, M.Czeiszperger and Greg Lee
 
@@ -19,9 +19,11 @@
 */
 
 #include <QDataStream>
+#include <QDebug>
 #include <QFile>
 #include <QList>
 #include <QTextCodec>
+
 #include <cmath>
 #include <drumstick/qsmf.h>
 #include <limits>
@@ -452,10 +454,14 @@ void QSmf::readFromStream(QDataStream *stream)
 void QSmf::readFromFile(const QString& fileName)
 {
     QFile file(fileName);
-    file.open(QIODevice::ReadOnly);
-    QDataStream ds(&file);
-    readFromStream(&ds);
-    file.close();
+    auto ok = file.open(QIODevice::ReadOnly);
+    if (ok) {
+        QDataStream ds(&file);
+        readFromStream(&ds);
+        file.close();
+    } else {
+        qCritical() << "cannot open file" << fileName;
+    }
 }
 
 /**
@@ -475,10 +481,14 @@ void QSmf::writeToStream(QDataStream *stream)
 void QSmf::writeToFile(const QString& fileName)
 {
     QFile file(fileName);
-    file.open(QIODevice::WriteOnly);
-    QDataStream ds(&file);
-    writeToStream(&ds);
-    file.close();
+    auto ok = file.open(QIODevice::WriteOnly);
+    if (ok) {
+        QDataStream ds(&file);
+        writeToStream(&ds);
+        file.close();
+    } else {
+        qCritical() << "cannot open file" << fileName;
+    }
 }
 
 /**

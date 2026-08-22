@@ -1,6 +1,6 @@
 #[===========================================================================[
 MIDI C++ Library
-Copyright (C) 2005-2025 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+Copyright (C) 2005-2026 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,8 +18,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 cmake_minimum_required(VERSION 3.16)
 
+if (POLICY CMP0072)
+    cmake_policy(SET CMP0072 NEW)
+endif()
+if (POLICY CMP0153)
+    cmake_policy(SET CMP0153 OLD)
+endif()
+
 project( Drumstick
-    VERSION 2.11.0
+    VERSION 2.11.1
     LANGUAGES CXX
     DESCRIPTION "MIDI C++ Libraries for Qt"
     HOMEPAGE_URL "https://drumstick.sourceforge.io"
@@ -30,7 +37,7 @@ include(SCMRevision)
 include(CTest)
 include(GNUInstallDirs)
 
-set(RELEASE_DATE "December 31, 2025")
+set(RELEASE_DATE "August 22, 2026")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
@@ -215,26 +222,32 @@ if(BUILD_RT AND PKG_CONFIG_FOUND AND UNIX AND NOT APPLE)
 endif()
 
 set(HAVE_FLUIDSYNTH OFF)
-if (BUILD_RT AND PKG_CONFIG_FOUND)
-    if (USE_FLUIDSYNTH)
-        pkg_check_modules(FLUIDSYNTH QUIET IMPORTED_TARGET fluidsynth>=2.5.0)
-        if(FLUIDSYNTH_FOUND)
-            message(STATUS "Found FluidSynth version = ${FLUIDSYNTH_VERSION}")
-            set(HAVE_FLUIDSYNTH ON)
-        else()
-            message(FATAL_ERROR "FluidSynth library not available. FluidSynth RT backend can't be built.")
-        endif()
+if (BUILD_RT AND USE_FLUIDSYNTH)
+    if (STATIC_DRUMSTICK)
+        find_package(FluidSynth CONFIG REQUIRED static)
+    else()
+        find_package(FluidSynth CONFIG REQUIRED shared)
+    endif()
+    if(FluidSynth_FOUND AND ${FluidSynth_VERSION} VERSION_GREATER_EQUAL 2.5)
+        message(STATUS "Found FluidSynth version = ${FluidSynth_VERSION}")
+        set(HAVE_FLUIDSYNTH ON)
+    else()
+        message(FATAL_ERROR "FluidSynth library not available or incompatible version. FluidSynth RT backend can't be built.")
     endif()
 endif()
 
 set(HAVE_SONIVOX OFF)
 if (BUILD_RT AND USE_SONIVOX)
-    find_package(sonivox 4.0 CONFIG QUIET)
-    if(sonivox_FOUND)
+    if (STATIC_DRUMSTICK)
+        find_package(sonivox CONFIG REQUIRED static)
+    else()
+        find_package(sonivox CONFIG REQUIRED shared)
+    endif()
+    if(sonivox_FOUND AND ${sonivox_VERSION} VERSION_GREATER_EQUAL 4.0)
         message(STATUS "Found Sonivox version = ${sonivox_VERSION}")
         set(HAVE_SONIVOX ON)
     else()
-        message(FATAL_ERROR "Sonivox library not available. SonivoxEas Synth RT backend can't be built.")
+        message(FATAL_ERROR "Sonivox library not available or incompatible version. SonivoxEas Synth RT backend can't be built.")
     endif()
 endif()
 

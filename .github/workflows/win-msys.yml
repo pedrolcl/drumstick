@@ -1,0 +1,78 @@
+name: "Windows MSYS2 CI"
+
+on:
+  push:
+    branches: [ "devel", "master" ]
+  pull_request:
+    branches: [ "devel", "master" ]
+  workflow_dispatch:
+
+env:
+  BUILD_TYPE: RelWithDebInfo
+  INSTALL_LOCATION: DrumstickV2
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # { icon: '⬛', sys: mingw32 } # There are no 32 bit packages for Qt6 in msys2 anymore
+          - { icon: '🟦', sys: mingw64,    os: windows-latest }
+          - { icon: '🟨', sys: ucrt64,     os: windows-latest  }
+          - { icon: '🟧', sys: clang64,    os: windows-latest }
+          - { icon: '🟩', sys: clangarm64, os: windows-11-arm }
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.icon }} msys2 ${{ matrix.sys }}
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: '${{ matrix.icon }} Setup MSYS2'
+      uses: msys2/setup-msys2@v2
+      with:
+        release: true
+        msystem: ${{matrix.sys}}
+        install: >-
+          git
+          make
+        pacboy: >-
+          toolchain:p
+          cmake:p
+          ninja:p
+          fluidsynth:p
+          qt6-base:p
+          qt6-5compat:p
+          qt6-tools:p
+          qt6-translations:p
+
+    - name: '${{ matrix.icon }} Configure CMake'
+      run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_INSTALL_PREFIX=${{env.INSTALL_LOCATION}}
+
+    - name: '${{ matrix.icon }} Build'
+      run: cmake --build build --config ${{env.BUILD_TYPE}}
+
+    - name: '${{ matrix.icon }} Test'
+      working-directory: build
+      run: |
+        export PATH=$PWD/lib${PATH:+:}"$PATH"
+        ctest -C ${{env.BUILD_TYPE}}
+
+    - name: '${{ matrix.icon }} Install'
+      run: cmake --install build --config ${{env.BUILD_TYPE}}
+
+    - name: '${{ matrix.icon }} Create Archive'
+      run: tar cvzf ${{env.INSTALL_LOCATION}}-msys2-${{matrix.sys}}.tar.gz ${{env.INSTALL_LOCATION}}
+
+    - name: '${{ matrix.icon }} Upload Artifacts'
+      uses: actions/upload-artifact@v7
+      with:
+        name: ${{env.INSTALL_LOCATION}}-msys2-${{matrix.sys}}
+        path: ${{env.INSTALL_LOCATION}}-msys2-${{matrix.sys}}.tar.gz
+        retention-days: 90
+        overwrite: true
+        archive: false
+

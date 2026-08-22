@@ -1,6 +1,6 @@
 /*
     Sonivox EAS Synthesizer for Qt applications
-    Copyright (C) 2016-2025, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2016-2026, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,12 +42,14 @@ const QString SynthRenderer::QSTR_CHORUSTYPE = QStringLiteral("ChorusType");
 const QString SynthRenderer::QSTR_CHORUSAMT = QStringLiteral("ChorusAmt");
 const QString SynthRenderer::QSTR_SONIVOXEAS = QStringLiteral("SonivoxEAS");
 const QString SynthRenderer::QSTR_SOUNDFONT = QStringLiteral("InstrumentsDefinition");
+const QString SynthRenderer::QSTR_SYNTHLIB = QStringLiteral("SynthLib");
 
 const int SynthRenderer::DEF_BUFFERTIME = 60;
 const int SynthRenderer::DEF_REVERBTYPE = EAS_PARAM_REVERB_HALL;
 const int SynthRenderer::DEF_REVERBAMT = 25800;
 const int SynthRenderer::DEF_CHORUSTYPE = -1;
 const int SynthRenderer::DEF_CHORUSAMT = 0;
+const int SynthRenderer::DEF_SYNTHLIB = EAS_SNDLIB_WT;
 
 SynthRenderer::SynthRenderer(QObject *parent) : QObject(parent),
     m_Stopped(true),
@@ -84,15 +86,31 @@ SynthRenderer::initEAS()
     }
     m_easData = dataHandle;
 
-    if (!m_soundfont.isEmpty()) {
-        FileWrapper dlsFile(m_soundfont);
-        if (dlsFile.ok()) {
-            eas_res = EAS_LoadDLSCollection(dataHandle, nullptr, dlsFile.getLocator());
+    const char *synthLibName = EAS_GetDefaultSoundLibrary(
+        static_cast<E_EAS_SNDLIB_TYPE>(m_synthLib));
+    if (synthLibName) {
+        EAS_SNDLIB_HANDLE pSndLib = EAS_GetSoundLibrary(m_easData, synthLibName);
+        if (pSndLib) {
+            EAS_RESULT eas_res = EAS_SetSoundLibrary(m_easData, nullptr, pSndLib);
             if (eas_res != EAS_SUCCESS) {
-                m_diagnostics << QString("EAS_LoadDLSCollection(%1) error: %2").arg(m_soundfont).arg(eas_res);
+                m_diagnostics << QString("EAS_SetSoundLibrary error: %1").arg(eas_res);
             }
-        } else {
-            m_diagnostics << QString("Failed to open %1").arg(m_soundfont);
+        }
+    }
+
+    if (m_synthLib == EAS_SNDLIB_WT) {
+        if (!m_soundfont.isEmpty()) {
+            FileWrapper dlsFile(m_soundfont);
+            if (dlsFile.ok()) {
+                eas_res = EAS_LoadDLSCollection(dataHandle, nullptr, dlsFile.getLocator());
+                if (eas_res != EAS_SUCCESS) {
+                    m_diagnostics << QString("EAS_LoadDLSCollection(%1) error: %2")
+                                         .arg(m_soundfont)
+                                         .arg(eas_res);
+                }
+            } else {
+                m_diagnostics << QString("Failed to open %1").arg(m_soundfont);
+            }
         }
     }
 
@@ -190,6 +208,7 @@ SynthRenderer::initialize(QSettings *settings)
     int reverbAmt = settings->value(QSTR_REVERBAMT, DEF_REVERBAMT).toInt();
     int chorusType = settings->value(QSTR_CHORUSTYPE, DEF_CHORUSTYPE).toInt();
     int chorusAmt = settings->value(QSTR_CHORUSAMT, DEF_CHORUSAMT).toInt();
+    m_synthLib = settings->value(QSTR_SYNTHLIB, DEF_SYNTHLIB).toInt();
     m_soundfont = settings->value(QSTR_SOUNDFONT, QString()).toString();
     settings->endGroup();
 
@@ -333,6 +352,7 @@ void SynthRenderer::writeSettings(QSettings *settings)
         settings->setValue(QSTR_CHORUSTYPE, m_chorusType);
         settings->setValue(QSTR_CHORUSAMT, m_chorusAmt);
         settings->setValue(QSTR_SOUNDFONT, m_soundfont);
+        settings->setValue(QSTR_SYNTHLIB, m_synthLib);
         settings->endGroup();
     }
 }
@@ -398,6 +418,25 @@ SynthRenderer::setChorusLevel(int amount)
         m_chorusAmt = amount;
     }
 }
+
+// void SynthRenderer::setSynthLib(int synthLib)
+// {
+//     qDebug() << Q_FUNC_INFO << synthLib << "old:" << m_synthLib;
+//     const char *synthLibName = EAS_GetDefaultSoundLibrary(static_cast<E_EAS_SNDLIB_TYPE>(synthLib));
+//     if (synthLibName) {
+//         qDebug() << Q_FUNC_INFO << synthLibName;
+//         EAS_SNDLIB_HANDLE pSndLib = EAS_GetSoundLibrary(m_easData, synthLibName);
+//         if (pSndLib) {
+//             EAS_RESULT eas_res = EAS_SetSoundLibrary(m_easData, nullptr, pSndLib);
+//             if (eas_res != EAS_SUCCESS) {
+//                 m_diagnostics << QString("EAS_SetSoundLibrary error: %1").arg(eas_res);
+//                 qDebug() << m_diagnostics;
+//             } else {
+//                 m_synthLib = synthLib;
+//             }
+//         }
+//     }
+// }
 
 void
 SynthRenderer::sendMessage(int m0)

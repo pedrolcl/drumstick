@@ -1,6 +1,6 @@
 /*
     Standard RIFF MIDI Component
-    Copyright (C) 2006-2025, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2026, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This library is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -83,10 +83,14 @@ void Rmidi::readFromFile(QString fileName)
 {
     //qDebug() << Q_FUNC_INFO << fileName;
     QFile file(m_fileName = fileName);
-    file.open(QIODevice::ReadOnly);
-    QDataStream ds(&file);
-    readFromStream(&ds);
-    file.close();
+    auto ok = file.open(QIODevice::ReadOnly);
+    if (ok) {
+        QDataStream ds(&file);
+        readFromStream(&ds);
+        file.close();
+    } else {
+        qCritical() << "cannot open file" << fileName;
+    }
 }
 
 /**

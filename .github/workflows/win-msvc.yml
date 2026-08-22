@@ -1,0 +1,75 @@
+name: "Windows MSVC CI"
+
+on:
+  push:
+    branches: [ "master", "devel" ]
+  pull_request:
+    branches: [ "master", "devel" ]
+  workflow_dispatch:
+
+env:
+  BUILD_TYPE: RelWithDebInfo
+  INSTALL_LOCATION: ${{github.workspace}}/DrumstickV2
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { icon: '🟪', arch: "win64", os: "windows-latest", triplet: "x64-windows" }
+          - { icon: '🟩', arch: "arm64", os: "windows-11-arm", triplet: "arm64-windows" }
+    runs-on: ${{ matrix.os }}
+    name: '${{ matrix.icon }} msvc ${{ matrix.arch }}'
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: '${{ matrix.icon }} Build vcpkg'
+      uses: johnwason/vcpkg-action@v8
+      id: vcpkg
+      with:
+        pkgs: fluidsynth[sndfile]
+        triplet: ${{ matrix.triplet }}
+        token: ${{ github.token }}
+        revision: master
+
+    - name: '${{ matrix.icon }} Setup MSVC'
+      uses: TheMrMilchmann/setup-msvc-dev@v4
+      with:
+        arch: ${{ matrix.arch }}
+
+    - name: '${{ matrix.icon }} Install Qt'
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: '6.10.*' # bug https://github.com/miurahr/aqtinstall/issues/1007
+        modules: qt5compat
+
+    - name: '${{ matrix.icon }} Configure CMake'
+      id: configuration
+      run: >
+        cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
+        -G Ninja -B ${{github.workspace}}/build
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DCMAKE_INSTALL_PREFIX=${{env.INSTALL_LOCATION}}
+
+    - name: '${{ matrix.icon }} Build'
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: '${{ matrix.icon }} Test'
+      working-directory: ${{github.workspace}}/build
+      run: |
+        $env:Path += ";$pwd\lib"
+        ctest -C ${{env.BUILD_TYPE}}
+
+    - name: '${{ matrix.icon }} Install'
+      run: cmake --install ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: '${{ matrix.icon }} Upload Artifacts'
+      uses: actions/upload-artifact@v7
+      with:
+        name: DrumstickV2-msvc-${{matrix.arch}}
+        path: ${{env.INSTALL_LOCATION}}
+        retention-days: 90
+        overwrite: true
+        archive: true

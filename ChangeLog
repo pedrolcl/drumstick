@@ -1,3 +1,23 @@
+2026-08-22
+    * Release 2.11.1
+
+2026-08-10
+    * RT, sonivox backend: user selectable FM and WT synths
+    * File: avoid warnings when ignoring QFile::open() returned result
+    * Widgets: update Sonivox configuration dialog
+
+2026-06-27
+    * File: WRK format - fix interpretation of some track parameters
+
+2025-12-31
+    * Release 2.11.0
+
+2025-11-25
+    * Synths Upgrade to Sonivox v4.0 and Fluidsynth v2.5, allowing native SF2 and DLS on both synths
+
+2025-09-28
+    * Related to GH #30, new function BackendManager *drumstick::rt::lastBackendManagerInstance()
+
 2025-04-07
     * Swedish translation update, thanks to Karl Jonatan Nyberg
 

@@ -1,6 +1,6 @@
 #[===========================================================================[
 MIDI C++ Library
-Copyright (C) 2005-2025 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
+Copyright (C) 2005-2026 Pedro Lopez-Cabanillas <plcl@users.sourceforge.net>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ endif()
 target_link_libraries(drumstick-rt-fluidsynth PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Drumstick::RT
-    PkgConfig::FLUIDSYNTH
+    FluidSynth::libfluidsynth
     $<$<BOOL:${HAVE_PIPEWIRE}>:PkgConfig::PIPEWIRE>
 )
 

@@ -1,6 +1,6 @@
 /*
     Virtual Piano test using the MIDI Sequencer C++ library
-    Copyright (C) 2006-2025, Pedro Lopez-Cabanillas <plcl@users.sf.net>
+    Copyright (C) 2006-2026, Pedro Lopez-Cabanillas <plcl@users.sf.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -61,6 +61,10 @@ namespace widgets {
         static const QString QSTR_SOUNDFONT;
         static const QString QSTR_DATADIR;
         static const QString QSTR_DATADIR2;
+        static const QString QSTR_SYNTHLIB;
+
+        static const int SYNTHLIB_WT;
+        static const int SYNTHLIB_FM;
 
     public Q_SLOTS:
         void accept() override;
