@@ -43,6 +43,7 @@ const QString SynthRenderer::QSTR_CHORUSAMT = QStringLiteral("ChorusAmt");
 const QString SynthRenderer::QSTR_SONIVOXEAS = QStringLiteral("SonivoxEAS");
 const QString SynthRenderer::QSTR_SOUNDFONT = QStringLiteral("InstrumentsDefinition");
 const QString SynthRenderer::QSTR_SYNTHLIB = QStringLiteral("SynthLib");
+const QString SynthRenderer::QSTR_GAIN = QStringLiteral("Gain");
 
 const int SynthRenderer::DEF_BUFFERTIME = 60;
 const int SynthRenderer::DEF_REVERBTYPE = EAS_PARAM_REVERB_HALL;
@@ -50,6 +51,7 @@ const int SynthRenderer::DEF_REVERBAMT = 25800;
 const int SynthRenderer::DEF_CHORUSTYPE = -1;
 const int SynthRenderer::DEF_CHORUSAMT = 0;
 const int SynthRenderer::DEF_SYNTHLIB = EAS_SNDLIB_WT;
+const int SynthRenderer::DEF_GAIN = EAS_REF_VOLUME;
 
 SynthRenderer::SynthRenderer(QObject *parent) : QObject(parent),
     m_Stopped(true),
@@ -111,6 +113,14 @@ SynthRenderer::initEAS()
             } else {
                 m_diagnostics << QString("Failed to open %1").arg(m_soundfont);
             }
+        }
+    }
+
+    if ((m_gain >= 0) && (m_gain <= EAS_MAX_VOLUME)) {
+        eas_res = EAS_SetVolume(dataHandle, nullptr, m_gain);
+        if (eas_res != EAS_SUCCESS) {
+            m_diagnostics << QString("EAS_SetVolume(%1) error: %2").arg(m_gain).arg(eas_res);
+            return;
         }
     }
 
@@ -210,6 +220,7 @@ SynthRenderer::initialize(QSettings *settings)
     int chorusAmt = settings->value(QSTR_CHORUSAMT, DEF_CHORUSAMT).toInt();
     m_synthLib = settings->value(QSTR_SYNTHLIB, DEF_SYNTHLIB).toInt();
     m_soundfont = settings->value(QSTR_SOUNDFONT, QString()).toString();
+    m_gain = settings->value(QSTR_GAIN, DEF_GAIN).toInt();
     settings->endGroup();
 
     initEAS();
@@ -353,6 +364,7 @@ void SynthRenderer::writeSettings(QSettings *settings)
         settings->setValue(QSTR_CHORUSAMT, m_chorusAmt);
         settings->setValue(QSTR_SOUNDFONT, m_soundfont);
         settings->setValue(QSTR_SYNTHLIB, m_synthLib);
+        settings->setValue(QSTR_GAIN, m_gain);
         settings->endGroup();
     }
 }
