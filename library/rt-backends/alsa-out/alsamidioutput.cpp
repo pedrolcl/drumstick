@@ -160,7 +160,15 @@ namespace rt {
                     int k = clientNames.count(name) + 1;
                     QString addr = QString("%1:%2").arg(p.getClient()).arg(p.getPort());
                     if (k > 2) {
-                        m_outputDevices << MIDIConnection(QString("%1 (%2)").arg(name).arg(k - namesMap[name]--), addr);
+                        QString pName = p.getName();
+                        if (pName.contains(name, Qt::CaseInsensitive)) {
+                            m_outputDevices << MIDIConnection(QString("%1 (%2)").arg(name).arg(
+                                                                  k - namesMap[name]--),
+                                                              addr);
+                        } else {
+                            m_outputDevices
+                                << MIDIConnection(QString("%1 (%2)").arg(name, pName), addr);
+                        }
                     } else {
                         m_outputDevices << MIDIConnection(name, addr);
                     }
