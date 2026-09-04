@@ -2,8 +2,12 @@ if (CMAKE_VERSION VERSION_LESS 3.14.0)
     message(FATAL_ERROR "Drumstick requires at least CMake version 3.14.0")
 endif()
 
-if ( NOT (QT_VERSION_MAJOR EQUAL @QT_VERSION_MAJOR@) )
+if ( DEFINED QT_VERSION_MAJOR AND NOT (QT_VERSION_MAJOR EQUAL @QT_VERSION_MAJOR@) )
     message(FATAL_ERROR "Drumstick was built with Qt@QT_VERSION_MAJOR@, please do not mix Qt${QT_VERSION_MAJOR} when building your program.")
+endif()
+
+if ( DEFINED QT_DEFAULT_MAJOR_VERSION AND NOT (QT_DEFAULT_MAJOR_VERSION EQUAL @QT_VERSION_MAJOR@) )
+    message(FATAL_ERROR "Drumstick was built with Qt@QT_VERSION_MAJOR@, please do not mix Qt${QT_DEFAULT_MAJOR_VERSION} when building your program.")
 endif()
 
 foreach(component ${${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS})
