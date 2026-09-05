@@ -73,7 +73,9 @@ namespace drumstick { namespace rt {
         static const int DEF_CHORUSTYPE;
         static const int DEF_CHORUSAMT;
         static const int DEF_SYNTHLIB;
-        static const int DEF_GAIN;
+
+        int defaultGain() const;
+        void setDefaultGain(int newDefaultGain);
 
     private:
         void initEAS();
@@ -110,8 +112,8 @@ namespace drumstick { namespace rt {
         int m_chorusType{DEF_CHORUSTYPE};
         int m_chorusAmt{DEF_CHORUSAMT};
         int m_synthLib{DEF_SYNTHLIB};
-        int m_gain{DEF_GAIN};
+        int m_defaultGain{EAS_REF_VOLUME};
+        int m_gain{m_defaultGain};
     };
-
 }} /* drumstick::rt */
 #endif /*SYNTHRENDERER_H_*/

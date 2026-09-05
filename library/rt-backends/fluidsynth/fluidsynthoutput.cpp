@@ -81,6 +81,16 @@ QString FluidSynthOutput::getSoundFont()
     return m_synth->soundFont();
 }
 
+double FluidSynthOutput::getDefaultGain()
+{
+    return m_synth->getDefaultGain();
+}
+
+void FluidSynthOutput::setDefaultGain(const double newValue)
+{
+    m_synth->setDefaultGain(newValue);
+}
+
 void FluidSynthOutput::initialize(QSettings *settings)
 {
     //qDebug() << Q_FUNC_INFO;

@@ -49,6 +49,7 @@ public Q_SLOTS:
     void reopenDrivers();
     void accept() override;
     void reject() override;
+    void configureOutputDriverDefaults();
 
 private:
     bool m_settingsChanged;

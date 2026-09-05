@@ -38,6 +38,7 @@ namespace rt {
         Q_PROPERTY(QString libversion READ getLibVersion)
         Q_PROPERTY(bool status READ getStatus)
         Q_PROPERTY(QString soundfont READ getSoundFont)
+        Q_PROPERTY(double defaultGain READ getDefaultGain WRITE setDefaultGain)
 
     public:
         explicit FluidSynthOutput(QObject *parent = nullptr);
@@ -80,6 +81,8 @@ namespace rt {
         QString getLibVersion();
         bool getStatus();
         QString getSoundFont();
+        double getDefaultGain();
+        void setDefaultGain(const double newValue);
     };
 
 }} // namespace drumstick::rt

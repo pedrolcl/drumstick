@@ -51,7 +51,6 @@ const int SynthRenderer::DEF_REVERBAMT = 25800;
 const int SynthRenderer::DEF_CHORUSTYPE = -1;
 const int SynthRenderer::DEF_CHORUSAMT = 0;
 const int SynthRenderer::DEF_SYNTHLIB = EAS_SNDLIB_WT;
-const int SynthRenderer::DEF_GAIN = EAS_REF_VOLUME;
 
 SynthRenderer::SynthRenderer(QObject *parent) : QObject(parent),
     m_Stopped(true),
@@ -210,8 +209,6 @@ SynthRenderer::~SynthRenderer()
 void
 SynthRenderer::initialize(QSettings *settings)
 {
-    //qDebug() << Q_FUNC_INFO;
-
     settings->beginGroup(QSTR_PREFERENCES);
     m_bufferTime = settings->value(QSTR_BUFFERTIME, DEF_BUFFERTIME).toInt();
     int reverbType = settings->value(QSTR_REVERBTYPE, DEF_REVERBTYPE).toInt();
@@ -220,8 +217,10 @@ SynthRenderer::initialize(QSettings *settings)
     int chorusAmt = settings->value(QSTR_CHORUSAMT, DEF_CHORUSAMT).toInt();
     m_synthLib = settings->value(QSTR_SYNTHLIB, DEF_SYNTHLIB).toInt();
     m_soundfont = settings->value(QSTR_SOUNDFONT, QString()).toString();
-    m_gain = settings->value(QSTR_GAIN, DEF_GAIN).toInt();
+    m_gain = settings->value(QSTR_GAIN, m_defaultGain).toInt();
     settings->endGroup();
+
+    // qDebug() << Q_FUNC_INFO << "gain:" << m_gain;
 
     initEAS();
     initSoundfont();
@@ -287,6 +286,18 @@ SynthRenderer::run()
     }
     //qDebug() << Q_FUNC_INFO << "ended";
     Q_EMIT finished();
+}
+
+int SynthRenderer::defaultGain() const
+{
+    return m_defaultGain;
+}
+
+void SynthRenderer::setDefaultGain(int newDefaultGain)
+{
+    if (m_defaultGain == newDefaultGain)
+        return;
+    m_defaultGain = newDefaultGain;
 }
 
 void

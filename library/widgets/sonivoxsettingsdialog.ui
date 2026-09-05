@@ -309,6 +309,7 @@
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>spnTime</tabstop>
+  <tabstop>sliderGain</tabstop>
   <tabstop>soundfont_dls</tabstop>
   <tabstop>btn_soundfont</tabstop>
   <tabstop>rbWT</tabstop>

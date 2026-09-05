@@ -130,7 +130,7 @@ void SonivoxSettingsDialog::readSettings()
     int chorusAmt = settings->value(QSTR_CHORUSAMT, 0).toInt();
     int synthLib = settings->value(QSTR_SYNTHLIB, SYNTHLIB_WT).toInt();
     QString soundfont = settings->value(QSTR_SOUNDFONT, QString()).toString();
-    int gain = settings->value(QSTR_GAIN, 100).toInt();
+    int gain = settings->value(QSTR_GAIN, m_driver ? m_driver->property("defaultGain") : 100).toInt();
     settings->endGroup();
 
     if (qEnvironmentVariableIsSet("PULSE_LATENCY_MSEC")) {
@@ -210,7 +210,8 @@ void SonivoxSettingsDialog::restoreDefaults()
     ui->dial_Reverb->setValue(25800);
     ui->combo_Chorus->setCurrentIndex(4);
     ui->dial_Chorus->setValue(0);
-    ui->sliderGain->setValue(100);
+    ui->sliderGain->setValue(m_driver ? m_driver->property("defaultGain").toInt() : 100);
+    ui->rbWT->setChecked(true);
 }
 
 void SonivoxSettingsDialog::showFileDialog()

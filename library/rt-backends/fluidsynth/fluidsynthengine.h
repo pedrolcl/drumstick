@@ -69,6 +69,9 @@ public:
 
     Q_INVOKABLE void writeSettings(QSettings *settings);
 
+    double getDefaultGain() const;
+    void setDefaultGain(double newDefault_gain);
+
     static const QString QSTR_FLUIDSYNTH_VERSION;
 
     static const QString QSTR_FLUIDSYNTH;
@@ -141,7 +144,8 @@ private:
     double fs_sampleRate { DEFAULT_SAMPLERATE };
     int fs_chorus { DEFAULT_CHORUS };
     int fs_reverb { DEFAULT_REVERB };
-    double fs_gain { DEFAULT_GAIN };
+    double default_gain{DEFAULT_GAIN};
+    double fs_gain{default_gain};
     int fs_polyphony { DEFAULT_POLYPHONY };
 
     qreal fs_reverb_damp{DEFAULT_REVERB_DAMP};

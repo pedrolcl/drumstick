@@ -183,5 +183,15 @@ QString SynthController::getSoundFont()
     return m_renderer->getSoundFont();
 }
 
+int SynthController::getDefaultGain()
+{
+    return m_renderer->defaultGain();
+}
+
+void SynthController::setDefaultGain(const int newValue)
+{
+    m_renderer->setDefaultGain(newValue);
+}
+
 } // namespace rt
 } // namespace drumstick
