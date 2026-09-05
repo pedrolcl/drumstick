@@ -43,6 +43,7 @@ const QString SynthRenderer::QSTR_CHORUSAMT = QStringLiteral("ChorusAmt");
 const QString SynthRenderer::QSTR_SONIVOXEAS = QStringLiteral("SonivoxEAS");
 const QString SynthRenderer::QSTR_SOUNDFONT = QStringLiteral("InstrumentsDefinition");
 const QString SynthRenderer::QSTR_SYNTHLIB = QStringLiteral("SynthLib");
+const QString SynthRenderer::QSTR_GAIN = QStringLiteral("Gain");
 
 const int SynthRenderer::DEF_BUFFERTIME = 60;
 const int SynthRenderer::DEF_REVERBTYPE = EAS_PARAM_REVERB_HALL;
@@ -111,6 +112,14 @@ SynthRenderer::initEAS()
             } else {
                 m_diagnostics << QString("Failed to open %1").arg(m_soundfont);
             }
+        }
+    }
+
+    if ((m_gain >= 0) && (m_gain <= EAS_MAX_VOLUME)) {
+        eas_res = EAS_SetVolume(dataHandle, nullptr, m_gain);
+        if (eas_res != EAS_SUCCESS) {
+            m_diagnostics << QString("EAS_SetVolume(%1) error: %2").arg(m_gain).arg(eas_res);
+            return;
         }
     }
 
@@ -200,8 +209,6 @@ SynthRenderer::~SynthRenderer()
 void
 SynthRenderer::initialize(QSettings *settings)
 {
-    //qDebug() << Q_FUNC_INFO;
-
     settings->beginGroup(QSTR_PREFERENCES);
     m_bufferTime = settings->value(QSTR_BUFFERTIME, DEF_BUFFERTIME).toInt();
     int reverbType = settings->value(QSTR_REVERBTYPE, DEF_REVERBTYPE).toInt();
@@ -210,7 +217,10 @@ SynthRenderer::initialize(QSettings *settings)
     int chorusAmt = settings->value(QSTR_CHORUSAMT, DEF_CHORUSAMT).toInt();
     m_synthLib = settings->value(QSTR_SYNTHLIB, DEF_SYNTHLIB).toInt();
     m_soundfont = settings->value(QSTR_SOUNDFONT, QString()).toString();
+    m_gain = settings->value(QSTR_GAIN, m_defaultGain).toInt();
     settings->endGroup();
+
+    // qDebug() << Q_FUNC_INFO << "gain:" << m_gain;
 
     initEAS();
     initSoundfont();
@@ -276,6 +286,18 @@ SynthRenderer::run()
     }
     //qDebug() << Q_FUNC_INFO << "ended";
     Q_EMIT finished();
+}
+
+int SynthRenderer::defaultGain() const
+{
+    return m_defaultGain;
+}
+
+void SynthRenderer::setDefaultGain(int newDefaultGain)
+{
+    if (m_defaultGain == newDefaultGain)
+        return;
+    m_defaultGain = newDefaultGain;
 }
 
 void
@@ -353,6 +375,7 @@ void SynthRenderer::writeSettings(QSettings *settings)
         settings->setValue(QSTR_CHORUSAMT, m_chorusAmt);
         settings->setValue(QSTR_SOUNDFONT, m_soundfont);
         settings->setValue(QSTR_SYNTHLIB, m_synthLib);
+        settings->setValue(QSTR_GAIN, m_gain);
         settings->endGroup();
     }
 }

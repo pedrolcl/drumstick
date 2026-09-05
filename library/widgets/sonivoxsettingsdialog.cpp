@@ -45,6 +45,7 @@ const QString SonivoxSettingsDialog::QSTR_SOUNDFONT = QStringLiteral("Instrument
 const QString SonivoxSettingsDialog::QSTR_DATADIR = QStringLiteral("soundfonts");
 const QString SonivoxSettingsDialog::QSTR_DATADIR2 = QStringLiteral("sounds/sf2");
 const QString SonivoxSettingsDialog::QSTR_SYNTHLIB = QStringLiteral("SynthLib");
+const QString SonivoxSettingsDialog::QSTR_GAIN = QStringLiteral("Gain");
 const int SonivoxSettingsDialog::SYNTHLIB_WT = 1;
 const int SonivoxSettingsDialog::SYNTHLIB_FM = 2;
 
@@ -129,6 +130,7 @@ void SonivoxSettingsDialog::readSettings()
     int chorusAmt = settings->value(QSTR_CHORUSAMT, 0).toInt();
     int synthLib = settings->value(QSTR_SYNTHLIB, SYNTHLIB_WT).toInt();
     QString soundfont = settings->value(QSTR_SOUNDFONT, QString()).toString();
+    int gain = settings->value(QSTR_GAIN, m_driver ? m_driver->property("defaultGain") : 100).toInt();
     settings->endGroup();
 
     if (qEnvironmentVariableIsSet("PULSE_LATENCY_MSEC")) {
@@ -155,6 +157,7 @@ void SonivoxSettingsDialog::readSettings()
     }
     ui->btn_soundfont->setEnabled(synthLib == 1);
     ui->soundfont_dls->setEnabled(synthLib == 1);
+    ui->sliderGain->setValue(gain);
 
     chkDriverProperties(settings.getQSettings());
 }
@@ -171,6 +174,7 @@ void SonivoxSettingsDialog::writeSettings()
     settings->setValue(QSTR_CHORUSAMT, ui->dial_Chorus->value());
     settings->setValue(QSTR_SOUNDFONT, ui->soundfont_dls->text());
     settings->setValue(QSTR_SYNTHLIB, ui->rbFM->isChecked() ? SYNTHLIB_FM : SYNTHLIB_WT);
+    settings->setValue(QSTR_GAIN, ui->sliderGain->value());
     settings->endGroup();
     settings->sync();
     qputenv("PULSE_LATENCY_MSEC", QByteArray::number( ui->spnTime->value() ));
@@ -206,6 +210,8 @@ void SonivoxSettingsDialog::restoreDefaults()
     ui->dial_Reverb->setValue(25800);
     ui->combo_Chorus->setCurrentIndex(4);
     ui->dial_Chorus->setValue(0);
+    ui->sliderGain->setValue(m_driver ? m_driver->property("defaultGain").toInt() : 100);
+    ui->rbWT->setChecked(true);
 }
 
 void SonivoxSettingsDialog::showFileDialog()

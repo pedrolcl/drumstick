@@ -37,6 +37,7 @@ namespace rt {
         Q_PROPERTY(bool status READ getStatus)
         Q_PROPERTY(QString libversion READ getLibVersion)
         Q_PROPERTY(QString soundfont READ getSoundFont)
+        Q_PROPERTY(int defaultGain READ getDefaultGain WRITE setDefaultGain)
 
     public:
         explicit SynthController(QObject *parent = nullptr);
@@ -80,7 +81,8 @@ namespace rt {
         bool getStatus();
         QString getLibVersion();
         QString getSoundFont();
+        int getDefaultGain();
+        void setDefaultGain(const int newValue);
     };
-
 }}
 #endif // SYNTHCONTROLLER_H

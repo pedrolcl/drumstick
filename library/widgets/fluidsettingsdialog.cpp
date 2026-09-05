@@ -265,7 +265,10 @@ void FluidSettingsDialog::readSettings()
     ui->periodSize->setValue( settings->value(QSTR_PERIODSIZE, DEFAULT_PERIODSIZE).toInt() );
     ui->periods->setValue( settings->value(QSTR_PERIODS, DEFAULT_PERIODS).toInt() );
     ui->sampleRate->setCurrentText(settings->value(QSTR_SAMPLERATE, DEFAULT_SAMPLERATE).toString());
-    ui->gain->setValue(settings->value(QSTR_GAIN, DEFAULT_GAIN).toDouble());
+    ui->gain->setValue(
+        settings
+            ->value(QSTR_GAIN, m_driver ? m_driver->property("defaultGain").toReal() : DEFAULT_GAIN)
+            .toDouble());
     ui->polyphony->setValue(settings->value(QSTR_POLYPHONY, DEFAULT_POLYPHONY).toInt());
     ui->soundFont->setText( settings->value(QSTR_INSTRUMENTSDEFINITION, m_defSoundFont).toString() );
 
@@ -306,7 +309,7 @@ void FluidSettingsDialog::writeSettings()
     double  sampleRate(DEFAULT_SAMPLERATE);
     int     chorus(DEFAULT_CHORUS);
     int     reverb(DEFAULT_REVERB);
-    double  gain(DEFAULT_GAIN);
+    double gain(m_driver ? m_driver->property("defaultGain").toReal() : DEFAULT_GAIN);
     int     polyphony(DEFAULT_POLYPHONY);
 
     double chorus_depth(DEFAULT_CHORUS_DEPTH);
@@ -374,7 +377,7 @@ void FluidSettingsDialog::restoreDefaults()
     ui->periodSize->setValue(DEFAULT_PERIODSIZE);
     ui->periods->setValue(DEFAULT_PERIODS);
     ui->sampleRate->setCurrentText(QString::number(DEFAULT_SAMPLERATE));
-    ui->gain->setValue(DEFAULT_GAIN);
+    ui->gain->setValue(m_driver ? m_driver->property("defaultGain").toReal() : DEFAULT_GAIN);
     ui->polyphony->setValue(DEFAULT_POLYPHONY);
     ui->soundFont->setText(m_defSoundFont);
     ui->chorus_depth->setValue(DEFAULT_CHORUS_DEPTH * CHORUS_REVERB_VALUE_SCALE);

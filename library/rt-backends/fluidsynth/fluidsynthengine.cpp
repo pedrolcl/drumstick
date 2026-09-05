@@ -205,6 +205,16 @@ void FluidSynthEngine::retrieveDefaultSoundfont()
     }
 }
 
+double FluidSynthEngine::getDefaultGain() const
+{
+    return default_gain;
+}
+
+void FluidSynthEngine::setDefaultGain(double newDefault_gain)
+{
+    default_gain = newDefault_gain;
+}
+
 void FluidSynthEngine::initialize()
 {
     //qDebug() << Q_FUNC_INFO;
