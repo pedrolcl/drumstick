@@ -1,3 +1,7 @@
+2026-09-05
+    * RT, Fluidsynth backend: default gain control option
+    * Widgets: update Fluidsynth configuration dialog
+
 2026-09-03
     * RT, sonivox backend: gain control option
     * Widgets: update Sonivox configuration dialog
