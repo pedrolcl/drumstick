@@ -1,6 +1,9 @@
 2026-09-05
     * RT, Fluidsynth backend: default gain control option
     * Widgets: update Fluidsynth configuration dialog
+    * Fix GH ticket #40: prevent Qt5 + Qt6 mix
+    * Fix GH ticket #37: Sonivox backend - add gain control
+    * Fix GH ticket #31: show ALSA port name instead of index number
 
 2026-09-03
     * RT, sonivox backend: gain control option
