@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
-    <height>360</height>
+    <width>325</width>
+    <height>384</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -328,8 +328,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>145</x>
-     <y>260</y>
+     <x>154</x>
+     <y>374</y>
     </hint>
     <hint type="destinationlabel">
      <x>148</x>
@@ -344,8 +344,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>239</x>
-     <y>260</y>
+     <x>248</x>
+     <y>374</y>
     </hint>
     <hint type="destinationlabel">
      <x>251</x>
@@ -360,12 +360,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>239</x>
-     <y>90</y>
+     <x>265</x>
+     <y>127</y>
     </hint>
     <hint type="destinationlabel">
-     <x>183</x>
-     <y>57</y>
+     <x>269</x>
+     <y>96</y>
     </hint>
    </hints>
   </connection>
@@ -376,28 +376,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>239</x>
-     <y>90</y>
+     <x>265</x>
+     <y>127</y>
     </hint>
     <hint type="destinationlabel">
-     <x>298</x>
-     <y>57</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sliderGain</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lblGain</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>164</x>
-     <y>53</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>299</x>
-     <y>53</y>
+     <x>314</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>

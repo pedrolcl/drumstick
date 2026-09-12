@@ -70,6 +70,10 @@ SonivoxSettingsDialog::SonivoxSettingsDialog(QWidget *parent) :
     connect(ui->btn_soundfont, &QToolButton::clicked, this, &SonivoxSettingsDialog::showFileDialog);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::pressed,
             this, &SonivoxSettingsDialog::restoreDefaults);
+    connect(ui->sliderGain,
+            &QSlider::valueChanged,
+            ui->lblGain,
+            QOverload<int>::of(&QLabel::setNum));
 
     drumstick::rt::BackendManager *man = drumstick::rt::lastBackendManagerInstance();
     m_driver = man->outputBackendByName("SonivoxEAS");
