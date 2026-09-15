@@ -1,3 +1,8 @@
+2026-09-15
+    * vpiano: implemented a generic keyboard event filter
+    * this class is simpler than a QAbstractNativeEventFilter subclass
+    * and works with Wayland.
+
 2026-09-05
     * RT, Fluidsynth backend: default gain control option
     * Widgets: update Fluidsynth configuration dialog
