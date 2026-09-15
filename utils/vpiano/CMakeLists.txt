@@ -33,6 +33,8 @@ set(vpiano_SRCS
     connections.cpp
     connections.h
     connections.ui
+    eventfilter.h
+    eventfilter.cpp
     preferences.cpp
     preferences.h
     preferences.ui

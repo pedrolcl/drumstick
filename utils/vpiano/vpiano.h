@@ -23,9 +23,11 @@
 #include <QMainWindow>
 
 #include <drumstick/backendmanager.h>
+#include <drumstick/pianokeybd.h>
 #include <drumstick/rtmidiinput.h>
 #include <drumstick/rtmidioutput.h>
 
+#include "eventfilter.h"
 #include "ui_vpiano.h"
 
 class VPiano : public QMainWindow
@@ -76,9 +78,10 @@ private:
     drumstick::rt::MIDIInput * m_midiIn;
     drumstick::rt::MIDIOutput* m_midiOut;
     Ui::VPiano ui;
+    EventFilter *m_filter;
 
-//  QStringList m_names_s{"do", "do♯", "re", "re♯", "mi", "fa", "fa♯", "sol", "sol♯", "la", "la♯", "si"};
-//  QStringList m_names_f{"do", "re♭", "re", "mi♭", "mi", "fa", "sol♭", "sol", "la♭", "la", "si♭", "si"};
+    //  QStringList m_names_s{"do", "do♯", "re", "re♯", "mi", "fa", "fa♯", "sol", "sol♯", "la", "la♯", "si"};
+    //  QStringList m_names_f{"do", "re♭", "re", "mi♭", "mi", "fa", "sol♭", "sol", "la♭", "la", "si♭", "si"};
 };
 
 #endif // VPIANO_H

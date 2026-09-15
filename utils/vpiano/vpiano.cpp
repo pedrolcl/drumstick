@@ -30,6 +30,7 @@
 #include <drumstick/settingsfactory.h>
 
 #include "connections.h"
+#include "eventfilter.h"
 #include "preferences.h"
 #include "vpiano.h"
 #include "vpianoabout.h"
@@ -102,6 +103,14 @@ VPiano::VPiano(QWidget *parent, Qt::WindowFlags flags)
     connect(centralOctaveGroup, &QActionGroup::triggered, this, &VPiano::slotCentralOctave);
 
     ui.statusBar->hide();
+
+    m_filter = new EventFilter(this);
+    m_filter->setRawKbdHandler(ui.pianokeybd);
+    installEventFilter(m_filter);
+    if (ui.actionRaw_Computer_Keyboard->isChecked()) {
+        ui.pianokeybd->setUsingNativeFilter(true);
+        m_filter->setRawKbdEnabled(true);
+    }
 }
 
 VPiano::~VPiano()
@@ -594,6 +603,8 @@ void VPiano::slotRawKeyboard(bool checked)
         ui.pianokeybd->resetKeyboardMap();
     }
     ui.pianokeybd->setRawKeyboardMode(checked);
+    ui.pianokeybd->setUsingNativeFilter(checked);
+    m_filter->setRawKbdEnabled(checked);
     VPianoSettings::instance()->setRawKeyboard(checked);
 }
 
