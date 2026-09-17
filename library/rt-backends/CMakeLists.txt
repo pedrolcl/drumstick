@@ -18,6 +18,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 set(DRUMSTICK_PLUGINS_DIR "drumstick2")
 
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    set(CMAKE_INSTALL_RPATH "\$ORIGIN/../../lib")
+endif()
+
 if(FALSE)
     add_subdirectory(dummy-in)
     add_subdirectory(dummy-out)
