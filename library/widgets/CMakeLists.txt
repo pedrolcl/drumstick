@@ -169,7 +169,10 @@ add_custom_target( update-widget-translations
 
 add_custom_target( drumstick-widgets-translations ALL DEPENDS ${QM_FILES} )
 
-if (UNIX)
+if (WIN32)
+    install( FILES ${QM_FILES}
+             DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/translations )
+else()
     install( FILES ${QM_FILES}
              DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/drumstick )
 endif ()
