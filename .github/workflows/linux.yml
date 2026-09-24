@@ -27,10 +27,21 @@ jobs:
     - name: '${{ matrix.icon }} Checkout'
       uses: actions/checkout@v7
 
-    - name: '${{ matrix.icon }} Dependencies'
+    - name: '${{ matrix.icon }} Install Dependencies'
       run: |
-        sudo apt-get update
-        sudo apt-get install -yq autoconf autoconf-archive automake libtool pkg-config libasound2-dev libpulse-dev libsndfile1-dev libltdl-dev
+        sudo rm -rf /var/lib/apt/lists/*
+        sudo apt-get clean
+        sudo apt-get update -y -o Acquire::Retries=3
+        sudo apt-get install -yq --fix-missing \
+          autoconf \
+          autoconf-archive \
+          automake \
+          libtool \
+          pkg-config \
+          libasound2-dev \
+          libpulse-dev \
+          libsndfile1-dev \
+          libltdl-dev
 
     - name: '${{ matrix.icon }} Set up CMake'
       uses: jwlawson/actions-setup-cmake@v2
@@ -41,7 +52,7 @@ jobs:
       uses: johnwason/vcpkg-action@v8
       id: vcpkg
       with:
-        pkgs: zlib sonivox fluidsynth[pulseaudio,sndfile]
+        pkgs: zlib sonivox fluidsynth[pipewire,pulseaudio,sndfile]
         triplet: ${{ matrix.triplet }}
         token: ${{ github.token }}
         revision: master
