@@ -40,7 +40,7 @@ jobs:
         triplet: universal-osx
         token: ${{ github.token }}
         revision: master        
-        extra-args: --overlay-triplets={{ github.workspace }}/vcpkg-custom-triplets
+        extra-args: --overlay-triplets=${{ github.workspace }}/vcpkg-custom-triplets
 
     - name: 'Install Qt'
       uses: jurplel/install-qt-action@v4
