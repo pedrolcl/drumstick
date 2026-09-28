@@ -66,3 +66,24 @@ jobs:
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: Test
+      working-directory: ${{github.workspace}}/build
+      run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure -R "^(file|widgets)"
+
+    - name: Install
+      run: cmake --install ${{github.workspace}}/build
+
+    - name: 'Create Archive'
+      run: |
+        cd ${{github.workspace}}
+        tar cvzf DrumstickV2-universal-macos.tar.gz DrumstickV2
+
+    - name: 'Upload Artifacts'
+      uses: actions/upload-artifact@v7
+      with:
+        name: DrumstickV2-universal-macos
+        path: DrumstickV2-universal-macos.tar.gz
+        retention-days: 90
+        overwrite: true
+        archive: false
