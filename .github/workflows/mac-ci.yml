@@ -37,7 +37,7 @@ jobs:
       id: vcpkg
       with:
         pkgs: fluidsynth[sndfile]
-        triplet: universal.osx
+        triplet: universal-osx
         token: ${{ github.token }}
         revision: master        
         extra-args: --overlay-triplets={{ github.workspace }}/vcpkg-custom-triplets
