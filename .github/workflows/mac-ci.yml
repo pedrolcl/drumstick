@@ -1,0 +1,68 @@
+name: macOS CI
+
+on:
+  push:
+    branches: [ "devel", "master" ]
+  pull_request:
+    branches: [ "devel", "master" ]
+  workflow_dispatch:
+
+env:
+  BUILD_TYPE: Release
+  INSTALL_LOCATION: DrumstickV2
+
+jobs:
+  build:
+    runs-on: macos-14
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+
+    - name: 'Clone vcpkg-custom-triplets repository'
+      uses: GuillaumeFalourd/clone-github-repo-action@v2.4
+      with:
+        depth: 1
+        branch: 'master'
+        owner: 'pedrolcl'
+        repository: 'vcpkg-custom-triplets'    
+        
+    - name: 'Set up CMake'
+      uses: jwlawson/actions-setup-cmake@v2
+      with:
+        cmake-version: '4.4.x' # https://github.com/microsoft/vcpkg/issues/53135
+
+    - name: 'VCPKG Build'
+      uses: johnwason/vcpkg-action@v8
+      id: vcpkg
+      with:
+        pkgs: fluidsynth[sndfile]
+        triplet: universal.osx
+        token: ${{ github.token }}
+        revision: master        
+        extra-args: --overlay-triplets={{ github.workspace }}/vcpkg-custom-triplets
+
+    - name: 'Install Qt'
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: '6.11.2'
+        modules: qt5compat
+
+    - name: 'Configure CMake'
+      run: >
+        cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
+        -B ${{github.workspace}}/build
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DCMAKE_INSTALL_PREFIX=${{env.INSTALL_LOCATION}}
+        -DCMAKE_OSX_DEPLOYMENT_TARGET="10.15"
+        -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+        -DCMAKE_INSTALL_RPATH="@executable_path/../Frameworks"
+        -DUSE_QT5=OFF
+        -DUSE_FLUIDSYNTH=ON
+        -DUSE_SONIVOX=OFF
+        -DUSE_PULSEAUDIO=OFF
+        -DBUILD_DOCS=OFF
+        -DBUILD_UTILS=OFF
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
