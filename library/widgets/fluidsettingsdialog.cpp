@@ -219,7 +219,7 @@ void FluidSettingsDialog::chkDriverProperties(QSettings *settings)
 void FluidSettingsDialog::setWidgetTip(QWidget *w, const QString &tip)
 {
     w->setToolTip(tip);
-    QToolTip::showText(w->parentWidget()->mapToGlobal(w->pos()), tip);
+    QToolTip::showText(w->parentWidget()->mapToGlobal(w->pos()), tip, this);
 }
 
 void drumstick::widgets::FluidSettingsDialog::initBuffer()
