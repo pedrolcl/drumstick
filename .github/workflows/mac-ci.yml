@@ -36,7 +36,7 @@ jobs:
       uses: johnwason/vcpkg-action@v8
       id: vcpkg
       with:
-        pkgs: fluidsynth[sndfile]
+        pkgs: fluidsynth #[sndfile] fails because mpg123 still uses autotools
         triplet: universal-osx
         token: ${{ github.token }}
         revision: master        
