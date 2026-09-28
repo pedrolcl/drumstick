@@ -57,12 +57,13 @@ jobs:
         -DCMAKE_OSX_DEPLOYMENT_TARGET="10.15"
         -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
         -DCMAKE_INSTALL_RPATH="@executable_path/../Frameworks"
+        -DBUILD_FRAMEWORKS=OFF
+        -DBUILD_DOCS=OFF
+        -DBUILD_UTILS=OFF
         -DUSE_QT5=OFF
         -DUSE_FLUIDSYNTH=ON
         -DUSE_SONIVOX=OFF
         -DUSE_PULSEAUDIO=OFF
-        -DBUILD_DOCS=OFF
-        -DBUILD_UTILS=OFF
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}

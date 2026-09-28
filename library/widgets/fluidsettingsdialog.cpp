@@ -178,7 +178,7 @@ QString FluidSettingsDialog::defaultAudioDriver() const
     const QString QSTR_DEFAULT_AUDIODRIVER =
 #if defined(Q_OS_WIN)
         QLatin1String("wasapi");
-#elif defined(Q_OS_OSX)
+#elif defined(Q_OS_MACOS)
         QLatin1String("coreaudio");
 #elif defined(Q_OS_LINUX)
         QSTR_PULSEAUDIO;

@@ -61,7 +61,7 @@ const QString FluidSynthEngine::QSTR_DEFAULT_AUDIODRIVER =
     QSTR_PULSEAUDIO;
 #elif defined(Q_OS_WIN)
     QStringLiteral("wasapi");
-#elif defined(Q_OS_OSX)
+#elif defined(Q_OS_MACOS)
     QStringLiteral("coreaudio");
 #else
     QStringLiteral("oss");
@@ -384,7 +384,7 @@ void FluidSynthEngine::scanSoundFonts()
     if (m_defSoundFont.isEmpty()) {
         m_soundFontsList.clear();
         QStringList paths = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
-#if defined(Q_OS_OSX)
+#if defined(Q_OS_MACOS)
         paths << (QCoreApplication::applicationDirPath() + QLatin1String("../Resources"));
 #endif
         foreach(const QString& p, paths) {

@@ -22,7 +22,7 @@ if (POLICY CMP0072)
     cmake_policy(SET CMP0072 NEW)
 endif()
 if (POLICY CMP0153)
-    cmake_policy(SET CMP0153 OLD)
+    cmake_policy(SET CMP0153 NEW)
 endif()
 
 project( Drumstick

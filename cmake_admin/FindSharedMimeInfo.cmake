@@ -30,11 +30,17 @@ else (UPDATE_MIME_DATABASE_EXECUTABLE)
 
     if (UPDATE_MIME_DATABASE_EXECUTABLE)
 
-        exec_program (${UPDATE_MIME_DATABASE_EXECUTABLE} ARGS -v RETURN_VALUE _null OUTPUT_VARIABLE _smiVersionRaw)
+        execute_process ( COMMAND ${UPDATE_MIME_DATABASE_EXECUTABLE} -v
+            ERROR_VARIABLE  _smiVersionRaw
+            RESULT_VARIABLE _command_result
+            OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-        string(REGEX REPLACE "update-mime-database \\([a-zA-Z\\-]+\\) ([0-9]\\.[0-9]+).*"
-               "\\1" smiVersion "${_smiVersionRaw}")
-        set (SHARED_MIME_INFO_FOUND TRUE)
+        if(_command_result EQUAL 0)
+            string(REGEX REPLACE "update-mime-database \\([a-zA-Z\\-]+\\) ([0-9]\\.[0-9]+).*"
+                   "\\1" smiVersion "${_smiVersionRaw}")
+            set (SHARED_MIME_INFO_FOUND TRUE)
+        endif()
+
     endif (UPDATE_MIME_DATABASE_EXECUTABLE)
 
     if (SHARED_MIME_INFO_FOUND)
