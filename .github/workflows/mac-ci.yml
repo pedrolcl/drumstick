@@ -13,7 +13,15 @@ env:
 
 jobs:
   build:
-    runs-on: macos-14
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: ["x86_64", "aarch64"]
+        include:
+          - { arch: "x86_64", os: "macos-15-intel"  }
+          - { arch: "aarch64", os: "macos-15" }
+    runs-on: ${{ matrix.os }}
+    name: 'macOS ${{ matrix.arch }}'
 
     steps:
     - name: Checkout
@@ -25,8 +33,8 @@ jobs:
         depth: 1
         branch: 'master'
         owner: 'pedrolcl'
-        repository: 'vcpkg-custom-triplets'    
-        
+        repository: 'vcpkg-custom-triplets'
+
     - name: 'Set up CMake'
       uses: jwlawson/actions-setup-cmake@v2
       with:
@@ -45,7 +53,7 @@ jobs:
     - name: 'Install Qt'
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.11.2'
+        version: '6.8.3'
         modules: qt5compat
 
     - name: 'Configure CMake'
@@ -54,12 +62,12 @@ jobs:
         -B ${{github.workspace}}/build
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         -DCMAKE_INSTALL_PREFIX=${{env.INSTALL_LOCATION}}
-        -DCMAKE_OSX_DEPLOYMENT_TARGET="10.15"
+        -DCMAKE_OSX_DEPLOYMENT_TARGET="12.0"
         -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
         -DCMAKE_INSTALL_RPATH="@executable_path/../Frameworks"
-        -DBUILD_FRAMEWORKS=OFF
+        -DBUILD_FRAMEWORKS=ON
         -DBUILD_DOCS=OFF
-        -DBUILD_UTILS=OFF
+        -DBUILD_UTILS=ON
         -DUSE_QT5=OFF
         -DUSE_FLUIDSYNTH=ON
         -DUSE_SONIVOX=OFF
@@ -70,7 +78,7 @@ jobs:
 
     - name: Test
       working-directory: ${{github.workspace}}/build
-      run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure -R "^(file|widgets)"
+      run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure
 
     - name: Install
       run: cmake --install ${{github.workspace}}/build
@@ -78,13 +86,13 @@ jobs:
     - name: 'Create Archive'
       run: |
         cd ${{github.workspace}}
-        tar cvzf DrumstickV2-universal-macos.tar.gz DrumstickV2
+        tar cvzf ${{env.INSTALL_LOCATION}}-universal-macos.tar.gz ${{env.INSTALL_LOCATION}}
 
     - name: 'Upload Artifacts'
       uses: actions/upload-artifact@v7
       with:
-        name: DrumstickV2-universal-macos
-        path: DrumstickV2-universal-macos.tar.gz
+        name: ${{env.INSTALL_LOCATION}}-${{ matrix.arch }}-macos
+        path: ${{env.INSTALL_LOCATION}}-${{ matrix.arch }}-macos.tar.gz
         retention-days: 90
         overwrite: true
         archive: false
