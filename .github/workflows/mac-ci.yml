@@ -86,7 +86,7 @@ jobs:
     - name: 'Create Archive'
       run: |
         cd ${{github.workspace}}
-        tar cvzf ${{env.INSTALL_LOCATION}}-universal-macos.tar.gz ${{env.INSTALL_LOCATION}}
+        tar cvzf ${{env.INSTALL_LOCATION}}-${{ matrix.arch }}-macos.tar.gz ${{env.INSTALL_LOCATION}}
 
     - name: 'Upload Artifacts'
       uses: actions/upload-artifact@v7
