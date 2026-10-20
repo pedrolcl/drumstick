@@ -16,10 +16,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: ["x86_64", "aarch64"]
+        arch: ["x86_64", "arm64"]
         include:
-          - { arch: "x86_64", os: "macos-15-intel"  }
-          - { arch: "aarch64", os: "macos-15" }
+          - { arch: "x86_64", os: "macos-15-intel", triplet: "x64.osx" }
+          - { arch: "arm64", os: "macos-15", triplet: "arm64-osx" }
     runs-on: ${{ matrix.os }}
     name: 'macOS ${{ matrix.arch }}'
 
@@ -45,7 +45,7 @@ jobs:
       id: vcpkg
       with:
         pkgs: fluidsynth #[sndfile] fails because mpg123 still uses autotools
-        triplet: universal-osx
+        triplet: ${{ matrix.triplet }}
         token: ${{ github.token }}
         revision: master        
         extra-args: --overlay-triplets=${{ github.workspace }}/vcpkg-custom-triplets
@@ -63,7 +63,6 @@ jobs:
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         -DCMAKE_INSTALL_PREFIX=${{env.INSTALL_LOCATION}}
         -DCMAKE_OSX_DEPLOYMENT_TARGET="12.0"
-        -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
         -DCMAKE_INSTALL_RPATH="@executable_path/../Frameworks"
         -DBUILD_FRAMEWORKS=ON
         -DBUILD_DOCS=OFF
