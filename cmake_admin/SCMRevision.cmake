@@ -29,7 +29,7 @@ if (NOT DEFINED PROJECT_WC_REVISION)
     if (Git_FOUND)
         execute_process(
             COMMAND "${GIT_EXECUTABLE}" rev-parse --short HEAD
-            WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+            WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
             RESULT_VARIABLE res
             OUTPUT_VARIABLE PROJECT_WC_REVISION
             ERROR_QUIET

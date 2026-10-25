@@ -333,7 +333,7 @@ if(UNIX AND NOT APPLE)
         find_package(Doxygen REQUIRED dot)
         if(DOXYGEN_FOUND)
             string(REPLACE ";" " " DOXYGEN_INCLUDE_DIRS "${Qt${QT_VERSION_MAJOR}Core_INCLUDE_DIRS}")
-            configure_file("${CMAKE_SOURCE_DIR}/Doxyfile.in"
+            configure_file("${PROJECT_SOURCE_DIR}/Doxyfile.in"
                 "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE @ONLY)
             add_custom_target(doxygen
                 ${DOXYGEN_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
@@ -374,7 +374,7 @@ endif()
 
 # uninstall custom target
 configure_file(
-    "${CMAKE_SOURCE_DIR}/cmake_admin/cmake_uninstall.cmake.in"
+    "${PROJECT_SOURCE_DIR}/cmake_admin/cmake_uninstall.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
     IMMEDIATE @ONLY)
 add_custom_target( uninstall
@@ -395,6 +395,6 @@ if(UNIX)
         COMMAND tar -cz --exclude=.[a-z]* -f drumstick-${PROJECT_VERSION}.tar.gz  drumstick-${PROJECT_VERSION}
         COMMAND zip -qr drumstick-${PROJECT_VERSION}.zip drumstick-${PROJECT_VERSION} -x '.[a-z]*'
         COMMAND rm -rf drumstick-${PROJECT_VERSION}
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     )
 endif()

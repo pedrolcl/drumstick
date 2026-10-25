@@ -23,7 +23,7 @@ set ( SOURCES widgetstest.cpp )
 add_executable ( widgetsTest ${SOURCES} )
 
 target_include_directories ( widgetsTest PUBLIC
-    ${CMAKE_SOURCE_DIR}/library/include )
+    ${PROJECT_SOURCE_DIR}/library/include )
 
 target_link_libraries (widgetsTest PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets

@@ -21,7 +21,7 @@ set ( SOURCES rttest.cpp )
 add_executable ( rtTest ${SOURCES} )
 
 target_include_directories (rtTest PUBLIC
-    ${CMAKE_SOURCE_DIR}/library/include )
+    ${PROJECT_SOURCE_DIR}/library/include )
 
 target_link_libraries (rtTest PRIVATE
     Qt${QT_VERSION_MAJOR}::Core

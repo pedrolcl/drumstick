@@ -94,7 +94,7 @@ else() # STATIC_DRUMSTICK
             FRAMEWORK ${BUILD_FRAMEWORKS}
             FRAMEWORK_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
             MACOSX_FRAMEWORK_IDENTIFIER "net.sourceforge.drumstick-rt"
-            MACOSX_FRAMEWORK_INFO_PLIST "${CMAKE_SOURCE_DIR}/cmake_admin/CustomFrameworkInfo.plist.in"
+            MACOSX_FRAMEWORK_INFO_PLIST "${PROJECT_SOURCE_DIR}/cmake_admin/CustomFrameworkInfo.plist.in"
         )
     endif()
 endif() # STATIC_DRUMSTICK
