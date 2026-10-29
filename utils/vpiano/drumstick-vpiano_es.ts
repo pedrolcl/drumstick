@@ -55,12 +55,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Connections</name>
     <message>
-        <location filename="connections.cpp" line="103"/>
+        <location filename="connections.cpp" line="106"/>
         <source>MIDI Output</source>
         <translation>Salida MIDI</translation>
     </message>
     <message>
-        <location filename="connections.cpp" line="124"/>
+        <location filename="connections.cpp" line="127"/>
         <source>MIDI Input</source>
         <translation>Entrada MIDI</translation>
     </message>
@@ -427,17 +427,17 @@ redistribuirlo bajo ciertas condiciones.</translation>
         <translation>Designación de subíndice de octava</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="460"/>
+        <location filename="vpiano.cpp" line="469"/>
         <source>Font to display note names</source>
         <translation>Fuente para mostrar nombres de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="536"/>
+        <location filename="vpiano.cpp" line="545"/>
         <source>Custom Note Names</source>
         <translation>Nombres personalizados de notas</translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="536"/>
+        <location filename="vpiano.cpp" line="545"/>
         <source>Names:</source>
         <translation>Nombres:</translation>
     </message>

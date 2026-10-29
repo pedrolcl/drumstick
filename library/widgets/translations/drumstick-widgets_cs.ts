@@ -561,12 +561,12 @@
         <translation>Selhalo</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="401"/>
+        <location filename="../fluidsettingsdialog.cpp" line="404"/>
         <source>Select SoundFont</source>
         <translation>Vybrat zvukovou banku</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="403"/>
+        <location filename="../fluidsettingsdialog.cpp" line="406"/>
         <source>SoundFont Files (*.sf2 *.sf3 *.dls)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -795,87 +795,92 @@
         <translation>Sonivox EAS Synth</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="37"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="30"/>
         <source>Chorus</source>
         <translation>Sbor</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="91"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="40"/>
         <source>Reverb</source>
         <translation>Dozvuk</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="244"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="165"/>
+        <source>Gain:</source>
+        <translation type="unfinished">Zesílení:</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.ui" line="238"/>
         <source>Synth Library:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="254"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="248"/>
         <source>WT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="264"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="258"/>
         <source>FM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="56"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="101"/>
         <source>SoundFont:</source>
         <translation type="unfinished">Zvuková banka:</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="82"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="127"/>
         <source>...</source>
         <translation type="unfinished">...</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="201"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="205"/>
         <source>Sonivox Library Version:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="109"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="71"/>
         <source>Buffer Time:</source>
         <translation>Čas vyrovnávací paměti:</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="119"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="81"/>
         <source> ms</source>
         <translation> ms</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="161"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="278"/>
         <source>Init. Status:</source>
         <translation>Stav inicializace:</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="95"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="100"/>
         <source>Sonivox Initialized</source>
         <translation>Sonivox inicializován</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="95"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="100"/>
         <source>Sonivox Initialization Failed</source>
         <translation>Sonivox se nepodařilo inicializovat</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="195"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="203"/>
         <source>Ready</source>
         <translation>Připraven</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="195"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="203"/>
         <source>Failed</source>
         <translation>Selhalo</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="218"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="228"/>
         <source>Select SoundFont</source>
         <translation type="unfinished">Vybrat zvukovou banku</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="220"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="230"/>
         <source>SoundFont Files (*.dls *.sf2)</source>
         <translation type="unfinished"></translation>
     </message>

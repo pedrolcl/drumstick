@@ -40,12 +40,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Connections</name>
     <message>
-        <location filename="connections.cpp" line="103"/>
+        <location filename="connections.cpp" line="106"/>
         <source>MIDI Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="connections.cpp" line="124"/>
+        <location filename="connections.cpp" line="127"/>
         <source>MIDI Input</source>
         <translation type="unfinished"></translation>
     </message>
@@ -382,17 +382,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="460"/>
+        <location filename="vpiano.cpp" line="469"/>
         <source>Font to display note names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="536"/>
+        <location filename="vpiano.cpp" line="545"/>
         <source>Custom Note Names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="vpiano.cpp" line="536"/>
+        <location filename="vpiano.cpp" line="545"/>
         <source>Names:</source>
         <translation type="unfinished"></translation>
     </message>

@@ -561,12 +561,12 @@
         <translation>Fallido</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="401"/>
+        <location filename="../fluidsettingsdialog.cpp" line="404"/>
         <source>Select SoundFont</source>
         <translation>Seleccionar SoundFont</translation>
     </message>
     <message>
-        <location filename="../fluidsettingsdialog.cpp" line="403"/>
+        <location filename="../fluidsettingsdialog.cpp" line="406"/>
         <source>SoundFont Files (*.sf2 *.sf3 *.dls)</source>
         <translation>Archivos SoundFont (*.sf2 *.sf3 *.dls)</translation>
     </message>
@@ -795,87 +795,92 @@
         <translation>Sintetizador Sonivox EAS</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="37"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="30"/>
         <source>Chorus</source>
         <translation>Coral</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="91"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="40"/>
         <source>Reverb</source>
         <translation>Reverberación</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="244"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="165"/>
+        <source>Gain:</source>
+        <translation>Ganancia:</translation>
+    </message>
+    <message>
+        <location filename="../sonivoxsettingsdialog.ui" line="238"/>
         <source>Synth Library:</source>
         <translation>Biblioteca de síntesis:</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="254"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="248"/>
         <source>WT</source>
         <translation>WT</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="264"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="258"/>
         <source>FM</source>
         <translation>FM</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="56"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="101"/>
         <source>SoundFont:</source>
         <translation>SoundFont:</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="82"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="127"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="201"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="205"/>
         <source>Sonivox Library Version:</source>
         <translation>Versión de la biblioteca Sonivox:</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="109"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="71"/>
         <source>Buffer Time:</source>
         <translation>Tiempo de buffer:</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="119"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="81"/>
         <source> ms</source>
         <translation> ms</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.ui" line="161"/>
+        <location filename="../sonivoxsettingsdialog.ui" line="278"/>
         <source>Init. Status:</source>
         <translation>Estado de inicialización:</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="95"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="100"/>
         <source>Sonivox Initialized</source>
         <translation>Sonivox inicializado</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="95"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="100"/>
         <source>Sonivox Initialization Failed</source>
         <translation>Inicialización fallida de Sonivox</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="195"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="203"/>
         <source>Ready</source>
         <translation>Listo</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="195"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="203"/>
         <source>Failed</source>
         <translation>Fallido</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="218"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="228"/>
         <source>Select SoundFont</source>
         <translation>Seleccionar SoundFont</translation>
     </message>
     <message>
-        <location filename="../sonivoxsettingsdialog.cpp" line="220"/>
+        <location filename="../sonivoxsettingsdialog.cpp" line="230"/>
         <source>SoundFont Files (*.dls *.sf2)</source>
         <translation>Archivos SoundFont (*.dls *.sf2)</translation>
     </message>
