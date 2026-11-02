@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="cs_CZ">
+<TS version="2.0" language="cs_CZ">
 <context>
     <name>PianoPalette</name>
     <message>
@@ -330,195 +330,195 @@
     <message>
         <location filename="../fluidsettingsdialog.ui" line="448"/>
         <source>3</source>
-        <translation type="unfinished">3</translation>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="389"/>
         <source>Modulation depth</source>
-        <translation type="unfinished"></translation>
+        <translation>Hloubka modulace</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="392"/>
         <source>Depth</source>
-        <translation type="unfinished"></translation>
+        <translation>Hloubka</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="376"/>
         <location filename="../fluidsettingsdialog.ui" line="561"/>
         <source>Output amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation>Výstupní amplituda</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="191"/>
         <location filename="../fluidsettingsdialog.ui" line="230"/>
         <source>44100</source>
-        <translation type="unfinished"></translation>
+        <translation>44100</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="195"/>
         <source>8000</source>
-        <translation type="unfinished"></translation>
+        <translation>8000</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="200"/>
         <source>11025</source>
-        <translation type="unfinished"></translation>
+        <translation>11025</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="205"/>
         <source>16000</source>
-        <translation type="unfinished"></translation>
+        <translation>16000</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="210"/>
         <source>22050</source>
-        <translation type="unfinished"></translation>
+        <translation>22050</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="215"/>
         <source>24000</source>
-        <translation type="unfinished"></translation>
+        <translation>24000</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="220"/>
         <source>32000</source>
-        <translation type="unfinished"></translation>
+        <translation>32000</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="225"/>
         <source>40000</source>
-        <translation type="unfinished"></translation>
+        <translation>40000</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="235"/>
         <source>48000</source>
-        <translation type="unfinished"></translation>
+        <translation>48000</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="240"/>
         <source>56000</source>
-        <translation type="unfinished"></translation>
+        <translation>56000</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="245"/>
         <source>64000</source>
-        <translation type="unfinished"></translation>
+        <translation>64000</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="250"/>
         <source>72000</source>
-        <translation type="unfinished"></translation>
+        <translation>72000</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="255"/>
         <source>80000</source>
-        <translation type="unfinished"></translation>
+        <translation>80000</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="260"/>
         <source>88000</source>
-        <translation type="unfinished"></translation>
+        <translation>88000</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="265"/>
         <source>88200</source>
-        <translation type="unfinished"></translation>
+        <translation>88200</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="270"/>
         <source>96000</source>
-        <translation type="unfinished"></translation>
+        <translation>96000</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="379"/>
         <location filename="../fluidsettingsdialog.ui" line="564"/>
         <source>Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Úroveň</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="402"/>
         <source>Voice count</source>
-        <translation type="unfinished"></translation>
+        <translation>Počet hlasů</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="405"/>
         <source>NR</source>
-        <translation type="unfinished"></translation>
+        <translation>NR</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="415"/>
         <source>Modulation speed in Hz</source>
-        <translation type="unfinished"></translation>
+        <translation>Rychlost modulace v Hz</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="418"/>
         <source>Speed</source>
-        <translation type="unfinished"></translation>
+        <translation>Rychlost</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="428"/>
         <source>4.25</source>
-        <translation type="unfinished"></translation>
+        <translation>4.25</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="438"/>
         <source>0.60</source>
-        <translation type="unfinished"></translation>
+        <translation>0.60</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="458"/>
         <source>0.20</source>
-        <translation type="unfinished"></translation>
+        <translation>0.20</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="535"/>
         <source>Damping amount</source>
-        <translation type="unfinished"></translation>
+        <translation>Míra tlumení</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="538"/>
         <source>Damp</source>
-        <translation type="unfinished"></translation>
+        <translation>Tlumení</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="590"/>
         <source>0.30</source>
-        <translation type="unfinished"></translation>
+        <translation>0.30</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="600"/>
         <source>0.70</source>
-        <translation type="unfinished"></translation>
+        <translation>0.70</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="610"/>
         <source>0.50</source>
-        <translation type="unfinished"></translation>
+        <translation>0.50</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="620"/>
         <source>0.80</source>
-        <translation type="unfinished"></translation>
+        <translation>0.80</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="506"/>
         <source>Room size (wet amount)</source>
-        <translation type="unfinished"></translation>
+        <translation>Velikost místnosti (naostro)</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="509"/>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Velikost</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="493"/>
         <source>Stereo spread</source>
-        <translation type="unfinished"></translation>
+        <translation>Stereofonní rozložení</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="496"/>
         <source>Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Šířka</translation>
     </message>
     <message>
         <location filename="../fluidsettingsdialog.ui" line="52"/>
@@ -568,11 +568,11 @@
     <message>
         <location filename="../fluidsettingsdialog.cpp" line="406"/>
         <source>SoundFont Files (*.sf2 *.sf3 *.dls)</source>
-        <translation type="unfinished"></translation>
+        <translation>Soubory zvukových bank (*.sf2 *.sf3 *.dls)</translation>
     </message>
     <message>
         <source>SoundFont Files (*.sf2)</source>
-        <translation type="vanished">Soubory zvukových bank (*.sf2)</translation>
+        <translation>Soubory zvukových bank (*.sf2)</translation>
     </message>
 </context>
 <context>
@@ -807,37 +807,37 @@
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="165"/>
         <source>Gain:</source>
-        <translation type="unfinished">Zesílení:</translation>
+        <translation>Zesílení:</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="238"/>
         <source>Synth Library:</source>
-        <translation type="unfinished"></translation>
+        <translation>Knihovna syntezátorů:</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="248"/>
         <source>WT</source>
-        <translation type="unfinished"></translation>
+        <translation>WT</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="258"/>
         <source>FM</source>
-        <translation type="unfinished"></translation>
+        <translation>FM</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="101"/>
         <source>SoundFont:</source>
-        <translation type="unfinished">Zvuková banka:</translation>
+        <translation>Zvuková banka:</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="127"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="205"/>
         <source>Sonivox Library Version:</source>
-        <translation type="unfinished"></translation>
+        <translation>Verze knihovny Sonivox:</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.ui" line="71"/>
@@ -877,12 +877,12 @@
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="228"/>
         <source>Select SoundFont</source>
-        <translation type="unfinished">Vybrat zvukovou banku</translation>
+        <translation>Vybrat zvukovou banku</translation>
     </message>
     <message>
         <location filename="../sonivoxsettingsdialog.cpp" line="230"/>
         <source>SoundFont Files (*.dls *.sf2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Soubory zvukových bank (*.dls *.sf2)</translation>
     </message>
 </context>
 </TS>

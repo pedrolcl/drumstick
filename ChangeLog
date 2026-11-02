@@ -1,3 +1,9 @@
+2026-11-02
+    * Czech translation updated. Thanks to Pavel Fric.
+
+2026-10-29
+    * Spanish and Galician translations updated
+
 2026-09-15
     * vpiano: implemented a generic keyboard event filter
     * this class is simpler than a QAbstractNativeEventFilter subclass
